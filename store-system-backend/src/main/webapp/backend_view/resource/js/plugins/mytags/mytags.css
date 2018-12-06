@@ -1,0 +1,36 @@
+.tagItem .delete {
+	float: right;
+	width: 15px;
+	height: 15px;
+	background-image: url(img/x.png);
+	background-repeat: round;
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	display: none;
+}
+
+.tagItem:hover .delete {
+	display: block;
+}
+
+.tagItem {
+	position: relative;
+	height: 32px;
+	line-height: 20px;
+	background-color: #66CCFF;
+	padding: 5px 10px;
+	text-align: center;
+	float: left;
+	margin: 5px;
+	border-radius: 4px;
+	color: #FFFFFF;
+	font-size: 18px;
+	letter-spacing: 2px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.tagItem:hover {
+	background-color: #0099FF;
+}

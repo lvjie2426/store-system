@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal">
+        <div class="ibox float-e-margins">
+            <div class="step1">
+                <div class="ibox-title">
+                    <h5>添加单位</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">单位名称</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="name" placeholder="请输入单位名称">
+                        </div>
+
+                    </div>
+
+                    <!--手机号-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">手机号</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="phone" placeholder="请输入手机号">
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">管理员账号</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="adminUserName" placeholder="请输入手机号">
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">管理员密码</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="adminPassword" placeholder="请输入管理员密码">
+                        </div>
+
+                    </div>
+
+
+                    <!--<div class="form-group ">-->
+                        <!--<label class="col-sm-3 control-label">渠道</label>-->
+                        <!--<div class="col-sm-5">-->
+                            <!--<select id="channel" class="form-control" style="width: 100%">-->
+                                <!--&lt;!&ndash;<option value="">ddd</option>&ndash;&gt;-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+
+                    <div class="form-group ">
+                        <label class="col-sm-3 control-label">角色模板</label>
+                            <div class="col-sm-5">
+                            <select id="roleInitTemplateId" class="form-control" style="width: 100%">
+                            <!--<option value="">ddd</option>-->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">介绍</label>
+
+                        <div class="col-sm-5">
+                            <textarea class="form-control"  id="content" name="a" style="resize: none;height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">上传头像</label>
+                        <div class="col-sm-5 control-label">
+                            <div class="input-group">
+                                <input id="cover" type="hidden">
+                                <input id="photoCover" type="text" class="form-control" disabled="disabled" placeholder="请选择图片">
+                                <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                                        </span>
+                            </div>
+                            <img src="" class="img-rounded" id="iconView" width="15%" height="100%" style="display: none;float:left">
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed "></div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-3">
+                            <button class="btn btn-primary" type="button" id="btn_submit">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+    <input style="height: 0;width: 0;" type="file" name="file"
+           accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+</form>
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!----select2----->
+<script src="../resource/js/plugins/select2/js/select2.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+<script src="../resource/common/newscontent.js"></script>
+
+<script src="../resource/common/common.js"></script>
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+
+
+<!--地区select-->
+<script src="../resource/js/area.js"></script>
+
+<script>
+    initSelectSubject("#roleInitTemplateId","/roleinittemplate/getAllRoleInitTemplatesByName?token="+encodeURIComponent(getUserInfo().token),false,true);
+    //这条干嘛的 你i没用
+    //initSelectSubject("#channelId","/channel/getAllListByName?token="+encodeURI(getUserInfo().token),false,true);
+    function formatSubject(item) {
+        if (item.loading) return item;
+        var markup = '<div> <p class="text-primary">名称:' + item.name + '</p>';
+        //markup += '这里可以添加其他选项...';
+        markup += ' </div>';
+        return markup;
+    }
+
+    function submitSubordinateData(){
+        var url = "/subordinate/addSubordinate";
+        var name = $("#name").val();
+        var phone = $("#phone").val();
+        var roleInitTemplateId=$("#roleInitTemplateId").val();
+        var content = $('#content').val();
+        var icon = $('#cover').val();
+        var adminUserName = $('#adminUserName').val();
+        var adminPassword = $('#adminPassword').val();
+
+
+        var params  ={};       
+        if(name == '' || name == undefined){
+            layer.msg("请输入单位名称", {icon: 2,time:500});
+        }else if(phone == '' || phone == undefined){
+            layer.msg("请选择手机号", {icon: 2,time:500});
+        }else if( content == '' || content == undefined){
+            layer.msg("请输入介绍", {icon: 2,time:500});
+        }else if( icon == '' || icon == undefined){
+            layer.msg("请上传头像", {icon: 2,time:500});
+        }else if( adminUserName == '' || adminUserName == undefined){
+            layer.msg("请输入管理员手机号", {icon: 2,time:500});
+        }else if( adminPassword == '' || adminPassword == undefined){
+            layer.msg("请输入管理员密码", {icon: 2,time:500});
+        }else{
+            params.name=name;
+            params.phone=phone;
+            params.roleInitTemplateId =roleInitTemplateId;
+            params.content = content;
+            params.icon = icon;
+            params.adminUserName = adminUserName;
+            params.adminPassword = adminPassword;
+            console.log(params);
+            myAjax(url,params,handle);
+            function handle(data,params){
+               
+                    if(data && data.success){
+
+                        layer.msg("添加成功", {icon: 1,time:1000},function () {
+                        	addMenuItem("../subordinate/subordinateList.html")     //新开一个tab页
+                            refreshTab("../subordinate/subordinateList.html") //你可以把这俩个尝试合成一个
+                            
+                            closeMyselfInIframe()                         
+                        });
+						
+                    }else{
+                        var msg = isBlank(data.msg)? "":data.msg;
+                        layer.msg("添加失败"+msg, {icon: 2});
+                    }
+                
+            }
+        }
+    }
+    
+ 
+    $(function () {
+
+         $("#btn_submit").click(submitSubordinateData);
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+
+<body class="gray-bg">
+	
+<div class="wrapper wrapper-content  animated fadeInDown tree-view"  style="display: none;">
+        <div class="col-sm-10">
+            <div class="ibox float-e-margins" id="ztree">
+                <div class="ibox-title">
+                    <h5>选择权限</h5>
+                </div>
+                <div class="ibox-content" >
+                    <ul id="treeDemo" class="ztree">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+</div>
+
+
+	
+<div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal" id="userForm">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">账户名</label>
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="userName" placeholder="请输入账户名">
+                <span class="help-block m-b-none validate">请输入账户名</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">昵称</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" placeholder="请输入昵称">
+                <span class="help-block m-b-none validate">请输入昵称</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户密码</label>
+            <div class="col-sm-10">
+                <input type="hidden" class="form-control" id="id">
+                <input type="text" class="form-control" id="password" placeholder="请输入用户密码">
+                <span class="help-block m-b-none validate">请输入用户密码</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">描述</label>
+            <div class="col-sm-10">
+                <input type="text" id="desc" placeholder="请输入描述" class="form-control">
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">选择角色</label>
+            <div id="ridCheckBox" class="col-sm-10">
+
+            </div>
+        </div>
+    </form>
+</div>
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>后台用户</h5>
+            </div>
+
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-right">姓名</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="searchName" class="form-control" placeholder="请输入姓名" />
+                                </div>
+                                <label class="col-sm-1 control-label text-right">账号</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="searchAccount" class="form-control" placeholder="请输入用户手机号" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                                </div>
+                                <label class="col-sm-1 control-label text-right">角色</label>
+                                <div class="col-sm-2">
+                                    <select id="searchRid"  class="  form-control"  title="请选择角色类型" >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">开始时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="startTime" class="form-control" placeholder="请选择开始时间"  readonly>
+                                </div>
+                                <label class="col-sm-1 control-label">结束时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="endTime" class="form-control" placeholder="请选择结束时间"  readonly>
+                                </div>
+                                <label class="col-sm-1 control-label">状态筛选</label>
+                                <div class="col-sm-2">
+                                    <select name="" id="searchStatus" class="form-control">
+                                        <option value="-1">所有</option>
+                                        <option value="0">正常</option>
+                                        <option value="1">失效</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 control-label"></label>
+                                <div class="col-sm-2">
+
+                                    <button type="button" class="btn  btn-info " id="btn_search" name="like_search">
+                                        <i class="fa fa-search"></i> 点击查询
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="toolbar" >
+                            <button class="btn btn-success  btn-outline" id="btn_add">
+                                <i class="fa fa-plus">添加</i>
+                            </button>
+
+                        </div>
+                        <table id="tb_table"></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- End Panel Other -->
+    </div>
+
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="../resource/js/content.js?v=1.0.0"></script>
+
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- ztree -->
+
+	<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+	<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+	<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
+
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+	<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <script src="../resource/js/plugins/laydate/laydate.js"></script>
+
+    <script src="../resource/common/common.js?"+Math.random()></script>
+    <script>
+        var RoleList = [];
+        var $table =  $('#tb_table');
+
+        var TableInit = function (columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $table.bootstrapTable({
+                    url: serverUrl+'/user/searchUser',         //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber:1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: columns,
+//                    showFooter:true,            //表格底部
+                    onClickRow: function (row) {
+//                        console.log(row)
+                    },
+                    queryParamsType:'limit',
+                    queryParams: function (params) {
+                        var name = $("#schoolname").val();
+                        var startTime = $("#startTime").val();
+                        var endTime = $("#endTime").val();
+
+                        return {
+                            token:getUserInfo().token,
+                            userType:1,
+                            page:(params.offset / params.limit) + 1,
+                            size: params.limit,
+                            name:$("#searchName").val(),
+                            userName:$("#searchAccount").val(),
+                            sid:0,//暂无下属机构
+                            rid:$("#searchRid").val(),
+                            status:$("#searchStatus").val(),
+                            startTime: isBlank(startTime) ? 0 : new Date(startTime).getTime(),
+                            endTime: isBlank(endTime) ? 0 : new Date(endTime).getTime(),
+
+                        };
+                    },
+                });
+            };
+            return oTableInit;
+        };
+
+
+        var columns = [
+            {field: "id", title: "用户id"},
+            {field: "userName", title: "账户"},
+            {field: "name", title: "昵称"},
+
+            {field: "desc", title: "描述"},
+            {field: "rids", title: "用户角色", formatter: function (value, row, index) {
+                var html = "";
+                for(var j=0;j<value.length;j++){
+                    var rid = value[j];
+                    for(var i=0;i<RoleList.length;i++){
+                            if(RoleList[i].id==rid){
+                                 html +=RoleList[i].name;
+                                 html +='&nbsp';
+                            }
+                    }
+                }
+                return html;
+            }},
+            {field: "ctime", title: "创建时间", formatter: function (value, row, index) {
+                return formatDateTime(value);
+            }},
+            {field: "status", title: "状态", formatter: function (value, row, index) {
+                var html = '';
+                if (value == 0) {
+                    html += "<a  class='btn btn-info btn-sm  btn-success' disabled  href='javascript:void(0)' >正常</a>";
+                } else if (value == 1) {
+                    html += "<a  class='btn btn-info btn-sm btn-warning' disabled href='javascript:void(0)' >失效</a>";
+                }
+                return html;
+            }},
+            {field: "other", title: "操作", align: "center", formatter: function (value, row, index) {
+                var data = JSON.stringify(row);
+                var html = '';
+                html +="<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editUser("+data+")\'>编辑</a>";
+                html +='&nbsp';
+                html +="<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editUserPermission("+data+")\'>权限</a>"
+                html +='&nbsp';
+                if(row.status==0){
+                    html += '<a class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="updateUserStatus(' + row.id + ',1)" >删除</a>';
+                }else{
+                    html += '<a class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="updateUserStatus(' + row.id + ',0)" >恢复</a>';
+                }
+                return html;
+            }}
+        ]
+
+
+
+        function getAllRole(callBack){
+            myAjax("/role/getAllRoles","",handle);
+            function handle(data,param){
+                if(data.success) {
+                    var roles = data.data;
+                    var ridCheckBoxHtml='';
+                    var searchList=[];
+                    searchList.push({id:0,name:"全部"});
+                    for(var i = 0;i< roles.length;i++){
+                        var obj = {};
+                        obj.id = roles[i].id;
+                        obj.name = roles[i].roleName;
+                        searchList.push(obj);
+                        RoleList.push(obj);
+                        ridCheckBoxHtml=ridCheckBoxHtml+'<input type="checkbox" name="roleCheck" id="role'+obj.id+'" value="'+obj.id+'" />'+obj.name+'<br />';
+                    }
+                    $('#ridCheckBox').html(ridCheckBoxHtml);
+
+
+                    changeSelect('searchRid',searchList);
+                    if(callBack){
+                        callBack();
+                    }
+                } else {
+                    layer.msg("请求失败");
+                }
+            }
+        }
+		
+        function addUser(){
+            var index = layer.open({
+                type: 1,shade: 0.01,
+                skin: 'layui-layer-demo', //样式类名
+                area: ['550px', '500px'],
+                anim: 0,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view'),
+                btn: ['提交', '关闭'],
+                yes: function(){
+                    var param = {};
+                    var Url = '/user/add';
+                    var result =  {succ:'添加成功！',fail:'添加失败！'};
+                    var userName =  $("#userName").val();
+                    var name =  $("#name").val();
+                    var desc = $("#desc").val();
+                    var password =  $("#password").val();
+
+                    var rids=[];
+                    $('input[name=roleCheck]:checked').each(function() {
+                            rids.push($(this).val());
+                    });
+                    if(isBlank(userName)){
+                        showValidate('#userName');
+                        return  ;
+                    }
+                    if(isBlank(password)){
+                        showValidate('#password');
+                        return  ;
+                    }
+
+                    layer.close(index);
+                    param.userName = userName;
+                    param.name = name;
+                    param.password = password;
+                    param.rids = rids;
+                    param.desc = desc;
+                    param.userType=1;
+                    myAjax(Url,param,handle);
+                    function handle(data, param){
+                        var msg = (data.msg == undefined ? '':','+data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                            handleTable("", 3, serverUrl+'/user/searchUser');
+                        }else{
+                            layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                        }
+                    }
+                },
+                btn2: function(){},
+                success: function(layero, index){
+                    resetForm("#userForm");
+                    $('input[name=roleCheck]').each(function() {
+                            $(this).removeAttr("checked");
+                    });
+                    $('#userName').attr('readonly', false);
+                    $('#password').attr('readonly', false);
+                }
+            });
+        }
+
+        function editUser(data){
+            var index = layer.open({
+                type: 1,shade: 0.01,
+                skin: 'layui-layer-demo', //样式类名
+                area: ['550px', '500px'],
+                anim: 0,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view'),
+                btn: ['提交', '关闭'],
+                yes: function(){
+                    var param = {};
+                    var Url = '/user/update';
+                    var result =  {succ:'更新成功！',fail:'更新失败！'};
+                    var id = data.id;
+                    var name =  $("#name").val();
+                    var desc = $("#desc").val();
+                    if(isBlank(userName)){
+                        showValidate('#userName');
+                        return  ;
+                    }
+                    var updateRids=[];
+                    $('input[name=roleCheck]:checked').each(function() {
+                            updateRids.push($(this).val());
+                    });
+
+                    layer.close(index);
+                    param.id = id;
+                    param.name = name;
+                    param.desc = desc;
+                    param.updateRids = updateRids;
+                    myAjax(Url,param,handle);
+                    function handle(data, param){
+                        var msg = (data.msg == undefined ? '':','+data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                            handleTable("", 3, serverUrl+'/user/searchUser');
+                        }else{
+                            layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                        }
+                    }
+                },
+                btn2: function(){},
+                success: function(layero, index){
+
+                    $('input[name=roleCheck]').each(function() {
+                            $(this).removeAttr("checked");
+                    });
+                    $('#userName').attr('readonly', true);
+                    echoUser(data);
+                }
+            });
+        }
+        
+      
+       function echoUser(data){
+            $("#userName").val(data.userName);
+            $("#desc").val(data.desc);
+            $("#sort").val(data.sort);
+            $("#name").val(data.name);
+            for(i=0;i<data.rids.length;i++){
+                $('#role'+data.rids[i]).prop("checked", true);
+            }
+            $("#password").val();
+        }
+        
+        
+        function updateUserStatus(id,status){
+            var url = "/user/updateStatus";
+            var result = {succ:'成功！',fail:'失败！'};
+            layer.msg('确认删除或恢复吗?', {
+                shade: [0.1, '##f5f5f5'],
+                time: 0 //不自动关闭
+                ,btn: ['确定','取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    myAjax(url,{id:id,status:status},handle);
+                    function handle(data,param){
+                        var msg = (data.msg == undefined ? '':','+data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                            handleTable("",3,serverUrl+'/user/searchUser');
+                        }else{
+                            layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
+                        }
+                    }
+                },btn2: function(index, layero){
+                }
+            });
+        }
+
+
+        $(function () {
+            getAllRole(function(){
+                var Table = new TableInit(columns);
+	            Table.Init();
+	            var oButtonInit = new ButtonInit();
+	            oButtonInit.Init();
+	            initZtree();
+		        $("#ztree").slimScroll({
+		            height: '375px'
+		        });
+		        laydate.render({
+                    elem: '#startTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#endTime',
+                    type: 'datetime'
+                });
+            });
+           
+        });
+        
+        
+         //初始化页面上面的按钮事件
+        var ButtonInit = function () {
+            var oInit = new Object();
+            oInit.Init = function () {
+                $('#btn_add').click(addUser);
+                $('#btn_search').click(searchUser);
+            };
+            return oInit;
+        };
+
+        function searchUser() {
+            handleTable("", 5, "");
+        }
+         
+	    function editUserPermission(data){
+	 	    reInitTree(data.id);
+                var index = layer.open({
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                area: ['620px', '520px'],
+                anim: 0,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.tree-view'),
+                btn: ['提交', '关闭'],
+                btnAlign: 'r',
+                yes: function(){
+                    var param = {};
+                    var treeData =  filterNode();
+                    layer.close(index);
+                    param.uid = data.id;
+                    param.pids = treeData;
+                    submitUserPermissionData(param);
+                },
+                btn2: function(){},
+            });
+	    }
+         
+
+    //转换节点
+    function transferNode(){
+        var attr = [];
+        var nodes = zTree.getCheckedNodes(true);
+        for(var i = 1;l = nodes.length, i< l;i++){
+            attr.push(nodes[i].name);
+        }
+        return attr.toString();
+    }
+
+    function submitUserPermissionData(params) {
+        var url = '';
+        var result;
+        url = serverUrl+'/user/updateUserPermissions';
+        result =  {succ:'更新成功！',fail:'更新失败！'};
+        var index = loading();
+        layer.close(index);
+        myAjax(url,params,handle);
+        function handle(data,param){
+            if (data && data.success) {
+                layer.msg(result.succ, {icon: 1});
+            }else{
+                layer.msg(result.fail, {icon: 2});
+            }
+        }
+       
+    }
+
+    //回显节点
+
+    var zNodes =[];
+    var zTree;
+    var setting = {
+        view: {
+            selectedMulti: false
+        },
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: { "Y" : "s", "N" : "s" }
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        },
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(treeNode)
+    };
+    function initZtree(){
+        var url = serverUrl+"/permission/getAll";
+        myAjax(url,"",handle);
+        function handle(data,param){
+            if(data.success) {
+                var treeData = transTreeData(data.data);
+                zNodes = treeData;
+            } else {
+                layer.msg("请求失败");
+                return;
+            }
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        }
+
+    }
+    function refreshTree(){
+        zTree.checkAllNodes(false);
+        zTree.refresh();
+    }
+
+    function transTreeData(data){
+        var temp = [];
+        for(var i = 0;i<data.length;i++){
+            var obj = {};
+            if(data[i].pid == 0){
+                obj.open = true;
+                obj.nocheck = true;
+            }
+            obj.id = data[i].id;
+            obj.sort = data[i].sort;
+            obj.cssName = data[i].cssName;
+            obj.name = data[i].text;
+            obj.pId = data[i].pid;
+            obj.href = data[i].href;
+            temp.push(obj)
+        }
+
+        return temp;
+    }
+
+    function reInitTree(id) {
+        var url =  serverUrl+"/user/getUserPermissions";
+        myAjax(url,{uid:id},handle);
+        function handle(data,param){
+            if(data.success) {
+                reviewNodes(data.data);
+            } else {
+                layer.msg("请求失败");
+            }
+        }
+    }
+    //回显ztree数据
+    function reviewNodes(data) {
+        var Nodes = cloneObj(zNodes);
+        for (var m = 0; m < Nodes.length; m++) {
+            for (var n = 0; n < data.length; n++) {
+                if (Nodes[m].id == data[n].id) {
+                    Nodes[m].checked = true;
+                }
+            }
+        }
+        zTree.destroy();
+        $.fn.zTree.init($("#treeDemo"), setting, Nodes);
+
+    }
+    //获取ztree选中数据
+    function filterNode(){
+        var attr = [];
+        if(zTree){
+            var nodes = zTree.getCheckedNodes(true);
+            for(var i = 0;l = nodes.length, i< l;i++){
+                attr.push(nodes[i].id);
+            }
+        }
+        return attr;
+    }
+    </script>
+</body>
+
+</html>

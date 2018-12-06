@@ -1,0 +1,263 @@
+.container-fluid .testinfo {
+  width: 100%;
+}
+.container-fluid .testinfo .onechoice {
+  padding-top: 10px;
+  border: 1px solid #e7eaec;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+.container-fluid .testinfo .onechoice .bigtitle {
+  font-size: 16px;
+  margin-bottom: 15px;
+  line-height: 36px;
+  border-bottom: 1px solid #E7EAEC;
+  padding-left: 20px;
+  position: relative;
+}
+.container-fluid .testinfo .onechoice .bigtitle .addtest {
+  font-size: 18px;
+  color: #ccc;
+  padding: 0 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 40px;
+}
+.container-fluid .testinfo .onechoice .bigtitle .toggle {
+  font-size: 18px;
+  color: #ccc;
+  padding: 0 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+  right: 0px;
+}
+.container-fluid .testinfo .onechoice .questions {
+  padding: 0;
+}
+.container-fluid .testinfo .onechoice .questions .smallquestion {
+  margin-bottom: 15px;
+  padding: 20px 30px;
+  border: 1px solid #e7eaec;
+  background-color: #fafafa;
+  border-radius: 20px;
+}
+.container-fluid .testinfo .onechoice .questions .smallquestion .title {
+  position: relative;
+  padding-bottom: 5px;
+  padding-right: 60px;
+  font-size: 14px;
+  margin-bottom: 0;
+  line-height: 24px;
+}
+.container-fluid .testinfo .onechoice .questions .smallquestion .title .edit {
+  font-size: 18px;
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  color: #c4c4c4;
+  cursor: pointer;
+}
+.container-fluid .testinfo .onechoice .questions .smallquestion .title .del {
+  font-size: 18px;
+  position: absolute;
+  top: 5px;
+  right: -10px;
+  color: #c4c4c4;
+  cursor: pointer;
+}
+.container-fluid .testinfo .onechoice .questions .smallquestion .option {
+  font-size: 12px !important;
+  line-height: 32px;
+}
+.container-fluid .testinfo .onechoice .questions .smallquestion .option li {
+  margin: 0 15px;
+  padding: 0;
+  border-bottom: 1px dashed #e7e7e7;
+}
+.container-fluid .testinfo .onechoice .questions .smallquestion .option .Answer {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-bottom: 0;
+  padding: 0 10px;
+  margin: 0 15px;
+  margin-top: 10px;
+}
+.container-fluid .testinfo .onechoice .questions .smallquestion .option .Answer .aw_title {
+  padding-top: 10px;
+}
+.container-fluid .testinfo .manychoice {
+  padding-top: 10px;
+  border: 1px solid #E7EAEC;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+.container-fluid .testinfo .manychoice .bigtitle {
+  font-size: 16px;
+  margin-bottom: 15px;
+  line-height: 36px;
+  border-bottom: 1px solid #E7EAEC;
+  padding-left: 20px;
+  position: relative;
+}
+.container-fluid .testinfo .manychoice .bigtitle .addtest {
+  font-size: 18px;
+  color: #ccc;
+  padding: 0 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 40px;
+}
+.container-fluid .testinfo .manychoice .bigtitle .toggle {
+  font-size: 18px;
+  color: #ccc;
+  padding: 0 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+  right: 0px;
+}
+.container-fluid .testinfo .manychoice .questions {
+  padding: 0;
+}
+.container-fluid .testinfo .manychoice .questions .smallquestion {
+  margin-bottom: 15px;
+  padding: 20px 30px;
+  border: 1px solid #E7EAEC;
+  border-radius: 20px;
+  background-color: #fafafa;
+}
+.container-fluid .testinfo .manychoice .questions .smallquestion .title {
+  position: relative;
+  padding-bottom: 5px;
+  padding-right: 60px;
+  font-size: 14px;
+  margin-bottom: 0;
+  line-height: 24px;
+}
+.container-fluid .testinfo .manychoice .questions .smallquestion .title .edit {
+  font-size: 18px;
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  color: #c4c4c4;
+  cursor: pointer;
+}
+.container-fluid .testinfo .manychoice .questions .smallquestion .title .del {
+  font-size: 18px;
+  position: absolute;
+  top: 5px;
+  right: -10px;
+  color: #c4c4c4;
+  cursor: pointer;
+}
+.container-fluid .testinfo .manychoice .questions .smallquestion .option {
+  line-height: 32px;
+  font-size: 12px !important;
+}
+.container-fluid .testinfo .manychoice .questions .smallquestion .option li {
+  margin: 0 15px;
+  padding: 0;
+  border-bottom: 1px dashed #e7e7e7;
+}
+.container-fluid .testinfo .manychoice .questions .smallquestion .option .Answer {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-bottom: 0;
+  padding: 0 10px;
+  margin: 0 15px;
+  margin-top: 10px;
+}
+.container-fluid .testinfo .manychoice .questions .smallquestion .option .Answer .aw_title {
+  padding-top: 10px;
+}
+.container-fluid .testinfo .shortanswer {
+  padding-top: 10px;
+  border: 1px solid #E7EAEC;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+.container-fluid .testinfo .shortanswer .bigtitle {
+  font-size: 16px;
+  margin-bottom: 15px;
+  line-height: 36px;
+  border-bottom: 1px solid #E7EAEC;
+  padding-left: 20px;
+  position: relative;
+}
+.container-fluid .testinfo .shortanswer .bigtitle .addtest {
+  font-size: 18px;
+  color: #ccc;
+  padding: 0 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 40px;
+}
+.container-fluid .testinfo .shortanswer .bigtitle .toggle {
+  font-size: 18px;
+  color: #ccc;
+  padding: 0 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+  right: 0px;
+}
+.container-fluid .testinfo .shortanswer .questions {
+  padding: 0;
+}
+.container-fluid .testinfo .shortanswer .questions .smallquestion {
+  margin-bottom: 15px;
+  padding: 20px 30px;
+  border: 1px solid #E7EAEC;
+  border-radius: 20px;
+  background-color: #fafafa;
+}
+.container-fluid .testinfo .shortanswer .questions .smallquestion .title {
+  position: relative;
+  padding-bottom: 5px;
+  padding-right: 60px;
+  font-size: 14px;
+  margin-bottom: 0;
+  line-height: 24px;
+}
+.container-fluid .testinfo .shortanswer .questions .smallquestion .title .edit {
+  font-size: 18px;
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  color: #c4c4c4;
+  cursor: pointer;
+}
+.container-fluid .testinfo .shortanswer .questions .smallquestion .title .del {
+  font-size: 18px;
+  position: absolute;
+  top: 5px;
+  right: -10px;
+  color: #c4c4c4;
+  cursor: pointer;
+}
+.container-fluid .testinfo .shortanswer .questions .smallquestion .problem {
+  font-size: 12px !important;
+  line-height: 32px;
+  padding: 0;
+  margin: 0 15px;
+  border-bottom: 1px dashed #e7e7e7;
+}
+.container-fluid .testinfo .shortanswer .questions .smallquestion .Answer {
+  background-color: rgba(0, 0, 0, 0.1);
+  font-size: 12px !important;
+  line-height: 32px;
+  padding: 0 10px;
+  margin: 0 15px;
+  margin-top: 10px;
+}
+.container-fluid .testinfo .shortanswer .questions .smallquestion .Answer .aw_title {
+  padding-top: 10px;
+}

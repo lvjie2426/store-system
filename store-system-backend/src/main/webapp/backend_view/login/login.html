@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>后台 - 登录</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css" rel="stylesheet">
+    <link href="../resource/css/login.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;url="/login/ie.html" />
+    <![endif]-->
+    <style>
+        .info{
+            color: red;
+        }
+        .safecode{
+            position: relative;
+        }
+        .safecode img{
+            width: 100px;
+            height: 34px;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .safecode input{
+            width: 56%;
+        }
+        .signinpanel .safecode .code {
+            background: #fff url(../resource/img/safepic.png) no-repeat 95% center;
+            color: #333;
+        }
+        .code{
+            color: #000;
+        }
+    </style>
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+    </script>
+
+</head>
+
+<body class="signin">
+<div class="signinpanel">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="signin-info">
+                <div class="logopanel m-b">
+                    <h1>后台管理系统</h1>
+                </div>
+                <div class="m-b"></div>
+                <h4>欢迎使用 <strong></strong></h4>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <form method="post" id="login_form" onsubmit="return login();" action="#">
+                <h4 class="no-margins">登录：</h4>
+                <p class="m-t-md">登录到后台管理系统</p>
+                <input id="username" type="text" class="form-control uname" name="username" placeholder="手机号" required=""/>
+                <input id="password" type="password" class="form-control pword m-b" name="password" placeholder="密码" required=""/>
+                <div class="safecode">
+                    <input id="code1" type="text" class="form-control code" name="code1" placeholder="验证码" required=""/>
+                    <img onclick="reload()" src="" id="code">
+                </div>
+
+                <input id="denglu" type="submit" value="登录" class="btn btn-success btn-block"/>
+            </form>
+        </div>
+    </div>
+    <div class="signup-footer">
+        <div class="pull-left">
+            <!--&copy; 2015 All Rights Reserved. H+-->
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+    <script src="../resource/common/common.js?"+Math.random()></script>
+
+    <script>
+        function guid() {
+            function S4() {
+               return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            }
+            return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+        }
+        var uuid;
+		function reload() {
+            uuid=guid();
+            $("#code").attr("src",loginCodeUrl+"?uuid="+uuid);
+        }
+		function login(){
+		    var loginJson={};
+		    loginJson.userName = $('#username').val();
+		    loginJson.password = $('#password').val();
+		    loginJson.code1= $('#code1').val();
+		    loginJson.uuid=uuid;
+			ajaxGet_withoutUser(loginUrl,loginJson,function(ret,err){
+		        if(ret){
+		        	if(!ret.success) {
+		        	    reload();
+		        		alert(ret.data);
+		        	} else {
+		        		setUserInfo(ret.data);
+		        		window.location.href="../index/index.html";
+		        	}
+		        }else{
+		        	     layer.msg('网络错误', {icon: 2});
+		        }
+        		});
+
+		    return false;
+    		}
+
+    		reload();
+
+
+    </script>
+</div>
+</body>
+
+</html>

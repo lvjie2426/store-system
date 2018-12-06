@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            background: #FFF;
+        }
+        .logo{
+            height: 35px;margin: 10px auto;
+            display: block;            background: #FFF;
+
+        }
+        .input_list ul li{
+            margin-top: 5px;
+        }
+        .input_list ul li input{
+            line-height: 35px;width: 70%;margin: 0 15%;
+           outline: none;
+            border: none; border-bottom: 1px solid #d2d2d2;color:#8f8f8f;
+        }
+
+        .img_list{
+
+            margin: 10px auto;
+            width: 70%;
+            display: -webkit-flex; /* Safari ,Webkit内核的浏览器，必须加上-webkit前缀。*/
+            display: flex;
+            justify-content:  space-between;
+        }
+        .img_list div{
+            width: 70px;
+            text-align: center;
+        }
+        .img_list div img{
+            width: 100%;
+            height: 70px;
+        }
+        .img_list div span{
+            color:#8f8f8f;
+            font-size: 12px
+        }
+        .text{
+            text-align: center;
+            font-size: 10px;color:#8f8f8f;
+            padding: 5px 0;
+        }
+        #reg{
+            width: 80%;height: 44px;color:#fff;font-size: 16px;text-align: center;
+            background: #0350fe;line-height: 44px;border-radius: 5px;
+            margin: 0 auto;
+        }
+        .no{
+            float: left;
+            width: 15px;height: 15px;
+            display: block;border: 1px solid #999999;
+            margin-top: 5px;
+            border-radius: 50%;
+        }
+        .blue{
+            font-size: 12px;color:#299fff;float: left;margin-top: 5px;text-decoration: none;margin-left: 5px;
+        }
+        .yes{
+            background: url("./resource/yes.png") no-repeat;background-size: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img class="logo" src="./resource/logo.png" alt="">
+        <div class="input_list">
+            <ul>
+                <li>
+                    <input placeholder="手机号" id="tel" type="tel">
+                </li>
+                <li>
+                    <input placeholder="密码" id="password" type="password">
+                </li>
+                <li>
+                    <input placeholder="确认密码" id="passwordagain" type="password">
+                </li>
+                <li>
+                    <input placeholder="姓名" id="name" type="text">
+                </li>
+                <li>
+                    <input placeholder="驾驶证号" id="carcardnum" type="text">
+                </li>
+                <li>
+                    <input placeholder="车牌号" id="carnum" type="text">
+                </li>
+            </ul>
+        </div>
+        <div class="img_list">
+            <div>
+                <div class="right-content right-file">
+                    <form style="opacity: 0;position: absolute;left: -280px;" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+                        <input style="height: 0;width: 0;" type="file" name="file"/>
+                    </form>
+                </div>
+                <img id="cover" onclick="uploadIcon('#uploadForm input','uploadForm','cover')" src="./resource/add.png" alt="">
+                <span>身份证正面</span>
+            </div>
+            <div>
+                <div class="right-content right-file">
+                    <form style="opacity: 0;position: absolute;left: -280px;" action="" id="uploadForm1" autocomplete="off" enctype="multipart/form-data">
+                        <input style="height: 0;width: 0;" type="file" name="file"/>
+                    </form>
+                </div>
+                <img id="cover1" onclick="uploadIcon('#uploadForm1 input','uploadForm1','cover1')" src="./resource/add.png" alt="">
+                <span>身份证反面</span>
+            </div>
+            <div>
+                <div class="right-content right-file">
+                    <form style="opacity: 0;position: absolute;left: -280px;" action="" id="uploadForm2" autocomplete="off" enctype="multipart/form-data">
+                        <input style="height: 0;width: 0;" type="file" name="file"/>
+                    </form>
+                </div>
+                <img id="cover2" onclick="uploadIcon('#uploadForm2 input','uploadForm2','cover2')" src="./resource/add.png" alt="">
+                <span>手持身份证</span>
+            </div>
+        </div>
+        <div class="img_list">
+            <div>
+                <div class="right-content right-file">
+                    <form style="opacity: 0;position: absolute;left: -280px;" action="" id="uploadForm3" autocomplete="off" enctype="multipart/form-data">
+                        <input style="height: 0;width: 0;" type="file" name="file"/>
+                    </form>
+                </div>
+                <img id="cover3" onclick="uploadIcon('#uploadForm3 input','uploadForm3','cover3')" src="./resource/add.png" alt="">
+                <span>行驶证</span>
+            </div>
+            <div>
+                <div class="right-content right-file">
+                    <form style="opacity: 0;position: absolute;left: -280px;" action="" id="uploadForm4" autocomplete="off" enctype="multipart/form-data">
+                        <input style="height: 0;width: 0;" type="file" name="file"/>
+                    </form>
+                </div>
+                <img id="cover4" onclick="uploadIcon('#uploadForm4 input','uploadForm4','cover4')" src="./resource/add.png" alt="">
+                <span>人车合影</span>
+            </div>
+            <div>
+                <div class="right-content right-file">
+                    <form style="opacity: 0;position: absolute;left: -280px;" action="" id="uploadForm5" autocomplete="off" enctype="multipart/form-data">
+                        <input style="height: 0;width: 0;" type="file" name="file"/>
+                    </form>
+                </div>
+                <img id="cover5" onclick="uploadIcon('#uploadForm5 input','uploadForm5','cover5')" src="./resource/add.png" alt="">
+                <span>驾照</span>
+            </div>
+        </div>
+    </div>
+    <div style="width: 70%;margin: 0 auto;">
+        <div>
+            <span class="no"></span>
+            <a class="blue" href="yin_si_zheng_ce.html">《个人信息保护及隐私政策》</a>
+            <div style="clear: both"></div>
+        </div>
+        <div>
+            <span class="no"></span>
+            <a class="blue" href="jie_ru_xie_yi.html">《COOL GO驾驶员接入协议》</a>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+    <div class="text">
+        需管理员审核，一经审核成功，会第一时间通知您
+    </div>
+    <div id="reg" onclick="submit()">注册</div>
+</body>
+<script src="./resource/jquery.min_3.2.1.js"></script>
+<script src="./resource/layer/layer.js"></script>
+<script>
+    $(".no").click(function () {
+        if($(this).hasClass('yes')){
+            $(this).removeClass('yes')
+        }else{
+            $(this).addClass('yes')
+        }
+    });
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null)
+            return unescape(r[2]);
+        return null;
+    }
+
+    var aid = getQueryString('aid');
+
+    function submit() {
+        if(!aid) {
+            layer.msg('机构不能为空', {icon: 2});
+            return;
+        }
+        var tel = $("#tel").val();
+        var password = $("#password").val();
+        var passwordagain = $("#passwordagain").val();
+        var name = $("#name").val();
+        var carcardnum = $("#carcardnum").val();
+        var carnum = $("#carnum").val();
+        if(!checkPhone(tel)){
+            layer.msg('请输入正确的手机号码', {icon: 2});
+            return;
+        }
+        if(password != '' && passwordagain != ''){
+            if(password != passwordagain){
+                layer.msg('输入的两次密码不一致！', {icon: 2});
+                return;
+            }
+        }else{
+            layer.msg('密码不能为空', {icon: 2});
+            return;
+        }
+        if(isBlank(name)){
+            layer.msg('姓名不能为空', {icon: 2});
+            return;
+        }
+        if(isBlank(carcardnum)){
+            layer.msg('驾驶证号不能为空', {icon: 2});
+            return;
+        }
+        if(isBlank(carnum)){
+            layer.msg('车牌号不能为空', {icon: 2});
+            return;
+        }
+
+        var index = 0;
+        for(var i=0;i<$('.img_list img').length;i++){
+            if($('.img_list img')[i].src.indexOf('/resource/add.png') < 0){
+                index++
+            }
+        }
+        if(index != 6){
+            layer.msg('所有图片都必须上传', {icon: 2});
+            return;
+        }
+
+        if($('.yes').length != 2){
+            layer.msg('必须要同意所有协议后才可提交!', {icon: 2});
+            return;
+        }
+
+        var cover = $('#cover')[0].src;
+        var cover1 = $('#cover1')[0].src;
+        var cover2 = $('#cover2')[0].src;
+        var cover3 = $('#cover3')[0].src;
+        var cover4 = $('#cover4')[0].src;
+        var cover5 = $('#cover5')[0].src;
+
+        var params = {};
+        params.aid = aid;
+        params.phone = tel;
+        params.password = password;
+        params.name = name;
+        params.licence = carcardnum;
+        params.carNum = carnum;
+        params.idCard = cover;
+        params.idCardReverse = cover1;
+        params.checkImg = cover2;
+        params.licenceImg = cover3;
+        params.manCarImg = cover4;
+        params.drivingLicense = cover5;
+        var result =  {succ:'注册成功！等待审核',fail:'注册失败！'};
+        myAjax('/user/driverRegist', params, handle);
+        function handle(data, param){
+            var msg = (data.msg == undefined ? '':','+data.msg);
+            if(data.success) {
+                location.href = 'success.html';
+//                layer.msg(result.succ, {icon: 1,shade: 0.01});
+            }else{
+                layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+            }
+        }
+    }
+
+    function uploadIcon(id,id1,id2){
+        $(id).click();
+        upload(id1,id2);
+    }
+
+    function upload(inputId,id1){
+        $("#"+inputId+" input").change(function(){
+            var f = $("#"+inputId+" input")[0].files;
+            if(f['0'].size/1024 > 4096){
+                layer.msg('只支持上传图片大小不大于4M的！', {icon: 2});
+                return;
+            }
+            for(var i =0;i<f.length;i++){
+                if(f[i].type.indexOf('gif') == -1){
+                }else{
+                    layer.msg('只支持png和jpg格式的图片哦~');
+                    return;
+                }
+            }
+            var formData = new FormData($(this).parent()[0]);
+//            var arr = ['39.105.84.67','39.105.18.34','39.107.249.176','39.105.11.28',
+//                       '39.107.121.111','47.95.122.81','47.93.204.12','39.106.128.203',
+//                       '39.105.2.185','60.205.203.224','39.107.231.167'];
+//            var num = Math.floor((Math.random()*arr.length));
+            $.ajax({
+                url: '/storage/handle',  //Server script to process data
+//                url: 'http://'+arr[num]+':50001/storage/handle',
+                type: 'POST',
+                data: formData,
+                sync:false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType:"json",
+                success:function(result){
+                    icon = result.ok;
+                    if(result.ok != undefined){
+                        $("#"+id1).attr('src',result.ok);
+                    }else{
+                        layer.msg('上传失败！', {
+                            icon: 2
+                        });
+                    }
+                },
+                error: function (err) {
+                    layer.msg('上传失败！', {
+                        icon: 2
+                    });
+                }
+            });
+        })
+    }
+
+    function loading(type){
+        var type = type == undefined ? 1:type;
+        var index = layer.load(type, {shade: [0.1,'#fff']});
+        return index;
+    }
+
+    function myAjax(url,param,func){
+        var index = loading();
+        $.ajax({
+            url:url,
+            type:"post",
+            dataType:"json",
+            data: param,
+            success:function(data){
+                layer.close(index);
+                if(typeof func == 'function'){
+                    func(data,param);
+                }
+            },
+            error: function () {
+                layer.close(index);
+                layer.msg("请求出错", {icon: 2});
+            }
+
+        });
+    }
+
+    function checkPhone(phone) {
+        var myreg=/^[1][1,2,3,4,5,6,7,8,9][0-9]{9}$/;
+        if (!myreg.test(phone)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function isBlank(data) {
+        return (data == "" || typeof(data)  == "undefined" || data == null ) ? true : false;
+    }
+
+</script>
+</html>

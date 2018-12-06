@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端用户列表</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+        <!-- Panel Other -->
+        <form method="get" class="form-horizontal" id="userForm">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control" id="name" placeholder="请输入用户名称">
+                    <span class="help-block m-b-none validate">请输入用户名称</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="password" placeholder="请输入密码">
+                    <span class="help-block m-b-none validate">请输入密码</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">手机号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="phone" placeholder="请输入用户手机号" onkeyup="value=value.replace(/[^\d]/g,'')">
+                    <span class="help-block m-b-none validate">请输入用户手机号</span>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>用户管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-right">姓名</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="searchName" class="form-control" placeholder="请输入姓名" />
+                                </div>
+                                <label class="col-sm-1 control-label text-right">手机号</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="searchPhone" class="form-control" placeholder="请输入用户手机号" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                                </div>
+
+                                <label class="col-sm-1 control-label">状态筛选</label>
+                                <div class="col-sm-2">
+                                    <select name="" id="searchStatus" class="form-control">
+                                        <option value="-1">全部</option>
+                                        <option value="0">正常</option>
+                                        <option value="1">失效</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">开始时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="startTime" class="form-control" placeholder="请选择开始时间" readonly>
+                                </div>
+                                <label class="col-sm-1 control-label">结束时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="endTime" class="form-control" placeholder="请选择结束时间" readonly>
+                                </div>
+                                <label class="col-sm-1 control-label"></label>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn  btn-info "  id="btn_search" name="like_search" >
+                                        <i class="fa fa-search"></i> 点击查询
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="toolbar" >
+                            <button class="btn btn-success  btn-outline" id="btn_add">
+                                <i class="fa fa-plus">添加</i>
+                            </button>
+
+                        </div>
+                        <table id="tb_table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Other -->
+    </div>
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../resource/js/plugins/laydate/laydate.js"></script>
+    <script src="../resource/js/plugins/select2/js/select2.js"></script>
+    <script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+    <script src="../resource/common/newscontent.js"></script>
+    <script src="../resource/common/common.js?" +Math.random()></script>
+    <script>
+    var $table = $('#tb_table');
+    //初始化
+    var TableInit = function (columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $table.bootstrapTable({
+                    url: serverUrl+'/user/searchUser',         //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber:1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: columns,
+//                    showFooter:true,            //表格底部
+                    onClickRow: function (row) {
+//                        console.log(row)
+                    },
+                    queryParamsType:'limit',
+                    queryParams: function (params) {
+                        var startTime = $("#startTime").val();
+                        var endTime = $("#endTime").val();
+
+                        return {
+                            token:getUserInfo().token,
+                            page:(params.offset / params.limit) + 1,
+                            size: params.limit,
+                            name:$("#searchName").val(),
+                            phone:$("#searchPhone").val(),
+                            sid:0,//暂无下属机构
+                            status:$("#searchStatus").val(),
+                            startTime: isBlank(startTime) ? 0 : new Date(startTime).getTime(),
+                            endTime: isBlank(endTime) ? 0 : new Date(endTime).getTime(),
+
+                        };
+                    },
+                });
+            };
+            return oTableInit;
+        };
+
+        var columns = [
+                {field: "id", title: "用户ID", align: "center" },
+                {field: "icon",title: "用户头像",align: "center",formatter: function(value, row, index) {
+                        if (value) {
+                            var imageThumb = ImageThumb(value, 80, 80, false);
+                            return imageThumb;
+                        } else {
+                            return '-';
+                        }
+                }},
+                {field: "name",title: "姓名",align: "center",formatter: function(value, row, index) {
+                        return value;
+                    }
+                },
+                {field: "phone",  title: "手机号",align: "center",formatter: function(value, row, index) {
+                        return value;
+                }},
+                {field: "plat",title: "手机型号",align: "center",formatter: function(value, row, index) {
+                        return value;
+                }},
+                {field: "platVersion",title: "系统版本",align: "center",formatter: function(value, row, index) {
+                        return value;
+                }},
+                {field: "ctime",title: "创建时间",align: "center",formatter: function(value, row, index) {
+                        return formatDateTime(value);
+                }},
+                {field: "utime",title: "最后登录时间",align: "center",formatter: function(value, row, index) {
+                        return formatDateTime(value);
+                }},
+                {field: "status",title: "状态",align: "center",formatter: function(value, row, index) {
+                        var status = row.status;
+                        var html = '';
+                        if (status == 0) {
+                            html += "<a  class='btn btn-info btn-sm  btn-success' disabled  href='javascript:void(0)' >正常</a>";
+                        } else if (status == 1) {
+                            html += "<a  class='btn btn-info btn-sm btn-warning' disabled href='javascript:void(0)' >失效</a>";
+                        }
+                        return html;
+                }},
+                {field: "id",title: "操作",align: "center", formatter: function(value, row, index) {
+                        var data = JSON.stringify(row);
+                        var Status = row.status;
+                        var html;
+                        if (Status == 0) {
+                            html = "<a  class='btn btn-info btn-danger btn-sm btn-outline' href='javascript:void(0)'  onclick=\'updateStatus(" + row.id + ",1)\'>删除</a>";
+                            html += '&nbsp';
+                        } else if (Status == 1) {
+                            html = "<a  class='btn btn-info btn-success btn-sm btn-outline' href='javascript:void(0)'  onclick=\'updateStatus(" + row.id + ",0)\'>恢复</a>";
+                            html += '&nbsp';
+                        }
+                        html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)'  onclick=\'editUser(" + data + ")\'>编辑</a>";
+                        return html;
+                    }
+                }
+        ];
+
+
+
+    //删除 == 切换状态
+    function updateStatus(id,status) {
+        var url;
+        var param = { id: id,status:status };
+        url = '/user/updateStatus';
+
+        layer.msg("确定执行该操作吗？", {
+            shade: [0.1, '##f5f5f5'],
+            btnAlign: 'c',
+            time: 0 //不自动关闭
+                ,
+            btn: ['确定', '取消'],
+            yes: function(index) {
+                layer.close(index);
+                myAjax(url, param, handle);
+                function handle(data, param) {
+                    if (data.success == true) {
+                        layer.msg('修改成功', { icon: 1, shade: 0.01 });
+                        handleTable('', 3, serverUrl+'/user/searchUser');
+                    } else {
+                        layer.msg('操作失败，请重试！', { icon: 2, shade: 0.01 });
+                    }
+                }
+            },
+            btn2: function(index, layero) {}
+        });
+    }
+
+     function addUser(){
+            var index = layer.open({
+                type: 1,shade: 0.01,
+                skin: 'layui-layer-demo', //样式类名
+                area: ['550px', '500px'],
+                anim: 0,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view'),
+                btn: ['提交', '关闭'],
+                yes: function(){
+                    var param = {};
+                    var Url = '/user/add';
+                    var result =  {succ:'添加成功！',fail:'添加失败！'};
+                    var phone =  $("#phone").val();
+                    var name =  $("#name").val();
+                    var password =  $("#password").val();
+                    if(isBlank(phone)){
+                        showValidate('#phone');
+                        return  ;
+                    }
+                    if(isBlank(password)){
+                        showValidate('#password');
+                        return  ;
+                    }
+
+                    param.phone = phone;
+                    param.name = name;
+                    param.password = password;
+                    myAjax(Url,param,handle);
+                    function handle(data, param){
+                        var msg = (data.msg == undefined ? '':','+data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                            handleTable("", 3, serverUrl+'/user/searchUser');
+                        }else{
+                            layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                        }
+                    }
+                },
+                btn2: function(){},
+                success: function(layero, index){
+                    resetForm("#userForm");
+                }
+            });
+        }
+
+
+    //编辑
+    function editUser(data) {
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['550px', '500px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function() {
+                layer.close(index);
+                var url = '/user/update';
+                var params = {
+                    id: data.id,
+                    name: $("#name").val(),
+                    password: $("#password").val(),
+                    phone: $("#phone").val(),
+                };
+                myAjax(url, params, handle);
+
+                function handle(data) {
+                    if (data.success == true) {
+                        layer.msg('修改成功', { icon: 1, shade: 0.01 });
+                        handleTable('', 3, serverUrl+'/user/searchUser');
+                    } else {
+                        layer.msg('操作失败，请重试！', { icon: 2, shade: 0.01 });
+                    }
+                };
+            },
+            btn2: function() {},
+            success: function(layero, index) {
+                echoUser(data);
+            }
+        });
+    }
+
+    //数据回显
+    function echoUser(data) {
+        $("#name").val(data.name);
+        $("#password").val("");
+        $("#phone").val(data.phone);
+        $("#school").val(data.school);
+    }
+
+
+    function searchUser() {
+        handleTable("", 5, "");
+    }
+    //初始化页面上面的按钮事件
+    var ButtonInit = function() {
+        var oInit = new Object();
+        oInit.Init = function() {
+                $('#btn_add').click(addUser);
+                $('#btn_search').click(searchUser);
+        };
+        return oInit;
+    };
+
+    $(function() {
+        var Table = new TableInit(columns);
+	    Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#startTime',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#endTime',
+            type: 'datetime'
+        });
+    });
+    </script>
+</body>
+
+</html>

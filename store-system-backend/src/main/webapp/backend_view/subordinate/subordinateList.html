@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated  fadeInDown  content-view">
+    <form method="get" class="form-horizontal" id="areaForm">
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">单位名称</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="name" placeholder="请输入单位名称">
+                <span class="help-block m-b-none validate">请输入单位名称</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">手机号</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="phone" placeholder="请输入手机号">
+                <span class="help-block m-b-none validate">请输入手机号</span>
+            </div>
+
+        </div>
+
+        <!--<div class="form-group ">-->
+            <!--<label class="col-sm-3 control-label">渠道</label>-->
+            <!--<div class="col-sm-8">-->
+                <!--<select id="channelId" class="js-data-example-ajax form-control" style="width: 100%">-->
+                <!--</select>-->
+            <!--</div>-->
+            <!--<span class="help-block m-b-none validate">请选择渠道</span>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">介绍</label>
+
+            <div class="col-sm-8">
+                <textarea class="form-control"  id="content" name="a" style="height:120px;resize: none;"></textarea>
+            </div>
+        </div>
+
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label">单位招生人数</label>-->
+            <!--<div class="col-sm-8">-->
+                <!--<input type="text" class="form-control" id="num" placeholder="请输入单位招生人数" onkeyup="value=value.replace(/[^\d]/g,'')">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上传头像</label>
+            <div class="col-sm-8 control-label">
+                <div class="input-group">
+                    <input id="cover" type="hidden">
+                    <input id="photoCover" type="text" class="form-control" disabled="disabled" placeholder="请选择图片">
+                    <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                        </span>
+                </div>
+                <img src="" class="img-rounded" id="iconView" width="15%" height="100%" style="display: none;float:left">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>单位列表</h5>
+        </div>
+
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">单位名称</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="subordinatename" placeholder="请输入单位名称">
+                                <span class="help-block m-b-none validate">请输入单位名称</span>
+                            </div>
+                            <!--<label class="col-sm-2 control-label">渠道</label>-->
+                            <!--<div class="col-sm-3">-->
+                                <!--<select id="channel" class="js-data-example-ajax form-control">-->
+
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<span class="help-block m-b-none validate">请选择渠道</span>-->
+                        </div>
+
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-2 control-label">选择省份</label>-->
+                            <!--<div class="col-sm-3">-->
+                                <!--<select id="province" name="province" class="form-control"-->
+                                        <!--onchange="doProvAndCityRelation();">-->
+                                    <!--<option id="choosePro" value="-1">&#45;&#45;请选择您所在省份&#45;&#45;</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<label class="col-sm-2 control-label">选择城市</label>-->
+                            <!--<div class="col-sm-3">-->
+                                <!--<select id="citys" name="city" class="form-control"-->
+                                        <!--onchange="doCityAndCountyRelation();">-->
+                                    <!--<option id='chooseCity' value='-1'>&#45;&#45;请选择您所在城市&#45;&#45;</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-info" id="btn_search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div id="toolbar" class="btn-group">
+                <button class="btn btn-success  btn-outline" onclick="openAdd()">
+                    <i class="fa fa-plus">添加</i>
+                </button>
+            </div>
+        </div>
+        <!-- End Panel Other -->
+    </div>
+</div>
+<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+    <input style="height: 0;width: 0;" type="file" name="file"
+           accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+</form>
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+
+<script src="../resource/common/common.js?" +Math.random()></script>
+
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+
+
+<script src="../resource/js/plugins/select2/js/select2.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+<script src="../resource/common/newscontent.js"></script>
+
+<!--地区select-->
+<script src="../resource/js/area.js"></script>
+<script>
+
+    function formatSubject(item) {
+        if (item.loading) return item;
+        var markup = '<div> <p class="text-primary">名称:' + item.name + '</p>';
+        //markup += '这里可以添加其他选项...';
+        markup += ' </div>';
+        return markup;
+    }
+
+
+    var $table = $('#tb_table');
+
+    function Table() {
+        $table.bootstrapTable({
+            url: serverUrl + '/subordinate/getSubordinatePager',         //请求后台的URL（*）
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            showRefresh: true,                   //是否显示刷新按钮
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [10, 30, 50],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            columns: [
+                {
+                    field: "id", title: "序号",align:"center",formatter: function (value, row, index) {
+                    return index+1;
+                }},
+                {
+                    field: "name", title: "单位名称", align: "center", formatter: function (value, row, index) {
+                    return value;
+                }
+                },
+
+                {
+                    field: "phone", title: "手机号", align: "center", formatter: function (value, row, index) {
+                    return value;
+                }
+                },
+                {
+                    field: "icon", title: "头像",width:300, align: "center", formatter: function (value, row, index) {
+                        return '<img src="' + value + '" style="height:50px" />';
+                    }
+                },
+                {
+                    field: "ctime", title: "创建时间", align: "center", formatter: function (value, row, index) {
+                    return formatDateTime(value);
+                }
+                },
+                {
+                    field: "content", title: "介绍",width:400, align: "center", formatter: function (value, row, index) {
+                    return value;
+                }
+                },
+
+                {
+                    field: "name", title: "编辑", align: "center", formatter: function (value, row, index) {
+
+                    var html = '';
+                    html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="用户管理" onclick=\'userList(' + JSON.stringify(row) + ')\'>用户管理</a>';
+                    html += '&nbsp';
+                    html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="编辑" onclick=\'addOrEdit(' + JSON.stringify(row) + ')\'>编辑</a>';
+                    html += '&nbsp';
+                    html += '<a  class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" title="删除" onclick="removeData(' + row.id + ')" >删除</a>';
+                    return html;
+                }
+                },
+
+            ],
+            queryParams: function (params) {
+                var name = $("#subordinatename").val();
+                //var cid = isBlank($("#channel").val()) ? "" : $("#channel").val();
+                var href =serverUrl + "/subordinate/exportSubordinate?token=" + getUserToken() + "&&name=" + encodeURIComponent(name) + "";
+                $('#exp').attr('href', href); // 动态参数添加href
+                return {
+                    token: getUserInfo().token,
+                    page: params.offset / params.limit + 1,
+                    size: params.limit,
+                    name: name,
+                    //cid: cid,
+                };
+            },
+        });
+    };
+    var state = {'1': '上线', '0': '下线'};
+
+    function getUserToken() {
+        var user = getUserInfo();
+        return encodeURIComponent(user.token);
+    }
+
+    //删除
+    function removeData(sid) {
+        var url = "/subordinate/deleteSubordinate";
+        var param = {id: sid};
+        var result = {succ: '删除成功!', fail: '删除失败'};
+        layer.msg("确定要删除该单位吗？", {
+            shade: [0.1, '##f5f5f5'], btnAlign: 'c',
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                myAjax(url, param, handle);
+
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : data.msg);
+                    if (data.success) {
+                        layer.msg(result.succ, {icon: 1,time:1000, shade: 0.01});
+                        handleTable(sid, 4);
+                    } else {
+                        layer.msg(msg, {icon: 2,time:1000, shade: 0.01});
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+    //添加修改
+    function addOrEdit(data) {
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加/更新',
+            area: ['600px','400px'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var params = {};
+                var url = "/subordinate/updateSubordinate";
+                var result = {succ: "更新成功!", fail: "更新失败"};
+                var name = $("#name").val();
+                //var cid = $("#channelId").val();
+                var content = $('#content').val();
+                var phone = $('#phone').val();
+                var icon = $('#iconView').attr('src');
+                // if(cid == '' || cid == undefined){
+                //     layer.msg('请选择渠道', {icon: 2, time:500});
+                // }else
+                {
+                    params.name = name;
+                    params.phone = phone;
+                    //params.cid = cid;
+                    params.content = content;
+                    params.icon = icon;
+                    params.id = data.id;
+                    myAjax(url, params, handle);
+
+                    function handle(data, params) {
+                        var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                        if (data.success) {
+                            layer.msg(result.succ, {icon: 1,time:500, shade: 0.01},function(){
+                            	layer.close(index)
+                            });
+                            
+                            handleTable("", 5, "");
+                        } else {
+                            layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
+                        }
+                    }
+                }
+            },
+            zIndex:500 ,
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                $("#name").val(data.name);
+                //动态添加一个option，从而获取val  id
+                //selectOption=''
+                //selectOption +='<option value="'+data.cid+'">'+data.channel+'</option>'
+                //$("#channelId").append(selectOption)
+                //$("#select2-channelId-container").text(data.channel)
+                $("#phone").val(data.phone);
+                $("#content").val(data.content);
+                $("#iconView").css('display', 'block');
+                $("#iconView").attr('src', data.icon);
+            }
+        })
+    }
+
+    function userList(data) {
+        addMenuItem("../subordinate/subordinateUserList.html?id=" + data.id, "单位用户");
+    }
+
+
+    function formReset() {
+        $("#areaForm")[0].reset();
+    }
+    function openAdd(){
+        addMenuItem("../subordinate/addsubordinate.html?id=","添加单位");
+    }
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_search').click(searchSubordinate);
+        };
+        return oInit;
+    };
+
+    function searchSubordinate() {
+        handleTable("", 5, "");
+    }
+
+    //主函数
+    $(function () {
+        Table();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+</script>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	
+
+  <!-- 缓存配置-->
+
+   
+	<bean id="cachePool" class="com.s7.baseFramework.redis.JedisX">
+		<constructor-arg index="0" ref="live_pool"></constructor-arg>
+		<constructor-arg index="1" ref="jedisPoolConfig"></constructor-arg>
+		<constructor-arg index="2" value="2000"></constructor-arg>
+	</bean>
+
+  <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="300" />
+        <property name="maxIdle" value="200" />
+	    <property name="minIdle" value="20" />
+        <property name="maxWaitMillis" value="1000" />
+        <property name="testOnBorrow" value="false" />
+    </bean>
+
+    <bean name="live_pool" class="com.s7.baseFramework.redis.JedisBean">
+        <property name="masterAddress">
+             <value>${redis.address}</value>
+        </property>
+        <property name="password" value="${redis.password}" />
+        
+    </bean>
+
+</beans>

@@ -1,0 +1,9 @@
+.validate{
+    display: none;
+    color: red;
+}
+.redColor{
+    color: red;
+}
+.img{ height: 40px}
+.content-view,.totalarea,.hiddenid{display: none}
