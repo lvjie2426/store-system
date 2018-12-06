@@ -8,27 +8,25 @@ import com.s7.space.enums.IdentityType;
 import java.io.Serializable;
 
 /**
- * 入库单
- * class_name: InBill
- * package: com.glasses.model
+ * 产品类目
+ * class_name: ProductCategory
+ * package: com.store.system.model
  * creat_user: lihao
- * creat_date: 2018/12/3
- * creat_time: 12:05
+ * creat_date: 2018/12/6
+ * creat_time: 10:55
  **/
-@HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
-public class InBill implements Serializable {
+@HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
+public class ProductCategory implements Serializable {
 
-    public static final int status_edit = 0; //编辑状态
-    public static final int status_wait_check = 1; //等待确认
-    public static final int status_end = 2; //已确认
-    public static final int status_delete = 3; //删除
+    public static final int status_nomore=0;//正常
+    public static final int status_delete=1;//删除
 
     @PrimaryKey
     private long id;
 
-    private long inUid; //入库人
+    private long pid; //父类目id
 
-    private long createUid; //创建人
+    private String name; //类目名称
 
     private int status;
 
@@ -44,12 +42,20 @@ public class InBill implements Serializable {
         this.id = id;
     }
 
-    public long getInUid() {
-        return inUid;
+    public long getPid() {
+        return pid;
     }
 
-    public void setInUid(long inUid) {
-        this.inUid = inUid;
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getStatus() {
@@ -74,13 +80,5 @@ public class InBill implements Serializable {
 
     public void setUtime(long utime) {
         this.utime = utime;
-    }
-
-    public long getCreateUid() {
-        return createUid;
-    }
-
-    public void setCreateUid(long createUid) {
-        this.createUid = createUid;
     }
 }

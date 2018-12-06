@@ -8,8 +8,16 @@ import com.s7.space.enums.IdentityType;
 
 import java.io.Serializable;
 
+/**
+ * 产品品牌
+ * class_name: ProductBrand
+ * package: com.store.system.model
+ * creat_user: lihao
+ * creat_date: 2018/12/6
+ * creat_time: 11:15
+ **/
 @HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
-public class GoodsFieldItem implements Serializable {
+public class ProductBrand implements Serializable {
 
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
@@ -17,14 +25,16 @@ public class GoodsFieldItem implements Serializable {
     @PrimaryKey
     private long id;
 
-    private long gfid;
+    private String name;
 
-    private String content;
+    private String icon;
 
-    private int status;
+    private String desc;
 
     @SortKey
     private long sort;
+
+    private int status;
 
     private long ctime;
 
@@ -38,28 +48,28 @@ public class GoodsFieldItem implements Serializable {
         this.id = id;
     }
 
-    public long getGfid() {
-        return gfid;
+    public String getName() {
+        return name;
     }
 
-    public void setGfid(long gfid) {
-        this.gfid = gfid;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getContent() {
-        return content;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public int getStatus() {
-        return status;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public long getSort() {
@@ -68,6 +78,14 @@ public class GoodsFieldItem implements Serializable {
 
     public void setSort(long sort) {
         this.sort = sort;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public long getCtime() {

@@ -8,16 +8,23 @@ import com.s7.space.enums.IdentityType;
 
 import java.io.Serializable;
 
-@HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
-public class GoodsSeries implements Serializable {
+
+/**
+ * 产品供应商
+ * class_name: ProductProvider
+ * package: com.store.system.model
+ * creat_user: lihao
+ * creat_date: 2018/12/6
+ * creat_time: 16:26
+ **/
+@HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
+public class ProductProvider implements Serializable {
 
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
 
     @PrimaryKey
     private long id;
-
-    private long gbid;
 
     private String name;
 
@@ -40,14 +47,6 @@ public class GoodsSeries implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getGbid() {
-        return gbid;
-    }
-
-    public void setGbid(long gbid) {
-        this.gbid = gbid;
     }
 
     public String getName() {
