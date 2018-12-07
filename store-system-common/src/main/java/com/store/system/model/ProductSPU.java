@@ -21,10 +21,15 @@ public class ProductSPU implements Serializable {
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
 
+    public static final int type_common = 0; //常规产品
+    public static final int type_integral = 1; //积分产品
+
     @PrimaryKey
     private long id;
 
-    private long subId; //店铺ID
+    private int type; //SPU类型 0-常规 1-积分
+
+    private long subid; //店铺ID
 
     private long pid; //供应商ID
 
@@ -158,12 +163,12 @@ public class ProductSPU implements Serializable {
         this.utime = utime;
     }
 
-    public long getSubId() {
-        return subId;
+    public long getSubid() {
+        return subid;
     }
 
-    public void setSubId(long subId) {
-        this.subId = subId;
+    public void setSubid(long subid) {
+        this.subid = subid;
     }
 
     public long getPid() {
@@ -180,5 +185,13 @@ public class ProductSPU implements Serializable {
 
     public void setSort(long sort) {
         this.sort = sort;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

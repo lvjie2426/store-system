@@ -166,4 +166,76 @@
         </property>
     </bean>
 
+    <bean id="productBrandDao" class="com.store.system.dao.impl.ProductBrandDaoImpl">
+        <property name="tableName" value="product_brand" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productCategoryDao" class="com.store.system.dao.impl.ProductCategoryDaoImpl">
+        <property name="tableName" value="product_category" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productPropertyNameDao" class="com.store.system.dao.impl.ProductPropertyNameDaoImpl">
+        <property name="tableName" value="product_property_name" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productPropertyValueDao" class="com.store.system.dao.impl.ProductPropertyValueDaoImpl">
+        <property name="tableName" value="product_property_value" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productProviderDao" class="com.store.system.dao.impl.ProductProviderDaoImpl">
+        <property name="tableName" value="product_provider" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productSeriesDao" class="com.store.system.dao.impl.ProductSeriesDaoImpl">
+        <property name="tableName" value="product_series" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productSKUDao" class="com.store.system.dao.impl.ProductSKUDaoImpl">
+        <property name="tableName" value="product_sku" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productSPUDao" class="com.store.system.dao.impl.ProductSPUDaoImpl">
+        <property name="tableName" value="product_spu" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

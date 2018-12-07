@@ -28,6 +28,9 @@ public class ProductPropertyName implements Serializable {
     public static final int multiple_yes = 1; //多值
     public static final int multiple_no = 0; //非多值
 
+    public static final int input_yes = 1; //输入属性
+    public static final int input_no = 0; //非输入属性
+
     @PrimaryKey
     private long id;
 
@@ -39,9 +42,11 @@ public class ProductPropertyName implements Serializable {
 
     private int status;
 
-    private int defaul; //是否默认
+    private int input; //是否输入属性 (输入的值非选项)
 
-    private int multiple; //是否多值
+    private int defaul; //是否默认 (默认的不需要在页面上显示)
+
+    private int multiple; //是否多值 (多值的是SKU要确定的属性, 单值的是SPU的属性)
 
     private long ctime;
 
@@ -117,5 +122,13 @@ public class ProductPropertyName implements Serializable {
 
     public void setMultiple(int multiple) {
         this.multiple = multiple;
+    }
+
+    public int getInput() {
+        return input;
+    }
+
+    public void setInput(int input) {
+        this.input = input;
     }
 }
