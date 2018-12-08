@@ -1,10 +1,13 @@
 package com.store.system.dao.impl;
 
 import com.s7.space.CacheBaseDao;
+import com.s7.space.annotation.cache.CacheDaoMethod;
 import com.s7.space.annotation.dao.HyperspaceDao;
 import com.s7.space.enums.HyperspaceType;
+import com.s7.space.enums.cache.CacheMethodEnum;
 import com.store.system.dao.ProductPropertyNameDao;
 import com.store.system.model.ProductPropertyName;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 import java.util.Map;
@@ -17,4 +20,9 @@ public class ProductPropertyNameDaoImpl extends CacheBaseDao<ProductPropertyName
         return super.cache_map();
     }
 
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<ProductPropertyName> getAllList(long cid, int status) throws DataAccessException {
+        return null;
+    }
 }
