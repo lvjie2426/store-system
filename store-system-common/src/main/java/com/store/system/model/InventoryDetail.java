@@ -2,36 +2,31 @@ package com.store.system.model;
 
 import com.s7.space.annotation.domain.HyperspaceDomain;
 import com.s7.space.annotation.domain.PrimaryKey;
-import com.s7.space.annotation.domain.SortKey;
 import com.s7.space.enums.HyperspaceDomainType;
 import com.s7.space.enums.IdentityType;
 
 import java.io.Serializable;
 
 /**
- * 产品类目
- * class_name: ProductCategory
+ * 进销存仓库明细
+ * class_name: InventoryDetail
  * package: com.store.system.model
  * creat_user: lihao
- * creat_date: 2018/12/6
- * creat_time: 10:55
+ * creat_date: 2018/12/10
+ * creat_time: 18:01
  **/
 @HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
-public class ProductCategory implements Serializable {
-
-    public static final int status_nomore=0;//正常
-    public static final int status_delete=1;//删除
+public class InventoryDetail implements Serializable {
 
     @PrimaryKey
     private long id;
 
-    private long pid; //父类目id
+    private long wid; //仓库id
 
-    private String name; //类目名称
+    private long p_skuid; //产品SKU的id
 
-    private int status;
+    private int num;
 
-    @SortKey
     private long ctime;
 
     private long utime;
@@ -44,28 +39,28 @@ public class ProductCategory implements Serializable {
         this.id = id;
     }
 
-    public long getPid() {
-        return pid;
+    public long getWid() {
+        return wid;
     }
 
-    public void setPid(long pid) {
-        this.pid = pid;
+    public void setWid(long wid) {
+        this.wid = wid;
     }
 
-    public String getName() {
-        return name;
+    public long getP_skuid() {
+        return p_skuid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setP_skuid(long p_skuid) {
+        this.p_skuid = p_skuid;
     }
 
-    public int getStatus() {
-        return status;
+    public int getNum() {
+        return num;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setNum(int num) {
+        this.num = num;
     }
 
     public long getCtime() {

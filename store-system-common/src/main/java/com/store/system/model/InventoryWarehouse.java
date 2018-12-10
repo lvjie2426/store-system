@@ -9,25 +9,32 @@ import com.s7.space.enums.IdentityType;
 import java.io.Serializable;
 
 /**
- * 产品类目
- * class_name: ProductCategory
+ * 进销存仓库
+ * class_name: InventoryWarehouse
  * package: com.store.system.model
  * creat_user: lihao
- * creat_date: 2018/12/6
- * creat_time: 10:55
+ * creat_date: 2018/12/10
+ * creat_time: 17:59
  **/
-@HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
-public class ProductCategory implements Serializable {
+@HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
+public class InventoryWarehouse implements Serializable {
 
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
 
+    public static final int type_common = 0; //普通仓库
+    public static final int type_give = 1; //赠品仓库
+
     @PrimaryKey
     private long id;
 
-    private long pid; //父类目id
+    private long subid;
 
-    private String name; //类目名称
+    private int type;
+
+    private String name;
+
+    private long adminid; //管理员id
 
     private int status;
 
@@ -44,12 +51,12 @@ public class ProductCategory implements Serializable {
         this.id = id;
     }
 
-    public long getPid() {
-        return pid;
+    public int getType() {
+        return type;
     }
 
-    public void setPid(long pid) {
-        this.pid = pid;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -58,6 +65,14 @@ public class ProductCategory implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getAdminid() {
+        return adminid;
+    }
+
+    public void setAdminid(long adminid) {
+        this.adminid = adminid;
     }
 
     public int getStatus() {
@@ -82,5 +97,13 @@ public class ProductCategory implements Serializable {
 
     public void setUtime(long utime) {
         this.utime = utime;
+    }
+
+    public long getSubid() {
+        return subid;
+    }
+
+    public void setSubid(long subid) {
+        this.subid = subid;
     }
 }

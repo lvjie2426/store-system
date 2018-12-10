@@ -10,4 +10,8 @@ public interface ProductSKUDao extends HDao<ProductSKU> {
 
     public List<ProductSKU> getAllList(long spuid, int status) throws DataAccessException;
 
+    public int getCount(long spuid, String code) throws DataAccessException;
+
+    public List<ProductSKU> getAllList(long spuid, String code) throws DataAccessException;
+
 }

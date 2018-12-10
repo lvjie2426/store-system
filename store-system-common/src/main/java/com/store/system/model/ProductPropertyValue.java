@@ -2,6 +2,7 @@ package com.store.system.model;
 
 import com.s7.space.annotation.domain.HyperspaceDomain;
 import com.s7.space.annotation.domain.PrimaryKey;
+import com.s7.space.annotation.domain.SortKey;
 import com.s7.space.enums.HyperspaceDomainType;
 import com.s7.space.enums.IdentityType;
 
@@ -28,6 +29,7 @@ public class ProductPropertyValue implements Serializable {
 
     private String content; //显示内容
 
+    @SortKey
     private long sort;
 
     private int status;

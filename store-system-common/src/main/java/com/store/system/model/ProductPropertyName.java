@@ -3,6 +3,7 @@ package com.store.system.model;
 
 import com.s7.space.annotation.domain.HyperspaceDomain;
 import com.s7.space.annotation.domain.PrimaryKey;
+import com.s7.space.annotation.domain.SortKey;
 import com.s7.space.enums.HyperspaceDomainType;
 import com.s7.space.enums.IdentityType;
 
@@ -31,13 +32,19 @@ public class ProductPropertyName implements Serializable {
     public static final int input_yes = 1; //输入属性
     public static final int input_no = 0; //非输入属性
 
+    public static final int type_spu = 1;  //SPU属性
+    public static final int type_sku = 2;  //SKU属性
+
     @PrimaryKey
     private long id;
 
     private long cid; //类目id
 
+    private int type; //属性类型 1-SPU属性 2-SKU属性
+
     private String content; //显示内容
 
+    @SortKey
     private long sort;
 
     private int status;
@@ -46,7 +53,7 @@ public class ProductPropertyName implements Serializable {
 
     private int defaul; //是否默认 (默认的不需要在页面上显示)
 
-    private int multiple; //是否多值 (多值的是SKU要确定的属性, 单值的是SPU的属性)
+    private int multiple; //是否多值
 
     private long ctime;
 
@@ -130,5 +137,13 @@ public class ProductPropertyName implements Serializable {
 
     public void setInput(int input) {
         this.input = input;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

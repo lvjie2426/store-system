@@ -2,6 +2,7 @@ package com.store.system.model;
 
 import com.s7.space.annotation.domain.HyperspaceDomain;
 import com.s7.space.annotation.domain.PrimaryKey;
+import com.s7.space.annotation.domain.SortKey;
 import com.s7.space.enums.HyperspaceDomainType;
 import com.s7.space.enums.IdentityType;
 
@@ -38,14 +39,13 @@ public class ProductSKU implements Serializable {
 
     private int integralPrice; //积分价
 
-    private int num; //当前数
-
-    private int hangupNum; //挂起数量
+    private int num; //备货量
 
     private String other; //附加属性
 
     private int status;
 
+    @SortKey
     private long sort;
 
     private long ctime;
@@ -122,14 +122,6 @@ public class ProductSKU implements Serializable {
 
     public void setNum(int num) {
         this.num = num;
-    }
-
-    public int getHangupNum() {
-        return hangupNum;
-    }
-
-    public void setHangupNum(int hangupNum) {
-        this.hangupNum = hangupNum;
     }
 
     public String getOther() {

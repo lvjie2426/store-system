@@ -17,6 +17,7 @@ import com.store.system.model.ProductPropertyName;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
 import com.store.system.service.ProductService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -54,15 +55,24 @@ public class ProductServiceImpl implements ProductService {
             throw new GlassesException("SPU属性格式错误");
         }
 
-        if(productSPU.getSubid() == 0) throw new GlassesException("SPU店铺不能为空");
-        if(productSPU.getCid() == 0) throw new GlassesException("SPU类目不能为空");
-        if(productSPU.getBid() == 0) throw new GlassesException("SPU品牌不能为空");
-
+        int type = productSPU.getType();
+        long subid = productSPU.getSubid();
+        long pid = productSPU.getPid();
         long cid = productSPU.getCid();
+        long bid = productSPU.getBid();
+        long sid = productSPU.getSid();
+        if(subid == 0) throw new GlassesException("SPU店铺不能为空");
+        if(cid == 0) throw new GlassesException("SPU类目不能为空");
+        if(bid == 0) throw new GlassesException("SPU品牌不能为空");
+
+        int count = productSPUDao.getCount(type, subid, pid, cid, bid, sid);
+        if(count > 0) throw new GlassesException("已添加此产品的SPU");
+
+
         List<ProductPropertyName> spuNames = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
         for(Iterator<ProductPropertyName> it = spuNames.iterator(); it.hasNext();) {
             ProductPropertyName name = it.next();
-            if(name.getMultiple() == ProductPropertyName.multiple_yes) it.remove();
+            if(name.getMultiple() != ProductPropertyName.type_spu) it.remove();
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(spuNames, "id");
         for(long nameId : nameIds) {
@@ -100,14 +110,20 @@ public class ProductServiceImpl implements ProductService {
             throw new GlassesException("SKU属性格式错误");
         }
 
-        if(productSKU.getSpuid() == 0) throw new GlassesException("SPU不能为空");
+        long spuid = productSKU.getSpuid();
+        String code = productSKU.getCode();
+        if(spuid == 0) throw new GlassesException("SPU不能为空");
+        if(StringUtils.isBlank(code)) throw new GlassesException("产品编码不能为空");
+
+        int count = productSKUDao.getCount(spuid, code);
+        if(count > 0) throw new GlassesException("已添加此产品的SKU");
 
         ProductSPU productSPU = productSPUDao.load(productSKU.getSpuid());
         long cid = productSPU.getCid();
         List<ProductPropertyName> skuNames = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
         for(Iterator<ProductPropertyName> it = skuNames.iterator(); it.hasNext();) {
             ProductPropertyName name = it.next();
-            if(name.getMultiple() == ProductPropertyName.multiple_no) it.remove();
+            if(name.getMultiple() != ProductPropertyName.type_sku) it.remove();
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(skuNames, "id");
         for(long nameId : nameIds) {
@@ -173,7 +189,7 @@ public class ProductServiceImpl implements ProductService {
         Set<Long> spuNames = Sets.newHashSet();
         Set<Long> skuNames = Sets.newHashSet();
         for(ProductPropertyName name : names) {
-            if(name.getMultiple() == ProductPropertyName.multiple_no) spuNames.add(name.getId());
+            if(name.getMultiple() == ProductPropertyName.type_spu) spuNames.add(name.getId());
             else skuNames.add(name.getId());
         }
 

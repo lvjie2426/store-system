@@ -2,6 +2,7 @@ package com.store.system.model;
 
 import com.s7.space.annotation.domain.HyperspaceDomain;
 import com.s7.space.annotation.domain.PrimaryKey;
+import com.s7.space.annotation.domain.SortKey;
 import com.s7.space.enums.HyperspaceDomainType;
 import com.s7.space.enums.IdentityType;
 
@@ -51,9 +52,12 @@ public class ProductSPU implements Serializable {
 
     private int status;
 
+    @SortKey
     private long sort;
 
     private String other; //附加属性
+
+    private String ext; //扩展字段
 
     private long ctime;
 
@@ -193,5 +197,13 @@ public class ProductSPU implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
     }
 }

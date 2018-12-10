@@ -5,15 +5,15 @@ import com.s7.space.annotation.cache.CacheDaoMethod;
 import com.s7.space.annotation.dao.HyperspaceDao;
 import com.s7.space.enums.HyperspaceType;
 import com.s7.space.enums.cache.CacheMethodEnum;
-import com.store.system.dao.ProductSKUDao;
-import com.store.system.model.ProductSKU;
+import com.store.system.dao.InventoryDetailDao;
+import com.store.system.model.InventoryDetail;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 import java.util.Map;
 
 @HyperspaceDao(type = HyperspaceType.cache)
-public class ProductSKUDaoImpl extends CacheBaseDao<ProductSKU> implements ProductSKUDao {
+public class InventoryDetailDaoImpl extends CacheBaseDao<InventoryDetail> implements InventoryDetailDao {
 
     @Override
     public Map<String, List<String>> getCacheMap() {
@@ -22,19 +22,13 @@ public class ProductSKUDaoImpl extends CacheBaseDao<ProductSKU> implements Produ
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<ProductSKU> getAllList(long spuid, int status) throws DataAccessException {
+    public List<InventoryDetail> getAllList(long p_skuid) throws DataAccessException {
         return null;
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
-    public int getCount(long spuid, String code) throws DataAccessException {
-        return 0;
-    }
-
-    @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<ProductSKU> getAllList(long spuid, String code) throws DataAccessException {
+    public List<InventoryDetail> getAllList(long wid, long p_skuid) throws DataAccessException {
         return null;
     }
 
