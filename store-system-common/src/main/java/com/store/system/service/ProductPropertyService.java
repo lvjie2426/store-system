@@ -9,4 +9,6 @@ public interface ProductPropertyService {
 
     public List<ClientProductProperty> getAllProperties(long cid) throws Exception;
 
+    public List<ClientProductProperty> getSKUProperties(long cid) throws Exception;
+
 }

@@ -2,6 +2,7 @@ package com.store.system.model;
 
 import com.s7.space.annotation.domain.HyperspaceDomain;
 import com.s7.space.annotation.domain.PrimaryKey;
+import com.s7.space.annotation.domain.SortKey;
 import com.s7.space.enums.HyperspaceDomainType;
 import com.s7.space.enums.IdentityType;
 
@@ -27,6 +28,7 @@ public class InventoryDetail implements Serializable {
 
     private int num;
 
+    @SortKey
     private long ctime;
 
     private long utime;
@@ -78,4 +80,5 @@ public class InventoryDetail implements Serializable {
     public void setUtime(long utime) {
         this.utime = utime;
     }
+
 }

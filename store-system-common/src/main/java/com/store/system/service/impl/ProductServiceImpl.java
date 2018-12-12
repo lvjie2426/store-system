@@ -296,4 +296,14 @@ public class ProductServiceImpl implements ProductService {
         return pager;
     }
 
+    @Override
+    public ClientProductSPU selectSPU(int type, long subid, long pid, long cid, long bid, long sid) throws Exception {
+        int count = productSPUDao.getCount(type, subid, pid, cid, bid, sid);
+        if(count == 0) throw new GlassesException("没有此类产品");
+        List<ProductSPU> productSPUList = productSPUDao.getAllList(type, subid, pid, cid, bid, sid);
+        ProductSPU productSPU = productSPUList.get(0);
+        ClientProductSPU clientProductSPU = new ClientProductSPU(productSPU);
+        return clientProductSPU;
+    }
+
 }

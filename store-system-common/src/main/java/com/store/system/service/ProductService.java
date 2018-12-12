@@ -30,4 +30,8 @@ public interface ProductService {
 
     public Pager getBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid) throws Exception;
 
+
+
+    public ClientProductSPU selectSPU(int type, long subid, long pid, long cid, long bid, long sid) throws Exception;
+
 }
