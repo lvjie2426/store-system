@@ -24,6 +24,8 @@ public class InventoryDetail implements Serializable {
 
     private long wid; //仓库id
 
+    private long p_spuid; //产品SPU的id
+
     private long p_skuid; //产品SKU的id
 
     private int num;
@@ -81,4 +83,11 @@ public class InventoryDetail implements Serializable {
         this.utime = utime;
     }
 
+    public long getP_spuid() {
+        return p_spuid;
+    }
+
+    public void setP_spuid(long p_spuid) {
+        this.p_spuid = p_spuid;
+    }
 }

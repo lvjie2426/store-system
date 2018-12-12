@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface InventoryDetailDao extends HDao<InventoryDetail> {
 
-    public List<InventoryDetail> getAllList(long p_skuid) throws DataAccessException;
-
     public List<InventoryDetail> getAllList(long wid, long p_skuid) throws DataAccessException;
+
+    public List<InventoryDetail> getAllListBySPU(long wid, long p_spuid) throws DataAccessException;
 
 }

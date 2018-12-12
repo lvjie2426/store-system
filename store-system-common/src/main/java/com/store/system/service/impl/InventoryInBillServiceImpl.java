@@ -125,6 +125,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                     long skuid = productSKU.getId();
                     InventoryDetail detail = new InventoryDetail();
                     detail.setWid(wid);
+                    detail.setP_spuid(productSKU.getSpuid());
                     detail.setP_skuid(skuid);
                     detail.setNum(item.getNum());
                     inventoryDetailDao.insert(detail);
@@ -150,6 +151,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 } else {
                     InventoryDetail detail = new InventoryDetail();
                     detail.setWid(wid);
+                    detail.setP_spuid(item.getSpuid());
                     detail.setP_skuid(skuid);
                     detail.setNum(num);
                     inventoryDetailDao.insert(detail);

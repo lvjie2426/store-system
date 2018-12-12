@@ -36,6 +36,8 @@ public class ClientInventoryDetail implements Serializable {
 
     private String p_code;
 
+    private String p_propertyJson;
+
     private int p_retailPrice;
 
     private int p_costPrice;
@@ -212,5 +214,13 @@ public class ClientInventoryDetail implements Serializable {
 
     public void setCtime(long ctime) {
         this.ctime = ctime;
+    }
+
+    public String getP_propertyJson() {
+        return p_propertyJson;
+    }
+
+    public void setP_propertyJson(String p_propertyJson) {
+        this.p_propertyJson = p_propertyJson;
     }
 }
