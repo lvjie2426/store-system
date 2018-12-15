@@ -20,9 +20,11 @@ import java.util.Set;
 @Service
 public class InventoryDetailServiceImpl implements InventoryDetailService {
 
-    private RowMapperHelp<ClientInventoryDetail> rowMapper = new RowMapperHelp<>(ClientInventoryDetail.class);
+    private RowMapperHelp<InventoryDetail> rowMapper = new RowMapperHelp<>(InventoryDetail.class);
 
-    private TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(ClientInventoryDetail.class);
+    private TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(InventoryDetail.class);
+
+    private TransformFieldSetUtils spuFieldSetUtils = new TransformFieldSetUtils(ProductSPU.class);
 
     private TransformMapUtils warehouseMapUtils = new TransformMapUtils(InventoryWarehouse.class);
 
@@ -33,6 +35,10 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
     private TransformMapUtils brandMapUtils = new TransformMapUtils(ProductBrand.class);
 
     private TransformMapUtils seriesMapUtils = new TransformMapUtils(ProductSeries.class);
+
+    private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
+
+    private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
 
     @Resource
     private InventoryWarehouseDao inventoryWarehouseDao;
@@ -50,66 +56,106 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
     private ProductSeriesDao productSeriesDao;
 
     @Resource
+    private ProductSPUDao productSPUDao;
+
+    @Resource
+    private ProductSKUDao productSKUDao;
+
+    @Resource
+    private InventoryDetailDao inventoryDetailDao;
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
-    @Override
-    public Pager getPager(Pager pager, long wid, long cid) throws Exception {
-        String sql = "select d.id, d.wid, spu.type as p_type, spu.pid as p_pid, spu.cid as p_cid, spu.bid as p_bid, spu.sid as p_sid, " +
-                     "spu.name as p_name, spu.id as p_spuid, sku.id as p_skuid, sku.code as p_code, sku.propertyJson as p_propertyJson, " +
-                     "sku.retailPrice as p_retailPrice, sku.costPrice as p_costPrice, sku.integralPrice as p_integralPrice, d.num, d.ctime from " +
-                     "inventory_detail as d, product_sku as sku, product_spu as spu where d.p_skuid = sku.id and d.p_spuid = spu.id";
-        String sqlCount = "select count(d.id) from inventory_detail as d, product_sku as sku," +
-                          "product_spu as spu where d.p_skuid = sku.id and d.p_spuid = spu.id ";
-        if(wid > 0) {
-            sql = sql + " and d.wid = " + wid;
-            sqlCount = sqlCount + " and d.wid = " + wid;
-        }
-        if(cid > 0) {
-            sql = sql + " and spu.cid = " + cid;
-            sqlCount = sqlCount + " and spu.cid = " + cid;
-        }
-        String limit = " limit %d , %d ";
-        sql = sql + " order by d.ctime desc";
-        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
-        List<ClientInventoryDetail> details = this.jdbcTemplate.query(sql, rowMapper);
+    private List<ClientInventoryDetail> transformClients(List<InventoryDetail> details) throws Exception {
+        List<ClientInventoryDetail> res = Lists.newArrayList();
+        Set<Long> p_spuids = fieldSetUtils.fieldList(details, "p_spuid");
+        List<ProductSPU> productSPUList = productSPUDao.load(Lists.newArrayList(p_spuids));
+        Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(productSPUList, "id");
+
+        Set<Long> p_skuids = fieldSetUtils.fieldList(details, "p_skuid");
+        List<ProductSKU> productSKUList = productSKUDao.load(Lists.newArrayList(p_skuids));
+        Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(productSKUList, "id");
 
         Set<Long> wids = fieldSetUtils.fieldList(details, "wid");
         List<InventoryWarehouse> warehouses = inventoryWarehouseDao.load(Lists.newArrayList(wids));
         Map<Long, InventoryWarehouse> warehouseMap = warehouseMapUtils.listToMap(warehouses, "id");
 
-        Set<Long> p_pids = fieldSetUtils.fieldList(details, "p_pid");
+        Set<Long> p_pids = spuFieldSetUtils.fieldList(productSPUList, "pid");
         List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(p_pids));
         Map<Long, ProductProvider> providerMap = providerMapUtils.listToMap(providers, "id");
 
-        Set<Long> p_cids = fieldSetUtils.fieldList(details, "p_cid");
+        Set<Long> p_cids = spuFieldSetUtils.fieldList(productSPUList, "cid");
         List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(p_cids));
         Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
 
-        Set<Long> p_bids = fieldSetUtils.fieldList(details, "p_bid");
+        Set<Long> p_bids = spuFieldSetUtils.fieldList(productSPUList, "bid");
         List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(p_bids));
         Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
 
-        Set<Long> p_sids = fieldSetUtils.fieldList(details, "p_sid");
+        Set<Long> p_sids = spuFieldSetUtils.fieldList(productSPUList, "sid");
         List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(p_sids));
         Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
 
-        for(ClientInventoryDetail one : details) {
+        for(InventoryDetail one : details) {
+            ClientInventoryDetail client = new ClientInventoryDetail(one);
             InventoryWarehouse warehouse = warehouseMap.get(one.getWid());
-            if(null != warehouse) one.setWarehouseName(warehouse.getName());
-            ProductProvider provider = providerMap.get(one.getP_pid());
-            if(null != provider) one.setProviderName(provider.getName());
-            ProductCategory category = categoryMap.get(one.getP_cid());
-            if(null != category) one.setCategoryName(category.getName());
-            ProductBrand brand = brandMap.get(one.getP_bid());
-            if(null != brand) one.setBrandName(brand.getName());
-            ProductSeries series = seriesMap.get(one.getP_sid());
-            if(null != series) one.setSeriesName(series.getName());
+            if(null != warehouse) client.setWarehouseName(warehouse.getName());
+            ProductSPU spu = spuMap.get(one.getP_spuid());
+            if(null != spu) {
+                client.setP_type(spu.getType());
+                client.setP_pid(spu.getPid());
+                ProductProvider provider = providerMap.get(spu.getPid());
+                if(null != provider) client.setProviderName(provider.getName());
+                ProductCategory category = categoryMap.get(spu.getCid());
+                if(null != category) client.setCategoryName(category.getName());
+                client.setP_bid(spu.getBid());
+                ProductBrand brand = brandMap.get(spu.getBid());
+                if(null != brand) client.setBrandName(brand.getName());
+                client.setP_sid(spu.getSid());
+                ProductSeries series = seriesMap.get(spu.getSid());
+                if(null != series) client.setSeriesName(series.getName());
+                client.setP_name(spu.getName());
+            }
+            ProductSKU sku = skuMap.get(one.getP_skuid());
+            if(null != sku) {
+                client.setP_code(sku.getCode());
+                client.setP_propertyJson(sku.getPropertyJson());
+                client.setP_retailPrice(sku.getRetailPrice());
+                client.setP_costPrice(sku.getCostPrice());
+                client.setP_integralPrice(sku.getIntegralPrice());
+            }
+            res.add(client);
         }
+        return res;
+    }
 
+    @Override
+    public Pager getPager(Pager pager, long wid, long cid) throws Exception {
+        String sql = "select * from inventory_detail where 1 = 1 ";
+        String sqlCount = "select count(id) from inventory_detail where 1 = 1 ";
+        if(wid > 0) {
+            sql = sql + " and wid = " + wid;
+            sqlCount = sqlCount + " and wid = " + wid;
+        }
+        if(cid > 0) {
+            sql = sql + " and cid = " + cid;
+            sqlCount = sqlCount + " and cid = " + cid;
+        }
+        String limit = " limit %d , %d ";
+        sql = sql + " order by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<InventoryDetail> details = this.jdbcTemplate.query(sql, rowMapper);
+        List<ClientInventoryDetail> data = transformClients(details);
         int count = this.jdbcTemplate.queryForInt(sqlCount);
-        pager.setData(details);
+        pager.setData(data);
         pager.setTotalCount(count);
         return pager;
     }
 
+    @Override
+    public List<ClientInventoryDetail> getAllList(long wid, long p_spuid) throws Exception {
+        List<InventoryDetail> details = inventoryDetailDao.getAllListBySPU(wid, p_spuid);
+        return transformClients(details);
+    }
 }

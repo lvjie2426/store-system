@@ -1,12 +1,10 @@
 package com.store.system.client;
 
-import java.io.Serializable;
+import com.store.system.model.InventoryDetail;
+import org.apache.commons.beanutils.BeanUtils;
 
-public class ClientInventoryDetail implements Serializable {
 
-    private long id;
-
-    private long wid;
+public class ClientInventoryDetail extends InventoryDetail {
 
     private String warehouseName;
 
@@ -15,8 +13,6 @@ public class ClientInventoryDetail implements Serializable {
     private long p_pid;
 
     private String providerName;
-
-    private long p_cid;
 
     private String categoryName;
 
@@ -30,13 +26,9 @@ public class ClientInventoryDetail implements Serializable {
 
     private String p_name;
 
-    private long p_spuid;
-
-    private long p_skuid;
-
     private String p_code;
 
-    private String p_propertyJson;
+    private String p_propertyJson; //SKU 属性
 
     private int p_retailPrice;
 
@@ -48,20 +40,12 @@ public class ClientInventoryDetail implements Serializable {
 
     private long ctime;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getWid() {
-        return wid;
-    }
-
-    public void setWid(long wid) {
-        this.wid = wid;
+    public ClientInventoryDetail(InventoryDetail inventoryDetail) {
+        try {
+            BeanUtils.copyProperties(this, inventoryDetail);
+        } catch (Exception e) {
+            throw new IllegalStateException("ClientInventoryDetail construction error!");
+        }
     }
 
     public String getWarehouseName() {
@@ -94,14 +78,6 @@ public class ClientInventoryDetail implements Serializable {
 
     public void setProviderName(String providerName) {
         this.providerName = providerName;
-    }
-
-    public long getP_cid() {
-        return p_cid;
-    }
-
-    public void setP_cid(long p_cid) {
-        this.p_cid = p_cid;
     }
 
     public String getCategoryName() {
@@ -150,22 +126,6 @@ public class ClientInventoryDetail implements Serializable {
 
     public void setP_name(String p_name) {
         this.p_name = p_name;
-    }
-
-    public long getP_spuid() {
-        return p_spuid;
-    }
-
-    public void setP_spuid(long p_spuid) {
-        this.p_spuid = p_spuid;
-    }
-
-    public long getP_skuid() {
-        return p_skuid;
-    }
-
-    public void setP_skuid(long p_skuid) {
-        this.p_skuid = p_skuid;
     }
 
     public String getP_code() {

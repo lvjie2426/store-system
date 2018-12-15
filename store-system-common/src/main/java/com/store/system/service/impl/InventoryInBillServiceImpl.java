@@ -123,8 +123,10 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 productSKU = productSKUDao.insert(productSKU);
                 if(null != productSKU) {
                     long skuid = productSKU.getId();
+                    ProductSPU spu = spuMap.get(productSKU.getSpuid());
                     InventoryDetail detail = new InventoryDetail();
                     detail.setWid(wid);
+                    detail.setP_cid(spu.getCid());
                     detail.setP_spuid(productSKU.getSpuid());
                     detail.setP_skuid(skuid);
                     detail.setNum(item.getNum());
@@ -149,8 +151,10 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                     detail.setNum(detail.getNum() + num);
                     inventoryDetailDao.update(detail);
                 } else {
+                    ProductSPU spu = spuMap.get(item.getSpuid());
                     InventoryDetail detail = new InventoryDetail();
                     detail.setWid(wid);
+                    detail.setP_cid(spu.getCid());
                     detail.setP_spuid(item.getSpuid());
                     detail.setP_skuid(skuid);
                     detail.setNum(num);
@@ -169,6 +173,10 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     private void check(InventoryInBill inventoryInBill) throws Exception {
         long wid = inventoryInBill.getWid();
         if(wid == 0) throw new GlassesException("仓库不能为空");
+        InventoryWarehouse warehouse = inventoryWarehouseDao.load(wid);
+        if(warehouse.getType() != inventoryInBill.getType()) throw new GlassesException("入库单类型错误");
+        if(inventoryInBill.getInUid() == 0) throw new GlassesException("入库人不能为空");
+        if(inventoryInBill.getCreateUid() == 0) throw new GlassesException("创建人不能为空");
         String itemsJson = inventoryInBill.getItemsJson();
         List<InventoryInBillItem> items = null;
         try {
@@ -176,8 +184,15 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         } catch (Exception e) {
             throw new GlassesException("入库单子项目格式错误");
         }
+        Map<String, Integer> codeNumMap = Maps.newHashMap();
         for(InventoryInBillItem item : items) {
             if(StringUtils.isBlank(item.getCode())) throw new GlassesException("入库单子项目编码不能为空");
+            Integer num = codeNumMap.get(item.getCode());
+            if(null == num) codeNumMap.put(item.getCode(), 1);
+            else codeNumMap.put(item.getCode(), num + 1);
+        }
+        for(Map.Entry<String, Integer> entry : codeNumMap.entrySet()) {
+            if(entry.getValue() > 1) throw new GlassesException("已经添加相同子项目进入库单");
         }
         Set<Long> spuids = itemFieldSetUtils.fieldList(items, "spuid");
         List<ProductSPU> productSPUList = productSPUDao.load(Lists.newArrayList(spuids));
