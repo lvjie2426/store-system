@@ -1,6 +1,6 @@
 package com.store.system.service;
 
-import com.s7.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.model.InventoryOutBill;
 
 public interface InventoryOutBillService {

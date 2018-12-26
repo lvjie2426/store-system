@@ -8,7 +8,7 @@
   <!-- 缓存配置-->
 
    
-	<bean id="cachePool" class="com.s7.baseFramework.redis.JedisX">
+	<bean id="cachePool" class="com.quakoo.baseFramework.redis.JedisX">
 		<constructor-arg index="0" ref="live_pool"></constructor-arg>
 		<constructor-arg index="1" ref="jedisPoolConfig"></constructor-arg>
 		<constructor-arg index="2" value="2000"></constructor-arg>
@@ -22,7 +22,7 @@
         <property name="testOnBorrow" value="false" />
     </bean>
 
-    <bean name="live_pool" class="com.s7.baseFramework.redis.JedisBean">
+    <bean name="live_pool" class="com.quakoo.baseFramework.redis.JedisBean">
         <property name="masterAddress">
              <value>${redis.address}</value>
         </property>

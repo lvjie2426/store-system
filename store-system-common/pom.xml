@@ -10,30 +10,35 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.s7</groupId>
-			<artifactId>hyperspace-core</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.s7</groupId>
-			<artifactId>hyperspace-common</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+        <dependency>
+            <groupId>com.quakoo</groupId>
+            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>quakoo-hyperspace-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.quakoo</groupId>
+            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>quakoo-hyperspace-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.quakoo</groupId>
+            <artifactId>quakoo-web-framework</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
 
 		<dependency>
 			<groupId>com.belerweb</groupId>

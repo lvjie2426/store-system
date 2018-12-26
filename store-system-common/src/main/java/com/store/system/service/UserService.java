@@ -5,7 +5,7 @@ import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.model.Permission;
 import com.store.system.model.User;
-import com.s7.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.Pager;
 
 import java.util.List;
 

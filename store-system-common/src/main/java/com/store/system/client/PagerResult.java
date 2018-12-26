@@ -1,7 +1,7 @@
 package com.store.system.client;
 
 import com.google.common.collect.Lists;
-import com.s7.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.Pager;
 
 import java.util.List;
 

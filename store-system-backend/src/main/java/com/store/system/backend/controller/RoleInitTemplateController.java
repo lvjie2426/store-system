@@ -3,7 +3,7 @@ package com.store.system.backend.controller;
 import com.store.system.client.ResultClient;
 import com.store.system.model.RoleInitTemplate;
 import com.store.system.service.RoleInitTemplateService;
-import com.s7.webframework.BaseController;
+import com.quakoo.webframework.BaseController;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

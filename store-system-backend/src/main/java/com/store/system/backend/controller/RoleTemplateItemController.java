@@ -4,7 +4,7 @@ import com.store.system.client.ResultClient;
 import com.store.system.model.Permission;
 import com.store.system.model.RoleTemplateItem;
 import com.store.system.service.RoleTemplateItemService;
-import com.s7.webframework.BaseController;
+import com.quakoo.webframework.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

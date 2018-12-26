@@ -1,8 +1,8 @@
 package com.store.system.interceptor;
 
 
-import com.s7.baseFramework.json.JsonUtils;
-import com.s7.webframework.MappingResponseJsonView;
+import com.quakoo.baseFramework.json.JsonUtils;
+import com.quakoo.webframework.MappingResponseJsonView;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -88,7 +88,7 @@ public class StatAspcet {
     }
 
 
-    @Around("execution(public * com.s7.webframework.BaseController.exp(..))")
+    @Around("execution(public * com.quakoo.webframework.BaseController.exp(..))")
     public Object logStatWithExp(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             HttpServletResponse response = null;

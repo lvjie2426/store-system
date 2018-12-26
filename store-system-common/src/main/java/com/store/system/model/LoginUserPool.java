@@ -1,11 +1,11 @@
 package com.store.system.model;
 
-import com.s7.baseFramework.model.pagination.PagerCursor;
-import com.s7.space.annotation.domain.CombinationKey;
-import com.s7.space.annotation.domain.HyperspaceDomain;
-import com.s7.space.annotation.domain.ShardingKey;
-import com.s7.space.annotation.domain.SortKey;
-import com.s7.space.enums.HyperspaceDomainType;
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
+import com.quakoo.space.annotation.domain.CombinationKey;
+import com.quakoo.space.annotation.domain.HyperspaceDomain;
+import com.quakoo.space.annotation.domain.ShardingKey;
+import com.quakoo.space.annotation.domain.SortKey;
+import com.quakoo.space.enums.HyperspaceDomainType;
 
 import java.io.Serializable;
 

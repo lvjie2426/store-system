@@ -18,7 +18,7 @@
 
     <import resource="cache-config.xml" />
 
-    <bean class="com.s7.space.aop.HyperspaceBeanPostProcessor"></bean>
+    <bean class="com.quakoo.space.aop.HyperspaceBeanPostProcessor"></bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
         <property name="locations">
@@ -30,7 +30,7 @@
 
 
     <!-- 配置信息 -->
-    <bean id="hyperspaceConfig" class="com.s7.space.HyperspaceConfig">
+    <bean id="hyperspaceConfig" class="com.quakoo.space.HyperspaceConfig">
         <property name="projectName" value="${project.name}" />
         <property name="zkAddress" value="${zookeeper.address}" />
     </bean>
@@ -69,7 +69,7 @@
 
 
     <!-- 下面是业务dao -->
-    <bean id="userMaxValueIncrementer" class="com.s7.db.StepMaxValueIncrementer">
+    <bean id="userMaxValueIncrementer" class="com.quakoo.db.StepMaxValueIncrementer">
         <property name="tableName" value="user_seq" />
         <property name="columnName" value="id" />
         <property name="step" value="50" />
@@ -267,6 +267,15 @@
 
     <bean id="inventoryOutBillDao" class="com.store.system.dao.impl.InventoryOutBillDaoImpl">
         <property name="tableName" value="inventory_out_bill" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inventoryCheckBillDao" class="com.store.system.dao.impl.InventoryCheckBillDaoImpl">
+        <property name="tableName" value="inventory_check_bill" />
         <property name="dataSources">
             <list>
                 <ref bean="dataSource" />

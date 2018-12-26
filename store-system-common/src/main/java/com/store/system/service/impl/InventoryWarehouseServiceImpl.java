@@ -2,8 +2,8 @@ package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.s7.baseFramework.transform.TransformFieldSetUtils;
-import com.s7.baseFramework.transform.TransformMapUtils;
+import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
+import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientInventoryWarehouse;
 import com.store.system.dao.InventoryWarehouseDao;
 import com.store.system.dao.UserDao;

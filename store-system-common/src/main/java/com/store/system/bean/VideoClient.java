@@ -1,11 +1,11 @@
 package com.store.system.bean;
 
 import com.google.common.collect.Maps;
-import com.s7.baseFramework.http.HttpPoolParam;
-import com.s7.baseFramework.http.HttpResult;
-import com.s7.baseFramework.http.MultiHttpPool;
-import com.s7.baseFramework.jackson.JsonUtils;
-import com.s7.baseFramework.secure.Base64Util;
+import com.quakoo.baseFramework.http.HttpPoolParam;
+import com.quakoo.baseFramework.http.HttpResult;
+import com.quakoo.baseFramework.http.MultiHttpPool;
+import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.quakoo.baseFramework.secure.Base64Util;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Mac;

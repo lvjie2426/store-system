@@ -5,7 +5,7 @@ import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.dao.UserDao;
 import com.store.system.exception.GlassesException;
-import com.s7.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.model.*;
 import com.store.system.service.*;
 import org.apache.commons.beanutils.BeanUtils;
@@ -158,11 +158,11 @@ public class SubordinateServiceImpl implements SubordinateService {
 		int count =0;
 		if(StringUtils.isNotBlank(name)){
 			subordinates=jdbcTemplate.query(sql,new BeanPropertyRowMapper(Subordinate.class),"%"+name+"%");
-			count=this.jdbcTemplate.queryForInt(sqlCount,"%"+name+"%");
+			count=this.jdbcTemplate.queryForObject(sqlCount, new Object[] {"%"+name+"%"}, Integer.class);
 		}
 		else{
 			subordinates=jdbcTemplate.query(sql,new BeanPropertyRowMapper(Subordinate.class));
-			count=this.jdbcTemplate.queryForInt(sqlCount);
+			count=this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
 		}
 
 		pager.setData(transformClient(subordinates));

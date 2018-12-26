@@ -3,10 +3,10 @@ package com.store.system.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.s7.baseFramework.jackson.JsonUtils;
-import com.s7.baseFramework.model.pagination.Pager;
-import com.s7.baseFramework.transform.TransformFieldSetUtils;
-import com.s7.ext.RowMapperHelp;
+import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.dao.ProductPropertyNameDao;
@@ -285,7 +285,7 @@ public class ProductServiceImpl implements ProductService {
         sql = sql + " order  by `sort` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
-        int count = this.jdbcTemplate.queryForInt(sqlCount);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         List<ClientProductSPU> data = Lists.newArrayList();
         for(ProductSPU one : productSPUList) {
             ClientProductSPU clientProductSPU = new ClientProductSPU(one);

@@ -1,9 +1,9 @@
 package com.store.system.backend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.s7.baseFramework.jackson.JsonUtils;
-import com.s7.baseFramework.model.pagination.Pager;
-import com.s7.webframework.BaseController;
+import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;

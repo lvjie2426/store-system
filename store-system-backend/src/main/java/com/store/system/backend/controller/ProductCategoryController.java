@@ -1,6 +1,6 @@
 package com.store.system.backend.controller;
 
-import com.s7.webframework.BaseController;
+import com.quakoo.webframework.BaseController;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.GlassesException;
 import com.store.system.model.ProductCategory;

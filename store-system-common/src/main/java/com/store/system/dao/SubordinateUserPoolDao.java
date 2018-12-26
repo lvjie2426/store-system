@@ -1,7 +1,7 @@
 package com.store.system.dao;
 
 import com.store.system.model.SubordinateUserPool;
-import com.s7.space.interfaces.HDao;
+import com.quakoo.space.interfaces.HDao;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;

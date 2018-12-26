@@ -1,7 +1,7 @@
 package com.store.system.backend.controller;
 
-import com.s7.baseFramework.model.pagination.Pager;
-import com.s7.webframework.BaseController;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.webframework.BaseController;
 import com.store.system.client.*;
 import com.store.system.exception.GlassesException;
 import com.store.system.model.InventoryInBill;

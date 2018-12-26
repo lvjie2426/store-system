@@ -1,8 +1,8 @@
 package com.store.system.backend;
 
 import ch.qos.logback.classic.LoggerContext;
-import com.s7.webframework.AbstractServer;
-import com.s7.webframework.Config;
+import com.quakoo.webframework.AbstractServer;
+import com.quakoo.webframework.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -30,7 +30,7 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 	<mvc:interceptors>
-		<bean class="com.s7.webframework.ServerBusyInterceptor" />
+		<bean class="com.quakoo.webframework.ServerBusyInterceptor" />
         <bean class="com.store.system.backend.interceptor.UserInterceptor" />
 	</mvc:interceptors>
 	<aop:aspectj-autoproxy proxy-target-class="true"/>

@@ -4,7 +4,7 @@ import com.store.system.client.ResultClient;
 import com.store.system.model.Permission;
 import com.store.system.model.Role;
 import com.store.system.service.RoleService;
-import com.s7.webframework.BaseController;
+import com.quakoo.webframework.BaseController;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

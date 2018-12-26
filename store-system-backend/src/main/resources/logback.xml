@@ -172,7 +172,7 @@
     <logger name="org.springframework" level="info"/>
     <logger name="org.apache.http" level="info"/>
 
-    <logger name="com.s7.baseFramework.redis" level="info"
+    <logger name="com.quakoo.baseFramework.redis" level="info"
             additivity="false">
         <appender-ref ref="redis"/>
 

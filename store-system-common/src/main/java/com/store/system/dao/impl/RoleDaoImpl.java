@@ -3,13 +3,13 @@ package com.store.system.dao.impl;
 
 import com.store.system.dao.RoleDao;
 import com.store.system.model.Role;
-import com.s7.space.CacheBaseDao;
-import com.s7.space.annotation.cache.CacheDaoMethod;
-import com.s7.space.annotation.cache.CacheSort;
-import com.s7.space.annotation.dao.HyperspaceDao;
-import com.s7.space.enums.HyperspaceType;
-import com.s7.space.enums.cache.CacheMethodEnum;
-import com.s7.space.enums.cache.CacheSortOrder;
+import com.quakoo.space.CacheBaseDao;
+import com.quakoo.space.annotation.cache.CacheDaoMethod;
+import com.quakoo.space.annotation.cache.CacheSort;
+import com.quakoo.space.annotation.dao.HyperspaceDao;
+import com.quakoo.space.enums.HyperspaceType;
+import com.quakoo.space.enums.cache.CacheMethodEnum;
+import com.quakoo.space.enums.cache.CacheSortOrder;
 
 import java.util.List;
 import java.util.Map;

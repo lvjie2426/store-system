@@ -2,7 +2,7 @@ package com.store.system.service;
 
 import com.store.system.client.ClientSubordinate;
 import com.store.system.model.Subordinate;
-import com.s7.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.Pager;
 
 import java.util.List;
 

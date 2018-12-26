@@ -13,13 +13,6 @@
             <artifactId>store-system-common</artifactId>
             <version>${project.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.s7</groupId>
-			<artifactId>WebFramework</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
 	</dependencies>
   
   <build>

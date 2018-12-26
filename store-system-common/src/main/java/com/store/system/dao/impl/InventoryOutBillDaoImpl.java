@@ -1,8 +1,8 @@
 package com.store.system.dao.impl;
 
-import com.s7.space.CacheBaseDao;
-import com.s7.space.annotation.dao.HyperspaceDao;
-import com.s7.space.enums.HyperspaceType;
+import com.quakoo.space.CacheBaseDao;
+import com.quakoo.space.annotation.dao.HyperspaceDao;
+import com.quakoo.space.enums.HyperspaceType;
 import com.store.system.dao.InventoryOutBillDao;
 import com.store.system.model.InventoryOutBill;
 

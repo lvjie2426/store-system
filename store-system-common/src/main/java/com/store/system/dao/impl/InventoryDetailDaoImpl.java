@@ -1,10 +1,10 @@
 package com.store.system.dao.impl;
 
-import com.s7.space.CacheBaseDao;
-import com.s7.space.annotation.cache.CacheDaoMethod;
-import com.s7.space.annotation.dao.HyperspaceDao;
-import com.s7.space.enums.HyperspaceType;
-import com.s7.space.enums.cache.CacheMethodEnum;
+import com.quakoo.space.CacheBaseDao;
+import com.quakoo.space.annotation.cache.CacheDaoMethod;
+import com.quakoo.space.annotation.dao.HyperspaceDao;
+import com.quakoo.space.enums.HyperspaceType;
+import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.store.system.dao.InventoryDetailDao;
 import com.store.system.model.InventoryDetail;
 import org.springframework.dao.DataAccessException;
@@ -29,6 +29,12 @@ public class InventoryDetailDaoImpl extends CacheBaseDao<InventoryDetail> implem
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
     public List<InventoryDetail> getAllListBySPU(long wid, long p_spuid) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryDetail> getAllList(long wid) throws DataAccessException {
         return null;
     }
 

@@ -1,15 +1,15 @@
 package com.store.system.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.s7.baseFramework.json.JsonUtils;
-import com.s7.baseFramework.secure.AESUtils;
-import com.s7.baseFramework.secure.Base64Util;
-import com.s7.space.annotation.domain.HyperspaceColumn;
-import com.s7.space.annotation.domain.HyperspaceDomain;
-import com.s7.space.annotation.domain.PrimaryKey;
-import com.s7.space.annotation.domain.SortKey;
-import com.s7.space.enums.HyperspaceDomainType;
-import com.s7.space.enums.IdentityType;
+import com.quakoo.baseFramework.json.JsonUtils;
+import com.quakoo.baseFramework.secure.AESUtils;
+import com.quakoo.baseFramework.secure.Base64Util;
+import com.quakoo.space.annotation.domain.HyperspaceColumn;
+import com.quakoo.space.annotation.domain.HyperspaceDomain;
+import com.quakoo.space.annotation.domain.PrimaryKey;
+import com.quakoo.space.annotation.domain.SortKey;
+import com.quakoo.space.enums.HyperspaceDomainType;
+import com.quakoo.space.enums.IdentityType;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;

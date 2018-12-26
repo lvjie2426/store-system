@@ -9,10 +9,10 @@ import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.s7.baseFramework.model.pagination.Pager;
-import com.s7.baseFramework.redis.JedisX;
-import com.s7.baseFramework.secure.MD5Utils;
-import com.s7.ext.RowMapperHelp;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.redis.JedisX;
+import com.quakoo.baseFramework.secure.MD5Utils;
+import com.quakoo.ext.RowMapperHelp;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -149,10 +149,10 @@ public class UserServiceImpl implements UserService {
             Object[] args = new Object[objects.size()];
             objects.toArray(args);
             users = jdbcTemplate.query(sql, new RowMapperHelp(User.class),args);
-            count = this.jdbcTemplate.queryForInt(countSql,args);
+            count = this.jdbcTemplate.queryForObject(countSql,args, Integer.class);
         }else{
             users = jdbcTemplate.query(sql, new RowMapperHelp(User.class));
-            count = this.jdbcTemplate.queryForInt(countSql);
+            count = this.jdbcTemplate.queryForObject(countSql,Integer.class);
         }
         pager.setData(transformClient(users));
         pager.setTotalCount(count);

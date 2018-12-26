@@ -1,10 +1,10 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
-import com.s7.baseFramework.model.pagination.Pager;
-import com.s7.baseFramework.transform.TransformFieldSetUtils;
-import com.s7.baseFramework.transform.TransformMapUtils;
-import com.s7.ext.RowMapperHelp;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
+import com.quakoo.baseFramework.transform.TransformMapUtils;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientInventoryDetail;
 import com.store.system.dao.*;
 import com.store.system.model.*;
@@ -147,7 +147,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<InventoryDetail> details = this.jdbcTemplate.query(sql, rowMapper);
         List<ClientInventoryDetail> data = transformClients(details);
-        int count = this.jdbcTemplate.queryForInt(sqlCount);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         pager.setData(data);
         pager.setTotalCount(count);
         return pager;
