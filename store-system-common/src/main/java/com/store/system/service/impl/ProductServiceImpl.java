@@ -9,13 +9,9 @@ import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
-import com.store.system.dao.ProductPropertyNameDao;
-import com.store.system.dao.ProductSKUDao;
-import com.store.system.dao.ProductSPUDao;
+import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.ProductPropertyName;
-import com.store.system.model.ProductSKU;
-import com.store.system.model.ProductSPU;
+import com.store.system.model.*;
 import com.store.system.service.ProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,6 +38,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private ProductSKUDao productSKUDao;
+
+    @Resource
+    private ProductProviderDao productProviderDao;
+
+    @Resource
+    private ProductCategoryDao productCategoryDao;
+
+    @Resource
+    private ProductBrandDao productBrandDao;
+
+    @Resource
+    private ProductSeriesDao productSeriesDao;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -226,7 +234,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ClientProductSPU loadSPU(long id) throws Exception {
         ProductSPU productSPU = productSPUDao.load(id);
-        ClientProductSPU clientProductSPU = new ClientProductSPU(productSPU);
+        ClientProductSPU clientProductSPU = transformClient(productSPU);
         List<ProductSKU> productSKUList = productSKUDao.getAllList(id, ProductSKU.status_nomore);
         List<ClientProductSKU> skuList = Lists.newArrayList();
         for(ProductSKU one : productSKUList) {
@@ -234,6 +242,19 @@ public class ProductServiceImpl implements ProductService {
             skuList.add(clientProductSKU);
         }
         clientProductSPU.setSkuList(skuList);
+        return clientProductSPU;
+    }
+
+    private ClientProductSPU transformClient(ProductSPU productSPU) throws Exception {
+        ClientProductSPU clientProductSPU = new ClientProductSPU(productSPU);
+        ProductProvider provider = productProviderDao.load(clientProductSPU.getPid());
+        if(null != provider) clientProductSPU.setProviderName(provider.getName());
+        ProductCategory category = productCategoryDao.load(clientProductSPU.getCid());
+        if(null != category) clientProductSPU.setCategoryName(category.getName());
+        ProductBrand brand = productBrandDao.load(clientProductSPU.getBid());
+        if(null != brand) clientProductSPU.setBrandName(brand.getName());
+        ProductSeries series = productSeriesDao.load(clientProductSPU.getSid());
+        if(null != series) clientProductSPU.setSeriesName(series.getName());
         return clientProductSPU;
     }
 
@@ -302,7 +323,7 @@ public class ProductServiceImpl implements ProductService {
         if(count == 0) throw new StoreSystemException("没有此类产品");
         List<ProductSPU> productSPUList = productSPUDao.getAllList(type, subid, pid, cid, bid, sid);
         ProductSPU productSPU = productSPUList.get(0);
-        ClientProductSPU clientProductSPU = new ClientProductSPU(productSPU);
+        ClientProductSPU clientProductSPU = transformClient(productSPU);
         return clientProductSPU;
     }
 

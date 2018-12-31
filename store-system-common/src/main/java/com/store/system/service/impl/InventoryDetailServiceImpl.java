@@ -158,4 +158,11 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         List<InventoryDetail> details = inventoryDetailDao.getAllListBySPU(wid, p_spuid);
         return transformClients(details);
     }
+
+    @Override
+    public List<InventoryDetail> getAllOriginList(long wid, long p_spuid) throws Exception {
+        List<InventoryDetail> details = inventoryDetailDao.getAllListBySPU(wid, p_spuid);
+        return details;
+    }
+
 }
