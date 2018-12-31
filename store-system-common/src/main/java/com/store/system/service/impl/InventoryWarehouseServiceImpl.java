@@ -7,7 +7,7 @@ import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientInventoryWarehouse;
 import com.store.system.dao.InventoryWarehouseDao;
 import com.store.system.dao.UserDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryWarehouse;
 import com.store.system.model.User;
 import com.store.system.service.InventoryWarehouseService;
@@ -33,9 +33,9 @@ public class InventoryWarehouseServiceImpl implements InventoryWarehouseService 
 
     private TransformMapUtils userMapUtils = new TransformMapUtils(User.class);
 
-    private void check(InventoryWarehouse inventoryWarehouse) throws GlassesException {
-        if(inventoryWarehouse.getSubid() == 0) throw new GlassesException("店铺不能为空");
-        if(StringUtils.isBlank(inventoryWarehouse.getName())) throw new GlassesException("店铺名称不能为空");
+    private void check(InventoryWarehouse inventoryWarehouse) throws StoreSystemException {
+        if(inventoryWarehouse.getSubid() == 0) throw new StoreSystemException("店铺不能为空");
+        if(StringUtils.isBlank(inventoryWarehouse.getName())) throw new StoreSystemException("店铺名称不能为空");
     }
 
     @Override

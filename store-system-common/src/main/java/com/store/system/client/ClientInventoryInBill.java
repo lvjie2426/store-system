@@ -3,6 +3,8 @@ package com.store.system.client;
 import com.store.system.model.InventoryInBill;
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.util.List;
+
 public class ClientInventoryInBill extends InventoryInBill {
 
     private String warehouseName;
@@ -12,6 +14,8 @@ public class ClientInventoryInBill extends InventoryInBill {
     private String createUserName;
 
     private String checkUserName;
+
+    private List<ClientInventoryInBillItem> items;
 
     public ClientInventoryInBill(InventoryInBill inventoryInBill) {
         try {
@@ -51,5 +55,13 @@ public class ClientInventoryInBill extends InventoryInBill {
 
     public void setCheckUserName(String checkUserName) {
         this.checkUserName = checkUserName;
+    }
+
+    public List<ClientInventoryInBillItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ClientInventoryInBillItem> items) {
+        this.items = items;
     }
 }

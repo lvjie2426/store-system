@@ -4,7 +4,7 @@ import com.store.system.dao.PermissionDao;
 import com.store.system.dao.RoleDao;
 import com.store.system.dao.RolePermissionPoolDao;
 import com.store.system.dao.UserDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Permission;
 import com.store.system.model.Role;
 import com.store.system.model.RolePermissionPool;
@@ -50,7 +50,7 @@ public class RoleServiceImpl implements RoleService {
     public boolean update(Role role) throws Exception {
         long rid = role.getId();
         Role currentRole = roleDao.load(rid);
-        if(null == currentRole) throw new GlassesException("角色不存在");
+        if(null == currentRole) throw new StoreSystemException("角色不存在");
         currentRole.setRoleName(role.getRoleName());
         currentRole.setRemark(role.getRemark());
         currentRole.setSort(role.getSort());
@@ -61,9 +61,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public boolean del(long id) throws Exception {
         Role currentRole = roleDao.load(id);
-        if(null == currentRole) throw new GlassesException("角色不存在");
+        if(null == currentRole) throw new StoreSystemException("角色不存在");
         int count = userDao.getCount(id);
-        if(count > 0) throw new GlassesException("用户正在使用此角色");
+        if(count > 0) throw new StoreSystemException("用户正在使用此角色");
         List<RolePermissionPool> pools = rolePermissionPoolDao.getAllList(id);
         for(RolePermissionPool pool : pools) {
             rolePermissionPoolDao.delete(pool);

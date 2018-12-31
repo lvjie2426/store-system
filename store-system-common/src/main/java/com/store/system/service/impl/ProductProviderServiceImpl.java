@@ -1,7 +1,7 @@
 package com.store.system.service.impl;
 
 import com.store.system.dao.ProductProviderDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductProvider;
 import com.store.system.service.ProductProviderService;
 import org.apache.commons.lang3.StringUtils;
@@ -16,9 +16,9 @@ public class ProductProviderServiceImpl implements ProductProviderService {
     @Resource
     private ProductProviderDao productProviderDao;
 
-    private void check(ProductProvider productProvider) throws GlassesException {
+    private void check(ProductProvider productProvider) throws StoreSystemException {
         String name = productProvider.getName();
-        if(StringUtils.isBlank(name)) throw new GlassesException("名称不能为空");
+        if(StringUtils.isBlank(name)) throw new StoreSystemException("名称不能为空");
     }
 
     @Override

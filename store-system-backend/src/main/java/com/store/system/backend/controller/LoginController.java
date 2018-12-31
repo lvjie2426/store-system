@@ -2,7 +2,7 @@ package com.store.system.backend.controller;
 
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.client.ResultClient;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
 import com.store.system.service.UserService;
 import com.store.system.util.VerifyCodeUtils;
@@ -69,7 +69,7 @@ public class LoginController extends BaseController {
             ClientUserOnLogin clientUserOnLogin = userService.login(user);
             cache.delete(verifyCode + uuid);
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }

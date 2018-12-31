@@ -2,8 +2,7 @@ package com.store.system.backend.controller;
 
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ResultClient;
-import com.store.system.exception.GlassesException;
-import com.store.system.model.ProductCategory;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductProvider;
 import com.store.system.service.ProductProviderService;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,7 @@ public class ProductProviderController extends BaseController {
         try {
             productProvider = productProviderService.add(productProvider);
             return this.viewNegotiating(request,response, new ResultClient(productProvider));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -39,7 +38,7 @@ public class ProductProviderController extends BaseController {
         try {
             boolean res = productProviderService.update(productProvider);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -50,7 +49,7 @@ public class ProductProviderController extends BaseController {
         try {
             boolean res = productProviderService.del(id);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }

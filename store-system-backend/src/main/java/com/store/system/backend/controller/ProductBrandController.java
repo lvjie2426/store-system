@@ -2,7 +2,7 @@ package com.store.system.backend.controller;
 
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ResultClient;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductBrand;
 import com.store.system.service.ProductBrandService;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ public class ProductBrandController extends BaseController {
         try {
             productBrand = productBrandService.add(productBrand);
             return this.viewNegotiating(request,response, new ResultClient(productBrand));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -38,7 +38,7 @@ public class ProductBrandController extends BaseController {
         try {
             boolean res = productBrandService.update(productBrand);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -49,7 +49,7 @@ public class ProductBrandController extends BaseController {
         try {
             boolean res = productBrandService.del(id);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }

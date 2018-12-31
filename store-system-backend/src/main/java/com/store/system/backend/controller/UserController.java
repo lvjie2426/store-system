@@ -4,7 +4,7 @@ package com.store.system.backend.controller;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Permission;
 import com.store.system.model.User;
 import com.store.system.service.PermissionService;
@@ -99,7 +99,7 @@ public class UserController extends BaseController {
         try {
             ClientUserOnLogin clientUserOnLogin = userService.register(user);
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
-        }catch (GlassesException e){
+        }catch (StoreSystemException e){
             return this.viewNegotiating(request,response,new ResultClient(false,"",e.getMessage()));
         }
     }

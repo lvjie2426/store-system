@@ -1,7 +1,7 @@
 package com.store.system.service.impl;
 
 import com.store.system.dao.ProductSeriesDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductSeries;
 import com.store.system.service.ProductSeriesService;
 import org.apache.commons.lang3.StringUtils;
@@ -16,11 +16,11 @@ public class ProductSeriesServiceImpl implements ProductSeriesService {
     @Resource
     private ProductSeriesDao productSeriesDao;
 
-    private void check(ProductSeries productSeries) throws GlassesException {
+    private void check(ProductSeries productSeries) throws StoreSystemException {
         long bid = productSeries.getBid();
         String name = productSeries.getName();
-        if(bid == 0) throw new GlassesException("品牌不能为空");
-        if(StringUtils.isBlank(name)) throw new GlassesException("名称不能为空");
+        if(bid == 0) throw new StoreSystemException("品牌不能为空");
+        if(StringUtils.isBlank(name)) throw new StoreSystemException("名称不能为空");
     }
 
     @Override

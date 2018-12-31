@@ -10,13 +10,10 @@ import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.bean.InventoryOutBillItem;
-import com.store.system.client.ClientInventoryInBill;
 import com.store.system.client.ClientInventoryOutBill;
-import com.store.system.dao.InventoryDetailDao;
-import com.store.system.dao.InventoryOutBillDao;
-import com.store.system.dao.InventoryWarehouseDao;
-import com.store.system.dao.UserDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.client.ClientInventoryOutBillItem;
+import com.store.system.dao.*;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.InventoryOutBillService;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,6 +31,20 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     private ReentrantLock lock = new ReentrantLock();
 
     private TransformFieldSetUtils itemFieldSetUtils = new TransformFieldSetUtils(InventoryOutBillItem.class);
+
+    private TransformFieldSetUtils spuFieldSetUtils = new TransformFieldSetUtils(ProductSPU.class);
+
+    private TransformFieldSetUtils detailFieldSetUtils = new TransformFieldSetUtils(InventoryDetail.class);
+
+    private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
+
+    private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
+
+    private TransformMapUtils categoryMapUtils = new TransformMapUtils(ProductCategory.class);
+
+    private TransformMapUtils brandMapUtils = new TransformMapUtils(ProductBrand.class);
+
+    private TransformMapUtils seriesMapUtils = new TransformMapUtils(ProductSeries.class);
 
     private TransformMapUtils detailMapUtils = new TransformMapUtils(InventoryDetail.class);
 
@@ -56,6 +67,21 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     private InventoryWarehouseDao inventoryWarehouseDao;
 
     @Resource
+    private ProductSPUDao productSPUDao;
+
+    @Resource
+    private ProductSKUDao productSKUDao;
+
+    @Resource
+    private ProductBrandDao productBrandDao;
+
+    @Resource
+    private ProductCategoryDao productCategoryDao;
+
+    @Resource
+    private ProductSeriesDao productSeriesDao;
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     @Override
@@ -66,8 +92,9 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
 
     @Override
     public boolean update(InventoryOutBill inventoryOutBill) throws Exception {
-        int status = inventoryOutBill.getStatus();
-        if(status != InventoryOutBill.status_edit) throw new GlassesException("状态错误,不能修改");
+        InventoryOutBill dbOutBill = inventoryOutBillDao.load(inventoryOutBill.getId());
+        int status = dbOutBill.getStatus();
+        if(status != InventoryOutBill.status_edit) throw new StoreSystemException("状态错误,不能修改");
         check(inventoryOutBill);
         boolean res = inventoryOutBillDao.update(inventoryOutBill);
         return res;
@@ -87,8 +114,8 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         lock.lock();
         try {
             InventoryOutBill outBill = inventoryOutBillDao.load(id);
-            if(null == outBill) throw new GlassesException("出库单为空");
-            if(outBill.getStatus() != InventoryOutBill.status_wait_check) throw new GlassesException("出库单状态错误");
+            if(null == outBill) throw new StoreSystemException("出库单为空");
+            if(outBill.getStatus() != InventoryOutBill.status_wait_check) throw new StoreSystemException("出库单状态错误");
             String itemsJson = outBill.getItemsJson();
             List<InventoryOutBillItem> items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryOutBillItem>>() {});
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
@@ -96,7 +123,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
             Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
             for(InventoryOutBillItem item : items) {
                 InventoryDetail detail = detailMap.get(item.getDid());
-                if(item.getNum() > detail.getNum()) throw new GlassesException("库存数量不足");
+                if(item.getNum() > detail.getNum()) throw new StoreSystemException("库存数量不足");
             }
             for(InventoryOutBillItem item : items) {
                 InventoryDetail detail = detailMap.get(item.getDid());
@@ -115,8 +142,8 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     @Override
     public void noPass(long id, long checkUid) throws Exception {
         InventoryOutBill outBill = inventoryOutBillDao.load(id);
-        if(null == outBill) throw new GlassesException("出库单为空");
-        if(outBill.getStatus() != InventoryOutBill.status_wait_check) throw new GlassesException("出库单状态错误");
+        if(null == outBill) throw new StoreSystemException("出库单为空");
+        if(outBill.getStatus() != InventoryOutBill.status_wait_check) throw new StoreSystemException("出库单状态错误");
         outBill.setCheckUid(checkUid);
         outBill.setCheck(InventoryOutBill.check_no_pass);
         outBill.setStatus(InventoryOutBill.status_end);
@@ -125,23 +152,23 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
 
     private void check(InventoryOutBill inventoryOutBill) throws Exception {
         long wid = inventoryOutBill.getWid();
-        if(wid == 0) throw new GlassesException("仓库不能为空");
-        if(inventoryOutBill.getOutUid() == 0) throw new GlassesException("出库人不能为空");
-        if(inventoryOutBill.getCreateUid() == 0) throw new GlassesException("创建人不能为空");
+        if(wid == 0) throw new StoreSystemException("仓库不能为空");
+        if(inventoryOutBill.getOutUid() == 0) throw new StoreSystemException("出库人不能为空");
+        if(inventoryOutBill.getCreateUid() == 0) throw new StoreSystemException("创建人不能为空");
         String itemsJson = inventoryOutBill.getItemsJson();
         List<InventoryOutBillItem> items = null;
         try {
             items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryOutBillItem>>() {});
         } catch (Exception e) {
-            throw new GlassesException("出库单子项目格式错误");
+            throw new StoreSystemException("出库单子项目格式错误");
         }
-        Map<String, Integer> codeNumMap = Maps.newHashMap();
+        Map<Long, Integer> didNumMap = Maps.newHashMap();
         for(InventoryOutBillItem item : items) {
-            Integer num = codeNumMap.get(item.getCode());
+            Integer num = didNumMap.get(item.getDid());
             if(null == num) {
-                codeNumMap.put(item.getCode(), 1);
+                didNumMap.put(item.getDid(), 1);
             } else {
-                codeNumMap.put(item.getCode(), num + 1);
+                didNumMap.put(item.getDid(), num + 1);
             }
         }
 
@@ -149,11 +176,11 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
         Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
         for(InventoryOutBillItem item : items) {
-            if(item.getNum() <= 0) throw new GlassesException("出库单子项目出库数错误");
-            if(codeNumMap.get(item.getCode()) > 1) throw new GlassesException("已经添加相同子项目进出库单");
+            if(item.getNum() <= 0) throw new StoreSystemException("出库单子项目出库数错误");
+            if(didNumMap.get(item.getDid()) > 1) throw new StoreSystemException("已经添加相同子项目进出库单");
             InventoryDetail detail = detailMap.get(item.getDid());
-            if(null == detail) throw new GlassesException("库存明细为空");
-            if(item.getNum() > detail.getNum()) throw new GlassesException("库存数量不足");
+            if(null == detail) throw new StoreSystemException("库存明细为空");
+            if(item.getNum() > detail.getNum()) throw new StoreSystemException("库存数量不足");
         }
     }
 
@@ -211,6 +238,56 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
             if(null != user) client.setOutUserName(user.getName());
             user = userMap.get(client.getCheckUid());
             if(null != user) client.setCheckUserName(user.getName());
+            List<InventoryOutBillItem> items = JsonUtils.fromJson(outBill.getItemsJson(), new TypeReference<List<InventoryOutBillItem>>() {});
+            Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
+            List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
+            Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
+            Set<Long> spuids = detailFieldSetUtils.fieldList(details, "p_spuid");
+            List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuids));
+            Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
+            Set<Long> skuids = detailFieldSetUtils.fieldList(details, "p_skuid");
+            List<ProductSKU> skuList = productSKUDao.load(Lists.newArrayList(skuids));
+            Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(skuList, "id");
+
+            Set<Long> cids = spuFieldSetUtils.fieldList(spuList, "cid");
+            List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
+            Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
+            Set<Long> bids = spuFieldSetUtils.fieldList(spuList, "bid");
+            List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
+            Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
+            Set<Long> sids = spuFieldSetUtils.fieldList(spuList, "sid");
+            List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
+            Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
+            List<ClientInventoryOutBillItem> clientItems = Lists.newArrayList();
+            for(InventoryOutBillItem item : items) {
+                ClientInventoryOutBillItem clientItem = new ClientInventoryOutBillItem(item);
+                InventoryDetail detail = detailMap.get(clientItem.getDid());
+                if(null != detail) {
+                    ProductSPU spu = spuMap.get(detail.getP_spuid());
+                    if(null != spu) {
+                        clientItem.setSpuid(spu.getId());
+                        clientItem.setSpuName(spu.getName());
+                        clientItem.setSpuCover(spu.getCover());
+                        clientItem.setSpuIcon(spu.getIcon());
+                        clientItem.setCid(spu.getCid());
+                        clientItem.setBid(spu.getBid());
+                        clientItem.setSid(spu.getSid());
+                    }
+                    ProductSKU sku = skuMap.get(detail.getP_skuid());
+                    if(null != sku) {
+                        clientItem.setCode(sku.getCode());
+                        clientItem.setPropertyJson(sku.getPropertyJson());
+                    }
+                }
+                ProductCategory category = categoryMap.get(clientItem.getCid());
+                if(null != category) clientItem.setCategoryName(category.getName());
+                ProductBrand brand = brandMap.get(clientItem.getBid());
+                if(null != brand) clientItem.setBrandName(brand.getName());
+                ProductSeries series = seriesMap.get(clientItem.getSid());
+                if(null != series) clientItem.setSeriesName(series.getName());
+                clientItems.add(clientItem);
+            }
+            client.setItems(clientItems);
             res.add(client);
         }
         return res;

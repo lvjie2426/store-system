@@ -1,13 +1,14 @@
 package com.store.system.backend.controller;
 
+import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.InventoryInBill;
+import com.store.system.model.InventoryOutBill;
 import com.store.system.model.User;
-import com.store.system.service.InventoryInBillService;
-import com.store.system.service.ProductPropertyService;
+import com.store.system.service.InventoryDetailService;
+import com.store.system.service.InventoryOutBillService;
 import com.store.system.service.ProductService;
 import com.store.system.util.UserUtils;
 import org.springframework.stereotype.Controller;
@@ -22,17 +23,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
-@RequestMapping("/inventoryinbill")
-public class InventoryInBillController extends BaseController {
+@RequestMapping("/inventoryOutBill")
+public class InventoryOutBillController extends BaseController {
 
     @Resource
     private ProductService productService;
 
     @Resource
-    private ProductPropertyService productPropertyService;
+    private InventoryDetailService inventoryDetailService;
 
     @Resource
-    private InventoryInBillService inventoryInBillService;
+    private InventoryOutBillService inventoryOutBillService;
 
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "type") int type,
@@ -41,36 +42,34 @@ public class InventoryInBillController extends BaseController {
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
                                @RequestParam(value = "sid") long sid,
+                               @RequestParam(value = "wid") long wid,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            ClientInventoryInBillSelect res = null;
+            List<ClientInventoryDetail> details = Lists.newArrayList();
             ClientProductSPU productSPU = productService.selectSPU(type, subid, pid, cid, bid, sid);
             if(null != productSPU) {
-                List<ClientProductProperty> properties = productPropertyService.getSKUProperties(cid);
-                res = new ClientInventoryInBillSelect();
-                res.setProductSPU(productSPU);
-                res.setSkuProperties(properties);
+                details = inventoryDetailService.getAllList(wid, productSPU.getId());
             }
-            return this.viewNegotiating(request,response, new ResultClient(res));
+            return this.viewNegotiating(request,response, new ResultClient(true, details));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
 
     @RequestMapping("/add")
-    public ModelAndView add(InventoryInBill inventoryInBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView add(InventoryOutBill inventoryOutBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            inventoryInBill = inventoryInBillService.add(inventoryInBill);
-            return this.viewNegotiating(request,response, new ResultClient(inventoryInBill));
+            inventoryOutBill = inventoryOutBillService.add(inventoryOutBill);
+            return this.viewNegotiating(request,response, new ResultClient(inventoryOutBill));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(InventoryInBill inventoryInBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView update(InventoryOutBill inventoryOutBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            boolean res = inventoryInBillService.update(inventoryInBill);
+            boolean res = inventoryOutBillService.update(inventoryOutBill);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -80,7 +79,7 @@ public class InventoryInBillController extends BaseController {
     @RequestMapping("/del")
     public ModelAndView del(@RequestParam(value = "id") long id, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            boolean res = inventoryInBillService.del(id);
+            boolean res = inventoryOutBillService.del(id);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -91,13 +90,13 @@ public class InventoryInBillController extends BaseController {
     public ModelAndView getCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         User user = UserUtils.getUser(request);
         long createUid = user.getId();
-        pager = inventoryInBillService.getCreatePager(pager, createUid);
+        pager = inventoryOutBillService.getCreatePager(pager, createUid);
         return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 
     @RequestMapping("/getCheckPager")
     public ModelAndView getCheckPager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryInBillService.getCheckPager(pager);
+        pager = inventoryOutBillService.getCheckPager(pager);
         return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 
@@ -106,7 +105,7 @@ public class InventoryInBillController extends BaseController {
         try {
             User user = UserUtils.getUser(request);
             long checkUid = user.getId();
-            inventoryInBillService.pass(id, checkUid);
+            inventoryOutBillService.pass(id, checkUid);
             return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -118,7 +117,7 @@ public class InventoryInBillController extends BaseController {
         try {
             User user = UserUtils.getUser(request);
             long checkUid = user.getId();
-            inventoryInBillService.noPass(id, checkUid);
+            inventoryOutBillService.noPass(id, checkUid);
             return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

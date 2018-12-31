@@ -1,7 +1,7 @@
 package com.store.system.service.impl;
 
 import com.store.system.dao.ProductCategoryDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductCategory;
 import com.store.system.service.ProductCategoryService;
 import org.apache.commons.lang3.StringUtils;
@@ -16,9 +16,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Resource
     private ProductCategoryDao productCategoryDao;
 
-    private void check(ProductCategory productCategory) throws GlassesException {
+    private void check(ProductCategory productCategory) throws StoreSystemException {
         String name = productCategory.getName();
-        if(StringUtils.isBlank(name)) throw new GlassesException("名称不能为空");
+        if(StringUtils.isBlank(name)) throw new StoreSystemException("名称不能为空");
     }
 
     @Override

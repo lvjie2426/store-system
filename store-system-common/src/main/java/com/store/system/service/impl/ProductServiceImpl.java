@@ -12,7 +12,7 @@ import com.store.system.client.ClientProductSPU;
 import com.store.system.dao.ProductPropertyNameDao;
 import com.store.system.dao.ProductSKUDao;
 import com.store.system.dao.ProductSPUDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductPropertyName;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
@@ -46,13 +46,13 @@ public class ProductServiceImpl implements ProductService {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    private void checkSPU(ProductSPU productSPU) throws GlassesException {
+    private void checkSPU(ProductSPU productSPU) throws StoreSystemException {
         String propertyJson = productSPU.getPropertyJson();
         Map<Long, Object> propertyMap = null;
         try {
             propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
         } catch (Exception e) {
-            throw new GlassesException("SPU属性格式错误");
+            throw new StoreSystemException("SPU属性格式错误");
         }
 
         int type = productSPU.getType();
@@ -61,12 +61,12 @@ public class ProductServiceImpl implements ProductService {
         long cid = productSPU.getCid();
         long bid = productSPU.getBid();
         long sid = productSPU.getSid();
-        if(subid == 0) throw new GlassesException("SPU店铺不能为空");
-        if(cid == 0) throw new GlassesException("SPU类目不能为空");
-        if(bid == 0) throw new GlassesException("SPU品牌不能为空");
+        if(subid == 0) throw new StoreSystemException("SPU店铺不能为空");
+        if(cid == 0) throw new StoreSystemException("SPU类目不能为空");
+        if(bid == 0) throw new StoreSystemException("SPU品牌不能为空");
 
         int count = productSPUDao.getCount(type, subid, pid, cid, bid, sid);
-        if(count > 0) throw new GlassesException("已添加此产品的SPU");
+        if(count > 0) throw new StoreSystemException("已添加此产品的SPU");
 
 
         List<ProductPropertyName> spuNames = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
@@ -76,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(spuNames, "id");
         for(long nameId : nameIds) {
-            if(!propertyMap.keySet().contains(nameId)) throw new GlassesException("SPU缺少关键属性");
+            if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
         }
     }
 
@@ -101,22 +101,22 @@ public class ProductServiceImpl implements ProductService {
         return productSPU;
     }
 
-    private void checkSKU(ProductSKU productSKU) throws GlassesException {
+    private void checkSKU(ProductSKU productSKU) throws StoreSystemException {
         String propertyJson = productSKU.getPropertyJson();
         Map<Long, Object> propertyMap = null;
         try {
             propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
         } catch (Exception e) {
-            throw new GlassesException("SKU属性格式错误");
+            throw new StoreSystemException("SKU属性格式错误");
         }
 
         long spuid = productSKU.getSpuid();
         String code = productSKU.getCode();
-        if(spuid == 0) throw new GlassesException("SPU不能为空");
-        if(StringUtils.isBlank(code)) throw new GlassesException("产品编码不能为空");
+        if(spuid == 0) throw new StoreSystemException("SPU不能为空");
+        if(StringUtils.isBlank(code)) throw new StoreSystemException("产品编码不能为空");
 
         int count = productSKUDao.getCount(spuid, code);
-        if(count > 0) throw new GlassesException("已添加此产品的SKU");
+        if(count > 0) throw new StoreSystemException("已添加此产品的SKU");
 
         ProductSPU productSPU = productSPUDao.load(productSKU.getSpuid());
         long cid = productSPU.getCid();
@@ -127,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(skuNames, "id");
         for(long nameId : nameIds) {
-            if(!propertyMap.keySet().contains(nameId)) throw new GlassesException("SKU缺少关键属性");
+            if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
         }
     }
 
@@ -171,18 +171,18 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private void check(ProductSPU productSPU, List<ProductSKU> productSKUList) throws GlassesException {
+    private void check(ProductSPU productSPU, List<ProductSKU> productSKUList) throws StoreSystemException {
         String propertyJson = productSPU.getPropertyJson();
         Map<Long, Object> propertyMap = null;
         try {
             propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
         } catch (Exception e) {
-            throw new GlassesException("SPU属性格式错误");
+            throw new StoreSystemException("SPU属性格式错误");
         }
 
-        if(productSPU.getSubid() == 0) throw new GlassesException("SPU店铺不能为空");
-        if(productSPU.getCid() == 0) throw new GlassesException("SPU类目不能为空");
-        if(productSPU.getBid() == 0) throw new GlassesException("SPU品牌不能为空");
+        if(productSPU.getSubid() == 0) throw new StoreSystemException("SPU店铺不能为空");
+        if(productSPU.getCid() == 0) throw new StoreSystemException("SPU类目不能为空");
+        if(productSPU.getBid() == 0) throw new StoreSystemException("SPU品牌不能为空");
 
         long cid = productSPU.getCid();
         List<ProductPropertyName> names = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
@@ -194,7 +194,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         for(long nameId : spuNames) {
-            if(!propertyMap.keySet().contains(nameId)) throw new GlassesException("SPU缺少关键属性");
+            if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
         }
 
         for(ProductSKU productSKU : productSKUList) {
@@ -203,10 +203,10 @@ public class ProductServiceImpl implements ProductService {
             try {
                 propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
             } catch (Exception e) {
-                throw new GlassesException("SKU属性格式错误");
+                throw new StoreSystemException("SKU属性格式错误");
             }
             for(long nameId : skuNames) {
-                if(!propertyMap.keySet().contains(nameId)) throw new GlassesException("SKU缺少关键属性");
+                if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
             }
         }
     }
@@ -215,7 +215,7 @@ public class ProductServiceImpl implements ProductService {
     public void add(ProductSPU productSPU, List<ProductSKU> productSKUList) throws Exception {
         check(productSPU, productSKUList);
         productSPU = productSPUDao.insert(productSPU);
-        if(null == productSPU) throw new GlassesException("SPU添加错误");
+        if(null == productSPU) throw new StoreSystemException("SPU添加错误");
         long spuid = productSPU.getId();
         for(ProductSKU productSKU : productSKUList) {
             productSKU.setSpuid(spuid);
@@ -299,7 +299,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ClientProductSPU selectSPU(int type, long subid, long pid, long cid, long bid, long sid) throws Exception {
         int count = productSPUDao.getCount(type, subid, pid, cid, bid, sid);
-        if(count == 0) throw new GlassesException("没有此类产品");
+        if(count == 0) throw new StoreSystemException("没有此类产品");
         List<ProductSPU> productSPUList = productSPUDao.getAllList(type, subid, pid, cid, bid, sid);
         ProductSPU productSPU = productSPUList.get(0);
         ClientProductSPU clientProductSPU = new ClientProductSPU(productSPU);

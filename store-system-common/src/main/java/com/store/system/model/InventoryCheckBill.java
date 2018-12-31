@@ -32,7 +32,7 @@ public class InventoryCheckBill implements Serializable {
 
     private long initUid; //发起人
 
-    private long checkUid; //审核人
+    private long checkUid; //盘点人
 
     private String itemsJson; //子条目JSON
 

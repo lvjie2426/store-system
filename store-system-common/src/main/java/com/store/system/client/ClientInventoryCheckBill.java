@@ -1,27 +1,27 @@
 package com.store.system.client;
 
-import com.store.system.model.InventoryOutBill;
+import com.store.system.model.InventoryCheckBill;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
 
-public class ClientInventoryOutBill extends InventoryOutBill {
+public class ClientInventoryCheckBill extends InventoryCheckBill {
 
     private String warehouseName;
 
-    private String outUserName;
+    private String initUserName;
 
     private String createUserName;
 
     private String checkUserName;
 
-    private List<ClientInventoryOutBillItem> items;
+    private List<ClientInventoryCheckBillItem> items;
 
-    public ClientInventoryOutBill(InventoryOutBill inventoryOutBill) {
+    public ClientInventoryCheckBill(InventoryCheckBill inventoryCheckBill) {
         try {
-            BeanUtils.copyProperties(this, inventoryOutBill);
+            BeanUtils.copyProperties(this, inventoryCheckBill);
         } catch (Exception e) {
-            throw new IllegalStateException("ClientInventoryOutBill construction error!");
+            throw new IllegalStateException("ClientInventoryCheckBill construction error!");
         }
     }
 
@@ -33,12 +33,12 @@ public class ClientInventoryOutBill extends InventoryOutBill {
         this.warehouseName = warehouseName;
     }
 
-    public String getOutUserName() {
-        return outUserName;
+    public String getInitUserName() {
+        return initUserName;
     }
 
-    public void setOutUserName(String outUserName) {
-        this.outUserName = outUserName;
+    public void setInitUserName(String initUserName) {
+        this.initUserName = initUserName;
     }
 
     public String getCreateUserName() {
@@ -57,12 +57,11 @@ public class ClientInventoryOutBill extends InventoryOutBill {
         this.checkUserName = checkUserName;
     }
 
-    public List<ClientInventoryOutBillItem> getItems() {
+    public List<ClientInventoryCheckBillItem> getItems() {
         return items;
     }
 
-    public void setItems(List<ClientInventoryOutBillItem> items) {
+    public void setItems(List<ClientInventoryCheckBillItem> items) {
         this.items = items;
     }
 }
-

@@ -4,7 +4,7 @@ import com.store.system.client.ClientSubordinate;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.dao.UserDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.model.*;
 import com.store.system.service.*;
@@ -56,7 +56,7 @@ public class SubordinateServiceImpl implements SubordinateService {
 			user.setName(subordinate.getName() + "+admin");
             ClientUserOnLogin clientUserOnLogin = userService.register(user);
 			if (null == clientUserOnLogin) {
-                throw new GlassesException("创建管理员账号错误");
+                throw new StoreSystemException("创建管理员账号错误");
 			}
             long uid = clientUserOnLogin.getId();
 			List<Permission> permissions = permissionService.getAllList(true);

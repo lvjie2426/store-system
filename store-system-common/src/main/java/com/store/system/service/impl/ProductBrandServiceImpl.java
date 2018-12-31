@@ -1,7 +1,7 @@
 package com.store.system.service.impl;
 
 import com.store.system.dao.ProductBrandDao;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductBrand;
 import com.store.system.service.ProductBrandService;
 import org.apache.commons.lang3.StringUtils;
@@ -16,9 +16,9 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     @Resource
     private ProductBrandDao productBrandDao;
 
-    private void check(ProductBrand productBrand) throws GlassesException {
+    private void check(ProductBrand productBrand) throws StoreSystemException {
         String name = productBrand.getName();
-        if(StringUtils.isBlank(name)) throw new GlassesException("名称不能为空");
+        if(StringUtils.isBlank(name)) throw new StoreSystemException("名称不能为空");
     }
 
     @Override

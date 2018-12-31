@@ -7,7 +7,7 @@ import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
 import com.store.system.service.ProductService;
@@ -34,7 +34,7 @@ public class ProductController extends BaseController {
         try {
             productSPU = productService.addSPU(productSPU);
             return this.viewNegotiating(request,response, new ResultClient(productSPU));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -44,7 +44,7 @@ public class ProductController extends BaseController {
         try {
             productSKU = productService.addSKU(productSKU);
             return this.viewNegotiating(request,response, new ResultClient(productSKU));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -57,11 +57,11 @@ public class ProductController extends BaseController {
             try {
                 productSKUList = JsonUtils.fromJson(skuJson, new TypeReference<List<ProductSKU>>() {});
             } catch (Exception e) {
-                throw new GlassesException("sku格式错误");
+                throw new StoreSystemException("sku格式错误");
             }
             productService.add(productSPU, productSKUList);
             return this.viewNegotiating(request,response, new ResultClient(true));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -76,23 +76,23 @@ public class ProductController extends BaseController {
             try {
                 addProductSKUList = JsonUtils.fromJson(addSkuJson, new TypeReference<List<ProductSKU>>() {});
             } catch (Exception e) {
-                throw new GlassesException("新增的sku格式错误");
+                throw new StoreSystemException("新增的sku格式错误");
             }
             List<ProductSKU> updateProductSKUList = null;
             try {
                 updateProductSKUList = JsonUtils.fromJson(updateSkuJson, new TypeReference<List<ProductSKU>>() {});
             } catch (Exception e) {
-                throw new GlassesException("修改的sku格式错误");
+                throw new StoreSystemException("修改的sku格式错误");
             }
             List<Long> delSkuIds = null;
             try {
                 delSkuIds = JsonUtils.fromJson(delSkuIdJson, new TypeReference<List<Long>>() {});
             } catch (Exception e) {
-                throw new GlassesException("删除的sku格式错误");
+                throw new StoreSystemException("删除的sku格式错误");
             }
             productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds);
             return this.viewNegotiating(request,response, new ResultClient(true));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -102,7 +102,7 @@ public class ProductController extends BaseController {
         try {
             boolean sign = productService.updateSPU(productSPU);
             return this.viewNegotiating(request,response, new ResultClient(true, sign));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -112,7 +112,7 @@ public class ProductController extends BaseController {
         try {
             boolean sign = productService.updateSKU(productSKU);
             return this.viewNegotiating(request,response, new ResultClient(true, sign));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -123,7 +123,7 @@ public class ProductController extends BaseController {
         try {
             boolean sign = productService.delSPU(id);
             return this.viewNegotiating(request,response, new ResultClient(true, sign));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -134,7 +134,7 @@ public class ProductController extends BaseController {
         try {
             boolean sign = productService.delSKU(id);
             return this.viewNegotiating(request,response, new ResultClient(true, sign));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }

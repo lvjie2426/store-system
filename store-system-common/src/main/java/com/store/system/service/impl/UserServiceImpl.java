@@ -3,7 +3,7 @@ package com.store.system.service.impl;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.*;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
             thirdSign = true;
         }
         if(thirdSign) {
-            if(StringUtils.isBlank(user.getPhone())) throw new GlassesException("手机号不能为空");
+            if(StringUtils.isBlank(user.getPhone())) throw new StoreSystemException("手机号不能为空");
             LoginUserPool loginUserPool = new LoginUserPool();
             loginUserPool.setUserType(user.getUserType());
             if(StringUtils.isNotBlank(user.getWeiboId())) {
@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
                 loginUserPool.setLoginType(LoginUserPool.loginType_alipay);
             }
             LoginUserPool dbLoginUserPool=loginUserPoolDao.load(loginUserPool);
-            if(dbLoginUserPool != null) throw new GlassesException("该账号已经存在");
+            if(dbLoginUserPool != null) throw new StoreSystemException("该账号已经存在");
 
             LoginUserPool phonePool = new LoginUserPool();
             phonePool.setUserType(user.getUserType());
@@ -199,21 +199,21 @@ public class UserServiceImpl implements UserService {
             if(null != phonePool) {
                 long uid = phonePool.getUid();
                 User dbUser = userDao.load(uid);
-                if(null == dbUser) throw new GlassesException("用户错误");
+                if(null == dbUser) throw new StoreSystemException("用户错误");
                 if(StringUtils.isNotBlank(user.getWeiboId())) {
-                    if(StringUtils.isNotBlank(dbUser.getWeiboId())) throw new GlassesException("手机号已绑定微博");
+                    if(StringUtils.isNotBlank(dbUser.getWeiboId())) throw new StoreSystemException("手机号已绑定微博");
                     dbUser.setWeiboId(user.getWeiboId());
                 }
                 if(StringUtils.isNotBlank(user.getWeixinId())) {
-                    if(StringUtils.isNotBlank(dbUser.getWeixinId())) throw new GlassesException("手机号已绑定微信");
+                    if(StringUtils.isNotBlank(dbUser.getWeixinId())) throw new StoreSystemException("手机号已绑定微信");
                     dbUser.setWeixinId(user.getWeixinId());
                 }
                 if(StringUtils.isNotBlank(user.getQqId())) {
-                    if(StringUtils.isNotBlank(dbUser.getQqId())) throw new GlassesException("手机号已绑定QQ");
+                    if(StringUtils.isNotBlank(dbUser.getQqId())) throw new StoreSystemException("手机号已绑定QQ");
                     dbUser.setQqId(user.getQqId());
                 }
                 if(StringUtils.isNotBlank(user.getAlipayId())) {
-                    if(StringUtils.isNotBlank(dbUser.getAlipayId())) throw new GlassesException("手机号已绑定支付宝");
+                    if(StringUtils.isNotBlank(dbUser.getAlipayId())) throw new StoreSystemException("手机号已绑定支付宝");
                     dbUser.setAlipayId(user.getAlipayId());
                 }
                 userDao.update(dbUser);
@@ -242,7 +242,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         } else {
-            if(StringUtils.isBlank(user.getPassword())) throw new GlassesException("密码不能为空");
+            if(StringUtils.isBlank(user.getPassword())) throw new StoreSystemException("密码不能为空");
             LoginUserPool loginUserPool = new LoginUserPool();
             loginUserPool.setUserType(user.getUserType());
             if(StringUtils.isNotBlank(user.getPhone())) {
@@ -254,7 +254,7 @@ public class UserServiceImpl implements UserService {
                 loginUserPool.setLoginType(LoginUserPool.loginType_userName);
             }
             LoginUserPool dbLoginUserPool=loginUserPoolDao.load(loginUserPool);
-            if(dbLoginUserPool != null) throw new GlassesException("该账号已经存在");
+            if(dbLoginUserPool != null) throw new StoreSystemException("该账号已经存在");
             user.createJsonString();
             Random rand = new Random();
             user.setRand(rand.nextInt(100000000));
@@ -298,21 +298,21 @@ public class UserServiceImpl implements UserService {
             loginUserPool.setAccount(user.getAlipayId());
             loginUserPool.setLoginType(LoginUserPool.loginType_alipay);
         }else{
-            throw new GlassesException("用户不存在");
+            throw new StoreSystemException("用户不存在");
         }
         loginUserPool=loginUserPoolDao.load(loginUserPool);
         if(loginUserPool==null){
-            throw new GlassesException("用户不存在");
+            throw new StoreSystemException("用户不存在");
         }
 
         User dbUser=userDao.load(loginUserPool.getUid());
         if(null == dbUser||dbUser.getStatus()==User.status_delete){
-            throw new GlassesException("用户不存在");
+            throw new StoreSystemException("用户不存在");
         }
 
         if(StringUtils.isNotBlank(dbUser.getPassword())&&
                 !MD5Utils.md5ReStr(user.getPassword().getBytes()).equalsIgnoreCase(dbUser.getPassword()))
-            throw new GlassesException("密码不正确");
+            throw new StoreSystemException("密码不正确");
         ClientUserOnLogin clientUserOnLogin = new ClientUserOnLogin(dbUser);
         return clientUserOnLogin;
     }
@@ -354,7 +354,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean update(User user, List<Long> updateRids) throws Exception {
         User currentUser = userDao.load(user.getId());
-        if(null == currentUser) throw new GlassesException("用户不存在");
+        if(null == currentUser) throw new StoreSystemException("用户不存在");
         LoginUserPool oldLoginUserPool=null;//旧的
         LoginUserPool loginUserPool=null;//新的
         if(StringUtils.isNotBlank(user.getUserName())
@@ -366,7 +366,7 @@ public class UserServiceImpl implements UserService {
             loginUserPool.setUid(user.getId());
             LoginUserPool dbLoginUserPool=loginUserPoolDao.load(loginUserPool);
             if(dbLoginUserPool!=null) {
-                throw new GlassesException("账号已存在");
+                throw new StoreSystemException("账号已存在");
             }
             oldLoginUserPool=new LoginUserPool();
             oldLoginUserPool.setAccount(currentUser.getUserName());
@@ -394,7 +394,7 @@ public class UserServiceImpl implements UserService {
             loginUserPool.setUid(user.getId());
             LoginUserPool dbLoginUserPool=loginUserPoolDao.load(loginUserPool);
             if(dbLoginUserPool!=null) {
-                throw new GlassesException("账号已存在");
+                throw new StoreSystemException("账号已存在");
             }
 
             oldLoginUserPool=new LoginUserPool();
@@ -434,7 +434,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateStatus(long id,int status) throws Exception {
         User user = userDao.load(id);
-        if(null == user) throw new GlassesException("用户不存在");
+        if(null == user) throw new StoreSystemException("用户不存在");
         user.setStatus(status);
         boolean sign = userDao.update(user);
         if(user.getSid()>0){
@@ -529,7 +529,7 @@ public class UserServiceImpl implements UserService {
     public boolean createAuthCode(String phone, String template)throws Exception{
         String sent = cache.getString("exists_auth_common_user_" + (phone));
         if (StringUtils.isNotBlank(sent)) {
-            throw new GlassesException("验证码已经发送");
+            throw new StoreSystemException("验证码已经发送");
         }
         Random random = new Random();
         int num = random.nextInt(9999);
@@ -540,7 +540,7 @@ public class UserServiceImpl implements UserService {
             cache.setString("auth_common_user_"+(phone), 5 * 60, code);
         } else {
             if (StringUtils.isNotBlank(sent)) {
-                throw new GlassesException("当前手机号已被注册");
+                throw new StoreSystemException("当前手机号已被注册");
             }
         }
         return true;
@@ -579,14 +579,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getAlipayUid(long uid) throws Exception {
         User user = userDao.load(uid);
-        if (null == user) throw new GlassesException("user is null!");
+        if (null == user) throw new StoreSystemException("user is null!");
         return user.getAlipayId();
     }
 
     @Override
     public boolean updateAlipayUid(long uid, String alipayUid) throws Exception {
         User user = userDao.load(uid);
-        if (null == user) throw new GlassesException("user is null!");
+        if (null == user) throw new StoreSystemException("user is null!");
         user.setAlipayId(alipayUid);
         boolean sign = userDao.update(user);
         return sign;
@@ -595,14 +595,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getWxpayOpenId(long uid) throws Exception {
         User user = userDao.load(uid);
-        if (null == user) throw new GlassesException("user is null!");
+        if (null == user) throw new StoreSystemException("user is null!");
         return user.getWeixinId();
     }
 
     @Override
     public boolean updateWxpayOpenId(long uid, String wxpayOpenId) throws Exception {
         User user = userDao.load(uid);
-        if (null == user) throw new GlassesException("user is null!");
+        if (null == user) throw new StoreSystemException("user is null!");
         user.setWeixinId(wxpayOpenId);
         boolean sign = userDao.update(user);
         return sign;

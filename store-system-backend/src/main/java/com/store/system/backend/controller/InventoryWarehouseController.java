@@ -3,7 +3,7 @@ package com.store.system.backend.controller;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientInventoryWarehouse;
 import com.store.system.client.ResultClient;
-import com.store.system.exception.GlassesException;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryWarehouse;
 import com.store.system.service.InventoryWarehouseService;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class InventoryWarehouseController extends BaseController {
         try {
             inventoryWarehouse = inventoryWarehouseService.add(inventoryWarehouse);
             return this.viewNegotiating(request,response, new ResultClient(inventoryWarehouse));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -39,7 +39,7 @@ public class InventoryWarehouseController extends BaseController {
         try {
             boolean res = inventoryWarehouseService.update(inventoryWarehouse);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
@@ -50,7 +50,7 @@ public class InventoryWarehouseController extends BaseController {
         try {
             boolean res = inventoryWarehouseService.del(id);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
-        } catch (GlassesException e) {
+        } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
