@@ -86,6 +86,16 @@ public class InventoryOutBillController extends BaseController {
         }
     }
 
+    @RequestMapping("/submit")
+    public ModelAndView submit(@RequestParam(value = "id") long id, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            boolean res = inventoryOutBillService.submit(id);
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
     @RequestMapping("/getCreatePager")
     public ModelAndView getCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         User user = UserUtils.getUser(request);
@@ -95,8 +105,9 @@ public class InventoryOutBillController extends BaseController {
     }
 
     @RequestMapping("/getCheckPager")
-    public ModelAndView getCheckPager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryOutBillService.getCheckPager(pager);
+    public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
+                                      Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        pager = inventoryOutBillService.getCheckPager(pager, subid);
         return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 

@@ -73,21 +73,4 @@ public class SubordinateController extends BaseController {
         return this.viewNegotiating(request,response,resultClient);
     }
 
-    @RequestMapping("/getAllListByName")
-    public ModelAndView getAllList(HttpServletRequest request, HttpServletResponse response,String name) throws Exception {
-        List<Subordinate> subordinates = subordinateService.getAllList();
-        List<Subordinate> result=new ArrayList<>();
-        for (Subordinate subordinate:subordinates){
-            if(StringUtils.isBlank(name)||subordinate.getName().contains(name)){
-                result.add(subordinate);
-            }
-        }
-        return this.viewNegotiating(request,response,result);
-    }
-
-    @RequestMapping("/getAllList")
-    public ModelAndView getAllList(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<Subordinate> subordinates= subordinateService.getAllList();
-        return this.viewNegotiating(request,response,subordinates);
-    }
 }

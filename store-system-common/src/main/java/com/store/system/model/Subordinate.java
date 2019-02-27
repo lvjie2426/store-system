@@ -22,6 +22,9 @@ public class Subordinate implements Serializable {
     //@Excel(name = "id", height = 20, width = 30, isImportField = "true_st")
     @PrimaryKey
     private long id;
+
+    private long pid; //父类ID
+
     //@Excel(name = "名称", height = 20, width = 30, isImportField = "true_st")
     private String name;
 
@@ -204,4 +207,11 @@ public class Subordinate implements Serializable {
         this.roleInitTemplateId = roleInitTemplateId;
     }
 
+    public long getPid() {
+        return pid;
+    }
+
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
 }

@@ -1,19 +1,19 @@
 package com.store.system.service;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
-import com.store.system.model.InventoryOutBill;
+import com.store.system.model.InventoryInvokeBill;
 
-public interface InventoryOutBillService {
+public interface InventoryInvokeBillService {
 
-    public InventoryOutBill add(InventoryOutBill inventoryOutBill) throws Exception;
+    public InventoryInvokeBill add(InventoryInvokeBill inventoryInvokeBill) throws Exception;
 
-    public boolean update(InventoryOutBill inventoryOutBill) throws Exception;
+    public boolean update(InventoryInvokeBill inventoryInvokeBill) throws Exception;
 
     public boolean del(long id) throws Exception;
 
     public boolean submit(long id) throws Exception;
 
-    public void pass(long id, long checkUid) throws Exception;
+    public void pass(long id, long checkUid, long outUid) throws Exception;
 
     public void noPass(long id, long checkUid) throws Exception;
 

@@ -155,13 +155,13 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 
     @Override
     public List<ClientInventoryDetail> getAllList(long wid, long p_spuid) throws Exception {
-        List<InventoryDetail> details = inventoryDetailDao.getAllListBySPU(wid, p_spuid);
+        List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndSPU(wid, p_spuid);
         return transformClients(details);
     }
 
     @Override
     public List<InventoryDetail> getAllOriginList(long wid, long p_spuid) throws Exception {
-        List<InventoryDetail> details = inventoryDetailDao.getAllListBySPU(wid, p_spuid);
+        List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndSPU(wid, p_spuid);
         return details;
     }
 

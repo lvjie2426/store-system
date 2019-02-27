@@ -12,6 +12,7 @@ public interface InventoryInBillService {
 
     public boolean del(long id) throws Exception;
 
+    public boolean submit(long id) throws Exception;
 
     public void pass(long id, long checkUid) throws Exception;
 
@@ -21,6 +22,6 @@ public interface InventoryInBillService {
 
     public Pager getCreatePager(Pager pager, long createUid) throws Exception;
 
-    public Pager getCheckPager(Pager pager) throws Exception;
+    public Pager getCheckPager(Pager pager, long subid) throws Exception;
 
 }

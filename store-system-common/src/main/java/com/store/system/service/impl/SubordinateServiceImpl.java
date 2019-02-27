@@ -21,7 +21,6 @@ import java.util.List;
 @Service
 public class SubordinateServiceImpl implements SubordinateService {
 
-
 	@Resource
 	private JdbcTemplate jdbcTemplate;
 	@Resource
@@ -107,13 +106,6 @@ public class SubordinateServiceImpl implements SubordinateService {
 		return subordinateDao.update(subordinate);
 	}
 
-	@Override
-	public List<ClientSubordinate> getAll() throws Exception {
-		return transformClient(subordinateDao.getAllList(Subordinate.status_online));
-	}
-
-
-
 	private List<ClientSubordinate> transformClientByProvince(List<Subordinate> subordinatees) throws Exception{
 		List<ClientSubordinate> result=new ArrayList<>();
 		if(subordinatees!=null) {
@@ -135,11 +127,6 @@ public class SubordinateServiceImpl implements SubordinateService {
 	public ClientSubordinate load(long sid) throws Exception {
 		return transformClient(subordinateDao.load(sid));
 	}
-	public List<ClientSubordinate> load(List<Long> ids) throws Exception{
-		return transformClient(subordinateDao.load(ids));
-
-	}
-
 
 	@Override
 	public Pager getBackPage(Pager pager,  String name) throws Exception {
@@ -170,43 +157,7 @@ public class SubordinateServiceImpl implements SubordinateService {
 		return pager;
 	}
 
-	@Override
-	public List<ClientSubordinate> exportSubordinate(String name) throws Exception {
-		String sql = "SELECT  *  FROM `subordinate` where 1=1 ";
-
-		{
-			sql = sql + " and `status` = " + Subordinate.status_online;
-		}
-		if (StringUtils.isNotBlank(name)) {
-			sql = sql + " and `name` like '" + name + "%'";
-		}
-		sql = sql + " order  by ctime desc";
-		List<Subordinate> subordinates = null;
-		subordinates = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Subordinate.class));
-		return transformClient(subordinates);
-	}
-
-
-	@Override
-	public List<Subordinate> getIdByName(String name) throws Exception {
-		String sql = "SELECT  *  FROM `subordinate` where 1=1";
-		if (StringUtils.isNotBlank(name)) {
-			sql = sql + " and `name` like '%"+name+"%'";
-		}else{
-			sql = sql + " and `name` like '% %'";
-		}
-		List<Subordinate> subordinates = null;
-		subordinates = jdbcTemplate.query(sql,new BeanPropertyRowMapper(Subordinate.class));
-		return subordinates;
-	}
-
-	@Override
-	public List<Subordinate> getAllList() throws Exception{
-		return subordinateDao.getAllList(Subordinate.status_online);
-	}
-
 	private List<ClientSubordinate> transformClient(List<Subordinate> subordinatees) throws Exception{
-
 		List<ClientSubordinate> result=new ArrayList<>();
 		if(subordinatees!=null) {
 			for (Subordinate subordinate : subordinatees) {

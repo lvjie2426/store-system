@@ -52,6 +52,8 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
 
     private TransformMapUtils warehouseMapUtils = new TransformMapUtils(InventoryWarehouse.class);
 
+    private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
+
     private RowMapperHelp<InventoryOutBill> rowMapper = new RowMapperHelp<>(InventoryOutBill.class);
 
     @Resource
@@ -82,6 +84,9 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     private ProductSeriesDao productSeriesDao;
 
     @Resource
+    private SubordinateDao subordinateDao;
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     @Override
@@ -105,6 +110,16 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         InventoryOutBill outBill = inventoryOutBillDao.load(id);
         if(null != outBill && outBill.getStatus() == InventoryOutBill.status_edit) {
             return inventoryOutBillDao.delete(id);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean submit(long id) throws Exception {
+        InventoryOutBill outBill = inventoryOutBillDao.load(id);
+        if(null != outBill && outBill.getStatus() == InventoryOutBill.status_edit) {
+            outBill.setStatus(InventoryOutBill.status_wait_check);
+            return inventoryOutBillDao.update(outBill);
         }
         return false;
     }
@@ -151,6 +166,8 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     }
 
     private void check(InventoryOutBill inventoryOutBill) throws Exception {
+        long subid = inventoryOutBill.getSubid();
+        if(subid == 0) throw new StoreSystemException("店铺不能为空");
         long wid = inventoryOutBill.getWid();
         if(wid == 0) throw new StoreSystemException("仓库不能为空");
         if(inventoryOutBill.getOutUid() == 0) throw new StoreSystemException("出库人不能为空");
@@ -180,6 +197,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
             if(didNumMap.get(item.getDid()) > 1) throw new StoreSystemException("已经添加相同子项目进出库单");
             InventoryDetail detail = detailMap.get(item.getDid());
             if(null == detail) throw new StoreSystemException("库存明细为空");
+            if(detail.getWid() != wid) throw new StoreSystemException("出库单子项目仓库错误");
             if(item.getNum() > detail.getNum()) throw new StoreSystemException("库存数量不足");
         }
     }
@@ -200,9 +218,9 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     }
 
     @Override
-    public Pager getCheckPager(Pager pager) throws Exception {
-        String sql = "SELECT * FROM `inventory_out_bill` where `status` > " + InventoryOutBill.status_edit;
-        String sqlCount = "SELECT COUNT(id) FROM `inventory_out_bill` where `status` > " + InventoryOutBill.status_edit;
+    public Pager getCheckPager(Pager pager, long subid) throws Exception {
+        String sql = "SELECT * FROM `inventory_out_bill` where subid = " + subid + " and `status` > " + InventoryOutBill.status_edit;
+        String sqlCount = "SELECT COUNT(id) FROM `inventory_out_bill` where subid = " + subid + " and `status` > " + InventoryOutBill.status_edit;
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -218,16 +236,20 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         List<ClientInventoryOutBill> res = Lists.newArrayList();
         Set<Long> uids = Sets.newHashSet();
         Set<Long> wids = Sets.newHashSet();
+        Set<Long> subids = Sets.newHashSet();
         for(InventoryOutBill outBill : outBills) {
             if(outBill.getWid() > 0) wids.add(outBill.getWid());
             if(outBill.getCreateUid() > 0) uids.add(outBill.getCreateUid());
             if(outBill.getOutUid() > 0) uids.add(outBill.getOutUid());
             if(outBill.getCheckUid() > 0) uids.add(outBill.getCheckUid());
+            if(outBill.getSubid() > 0) subids.add(outBill.getSubid());
         }
         List<User> users = userDao.load(Lists.newArrayList(uids));
         Map<Long, User> userMap = userMapUtils.listToMap(users, "id");
         List<InventoryWarehouse> warehouses = inventoryWarehouseDao.load(Lists.newArrayList(wids));
         Map<Long, InventoryWarehouse> warehouseMap = warehouseMapUtils.listToMap(warehouses, "id");
+        List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(subids));
+        Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
         for(InventoryOutBill outBill : outBills) {
             ClientInventoryOutBill client = new ClientInventoryOutBill(outBill);
             InventoryWarehouse warehouse = warehouseMap.get(client.getWid());
@@ -238,6 +260,8 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
             if(null != user) client.setOutUserName(user.getName());
             user = userMap.get(client.getCheckUid());
             if(null != user) client.setCheckUserName(user.getName());
+            Subordinate subordinate = subordinateMap.get(client.getSubid());
+            if(null != subordinate) client.setSubName(subordinate.getName());
             List<InventoryOutBillItem> items = JsonUtils.fromJson(outBill.getItemsJson(), new TypeReference<List<InventoryOutBillItem>>() {});
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));

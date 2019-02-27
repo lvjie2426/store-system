@@ -100,7 +100,7 @@ public class InventoryCheckBillController extends BaseController {
     @RequestMapping("/submit")
     public ModelAndView submit(@RequestParam(value = "id") long id, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            boolean res = inventoryCheckBillService.submitCheck(id);
+            boolean res = inventoryCheckBillService.submit(id);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -110,7 +110,7 @@ public class InventoryCheckBillController extends BaseController {
     @RequestMapping("/save")
     public ModelAndView save(InventoryCheckBill inventoryCheckBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            boolean res = inventoryCheckBillService.saveCheck(inventoryCheckBill);
+            boolean res = inventoryCheckBillService.save(inventoryCheckBill);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -122,7 +122,7 @@ public class InventoryCheckBillController extends BaseController {
         try {
             User user = UserUtils.getUser(request);
             long checkUid = user.getId();
-            boolean res = inventoryCheckBillService.endCheck(id, checkUid);
+            boolean res = inventoryCheckBillService.end(id, checkUid);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -138,8 +138,9 @@ public class InventoryCheckBillController extends BaseController {
     }
 
     @RequestMapping("/getCheckPager")
-    public ModelAndView getCheckPager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryCheckBillService.getCheckPager(pager);
+    public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
+                                      Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        pager = inventoryCheckBillService.getCheckPager(pager, subid);
         return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 

@@ -28,17 +28,4 @@ public class SubordinateDaoImpl extends CacheBaseDao<Subordinate> implements Sub
 		return null;
 	}
 
-	@Override
-	@CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-	public List<Subordinate> getAllSubordinateByProvince(long province, long city, int status) throws DataAccessException {
-		return null;
-	}
-
-	@Override
-	@CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-	public List<Subordinate> getIdByName(String name) throws DataAccessException {
-		return null;
-	}
-
-
 }

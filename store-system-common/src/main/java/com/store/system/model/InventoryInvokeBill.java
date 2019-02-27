@@ -9,15 +9,15 @@ import com.quakoo.space.enums.IdentityType;
 import java.io.Serializable;
 
 /**
- * 进销存出库单
- * class_name: InventoryOutBill
+ * 进销存调货单
+ * class_name: InventoryInvokeBill
  * package: com.store.system.model
  * creat_user: lihao
  * creat_date: 2019/1/1
- * creat_time: 16:15
+ * creat_time: 16:12
  **/
-@HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
-public class InventoryOutBill implements Serializable {
+@HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
+public class InventoryInvokeBill implements Serializable {
 
     public static final int status_edit = 0; //编辑状态
     public static final int status_wait_check = 1; //等待审核
@@ -29,15 +29,21 @@ public class InventoryOutBill implements Serializable {
     @PrimaryKey
     private long id;
 
-    private long subid; //店铺ID
+    private long inSubid; //要入库的店铺ID
 
-    private long wid; //仓库ID
+    private long inWid; //要入库的仓库ID
 
-    private long outUid; //出库人
+    private long outSubid; //要出库的店铺ID
+
+    private long outWid; //要出库的仓库ID
 
     private long createUid; //创建人
 
     private long checkUid; //审核人
+
+    private long outUid; //出库人
+
+    private long inUid; //入库人
 
     private String itemsJson; //子条目JSON
 
@@ -58,20 +64,36 @@ public class InventoryOutBill implements Serializable {
         this.id = id;
     }
 
-    public long getWid() {
-        return wid;
+    public long getInSubid() {
+        return inSubid;
     }
 
-    public void setWid(long wid) {
-        this.wid = wid;
+    public void setInSubid(long inSubid) {
+        this.inSubid = inSubid;
     }
 
-    public long getOutUid() {
-        return outUid;
+    public long getInWid() {
+        return inWid;
     }
 
-    public void setOutUid(long outUid) {
-        this.outUid = outUid;
+    public void setInWid(long inWid) {
+        this.inWid = inWid;
+    }
+
+    public long getOutSubid() {
+        return outSubid;
+    }
+
+    public void setOutSubid(long outSubid) {
+        this.outSubid = outSubid;
+    }
+
+    public long getOutWid() {
+        return outWid;
+    }
+
+    public void setOutWid(long outWid) {
+        this.outWid = outWid;
     }
 
     public long getCreateUid() {
@@ -88,6 +110,22 @@ public class InventoryOutBill implements Serializable {
 
     public void setCheckUid(long checkUid) {
         this.checkUid = checkUid;
+    }
+
+    public long getOutUid() {
+        return outUid;
+    }
+
+    public void setOutUid(long outUid) {
+        this.outUid = outUid;
+    }
+
+    public long getInUid() {
+        return inUid;
+    }
+
+    public void setInUid(long inUid) {
+        this.inUid = inUid;
     }
 
     public String getItemsJson() {
@@ -128,13 +166,5 @@ public class InventoryOutBill implements Serializable {
 
     public void setUtime(long utime) {
         this.utime = utime;
-    }
-
-    public long getSubid() {
-        return subid;
-    }
-
-    public void setSubid(long subid) {
-        this.subid = subid;
     }
 }

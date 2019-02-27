@@ -26,6 +26,8 @@ public class InventoryCheckBill implements Serializable {
     @PrimaryKey
     private long id;
 
+    private long subid; //店铺ID
+
     private long wid; //仓库ID
 
     private long createUid; //创建人
@@ -113,5 +115,13 @@ public class InventoryCheckBill implements Serializable {
 
     public void setUtime(long utime) {
         this.utime = utime;
+    }
+
+    public long getSubid() {
+        return subid;
+    }
+
+    public void setSubid(long subid) {
+        this.subid = subid;
     }
 }

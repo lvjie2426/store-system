@@ -32,7 +32,7 @@ public class InventoryInBill implements Serializable {
     @PrimaryKey
     private long id;
 
-    private int type; //类型 0-普通单 1-赠品单
+    private long subid; //店铺ID
 
     private long wid; //仓库ID
 
@@ -133,11 +133,11 @@ public class InventoryInBill implements Serializable {
         this.checkUid = checkUid;
     }
 
-    public int getType() {
-        return type;
+    public long getSubid() {
+        return subid;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setSubid(long subid) {
+        this.subid = subid;
     }
 }

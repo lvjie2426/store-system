@@ -283,4 +283,31 @@
         </property>
     </bean>
 
+    <bean id="inventoryInvokeBillDao" class="com.store.system.dao.impl.InventoryInvokeBillDaoImpl">
+        <property name="tableName" value="inventory_invoke_bill" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="payPassportDao" class="com.store.system.dao.impl.PayPassportDaoImpl">
+        <property name="tableName" value="pay_passport" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="orderDao" class="com.store.system.dao.impl.OrderDaoImpl">
+        <property name="tableName" value="order" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

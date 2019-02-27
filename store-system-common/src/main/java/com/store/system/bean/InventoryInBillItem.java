@@ -24,8 +24,6 @@ public class InventoryInBillItem implements Serializable {
 
     private int integralPrice; //积分价
 
-    private int quantity; //备货量
-
     private int num;
 
     public InventoryInBillItem() {
@@ -87,11 +85,4 @@ public class InventoryInBillItem implements Serializable {
         this.num = num;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }

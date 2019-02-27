@@ -22,6 +22,8 @@ public class InventoryDetail implements Serializable {
     @PrimaryKey
     private long id;
 
+    private long subid; //店铺ID
+
     private long wid; //仓库id
 
     private long p_cid; //产品类目的id
@@ -99,5 +101,13 @@ public class InventoryDetail implements Serializable {
 
     public void setP_cid(long p_cid) {
         this.p_cid = p_cid;
+    }
+
+    public long getSubid() {
+        return subid;
+    }
+
+    public void setSubid(long subid) {
+        this.subid = subid;
     }
 }

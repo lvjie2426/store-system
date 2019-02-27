@@ -48,6 +48,8 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     private TransformMapUtils seriesMapUtils = new TransformMapUtils(ProductSeries.class);
 
+    private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
+
     private RowMapperHelp<InventoryInBill> rowMapper = new RowMapperHelp<>(InventoryInBill.class);
 
     @Resource
@@ -81,6 +83,9 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     private UserDao userDao;
 
     @Resource
+    private SubordinateDao subordinateDao;
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     @Override
@@ -101,6 +106,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
             InventoryInBill inBill = inventoryInBillDao.load(id);
             if(null == inBill) throw new StoreSystemException("入库单为空");
             if(inBill.getStatus() != InventoryInBill.status_wait_check) throw new StoreSystemException("入库单状态错误");
+            long subid = inBill.getSubid();
             long wid = inBill.getWid();
             String itemsJson = inBill.getItemsJson();
             List<InventoryInBillItem> items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryInBillItem>>() {});
@@ -134,13 +140,13 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 productSKU.setRetailPrice(item.getRetailPrice());
                 productSKU.setCostPrice(item.getCostPrice());
                 productSKU.setIntegralPrice(item.getIntegralPrice());
-                productSKU.setNum(item.getQuantity());
                 productSKU.setSort(System.currentTimeMillis());
                 productSKU = productSKUDao.insert(productSKU);
                 if(null != productSKU) {
                     long skuid = productSKU.getId();
                     ProductSPU spu = spuMap.get(productSKU.getSpuid());
                     InventoryDetail detail = new InventoryDetail();
+                    detail.setSubid(subid);
                     detail.setWid(wid);
                     detail.setP_cid(spu.getCid());
                     detail.setP_spuid(productSKU.getSpuid());
@@ -161,7 +167,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                         break;
                     }
                 }
-                List<InventoryDetail> details = inventoryDetailDao.getAllList(wid, skuid);
+                List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndSKU(wid, skuid);
                 if(details.size() > 0) {
                     InventoryDetail detail = details.get(0);
                     detail.setNum(detail.getNum() + num);
@@ -169,6 +175,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 } else {
                     ProductSPU spu = spuMap.get(item.getSpuid());
                     InventoryDetail detail = new InventoryDetail();
+                    detail.setSubid(subid);
                     detail.setWid(wid);
                     detail.setP_cid(spu.getCid());
                     detail.setP_spuid(item.getSpuid());
@@ -187,10 +194,10 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     }
 
     private void check(InventoryInBill inventoryInBill) throws Exception {
+        long subid = inventoryInBill.getSubid();
+        if(subid == 0) throw new StoreSystemException("店铺不能为空");
         long wid = inventoryInBill.getWid();
         if(wid == 0) throw new StoreSystemException("仓库不能为空");
-        InventoryWarehouse warehouse = inventoryWarehouseDao.load(wid);
-        if(warehouse.getType() != inventoryInBill.getType()) throw new StoreSystemException("入库单类型错误");
         if(inventoryInBill.getInUid() == 0) throw new StoreSystemException("入库人不能为空");
         if(inventoryInBill.getCreateUid() == 0) throw new StoreSystemException("创建人不能为空");
         String itemsJson = inventoryInBill.getItemsJson();
@@ -279,6 +286,16 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     }
 
     @Override
+    public boolean submit(long id) throws Exception {
+        InventoryInBill inBill = inventoryInBillDao.load(id);
+        if(null != inBill && inBill.getStatus() == InventoryInBill.status_edit) {
+            inBill.setStatus(InventoryInBill.status_wait_check);
+            return inventoryInBillDao.update(inBill);
+        }
+        return false;
+    }
+
+    @Override
     public Pager getCreatePager(Pager pager, long createUid) throws Exception {
         String sql = "SELECT * FROM `inventory_in_bill` where createUid = " + createUid;
         String sqlCount = "SELECT COUNT(id) FROM `inventory_in_bill` where createUid = " + createUid;
@@ -294,9 +311,9 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     }
 
     @Override
-    public Pager getCheckPager(Pager pager) throws Exception {
-        String sql = "SELECT * FROM `inventory_in_bill` where `status` > " + InventoryInBill.status_edit;
-        String sqlCount = "SELECT COUNT(id) FROM `inventory_in_bill` where `status` > " + InventoryInBill.status_edit;
+    public Pager getCheckPager(Pager pager, long subid) throws Exception {
+        String sql = "SELECT * FROM `inventory_in_bill` where subid = " + subid + " and `status` > " + InventoryInBill.status_edit;
+        String sqlCount = "SELECT COUNT(id) FROM `inventory_in_bill` where subid = " + subid + " and `status` > " + InventoryInBill.status_edit;
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -312,16 +329,20 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         List<ClientInventoryInBill> res = Lists.newArrayList();
         Set<Long> uids = Sets.newHashSet();
         Set<Long> wids = Sets.newHashSet();
+        Set<Long> subids = Sets.newHashSet();
         for(InventoryInBill inBill : inBills) {
             if(inBill.getWid() > 0) wids.add(inBill.getWid());
             if(inBill.getCreateUid() > 0) uids.add(inBill.getCreateUid());
             if(inBill.getInUid() > 0) uids.add(inBill.getInUid());
             if(inBill.getCheckUid() > 0) uids.add(inBill.getCheckUid());
+            if(inBill.getSubid() > 0) subids.add(inBill.getSubid());
         }
         List<User> users = userDao.load(Lists.newArrayList(uids));
         Map<Long, User> userMap = userMapUtils.listToMap(users, "id");
         List<InventoryWarehouse> warehouses = inventoryWarehouseDao.load(Lists.newArrayList(wids));
         Map<Long, InventoryWarehouse> warehouseMap = warehouseMapUtils.listToMap(warehouses, "id");
+        List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(subids));
+        Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
         for(InventoryInBill inBill : inBills) {
             ClientInventoryInBill client = new ClientInventoryInBill(inBill);
             InventoryWarehouse warehouse = warehouseMap.get(client.getWid());
@@ -332,8 +353,9 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
             if(null != user) client.setInUserName(user.getName());
             user = userMap.get(client.getCheckUid());
             if(null != user) client.setCheckUserName(user.getName());
+            Subordinate subordinate = subordinateMap.get(client.getSubid());
+            if(null != subordinate) client.setSubName(subordinate.getName());
             List<InventoryInBillItem> items = JsonUtils.fromJson(inBill.getItemsJson(), new TypeReference<List<InventoryInBillItem>>() {});
-
             Set<Long> spuids = itemFieldSetUtils.fieldList(items, "spuid");
             List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuids));
             Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");

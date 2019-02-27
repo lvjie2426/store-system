@@ -7,6 +7,8 @@ import java.util.List;
 
 public class ClientInventoryCheckBill extends InventoryCheckBill {
 
+    private String subName;
+
     private String warehouseName;
 
     private String initUserName;
@@ -63,5 +65,13 @@ public class ClientInventoryCheckBill extends InventoryCheckBill {
 
     public void setItems(List<ClientInventoryCheckBillItem> items) {
         this.items = items;
+    }
+
+    public String getSubName() {
+        return subName;
+    }
+
+    public void setSubName(String subName) {
+        this.subName = subName;
     }
 }

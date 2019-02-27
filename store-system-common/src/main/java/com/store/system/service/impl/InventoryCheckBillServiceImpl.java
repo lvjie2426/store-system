@@ -50,6 +50,8 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
 
     private TransformMapUtils seriesMapUtils = new TransformMapUtils(ProductSeries.class);
 
+    private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
+
     private RowMapperHelp rowMapper = new RowMapperHelp(InventoryCheckBill.class);
 
     @Resource
@@ -80,9 +82,14 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     private UserDao userDao;
 
     @Resource
+    private SubordinateDao subordinateDao;
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     private void check(InventoryCheckBill inventoryCheckBill) throws Exception {
+        long subid = inventoryCheckBill.getSubid();
+        if(subid == 0) throw new StoreSystemException("店铺不能为空");
         long wid = inventoryCheckBill.getWid();
         if(wid == 0) throw new StoreSystemException("仓库不能为空");
         if(inventoryCheckBill.getInitUid() == 0) throw new StoreSystemException("发起人不能为空");
@@ -100,6 +107,8 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
         for(InventoryCheckBillItem item : items) {
             InventoryDetail detail = detailMap.get(item.getDid());
+            if(null == detail) throw new StoreSystemException("库存明细为空");
+            if(detail.getWid() != wid) throw new StoreSystemException("盘点单子项目仓库错误");
             if(item.getCurrentNum() != detail.getNum()) throw new StoreSystemException("条目明细错误");
             if(item.getRealNum() != 0) throw new StoreSystemException("条目明细错误");
         }
@@ -131,7 +140,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public boolean submitCheck(long id) throws Exception {
+    public boolean submit(long id) throws Exception {
         InventoryCheckBill checkBill = inventoryCheckBillDao.load(id);
         if(null != checkBill && checkBill.getStatus() == InventoryCheckBill.status_edit) {
             checkBill.setStatus(InventoryCheckBill.status_wait_check);
@@ -141,7 +150,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public boolean endCheck(long id, long checkUid) throws Exception {
+    public boolean end(long id, long checkUid) throws Exception {
         InventoryCheckBill checkBill = inventoryCheckBillDao.load(id);
         if(null != checkBill && checkBill.getStatus() == InventoryCheckBill.status_wait_check) {
             checkBill.setStatus(InventoryCheckBill.status_end);
@@ -152,7 +161,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public boolean saveCheck(InventoryCheckBill inventoryCheckBill) throws Exception {
+    public boolean save(InventoryCheckBill inventoryCheckBill) throws Exception {
         InventoryCheckBill dbCheckBill = inventoryCheckBillDao.load(inventoryCheckBill.getId());
         int status = dbCheckBill.getStatus();
         if(status != InventoryCheckBill.status_wait_check) throw new StoreSystemException("状态错误,不能盘点");
@@ -193,9 +202,9 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public Pager getCheckPager(Pager pager) throws Exception {
-        String sql = "SELECT * FROM `inventory_check_bill` where `status` > " + InventoryCheckBill.status_edit;
-        String sqlCount = "SELECT COUNT(id) FROM `inventory_check_bill` where `status` > " + InventoryCheckBill.status_edit;
+    public Pager getCheckPager(Pager pager, long subid) throws Exception {
+        String sql = "SELECT * FROM `inventory_check_bill` where subid = " + subid + " and `status` > " + InventoryCheckBill.status_edit;
+        String sqlCount = "SELECT COUNT(id) FROM `inventory_check_bill` where subid = " + subid + " and `status` > " + InventoryCheckBill.status_edit;
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -211,16 +220,20 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         List<ClientInventoryCheckBill> res = Lists.newArrayList();
         Set<Long> uids = Sets.newHashSet();
         Set<Long> wids = Sets.newHashSet();
+        Set<Long> subids = Sets.newHashSet();
         for(InventoryCheckBill checkBill : checkBills) {
             if(checkBill.getWid() > 0) wids.add(checkBill.getWid());
             if(checkBill.getCreateUid() > 0) uids.add(checkBill.getCreateUid());
             if(checkBill.getInitUid() > 0) uids.add(checkBill.getInitUid());
             if(checkBill.getCheckUid() > 0) uids.add(checkBill.getCheckUid());
+            if(checkBill.getSubid() > 0) subids.add(checkBill.getSubid());
         }
         List<User> users = userDao.load(Lists.newArrayList(uids));
         Map<Long, User> userMap = userMapUtils.listToMap(users, "id");
         List<InventoryWarehouse> warehouses = inventoryWarehouseDao.load(Lists.newArrayList(wids));
         Map<Long, InventoryWarehouse> warehouseMap = warehouseMapUtils.listToMap(warehouses, "id");
+        List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(subids));
+        Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
         for(InventoryCheckBill checkBill : checkBills) {
             ClientInventoryCheckBill client = new ClientInventoryCheckBill(checkBill);
             InventoryWarehouse warehouse = warehouseMap.get(client.getWid());
@@ -231,6 +244,8 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
             if(null != user) client.setInitUserName(user.getName());
             user = userMap.get(client.getCheckUid());
             if(null != user) client.setCheckUserName(user.getName());
+            Subordinate subordinate = subordinateMap.get(client.getSubid());
+            if(null != subordinate) client.setSubName(subordinate.getName());
             List<InventoryCheckBillItem> items = JsonUtils.fromJson(checkBill.getItemsJson(), new TypeReference<List<InventoryCheckBillItem>>() {});
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));

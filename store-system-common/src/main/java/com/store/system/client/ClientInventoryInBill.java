@@ -7,6 +7,8 @@ import java.util.List;
 
 public class ClientInventoryInBill extends InventoryInBill {
 
+    private String subName;
+
     private String warehouseName;
 
     private String inUserName;
@@ -23,6 +25,14 @@ public class ClientInventoryInBill extends InventoryInBill {
         } catch (Exception e) {
             throw new IllegalStateException("ClientInventoryInBill construction error!");
         }
+    }
+
+    public String getSubName() {
+        return subName;
+    }
+
+    public void setSubName(String subName) {
+        this.subName = subName;
     }
 
     public String getWarehouseName() {
