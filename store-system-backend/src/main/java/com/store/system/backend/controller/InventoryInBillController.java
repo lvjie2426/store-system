@@ -1,14 +1,15 @@
 package com.store.system.backend.controller;
 
+import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryInBill;
+import com.store.system.model.ProductPropertyName;
+import com.store.system.model.ProductPropertyValue;
 import com.store.system.model.User;
-import com.store.system.service.InventoryInBillService;
-import com.store.system.service.ProductPropertyService;
-import com.store.system.service.ProductService;
+import com.store.system.service.*;
 import com.store.system.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -29,7 +31,16 @@ public class InventoryInBillController extends BaseController {
     private ProductService productService;
 
     @Resource
-    private ProductPropertyService productPropertyService;
+    private SubordinateService subordinateService;
+
+//    @Resource
+//    private ProductPropertyService productPropertyService;
+
+    @Resource
+    private ProductPropertyNameService productPropertyNameService;
+
+    @Resource
+    private ProductPropertyValueService productPropertyValueService;
 
     @Resource
     private InventoryInBillService inventoryInBillService;
@@ -43,13 +54,36 @@ public class InventoryInBillController extends BaseController {
                                @RequestParam(value = "sid") long sid,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            ClientSubordinate subordinate = subordinateService.load(subid);
+            long pSubid = subordinate.getPid();
+            if(pSubid == 0) throw new StoreSystemException("店铺为空");
             ClientInventoryInBillSelect res = null;
-            ClientProductSPU productSPU = productService.selectSPU(type, subid, pid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(type, pSubid, pid, cid, bid, sid);
             if(null != productSPU) {
-                List<ClientProductProperty> properties = productPropertyService.getSKUProperties(cid);
-                res = new ClientInventoryInBillSelect();
-                res.setProductSPU(productSPU);
-                res.setSkuProperties(properties);
+                List<ProductPropertyName> propertyNames = productPropertyNameService.getSubAllList(pSubid, cid);
+                for(Iterator<ProductPropertyName> it = propertyNames.iterator(); it.hasNext();) {
+                    ProductPropertyName propertyName = it.next();
+                    if(propertyName.getType() != ProductPropertyName.type_sku) it.remove();
+                }
+                if(propertyNames.size() > 0) {
+                    res = new ClientInventoryInBillSelect();
+                    res.setProductSPU(productSPU);
+                    List<ClientProductProperty> properties = Lists.newArrayList();
+                    for(ProductPropertyName propertyName : propertyNames) {
+                        ClientProductProperty property = new ClientProductProperty(propertyName);
+                        if(propertyName.getInput() == ProductPropertyName.input_no) {
+                            List<ProductPropertyValue> propertyValues = productPropertyValueService.getSubAllList(pSubid, propertyName.getId());
+                            List<ClientProductPropertyValue> values = Lists.newArrayList();
+                            for(ProductPropertyValue propertyValue : propertyValues) {
+                                ClientProductPropertyValue value = new ClientProductPropertyValue(propertyValue);
+                                values.add(value);
+                            }
+                            property.setValues(values);
+                        }
+                        properties.add(property);
+                    }
+                    res.setSkuProperties(properties);
+                }
             }
             return this.viewNegotiating(request,response, new ResultClient(res));
         } catch (StoreSystemException e) {

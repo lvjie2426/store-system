@@ -1,10 +1,15 @@
 package com.store.system.backend.controller;
 
 import com.quakoo.webframework.BaseController;
+import com.store.system.client.ClientSubordinate;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.ProductBrand;
+import com.store.system.model.ProductBrandPool;
 import com.store.system.model.ProductCategory;
+import com.store.system.model.ProductCategoryPool;
 import com.store.system.service.ProductCategoryService;
+import com.store.system.service.SubordinateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +27,9 @@ public class ProductCategoryController extends BaseController {
 
     @Resource
     private ProductCategoryService productCategoryService;
+
+    @Resource
+    private SubordinateService subordinateService;
 
     @RequestMapping("/add")
     public ModelAndView add(ProductCategory productCategory, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -60,4 +68,50 @@ public class ProductCategoryController extends BaseController {
         return this.viewNegotiating(request,response, new ResultClient(true, res));
     }
 
+    @RequestMapping("/addPool")
+    public ModelAndView addPool(@RequestParam(value = "subid") long subid,
+                                @RequestParam(value = "cid") long cid,
+                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            ClientSubordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() != 0) throw new StoreSystemException("非公司不能添加");
+            ProductCategoryPool productCategoryPool = new ProductCategoryPool();
+            productCategoryPool.setSubid(subid);
+            productCategoryPool.setCid(cid);
+            boolean sign = productCategoryService.addPool(productCategoryPool);
+            return this.viewNegotiating(request,response, new ResultClient(true, sign));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/delPool")
+    public ModelAndView delPool(@RequestParam(value = "subid") long subid,
+                                @RequestParam(value = "cid") long cid,
+                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            ClientSubordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() != 0) throw new StoreSystemException("非公司不能删除");
+            ProductCategoryPool productCategoryPool = new ProductCategoryPool();
+            productCategoryPool.setSubid(subid);
+            productCategoryPool.setCid(cid);
+            boolean res = productCategoryService.delPool(productCategoryPool);
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/getSubAllList")
+    public ModelAndView getSubAllList(@RequestParam(value = "subid") long subid,
+                                      HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            ClientSubordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() > 0) subid = subordinate.getPid();
+            List<ProductCategory> res = productCategoryService.getSubAllList(subid);
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
 }

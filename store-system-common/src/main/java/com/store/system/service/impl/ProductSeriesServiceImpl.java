@@ -1,20 +1,33 @@
 package com.store.system.service.impl;
 
+import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
+import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.dao.ProductSeriesDao;
+import com.store.system.dao.ProductSeriesPoolDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.ProductSeries;
+import com.store.system.model.*;
 import com.store.system.service.ProductSeriesService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ProductSeriesServiceImpl implements ProductSeriesService {
 
     @Resource
     private ProductSeriesDao productSeriesDao;
+
+    @Resource
+    private ProductSeriesPoolDao productSeriesPoolDao;
+
+    private TransformFieldSetUtils poolFieldSetUtils = new TransformFieldSetUtils(ProductSeriesPool.class);
+
+    private TransformMapUtils mapUtils = new TransformMapUtils(ProductSeries.class);
 
     private void check(ProductSeries productSeries) throws StoreSystemException {
         long bid = productSeries.getBid();
@@ -48,7 +61,39 @@ public class ProductSeriesServiceImpl implements ProductSeriesService {
     }
 
     @Override
+    public ProductSeries load(long id) throws Exception {
+        return productSeriesDao.load(id);
+    }
+
+    @Override
     public List<ProductSeries> getAllList(long bid) throws Exception {
         return productSeriesDao.getAllList(bid, ProductSeries.status_nomore);
+    }
+
+    @Override
+    public boolean addPool(ProductSeriesPool pool) throws Exception {
+        ProductSeriesPool sign = productSeriesPoolDao.load(pool);
+        if(sign != null) throw new StoreSystemException("已添加");
+        pool = productSeriesPoolDao.insert(pool);
+        return pool != null;
+    }
+
+    @Override
+    public boolean delPool(ProductSeriesPool pool) throws Exception {
+        return productSeriesPoolDao.delete(pool);
+    }
+
+    @Override
+    public List<ProductSeries> getSubAllList(long subid, long bid) throws Exception {
+        List<ProductSeriesPool> pools = productSeriesPoolDao.getAllList(subid, bid);
+        Set<Long> sids = poolFieldSetUtils.fieldList(pools, "sid");
+        List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
+        Map<Long, ProductSeries> seriesMap = mapUtils.listToMap(seriesList, "id");
+        List<ProductSeries> res = Lists.newArrayList();
+        for(ProductSeriesPool pool : pools) {
+            ProductSeries series = seriesMap.get(pool.getSid());
+            if(series != null) res.add(series);
+        }
+        return res;
     }
 }
