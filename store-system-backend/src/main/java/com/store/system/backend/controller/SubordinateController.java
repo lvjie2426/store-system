@@ -31,13 +31,12 @@ public class SubordinateController extends BaseController {
     private SubordinateService subordinateService;
 
 
-    @RequestMapping("/getSubordinatePager")
-    public ModelAndView getSubordinatePager(HttpServletRequest request, HttpServletResponse response,
-                                       Pager pager, String name,
-                                            Model model) throws Exception {
-        pager = subordinateService.getBackPage(pager, name);
-        return this.viewNegotiating(request, response, new PagerResult<>(pager));
-    }
+//    @RequestMapping("/getSubordinatePager")
+//    public ModelAndView getSubordinatePager(HttpServletRequest request, HttpServletResponse response,
+//                                       Pager pager, String name, Model model) throws Exception {
+//        pager = subordinateService.getBackPage(pager, name);
+//        return this.viewNegotiating(request, response, new PagerResult<>(pager));
+//    }
 
     @RequestMapping("/getSubordinate")
     public ModelAndView getSubordinatePager(HttpServletRequest request, HttpServletResponse response,

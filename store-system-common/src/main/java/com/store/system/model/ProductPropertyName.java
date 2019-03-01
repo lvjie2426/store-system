@@ -23,13 +23,13 @@ public class ProductPropertyName implements Serializable {
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
 
-    public static final int defaul_yes = 1; //默认
-    public static final int defaul_no = 0; //非默认
+    public static final int defaul_yes = 1; //默认 (关键属性，有单独的字段)
+    public static final int defaul_no = 0; //非默认 (非关键的属性，json字段)
 
     public static final int multiple_yes = 1; //多值
     public static final int multiple_no = 0; //非多值
 
-    public static final int input_yes = 1; //输入属性
+    public static final int input_yes = 1; //输入属性(选项)
     public static final int input_no = 0; //非输入属性
 
     public static final int type_spu = 1;  //SPU属性

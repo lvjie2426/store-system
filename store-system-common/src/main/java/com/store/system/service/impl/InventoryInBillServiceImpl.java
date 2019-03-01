@@ -123,8 +123,8 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 skuMap.put(spuid, skuList);
             }
 
-            List<InventoryInBillItem> existsItems = Lists.newArrayList();
-            List<InventoryInBillItem> noExistsItems = Lists.newArrayList();
+            List<InventoryInBillItem> existsItems = Lists.newArrayList(); //已经存在的sku
+            List<InventoryInBillItem> noExistsItems = Lists.newArrayList(); //不存在的sku
             for(InventoryInBillItem item : items) {
                 String code = item.getCode();
                 List<String> skuCodes = skuCodesMap.get(item.getSpuid());
@@ -141,7 +141,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 productSKU.setCostPrice(item.getCostPrice());
                 productSKU.setIntegralPrice(item.getIntegralPrice());
                 productSKU.setSort(System.currentTimeMillis());
-                productSKU = productSKUDao.insert(productSKU);
+                productSKU = productSKUDao.insert(productSKU); //SKU不存在先存sku
                 if(null != productSKU) {
                     long skuid = productSKU.getId();
                     ProductSPU spu = spuMap.get(productSKU.getSpuid());
@@ -152,7 +152,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                     detail.setP_spuid(productSKU.getSpuid());
                     detail.setP_skuid(skuid);
                     detail.setNum(item.getNum());
-                    inventoryDetailDao.insert(detail);
+                    inventoryDetailDao.insert(detail); //sku存完，再存库存明细
                 }
             }
 
@@ -168,11 +168,11 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                     }
                 }
                 List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndSKU(wid, skuid);
-                if(details.size() > 0) {
+                if(details.size() > 0) { //如果有这个库存明细，做更新
                     InventoryDetail detail = details.get(0);
                     detail.setNum(detail.getNum() + num);
                     inventoryDetailDao.update(detail);
-                } else {
+                } else { //没有库存明细，做插入
                     ProductSPU spu = spuMap.get(item.getSpuid());
                     InventoryDetail detail = new InventoryDetail();
                     detail.setSubid(subid);

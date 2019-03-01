@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientSubordinate;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.SubordinateDao;
@@ -33,10 +34,15 @@ public class SubordinateServiceImpl implements SubordinateService {
 
 	@Resource
 	private PermissionService permissionService;
+
 	@Resource
 	private RoleService roleService;
+
 	@Resource
 	private RoleTemplateItemService roleTemplateItemService;
+
+    private RowMapperHelp<Subordinate> rowMapper = new RowMapperHelp<>(Subordinate.class);
+
 
 	@Override
 	public Subordinate insert(Subordinate subordinate) throws Exception {
@@ -106,20 +112,8 @@ public class SubordinateServiceImpl implements SubordinateService {
 		return subordinateDao.update(subordinate);
 	}
 
-	private List<ClientSubordinate> transformClientByProvince(List<Subordinate> subordinatees) throws Exception{
-		List<ClientSubordinate> result=new ArrayList<>();
-		if(subordinatees!=null) {
-			for (Subordinate subordinate : subordinatees) {
-				ClientSubordinate clientSubordinate = transformClient(subordinate);
-				result.add(clientSubordinate);
-			}
-		}
-		return result;
-	}
-
 	private ClientSubordinate transformClient(Subordinate subordinate) throws Exception{
-		ClientSubordinate clientSubordinate = new ClientSubordinate();
-		BeanUtils.copyProperties(clientSubordinate, subordinate);
+		ClientSubordinate clientSubordinate = new ClientSubordinate(subordinate);
 		return clientSubordinate;
 	}
 
@@ -128,45 +122,64 @@ public class SubordinateServiceImpl implements SubordinateService {
 		return transformClient(subordinateDao.load(sid));
 	}
 
-	@Override
-	public Pager getBackPage(Pager pager,  String name) throws Exception {
-		String sql = "SELECT  *  FROM `subordinate` where 1=1 ";
-		String sqlCount = "SELECT  COUNT(*)  FROM `subordinate` where 1=1";
-		String limit = "  limit %d , %d ";
-		sql = sql + " and `status` = " + Subordinate.status_online;
-		sqlCount = sqlCount + " and `status` = " + Subordinate.status_online;
-		if (StringUtils.isNotBlank(name)) {
-			sql = sql + " and `name` like ?";
-			sqlCount = sqlCount + " and `name` like ?";
-		}
-		sql = sql + " order  by ctime desc";
-		sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
-		List<Subordinate> subordinates = null;
-		int count =0;
-		if(StringUtils.isNotBlank(name)){
-			subordinates=jdbcTemplate.query(sql,new BeanPropertyRowMapper(Subordinate.class),"%"+name+"%");
-			count=this.jdbcTemplate.queryForObject(sqlCount, new Object[] {"%"+name+"%"}, Integer.class);
-		}
-		else{
-			subordinates=jdbcTemplate.query(sql,new BeanPropertyRowMapper(Subordinate.class));
-			count=this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
-		}
-
-		pager.setData(transformClient(subordinates));
-		pager.setTotalCount(count);
-		return pager;
-	}
+//	@Override
+//	public Pager getBackPage(Pager pager,  String name) throws Exception {
+//		String sql = "SELECT  *  FROM `subordinate` where 1=1 ";
+//		String sqlCount = "SELECT  COUNT(*)  FROM `subordinate` where 1=1";
+//		String limit = "  limit %d , %d ";
+//		sql = sql + " and `status` = " + Subordinate.status_online;
+//		sqlCount = sqlCount + " and `status` = " + Subordinate.status_online;
+//		if (StringUtils.isNotBlank(name)) {
+//			sql = sql + " and `name` like ?";
+//			sqlCount = sqlCount + " and `name` like ?";
+//		}
+//		sql = sql + " order  by ctime desc";
+//		sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+//		List<Subordinate> subordinates = null;
+//		int count =0;
+//		if(StringUtils.isNotBlank(name)){
+//			subordinates=jdbcTemplate.query(sql,new BeanPropertyRowMapper(Subordinate.class),"%"+name+"%");
+//			count=this.jdbcTemplate.queryForObject(sqlCount, new Object[] {"%"+name+"%"}, Integer.class);
+//		}
+//		else{
+//			subordinates=jdbcTemplate.query(sql,new BeanPropertyRowMapper(Subordinate.class));
+//			count=this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+//		}
+//
+//		pager.setData(transformClient(subordinates));
+//		pager.setTotalCount(count);
+//		return pager;
+//	}
 
 	private List<ClientSubordinate> transformClient(List<Subordinate> subordinatees) throws Exception{
 		List<ClientSubordinate> result=new ArrayList<>();
 		if(subordinatees!=null) {
 			for (Subordinate subordinate : subordinatees) {
-				ClientSubordinate clientSubordinate = transformClient(subordinate);
+				ClientSubordinate clientSubordinate = new ClientSubordinate(subordinate);
 				result.add(clientSubordinate);
 			}
 		}
 		return result;
 	}
 
+    @Override
+    public List<ClientSubordinate> getTwoLevelAllList(long pid) throws Exception {
+	    List<Subordinate> subordinates = subordinateDao.getAllList(pid, Subordinate.status_online);
+        return transformClient(subordinates);
+    }
+
+    @Override
+    public Pager getOneLevelPager(Pager pager) throws Exception {
+        String sql = "SELECT  *  FROM `subordinate` where pid = 0 and status = " + Subordinate.status_online;
+        String sqlCount = "SELECT  COUNT(*)  FROM `subordinate` where pid = 0 and status = " + Subordinate.status_online;
+        String limit = " limit %d , %d";
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<Subordinate> subordinates = this.jdbcTemplate.query(sql, rowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        pager.setData(transformClient(subordinates));
+        pager.setTotalCount(count);
+        return pager;
+    }
 
 }

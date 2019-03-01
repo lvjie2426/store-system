@@ -16,6 +16,10 @@ public interface SubordinateService {
 
 	public boolean delete(long id) throws Exception;
 
-	public Pager getBackPage(Pager pager, String name) throws Exception;
+//	public Pager getBackPage(Pager pager, String name) throws Exception;
+
+	public List<ClientSubordinate> getTwoLevelAllList(long pid) throws Exception;
+
+	public Pager getOneLevelPager(Pager pager) throws Exception;
 
 }

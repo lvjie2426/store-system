@@ -2,10 +2,7 @@ package com.store.system.backend.controller;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
-import com.store.system.client.ClientInventoryCheckBillSelect;
-import com.store.system.client.ClientProductSPU;
-import com.store.system.client.PagerResult;
-import com.store.system.client.ResultClient;
+import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryCheckBill;
 import com.store.system.model.InventoryDetail;
@@ -13,6 +10,7 @@ import com.store.system.model.User;
 import com.store.system.service.InventoryCheckBillService;
 import com.store.system.service.InventoryDetailService;
 import com.store.system.service.ProductService;
+import com.store.system.service.SubordinateService;
 import com.store.system.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +36,9 @@ public class InventoryCheckBillController extends BaseController {
     @Resource
     private InventoryCheckBillService inventoryCheckBillService;
 
+    @Resource
+    private SubordinateService subordinateService;
+
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "type") int type,
                                @RequestParam(value = "subid") long subid,
@@ -48,8 +49,11 @@ public class InventoryCheckBillController extends BaseController {
                                @RequestParam(value = "wid") long wid,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            ClientSubordinate subordinate = subordinateService.load(subid);
+            long pSubid = subordinate.getPid();
+            if(pSubid == 0) throw new StoreSystemException("店铺为空");
             ClientInventoryCheckBillSelect res = null;
-            ClientProductSPU productSPU = productService.selectSPU(type, subid, pid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(type, pSubid, pid, cid, bid, sid);
             if(null != productSPU) {
                 res = new ClientInventoryCheckBillSelect();
                 res.setProductSPU(productSPU);

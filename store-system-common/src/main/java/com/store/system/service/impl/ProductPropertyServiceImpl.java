@@ -44,6 +44,15 @@ public class ProductPropertyServiceImpl implements ProductPropertyService {
         return res;
     }
 
+    /**
+     * 获取入库的时候要明确的SKU属性
+     * method_name: getSKUProperties
+     * params: [cid]
+     * return: java.util.List<com.store.system.client.ClientProductProperty>
+     * creat_user: lihao
+     * creat_date: 2019/2/28
+     * creat_time: 14:44
+     **/
     @Override
     public List<ClientProductProperty> getSKUProperties(long cid) throws Exception {
         List<ProductPropertyName> names = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);

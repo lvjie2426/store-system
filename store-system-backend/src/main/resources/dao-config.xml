@@ -175,8 +175,26 @@
         </property>
     </bean>
 
+    <bean id="productBrandPoolDao" class="com.store.system.dao.impl.ProductBrandPoolDaoImpl">
+        <property name="tableName" value="product_brand_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
     <bean id="productCategoryDao" class="com.store.system.dao.impl.ProductCategoryDaoImpl">
         <property name="tableName" value="product_category" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productCategoryPoolDao" class="com.store.system.dao.impl.ProductCategoryPoolDaoImpl">
+        <property name="tableName" value="product_category_pool" />
         <property name="dataSources">
             <list>
                 <ref bean="dataSource" />
@@ -193,8 +211,26 @@
         </property>
     </bean>
 
+    <bean id="productPropertyNamePoolDao" class="com.store.system.dao.impl.ProductPropertyNamePoolDaoImpl">
+        <property name="tableName" value="product_property_name_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
     <bean id="productPropertyValueDao" class="com.store.system.dao.impl.ProductPropertyValueDaoImpl">
         <property name="tableName" value="product_property_value" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productPropertyValuePoolDao" class="com.store.system.dao.impl.ProductPropertyValuePoolDaoImpl">
+        <property name="tableName" value="product_property_value_pool" />
         <property name="dataSources">
             <list>
                 <ref bean="dataSource" />
@@ -211,8 +247,26 @@
         </property>
     </bean>
 
+    <bean id="productProviderPoolDao" class="com.store.system.dao.impl.ProductProviderPoolDaoImpl">
+        <property name="tableName" value="product_provider_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
     <bean id="productSeriesDao" class="com.store.system.dao.impl.ProductSeriesDaoImpl">
         <property name="tableName" value="product_series" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productSeriesPoolDao" class="com.store.system.dao.impl.ProductSeriesPoolDaoImpl">
+        <property name="tableName" value="product_series_pool" />
         <property name="dataSources">
             <list>
                 <ref bean="dataSource" />
