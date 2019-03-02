@@ -60,6 +60,11 @@ public class ProductPropertyValueServiceImpl implements ProductPropertyValueServ
     }
 
     @Override
+    public ProductPropertyValue load(long id) throws Exception {
+        return productPropertyValueDao.load(id);
+    }
+
+    @Override
     public List<ProductPropertyValue> getAllList(long pnid) throws Exception {
         return productPropertyValueDao.getAllList(pnid, ProductPropertyValue.status_nomore);
     }

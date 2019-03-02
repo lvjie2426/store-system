@@ -13,6 +13,8 @@ public interface ProductPropertyValueService {
 
     public boolean del(long id) throws Exception;
 
+    public ProductPropertyValue load(long id) throws Exception;
+
     public List<ProductPropertyValue> getAllList(long pnid) throws Exception;
 
 
