@@ -4,8 +4,6 @@ import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientSubordinate;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.ProductProvider;
-import com.store.system.model.ProductProviderPool;
 import com.store.system.model.ProductSeries;
 import com.store.system.model.ProductSeriesPool;
 import com.store.system.service.ProductSeriesService;
