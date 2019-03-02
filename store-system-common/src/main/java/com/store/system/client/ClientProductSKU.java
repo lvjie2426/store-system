@@ -5,6 +5,8 @@ import org.apache.commons.beanutils.BeanUtils;
 
 public class ClientProductSKU extends ProductSKU {
 
+    private int num; //可用库存
+
     public ClientProductSKU(ProductSKU productSKU) {
         try {
             BeanUtils.copyProperties(this, productSKU);
@@ -13,4 +15,13 @@ public class ClientProductSKU extends ProductSKU {
         }
     }
 
+    @Override
+    public int getNum() {
+        return num;
+    }
+
+    @Override
+    public void setNum(int num) {
+        this.num = num;
+    }
 }

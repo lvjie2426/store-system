@@ -33,9 +33,6 @@ public class InventoryInBillController extends BaseController {
     @Resource
     private SubordinateService subordinateService;
 
-//    @Resource
-//    private ProductPropertyService productPropertyService;
-
     @Resource
     private ProductPropertyNameService productPropertyNameService;
 
@@ -45,6 +42,15 @@ public class InventoryInBillController extends BaseController {
     @Resource
     private InventoryInBillService inventoryInBillService;
 
+    /**
+     * 获取一个商品的SPU，返回需要确定的所有SKU属性
+     * method_name: select
+     * params: [type, subid, pid, cid, bid, sid, request, response, model]
+     * return: org.springframework.web.servlet.ModelAndView
+     * creat_user: lihao
+     * creat_date: 2019/3/2
+     * creat_time: 14:54
+     **/
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "type") int type,
                                @RequestParam(value = "subid") long subid,
@@ -91,6 +97,15 @@ public class InventoryInBillController extends BaseController {
         }
     }
 
+    /**
+     * 添加一个入库单(item属性是sku相关参数对象的JSON结构)
+     * method_name: add
+     * params: [inventoryInBill, request, response, model]
+     * return: org.springframework.web.servlet.ModelAndView
+     * creat_user: lihao
+     * creat_date: 2019/3/2
+     * creat_time: 14:56
+     **/
     @RequestMapping("/add")
     public ModelAndView add(InventoryInBill inventoryInBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {

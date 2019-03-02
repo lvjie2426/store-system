@@ -23,7 +23,7 @@ public class Subordinate implements Serializable {
     @PrimaryKey
     private long id;
 
-    private long pid; //父类ID
+    private long pid; //父类ID(0：公司，非0：分店)
 
     //@Excel(name = "名称", height = 20, width = 30, isImportField = "true_st")
     private String name;

@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
+import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
@@ -30,6 +31,14 @@ public class ProductServiceImpl implements ProductService {
 
     private RowMapperHelp<ProductSPU> spuRowMapper = new RowMapperHelp<>(ProductSPU.class);
 
+    private TransformMapUtils providerMapUtils = new TransformMapUtils(ProductProvider.class);
+
+    private TransformMapUtils brandMapUtils = new TransformMapUtils(ProductBrand.class);
+
+    private TransformMapUtils seriesMapUtils = new TransformMapUtils(ProductSeries.class);
+
+    private TransformMapUtils categoryMapUtils = new TransformMapUtils(ProductCategory.class);
+
     @Resource
     private ProductPropertyNameDao productPropertyNameDao;
 
@@ -50,6 +59,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private ProductSeriesDao productSeriesDao;
+
+    @Resource
+    private SubordinateDao subordinateDao;
+
+    @Resource
+    private InventoryDetailDao inventoryDetailDao;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -91,6 +106,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean updateSPU(ProductSPU productSPU) throws Exception {
         checkSPU(productSPU);
+        Subordinate subordinate = subordinateDao.load(productSPU.getSubid());
+        if(subordinate.getPid() > 0) productSPU.setSubid(subordinate.getPid());
         boolean res = productSPUDao.update(productSPU);
         return res;
     }
@@ -105,6 +122,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductSPU addSPU(ProductSPU productSPU) throws Exception {
         checkSPU(productSPU);
+        Subordinate subordinate = subordinateDao.load(productSPU.getSubid());
+        if(subordinate.getPid() > 0) productSPU.setSubid(subordinate.getPid());
         productSPU = productSPUDao.insert(productSPU);
         return productSPU;
     }
@@ -245,6 +264,42 @@ public class ProductServiceImpl implements ProductService {
         return clientProductSPU;
     }
 
+    private List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList) throws Exception {
+        List<ClientProductSPU> res = Lists.newArrayList();
+        if(productSPUList.size() == 0) return res;
+        Set<Long> pids = Sets.newHashSet();
+        Set<Long> cids = Sets.newHashSet();
+        Set<Long> bids = Sets.newHashSet();
+        Set<Long> sids = Sets.newHashSet();
+        for(ProductSPU one : productSPUList) {
+            pids.add(one.getPid());
+            cids.add(one.getCid());
+            bids.add(one.getBid());
+            sids.add(one.getSid());
+        }
+        List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(pids));
+        Map<Long, ProductProvider> providerMap = providerMapUtils.listToMap(providers, "id");
+        List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
+        Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
+        List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
+        Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
+        List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
+        Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
+        for(ProductSPU one : productSPUList) {
+            ClientProductSPU client = new ClientProductSPU(one);
+            ProductProvider provider = providerMap.get(client.getPid());
+            if(null != provider) client.setProviderName(provider.getName());
+            ProductCategory category = categoryMap.get(client.getCid());
+            if(null != category) client.setCategoryName(category.getName());
+            ProductBrand brand = brandMap.get(client.getBid());
+            if(null != brand) client.setBrandName(brand.getName());
+            ProductSeries series = seriesMap.get(client.getSid());
+            if(null != series) client.setSeriesName(series.getName());
+            res.add(client);
+        }
+        return res;
+    }
+
     private ClientProductSPU transformClient(ProductSPU productSPU) throws Exception {
         ClientProductSPU clientProductSPU = new ClientProductSPU(productSPU);
         ProductProvider provider = productProviderDao.load(clientProductSPU.getPid());
@@ -279,7 +334,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Pager getBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid) throws Exception {
+    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid) throws Exception {
         String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore;
         String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore;
         String limit = " limit %d , %d ";
@@ -327,4 +382,51 @@ public class ProductServiceImpl implements ProductService {
         return clientProductSPU;
     }
 
+    @Override
+    public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid) throws Exception {
+        String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + pSubid;
+        String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + pSubid;
+        String limit = " limit %d , %d ";
+        if(cid > 0) {
+            sql += " and cid = " + cid;
+            sqlCount += " and cid = " + cid;
+        }
+        if(bid > 0) {
+            sql += " and bid = " + bid;
+            sqlCount += " and bid = " + bid;
+        }
+        sql = sql + " order  by `sort` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        List<ClientProductSPU> data = transformClients(productSPUList);
+        for(ClientProductSPU one : data) {
+            int num = 0;
+            List<InventoryDetail> details = inventoryDetailDao.getAllListBySubAndSPU(subid, one.getId());
+            for(InventoryDetail detail : details) {
+                num += detail.getNum();
+            }
+            one.setNum(num);
+        }
+        pager.setData(data);
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid) throws Exception {
+        List<ProductSKU> list = productSKUDao.getAllList(spuid, ProductSKU.status_nomore);
+        List<ClientProductSKU> res = Lists.newArrayList();
+        for(ProductSKU one : list) {
+            ClientProductSKU client = new ClientProductSKU(one);
+            int num = 0;
+            List<InventoryDetail> details = inventoryDetailDao.getAllListBySubAndSKU(subid, one.getId());
+            for(InventoryDetail detail : details) {
+                num += detail.getNum();
+            }
+            client.setNum(num);
+            res.add(client);
+        }
+        return res;
+    }
 }

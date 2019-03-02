@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
@@ -28,12 +29,14 @@ public interface ProductService {
 
     public boolean delSPU(long id) throws Exception;
 
-    public Pager getBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid) throws Exception;
+    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid) throws Exception;
 
 
 
     public ClientProductSPU selectSPU(int type, long subid, long pid, long cid, long bid, long sid) throws Exception;
 
-//    public Pager getBackPager(Pager pager, long subid, long cid, long bid) throws Exception;
+    public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid) throws Exception;
+
+    public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid) throws Exception;
 
 }

@@ -17,6 +17,8 @@ public class ClientProductSPU extends ProductSPU {
 
     private List<ClientProductSKU> skuList;
 
+    private int num; //可用库存
+
     public ClientProductSPU(ProductSPU productSPU) {
         try {
             BeanUtils.copyProperties(this, productSPU);
@@ -63,5 +65,13 @@ public class ClientProductSPU extends ProductSPU {
 
     public void setSeriesName(String seriesName) {
         this.seriesName = seriesName;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 }

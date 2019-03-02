@@ -4,13 +4,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
+import com.store.system.model.Subordinate;
 import com.store.system.service.ProductService;
+import com.store.system.service.SubordinateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,9 @@ public class ProductController extends BaseController {
 
     @Resource
     private ProductService productService;
+
+    @Resource
+    private SubordinateService subordinateService;
 
     @RequestMapping("/addSPU")
     public ModelAndView addSPU(ProductSPU productSPU, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -49,6 +55,15 @@ public class ProductController extends BaseController {
         }
     }
 
+    /**
+     * 增加商品SPU和SKU
+     * method_name: add
+     * params: [productSPU, skuJson, request, response, model]
+     * return: org.springframework.web.servlet.ModelAndView
+     * creat_user: lihao
+     * creat_date: 2019/3/2
+     * creat_time: 14:49
+     **/
     @RequestMapping("/add")
     public ModelAndView add(ProductSPU productSPU, @RequestParam(value = "skuJson") String skuJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -66,6 +81,15 @@ public class ProductController extends BaseController {
         }
     }
 
+    /**
+     * 修改商品SPU和SKU
+     * method_name: change
+     * params: [productSPU, addSkuJson, updateSkuJson, delSkuIdJson, request, response, model]
+     * return: org.springframework.web.servlet.ModelAndView
+     * creat_user: lihao
+     * creat_date: 2019/3/2
+     * creat_time: 14:48
+     **/
     @RequestMapping("/change")
     public ModelAndView change(ProductSPU productSPU, @RequestParam(value = "addSkuJson") String addSkuJson,
                                @RequestParam(value = "updateSkuJson") String updateSkuJson,
@@ -139,6 +163,15 @@ public class ProductController extends BaseController {
         }
     }
 
+    /**
+     * 获取公司的所有商品SPU
+     * method_name: getSPUPager
+     * params: [subid, cid, pid, bid, sid, pager, request, response, model]
+     * return: org.springframework.web.servlet.ModelAndView
+     * creat_user: lihao
+     * creat_date: 2019/3/2
+     * creat_time: 14:39
+     **/
     @RequestMapping("/getSPUPager")
     public ModelAndView getSPUPager(@RequestParam(value = "subid", defaultValue = "0") long subid,
                                     @RequestParam(value = "cid", defaultValue = "0") long cid,
@@ -147,8 +180,14 @@ public class ProductController extends BaseController {
                                     @RequestParam(value = "sid", defaultValue = "0") long sid,
                                     Pager pager,
                                     HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = productService.getBackPager(pager, subid, cid, pid, bid, sid);
-        return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        try {
+            Subordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() > 0) subid = subordinate.getPid();
+            pager = productService.getSPUBackPager(pager, subid, cid, pid, bid, sid);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     @RequestMapping("/loadSPU")
@@ -156,6 +195,44 @@ public class ProductController extends BaseController {
                                 HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         ClientProductSPU clientProductSPU = productService.loadSPU(id);
         return this.viewNegotiating(request,response, new ResultClient(true, clientProductSPU));
+    }
+
+    /**
+     * 销售开单 添加商品的SPU列表
+     * method_name: getSaleSPUBackPager
+     * params: [subid, cid, bid, pager, request, response, model]
+     * return: org.springframework.web.servlet.ModelAndView
+     * creat_user: lihao
+     * creat_date: 2019/3/2
+     * creat_time: 14:38
+     **/
+    @RequestMapping("/getSaleSPUBackPager")
+    public ModelAndView getSaleSPUBackPager(@RequestParam(value = "subid", defaultValue = "0") long subid,
+                                    @RequestParam(value = "cid", defaultValue = "0") long cid,
+                                    @RequestParam(value = "bid", defaultValue = "0") long bid,
+                                    Pager pager,
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            long pSubid = subid;
+            Subordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() > 0) pSubid = subordinate.getPid();
+            pager = productService.getSaleSPUBackPager(pager, pSubid, subid, cid, bid);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/getSaleSKUAllList")
+    public ModelAndView getSaleSKUAllList(@RequestParam(value = "subid", defaultValue = "0") long subid,
+                                            @RequestParam(value = "spuid") long spuid,
+                                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            List<ClientProductSKU> res = productService.getSaleSKUAllList(subid, spuid);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
     }
 
 }

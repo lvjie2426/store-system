@@ -30,7 +30,7 @@ public class ProductSPU implements Serializable {
 
     private int type; //SPU类型 0-常规 1-积分
 
-    private long subid; //店铺ID
+    private long subid; //店铺ID (一级：公司)
 
     private long pid; //供应商ID
 
