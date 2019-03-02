@@ -12,6 +12,8 @@ public interface ProductPropertyNameService {
 
     public boolean del(long id) throws Exception;
 
+    public ProductPropertyName load(long id) throws Exception;
+
     public List<ProductPropertyName> getAllList(long cid) throws Exception;
 
 

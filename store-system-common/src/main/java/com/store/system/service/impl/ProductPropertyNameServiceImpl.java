@@ -59,6 +59,11 @@ public class ProductPropertyNameServiceImpl implements ProductPropertyNameServic
     }
 
     @Override
+    public ProductPropertyName load(long id) throws Exception {
+        return productPropertyNameDao.load(id);
+    }
+
+    @Override
     public List<ProductPropertyName> getAllList(long cid) throws Exception {
         return productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
     }
