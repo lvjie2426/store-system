@@ -8,6 +8,8 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
+import com.store.system.client.ClientInventoryDetail;
+import com.store.system.client.ClientInventoryWarehouse;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.dao.*;
@@ -39,6 +41,10 @@ public class ProductServiceImpl implements ProductService {
 
     private TransformMapUtils categoryMapUtils = new TransformMapUtils(ProductCategory.class);
 
+    private TransformMapUtils warehouseMapUtils = new TransformMapUtils(InventoryWarehouse.class);
+
+    private TransformMapUtils subordinateMapUtils = new TransformMapUtils(Subordinate.class);
+
     @Resource
     private ProductPropertyNameDao productPropertyNameDao;
 
@@ -65,6 +71,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private InventoryDetailDao inventoryDetailDao;
+
+    @Resource
+    private InventoryWarehouseDao inventoryWarehouseDao;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -417,15 +426,50 @@ public class ProductServiceImpl implements ProductService {
     public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid) throws Exception {
         List<ProductSKU> list = productSKUDao.getAllList(spuid, ProductSKU.status_nomore);
         List<ClientProductSKU> res = Lists.newArrayList();
+        Set<Long> wids = Sets.newHashSet();
+        Set<Long> sids = Sets.newHashSet();
         for(ProductSKU one : list) {
             ClientProductSKU client = new ClientProductSKU(one);
             int num = 0;
-            List<InventoryDetail> details = inventoryDetailDao.getAllListBySubAndSKU(subid, one.getId());
-            for(InventoryDetail detail : details) {
-                num += detail.getNum();
+            List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(one.getId());
+            List<ClientInventoryDetail> details = Lists.newArrayList();
+            List<ClientInventoryDetail> otherDetails = Lists.newArrayList();
+            for(InventoryDetail detail : allDetails) {
+                wids.add(detail.getWid());
+                sids.add(detail.getSubid());
+                ClientInventoryDetail clientInventoryDetail = new ClientInventoryDetail(detail);
+                if(detail.getSubid() == subid) {
+                    details.add(clientInventoryDetail);
+                    num += detail.getNum();
+                } else {
+                    otherDetails.add(clientInventoryDetail);
+                }
             }
+            client.setDetails(details);
+            client.setOtherDetails(otherDetails);
             client.setNum(num);
             res.add(client);
+        }
+        List<InventoryWarehouse> warehouses = inventoryWarehouseDao.load(Lists.newArrayList(wids));
+        Map<Long, InventoryWarehouse> warehouseMap = warehouseMapUtils.listToMap(warehouses, "id");
+        List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(sids));
+        Map<Long, Subordinate> subordinateMap = subordinateMapUtils.listToMap(subordinates, "id");
+
+        for(ClientProductSKU one : res) {
+            List<ClientInventoryDetail> details = one.getDetails();
+            for(ClientInventoryDetail detail : details) {
+                InventoryWarehouse warehouse = warehouseMap.get(detail.getWid());
+                if(null != warehouse) detail.setWarehouseName(warehouse.getName());
+                Subordinate subordinate = subordinateMap.get(detail.getSubid());
+                if(null != subordinate) detail.setSubName(subordinate.getName());
+            }
+            List<ClientInventoryDetail> otherDetails = one.getOtherDetails();
+            for(ClientInventoryDetail otherDetail : otherDetails) {
+                InventoryWarehouse warehouse = warehouseMap.get(otherDetail.getWid());
+                if(null != warehouse) otherDetail.setWarehouseName(warehouse.getName());
+                Subordinate subordinate = subordinateMap.get(otherDetail.getSubid());
+                if(null != subordinate) otherDetail.setSubName(subordinate.getName());
+            }
         }
         return res;
     }

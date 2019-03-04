@@ -6,7 +6,9 @@ import org.apache.commons.beanutils.BeanUtils;
 
 public class ClientInventoryDetail extends InventoryDetail {
 
-    private String warehouseName;
+    private String subName; //店铺名称
+
+    private String warehouseName; //仓库名称
 
     private int p_type;
 
@@ -182,5 +184,13 @@ public class ClientInventoryDetail extends InventoryDetail {
 
     public void setP_propertyJson(String p_propertyJson) {
         this.p_propertyJson = p_propertyJson;
+    }
+
+    public String getSubName() {
+        return subName;
+    }
+
+    public void setSubName(String subName) {
+        this.subName = subName;
     }
 }

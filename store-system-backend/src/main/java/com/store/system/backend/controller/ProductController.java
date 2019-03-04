@@ -223,6 +223,15 @@ public class ProductController extends BaseController {
         }
     }
 
+    /**
+     * 销售开单 添加商品的SKU列表
+     * method_name: getSaleSKUAllList
+     * params: [subid, spuid, request, response, model]
+     * return: org.springframework.web.servlet.ModelAndView
+     * creat_user: lihao
+     * creat_date: 2019/3/2
+     * creat_time: 15:34
+     **/
     @RequestMapping("/getSaleSKUAllList")
     public ModelAndView getSaleSKUAllList(@RequestParam(value = "subid", defaultValue = "0") long subid,
                                             @RequestParam(value = "spuid") long spuid,

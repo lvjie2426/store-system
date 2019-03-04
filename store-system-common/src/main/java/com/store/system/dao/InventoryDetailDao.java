@@ -18,6 +18,8 @@ public interface InventoryDetailDao extends HDao<InventoryDetail> {
 
     public List<InventoryDetail> getAllListBySubAndSKU(long subid, long p_skuid) throws DataAccessException;
 
+    public List<InventoryDetail> getAllListBySKU(long p_skuid) throws DataAccessException;
+
     public List<InventoryDetail> getAllListBySPU(long p_spuid) throws DataAccessException;
 
 }
