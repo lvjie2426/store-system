@@ -373,4 +373,13 @@
         </property>
     </bean>
 
+    <bean id="optometryInfoDao" class="com.store.system.dao.impl.OptometryInfoDaoImpl">
+        <property name="tableName" value="optometry_info" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

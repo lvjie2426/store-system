@@ -3,10 +3,19 @@ package com.store.system.model;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
+import com.quakoo.space.enums.IdentityType;
 
 import java.io.Serializable;
 
-@HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure)
+/**
+ * 顾客信息
+ * class_name: Customer
+ * package: com.store.system.model
+ * creat_user: lihao
+ * creat_date: 2019/3/4
+ * creat_time: 17:22
+ **/
+@HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
 public class Customer implements Serializable {
 
     public static final int sex_nomore=0;//未知
