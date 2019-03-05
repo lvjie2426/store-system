@@ -9,7 +9,6 @@ import com.store.system.model.Customer;
 import com.store.system.model.Subordinate;
 import com.store.system.service.CustomerService;
 import com.store.system.service.SubordinateService;
-import com.store.system.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
