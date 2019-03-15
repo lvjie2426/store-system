@@ -4,12 +4,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientOptometryInfo;
-import com.store.system.dao.CustomerDao;
 import com.store.system.dao.OptometryInfoDao;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.dao.UserDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.Customer;
 import com.store.system.model.OptometryInfo;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
@@ -26,8 +24,6 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
 
     private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
 
-    private TransformMapUtils customerMapUtils = new TransformMapUtils(Customer.class);
-
     private TransformMapUtils userMapUtils = new TransformMapUtils(User.class);
 
     @Resource
@@ -37,13 +33,10 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
     private SubordinateDao subordinateDao;
 
     @Resource
-    private CustomerDao customerDao;
-
-    @Resource
     private UserDao userDao;
 
     private void check(OptometryInfo optometryInfo) throws StoreSystemException {
-        if(optometryInfo.getCid() == 0) throw new StoreSystemException("顾客ID为空");
+        if(optometryInfo.getUid() == 0) throw new StoreSystemException("顾客ID为空");
         if(optometryInfo.getOptUid() == 0) throw new StoreSystemException("验光师ID为空");
         if(optometryInfo.getOptTime() == 0) throw new StoreSystemException("验光时间为空");
     }
@@ -77,18 +70,15 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
 
     private List<ClientOptometryInfo> transformClients(List<OptometryInfo> list) throws Exception {
         Set<Long> sids = Sets.newHashSet();
-        Set<Long> cids = Sets.newHashSet();
         Set<Long> uids = Sets.newHashSet();
         for(OptometryInfo one : list) {
             if(one.getSubid() > 0) sids.add(one.getSubid());
             if(one.getpSubid() > 0) sids.add(one.getpSubid());
-            cids.add(one.getCid());
+            uids.add(one.getUid());
             uids.add(one.getOptUid());
         }
         List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(sids));
         Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
-        List<Customer> customers = customerDao.load(Lists.newArrayList(cids));
-        Map<Long, Customer> customerMap = customerMapUtils.listToMap(customers, "id");
         List<User> users = userDao.load(Lists.newArrayList(uids));
         Map<Long, User> userMap = userMapUtils.listToMap(users, "id");
         List<ClientOptometryInfo> res = Lists.newArrayList();
@@ -102,7 +92,7 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
                 Subordinate subordinate = subordinateMap.get(one.getpSubid());
                 if(subordinate != null) clientOptometryInfo.setpSubName(subordinate.getName());
             }
-            Customer customer = customerMap.get(one.getCid());
+            User customer = userMap.get(one.getUid());
             if(customer != null) clientOptometryInfo.setCustomerName(customer.getName());
             User user = userMap.get(one.getOptUid());
             if(user != null) clientOptometryInfo.setOptUserName(user.getName());
@@ -112,8 +102,8 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
     }
 
     @Override
-    public List<ClientOptometryInfo> getList(long cid, int size) throws Exception {
-        List<OptometryInfo> list = optometryInfoDao.getList(cid, size);
+    public List<ClientOptometryInfo> getList(long uid, int size) throws Exception {
+        List<OptometryInfo> list = optometryInfoDao.getList(uid, size);
         return transformClients(list);
     }
 }

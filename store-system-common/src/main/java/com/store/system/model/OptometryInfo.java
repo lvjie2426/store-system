@@ -33,7 +33,7 @@ public class OptometryInfo implements Serializable {
 
     private long subid; //分店ID
 
-    private long cid; //顾客ID
+    private long uid; //顾客ID
 
     private long optUid; //验光师
 
@@ -86,14 +86,6 @@ public class OptometryInfo implements Serializable {
 
     public void setSubid(long subid) {
         this.subid = subid;
-    }
-
-    public long getCid() {
-        return cid;
-    }
-
-    public void setCid(long cid) {
-        this.cid = cid;
     }
 
     public long getOptUid() {
@@ -206,5 +198,13 @@ public class OptometryInfo implements Serializable {
 
     public void setUtime(long utime) {
         this.utime = utime;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
     }
 }

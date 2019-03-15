@@ -13,6 +13,6 @@ public interface OptometryInfoService {
 
     public boolean del(long id) throws Exception;
 
-    public List<ClientOptometryInfo> getList(long cid, int size) throws Exception;
+    public List<ClientOptometryInfo> getList(long uid, int size) throws Exception;
 
 }

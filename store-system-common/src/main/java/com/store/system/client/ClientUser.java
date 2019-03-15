@@ -5,7 +5,9 @@ import org.apache.commons.beanutils.BeanUtils;
 
 public class ClientUser extends User {
 
-    private int couponNum;
+    private String pSubName; //公司名称
+
+    private String subName; //分店名称
 
     public ClientUser(User user) {
         try {
@@ -13,16 +15,23 @@ public class ClientUser extends User {
             this.setPassword(null);
             this.setRand(-1);
         } catch (Exception e) {
-            throw new IllegalStateException("user construction error!");
+            throw new IllegalStateException("ClientUser construction error!");
         }
     }
 
-    public int getCouponNum() {
-        return couponNum;
+    public String getpSubName() {
+        return pSubName;
     }
 
-    public void setCouponNum(int couponNum) {
-        this.couponNum = couponNum;
+    public void setpSubName(String pSubName) {
+        this.pSubName = pSubName;
     }
 
+    public String getSubName() {
+        return subName;
+    }
+
+    public void setSubName(String subName) {
+        this.subName = subName;
+    }
 }

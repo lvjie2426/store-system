@@ -52,7 +52,7 @@ public interface UserService {
      * @return
      * @throws Exception
      */
-    public ClientUserOnLogin login(User user) throws Exception;
+    public ClientUserOnLogin login(User user, String code) throws Exception;
 
 
     public User load(long uid) throws Exception;
@@ -64,11 +64,6 @@ public interface UserService {
 
 
     public List<User> load(List<Long> uids) throws Exception;
-
-    public List<ClientUser> loadWithClient(List<Long> uids) throws Exception;
-
-
-
 
     public boolean update(User user, List<Long> updateRids) throws Exception;
 
@@ -84,13 +79,6 @@ public interface UserService {
 
     public void addScore(long id, int num) throws Exception;
 
-
-    public String getAlipayUid(long uid) throws Exception ;
-    public boolean updateAlipayUid(long uid, String alipayUid) throws Exception;
-    public String getWxpayOpenId(long uid) throws Exception ;
-    public boolean updateWxpayOpenId(long uid, String wxpayOpenId) throws Exception;
-
-
     /**
      * 获取下属单位的所有用户
      * @param sid
@@ -99,8 +87,6 @@ public interface UserService {
      */
     public List<User> getAllUserBySid(long sid)throws Exception;
 
-    public boolean addfavourNum(long uid, String filed, int num) throws Exception;
-
     /**
      * 修改基本信息
      * @param user
@@ -108,5 +94,18 @@ public interface UserService {
      */
     public boolean updateUser(User user) throws Exception;
 
+
+
+    ///////////////////////////顾客相关//////////////////////////
+
+    public User addCustomer(User user) throws Exception;
+
+    public boolean updateCustomer(User user) throws Exception;
+
+    public boolean delCustomer(long id) throws Exception;
+
+    public Pager getBackCustomerPager(Pager pager, long pSubid) throws Exception; //获取公司下的顾客
+
+    public Pager getBackSubCustomerPager(Pager pager, long subid) throws Exception; //获取分店下的顾客
 
 }

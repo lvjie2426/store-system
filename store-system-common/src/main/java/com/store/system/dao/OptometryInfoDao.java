@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface OptometryInfoDao extends HDao<OptometryInfo> {
 
-    public List<OptometryInfo> getList(long cid, int size) throws DataAccessException;
+    public List<OptometryInfo> getList(long uid, int size) throws DataAccessException;
 
 }

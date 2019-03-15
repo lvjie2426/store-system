@@ -6,8 +6,10 @@ import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Permission;
+import com.store.system.model.Subordinate;
 import com.store.system.model.User;
 import com.store.system.service.PermissionService;
+import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
 import com.store.system.util.UserUtils;
 import com.google.common.collect.Lists;
@@ -41,6 +43,9 @@ public class UserController extends BaseController {
 
     @Resource
     private PermissionService permissionService;
+
+    @Resource
+    private SubordinateService subordinateService;
 
     @RequestMapping("/getTree")
     public ModelAndView getTree(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -127,6 +132,68 @@ public class UserController extends BaseController {
         if(uid == 0) return super.viewNegotiating(request, response, new ResultClient("用户ID不能为空"));
         boolean res = userService.updateUserPermission(uid, pids);
         return this.viewNegotiating(request, response, new ResultClient(res));
+    }
+
+
+    /////////////////////顾客相关////////////////////////
+
+    @RequestMapping("/addCustomer")
+    public ModelAndView addCustomer(User user, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            user = userService.addCustomer(user);
+            return this.viewNegotiating(request,response, new ResultClient(user));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/updateCustomer")
+    public ModelAndView updateCustomer(User user, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            boolean res = userService.updateCustomer(user);
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/delCustomer")
+    public ModelAndView delCustomer(@RequestParam(value = "id") long id,
+                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            boolean res = userService.delCustomer(id);
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/getCustomerPager")
+    public ModelAndView getCustomerPager(Pager pager, @RequestParam(value = "subid") long subid,
+                                         HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            Subordinate subordinate = subordinateService.load(subid);
+            long pSubid = subordinate.getPid();
+            if(pSubid != 0) throw new StoreSystemException("公司ID错误");
+            pager = userService.getBackCustomerPager(pager, subid);
+            return this.viewNegotiating(request,response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/getSubCustomerPager")
+    public ModelAndView getSubCustomerPager(Pager pager, @RequestParam(value = "subid") long subid,
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            Subordinate subordinate = subordinateService.load(subid);
+            long pSubid = subordinate.getPid();
+            if(pSubid == 0) throw new StoreSystemException("分店ID错误");
+            pager = userService.getBackSubCustomerPager(pager, subid);
+            return this.viewNegotiating(request,response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.*;
@@ -43,8 +44,16 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private SubordinateUserPoolDao subordinateUserPoolDao;
+
+    @Resource
+    private SubordinateDao subordinateDao;
+
     @Resource
     protected JdbcTemplate jdbcTemplate;
+
+    private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
+
+    private RowMapperHelp<User> rowMapper = new RowMapperHelp<>(User.class);
 
     @Autowired(required = true)
     @Qualifier("cachePool")
@@ -221,15 +230,33 @@ public class UserServiceImpl implements UserService {
                 loginUserPoolDao.insert(loginUserPool);
                 user = dbUser;
             } else {
-                user.createJsonString();
                 Random rand = new Random();
                 user.setRand(rand.nextInt(100000000));
+                if(StringUtils.isNotBlank(user.getWeiboId())) {
+                    user.setWeiboId(user.getWeiboId());
+                }
+                if(StringUtils.isNotBlank(user.getWeixinId())) {
+                    user.setWeixinId(user.getWeixinId());
+                }
+                if(StringUtils.isNotBlank(user.getQqId())) {
+                    user.setQqId(user.getQqId());
+                }
+                if(StringUtils.isNotBlank(user.getAlipayId())) {
+                    user.setAlipayId(user.getAlipayId());
+                }
+                user.setPassword(MD5Utils.md5ReStr(user.getPassword().getBytes()));
+                if(user.getSid()>0){
+                    Subordinate subordinate = subordinateDao.load(user.getSid());
+                    long psid = subordinate.getPid();
+                    if(psid == 0) psid = subordinate.getId();
+                    user.setPsid(psid);
+                }
                 user = userDao.insert(user);
                 phonePool = new LoginUserPool();
                 phonePool.setUserType(user.getUserType());
                 phonePool.setLoginType(LoginUserPool.loginType_phone);
                 phonePool.setAccount(user.getPhone());
-                phonePool = loginUserPoolDao.load(phonePool);
+                phonePool.setUid(user.getId());
                 loginUserPoolDao.insert(phonePool);
                 loginUserPool.setUid(user.getId());
                 loginUserPoolDao.insert(loginUserPool);
@@ -255,10 +282,18 @@ public class UserServiceImpl implements UserService {
             }
             LoginUserPool dbLoginUserPool=loginUserPoolDao.load(loginUserPool);
             if(dbLoginUserPool != null) throw new StoreSystemException("该账号已经存在");
-            user.createJsonString();
             Random rand = new Random();
+            String name = user.getName();
+            if(StringUtils.isBlank(name)) name = ""+rand.nextInt(100000000);
+            user.setName(name);
             user.setRand(rand.nextInt(100000000));
             user.setPassword(MD5Utils.md5ReStr(user.getPassword().getBytes()));
+            if(user.getSid()>0){
+                Subordinate subordinate = subordinateDao.load(user.getSid());
+                long psid = subordinate.getPid();
+                if(psid == 0) psid = subordinate.getId();
+                user.setPsid(psid);
+            }
             user = userDao.insert(user);
             loginUserPool.setUid(user.getId());
             loginUserPoolDao.insert(loginUserPool);
@@ -276,7 +311,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ClientUserOnLogin login(User user) throws Exception {
+    public ClientUserOnLogin login(User user, String code) throws Exception {
         LoginUserPool loginUserPool = new LoginUserPool();
         loginUserPool.setUserType(user.getUserType());
         if(StringUtils.isNotBlank(user.getPhone())) {
@@ -309,10 +344,15 @@ public class UserServiceImpl implements UserService {
         if(null == dbUser||dbUser.getStatus()==User.status_delete){
             throw new StoreSystemException("用户不存在");
         }
+        if(StringUtils.isBlank(user.getQqId())&&StringUtils.isBlank(user.getWeixinId())&&StringUtils.isBlank(user.getWeiboId())){
+            if(StringUtils.isBlank(code)){
+                if(StringUtils.isNotBlank(dbUser.getPassword())&&
+                        !MD5Utils.md5ReStr(user.getPassword().getBytes()).equalsIgnoreCase(dbUser.getPassword())) {
+                    throw new StoreSystemException("密码不正确");
+                }
 
-        if(StringUtils.isNotBlank(dbUser.getPassword())&&
-                !MD5Utils.md5ReStr(user.getPassword().getBytes()).equalsIgnoreCase(dbUser.getPassword()))
-            throw new StoreSystemException("密码不正确");
+            }
+        }
         ClientUserOnLogin clientUserOnLogin = new ClientUserOnLogin(dbUser);
         return clientUserOnLogin;
     }
@@ -343,12 +383,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> load(List<Long> ids) throws Exception {
         return userDao.load(ids);
-    }
-
-
-    @Override
-    public List<ClientUser> loadWithClient(List<Long> ids) throws Exception {
-        return transformClient(userDao.load(ids));
     }
 
     @Override
@@ -419,8 +453,6 @@ public class UserServiceImpl implements UserService {
             Random rand = new Random();
             currentUser.setRand(rand.nextInt(100000000));
         }
-        currentUser.createJsonString();
-
 
         boolean sign = userDao.update(currentUser);
         if(oldLoginUserPool!=null){
@@ -560,52 +592,42 @@ public class UserServiceImpl implements UserService {
 
 
     public List<ClientUser> transformClient(List<User> users) throws Exception{
-        List<ClientUser> result=new ArrayList<>();
-        if(users!=null) {
-            for (User user : users) {
-                ClientUser clientUser = transformClient(user);
-                result.add(clientUser);
-            }
+        Set<Long> sids = Sets.newHashSet();
+        for(User user : users) {
+            if(user.getPsid() > 0) sids.add(user.getPsid());
+            if(user.getSid() > 0) sids.add(user.getSid());
         }
-        return result;
+        List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(sids));
+        Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
+        List<ClientUser> res = Lists.newArrayList();
+        for(User user : users) {
+            ClientUser clientUser = new ClientUser(user);
+            if(clientUser.getPsid() > 0) {
+                Subordinate subordinate = subordinateMap.get(clientUser.getPsid());
+                if(subordinate != null) clientUser.setpSubName(subordinate.getName());
+            }
+            if(clientUser.getSid() > 0) {
+                Subordinate subordinate = subordinateMap.get(clientUser.getSid());
+                if(subordinate != null) clientUser.setSubName(subordinate.getName());
+            }
+            res.add(clientUser);
+        }
+        return res;
     }
 
     private ClientUser transformClient(User user) throws Exception{
         ClientUser clientUser = new ClientUser(user);
+        Set<Long> sids = Sets.newHashSet();
+        if(user.getPsid() > 0) sids.add(user.getPsid());
+        if(user.getSid() > 0) sids.add(user.getSid());
+        List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(sids));
+        Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
+        if(clientUser.getPsid() > 0) {
+            Subordinate subordinate = subordinateMap.get(clientUser.getPsid());
+            if(subordinate != null) clientUser.setpSubName(subordinate.getName());
+        }
+
         return clientUser;
-    }
-
-
-    @Override
-    public String getAlipayUid(long uid) throws Exception {
-        User user = userDao.load(uid);
-        if (null == user) throw new StoreSystemException("user is null!");
-        return user.getAlipayId();
-    }
-
-    @Override
-    public boolean updateAlipayUid(long uid, String alipayUid) throws Exception {
-        User user = userDao.load(uid);
-        if (null == user) throw new StoreSystemException("user is null!");
-        user.setAlipayId(alipayUid);
-        boolean sign = userDao.update(user);
-        return sign;
-    }
-
-    @Override
-    public String getWxpayOpenId(long uid) throws Exception {
-        User user = userDao.load(uid);
-        if (null == user) throw new StoreSystemException("user is null!");
-        return user.getWeixinId();
-    }
-
-    @Override
-    public boolean updateWxpayOpenId(long uid, String wxpayOpenId) throws Exception {
-        User user = userDao.load(uid);
-        if (null == user) throw new StoreSystemException("user is null!");
-        user.setWeixinId(wxpayOpenId);
-        boolean sign = userDao.update(user);
-        return sign;
     }
 
     public List<User> getAllUserBySid(long sid)throws Exception{
@@ -615,15 +637,6 @@ public class UserServiceImpl implements UserService {
             uids.add(subordinateUserPool.getUid());
         }
         return userDao.load(uids);
-    }
-
-    @Override
-    public boolean addfavourNum(long uid,String filed, int num) throws Exception {
-        User user = userDao.increment(userDao.load(uid), filed, num);
-        if(user!=null){
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -642,38 +655,6 @@ public class UserServiceImpl implements UserService {
         if(user.getAge() != 0){
             olduser.setAge(user.getAge());
         }
-        //身高
-        if (user.getHeight()!=null && !"".equals(user.getHeight())){
-            olduser.setHeight(user.getHeight());
-        }
-        //体重
-        if (user.getWeight()!=null && !"".equals(user.getWeight())){
-            olduser.setWeight(user.getWeight());
-        }
-        //头像
-        if(user.getIcon()!=null && !"".equals(user.getIcon())){
-            olduser.setIcon(user.getIcon());
-        }
-        //罩杯
-        if(user.getBar()!=null && !"".equals(user.getBar())){
-            olduser.setBar(user.getBar());
-        }
-        //腰围
-        if(user.getWaistline()!=null && !"".equals(user.getWaistline())){
-            olduser.setWaistline(user.getWaistline());
-        }
-        //臀围
-        if(user.getHipline()!=null && !"".equals(user.getHipline())){
-            olduser.setHipline(user.getHipline());
-        }
-        //胸围
-        if(user.getChest()!=null && !"".equals(user.getChest())){
-            olduser.setChest(user.getChest());
-        }
-        //腿长
-        if(user.getLeg()!=null && !"".equals(user.getLeg())){
-            olduser.setLeg(user.getLeg());
-        }
         //封面图
         if(user.getCover()!=null && !"".equals(user.getCover())){
             olduser.setCover(user.getCover());
@@ -682,5 +663,111 @@ public class UserServiceImpl implements UserService {
         return res;
     }
 
+    private void check(User user) throws StoreSystemException {
+        if(user.getUserType() != User.userType_user) throw new StoreSystemException("用户类型错误");
+        String name = user.getName();
+        if(StringUtils.isBlank(name)) throw new StoreSystemException("姓名不能为空");
+        String phone = user.getPhone();
+        if(StringUtils.isBlank(phone)) throw new StoreSystemException("手机号不能为空");
+        if(user.getSid() == 0) throw new StoreSystemException("店铺ID错误");
+
+    }
+
+    @Override
+    public User addCustomer(User user) throws Exception {
+        check(user);
+        long subid = user.getSid();
+        Subordinate subordinate = subordinateDao.load(subid);
+        long pSubid = subordinate.getPid();
+        if(subordinate.getPid() == 0) pSubid = subid;
+        user.setPsid(pSubid);
+        user = userDao.insert(user);
+        LoginUserPool loginUserPool = new LoginUserPool();
+        loginUserPool.setUserType(User.userType_user);
+        loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+        loginUserPool.setAccount(user.getPhone());
+        loginUserPool.setUid(user.getId());
+        loginUserPoolDao.insert(loginUserPool);
+        return user;
+    }
+
+    @Override
+    public boolean updateCustomer(User user) throws Exception {
+        check(user);
+        User dbUser = userDao.load(user.getId());
+        long subid = user.getSid();
+        Subordinate subordinate = subordinateDao.load(subid);
+        long pSubid = subordinate.getPid();
+        if(subordinate.getPid() == 0) pSubid = subid;
+        user.setPsid(pSubid);
+        boolean res = userDao.update(user);
+        if(res && !dbUser.getPhone().equals(user.getPhone())) {
+            LoginUserPool loginUserPool = new LoginUserPool();
+            loginUserPool.setUserType(User.userType_user);
+            loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+            loginUserPool.setAccount(dbUser.getPhone());
+            loginUserPoolDao.delete(loginUserPool);
+            loginUserPool = new LoginUserPool();
+            loginUserPool.setUserType(User.userType_user);
+            loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+            loginUserPool.setAccount(user.getPhone());
+            loginUserPool.setUid(user.getId());
+            loginUserPoolDao.insert(loginUserPool);
+        }
+        return res;
+    }
+
+    @Override
+    public boolean delCustomer(long id) throws Exception {
+        User user = userDao.load(id);
+        if(user != null) {
+            if(user.getUserType() != User.userType_user) throw new StoreSystemException("用户类型错误");
+            user.setStatus(User.status_delete);
+            boolean res = userDao.update(user);
+            if(res) {
+                LoginUserPool loginUserPool = new LoginUserPool();
+                loginUserPool.setUserType(User.userType_user);
+                loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+                loginUserPool.setAccount(user.getPhone());
+                loginUserPoolDao.delete(loginUserPool);
+            }
+            return res;
+        }
+        return false;
+    }
+
+    @Override
+    public Pager getBackCustomerPager(Pager pager, long pSubid) throws Exception {
+        String sql = "SELECT * FROM `user` where psid = " + pSubid + " and `status` = " + User.status_nomore
+                + " and userType = " + User.userType_user;
+        String sqlCount = "SELECT COUNT(id) FROM `user` where psid = " + pSubid + " and `status` = " + User.status_nomore
+                + " and userType = " + User.userType_user;
+        String limit = " limit %d , %d ";
+        sql = sql + " order  by `ctime` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<User> users = this.jdbcTemplate.query(sql, rowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        List<ClientUser> data = transformClient(users);
+        pager.setData(data);
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public Pager getBackSubCustomerPager(Pager pager, long subid) throws Exception {
+        String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore
+                + " and userType = " + User.userType_user;
+        String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore
+                + " and userType = " + User.userType_user;
+        String limit = " limit %d , %d ";
+        sql = sql + " order  by `ctime` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<User> users = this.jdbcTemplate.query(sql, rowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        List<ClientUser> data = transformClient(users);
+        pager.setData(data);
+        pager.setTotalCount(count);
+        return pager;
+    }
 
 }

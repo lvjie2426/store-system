@@ -66,7 +66,7 @@ public class LoginController extends BaseController {
             user.setUserName(userName);
             user.setPassword(password);
             user.setUserType(userType);
-            ClientUserOnLogin clientUserOnLogin = userService.login(user);
+            ClientUserOnLogin clientUserOnLogin = userService.login(user, code);
             cache.delete(verifyCode + uuid);
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
         } catch (StoreSystemException e) {

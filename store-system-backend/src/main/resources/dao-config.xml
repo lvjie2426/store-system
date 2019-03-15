@@ -364,8 +364,8 @@
         </property>
     </bean>
 
-    <bean id="customerDao" class="com.store.system.dao.impl.CustomerDaoImpl">
-        <property name="tableName" value="customer" />
+    <bean id="optometryInfoDao" class="com.store.system.dao.impl.OptometryInfoDaoImpl">
+        <property name="tableName" value="optometry_info" />
         <property name="dataSources">
             <list>
                 <ref bean="dataSource" />
@@ -373,8 +373,26 @@
         </property>
     </bean>
 
-    <bean id="optometryInfoDao" class="com.store.system.dao.impl.OptometryInfoDaoImpl">
-        <property name="tableName" value="optometry_info" />
+    <bean id="userGradeDao" class="com.store.system.dao.impl.UserGradeDaoImpl">
+        <property name="tableName" value="user_grade" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="marketingCouponDao" class="com.store.system.dao.impl.MarketingCouponDaoImpl">
+        <property name="tableName" value="marketing_coupon" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="marketingShotMsgDao" class="com.store.system.dao.impl.MarketingShotMsgDaoImpl">
+        <property name="tableName" value="marketing_shot_msg" />
         <property name="dataSources">
             <list>
                 <ref bean="dataSource" />

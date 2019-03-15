@@ -74,15 +74,14 @@ public class User implements Serializable {
 
     private String qqInfo;// qq信息
 
-
     /**
      * 角色
      */
-    @HyperspaceColumn(isDbColumn = false)
+    @HyperspaceColumn(isJson = true)
     private List<Long> rids=new ArrayList<>();//角色ID
-    private String ridsJson;//#v500# ^nn^角色ID
 
-    private long sid; //下属单位ID，0表示平台
+    private long psid; //上级单位ID
+    private long sid;  //下级单位ID，0表示平台
 
     private int status;
 
@@ -123,7 +122,9 @@ public class User implements Serializable {
     private String lastIp;//最后的ip
 
 
-    private int score;
+    private int score; //积分
+
+    private long money; //储值金额
 
     private String plat;
 
@@ -138,29 +139,6 @@ public class User implements Serializable {
     private long utime;
 
     //========常用字段结束===========
-
-    private int favourNum;  //收藏数量
-
-    private int focousNum;  //关注数量
-
-    private int fansNum;
-
-    private String height;//身高
-
-    private String weight;//体重
-
-    private String waistline;//腰围
-
-    private String hipline ;//臀围
-
-    private String chest;//胸围
-
-    private String leg;//腿长
-
-    private String bar;//罩杯
-
-
-
 
     public long getId() {
         return id;
@@ -297,10 +275,6 @@ public class User implements Serializable {
         this.rids = rids;
     }
 
-    public String getRidsJson() {
-        return ridsJson;
-    }
-
 
     public String getIcon() {
         return icon;
@@ -407,22 +381,6 @@ public class User implements Serializable {
         this.age = age;
     }
 
-    public int getFavourNum() {
-        return favourNum;
-    }
-
-    public void setFavourNum(int favourNum) {
-        this.favourNum = favourNum;
-    }
-
-    public int getFansNum() {
-        return fansNum;
-    }
-
-    public void setFansNum(int fansNum) {
-        this.fansNum = fansNum;
-    }
-
     public String getLastIp() {
         return lastIp;
     }
@@ -463,81 +421,20 @@ public class User implements Serializable {
         this.userType = userType;
     }
 
-    public void setRidsJson(String ridsJson) throws IOException {
-        this.ridsJson = ridsJson;
-        if(StringUtils.isNotBlank(ridsJson))
-            this.rids=JsonUtils.parse(ridsJson, new TypeReference<List<Long>>() {});
 
+    public long getPsid() {
+        return psid;
     }
 
-    public void createJsonString() throws Exception {
-
-        if(rids!=null){
-            this.setRidsJson(JsonUtils.format(rids));
-        }
+    public void setPsid(long psid) {
+        this.psid = psid;
     }
 
-    public String getHeight() {
-        return height;
+    public long getMoney() {
+        return money;
     }
 
-    public void setHeight(String height) {
-        this.height = height;
-    }
-
-    public String getWeight() {
-        return weight;
-    }
-
-    public void setWeight(String weight) {
-        this.weight = weight;
-    }
-
-    public String getWaistline() {
-        return waistline;
-    }
-
-    public void setWaistline(String waistline) {
-        this.waistline = waistline;
-    }
-
-    public String getHipline() {
-        return hipline;
-    }
-
-    public void setHipline(String hipline) {
-        this.hipline = hipline;
-    }
-
-    public String getChest() {
-        return chest;
-    }
-
-    public void setChest(String chest) {
-        this.chest = chest;
-    }
-
-    public String getLeg() {
-        return leg;
-    }
-
-    public void setLeg(String leg) {
-        this.leg = leg;
-    }
-
-    public String getBar() {
-        return bar;
-    }
-
-    public void setBar(String bar) {
-        this.bar = bar;
-    }
-
-    public int getFocousNum() {
-        return focousNum;
-    }
-
-    public void setFocousNum(int focousNum) {
-        this.focousNum = focousNum;
+    public void setMoney(long money) {
+        this.money = money;
     }
 }
