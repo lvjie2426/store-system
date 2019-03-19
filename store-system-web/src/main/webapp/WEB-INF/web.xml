@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-	<display-name>coolgocar Web Application</display-name>
+	<display-name>store system Web Application</display-name>
 
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -24,33 +24,26 @@
 
 
     <servlet>
-        <servlet-name>coolgocar</servlet-name>
-        <servlet-class>com.coolgocar.web.interceptor.OptionDispatcherServlet</servlet-class>
+        <servlet-name>store-system</servlet-name>
+        <servlet-class>com.store.system.interceptor.OptionDispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath*:coolgocar-servlet.xml</param-value>
+            <param-value>classpath*:glasses-servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>store-system</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>*.html</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/resource/*</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/view/*</url-pattern>
+    </servlet-mapping>
 
-
-	<servlet-mapping>
-		<servlet-name>coolgocar</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
-
-
-	<session-config>
-		<session-timeout>300000</session-timeout>
-	</session-config>
+    <session-config>
+        <session-timeout>300000</session-timeout>
+    </session-config>
 	
 </web-app>

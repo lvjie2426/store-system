@@ -11,6 +11,7 @@ import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.quakoo.space.mapper.LongRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
@@ -22,6 +23,12 @@ import java.util.Map;
 public class UserDaoImpl extends CacheBaseDao<User> implements UserDao {
 
     Logger logger= LoggerFactory.getLogger(UserDaoImpl.class);
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        DEFAULT_INIT_LIST_SIZE = 10000;
+        super.afterPropertiesSet();
+    }
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
@@ -67,9 +74,7 @@ public class UserDaoImpl extends CacheBaseDao<User> implements UserDao {
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<User> getAllListByPhone(String phone) {
+    public List<User> getAllList(long sid, int userType, int status) throws DataAccessException {
         return null;
     }
-
-
 }

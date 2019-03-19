@@ -15,8 +15,7 @@ public interface UserDao extends HDao<User> {
 
     public int getCount(long rid) throws DataAccessException;
 
-    public List<User> getAllListByPhone(String phone);
 
-
+    public List<User> getAllList(long sid, int userType, int status) throws DataAccessException;
 
 }

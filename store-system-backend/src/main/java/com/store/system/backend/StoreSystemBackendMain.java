@@ -6,11 +6,11 @@ import com.quakoo.webframework.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GlassesBackendMain extends AbstractServer {
+public class StoreSystemBackendMain extends AbstractServer {
 
-	private final static Logger logger = LoggerFactory.getLogger(GlassesBackendMain.class);
+	private final static Logger logger = LoggerFactory.getLogger(StoreSystemBackendMain.class);
 
-	public GlassesBackendMain(String[] anArgs) {
+	public StoreSystemBackendMain(String[] anArgs) {
 		super(anArgs);
 	}
 
@@ -49,7 +49,7 @@ public class GlassesBackendMain extends AbstractServer {
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 		context.setPackagingDataEnabled(false);
 		context.setName(projectName);
-        GlassesBackendMain server = new GlassesBackendMain(args);
+        StoreSystemBackendMain server = new StoreSystemBackendMain(args);
 		server.run(args);
 	}
 
@@ -63,7 +63,7 @@ public class GlassesBackendMain extends AbstractServer {
 				String separator = System.getProperty("file.separator");
 				StringBuilder webapp = new StringBuilder().append(System.getProperty("user.dir")).append(separator)
 						.append("src").append(separator).append("main").append(separator).append("webapp");
-				args = new String[] { "GlassesBackendMain", "10004", webapp.toString() };
+				args = new String[] { "StoreSystemBackendMain", "10004", webapp.toString() };
 			}
 			runServer(args);
 		} catch (Exception e) {
