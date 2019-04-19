@@ -50,7 +50,7 @@ public class SubmailUtils {
         try {
             List<List<SubmailMultiItem>> multiItemsList = Lists.partition(multiItems, 50);
             for(List<SubmailMultiItem> one : multiItemsList) {
-                String multi = JsonUtils.toJson(multiItems);
+                String multi = JsonUtils.toJson(one);
                 Map<String, Object> postParams = Maps.newHashMap();
                 postParams.put("multi", multi);
                 postParams.put("content", content_signature + content);
