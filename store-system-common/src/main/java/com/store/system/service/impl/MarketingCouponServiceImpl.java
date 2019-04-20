@@ -125,7 +125,7 @@ public class MarketingCouponServiceImpl implements MarketingCouponService {
             }
             if(sign) {
                 if(descSubtractType == MarketingCoupon.desc_subtract_type_money) {
-                    res = (int)descSubtract;
+                    res = money - (int)descSubtract;
                 } else if(descSubtractType == MarketingCoupon.desc_subtract_type_rate) {
                     BigDecimal bigDecimal = new BigDecimal(res * descSubtract);
                     res = bigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
