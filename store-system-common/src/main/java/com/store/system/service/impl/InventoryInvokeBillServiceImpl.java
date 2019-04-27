@@ -211,7 +211,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
                 InventoryInBillItem inBillItem = new InventoryInBillItem();
                 inBillItem.setSpuid(detail.getP_spuid());
                 inBillItem.setCode(sku.getCode());
-                inBillItem.setPropertyJson(sku.getPropertyJson());
+                inBillItem.setProperties(sku.getProperties());
                 inBillItem.setCostPrice(sku.getCostPrice());
                 inBillItem.setRetailPrice(sku.getRetailPrice());
                 inBillItem.setIntegralPrice(sku.getIntegralPrice());
@@ -358,7 +358,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
                     if(null != spu) {
                         clientItem.setSpuid(spu.getId());
                         clientItem.setSpuName(spu.getName());
-                        clientItem.setSpuCover(spu.getCover());
+                        clientItem.setSpuCovers(spu.getCovers());
                         clientItem.setSpuIcon(spu.getIcon());
                         clientItem.setCid(spu.getCid());
                         clientItem.setBid(spu.getBid());
@@ -367,7 +367,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
                     ProductSKU sku = skuMap.get(detail.getP_skuid());
                     if(null != sku) {
                         clientItem.setCode(sku.getCode());
-                        clientItem.setPropertyJson(sku.getPropertyJson());
+                        clientItem.setProperties(sku.getProperties());
                     }
                 }
                 ProductCategory category = categoryMap.get(clientItem.getCid());

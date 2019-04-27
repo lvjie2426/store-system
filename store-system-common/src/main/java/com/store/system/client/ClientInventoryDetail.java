@@ -1,7 +1,10 @@
 package com.store.system.client;
 
+import com.oracle.tools.packager.mac.MacAppBundler;
 import com.store.system.model.InventoryDetail;
 import org.apache.commons.beanutils.BeanUtils;
+
+import java.util.Map;
 
 
 public class ClientInventoryDetail extends InventoryDetail {
@@ -30,7 +33,7 @@ public class ClientInventoryDetail extends InventoryDetail {
 
     private String p_code;
 
-    private String p_propertyJson; //SKU 属性
+    private Map<Long, Object> p_properties; //SKU 属性
 
     private int p_retailPrice;
 
@@ -178,12 +181,12 @@ public class ClientInventoryDetail extends InventoryDetail {
         this.ctime = ctime;
     }
 
-    public String getP_propertyJson() {
-        return p_propertyJson;
+    public Map<Long, Object> getP_properties() {
+        return p_properties;
     }
 
-    public void setP_propertyJson(String p_propertyJson) {
-        this.p_propertyJson = p_propertyJson;
+    public void setP_properties(Map<Long, Object> p_properties) {
+        this.p_properties = p_properties;
     }
 
     public String getSubName() {

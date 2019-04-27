@@ -150,7 +150,7 @@ public class ProductCustomServiceImpl implements ProductCustomService {
             ProductSKU sku = skuMap.get(clientProductCustom.getSkuid());
             if(sku != null) {
                 clientProductCustom.setCode(sku.getCode());
-                clientProductCustom.setPropertyJson(sku.getPropertyJson());
+                clientProductCustom.setProperties(sku.getProperties());
             }
             res.add(clientProductCustom);
         }

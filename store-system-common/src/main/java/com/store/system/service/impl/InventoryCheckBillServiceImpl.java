@@ -276,7 +276,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
                     if(null != spu) {
                         clientItem.setSpuid(spu.getId());
                         clientItem.setSpuName(spu.getName());
-                        clientItem.setSpuCover(spu.getCover());
+                        clientItem.setSpuCovers(spu.getCovers());
                         clientItem.setSpuIcon(spu.getIcon());
                         clientItem.setCid(spu.getCid());
                         clientItem.setBid(spu.getBid());
@@ -285,7 +285,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
                     ProductSKU sku = skuMap.get(detail.getP_skuid());
                     if(null != sku) {
                         clientItem.setCode(sku.getCode());
-                        clientItem.setPropertyJson(sku.getPropertyJson());
+                        clientItem.setProperties(sku.getProperties());
                     }
                 }
                 ProductCategory category = categoryMap.get(clientItem.getCid());

@@ -1,6 +1,7 @@
 package com.store.system.bean;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 进销存入库单子条目
@@ -16,7 +17,7 @@ public class InventoryInBillItem implements Serializable {
 
     private String code; //产品编码
 
-    private String propertyJson; //属性json
+    private Map<Long, Object> properties; //属性json
 
     private int retailPrice; //零售价(分)
 
@@ -43,14 +44,6 @@ public class InventoryInBillItem implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getPropertyJson() {
-        return propertyJson;
-    }
-
-    public void setPropertyJson(String propertyJson) {
-        this.propertyJson = propertyJson;
     }
 
     public int getRetailPrice() {
@@ -85,4 +78,11 @@ public class InventoryInBillItem implements Serializable {
         this.num = num;
     }
 
+    public Map<Long, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<Long, Object> properties) {
+        this.properties = properties;
+    }
 }

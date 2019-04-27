@@ -3,6 +3,8 @@ package com.store.system.client;
 import com.store.system.model.ProductCustom;
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.util.Map;
+
 public class ClientProductCustom extends ProductCustom {
 
     private String pSubName; //公司名称
@@ -21,7 +23,7 @@ public class ClientProductCustom extends ProductCustom {
 
     private String code;
 
-    private String propertyJson; //SKU 属性
+    private Map<Long, Object> properties; //SKU 属性
 
     public ClientProductCustom(ProductCustom productCustom) {
         try {
@@ -95,11 +97,11 @@ public class ClientProductCustom extends ProductCustom {
         this.code = code;
     }
 
-    public String getPropertyJson() {
-        return propertyJson;
+    public Map<Long, Object> getProperties() {
+        return properties;
     }
 
-    public void setPropertyJson(String propertyJson) {
-        this.propertyJson = propertyJson;
+    public void setProperties(Map<Long, Object> properties) {
+        this.properties = properties;
     }
 }

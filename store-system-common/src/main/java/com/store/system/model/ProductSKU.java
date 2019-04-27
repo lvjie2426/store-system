@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
@@ -7,6 +8,7 @@ import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 产品SKU
@@ -31,7 +33,8 @@ public class ProductSKU implements Serializable {
 
     private String name; //sku名称
 
-    private String propertyJson; //属性json
+    @HyperspaceColumn(isJson = true)
+    private Map<Long, Object> properties; //属性json
 
     private int retailPrice; //零售价(分)
 
@@ -82,14 +85,6 @@ public class ProductSKU implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPropertyJson() {
-        return propertyJson;
-    }
-
-    public void setPropertyJson(String propertyJson) {
-        this.propertyJson = propertyJson;
     }
 
     public int getRetailPrice() {
@@ -162,5 +157,13 @@ public class ProductSKU implements Serializable {
 
     public void setUtime(long utime) {
         this.utime = utime;
+    }
+
+    public Map<Long, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<Long, Object> properties) {
+        this.properties = properties;
     }
 }

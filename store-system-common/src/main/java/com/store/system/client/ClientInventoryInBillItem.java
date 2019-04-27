@@ -3,13 +3,15 @@ package com.store.system.client;
 import com.store.system.bean.InventoryInBillItem;
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.util.List;
+
 public class ClientInventoryInBillItem extends InventoryInBillItem {
 
     private String spuName;
 
     private String spuIcon;
 
-    private String spuCover;
+    private List<String> spuCovers;
 
     private long cid;
 
@@ -47,12 +49,12 @@ public class ClientInventoryInBillItem extends InventoryInBillItem {
         this.spuIcon = spuIcon;
     }
 
-    public String getSpuCover() {
-        return spuCover;
+    public List<String> getSpuCovers() {
+        return spuCovers;
     }
 
-    public void setSpuCover(String spuCover) {
-        this.spuCover = spuCover;
+    public void setSpuCovers(List<String> spuCovers) {
+        this.spuCovers = spuCovers;
     }
 
     public long getCid() {

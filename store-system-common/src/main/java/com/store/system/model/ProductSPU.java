@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
@@ -7,6 +8,8 @@ import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 产品SPU
@@ -42,13 +45,15 @@ public class ProductSPU implements Serializable {
 
     private String icon;
 
-    private String cover;
+    @HyperspaceColumn(isJson = true)
+    private List<String> covers;
 
     private String name; //产品名称
 
     private String priceRange; //价格区间
 
-    private String propertyJson; //属性json
+    @HyperspaceColumn(isJson = true)
+    private Map<Long, Object> properties; //属性json
 
     private int status;
 
@@ -103,14 +108,6 @@ public class ProductSPU implements Serializable {
         this.icon = icon;
     }
 
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
     public String getName() {
         return name;
     }
@@ -127,12 +124,20 @@ public class ProductSPU implements Serializable {
         this.priceRange = priceRange;
     }
 
-    public String getPropertyJson() {
-        return propertyJson;
+    public List<String> getCovers() {
+        return covers;
     }
 
-    public void setPropertyJson(String propertyJson) {
-        this.propertyJson = propertyJson;
+    public void setCovers(List<String> covers) {
+        this.covers = covers;
+    }
+
+    public Map<Long, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<Long, Object> properties) {
+        this.properties = properties;
     }
 
     public int getStatus() {

@@ -79,20 +79,13 @@ public class ProductServiceImpl implements ProductService {
     private JdbcTemplate jdbcTemplate;
 
     private void checkSPU(ProductSPU productSPU) throws StoreSystemException {
-        String propertyJson = productSPU.getPropertyJson();
-        Map<Long, Object> propertyMap = null;
-        try {
-            propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
-        } catch (Exception e) {
-            throw new StoreSystemException("SPU属性格式错误");
-        }
-
         int type = productSPU.getType();
         long subid = productSPU.getSubid();
         long pid = productSPU.getPid();
         long cid = productSPU.getCid();
         long bid = productSPU.getBid();
         long sid = productSPU.getSid();
+        Map<Long, Object> properties = productSPU.getProperties();
         if(subid == 0) throw new StoreSystemException("SPU店铺不能为空");
         if(cid == 0) throw new StoreSystemException("SPU类目不能为空");
         if(bid == 0) throw new StoreSystemException("SPU品牌不能为空");
@@ -108,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(spuNames, "id");
         for(long nameId : nameIds) {
-            if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
+            if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
         }
     }
 
@@ -138,14 +131,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void checkSKU(ProductSKU productSKU) throws StoreSystemException {
-        String propertyJson = productSKU.getPropertyJson();
-        Map<Long, Object> propertyMap = null;
-        try {
-            propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
-        } catch (Exception e) {
-            throw new StoreSystemException("SKU属性格式错误");
-        }
-
+        Map<Long, Object> properties = productSKU.getProperties();
         long spuid = productSKU.getSpuid();
         String code = productSKU.getCode();
         if(spuid == 0) throw new StoreSystemException("SPU不能为空");
@@ -163,7 +149,7 @@ public class ProductServiceImpl implements ProductService {
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(skuNames, "id");
         for(long nameId : nameIds) {
-            if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
+            if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
         }
     }
 
@@ -208,14 +194,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void check(ProductSPU productSPU, List<ProductSKU> productSKUList) throws StoreSystemException {
-        String propertyJson = productSPU.getPropertyJson();
-        Map<Long, Object> propertyMap = null;
-        try {
-            propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
-        } catch (Exception e) {
-            throw new StoreSystemException("SPU属性格式错误");
-        }
-
+        Map<Long, Object> properties = productSPU.getProperties();
         if(productSPU.getSubid() == 0) throw new StoreSystemException("SPU店铺不能为空");
         if(productSPU.getCid() == 0) throw new StoreSystemException("SPU类目不能为空");
         if(productSPU.getBid() == 0) throw new StoreSystemException("SPU品牌不能为空");
@@ -230,19 +209,13 @@ public class ProductServiceImpl implements ProductService {
         }
 
         for(long nameId : spuNames) {
-            if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
+            if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
         }
 
         for(ProductSKU productSKU : productSKUList) {
-            propertyJson = productSKU.getPropertyJson();
-            propertyMap = null;
-            try {
-                propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
-            } catch (Exception e) {
-                throw new StoreSystemException("SKU属性格式错误");
-            }
+            properties = productSKU.getProperties();
             for(long nameId : skuNames) {
-                if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
+                if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
             }
         }
     }

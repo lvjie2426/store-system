@@ -136,7 +136,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 ProductSKU productSKU = new ProductSKU();
                 productSKU.setSpuid(item.getSpuid());
                 productSKU.setCode(item.getCode());
-                productSKU.setPropertyJson(item.getPropertyJson());
+                productSKU.setProperties(item.getProperties());
                 productSKU.setRetailPrice(item.getRetailPrice());
                 productSKU.setCostPrice(item.getCostPrice());
                 productSKU.setIntegralPrice(item.getIntegralPrice());
@@ -246,16 +246,10 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
             if(!skuCodes.contains(code)) noExistsItems.add(item);
         }
         for(InventoryInBillItem item : noExistsItems) {
-            String propertyJson = item.getPropertyJson();
-            Map<Long, Object> propertyMap = null;
-            try {
-                propertyMap = JsonUtils.fromJson(propertyJson, new TypeReference<Map<Long, Object>>() {});
-            } catch (Exception e) {
-                throw new StoreSystemException("SKU属性格式错误");
-            }
+            Map<Long, Object> properties = item.getProperties();
             List<Long> nameIds = skuPropertyIdsMap.get(item.getSpuid());
             for(long nameId : nameIds) {
-                if(!propertyMap.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
+                if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
             }
         }
     }
@@ -375,7 +369,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 ProductSPU spu = spuMap.get(clientItem.getSpuid());
                 if(null != spu) {
                     clientItem.setSpuName(spu.getName());
-                    clientItem.setSpuCover(spu.getCover());
+                    clientItem.setSpuCovers(spu.getCovers());
                     clientItem.setSpuIcon(spu.getIcon());
                     clientItem.setBid(spu.getBid());
                     clientItem.setCid(spu.getCid());

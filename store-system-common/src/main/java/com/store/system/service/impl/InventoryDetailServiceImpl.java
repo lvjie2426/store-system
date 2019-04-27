@@ -120,7 +120,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
             ProductSKU sku = skuMap.get(one.getP_skuid());
             if(null != sku) {
                 client.setP_code(sku.getCode());
-                client.setP_propertyJson(sku.getPropertyJson());
+                client.setP_properties(sku.getProperties());
                 client.setP_retailPrice(sku.getRetailPrice());
                 client.setP_costPrice(sku.getCostPrice());
                 client.setP_integralPrice(sku.getIntegralPrice());

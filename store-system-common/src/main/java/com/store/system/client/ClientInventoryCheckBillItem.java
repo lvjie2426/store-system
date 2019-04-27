@@ -3,6 +3,9 @@ package com.store.system.client;
 import com.store.system.bean.InventoryCheckBillItem;
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.util.List;
+import java.util.Map;
+
 public class ClientInventoryCheckBillItem extends InventoryCheckBillItem {
 
     private long spuid; //产品SPU的id
@@ -11,7 +14,7 @@ public class ClientInventoryCheckBillItem extends InventoryCheckBillItem {
 
     private String spuIcon;
 
-    private String spuCover;
+    private List<String> spuCovers;
 
     private long cid;
 
@@ -27,7 +30,7 @@ public class ClientInventoryCheckBillItem extends InventoryCheckBillItem {
 
     private String code; //产品编码
 
-    private String propertyJson; //sku属性json
+    private Map<Long, Object> properties; //sku属性json
 
     public ClientInventoryCheckBillItem(InventoryCheckBillItem inventoryCheckBillItem) {
         try {
@@ -61,12 +64,12 @@ public class ClientInventoryCheckBillItem extends InventoryCheckBillItem {
         this.spuIcon = spuIcon;
     }
 
-    public String getSpuCover() {
-        return spuCover;
+    public List<String> getSpuCovers() {
+        return spuCovers;
     }
 
-    public void setSpuCover(String spuCover) {
-        this.spuCover = spuCover;
+    public void setSpuCovers(List<String> spuCovers) {
+        this.spuCovers = spuCovers;
     }
 
     public long getCid() {
@@ -125,11 +128,11 @@ public class ClientInventoryCheckBillItem extends InventoryCheckBillItem {
         this.code = code;
     }
 
-    public String getPropertyJson() {
-        return propertyJson;
+    public Map<Long, Object> getProperties() {
+        return properties;
     }
 
-    public void setPropertyJson(String propertyJson) {
-        this.propertyJson = propertyJson;
+    public void setProperties(Map<Long, Object> properties) {
+        this.properties = properties;
     }
 }
