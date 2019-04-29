@@ -604,7 +604,7 @@ public class UserServiceImpl implements UserService {
             ClientUser clientUser = new ClientUser(user);
             if(clientUser.getPsid() > 0) {
                 Subordinate subordinate = subordinateMap.get(clientUser.getPsid());
-                if(subordinate != null) clientUser.setpSubName(subordinate.getName());
+                if(subordinate != null) clientUser.setPSubName(subordinate.getName());
             }
             if(clientUser.getSid() > 0) {
                 Subordinate subordinate = subordinateMap.get(clientUser.getSid());
@@ -624,7 +624,7 @@ public class UserServiceImpl implements UserService {
         Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
         if(clientUser.getPsid() > 0) {
             Subordinate subordinate = subordinateMap.get(clientUser.getPsid());
-            if(subordinate != null) clientUser.setpSubName(subordinate.getName());
+            if(subordinate != null) clientUser.setPSubName(subordinate.getName());
         }
 
         return clientUser;

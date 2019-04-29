@@ -1,7 +1,10 @@
 package com.store.system.bean;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class InventoryInvokeBillItem implements Serializable {
 
     private long did;
@@ -11,19 +14,4 @@ public class InventoryInvokeBillItem implements Serializable {
     public InventoryInvokeBillItem() {
     }
 
-    public long getDid() {
-        return did;
-    }
-
-    public void setDid(long did) {
-        this.did = did;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
 }

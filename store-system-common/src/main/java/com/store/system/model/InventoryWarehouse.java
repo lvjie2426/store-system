@@ -5,6 +5,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ import java.io.Serializable;
  * creat_time: 17:59
  **/
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
+@Data
 public class InventoryWarehouse implements Serializable {
 
     public static final int status_nomore=0;//正常
@@ -43,67 +45,4 @@ public class InventoryWarehouse implements Serializable {
 
     private long utime;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public long getAdminid() {
-        return adminid;
-    }
-
-    public void setAdminid(long adminid) {
-        this.adminid = adminid;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public long getSubid() {
-        return subid;
-    }
-
-    public void setSubid(long subid) {
-        this.subid = subid;
-    }
 }

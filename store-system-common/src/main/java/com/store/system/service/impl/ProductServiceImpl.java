@@ -388,7 +388,7 @@ public class ProductServiceImpl implements ProductService {
             for(InventoryDetail detail : details) {
                 num += detail.getNum();
             }
-            one.setNum(num);
+            one.setCanUseNum(num);
         }
         pager.setData(data);
         pager.setTotalCount(count);
@@ -420,7 +420,7 @@ public class ProductServiceImpl implements ProductService {
             }
             client.setDetails(details);
             client.setOtherDetails(otherDetails);
-            client.setNum(num);
+            client.setCanUseNum(num);
             res.add(client);
         }
         List<InventoryWarehouse> warehouses = inventoryWarehouseDao.load(Lists.newArrayList(wids));

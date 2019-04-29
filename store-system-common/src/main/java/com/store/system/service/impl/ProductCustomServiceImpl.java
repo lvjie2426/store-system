@@ -132,7 +132,7 @@ public class ProductCustomServiceImpl implements ProductCustomService {
         for(ProductCustom one : productCustoms) {
             ClientProductCustom clientProductCustom = new ClientProductCustom(one);
             Subordinate subordinate = subordinateMap.get(clientProductCustom.getPsid());
-            if(subordinate != null) clientProductCustom.setpSubName(subordinate.getName());
+            if(subordinate != null) clientProductCustom.setPSubName(subordinate.getName());
             subordinate = subordinateMap.get(clientProductCustom.getSid());
             if(subordinate != null) clientProductCustom.setSubName(subordinate.getName());
             ProductSPU spu = spuMap.get(clientProductCustom.getSpuid());

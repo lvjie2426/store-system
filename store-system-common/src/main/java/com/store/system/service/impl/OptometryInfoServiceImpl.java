@@ -47,7 +47,7 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
         long subid = optometryInfo.getSubid();
         Subordinate subordinate = subordinateDao.load(subid);
         if(subordinate.getPid() == 0) throw new StoreSystemException("公司ID错误");
-        optometryInfo.setpSubid(subordinate.getPid());
+        optometryInfo.setPSubid(subordinate.getPid());
         optometryInfo = optometryInfoDao.insert(optometryInfo);
         return optometryInfo;
     }
@@ -58,7 +58,7 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
         long subid = optometryInfo.getSubid();
         Subordinate subordinate = subordinateDao.load(subid);
         if(subordinate.getPid() == 0) throw new StoreSystemException("公司ID错误");
-        optometryInfo.setpSubid(subordinate.getPid());
+        optometryInfo.setPSubid(subordinate.getPid());
         boolean res = optometryInfoDao.update(optometryInfo);
         return res;
     }
@@ -73,7 +73,7 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
         Set<Long> uids = Sets.newHashSet();
         for(OptometryInfo one : list) {
             if(one.getSubid() > 0) sids.add(one.getSubid());
-            if(one.getpSubid() > 0) sids.add(one.getpSubid());
+            if(one.getPSubid() > 0) sids.add(one.getPSubid());
             uids.add(one.getUid());
             uids.add(one.getOptUid());
         }
@@ -88,9 +88,9 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
                 Subordinate subordinate = subordinateMap.get(one.getSubid());
                 if(subordinate != null) clientOptometryInfo.setSubName(subordinate.getName());
             }
-            if(one.getpSubid() > 0) {
-                Subordinate subordinate = subordinateMap.get(one.getpSubid());
-                if(subordinate != null) clientOptometryInfo.setpSubName(subordinate.getName());
+            if(one.getPSubid() > 0) {
+                Subordinate subordinate = subordinateMap.get(one.getPSubid());
+                if(subordinate != null) clientOptometryInfo.setPSubName(subordinate.getName());
             }
             User customer = userMap.get(one.getUid());
             if(customer != null) clientOptometryInfo.setCustomerName(customer.getName());

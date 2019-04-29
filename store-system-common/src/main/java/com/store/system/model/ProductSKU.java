@@ -6,6 +6,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -19,6 +20,7 @@ import java.util.Map;
  * creat_time: 16:29
  **/
 @HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
+@Data
 public class ProductSKU implements Serializable {
 
     public static final int status_nomore=0;//正常
@@ -55,115 +57,4 @@ public class ProductSKU implements Serializable {
 
     private long utime;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getSpuid() {
-        return spuid;
-    }
-
-    public void setSpuid(long spuid) {
-        this.spuid = spuid;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getRetailPrice() {
-        return retailPrice;
-    }
-
-    public void setRetailPrice(int retailPrice) {
-        this.retailPrice = retailPrice;
-    }
-
-    public int getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(int costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public int getIntegralPrice() {
-        return integralPrice;
-    }
-
-    public void setIntegralPrice(int integralPrice) {
-        this.integralPrice = integralPrice;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public String getOther() {
-        return other;
-    }
-
-    public void setOther(String other) {
-        this.other = other;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public long getSort() {
-        return sort;
-    }
-
-    public void setSort(long sort) {
-        this.sort = sort;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public Map<Long, Object> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Map<Long, Object> properties) {
-        this.properties = properties;
-    }
 }

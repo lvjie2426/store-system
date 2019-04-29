@@ -1,10 +1,14 @@
 package com.store.system.client;
 
 import com.store.system.model.ProductSPU;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class ClientProductSPU extends ProductSPU {
 
     private String providerName;
@@ -17,7 +21,7 @@ public class ClientProductSPU extends ProductSPU {
 
     private List<ClientProductSKU> skuList;
 
-    private int num; //可用库存
+    private int canUseNum; //可用库存
 
     public ClientProductSPU(ProductSPU productSPU) {
         try {
@@ -27,51 +31,4 @@ public class ClientProductSPU extends ProductSPU {
         }
     }
 
-    public List<ClientProductSKU> getSkuList() {
-        return skuList;
-    }
-
-    public void setSkuList(List<ClientProductSKU> skuList) {
-        this.skuList = skuList;
-    }
-
-    public String getProviderName() {
-        return providerName;
-    }
-
-    public void setProviderName(String providerName) {
-        this.providerName = providerName;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
-    public String getSeriesName() {
-        return seriesName;
-    }
-
-    public void setSeriesName(String seriesName) {
-        this.seriesName = seriesName;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
 }

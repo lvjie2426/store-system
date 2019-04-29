@@ -6,10 +6,12 @@ import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.ShardingKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
+import lombok.Data;
 
 import java.io.Serializable;
 
 @HyperspaceDomain(domainType= HyperspaceDomainType.listDataStructure)
+@Data
 public class LoginUserPool implements Serializable {
 
 	private static final long serialVersionUID = -1L;
@@ -36,9 +38,7 @@ public class LoginUserPool implements Serializable {
 	@CombinationKey
 	private String account;//手机号登陆的时候 对应phone. 账号名密码登录的时候对应userName 微信登录的时候对应weixinId
 
-	
 	private long uid;
-	
 
 	@SortKey
 	@PagerCursor
@@ -46,52 +46,4 @@ public class LoginUserPool implements Serializable {
 	
 	private long utime;
 
-	public int getLoginType() {
-		return loginType;
-	}
-
-	public void setLoginType(int loginType) {
-		this.loginType = loginType;
-	}
-
-	public String getAccount() {
-		return account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public long getUid() {
-		return uid;
-	}
-
-	public void setUid(long uid) {
-		this.uid = uid;
-	}
-
-	public long getCtime() {
-		return ctime;
-	}
-
-	public void setCtime(long ctime) {
-		this.ctime = ctime;
-	}
-
-	public long getUtime() {
-		return utime;
-	}
-
-	public void setUtime(long utime) {
-		this.utime = utime;
-	}
-
-
-    public int getUserType() {
-        return userType;
-    }
-
-    public void setUserType(int userType) {
-        this.userType = userType;
-    }
 }

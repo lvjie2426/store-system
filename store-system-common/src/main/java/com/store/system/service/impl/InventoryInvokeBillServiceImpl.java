@@ -108,13 +108,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
         if(outWid == 0) throw new StoreSystemException("出库仓库不能为空");
         if(inventoryInvokeBill.getCreateUid() == 0) throw new StoreSystemException("创建人不能为空");
         if(inventoryInvokeBill.getInUid() == 0) throw new StoreSystemException("入库人不能为空");
-        String itemsJson = inventoryInvokeBill.getItemsJson();
-        List<InventoryInvokeBillItem> items = null;
-        try {
-            items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryInvokeBillItem>>() {});
-        } catch (Exception e) {
-            throw new StoreSystemException("调货单子项目格式错误");
-        }
+        List<InventoryInvokeBillItem> items = inventoryInvokeBill.getItems();
         Map<Long, Integer> didNumMap = Maps.newHashMap();
         for(InventoryInvokeBillItem item : items) {
             Integer num = didNumMap.get(item.getDid());
@@ -179,8 +173,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
             InventoryInvokeBill invokeBill = inventoryInvokeBillDao.load(id);
             if(null == invokeBill) throw new StoreSystemException("调货单为空");
             if(invokeBill.getStatus() != InventoryInvokeBill.status_wait_check) throw new StoreSystemException("调货单状态错误");
-            String itemsJson = invokeBill.getItemsJson();
-            List<InventoryInvokeBillItem> items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryInvokeBillItem>>() {});
+            List<InventoryInvokeBillItem> items = invokeBill.getItems();
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
             Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
@@ -225,7 +218,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
             outBill.setCheckUid(checkUid);
             outBill.setCheck(InventoryOutBill.check_pass);
             outBill.setCreateUid(checkUid);
-            outBill.setItemsJson(JsonUtils.toJson(outBillItems));
+            outBill.setItems(outBillItems);
             outBill.setOutUid(outUid);
             outBill.setStatus(InventoryOutBill.status_end);
             inventoryOutBillDao.insert(outBill);
@@ -235,7 +228,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
             inBill.setWid(invokeBill.getInWid());
             inBill.setInUid(invokeBill.getInUid());
             inBill.setCreateUid(invokeBill.getInUid());
-            inBill.setItemsJson(JsonUtils.toJson(inBillItems));
+            inBill.setItems(inBillItems);
             inBill.setStatus(InventoryInBill.status_wait_check);
             inventoryInBillDao.insert(inBill);
 
@@ -329,7 +322,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
             if(null != user) client.setOutUserName(user.getName());
             user = userMap.get(client.getInUid());
             if(null != user) client.setInUserName(user.getName());
-            List<InventoryInvokeBillItem> items = JsonUtils.fromJson(invokeBill.getItemsJson(), new TypeReference<List<InventoryInvokeBillItem>>() {});
+            List<InventoryInvokeBillItem> items = invokeBill.getItems();
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
             Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
@@ -378,7 +371,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
                 if(null != series) clientItem.setSeriesName(series.getName());
                 clientItems.add(clientItem);
             }
-            client.setItems(clientItems);
+            client.setClientItems(clientItems);
             res.add(client);
         }
         return res;

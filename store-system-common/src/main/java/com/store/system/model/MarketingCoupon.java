@@ -6,6 +6,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -18,6 +19,7 @@ import java.io.Serializable;
  * creat_time: 16:33
  **/
 @HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
+@Data
 public class MarketingCoupon implements Serializable {
 
     public static final int status_nomore=0;//正常
@@ -65,137 +67,10 @@ public class MarketingCoupon implements Serializable {
 
     private int open; //是否开启
 
-    private int status; //是否删除
+    private int status; //是否删除s
 
     private long ctime;
 
     private long utime;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getDescFullType() {
-        return descFullType;
-    }
-
-    public void setDescFullType(int descFullType) {
-        this.descFullType = descFullType;
-    }
-
-    public int getDescFull() {
-        return descFull;
-    }
-
-    public void setDescFull(int descFull) {
-        this.descFull = descFull;
-    }
-
-    public int getDescSubtractType() {
-        return descSubtractType;
-    }
-
-    public void setDescSubtractType(int descSubtractType) {
-        this.descSubtractType = descSubtractType;
-    }
-
-    public double getDescSubtract() {
-        return descSubtract;
-    }
-
-    public void setDescSubtract(double descSubtract) {
-        this.descSubtract = descSubtract;
-    }
-
-    public int getConditionType() {
-        return conditionType;
-    }
-
-    public void setConditionType(int conditionType) {
-        this.conditionType = conditionType;
-    }
-
-    public int getConditionFull() {
-        return conditionFull;
-    }
-
-    public void setConditionFull(int conditionFull) {
-        this.conditionFull = conditionFull;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
-    public long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
-    }
-
-    public long getSort() {
-        return sort;
-    }
-
-    public void setSort(long sort) {
-        this.sort = sort;
-    }
-
-    public int getOpen() {
-        return open;
-    }
-
-    public void setOpen(int open) {
-        this.open = open;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public long getSubid() {
-        return subid;
-    }
-
-    public void setSubid(long subid) {
-        this.subid = subid;
-    }
 }

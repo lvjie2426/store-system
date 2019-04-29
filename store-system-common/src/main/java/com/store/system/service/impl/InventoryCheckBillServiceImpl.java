@@ -94,14 +94,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         if(wid == 0) throw new StoreSystemException("仓库不能为空");
         if(inventoryCheckBill.getInitUid() == 0) throw new StoreSystemException("发起人不能为空");
         if(inventoryCheckBill.getCreateUid() == 0) throw new StoreSystemException("创建人不能为空");
-        String itemsJson = inventoryCheckBill.getItemsJson();
-        List<InventoryCheckBillItem> items = null;
-        try {
-            items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryCheckBillItem>>() {});
-        } catch (Exception e) {
-            throw new StoreSystemException("盘点单子项目格式错误");
-        }
-
+        List<InventoryCheckBillItem> items = inventoryCheckBill.getItems();
         Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
         List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
         Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
@@ -168,15 +161,8 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         if(dbCheckBill.getWid() != inventoryCheckBill.getWid()) throw new StoreSystemException("仓库错误");
         if(dbCheckBill.getInitUid() != inventoryCheckBill.getInitUid()) throw new StoreSystemException("发起人错误");
         if(dbCheckBill.getCreateUid() != inventoryCheckBill.getCreateUid()) throw new StoreSystemException("创建人错误");
-        String itemsJson = inventoryCheckBill.getItemsJson();
-        List<InventoryCheckBillItem> items = null;
-        try {
-            items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryCheckBillItem>>() {});
-        } catch (Exception e) {
-            throw new StoreSystemException("盘点单子项目格式错误");
-        }
-        String dbItemsJson = dbCheckBill.getItemsJson();
-        List<InventoryCheckBillItem> dbItems = JsonUtils.fromJson(dbItemsJson, new TypeReference<List<InventoryCheckBillItem>>() {});
+        List<InventoryCheckBillItem> items = inventoryCheckBill.getItems();
+        List<InventoryCheckBillItem> dbItems = dbCheckBill.getItems();
         Map<Long, InventoryCheckBillItem> dbItemMap = itemMapUtils.listToMap(dbItems, "did");
         for(InventoryCheckBillItem item : items) {
             InventoryCheckBillItem dbItem = dbItemMap.get(item.getDid());
@@ -246,7 +232,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
             if(null != user) client.setCheckUserName(user.getName());
             Subordinate subordinate = subordinateMap.get(client.getSubid());
             if(null != subordinate) client.setSubName(subordinate.getName());
-            List<InventoryCheckBillItem> items = JsonUtils.fromJson(checkBill.getItemsJson(), new TypeReference<List<InventoryCheckBillItem>>() {});
+            List<InventoryCheckBillItem> items = checkBill.getItems();
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
             Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
@@ -296,7 +282,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
                 if(null != series) clientItem.setSeriesName(series.getName());
                 clientItems.add(clientItem);
             }
-            client.setItems(clientItems);
+            client.setClientItems(clientItems);
             res.add(client);
         }
         return  res;

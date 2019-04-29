@@ -1,5 +1,7 @@
 package com.store.system.bean;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import java.util.Map;
  * creat_date: 2018/12/11
  * creat_time: 11:24
  **/
+@Data
 public class InventoryInBillItem implements Serializable {
 
     private long spuid;
@@ -30,59 +33,4 @@ public class InventoryInBillItem implements Serializable {
     public InventoryInBillItem() {
     }
 
-    public long getSpuid() {
-        return spuid;
-    }
-
-    public void setSpuid(long spuid) {
-        this.spuid = spuid;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public int getRetailPrice() {
-        return retailPrice;
-    }
-
-    public void setRetailPrice(int retailPrice) {
-        this.retailPrice = retailPrice;
-    }
-
-    public int getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(int costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public int getIntegralPrice() {
-        return integralPrice;
-    }
-
-    public void setIntegralPrice(int integralPrice) {
-        this.integralPrice = integralPrice;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public Map<Long, Object> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Map<Long, Object> properties) {
-        this.properties = properties;
-    }
 }

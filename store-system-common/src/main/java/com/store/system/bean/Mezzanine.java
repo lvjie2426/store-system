@@ -1,7 +1,9 @@
 package com.store.system.bean;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class Mezzanine {
 
     @JsonProperty("FileName")
@@ -16,35 +18,4 @@ public class Mezzanine {
     @JsonProperty("FileURL")
     private String fileURL;
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public String getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(String creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public String getFileURL() {
-        return fileURL;
-    }
-
-    public void setFileURL(String fileURL) {
-        this.fileURL = fileURL;
-    }
 }

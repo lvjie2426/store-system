@@ -1,10 +1,13 @@
 package com.store.system.client;
 
 import com.store.system.model.InventoryDetail;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Data
 public class ClientInventoryCheckBillSelect implements Serializable {
 
     private ClientProductSPU productSPU;
@@ -13,27 +16,4 @@ public class ClientInventoryCheckBillSelect implements Serializable {
 
     private List<InventoryDetail> details;
 
-    public int getCurrentNum() {
-        return currentNum;
-    }
-
-    public void setCurrentNum(int currentNum) {
-        this.currentNum = currentNum;
-    }
-
-    public List<InventoryDetail> getDetails() {
-        return details;
-    }
-
-    public void setDetails(List<InventoryDetail> details) {
-        this.details = details;
-    }
-
-    public ClientProductSPU getProductSPU() {
-        return productSPU;
-    }
-
-    public void setProductSPU(ClientProductSPU productSPU) {
-        this.productSPU = productSPU;
-    }
 }

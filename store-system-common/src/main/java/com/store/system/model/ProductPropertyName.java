@@ -6,6 +6,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -18,6 +19,7 @@ import java.io.Serializable;
  * creat_time: 11:05
  **/
 @HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
+@Data
 public class ProductPropertyName implements Serializable {
 
     public static final int status_nomore=0;//正常
@@ -59,91 +61,4 @@ public class ProductPropertyName implements Serializable {
 
     private long utime;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getCid() {
-        return cid;
-    }
-
-    public void setCid(long cid) {
-        this.cid = cid;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public long getSort() {
-        return sort;
-    }
-
-    public void setSort(long sort) {
-        this.sort = sort;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public int getDefaul() {
-        return defaul;
-    }
-
-    public void setDefaul(int defaul) {
-        this.defaul = defaul;
-    }
-
-    public int getMultiple() {
-        return multiple;
-    }
-
-    public void setMultiple(int multiple) {
-        this.multiple = multiple;
-    }
-
-    public int getInput() {
-        return input;
-    }
-
-    public void setInput(int input) {
-        this.input = input;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 }

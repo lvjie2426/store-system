@@ -108,8 +108,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
             if(inBill.getStatus() != InventoryInBill.status_wait_check) throw new StoreSystemException("入库单状态错误");
             long subid = inBill.getSubid();
             long wid = inBill.getWid();
-            String itemsJson = inBill.getItemsJson();
-            List<InventoryInBillItem> items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryInBillItem>>() {});
+            List<InventoryInBillItem> items = inBill.getItems();
             Set<Long> spuids = itemFieldSetUtils.fieldList(items, "spuid");
             List<ProductSPU> productSPUList = productSPUDao.load(Lists.newArrayList(spuids));
             Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(productSPUList, "id");
@@ -200,13 +199,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         if(wid == 0) throw new StoreSystemException("仓库不能为空");
         if(inventoryInBill.getInUid() == 0) throw new StoreSystemException("入库人不能为空");
         if(inventoryInBill.getCreateUid() == 0) throw new StoreSystemException("创建人不能为空");
-        String itemsJson = inventoryInBill.getItemsJson();
-        List<InventoryInBillItem> items = null;
-        try {
-            items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryInBillItem>>() {});
-        } catch (Exception e) {
-            throw new StoreSystemException("入库单子项目格式错误");
-        }
+        List<InventoryInBillItem> items = inventoryInBill.getItems();
         Map<String, Integer> codeNumMap = Maps.newHashMap();
         for(InventoryInBillItem item : items) {
             if(StringUtils.isBlank(item.getCode())) throw new StoreSystemException("入库单子项目编码不能为空");
@@ -349,7 +342,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
             if(null != user) client.setCheckUserName(user.getName());
             Subordinate subordinate = subordinateMap.get(client.getSubid());
             if(null != subordinate) client.setSubName(subordinate.getName());
-            List<InventoryInBillItem> items = JsonUtils.fromJson(inBill.getItemsJson(), new TypeReference<List<InventoryInBillItem>>() {});
+            List<InventoryInBillItem> items = inBill.getItems();
             Set<Long> spuids = itemFieldSetUtils.fieldList(items, "spuid");
             List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuids));
             Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
@@ -383,7 +376,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 if(null != category) clientItem.setCategoryName(category.getName());
                 clientItems.add(clientItem);
             }
-            client.setItems(clientItems);
+            client.setClientItems(clientItems);
             res.add(client);
         }
         return res;

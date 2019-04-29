@@ -5,6 +5,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ import java.io.Serializable;
  * creat_time: 15:24
  **/
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
+@Data
 public class UserGrade implements Serializable, Comparable<UserGrade> {
 
     @PrimaryKey
@@ -57,99 +59,4 @@ public class UserGrade implements Serializable, Comparable<UserGrade> {
         return res;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getConditionScore() {
-        return conditionScore;
-    }
-
-    public void setConditionScore(int conditionScore) {
-        this.conditionScore = conditionScore;
-    }
-
-    public int getSubstituteScore() {
-        return substituteScore;
-    }
-
-    public void setSubstituteScore(int substituteScore) {
-        this.substituteScore = substituteScore;
-    }
-
-    public int getSubstituteMoney() {
-        return substituteMoney;
-    }
-
-    public void setSubstituteMoney(int substituteMoney) {
-        this.substituteMoney = substituteMoney;
-    }
-
-    public double getSubstituteRate() {
-        return substituteRate;
-    }
-
-    public void setSubstituteRate(double substituteRate) {
-        this.substituteRate = substituteRate;
-    }
-
-    public int getGainMoney() {
-        return gainMoney;
-    }
-
-    public void setGainMoney(int gainMoney) {
-        this.gainMoney = gainMoney;
-    }
-
-    public int getGainScore() {
-        return gainScore;
-    }
-
-    public void setGainScore(int gainScore) {
-        this.gainScore = gainScore;
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public long getSubid() {
-        return subid;
-    }
-
-    public void setSubid(long subid) {
-        this.subid = subid;
-    }
 }

@@ -6,11 +6,13 @@ import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.ShardingKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
+import lombok.Data;
 
 import java.io.Serializable;
 
 
 @HyperspaceDomain(domainType = HyperspaceDomainType.listDataStructure)
+@Data
 public class RolePermissionPool implements Serializable {
     /**
      *
@@ -30,45 +32,5 @@ public class RolePermissionPool implements Serializable {
     @PagerCursor
     @SortKey
     private long sort;
-
-    public long getRid() {
-        return rid;
-    }
-
-    public void setRid(long rid) {
-        this.rid = rid;
-    }
-
-    public long getPid() {
-        return pid;
-    }
-
-    public void setPid(long pid) {
-        this.pid = pid;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public long getSort() {
-        return sort;
-    }
-
-    public void setSort(long sort) {
-        this.sort = sort;
-    }
 
 }

@@ -5,6 +5,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ import java.io.Serializable;
  * creat_time: 14:29
  **/
 @HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
+@Data
 public class ProductCustom implements Serializable {
 
     public static final int status_wait_pay = 0; //等待付款
@@ -49,91 +51,4 @@ public class ProductCustom implements Serializable {
 
     private long utime;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getPsid() {
-        return psid;
-    }
-
-    public void setPsid(long psid) {
-        this.psid = psid;
-    }
-
-    public long getSid() {
-        return sid;
-    }
-
-    public void setSid(long sid) {
-        this.sid = sid;
-    }
-
-    public long getSpuid() {
-        return spuid;
-    }
-
-    public void setSpuid(long spuid) {
-        this.spuid = spuid;
-    }
-
-    public long getSkuid() {
-        return skuid;
-    }
-
-    public void setSkuid(long skuid) {
-        this.skuid = skuid;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public long getSoid() {
-        return soid;
-    }
-
-    public void setSoid(long soid) {
-        this.soid = soid;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

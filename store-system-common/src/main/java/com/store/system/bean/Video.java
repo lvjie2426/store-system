@@ -1,11 +1,13 @@
 package com.store.system.bean;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class Video implements Serializable {
 
 //    VideoId	String	视频ID
@@ -58,78 +60,6 @@ public class Video implements Serializable {
 	@JsonProperty("Tags")  
     private String tags;//		String	视频标签，多个会用逗号分隔
     private List<PlayInfo> playInfos=new ArrayList<>();//  视频播放地址
-	public String getVideoId() {
-		return videoId;
-	}
-	public void setVideoId(String videoId) {
-		this.videoId = videoId;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public double getDuration() {
-		return duration;
-	}
-	public void setDuration(double duration) {
-		this.duration = duration;
-	}
-	public String getCoverURL() {
-		return coverURL;
-	}
-	public void setCoverURL(String coverURL) {
-		this.coverURL = coverURL;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public String getCreationTime() {
-		return creationTime;
-	}
-	public void setCreationTime(String creationTime) {
-		this.creationTime = creationTime;
-	}
-	public long getSize() {
-		return size;
-	}
-	public void setSize(long size) {
-		this.size = size;
-	}
-	public long getCateId() {
-		return cateId;
-	}
-	public void setCateId(long cateId) {
-		this.cateId = cateId;
-	}
-	public String getCateName() {
-		return cateName;
-	}
-	public void setCateName(String cateName) {
-		this.cateName = cateName;
-	}
-	public String getTags() {
-		return tags;
-	}
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
-	public List<PlayInfo> getPlayInfos() {
-		return playInfos;
-	}
-	public void setPlayInfos(List<PlayInfo> playInfos) {
-		this.playInfos = playInfos;
-	}
 
-   
+
 }

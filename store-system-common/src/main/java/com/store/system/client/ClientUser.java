@@ -1,8 +1,12 @@
 package com.store.system.client;
 
 import com.store.system.model.User;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class ClientUser extends User {
 
     private String pSubName; //公司名称
@@ -19,19 +23,4 @@ public class ClientUser extends User {
         }
     }
 
-    public String getpSubName() {
-        return pSubName;
-    }
-
-    public void setpSubName(String pSubName) {
-        this.pSubName = pSubName;
-    }
-
-    public String getSubName() {
-        return subName;
-    }
-
-    public void setSubName(String subName) {
-        this.subName = subName;
-    }
 }

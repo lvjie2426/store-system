@@ -5,6 +5,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ import java.io.Serializable;
  * creat_time: 18:01
  **/
 @HyperspaceDomain(identityType = IdentityType.origin_indentity, domainType = HyperspaceDomainType.mainDataStructure)
+@Data
 public class InventoryDetail implements Serializable {
 
     @PrimaryKey
@@ -39,75 +41,4 @@ public class InventoryDetail implements Serializable {
 
     private long utime;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getWid() {
-        return wid;
-    }
-
-    public void setWid(long wid) {
-        this.wid = wid;
-    }
-
-    public long getP_skuid() {
-        return p_skuid;
-    }
-
-    public void setP_skuid(long p_skuid) {
-        this.p_skuid = p_skuid;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public long getP_spuid() {
-        return p_spuid;
-    }
-
-    public void setP_spuid(long p_spuid) {
-        this.p_spuid = p_spuid;
-    }
-
-    public long getP_cid() {
-        return p_cid;
-    }
-
-    public void setP_cid(long p_cid) {
-        this.p_cid = p_cid;
-    }
-
-    public long getSubid() {
-        return subid;
-    }
-
-    public void setSubid(long subid) {
-        this.subid = subid;
-    }
 }

@@ -131,8 +131,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
             InventoryOutBill outBill = inventoryOutBillDao.load(id);
             if(null == outBill) throw new StoreSystemException("出库单为空");
             if(outBill.getStatus() != InventoryOutBill.status_wait_check) throw new StoreSystemException("出库单状态错误");
-            String itemsJson = outBill.getItemsJson();
-            List<InventoryOutBillItem> items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryOutBillItem>>() {});
+            List<InventoryOutBillItem> items = outBill.getItems();
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
             Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
@@ -172,13 +171,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         if(wid == 0) throw new StoreSystemException("仓库不能为空");
         if(inventoryOutBill.getOutUid() == 0) throw new StoreSystemException("出库人不能为空");
         if(inventoryOutBill.getCreateUid() == 0) throw new StoreSystemException("创建人不能为空");
-        String itemsJson = inventoryOutBill.getItemsJson();
-        List<InventoryOutBillItem> items = null;
-        try {
-            items = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryOutBillItem>>() {});
-        } catch (Exception e) {
-            throw new StoreSystemException("出库单子项目格式错误");
-        }
+        List<InventoryOutBillItem> items = inventoryOutBill.getItems();
         Map<Long, Integer> didNumMap = Maps.newHashMap();
         for(InventoryOutBillItem item : items) {
             Integer num = didNumMap.get(item.getDid());
@@ -262,7 +255,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
             if(null != user) client.setCheckUserName(user.getName());
             Subordinate subordinate = subordinateMap.get(client.getSubid());
             if(null != subordinate) client.setSubName(subordinate.getName());
-            List<InventoryOutBillItem> items = JsonUtils.fromJson(outBill.getItemsJson(), new TypeReference<List<InventoryOutBillItem>>() {});
+            List<InventoryOutBillItem> items = outBill.getItems();
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
             Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
@@ -311,7 +304,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
                 if(null != series) clientItem.setSeriesName(series.getName());
                 clientItems.add(clientItem);
             }
-            client.setItems(clientItems);
+            client.setClientItems(clientItems);
             res.add(client);
         }
         return res;

@@ -1,10 +1,14 @@
 package com.store.system.client;
 
 import com.store.system.model.InventoryOutBill;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class ClientInventoryOutBill extends InventoryOutBill {
 
     private String subName;
@@ -17,7 +21,7 @@ public class ClientInventoryOutBill extends InventoryOutBill {
 
     private String checkUserName;
 
-    private List<ClientInventoryOutBillItem> items;
+    private List<ClientInventoryOutBillItem> clientItems;
 
     public ClientInventoryOutBill(InventoryOutBill inventoryOutBill) {
         try {
@@ -27,52 +31,5 @@ public class ClientInventoryOutBill extends InventoryOutBill {
         }
     }
 
-    public String getWarehouseName() {
-        return warehouseName;
-    }
-
-    public void setWarehouseName(String warehouseName) {
-        this.warehouseName = warehouseName;
-    }
-
-    public String getOutUserName() {
-        return outUserName;
-    }
-
-    public void setOutUserName(String outUserName) {
-        this.outUserName = outUserName;
-    }
-
-    public String getCreateUserName() {
-        return createUserName;
-    }
-
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
-    }
-
-    public String getCheckUserName() {
-        return checkUserName;
-    }
-
-    public void setCheckUserName(String checkUserName) {
-        this.checkUserName = checkUserName;
-    }
-
-    public List<ClientInventoryOutBillItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ClientInventoryOutBillItem> items) {
-        this.items = items;
-    }
-
-    public String getSubName() {
-        return subName;
-    }
-
-    public void setSubName(String subName) {
-        this.subName = subName;
-    }
 }
 

@@ -6,6 +6,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * creat_time: 15:25
  **/
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
+@Data
 public class MarketingTimingSms implements Serializable {
 
     public static final int status_nomore=0;//正常
@@ -66,111 +68,6 @@ public class MarketingTimingSms implements Serializable {
     private long ctime;
 
     private long utime;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public long getSubid() {
-        return subid;
-    }
-
-    public void setSubid(long subid) {
-        this.subid = subid;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public void setRange(int range) {
-        this.range = range;
-    }
-
-    public int getSex() {
-        return sex;
-    }
-
-    public void setSex(int sex) {
-        this.sex = sex;
-    }
-
-    public int getStartAge() {
-        return startAge;
-    }
-
-    public void setStartAge(int startAge) {
-        this.startAge = startAge;
-    }
-
-    public int getEndAge() {
-        return endAge;
-    }
-
-    public void setEndAge(int endAge) {
-        this.endAge = endAge;
-    }
-
-    public long getSendTime() {
-        return sendTime;
-    }
-
-    public void setSendTime(long sendTime) {
-        this.sendTime = sendTime;
-    }
-
-    public int getSend() {
-        return send;
-    }
-
-    public void setSend(int send) {
-        this.send = send;
-    }
 
     public static void main(String[] args) {
         String str = "@var(user_name)";

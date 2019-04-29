@@ -1,13 +1,17 @@
 package com.store.system.client;
 
 import com.store.system.model.ProductSKU;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class ClientProductSKU extends ProductSKU {
 
-    private int num; //可用库存
+    private int canUseNum; //可用库存
 
     private List<ClientInventoryDetail> details; //库存详情
 
@@ -21,29 +25,4 @@ public class ClientProductSKU extends ProductSKU {
         }
     }
 
-    @Override
-    public int getNum() {
-        return num;
-    }
-
-    @Override
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public List<ClientInventoryDetail> getDetails() {
-        return details;
-    }
-
-    public void setDetails(List<ClientInventoryDetail> details) {
-        this.details = details;
-    }
-
-    public List<ClientInventoryDetail> getOtherDetails() {
-        return otherDetails;
-    }
-
-    public void setOtherDetails(List<ClientInventoryDetail> otherDetails) {
-        this.otherDetails = otherDetails;
-    }
 }

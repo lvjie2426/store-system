@@ -1,5 +1,7 @@
 package com.store.system.bean;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -10,6 +12,7 @@ import java.io.Serializable;
  * creat_date: 2018/12/26
  * creat_time: 16:05
  **/
+@Data
 public class InventoryCheckBillItem implements Serializable {
 
     private long did;
@@ -21,27 +24,4 @@ public class InventoryCheckBillItem implements Serializable {
     public InventoryCheckBillItem() {
     }
 
-    public long getDid() {
-        return did;
-    }
-
-    public void setDid(long did) {
-        this.did = did;
-    }
-
-    public int getCurrentNum() {
-        return currentNum;
-    }
-
-    public void setCurrentNum(int currentNum) {
-        this.currentNum = currentNum;
-    }
-
-    public int getRealNum() {
-        return realNum;
-    }
-
-    public void setRealNum(int realNum) {
-        this.realNum = realNum;
-    }
 }

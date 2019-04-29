@@ -1,12 +1,16 @@
 package com.store.system.model;
 
+import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import com.store.system.bean.InventoryInvokeBillItem;
+import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 进销存调货单
@@ -17,6 +21,7 @@ import java.io.Serializable;
  * creat_time: 16:12
  **/
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
+@Data
 public class InventoryInvokeBill implements Serializable {
 
     public static final int status_edit = 0; //编辑状态
@@ -45,7 +50,8 @@ public class InventoryInvokeBill implements Serializable {
 
     private long inUid; //入库人
 
-    private String itemsJson; //子条目JSON
+    @HyperspaceColumn(isJson = true)
+    private List<InventoryInvokeBillItem> items; //子条目JSON
 
     private int status;
 
@@ -56,115 +62,4 @@ public class InventoryInvokeBill implements Serializable {
 
     private long utime;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getInSubid() {
-        return inSubid;
-    }
-
-    public void setInSubid(long inSubid) {
-        this.inSubid = inSubid;
-    }
-
-    public long getInWid() {
-        return inWid;
-    }
-
-    public void setInWid(long inWid) {
-        this.inWid = inWid;
-    }
-
-    public long getOutSubid() {
-        return outSubid;
-    }
-
-    public void setOutSubid(long outSubid) {
-        this.outSubid = outSubid;
-    }
-
-    public long getOutWid() {
-        return outWid;
-    }
-
-    public void setOutWid(long outWid) {
-        this.outWid = outWid;
-    }
-
-    public long getCreateUid() {
-        return createUid;
-    }
-
-    public void setCreateUid(long createUid) {
-        this.createUid = createUid;
-    }
-
-    public long getCheckUid() {
-        return checkUid;
-    }
-
-    public void setCheckUid(long checkUid) {
-        this.checkUid = checkUid;
-    }
-
-    public long getOutUid() {
-        return outUid;
-    }
-
-    public void setOutUid(long outUid) {
-        this.outUid = outUid;
-    }
-
-    public long getInUid() {
-        return inUid;
-    }
-
-    public void setInUid(long inUid) {
-        this.inUid = inUid;
-    }
-
-    public String getItemsJson() {
-        return itemsJson;
-    }
-
-    public void setItemsJson(String itemsJson) {
-        this.itemsJson = itemsJson;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getCheck() {
-        return check;
-    }
-
-    public void setCheck(int check) {
-        this.check = check;
-    }
-
-    public long getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
 }
