@@ -97,7 +97,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductPropertyName> spuNames = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
         for(Iterator<ProductPropertyName> it = spuNames.iterator(); it.hasNext();) {
             ProductPropertyName name = it.next();
-            if(name.getMultiple() != ProductPropertyName.type_spu) it.remove();
+            if(name.getType() != ProductPropertyName.type_spu) it.remove();
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(spuNames, "id");
         for(long nameId : nameIds) {
@@ -145,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductPropertyName> skuNames = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
         for(Iterator<ProductPropertyName> it = skuNames.iterator(); it.hasNext();) {
             ProductPropertyName name = it.next();
-            if(name.getMultiple() != ProductPropertyName.type_sku) it.remove();
+            if(name.getType() != ProductPropertyName.type_sku) it.remove();
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(skuNames, "id");
         for(long nameId : nameIds) {
@@ -204,7 +204,7 @@ public class ProductServiceImpl implements ProductService {
         Set<Long> spuNames = Sets.newHashSet();
         Set<Long> skuNames = Sets.newHashSet();
         for(ProductPropertyName name : names) {
-            if(name.getMultiple() == ProductPropertyName.type_spu) spuNames.add(name.getId());
+            if(name.getType() == ProductPropertyName.type_spu) spuNames.add(name.getId());
             else skuNames.add(name.getId());
         }
 
