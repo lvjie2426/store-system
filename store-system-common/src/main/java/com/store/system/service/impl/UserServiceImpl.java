@@ -759,13 +759,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex, int userType) throws Exception {
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex, int userType, String job) throws Exception {
         String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String limit = " limit %d , %d ";
         if(userType>-1){
             sql = sql + " AND userType =" + userType;
             sqlCount = sqlCount + " AND userType =" + userType;
+        }
+        if(StringUtils.isNotBlank(job)){
+            sql = sql + " and `job` =" + job;
+            sqlCount = sqlCount + " and `job` =" + job;
         }
         if (StringUtils.isNotBlank(name)) {
             sql = sql + " and `name` like ?";
@@ -799,6 +803,18 @@ public class UserServiceImpl implements UserService {
         pager.setData(data);
         pager.setTotalCount(count);
         return pager;
+    }
+
+    @Override
+    public Set<String> getAllUserJob(long subid) throws Exception {
+        Set<String> jobs = Sets.newConcurrentHashSet();
+        List<User> users = userDao.getAllList(subid,User.userType_backendUser,User.status_nomore);
+        if(users!=null&&users.size()>0){
+            for(User user:users){
+                jobs.add(user.getJob());
+            }
+        }
+        return jobs;
     }
 
 }

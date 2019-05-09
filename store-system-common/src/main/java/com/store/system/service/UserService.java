@@ -8,6 +8,7 @@ import com.store.system.model.User;
 import com.quakoo.baseFramework.model.pagination.Pager;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface UserService {
@@ -106,6 +107,7 @@ public interface UserService {
 
     public Pager getBackCustomerPager(Pager pager, long pSubid, int userType) throws Exception; //获取公司下的顾客
 
-    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex,int userType) throws Exception; //获取分店下的顾客
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex,int userType, String job) throws Exception; //获取分店下的顾客
 
+    public Set<String> getAllUserJob(long subid)throws Exception;
 }

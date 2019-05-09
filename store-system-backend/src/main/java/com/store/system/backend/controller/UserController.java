@@ -1,6 +1,7 @@
 package com.store.system.backend.controller;
 
 
+import com.store.system.bean.Result;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
@@ -25,10 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -191,17 +189,33 @@ public class UserController extends BaseController {
                                             @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
                                             @RequestParam(required = false, value = "name",defaultValue = "") String name,
                                             @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
+                                            @RequestParam(required = false,value = "job",defaultValue = "") String job,
                                     HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("分店ID错误");
-            pager = userService.getBackSubCustomerPager(pager, subid,phone,name,sex,userType);
+            pager = userService.getBackSubCustomerPager(pager, subid,phone,name,sex,userType,job);
             return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
+
+    //获取所有顾客的职业
+    @RequestMapping("/getAllUserJob")
+    public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,
+                                      @RequestParam(value = "subid") long subid )throws Exception{
+        try{
+            Subordinate subordinate = subordinateService.load(subid);
+            long pSubid = subordinate.getPid();
+            if(pSubid == 0) throw new StoreSystemException("分店ID错误");
+            return this.viewNegotiating(request,response,new ResultClient(userService.getAllUserJob(subid)));
+        }catch (Exception e){
+            return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
+        }
+    }
+
 
 }
 
