@@ -35,6 +35,9 @@ public class User implements Serializable {
     public static final int userType_user=0;//前端用户
     public static final int userType_backendUser=1;//后台用户
 
+    public static final int type_customer=0;//顾客
+    public static final int type_user=1;//员工
+
     public static final int sex_nomore=0;//未知
     public static final int sex_mai=1;//男
     public static final int sex_woman=2;//女
@@ -51,6 +54,8 @@ public class User implements Serializable {
     private long rand;
 
     private int userType;//用户类型（一般分为普通用户、后台用户）
+
+    private int type;
 
     private String phone;//手机号，手机号+验证码登录时候用
 
