@@ -128,4 +128,16 @@ public class SubordinateController extends BaseController {
         }
 
     }
+    @RequestMapping("/getSubordinateStoreByName")
+    public ModelAndView getSubordinateStoreByName(HttpServletRequest request, HttpServletResponse response,
+                                           Pager pager, long sid,String name,
+                                            Model model) throws Exception {
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,subordinateService.getSubordinateStoreByName(pager,sid,name)));
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
+    }
+
 }

@@ -25,4 +25,6 @@ public interface SubordinateService {
 	public Subordinate insertStore(Subordinate subordinate)throws Exception;
 
 	public boolean updateStore(Subordinate subordinate)throws Exception;
+
+    public Pager getSubordinateStoreByName(Pager pager,long sid, String name)throws Exception;
 }
