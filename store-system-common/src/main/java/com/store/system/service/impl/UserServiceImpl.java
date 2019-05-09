@@ -740,14 +740,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager getBackCustomerPager(Pager pager, long pSubid, int type) throws Exception {
-        String sql = "SELECT * FROM `user` where psid = " + pSubid + " and `status` = " + User.status_nomore
-                + " and userType = " + User.userType_user;
-        String sqlCount = "SELECT COUNT(id) FROM `user` where psid = " + pSubid + " and `status` = " + User.status_nomore
-                + " and userType = " + User.userType_user;
-        if(type>-1){
-            sql = sql + " AND type =" + type;
-            sqlCount = sqlCount + " AND type =" + type;
+    public Pager getBackCustomerPager(Pager pager, long pSubid, int userType) throws Exception {
+        String sql = "SELECT * FROM `user` where psid = " + pSubid + " and `status` = " + User.status_nomore;
+        String sqlCount = "SELECT COUNT(id) FROM `user` where psid = " + pSubid + " and `status` = " + User.status_nomore;
+        if(userType>-1){
+            sql = sql + " AND userType =" + userType;
+            sqlCount = sqlCount + " AND userType =" + userType;
         }
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
@@ -761,15 +759,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex, int type) throws Exception {
-        String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore
-                + " and userType = " + User.userType_user;
-        String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore
-                + " and userType = " + User.userType_user;
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex, int userType) throws Exception {
+        String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
+        String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String limit = " limit %d , %d ";
-        if(type>-1){
-            sql = sql + " AND type =" + type;
-            sqlCount = sqlCount + " AND type =" + type;
+        if(userType>-1){
+            sql = sql + " AND userType =" + userType;
+            sqlCount = sqlCount + " AND userType =" + userType;
         }
         if (StringUtils.isNotBlank(name)) {
             sql = sql + " and `name` like ?";

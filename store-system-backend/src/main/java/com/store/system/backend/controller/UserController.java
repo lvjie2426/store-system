@@ -172,13 +172,13 @@ public class UserController extends BaseController {
 
     @RequestMapping("/getCustomerPager")
     public ModelAndView getCustomerPager(Pager pager, @RequestParam(value = "subid") long subid,
-                                         @RequestParam(value = "type") int type,
+                                         @RequestParam(value = "userType") int userType,
                                          HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid != 0) throw new StoreSystemException("公司ID错误");
-            pager = userService.getBackCustomerPager(pager, subid ,type);
+            pager = userService.getBackCustomerPager(pager, subid, userType);
             return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -187,7 +187,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("/getSubCustomerPager")
     public ModelAndView getSubCustomerPager(Pager pager, @RequestParam(value = "subid") long subid,
-                                            @RequestParam(value = "type") int type,
+                                            @RequestParam(value = "userType") int userType,
                                             @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
                                             @RequestParam(required = false, value = "name",defaultValue = "") String name,
                                             @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
@@ -196,7 +196,7 @@ public class UserController extends BaseController {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("分店ID错误");
-            pager = userService.getBackSubCustomerPager(pager, subid,phone,name,sex,type);
+            pager = userService.getBackSubCustomerPager(pager, subid,phone,name,sex,userType);
             return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
