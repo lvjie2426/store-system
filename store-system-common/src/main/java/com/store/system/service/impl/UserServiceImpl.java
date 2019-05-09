@@ -470,12 +470,14 @@ public class UserServiceImpl implements UserService {
         if(null == user) throw new StoreSystemException("用户不存在");
         user.setStatus(status);
         boolean sign = userDao.update(user);
-        if(user.getSid()>0){
-            SubordinateUserPool subordinateUserPool=new SubordinateUserPool();
-            subordinateUserPool.setUid(user.getId());
-            subordinateUserPool.setSid(user.getSid());
-            subordinateUserPool.setStatus(user.getStatus());
-            subordinateUserPoolDao.update(subordinateUserPool);
+        LoginUserPool loginUserPool = new LoginUserPool();
+        loginUserPool.setUserType(User.userType_user);
+        loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+        loginUserPool.setAccount(user.getPhone());
+        if(user.getStatus()==User.status_delete){
+            loginUserPoolDao.delete(loginUserPool);
+        }else if(user.getStatus()==User.status_nomore){
+            loginUserPoolDao.insert(loginUserPool);
         }
         return sign;
     }
@@ -662,8 +664,38 @@ public class UserServiceImpl implements UserService {
         if(user.getCover()!=null && !"".equals(user.getCover())){
             olduser.setCover(user.getCover());
         }
-        boolean res = userDao.update(olduser);
-        return res;
+        //生日
+        if(user.getBirthdate()!=0&&"".equals(user.getBirthdate())){
+            olduser.setBirthdate(user.getBirthdate());
+        }
+        //职位
+        if(user.getJob()!=null&&"".equals(user.getJob())){
+            olduser.setJob(user.getJob());
+        }
+        //邮件
+        if(user.getMail()!=null&&"".equals(user.getMail())){
+            olduser.setMail(user.getMail());
+        }
+        //手机号
+        if(user.getPhone()!=null&&"".equals(user.getPhone())){
+            olduser.setPlace(user.getPhone());
+        }
+        boolean res = userDao.update(user);
+        if(res && !olduser.getPhone().equals(user.getPhone())) {
+            LoginUserPool loginUserPool = new LoginUserPool();
+            loginUserPool.setUserType(User.userType_user);
+            loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+            loginUserPool.setAccount(olduser.getPhone());
+            loginUserPoolDao.delete(loginUserPool);
+            loginUserPool = new LoginUserPool();
+            loginUserPool.setUserType(User.userType_user);
+            loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+            loginUserPool.setAccount(user.getPhone());
+            loginUserPool.setUid(user.getId());
+            loginUserPoolDao.insert(loginUserPool);
+        }
+        boolean result = userDao.update(olduser);
+        return result;
     }
 
     private void check(User user) throws StoreSystemException {

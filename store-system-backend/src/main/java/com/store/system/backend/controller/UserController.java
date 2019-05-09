@@ -117,14 +117,6 @@ public class UserController extends BaseController {
         return this.viewNegotiating(request, response, new ResultClient(res));
     }
 
-    @RequestMapping("/updateStatus")
-    public ModelAndView del(@RequestParam(required = true, value = "id") long id,
-                            int status,
-                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        boolean res = userService.updateStatus(id,status);
-        return this.viewNegotiating(request, response, new ResultClient(res));
-    }
-
     @RequestMapping("/updateUserPermissions")
     public ModelAndView updateUserPermissions(@RequestParam(value = "uid", required = false) long uid,
                                               @RequestParam(value = "pids", required = false, defaultValue = "") List<Long> pids,
@@ -210,12 +202,28 @@ public class UserController extends BaseController {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("分店ID错误");
-            return this.viewNegotiating(request,response,new ResultClient(userService.getAllUserJob(subid)));
+            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(subid)));
         }catch (Exception e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
         }
     }
+    /////////////////////员工相关////////////////////////
+    @RequestMapping("/updateUser")
+    public ModelAndView updateUser(HttpServletRequest request,HttpServletResponse response,
+                                   User user)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,userService.updateUser(user)));
+        }catch (Exception e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+    }
 
-
+    @RequestMapping("/updateStatus")
+    public ModelAndView del(@RequestParam(required = true, value = "id") long id,
+                            int status,
+                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        boolean res = userService.updateStatus(id,status);
+        return this.viewNegotiating(request, response, new ResultClient(res));
+    }
 }
 
