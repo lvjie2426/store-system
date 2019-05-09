@@ -26,7 +26,8 @@ import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+    @Resource
+    private UserGradeDao userGradeDao;
     @Resource
     private UserDao userDao;
 
@@ -610,6 +611,8 @@ public class UserServiceImpl implements UserService {
                 Subordinate subordinate = subordinateMap.get(clientUser.getSid());
                 if(subordinate != null) clientUser.setSubName(subordinate.getName());
             }
+            //会员等级
+            //消费次数
             res.add(clientUser);
         }
         return res;
@@ -737,11 +740,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager getBackCustomerPager(Pager pager, long pSubid) throws Exception {
+    public Pager getBackCustomerPager(Pager pager, long pSubid, int type) throws Exception {
         String sql = "SELECT * FROM `user` where psid = " + pSubid + " and `status` = " + User.status_nomore
                 + " and userType = " + User.userType_user;
         String sqlCount = "SELECT COUNT(id) FROM `user` where psid = " + pSubid + " and `status` = " + User.status_nomore
                 + " and userType = " + User.userType_user;
+        if(type>-1){
+            sql = sql + " AND type =" + type;
+            sqlCount = sqlCount + " AND type =" + type;
+        }
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -754,16 +761,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager getBackSubCustomerPager(Pager pager, long subid) throws Exception {
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex, int type) throws Exception {
         String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore
                 + " and userType = " + User.userType_user;
         String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore
                 + " and userType = " + User.userType_user;
         String limit = " limit %d , %d ";
+        if(type>-1){
+            sql = sql + " AND type =" + type;
+            sqlCount = sqlCount + " AND type =" + type;
+        }
+        if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and `name` like ?";
+            sqlCount = sqlCount + " and `name` like ?";
+        }
+        if (StringUtils.isNotBlank(phone)) {
+            sql = sql + " and `phone` like ?";
+            sqlCount = sqlCount + " and `phone` like ?";
+        }
+        if (sex>-1){
+            sql = sql + " AND sex =" + sex;
+            sqlCount = sqlCount + " AND sex =" + sex;
+        }
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
-        List<User> users = this.jdbcTemplate.query(sql, rowMapper);
-        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        List<Object> objects=new ArrayList<>();
+        List<User> users = null;
+        int count = 0;
+        if(StringUtils.isNotBlank(name)){objects.add("%"+name+"%");}
+        if(StringUtils.isNotBlank(phone)){objects.add("%"+phone+"%");}
+        if(objects.size()>0) {
+            Object[] args = new Object[objects.size()];
+            objects.toArray(args);
+            users = this.jdbcTemplate.query(sql, rowMapper,args);
+            count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        }else{
+            users = this.jdbcTemplate.query(sql, rowMapper);
+            count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        }
         List<ClientUser> data = transformClient(users);
         pager.setData(data);
         pager.setTotalCount(count);

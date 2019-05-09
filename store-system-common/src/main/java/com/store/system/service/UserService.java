@@ -104,8 +104,8 @@ public interface UserService {
 
     public boolean delCustomer(long id) throws Exception;
 
-    public Pager getBackCustomerPager(Pager pager, long pSubid) throws Exception; //获取公司下的顾客
+    public Pager getBackCustomerPager(Pager pager, long pSubid, int type) throws Exception; //获取公司下的顾客
 
-    public Pager getBackSubCustomerPager(Pager pager, long subid) throws Exception; //获取分店下的顾客
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex,int type) throws Exception; //获取分店下的顾客
 
 }

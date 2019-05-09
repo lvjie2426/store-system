@@ -86,12 +86,14 @@ public class UserController extends BaseController {
 
     @RequestMapping("/searchUser")
     public ModelAndView searchUser(HttpServletRequest request, HttpServletResponse response,
-                                   Pager pager, long startTime, long endTime,
+                                   Pager pager,
+                                   @RequestParam(required = false,value = "startTime",defaultValue = "-1") long startTime,
+                                   @RequestParam(required = false,value = "endTime",defaultValue = "-1") long endTime,
                                    @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
                                    @RequestParam(required = false, value = "name",defaultValue = "") String name,
                                    @RequestParam(required = false, value = "userName",defaultValue = "") String userName,
                                    @RequestParam(required = false, value = "sid",defaultValue = "0") long sid,
-                                   @RequestParam(required = false, value = "userType",defaultValue = "0") int userType,
+                                   @RequestParam(required = false, value = "userType",defaultValue = "-1") int userType,
                                    @RequestParam(required = false, value = "rid",defaultValue = "0") long rid,
                                    @RequestParam(required = false, value = "status",defaultValue = "-1") int status,
                                    Model model) throws Exception {
@@ -170,12 +172,13 @@ public class UserController extends BaseController {
 
     @RequestMapping("/getCustomerPager")
     public ModelAndView getCustomerPager(Pager pager, @RequestParam(value = "subid") long subid,
+                                         @RequestParam(value = "type") int type,
                                          HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid != 0) throw new StoreSystemException("公司ID错误");
-            pager = userService.getBackCustomerPager(pager, subid);
+            pager = userService.getBackCustomerPager(pager, subid ,type);
             return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -184,12 +187,16 @@ public class UserController extends BaseController {
 
     @RequestMapping("/getSubCustomerPager")
     public ModelAndView getSubCustomerPager(Pager pager, @RequestParam(value = "subid") long subid,
+                                            @RequestParam(value = "type") int type,
+                                            @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
+                                            @RequestParam(required = false, value = "name",defaultValue = "") String name,
+                                            @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
                                     HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("分店ID错误");
-            pager = userService.getBackSubCustomerPager(pager, subid);
+            pager = userService.getBackSubCustomerPager(pager, subid,phone,name,sex,type);
             return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
