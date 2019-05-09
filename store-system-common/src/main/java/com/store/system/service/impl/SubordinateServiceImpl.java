@@ -46,7 +46,7 @@ public class SubordinateServiceImpl implements SubordinateService {
 
 	@Override
 	public Subordinate insert(Subordinate subordinate) throws Exception {
-
+        subordinate.setAdminPassword(Subordinate.defaul_pwd);
 		subordinate = subordinateDao.insert(subordinate);
 		//为每个所生成指定的系统内部账号
 		if(StringUtils.isNoneBlank(subordinate.getAdminPhone())||StringUtils.isNoneBlank(subordinate.getAdminUserName())) {
@@ -94,14 +94,38 @@ public class SubordinateServiceImpl implements SubordinateService {
 
 	@Override
 	public boolean update(Subordinate subordinate) throws Exception {
-		Subordinate db=subordinateDao.load(subordinate.getId());
+            Subordinate db=subordinateDao.load(subordinate.getId());
+        db.setIcon(subordinate.getIcon());
+		db.setName(subordinate.getName());
 		db.setProvince(subordinate.getProvince());
 		db.setCity(subordinate.getCity());
-		db.setName(subordinate.getName());
+		db.setArea(subordinate.getArea());
+		db.setAddress(subordinate.getAddress());
 		db.setContent(subordinate.getContent());
-		db.setIcon(subordinate.getIcon());
+		db.setAdminUserName(subordinate.getAdminUserName());
+		db.setAdminPhone(subordinate.getAdminPhone());
+		return subordinateDao.update(db);
+	}
+
+	@Override
+	public boolean updateStore(Subordinate subordinate) throws Exception {
+		Subordinate db=subordinateDao.load(subordinate.getId());
+		db.setName(subordinate.getName());
+		db.setProvince(subordinate.getProvince());
+		db.setCity(subordinate.getCity());
+		db.setArea(subordinate.getArea());
 		db.setPhone(subordinate.getPhone());
-		db.setDesc(subordinate.getDesc());
+		db.setStoreCode(subordinate.getStoreCode());
+		db.setStoreImg(subordinate.getStoreImg());
+		db.setThreePolicy(subordinate.getThreePolicy());
+		db.setProcessId(subordinate.getProcessId());
+		db.setStoredType(subordinate.getStoredType());
+		db.setPayType(subordinate.getPayType());
+		db.setStartTime(subordinate.getStartTime());
+		db.setEndTime(subordinate.getEndTime());
+
+		db.setAddress(subordinate.getAddress());
+
 		return subordinateDao.update(db);
 	}
 
@@ -181,5 +205,12 @@ public class SubordinateServiceImpl implements SubordinateService {
         pager.setTotalCount(count);
         return pager;
     }
+
+	@Override
+	public Subordinate insertStore(Subordinate subordinate)throws Exception {
+		subordinate.setPid(subordinate.getId());
+		subordinate = subordinateDao.insert(subordinate);
+		return subordinate;
+	}
 
 }

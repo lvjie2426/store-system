@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
@@ -8,36 +9,51 @@ import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
- * 下属单位
+ * 公司，门店
  */
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure,
         identityType = IdentityType.origin_indentity)
 @Data
 public class Subordinate implements Serializable {
+    public static final  String defaul_pwd="123456";
 
     public static final int status_online = 0;//线上
     public static final int status_delete = 1;//删除
 
-    //@Excel(name = "id", height = 20, width = 30, isImportField = "true_st")
+    public static final int storedType_per = 0;//本店自己
+    public static final int storedType_pub = 1;//与其他店公用
+
+    public static final int payType_wx_per = 1;//微信个人
+    public static final int payType_wx_pub = 2;//微信公共
+    public static final int payType_ali_pub = 3;//支付宝公共
+    public static final int payType_ali_per = 4;//支付宝个人
+
+    public static final int processType_per = 0;//本店加工
+    public static final int processType_pub = 1;//工厂加工
+
+
     @PrimaryKey
     private long id;
 
     private long pid; //父类ID(0：公司，非0：分店)
 
-    //@Excel(name = "名称", height = 20, width = 30, isImportField = "true_st")
     private String name;
+    // 门店简码
+    private String storeCode;
+    //门店照片
+    @HyperspaceColumn(isJson = true)
+    private List<String> storeImg=new ArrayList<>();
 
     private String cover;
-    //@Excel(name = "介绍", height = 20, width = 30, isImportField = "true_st")
     private String content;//介绍
 
     private String desc;
-    //@Excel(name = "手机号", height = 20, width = 30, isImportField = "true_st")
     private long phone;
-    //@Excel(name = "logo", height = 20, width = 30, isImportField = "true_st")
     private String icon;
 
     private String address;
@@ -53,10 +69,24 @@ public class Subordinate implements Serializable {
     private int status;
 
     private long province;//省
-
     private long city;//城市
-
+    private long area;//区
     private long roleInitTemplateId;//角色模板ID
+    //营业开始时间
+    private String startTime;
+    //营业结束时间
+    private String endTime;
+    //支付方式
+    private int payType;
+    //储值方式
+    private int storedType;
+    //加工方式
+    private int processType;
+    //加工中心id
+    private int processId;
+    //三包政策
+    private String threePolicy;
+
 
     @SortKey
     private long ctime;
