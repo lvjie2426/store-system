@@ -3,6 +3,7 @@ package com.store.system.backend.controller;
 import com.store.system.client.ClientSubordinate;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Subordinate;
 import com.store.system.service.SubordinateService;
 import com.google.common.collect.Lists;
@@ -42,34 +43,89 @@ public class SubordinateController extends BaseController {
     public ModelAndView getSubordinatePager(HttpServletRequest request, HttpServletResponse response,
                                        long sid,
                                        Model model) throws Exception {
-        ClientSubordinate clientSubordinate = subordinateService.load(sid);
-        List<ClientSubordinate> list = Lists.newArrayList();
-        list.add(clientSubordinate);
-        return this.viewNegotiating(request,response,new ResultClient(true,list));
+        try {
+            ClientSubordinate clientSubordinate = subordinateService.load(sid);
+            List<ClientSubordinate> list = Lists.newArrayList();
+            list.add(clientSubordinate);
+            return this.viewNegotiating(request,response,new ResultClient(true,list));
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
     }
 
     @RequestMapping("/addSubordinate")
     public ModelAndView searchSubordinateCode(HttpServletRequest request, HttpServletResponse response,
                                          Subordinate subordinate,
                                          Model model) throws Exception {
-        subordinate = subordinateService.insert(subordinate);
-        return this.viewNegotiating(request,response, new ResultClient(subordinate));
+        try {
+            subordinate = subordinateService.insert(subordinate);
+            return this.viewNegotiating(request,response, new ResultClient(subordinate));
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
     }
 
     @RequestMapping("/updateSubordinate")
     public ModelAndView updateSubordinate(HttpServletRequest request, HttpServletResponse response,
                                      Subordinate subordinate,
                                      Model model) throws Exception {
-        ResultClient resultClient = new ResultClient(subordinateService.update(subordinate));
-        return this.viewNegotiating(request,response,resultClient);
+        try {
+            ResultClient resultClient = new ResultClient(subordinateService.update(subordinate));
+            return this.viewNegotiating(request,response,resultClient);
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
     }
 
     @RequestMapping("/deleteSubordinate")
     public ModelAndView deleteSubordinate(HttpServletRequest request, HttpServletResponse response,
                                      long id,
                                      Model model) throws Exception {
-        ResultClient resultClient = new ResultClient(subordinateService.delete(id));
-        return this.viewNegotiating(request,response,resultClient);
-    }
+        try {
+            ResultClient resultClient = new ResultClient(subordinateService.delete(id));
+            return this.viewNegotiating(request,response,resultClient);
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
 
+    }
+    @RequestMapping("/addSubordinateStore")
+    public ModelAndView addSubordinateStore(HttpServletRequest request, HttpServletResponse response,
+                                              Subordinate subordinate,
+                                              Model model) throws Exception {
+        try {
+            subordinate = subordinateService.insertStore(subordinate);
+            return this.viewNegotiating(request,response, new ResultClient(subordinate));
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
+    }
+    @RequestMapping("/updateSubordinateStore")
+    public ModelAndView updateSubordinateStore(HttpServletRequest request, HttpServletResponse response,
+                                          Subordinate subordinate,
+                                          Model model) throws Exception {
+        try {
+            ResultClient resultClient = new ResultClient(subordinateService.updateStore(subordinate));
+            return this.viewNegotiating(request,response,resultClient);
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
+    }
+    @RequestMapping("/getSubordinateStore")
+    public ModelAndView getSubordinateStore(HttpServletRequest request, HttpServletResponse response,
+                                            long sid,
+                                            Model model) throws Exception {
+        try {
+            List<ClientSubordinate> list= subordinateService.getTwoLevelAllList(sid);
+            return this.viewNegotiating(request,response,new ResultClient(true,list));
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
+    }
 }

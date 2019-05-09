@@ -22,4 +22,7 @@ public interface SubordinateService {
 
 	public Pager getOneLevelPager(Pager pager) throws Exception;
 
+	public Subordinate insertStore(Subordinate subordinate)throws Exception;
+
+	public boolean updateStore(Subordinate subordinate)throws Exception;
 }
