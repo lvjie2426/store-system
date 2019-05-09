@@ -1,6 +1,7 @@
 package com.store.system.service.impl;
 
 import com.quakoo.ext.RowMapperHelp;
+import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientSubordinate;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.SubordinateDao;
@@ -127,6 +128,30 @@ public class SubordinateServiceImpl implements SubordinateService {
 		db.setAddress(subordinate.getAddress());
 
 		return subordinateDao.update(db);
+	}
+
+	@Override
+	public Pager getSubordinateStoreByName(Pager pager,long sid, String name) throws Exception{
+		String sql = "SELECT  *  FROM `subordinate`   where  1=1 ";
+		String sqlCount = "SELECT  COUNT(*)  FROM `subordinate` where 1=1";
+		String limit = "  limit %d , %d ";
+		if(sid>0) {
+			sql = sql + " and `pid` = " +sid;
+			sqlCount = sqlCount + " and `pid` = " +sid;
+		}
+		if(!name.isEmpty()){
+			sql = sql + " and `name`  like '%" + name + "%'" ;
+			sqlCount = sqlCount + " and `name` like '%" + name + "%'" ;
+		}
+
+		sql = sql + " order  by ctime desc";
+		int count = 0;
+		sql = sql + String.format(limit, pager.getSize() * (pager.getPage() - 1), pager.getSize());
+		List<Subordinate> subordinateList = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Subordinate>(Subordinate.class));
+		count=this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+		pager.setData(transformClient(subordinateList));
+		pager.setTotalCount(count);;
+		return pager;
 	}
 
 	@Override
