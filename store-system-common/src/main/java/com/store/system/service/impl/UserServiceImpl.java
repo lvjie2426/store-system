@@ -649,49 +649,29 @@ public class UserServiceImpl implements UserService {
         //查找用户
         User olduser=userDao.load(user.getId());
         //姓名
-        if(user.getName()!=null && !"".equals(user.getName())){
-            olduser.setName(user.getName());
-        }
+        if(user.getName()!=null && !"".equals(user.getName())){ olduser.setName(user.getName()); }
         //性别
-        if(user.getSex() != 0){
-            olduser.setSex(user.getSex());
-        }
+        if(user.getSex() != 0){ olduser.setSex(user.getSex()); }
         //年龄
-        if(user.getAge() != 0){
-            olduser.setAge(user.getAge());
-        }
+        if(user.getAge() != 0){ olduser.setAge(user.getAge()); }
         //封面图
-        if(user.getCover()!=null && !"".equals(user.getCover())){
-            olduser.setCover(user.getCover());
-        }
+        if(user.getCover()!=null && !"".equals(user.getCover())){ olduser.setCover(user.getCover()); }
         //生日
-        if(user.getBirthdate()!=0&&"".equals(user.getBirthdate())){
-            olduser.setBirthdate(user.getBirthdate());
-        }
+        if(user.getBirthdate()!=0&&"".equals(user.getBirthdate())){ olduser.setBirthdate(user.getBirthdate()); }
         //职位
-        if(user.getJob()!=null&&"".equals(user.getJob())){
-            olduser.setJob(user.getJob());
-        }
+        if(user.getJob()!=null&&"".equals(user.getJob())){ olduser.setJob(user.getJob()); }
         //邮件
-        if(user.getMail()!=null&&"".equals(user.getMail())){
-            olduser.setMail(user.getMail());
-        }
+        if(user.getMail()!=null&&"".equals(user.getMail())){ olduser.setMail(user.getMail()); }
         //手机号
-        if(user.getPhone()!=null&&"".equals(user.getPhone())){
-            olduser.setPlace(user.getPhone());
-        }
-        boolean res = userDao.update(user);
+        if(user.getPhone()!=null&&"".equals(user.getPhone())){ olduser.setPlace(user.getPhone()); }
+        boolean res = userDao.update(olduser);
         if(res && !olduser.getPhone().equals(user.getPhone())) {
             LoginUserPool loginUserPool = new LoginUserPool();
-            loginUserPool.setUserType(User.userType_user);
+            loginUserPool.setUserType(User.userType_backendUser);//员工
             loginUserPool.setLoginType(LoginUserPool.loginType_phone);
             loginUserPool.setAccount(olduser.getPhone());
             loginUserPoolDao.delete(loginUserPool);
-            loginUserPool = new LoginUserPool();
-            loginUserPool.setUserType(User.userType_user);
-            loginUserPool.setLoginType(LoginUserPool.loginType_phone);
-            loginUserPool.setAccount(user.getPhone());
-            loginUserPool.setUid(user.getId());
+            loginUserPool.setUid(olduser.getId());
             loginUserPoolDao.insert(loginUserPool);
         }
         boolean result = userDao.update(olduser);
