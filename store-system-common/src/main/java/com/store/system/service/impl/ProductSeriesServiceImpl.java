@@ -3,10 +3,12 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
+import com.store.system.dao.ProductBrandDao;
 import com.store.system.dao.ProductSeriesDao;
 import com.store.system.dao.ProductSeriesPoolDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
+import com.store.system.service.ProductBrandService;
 import com.store.system.service.ProductSeriesService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,8 @@ public class ProductSeriesServiceImpl implements ProductSeriesService {
 
     @Resource
     private ProductSeriesDao productSeriesDao;
-
+    @Resource
+    private ProductBrandDao productBrandDao;
     @Resource
     private ProductSeriesPoolDao productSeriesPoolDao;
 
@@ -46,7 +49,27 @@ public class ProductSeriesServiceImpl implements ProductSeriesService {
     @Override
     public boolean update(ProductSeries productSeries) throws Exception {
         check(productSeries);
-        boolean res = productSeriesDao.update(productSeries);
+        ProductSeries oldProductSeries = productSeriesDao.load(productSeries);
+        if(oldProductSeries==null){throw new StoreSystemException("未找到该系列!");}
+        if(productSeries.getBid()>0){
+            ProductBrand productBrand = productBrandDao.load(productSeries.getBid());
+            if(productBrand==null){throw new StoreSystemException("未找到该品牌!");}
+            oldProductSeries.setBid(productSeries.getBid());
+        }
+        if(productSeries.getName()!=null){
+            oldProductSeries.setName(productSeries.getName());
+        }
+        if(productSeries.getDesc()!=null){
+            oldProductSeries.setDesc(productSeries.getDesc());
+        }
+        if(productSeries.getIcon()!=null){
+            oldProductSeries.setIcon(productSeries.getIcon());
+        }
+        if(productSeries.getSort()>0){
+            oldProductSeries.setSort(productSeries.getSort());
+        }
+        oldProductSeries.setStatus(productSeries.getStatus());
+        boolean res = productSeriesDao.update(oldProductSeries);
         return res;
     }
 

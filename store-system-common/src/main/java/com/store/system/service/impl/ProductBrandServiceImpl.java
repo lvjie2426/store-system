@@ -48,13 +48,13 @@ public class ProductBrandServiceImpl implements ProductBrandService {
         check(productBrand);
         ProductBrand oldProductBrand = productBrandDao.load(productBrand);
         if(oldProductBrand==null) throw new StoreSystemException("未找到该品牌!");
-        if(!"".equals(productBrand.getName())){
+        if(productBrand.getName()!=null){
             oldProductBrand.setName(productBrand.getName());
         }
-        if(!"".equals(productBrand.getDesc())){
+        if(productBrand.getDesc()!=null){
             oldProductBrand.setDesc(productBrand.getDesc());
         }
-        if(!"".equals(productBrand.getIcon())){
+        if(productBrand.getIcon()!=null){
             oldProductBrand.setIcon(productBrand.getIcon());
         }
         if(productBrand.getSort()>0){
