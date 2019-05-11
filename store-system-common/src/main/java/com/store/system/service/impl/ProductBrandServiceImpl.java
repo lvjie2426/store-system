@@ -46,7 +46,22 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     @Override
     public boolean update(ProductBrand productBrand) throws Exception {
         check(productBrand);
-        boolean res = productBrandDao.update(productBrand);
+        ProductBrand oldProductBrand = productBrandDao.load(productBrand);
+        if(oldProductBrand==null) throw new StoreSystemException("未找到该品牌!");
+        if(!"".equals(productBrand.getName())){
+            oldProductBrand.setName(productBrand.getName());
+        }
+        if(!"".equals(productBrand.getDesc())){
+            oldProductBrand.setDesc(productBrand.getDesc());
+        }
+        if(!"".equals(productBrand.getIcon())){
+            oldProductBrand.setIcon(productBrand.getIcon());
+        }
+        if(productBrand.getSort()>0){
+            oldProductBrand.setSort(productBrand.getSort());
+        }
+        oldProductBrand.setStatus(productBrand.getStatus());
+        boolean res = productBrandDao.update(oldProductBrand);
         return res;
     }
 
