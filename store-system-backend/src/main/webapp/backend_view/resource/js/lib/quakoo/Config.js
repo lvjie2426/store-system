@@ -25,6 +25,8 @@ var Config = (function(_super){
 
         /**测试服务器地址*/
         this.serverUrl = "http://39.107.247.82:10004";
+        /**李浩杰*/
+        // this.serverUrl = "http://192.168.1.48:10004";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -46,6 +48,42 @@ var Config = (function(_super){
     _proto.getUrl_web_user_loginUrl = function(){return this.serverUrl + '/login/in';};
     /**登陆验证码*/
     _proto.getUrl_web_user_loginCodeUrl = function(){return this.serverUrl + '/login/verifyCode'};
+
+    //=======================顾客管理 开始====================
+    /**获取公司下门店列表*/
+    _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
+    /**获取门店下顾客的所有职业*/
+    _proto.getUrl_user_getAllUserJob = function(){return this.serverUrl + '/user/getAllUserJob';};
+    /**添加顾客*/
+    _proto.getUrl_user_addCustomer = function(){return this.serverUrl + '/user/addCustomer';};
+    /**获取所属公司的所有顾客*/
+    _proto.getUrl_user_getCustomerPager = function(){return this.serverUrl + '/user/getCustomerPager';};
+    /**查询某个门店下的所有会员级别列表*/
+    _proto.getUrl_usergrade_getAllList = function(){return this.serverUrl + '/usergrade/getAllList';};
+    /**获取所属门店的所有顾客*/
+    _proto.getUrl_user_getSubCustomerPager = function(){return this.serverUrl + '/user/getSubCustomerPager';};
+    /**修改顾客信息*/
+    _proto.getUrl_user_updateCustomer = function(){return this.serverUrl + '/user/updateCustomer';};
+
+    //=======================顾客管理 结束====================
+
+    //=======================公司管理 开始====================
+    /**获取公司下门店列表*/
+    _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
+
+    //=======================公司管理 结束====================
+
+    //=======================企业端（营销管理） 开始====================
+    /**获取公司下门店列表*/
+    _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
+
+    //=======================企业端（营销管理） 结束====================
+
+    //=======================商品管理 开始====================
+    /**获取公司下门店列表*/
+    _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
+
+    //=======================商品管理 结束====================
 
 
 

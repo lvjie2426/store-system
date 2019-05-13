@@ -250,6 +250,9 @@
     <script src="../resource/layui/layui.js"></script>
     <!-- 公司内部库 -->
     <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakoo/Config.js"></script>
     <script src="../resource/js/lib/quakoo/project.js"></script>
     <!-- 全局公共js -->
     <script src="../resource/js/yanjing.js"></script>
@@ -257,6 +260,23 @@
     <script src="../resource/js/yanjing/daterange.js"></script>
     <!-- 当前页面逻辑 -->
     <script>
+
+        /**获取门店下顾客的所有职业*/
+        function (){
+            quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid,name:name},function (ret) {
+                if(ret&&ret.success){
+                    if(quakooUtils.isNotBlack(ret.data)){
+                        for(var i = 0;i<ret.data.length;i++){
+                            ret.data[i].text = (i+1)+". "+ret.data[i].name;
+                        }
+                        var data = {list:ret.data};
+                        var html = template("shopList", data);
+                        document.getElementById("shopUl").innerHTML = html;
+                    }
+                }
+            });
+        }
+
         var custManagement = (function () {
 
             //头部js

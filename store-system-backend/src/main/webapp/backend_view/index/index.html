@@ -87,12 +87,7 @@
                             <span class="text">精益眼镜旗舰店</span> <i class="iconfont icon-ico_arrow_down"></i>
                         </div>
                         <div class="optionBox">
-                            <ul class="optionUL">
-                                <li value="精益眼镜旗舰店1">精益眼镜旗舰店1</li>
-                                <li value="精益眼镜旗舰店2">精益眼镜旗舰店2</li>
-                                <li value="精益眼镜旗舰店3">精益眼镜旗舰店3</li>
-                                <li value="精益眼镜旗舰店4">精益眼镜旗舰店4</li>
-                                <li value="精益眼镜旗舰店5">精益眼镜旗舰店5</li>
+                            <ul class="optionUL" id="shopUl">
                             </ul>
                         </div>
                     </div>
@@ -231,10 +226,38 @@
 <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
 <script src="../resource/js/lib/quakoo/Config.js"></script>
 <script src="../resource/js/lib/quakoo/project.js"></script>
-
+<script src="../resource/js/template-native.js"></script>
 <script src="../resource/js/yanjing.js"></script>
 
+<!--门店列表开始-->
+<script type="text/html" id="shopList">
+    <%for(var i=0;i < list.length;i++){%>
+        <li value="'<%=list[i].name%>'"><%=list[i].text%></li>
+    <%}%>
+</script>
+<!--门店列表结束-->
+
+
 <script>
+    console.log(JSON.stringify(quakooUser.getUserInfo()));
+    var sid = quakooUser.getUserInfo().sid;
+    var name = quakooUser.getUserInfo().name;
+    getSubordinateStore();
+    /**获取公司下门店列表*/
+    function getSubordinateStore(){
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid,name:name},function (ret) {
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    for(var i = 0;i<ret.data.length;i++){
+                        ret.data[i].text = (i+1)+". "+ret.data[i].name;
+                    }
+                    var data = {list:ret.data};
+                    var html = template("shopList", data);
+                    document.getElementById("shopUl").innerHTML = html;
+                }
+            }
+        });
+    }
     $(function () {
         /*下拉框*/
         selectTag($('#selectBox'), function (ret) {
