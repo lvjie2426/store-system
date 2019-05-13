@@ -37,18 +37,17 @@ var addHot = serverUrl + '/hotupdate/add';//添加
 var upDateHot = serverUrl + '/hotupdate/update';//更新
 var deleteHot = serverUrl + '/hotupdate/delete';//删除
 
-    if (window.location.pathname.indexOf('login/login.html') >= 0) {
+if (window.location.pathname.indexOf('login/login.html') >= 0) {
 
 } else {
     checkUser();
 }
 
 function checkUser() {
-    /*var user = getUserInfo();
+    var user = getUserInfo();
     if (user) {} else {
         window.parent.window.location.href = '../login/login.html';
-        //openNewWindow('login.html')
-    }*/
+    }
 }
 
 //===================公用方法=============================
@@ -170,7 +169,7 @@ function isNullJson(obj) {
  *
  */
 function loading(type) {
-    var type = type == undefined ? 1 : type;
+    type = type == undefined ? 1 : type;
     var index = layer.load(type, {
         shade: [0.1, '#fff']
     });

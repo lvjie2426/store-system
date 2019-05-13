@@ -104,9 +104,7 @@
                         </div>
                         <div class="optionBox">
                             <ul class="optionUL">
-                                <li value="联系我们">联系我们</li>
-                                <li value="信箱">信箱</li>
-                                <li value="安全退出">安全退出</li>
+                                <li value="安全退出" onclick="logout()">安全退出</li>
                             </ul>
                         </div>
                     </div>
@@ -227,77 +225,23 @@
 <script src="../resource/js/plugins/pace/pace.min.js"></script>
 <script src="../resource/common/common.js?" +Math.random()></script>
 
+
 <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
 <script src="../resource/js/lib/quakoo/project.js"></script>
+
 <script src="../resource/js/yanjing.js"></script>
-<!--<script src="../resource/js/backhand.js"></script>-->
-<!--<script src="../resource/js/contabs.js"></script>-->
 
 <script>
-
     $(function () {
         /*下拉框*/
         selectTag($('#selectBox'), function (ret) {
 
         });
-        selectTag($('#select-admin'), function (ret) {
-            console.log(ret)
-        })
+        selectTag($('#select-admin'))
     });
-
-    function initMenu() {
-        var param = {};
-        var user = getUserInfo();
-        param.token = user.token;
-        $('#side-menu').hide();
-        $.ajax({
-            url: serverUrl + "backend/getMain",
-            type: "post",
-            dataType: "json",
-            data: param,
-            async: false,
-            success: function (data) {
-                if (data) {
-                    for (var index in data["map"]) {
-                        var menu = addMenu(data["map"][index]);
-                    }
-
-                    $("#side-menu").append(menu);
-                }
-                showMenu();
-            },
-            error: function () {
-// window.location.href = "/login/in";
-//                layer.msg("加载失败", {icon: 2});
-            }
-
-        });
-    }
-
-    function addMenu(data) {
-        var permissionData = data[0];
-        var content = '';
-        for (var i = 0; i < permissionData.length; i++) {
-            var level2 = data[permissionData[i].id];
-            content += ' <li>';
-            content += '  <a href="#"><i class="' + permissionData[i].cssName + '"></i>';
-            content += ' <span class="nav-label">' + permissionData[i].text + '</span>';
-            content += '<span class="fa arrow"></span></a>';
-
-            if (level2 && level2.length > 0) {
-                for (var j = 0; j < level2.length; j++) {
-                    content += '  <ul class="nav nav-second-level">';
-                    content += ' <li>';
-                    content += ' <a class="J_menuItem"  data-index = ' + level2[j].id + ' href="' + level2[j].href.substring(2, level2[j].href.length - 2) + '">' + level2[j].text + '</a>';
-                    content += ' </li>';
-                    content += ' </ul>';
-                }
-            }
-
-            content += ' </li>';
-        }
-        return content;
-    }
 
     function include_js(path) {
         var sobj = document.createElement('script');
@@ -306,33 +250,15 @@
         var headobj = document.getElementsByTagName('head')[0];
         headobj.appendChild(sobj);
     }
-
-    //
-    // function showMenu(){
-    // // MetsiMenu
-    // $('#side-menu').metisMenu();
-    // $('#side-menu').show();
-    // }
-    // initMenu();
     include_js('../resource/js/backhand.js');
     include_js('../resource/js/contabs.js');
     $('#side-menu').metisMenu();
-
+    //退出
     function logout() {
-        removeUserInfo();
+        quakooUser.removeUserInfo()
+        window.location.href="../login/login.html";
     }
-
-    //    $(".layout").click(function(){
-    //        $.ajax({
-    //            url:"/login/logout",
-    //            type:"post",
-    //            dataType:"json",
-    //            success:function(data){
-    //            }
-    //        });
-    //    });
 </script>
-<!-- 自定义js -->
 
 
 </body>

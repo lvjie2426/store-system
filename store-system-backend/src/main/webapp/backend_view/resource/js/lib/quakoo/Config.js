@@ -6,7 +6,6 @@
  *  放本业务相关的配置
  *
  */
-
 var Config = (function(_super){
     function Config(){
         Config.__super.call(this);
@@ -18,47 +17,18 @@ var Config = (function(_super){
          */
         this.version = "1.0.0";
         this.hotVersion = "201901020001"
-        this.rootWindowName = "root";
-        //头部高度
-        this.headHeight = 44;
-        //底部高度
-        this.bottomHeight = 48;
-
-        //win窗口中打开的FRAME距离顶部的高度（win窗口头部高度）
-        this.winHeadHeight = 45;
-        //win窗口中打开的FRAME距离底部的高度（win窗口底部高度）
-        this.winBottomHeight = 0;
 
 
-        //是否初始化
-        this.isInit = "isInit";
-        this.lastTime = 'lastTime';
-        //是否播放引导视频
-        this.isShowGuide = false;
-        //是否需要游客登录
-        this.isNeedCustomerUser = true;
-        //短信验证码发送时间
-        this.Storage_Sms_Time = "smsTime";
-        //聊天未读消息数
-        this.Storage_chat_num = "chat_num";
-        //当前地址
-        this.curAddress = 'curAddress';
-        //当前经度
-        this.curLon = 'curLon';
-        //当前纬度
-        this.curLat = 'curLat';
-        //购物车
-        this.cartsKey = 'carts';
 
 
-        /**api服务地址*/
-        this.serverUrl = "http://39.107.247.82:19996";
-        // this.serverUrl = "http://192.168.1.13:50001";
+
+
+        /**测试服务器地址*/
+        this.serverUrl = "http://39.107.247.82:10004";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
         this.uploadImageUrl = "http://39.107.247.82:19996/storage/handle";
-
         /**聊天地址*/
         this.chatServerUrl = '39.107.247.82';
         /**聊天端口*/
@@ -71,7 +41,13 @@ var Config = (function(_super){
 
 
     }
-    var _proto = Config.prototype;
+    var _proto = _super.prototype;
+    /**登陆*/
+    _proto.getUrl_web_user_loginUrl = function(){return this.serverUrl + '/login/in';};
+    /**登陆验证码*/
+    _proto.getUrl_web_user_loginCodeUrl = function(){return this.serverUrl + '/login/verifyCode'};
+
+
 
     Quakoo.class(Config,'Config',_super);
 
