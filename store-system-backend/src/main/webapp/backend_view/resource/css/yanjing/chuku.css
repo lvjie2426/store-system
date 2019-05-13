@@ -1,0 +1,367 @@
+
+.outbound-right{
+    position: relative;
+}
+.outbound-right-content {
+    padding: 16px;
+}
+
+.outbound-right-content .item {
+    overflow-x: auto;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.outbound-right-content h5 {
+    font-size: 12px;
+    color: #393953;
+    margin-bottom: 8px;
+}
+
+.outbound-right-content table {
+    border-right: 1px solid #ECECF4;
+    border-left: 1px solid #ECECF4;
+    border-top: 1px solid #ECECF4;
+    border-bottom: 1px solid #ECECF4;
+    table-layout: fixed;
+    text-align: left;
+}
+
+.outbound-right-content th,
+.outbound-right-content td {
+    height: 32px;
+    padding-left: 12px;
+}
+
+.outbound-right-content tbody {
+    background: #fff;
+}
+
+.outbound-right-content u.rem {
+    color: #DD5B4B;
+    cursor: pointer;
+}
+
+td.brL {
+    border-left: 1px solid #ECECF4;
+}
+
+.outbound-single{
+    display: none;
+}
+.outbound-right-head .orhTitle {
+    display: inline-block;
+    height: 100%;
+    line-height: 44px;
+    padding-left: 16px;
+    color: #393953;
+}
+.outbound-right-head .layui-layer-title{
+    background: rgba(244, 244, 248, 1);
+}
+
+.outbound-single .btnBox {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 6px 8px;
+    border-top: 1px solid #eee;
+}
+
+.btn-rem {
+    background: #DD5B4B;
+    height: 28px;
+    border-radius: 2px;
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    line-height: 26px;
+    text-align: center;
+    padding: 0 10px;
+    font-family: PingFangSC-Semibold;
+    margin-right: 8px;
+}
+
+.btn-rem:hover {
+    color: #fff;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.inp {
+    height: 28px;
+    padding-left: 8px;
+    border: 1px solid #ECECF4;
+    display: inline-block;
+}
+
+.inp::placeholder {
+    color: #828297;
+}
+
+.booF th {
+    height: auto !important;
+}
+.booF table td{
+    height: auto !important;
+    border-top :0px !important;
+}
+.booF tr td:nth-last-child(1),.booF tr th:nth-last-child(1){
+    border-left: 1px solid #ECECF4 !important;
+}
+.booF thead th{
+    background: #F4F4F8;
+}
+.booF table{
+    border-bottom: 0px !important;
+}
+
+
+.tab-content-item tr td:nth-last-child(1){
+border-left: 1px solid #ECECF4;
+}
+
+.fixed-table-body input{
+    border: none;
+}
+
+
+
+
+
+
+
+
+
+/*新增样式开始*/
+.content-view{
+
+}
+.outbound-left .top{
+    width: 100%;
+    height: 44px;
+    line-height: 43px;
+    padding:0 8px 0 16px;
+    background-color: rgba(255, 255, 255, 1);
+    border-bottom:1px solid rgba(236, 236, 244, 1);
+}
+.outbound-left .top .title{
+    float:left;
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.outbound-left .top .select-title{
+    float: right;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: right;
+    font-family: PingFangSC-Semibold;
+    margin-right: 6px;
+}
+.outbound-left .top .selectBox{
+    float: right;
+    width: 120px;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    margin-top:8px;
+}
+.outbound-body-top-hidden{
+    width: 100%;height: 40px;padding: 12px 0 0;
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+    display: block;
+    position:relative;
+    margin-bottom:10px;
+}
+.outbound-body-top-hidden .text-default{
+    float:left;
+    height: 17px;
+    line-height: 14px;
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+}
+.outbound-body-top-hidden .button{
+    position:absolute;
+    right:0;
+    bottom: 0;
+    width: 92px;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: right;
+    font-family: PingFangSC-Semibold;
+}
+.outbound-body-top-show{
+    display:none;
+    width: 100%;height: 40px;padding: 0;
+    opacity: 1;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+    background-color: rgba(255, 255, 255, 1);
+    position: relative;
+    margin-bottom: 10px;
+}
+.outbound-body-top-show .text-end{
+    float:left;
+}
+.outbound-body-top-show .text-end span{
+    display: inline-block;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+    margin-right:16px;
+}
+.outbound-body-top-show .text-end .tab-lr{
+    float: left;
+    display: inline-block;
+}
+.outbound-body-top-show .text-end .tab-lr .tab-lr-item{
+    float:left;
+    height: 40px;
+    line-height: 38px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    margin-right:24px;
+    cursor: pointer;
+}
+.outbound-body-top-show .text-end .tab-lr .tab-lr-item:hover{
+    border-bottom:2px solid rgba(65, 134, 220, 1);
+}
+.outbound-body-top-show .text-end .tab-lr .tab-lr-item.active{
+    border-bottom:2px solid rgba(65, 134, 220, 1);
+    color: rgba(65, 134, 220, 1);
+}
+.outbound-body-top-show .button{
+    position: absolute;
+    right: 0;
+    bottom:0;
+    float:right;
+    width: 92px;
+    height: 28px;
+    line-height: 28px;
+    padding:0 10px;
+    border-radius: 2px;
+    background-color: rgba(87, 184, 219, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+
+
+/*右侧调货单样式中间内容样式*/
+.content-view .outbound-right .right-content{
+    width:100%;
+    padding:0 16px;
+}
+.content-view .outbound-right .right-content .right-content-item .right-item-title{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view .outbound-right .right-content table{
+    width:100%;
+    height:auto;
+}
+.content-view .outbound-right .right-content table thead th{
+    background-color:#F4F4F8;
+    height:32px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.content-view .outbound-right .right-content table tbody td{
+    background-color: #ffffff;
+    height:32px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.tab-content-list .tab-content-item{
+    display: none;
+}
+.tab-content-list .tab-content-item.active{
+    display: block;
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-content{
+    padding-top:10px;
+    margin-bottom: 16px;
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-content .selectBox{
+    margin-right:8px;
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-content input{
+    width: 116px;
+    height: 28px;
+    line-height: 26px;
+    padding:0 8px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    opacity: 0.6;
+    color: #828297;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-content input::-webkit-input-placeholder{
+    color: rgba(130, 130, 151, 1);
+}
+.content-view .outbound-right .right-content table tbody td .button{
+    color: rgba(221, 91, 75, 1);
+    font-size: 12px;
+    text-align: left;
+    text-decoration: underline;
+    font-family: PingFangSC-Medium;
+}
+/*右侧调货单底部样式*/
+.outbound-foot{
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px -1px 0px 0px rgba(236, 236, 244, 1);
+    width: 100%;height: 44px;padding: 6px;
+    position: absolute;bottom: 0;left: 0;
+}
+.outbound-foot .btn-yj-default32{
+    float: right;
+}
+.outbound-foot .btn-yj-default32.active{
+    background:#4186DC;
+    color: #ffffff;
+}
+
+
+/*新增调货样式结束*/

@@ -1,0 +1,1708 @@
+/*公共样式*/
+/*清除浮动*/
+.clear{
+    zoom:1;
+}
+.clear:after{
+    content:'\20';
+    display:block;
+    height:0;
+    clear:both;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+input,button{
+    font-weight: 500;
+    outline: none;
+}
+/*input:disabled谷歌浏览器样式*/
+input:disabled{
+    background:#ffffff;
+}
+/*选框样式*/
+.fixed-table-container input[type=radio], .fixed-table-container input[type=checkbox]{
+    margin:7px auto!important;
+}
+/*滚动条样式开始*/
+::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: .1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: all 3s;
+}
+.task-shop .content .table table tbody::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+
+.task-shop .content .table table tbody::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.task-shop .content .table table tbody::-webkit-scrollbar-thumb {
+    border-radius: .1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: all 3s;
+}
+
+/*开关开始*/
+.switch .switch-btn{
+    width: 24px;
+    height: 16px;
+    opacity: 0.4;
+    border-radius: 100px;
+    background-color: rgba(130, 130, 151, 1);
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    transition: .5s;
+}
+.switch.active .switch-btn{
+    opacity: 1;
+    background-color: rgba(65, 134, 220, 1);
+}
+.switch.active .switch-btn i{
+    top: 2px;right: 2px;
+    left: auto;
+}
+.switch .switch-btn i{
+    transition: .5s;
+    width: 12px;
+    height: 12px;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 2px;left: 2px;
+}
+/*开关结束*/
+
+/*按钮开始*/
+.btn{
+    height: 28px;
+    line-height: 28px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    padding:0 10px;
+    border-radius: 2px;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: PingFangSC-Semibold;
+}
+.btn-default{
+
+}
+.btn-primary{
+    background-color:#4186DC;
+    color:#FFFFFF;
+}
+.btn-success{
+
+}
+.btn-info{
+
+}
+.btn-warning{
+
+}
+.btn-danger{
+    background-color: #DD5B4B;
+}
+/*按钮结束*/
+
+/*下拉框开始*/
+.selectBox{
+    width: auto;
+    height: 28px;
+    line-height: 26px;
+    padding-left:8px;
+    padding-right:6px;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 2px;
+    background-color: #ffffff;
+    border: 1px solid #ececf4;
+    color: #393953;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: PingFangSC-Semibold;
+    box-sizing: border-box;
+}
+.selectBox .select-box-header i{
+    margin:0;
+}
+/*下拉框结束*/
+
+/*单选样式开始*/
+.radio-button .box{
+    width: 100%;
+    height: 28px;
+    margin-bottom: 8px;
+}
+.radio-button .box>input{
+    display: none;
+}
+.radio-button label{
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+    padding-left:20px;
+    display: inline-block;
+    position: relative;
+    color: #393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.radio-button label:active{
+}
+.radio-button label:after{
+    content: "";
+    display: block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    width:14px;
+    height:14px;
+    background-color: #F4F4F8;
+    border:1px solid rgba(130,130,151,0.2);
+    border-radius: 100%;
+    position: absolute;
+    top: 6px;
+    left: 0;
+    z-index:9999;
+}
+.radio-button input:checked+label:after{
+    width: 6px;
+    height: 6px;
+    background-color:#FFF;
+    border: 5px solid #4186DC;
+}
+/*单选样式结束*/
+
+/*重置弹窗底部按钮开始*/
+.layui-layer-btn .layui-layer-btn0{
+    height: 32px;
+    line-height: 30px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1) !important;
+    border: 1px solid rgba(236, 236, 244, 1) !important;
+    padding:0 10px;
+    margin:0 0 0 8px;
+    color: rgba(130, 130, 151, 1) !important;
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+.layui-layer-btn .layui-layer-btn1{
+    height: 32px;
+    line-height: 30px;
+    padding:0 10px;
+    margin:0 0 0 8px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1)!important;
+    border: 1px solid rgba(236, 236, 244, 1) !important;
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1) !important;
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+/*重置弹窗底部按钮结束*/
+
+/**/
+#rwjl-table .end{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    background-color: rgba(130, 130, 151, 0.1);
+    border-radius: 100%;
+    color:#828297;
+}
+
+/*主页样式开始*/
+.body-bg{
+    width:100%;
+    height:100%;
+    background-color:#ECECF3;
+}
+.header{
+    width: 100%;
+    height: 52px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-right:16px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
+}
+.header ul{
+    float:left;
+}
+.header .tab-ul li{
+    float:left;
+    height:52px;
+    line-height:52px;
+    margin-left: 24px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border:none;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.header .tab-ul li.active{
+    color: rgba(57, 57, 83, 1);
+    border-bottom: 2px solid #393953;
+    font-weight: 600;
+}
+.header ol li{
+    height:52px;
+    line-height:52px;
+    display: none;
+    float:right;
+}
+.header ol li.active{
+    display: block;
+}
+.header ol li span{
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: right;
+    font-family: PingFangSC-Medium;
+}
+.header ol li button{
+    height: 28px;
+    line-height:28px;
+    padding:0 10px;
+    margin-left: 12px;
+    border:none;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+
+.content{
+    width:89.29%;
+    margin:24px auto 0;
+    background:#FFF;
+}
+.content ul .tab-item{
+    display:none;
+}
+.content ul .tab-item.active{
+    display: block;
+}
+.content .tab-item ol{
+}
+@media screen and (min-width:1080px) {
+    .content .tab-item .card-item{
+        width:33.33%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding:0 5px;
+        margin-bottom:12px;
+        background-color:transparent;
+        float:left;
+    }
+}
+@media screen and (max-width:1079px) {
+    .content .tab-item .card-item{
+        width:50%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding:0 5px;
+        margin-bottom:12px;
+        background-color:transparent;
+        float:left;
+    }
+}
+@media screen and (max-width:860px) {
+    .content .tab-item .card-item{
+        width:100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding:0 5px;
+        margin-bottom:12px;
+        background-color:transparent;
+        float:left;
+    }
+}
+/*抵用券营销开始*/
+.content .first{
+    background:#ECECF3;
+}
+.first li .top{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background-color: rgba(244, 244, 248, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding:0 16px;
+}
+.first li .top .text{
+    color:#828297;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.first li .top .switch.active+.text {
+    color: rgba(57, 57, 83, 1);
+}
+.first li .middle-cont{
+    width:100%;
+    background:#FFF;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding:4px 16px;
+}
+.middle-cont .item{
+    padding:5px 0;
+}
+.middle-cont .item .text-top{
+    height: 19px;
+    line-height: 19px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.middle-cont .item .text-bot{
+    height:19px;
+    line-height: 19px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.bot-cont{
+    width: 100%;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px -1px 0px 0px rgba(236, 236, 244, 1);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding:6px;
+}
+.bot-cont .button{
+    float: right;
+    display: inline-block;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 2px;
+    padding:0 10px;
+    margin-left: 8px;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+}
+.first .bot-cont .button-thin-red{
+    background-color: rgba(221, 91, 75, 0.1);
+    border: 1px solid rgba(221, 91, 75, 0.1);
+    color:#DD5B4B;
+    font-family: PingFangSC-Semibold;
+}
+.first .bot-cont .button-thin-blue{
+    background-color: rgba(65, 134, 220, 0.1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    color: #4186DC;
+    font-family: PingFangSC-Semibold;
+}
+/*抵用券营销结束*/
+
+/*短信营销开始*/
+.content .section{
+    background: #ECECF3;
+}
+.content .section .inner{
+    width:100%;
+    height:100%;
+    background:#F4F4F8;
+}
+.section li .top{
+    width:100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: rgba(244, 244, 248, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left:16px;
+    padding-right: 13px;
+}
+.section li .top .text{
+    float:left;
+}
+.section li .top .text .main{
+    margin-top: 11px;
+    height: 18px;
+    line-height: 18px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.section li .top .text .vice {
+    margin-top:2px;
+    height: 17px;
+    line-height: 17px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.switch{
+    float:right;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.switch .off{
+    display: inline-block;
+}
+.switch .on{
+    display: none;
+}
+.switch.active .off{
+    display: none;
+}
+.switch.active .on{
+    display: inline-block;
+}
+.switch.active{
+    color: rgba(65, 134, 220, 1);
+    font-weight: 600;
+}
+.section li .cont{
+    position: relative;
+    width: 92.62%;
+    height: 148px;
+    margin:12px auto;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+.section li .cont .off{
+    position:absolute;
+    left:50%;
+    top:50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+}
+.section li .cont .off i {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    line-height:48px;
+    background-color: rgba(65, 134, 220, 1);
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    text-align: center;
+    vertical-align: middle;
+    color:#ffffff;
+    font-size:16px;
+}
+.section li .cont .off span {
+    display: block;
+    margin-top:3px;
+    height: 17px;
+    line-height: 17px;
+    color: rgba(65, 134, 220, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Medium;
+}
+.section li .cont .on{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding:0 16px;
+
+}
+.section li .message-top {
+    width:100%;
+    height: 40px;
+    line-height: 24px;
+    background-color: rgba(244, 244, 248, 0);
+    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 8px 0;
+}
+.section li .message-top span{
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.section li .message-top .button-thin{
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    line-height: 22px;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 0.1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    color: rgba(65, 134, 220, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+.section li .message-cont{
+    width:100%;
+    line-height:28px;
+    margin-top:13px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    font-family: PingFangSC-Medium;
+}
+.fixed-table-container{
+    border:none;
+}
+/*短信营销结束*/
+/*主页样式结束*/
+
+/**弹窗样式开始*/
+/*新增抵用券开始*/
+.content-view1,.content-view2,.content-view3{
+    display: none;
+}
+.content-view1{
+    width:100%;
+    height:100%;
+    position: relative;
+}
+.content-view1  .lay-header{
+    position:absolute;
+    top:0;
+    left:0;
+    z-index: 19920323;
+    width:100%;
+    height: 44px;
+    line-height:44px;
+    padding-left:16px;
+    padding-right: 12px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    font-weight:600;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view1  .lay-header .lay-title{
+    padding:0;
+    background-color: #ffffff;
+    border:none;
+    display: block;
+    float: left;
+}
+.content-view1 .lay-content{
+    width:100%;
+    height:340px;
+    padding:60px 16px 0;
+    overflow: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.lay-row{
+    width:100%;
+    height:auto;
+    line-height:28px;
+    margin-bottom: 8px;
+}
+.lay-content .left{
+    width:26%;
+    float:left;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.lay-content .right{
+    width:74%;
+    float:right;
+}
+.lay-content input.right{
+    height: 28px;
+    line-height: 28px;
+    padding:0 8px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    font-family: Roboto-Medium;
+}
+.lay-content .title .right{
+    height: 28px;
+    line-height: 28px;
+    padding:0 8px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    font-family: Roboto-Medium;
+}
+
+.lay-content .title .right::-webkit-input-placeholder {
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-family: PingFangSC-Medium;
+}
+.lay-content input.right::-webkit-input-placeholder {
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-family: PingFangSC-Medium;
+}
+.lay-content .describe .right{
+    line-height: 28px;
+    font-size:0;
+}
+.lay-content .describe .right strong{
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.lay-content .describe .right em{
+    display: inline-block;
+    width:6px;
+}
+input[type="number"]{
+    width:60px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding:0 8px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+    border:1px solid #ececf4;
+}
+input[type="number"]::-webkit-input-placeholder{
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-family: PingFangSC-Medium;
+}
+.lay-row.time .right{
+    width:74%;
+    height: 28px;
+}
+.lay-row.time .right .yj-date{
+    width:100%;
+
+}
+.lay-row.time .right::-webkit-input-placeholder{
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-family: PingFangSC-Medium;
+
+}
+.dialog-voucher .layui-layer-btn .layui-layer-btn0{
+    height: 32px;
+    line-height: 30px;
+    padding:0 10px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+    margin:0;
+}
+.dialog-voucher .layui-layer-btn .layui-layer-btn1{
+    height: 32px;
+    line-height: 30px;
+    padding:0 10px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+    margin: 0 0 0 8px;
+}
+.dialog-voucher .layui-layer-btn .layui-layer-btn1.active{
+    opacity: 1;
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+}
+/*新增抵用券结束*/
+
+/*编辑短信营销开始*/
+.content-view2{
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+}
+.content-view2 .top-name{
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    padding:0 16px;
+    background-color: rgba(244, 244, 248, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    font-weight: bolder;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view2 .mid-content{
+    width:100%;
+    height:auto;
+    padding:0 12px 16px;
+
+}
+.content-view2 .mid-content .label-button{
+    width:100%;
+    height:38px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-top:8px;
+}
+.content-view2 .mid-content .label-button input[type="button"]{
+    width: auto;
+    height: 22px;
+    line-height: 22px;
+    padding:0 6px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 11px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view2 .mid-content .content-area{
+    width: 100%;
+    height: 148px;
+    padding:0 16px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+.content-view2 .mid-content .content-area input[type="text"]{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    border:none;
+    background-color: rgba(244, 244, 248, 0);
+    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.content-view2 .mid-content .content-area p{
+    width:100%;
+    height:auto;
+    line-height:28px;
+    padding-top:13px;
+    text-align: left;
+    vertical-align: middle;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+}
+.content-view2 .layui-layer-btn{
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    background-color: rgba(244, 244, 248, 1);
+    box-shadow: 0px -1px 0px 0px rgba(236, 236, 244, 1);
+}
+/*编辑短信营销结束*/
+
+/*新增短信群发开始*/
+.content-view3 {
+    width: 100%;
+    height: auto;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+}
+.content-view3 .top-name{
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    padding-left:16px;
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    font-weight: bolder;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view3 .customer .title{
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    padding-left:16px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1),0px -1px 0px 0px rgba(244, 244, 248, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: bolder;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view3 .customer .contents{
+    padding:0 16px;
+}
+.content-view3 .customer .contents .item{
+    width:100%;
+    height:37px;
+    line-height: 37px;
+}
+.content-view3 .customer .contents .item .left{
+    float: left;
+    width:22%;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view3 .customer .contents .item .right {
+    float:left;
+    width:78%;
+}
+.content-view3 .customer input[type="radio"]{
+    display:none;
+}
+.content-view3 .customer .radio-button label{
+    width: auto;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view3 .customer .contents .selectBox{
+    width: 156px;
+    height: 28px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+.content-view3 .customer .contents .selectBox span {
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.content-view3 .sms{
+    width:100%;
+}
+.content-view3 .sms .title{
+    width: 100%;
+    height: 36px;
+    line-height:36px;
+    padding-left: 16px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1), 0px -1px 0px 0px rgba(244, 244, 248, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: bolder;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view3 .mid-content{
+    width:100%;
+    height:auto;
+    padding:0 12px 16px;
+
+}
+.content-view3 .mid-content .label-button{
+    width:100%;
+    height:38px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-top:8px;
+}
+.content-view3 .mid-content .label-button input[type="button"]{
+    width: auto;
+    height: 22px;
+    line-height: 22px;
+    padding:0 6px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 11px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view3 .mid-content .content-area{
+    width: 100%;
+    height: 148px;
+    padding:0 16px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+.content-view3 .mid-content .content-area input[type="text"]{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    border:none;
+    background-color: rgba(244, 244, 248, 0);
+    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.content-view3 .mid-content .content-area p{
+    width:100%;
+    height:auto;
+    line-height:28px;
+    padding-top:13px;
+    text-align: left;
+    vertical-align: middle;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+}
+.content-view3 .time{
+    padding:10px 16px 16px;
+    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1), 0px -1px 0px 0px rgba(244, 244, 248, 1);
+}
+.content-view3 .time .title{
+    width:100%;
+    height:29px;
+    line-height: 29px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: bolder;
+    text-align: left;
+    vertical-align: middle;
+    font-family: PingFangSC-Semibold;
+}
+.content-view3 .time .send-time{
+    width: 156px;
+    height: 28px;
+    line-height:26px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    color: #393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    position:relative;
+    cursor: pointer;
+}
+.content-view3 .time .send-time input{
+    border:none;
+    color: #393953;
+    border: 1px solid rgba(236, 236, 244, 1);
+    position: absolute;
+    left: 0px;
+    top:0px;
+    width: 100%;
+    height: 28px;
+    padding:0 8px;
+    cursor: pointer;
+}
+.content-view3 .time .send-time input::-webkit-input-placeholder{
+    color: rgba(130, 130, 151, 1);
+}
+.content-view3 .time .send-time i{
+    position: absolute;
+    right: 6px;
+    top: 2px;
+    color:#828297;
+}
+
+/*新增短信群发结束*/
+/*创建任务弹窗开始*/
+.create-task{
+    width:100%;
+    height:auto;
+    display: none;
+    overflow: hidden;
+
+}
+.create-task .create-task-header{
+    width:100%;
+    height: 44px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+}
+.create-task .create-task-header .move{
+    width:120px;
+    height:44px;
+}
+.create-task .create-task-header .move.active{
+    border-bottom: none;
+}
+.create-task .create-task-header .move:hover{
+    border-bottom: none;
+}
+.create-task .create-task-header li{
+    height: 44px;
+    line-height: 44px;
+    float:left;
+    color:#828297;
+    font-size:13px;
+    text-align: left;
+    margin-left:16px;
+    border-bottom: 2px solid transparent;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.create-task .create-task-header li.active{
+    color:#393953;
+    border-bottom:2px solid #393953;
+}
+.create-task .create-task-header li:hover{
+    border-bottom:2px solid #393953;
+}
+.create-task .task-first{
+    width:100%;
+    padding:11px 16px 16px;
+}
+.task-item{
+}
+.create-task .task-first .first-item .text{
+    height: 17px;
+    line-height:17px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    margin-bottom:6px;
+}
+.create-task .task-first .first-item input{
+    width: 156px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    padding:0 8px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    opacity: 0.6;
+    color: #393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.create-task .task-first .first-item input::-webkit-input-placeholder{
+    color: #828297;
+}
+.create-task .task-first .first-item .shop{
+    position: relative;
+    width: 156px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    padding:0 8px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    opacity: 0.6;
+    color: #393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.create-task .task-first .first-item .shop i{
+    position:absolute;
+    top:0;
+    height:26px;
+    right:8px;
+}
+.create-task .task-second{
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    padding:0 16px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1), 0px -1px 0px 0px rgba(244, 244, 248, 1);
+}
+.create-task .task-second input#money,input#number{
+    display: none;
+}
+.create-task .task-second label{
+    height: 100%;
+    display: inline-block;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    padding-left:20px;
+    margin-right:14px;
+    position: relative;
+}
+.create-task .task-second label:before{
+    content: '';
+    display: block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    position: absolute;
+    left: 0;
+    top:10px;
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 100%;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(130, 130, 151, 0.2);
+}
+.create-task .task-second input:checked+label:before{
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: #ffffff;
+    border:5px solid rgba(65, 134, 220, 1)
+}
+.create-task .task-third{
+    width:100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left:16px;
+    border:1px solid #ECECF4;
+}
+.create-task .task-third input[type="radio"]{
+    display: none;
+}
+.create-task .task-third label[for="allShop"],.create-task .task-third label[for="selectProduct"]{
+    width:100%;
+    height:28px;
+    line-height: 28px;
+    padding-left:20px;
+    margin-top:12px;
+    position: relative;
+}
+.create-task .task-third label[for="allShop"]:after,.create-task .task-third label[for="selectProduct"]:after{
+    content: '';
+    display: block;
+    width:16px;
+    height:16px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 100%;
+    position:absolute;
+    left:0;
+    top:6px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(130, 130, 151, 0.2);
+}
+.create-task .task-third input[name="salesNum"]:checked+label:after{
+    background-color: #FFF;
+    border:5px solid rgba(65, 134, 220, 1);
+}
+.create-task .task-third input[name="salesNum"]:checked+label[for="allShop"] input{
+    background-color: rgba(255, 255, 255, 1);
+}
+.create-task .task-third input[name="salesNum"]:checked+label[for="selectProduct"] button{
+    background-color: rgba(255, 255, 255, 1);
+}
+.create-task .task-third input[name="salesNum"]:checked+label[for="selectProduct"] input{
+    background-color: rgba(255,255,255,1);
+}
+.create-task .task-third label[for="allShop"] span{
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.create-task .task-third label[for="allShop"] input{
+    width: 100px;
+    height: 28px;
+    padding: 0 8px;
+    color:#393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+.create-task .task-third label[for="allShop"] input::-webkit-input-placeholder {
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+}
+.create-task .task-third label[for="selectProduct"] button{
+    width: 120px;
+    height: 28px;
+    line-height: 26px;
+    padding:0 8px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.create-task .task-third label[for="selectProduct"] button i{
+    float: right;
+}
+.create-task .task-third label[for="selectProduct"] span {
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.create-task .task-third label[for="selectProduct"] input{
+    width: 100px;
+    height: 28px;
+    padding: 8px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color:#393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.create-task .task-third label[for="selectProduct"] input::-webkit-input-placeholder {
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+}
+.create-task .task-third .award,.create-task .task-third .mission-time{
+    width:100%;
+    height:auto;
+    margin-top:16px;
+}
+.create-task .task-third .award .award-text,.create-task .task-third .mission-time .mission-text{
+    width:100%;
+    height: 17px;
+    line-height: 17px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.create-task .task-third .award input {
+    width: 156px;
+    height: 28px;
+    line-height: 26px;
+    padding:0 8px;
+    margin-top: 6px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color:#393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.create-task .task-third .mission-time .send-time{
+    width: 180px;
+    height:28px;
+    float: left;
+    display: block;
+    margin:6px 0 16px;
+    position: relative;
+}
+.create-task .task-third .mission-time .send-time input{
+    width: 100%;
+    height: 28px;
+    line-height: 26px;
+    padding:0 8px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.create-task .task-third .mission-time .send-time i{
+    color:#828297;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+}
+.create-task .task-third .mission-time .yj-demo-time{
+    width: 180px;
+    height:28px;
+    float: left;
+    display:none;
+}
+.create-task .task-third .mission-time .yj-date{
+    width: 180px;
+    height: 28px;
+    padding:0 8px;
+    margin-top: 6px;
+    border-radius: 2px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+
+}
+.create-task .task-third .mission-time i{
+    float: right;
+}
+.create-task .task-third .award input::-webkit-input-placeholder{
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+
+}
+.create-task .task-third .mission-time input[type="checkbox"]{
+    display: none;
+}
+.create-task .task-third .mission-time label{
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    padding-left: 20px;
+    margin-left: 12px;
+    position: relative;
+    float:left;
+    margin-top: 11px;
+}
+.create-task .task-third .mission-time label:after {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 100px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(130, 130, 151, 0.2);
+    position:absolute;
+    left: 0;
+    top: 0;
+}
+.create-task .task-third .mission-time input[type="checkbox"]:checked+label:after {
+    background-color: #FFFFFF;
+    border: 5px solid rgba(65, 134, 220, 1);
+}
+.create-task label{
+    cursor: pointer;
+}
+.task-object,.task-shop,.task-product{
+    display: none;
+}
+/*选择门店弹窗*/
+.task-shop{
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    position: relative;
+}
+.task-shop .task-header{
+    position:absolute;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    z-index:19920323;
+    padding-left:16px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.task-shop .content{
+    width:100%;
+    height: 264px;
+    padding: 60px 16px 16px;
+    margin:0;
+    background-color: rgba(255, 255, 255, 1);
+    overflow: auto;
+}
+.task-shop .content .table-box{
+    width:100%;
+    height:100%;
+}
+#shop-table{
+    width:100%;
+    max-height:190px;
+    border:1px solid rgba(236, 236, 244, 1);
+    border-radius: 1px;
+}
+#shop-table thead{
+    height:36px;
+}
+#shop-table th{
+    height:36px;
+    background:#F4F4F8;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+#shop-table th .th-inner{
+    padding:0;
+}
+#shop-table tbody{
+    max-height: 152px;
+    overflow-y: auto;
+}
+#shop-table tbody tr td{
+    padding:6px 0;
+    border:none;
+}
+
+.task-product{
+    width:100%;
+    height:100%;
+    position: relative;
+    overflow: hidden;
+}
+.task-product .task-header{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height: 44px;
+    line-height: 44px;
+    z-index: 19920323;
+    padding:0 16px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.task-product .product-tab{
+    padding-top: 44px;
+    width:100%;
+    height: 40px;
+    line-height:40px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(229, 229, 229, 0.5),0px -1px 0px 0px rgba(229, 229, 229, 0.5);
+    font-family: PingFangSC-Semibold;
+}
+.task-product .product-tab .product-item{
+    float: left;
+    margin-left:24px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+}
+.task-product .product-tab .product-item.active{
+    color: rgba(57, 57, 83, 1);
+    border-bottom:2px solid rgba(57, 57, 83, 1);
+}
+.task-product .product-list-tab{
+    width:100%;
+    height:472px;
+    overflow-y: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding:16px;
+}
+.task-product .product-list-tab .product-list-item{
+    width: 100%;
+    height: 100%;
+    display:none;
+}
+.task-product .product-list-tab .product-list-item.active{
+    display: block;
+}
+.task-product .product-list-tab .product-list-item table{
+    border:1px solid rgba(236, 236, 244, 1);
+}
+.task-product .product-list-tab .product-list-item table tbody{
+    height: 368px;
+    overflow: auto;
+    border:1px solid rgba(236, 236, 244, 1);
+}
+.task-product .product-list-tab .product-list-item table th{
+    height: 36px;
+    line-height: 36px;
+    background-color: #F4F4F8;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    border:none;
+}
+.task-product .product-list-tab .product-list-item table td{
+    height: 36px;
+    line-height: 36px;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    border:none;
+}
+/*删除任务弹窗开始*/
+.delete-task{
+    width:100%;
+    height:100%;
+    display: none;
+}
+.delete-task .delete-header{
+    width:100%;
+    height: 44px;
+    line-height: 44px;
+    padding:0 16px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(221, 91, 75, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.delete-task .content{
+    width:100%;
+    height:17px;
+    line-height: 17px;
+    padding:0 16px;
+    margin-top:12px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+/*删除任务弹窗结束*/
+
+/*创建任务弹窗结束*/
+/*弹窗样式结束*/
+.demo2{
+    transform-origin: center;
+    transform: rotate(-90deg);
+}
+.table thead{
+    background-color: #f4f4f8;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.table tbody{
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+}
+#slide1{
+    margin-top:15px;
+}
+#slide1 .layui-slider {
+    width: 204px;
+    height: 2px;
+    background-color: rgba(236, 236, 244, 1);
+}
+#slide1 .layui-slider-wrap-btn{
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(130, 130, 151, 0.4);
+}
+#slide1 .layui-slider-wrap{
+    top:-18px;
+}
+
+
+.layui-layer-dx .layui-layer-btn a{
+    margin: 0 0 0 8px;
+    height: 32px;line-height: 30px;
+}
+.layui-layer-dx .layui-layer-btn .layui-layer-btn0{
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+}
+.layui-layer-dx .layui-layer-btn .layui-layer-btn1{
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+}

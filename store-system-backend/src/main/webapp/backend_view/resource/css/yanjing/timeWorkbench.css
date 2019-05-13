@@ -1,0 +1,929 @@
+/*
+实时工作台的css
+*/
+body {
+    background-color: #ECECF3;
+}
+
+header {
+    width: 100%;
+    height: 52px;
+    background-color: #fff;
+    line-height: 52px;
+}
+
+header ul li {
+    margin: 0 24px;
+    font-size: 12px;
+    color: #828297;
+    /*width:48px;*/
+    height: 50px;
+    float: left;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.xuan {
+    color: #393953;
+    border-bottom: 2px solid #393953;
+}
+
+/*今日概览css — -  开始*/
+.list {
+    width: 88.5%;
+    margin: 0 auto;
+    height: 100%;
+    padding-bottom: 30px;
+}
+
+.list>ul {
+    width: 100%;
+    padding: 12px;
+}
+
+.list>ul li {
+    width: 25%;
+    height: 64px;
+    float: left;
+    line-height: 64px;
+    position: relative;
+}
+
+.list>ul li div {
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 50%;
+    background-color: #fff;
+    float: left;
+    position: absolute;
+    left: 50%;
+    margin-left: -48px;
+    top: 8px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.list>ul li span {
+    font-size: 12px;
+    color: #828297;
+    float: left;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: 10px;
+}
+
+.salesData {
+    width: 100%;
+    height: 191px;
+    background-color: #fff;
+    border-radius: 2px;
+    margin-top: 12px;
+}
+
+.salesDataTop {
+    width: 100%;
+    height: 44px;
+    background-color: #fff;
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+}
+
+.salesDataTop>ul {
+    float: left;
+}
+
+.salesDataTop>ul li {
+    line-height: 44px;
+    margin: 0 24px;
+    color: #828297;
+    font-weight: bold;
+    float: left;
+    cursor: pointer;
+}
+
+.suanZ {
+    color: #393953;
+    border-bottom: 2px solid #393953;
+}
+
+.salesDataTop>div {
+    float: right;
+}
+
+.moreSales {
+    width: 68px;
+    line-height: 28px;
+    background-color: #DD5B4B;
+    border-radius: 2px;
+    text-align: center;
+    height: 28px;
+    margin: 8px 6px;
+    color: #fff;
+}
+
+.salesDatacen {
+    width: 100%;
+    height: 106px;
+}
+.salesDatacen ul{
+    width: 100%;
+    overflow: hidden;
+}
+
+.salesDatacen>ul li {
+    width: 17.8%;
+    height: 104px;
+    float: left;
+}
+
+.salesDatacen>ul li div:first-child {
+    margin: 24px 0 0 36px;
+    width: 144px;
+    height: 42px;
+}
+
+.salesDatacen>ul li div:first-child span {
+    font-size: 36px;
+    color: #393953;
+    font-weight: bold;
+    float: left;
+    line-height: 42px;
+}
+
+.salesDatacen>ul li div:first-child div {
+    float: left;
+    margin: 7px 0 0 6px;
+}
+
+.salesDatacen>ul li div:first-child em {
+    color: #54B677;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.salesDatacen>ul li div:nth-child(2) {
+    margin-left: 36px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 17px;
+    color: #828297;
+}
+
+.salesDatabot {
+    width: 100%;
+    height: 41px;
+    background-color: #F4F4F8;
+}
+
+.salesDatabot p {
+    line-height: 41px;
+    margin-left: 16px;
+    font-size: 12px;
+    color: #828297;
+    float: left;
+}
+
+.salesDatabot>ul {
+    line-height: 41px;
+    font-size: 12px;
+    color: #828297;
+    float: right;
+    font-weight: bold;
+}
+
+.salesDatabot>ul li {
+    float: left;
+    margin-right: 28px;
+}
+
+.salesDatabot>ul li em {
+    color: #393953;
+}
+
+.questRewards {
+    width: 100%;
+}
+
+.questRewardsTop {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    background-color: #fff;
+    margin-top: 12px;
+    border-radius: 2px;
+    border-bottom: 1px solid rgba(236, 236, 244, 1);
+}
+
+.questRewardsTop>div:first-child {
+    float: left;
+    margin-left: 16px;
+    font-weight: bold;
+}
+
+.questRewardsTop>div:first-child p {
+    font-size: 13px;
+    color: #393953;
+    float: left;
+}
+
+.questRewardsTop>div:first-child span {
+    font-size: 12px;
+    color: #828297;
+    padding-left: 4px;
+    float: left;
+}
+
+.questRewardsTop>div:nth-child(2) {
+    float: right;
+    width: 92px;
+    height: 28px;
+    border-radius: 2px;
+    line-height: 28px;
+    border: 1px solid #ECECF4;
+    color: #828297;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    margin: 8px 16px 0 0;
+}
+
+/* 以上样式头部 */
+/* 奖励轮播样式 */
+.questRewardsBanner {
+    width: 100%;
+    overflow: hidden;
+    height: 94px;
+    position: relative;
+    background: #fff;
+    box-shadow: 0px 15px 10px -15px #ccc;
+}
+
+.questRewardsBanner ul {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 98;
+}
+
+.questRewardsBanner ul li {
+    min-width: 160px;
+    padding: 24px 0 24px 36px;
+    display: inline-block;
+    height: 100%;
+    box-sizing: border-box;
+    border-left: 1px solid #ECECF4;
+    overflow: hidden;
+}
+
+.questRewardsBanner ul li:nth-child(1) {
+    border-left: none;
+    border-bottom: 2px solid #DD5B4B;
+    float: left;
+}
+
+.questRewardsBanner ul li h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.questRewardsBanner ul li span {
+    color: #828297;
+    position: relative;
+}
+
+.questRewardsBanner ul li em {
+    font-size: 12px;
+}
+
+.questRewardsBanner ul li i {
+    position: absolute;
+    top: 0;
+    left: -20px;
+}
+
+.questRewardsBanner .gradual {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 40px;
+    z-index: 999;
+}
+
+.questRewardsBanner .btnRight {
+    right: 0;
+    background-image: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 50%);
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 50%);
+}
+
+.questRewardsBanner .btnRight span {
+    border-radius: 2px 0 0 2px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -18px;
+}
+
+.questRewardsBanner .btnLeft {
+    display: none;
+    left: 0;
+    background-image: -webkit-linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, #fff 50%);
+    background-image: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, #fff 50%);
+}
+
+.questRewardsBanner .btnLeft span {
+    border-radius: 0 2px 2px 0;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -18px;
+}
+
+.questRewardsBanner .gradual span {
+    width: 16px;
+    height: 28px;
+    text-align: center;
+    line-height: 28px;
+    font-size: 18px;
+    color: #fff;
+    background: #DD5B4B;
+    display: block;
+    cursor: pointer;
+}
+
+/* 奖励表单 */
+.questRewardsContent {
+    width: 100%;
+    overflow: hidden;
+    background: #F4F4F8;
+    border-radius: 0 0 2px 2px;
+}
+
+.taskReward {
+    width: 60%;
+    float: left;
+    border: 1px solid #ECECF4;
+    border-top: none;
+}
+
+.salesIncentives {
+    width: 40%;
+    float: right;
+    border: 1px solid #ECECF4;
+    border-top: none;
+    border-bottom: none;
+}
+
+.questRewardsContent h3 {
+    height: 44px;
+    line-height: 44px;
+    width: 100%;
+    padding-left: 16px;
+    border-bottom: 1px solid #ECECF4;
+}
+
+.questRewardsContent .content {
+    padding: 10px;
+    min-height: 418px;
+    line-height: 418px;
+    text-align: center
+}
+
+.questRewardsContent table {
+    background: #fff;
+}
+
+.questRewardsContent table td {
+    border: none !important;
+}
+
+/*今日概览css — -  结束*/
+/* 资金管理开始 */
+#monMan {
+    width: 88.5%;
+    margin: 0 auto;
+    padding: 12px 0 30px;
+    display: none;
+}
+
+#monMan td {
+    border-color: #F7F7FA;
+
+}
+
+.cashDetailedBox {
+    width: 100%;
+    overflow: hidden;
+}
+
+.cashBox {
+    width: 42%;
+    margin-right: 1.2%;
+    float: left;
+}
+
+.cashBox .cashTitle {
+    line-height: 44px;
+    padding-left: 16px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.cashBox .cashContent {
+    padding: 40px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.cashBox .cashContent li {
+    width: 33.3333%;
+    float: left;
+    text-align: center;
+}
+
+.cashBox .cashContent li h2 {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.cashBox .cashFooter {
+    padding: 12px 16px;
+    overflow: hidden;
+}
+
+.detailedBox {
+    width: 56.8%;
+    float: right;
+    overflow: hidden;
+}
+
+.detailedTitle {
+    padding: 15px 16px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.detailedTitle h3 {
+    display: inline-block;
+    float: left;
+    font-size: 13px;
+}
+
+.detailedTitle span {
+    float: right;
+    margin-left: 10px;
+}
+
+.detailedTitle span i {
+    display: inline-block;
+    width: 10px;
+    height: 4px;
+    margin-left: 8px;
+    background: #DD5B4B;
+    margin-bottom: 2px;
+}
+
+.detailedBox .totalBox {
+    width: 24.8%;
+    margin: 30px 0;
+    border-right: 1px solid #ECECF4;
+    text-align: center;
+    float: left;
+}
+
+.detailedBox .totalBox h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+#echarts {
+    display: inline-block;
+    /* float: right; */
+    width: 100%;
+    height: 168px;
+}
+
+.formBox {
+    background: #fff;
+    margin-top: 12px;
+}
+
+/* 资金管理结束 */
+
+
+/* 弹窗样式 */
+/* 现金结算弹窗 */
+.closeCashPop,
+.cmyRoyaltyPop {
+    display: none;
+    padding-top: 44px;
+}
+.cmyRoyaltyPop{
+    padding:0;
+}
+
+.closeCashPop .titleBox {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 8px 0 16px;
+}
+.closeCashPop .titleBox:first-child{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 997;
+    background: #fff;
+}
+
+.closeCashPop .titleBox h3,
+.closeCashPop .titleBox span.fcHui {
+    display: inline-block;
+    margin-right: 4px;
+    height: 100%;
+    line-height: 44px;
+}
+.closeCashPop .titleBox h3{
+    width: 50%;
+}
+
+.closeCashPop .selectBox {
+    margin: 8px 0;
+}
+
+.closeCashPop em {
+    margin-right: 16px;
+}
+
+.closeCashPop .inputContent {
+    width: 100%;
+    overflow: hidden;
+    padding: 16px 16px 0 0;
+}
+
+.inputContent .inpBox {
+    width: 50%;
+    float: left;
+    padding-left: 15px;
+}
+
+.inputContent .inpBox input {
+    height: 28px;
+    border: 1px solid #ECECF4;
+    padding-left: 8px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+}
+
+.inpBox input::placeholder {
+    color: #828297;
+}
+
+.xjZje {
+    background: #F4F4F8;
+    color: #828297;
+}
+
+.layui-layer-btn {
+    border-top: 1px solid #ECECF4;
+}
+
+/* 提成商品弹窗 */
+.layui-layer-title {
+    background: #fff !important;
+}
+
+.tab-ul {
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid #ECECF4;
+}
+
+.tab-ul li {
+    height: 40px;
+    line-height: 40px;
+}
+
+.cmyRoyaltyPop .formContent {
+    padding: 16px;
+}
+
+.cmyRoyaltyPop .table {
+    border-bottom: none !important;
+}
+
+.cmyRoyaltyPop .fixed-table-pagination {
+    border: 1px solid #ECECF4;
+}
+
+.cmyRoyaltyPop td {
+    border: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 当前页面公用样式 */
+.ov {
+    padding: 8px 16px;
+    width: 100%;
+    border-top: 1px solid #ECECF4;
+    overflow: hidden;
+    background: #F4F4F8;
+}
+.layui-layer-btn a{
+    line-height: 26px !important;
+}
+.btnSetOrder{
+    padding: 4px 10px;
+    background: #4186DC;
+    color: #fff;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.end{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    background-color: rgba(130, 130, 151, 0.1);
+    border-radius: 100%;
+    color:#828297;
+    text-align: center;
+    margin-left: -4px;
+}
+.fl {
+    float: left;
+}
+
+.bomr {
+    border-bottom: 1px solid #ECECF4;
+}
+
+.br {
+    border: 1px solid #ECECF4;
+    border-radius: 2px;
+    background: #fff;
+}
+
+.fr {
+    float: right;
+}
+
+.fcHui {
+    color: #828297;
+
+}
+
+.hide {
+    display: none;
+}
+
+.womenC {
+    color: #DD5B4B;
+}
+
+.btnRemove {
+    float: right;
+    background: #DD5B4B !important;
+    border-color: #DD5B4B !important;
+    outline: none;
+}
+
+.btnOrdinary {
+    padding: 0 10px;
+    outline: none;
+    color: #828297;
+    border: 1px solid #ECECF4;
+    background: #fff;
+    height: 28px;
+    line-height: 28px;
+    display: inline-block;
+    margin: 8px 8px 8px 0;
+}
+
+.btnViewOrder {
+    padding: 5px 10px;
+    color: #4186DC;
+    background: #EBF2FB;
+    border: 1px solid #DAE6F7;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.spanType {
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.span1 {
+    background: #F0983F;
+}
+
+.span2 {
+    background: #828297;
+}
+
+.span3 {
+    color: #828297;
+    background: #F4F4F8;
+}
+
+.span4 {
+    background: #57B8DB;
+}
+
+.span5 {
+    background: #DD5B4B;
+}
+
+.butn {
+    display: inline-block;
+    line-height: 28px;
+    height: 28px;
+    padding: 0 10px;
+    outline: none;
+    border: none;
+    color: #fff;
+    border-radius: 2px;
+    margin: 8px 8px 8px 0;
+}
+
+.dib {
+    display: inline-block;
+}
+
+
+.table {
+
+    table-layout: fixed;
+
+}
+
+.fixed-table-body {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.fixed-table-body::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+
+.fixed-table-body::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.fixed-table-body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    transition: all 3s;
+}
+
+.table.table-border,
+.fixed-table-container {
+    width: 100% !important;
+    border-radius: 0 !important;
+    border-color: #ECECF4 !important;
+}
+
+.yj-date {
+    width: auto;
+    display: inline-block;
+    float: left;
+    border-left: none;
+    border-right: none;
+}
+
+.yj-demo-time {
+    margin: 8px 0;
+}
+
+.salesDataTop .yj-demo-time .i {
+    float: left;
+    padding: 4px 6px 3px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: #828297;
+    cursor: pointer;
+}
+
+/* 结算现金记录弹窗 */
+.settlementRecordPop{
+    width: 100%;
+    padding: 16px;
+    position: relative;
+}
+.formSetRecord{
+    width: 100%;
+    overflow: auto;
+    max-height: 390px;
+}
+.formSetRecord .header,.formSetRecord .item{
+    border-bottom: 1px solid #ECECF4;
+    background :#F4F4F8;
+    color:#828297;
+    height: 36px;
+    line-height: 36px;
+    font-size: 12px;
+    white-space: nowrap;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.formSetRecord .header li{
+    background: #F4F4F8;
+}
+.formSetRecord .header li:nth-last-child(1){
+    color: #F4F4F8;
+}
+.formSetRecord .header li,.formSetRecord .item li{
+    display: inline-block;
+    min-width: 80px;
+    float: left;
+    width: 80px;
+    padding-left: 12px;
+}
+.formSetRecord .content{
+    background: #FFF;
+}
+.formSetRecord .item {
+    background: #fff;
+    border: none;
+}
+.formSetRecord .item ul{
+    width: 100%;
+    overflow: hidden;
+}
+.formSetRecord .item li{
+color: #393953;
+}
+.formSetRecord .bomr {
+    height: 36px;line-height: 36px;padding-left: 16px;
+    color: #828297;
+}
+
+.formSetRecord::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+.formSetRecord::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.formSetRecord::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 3s;
+}
+.settlementRecordPop .fixedBox{
+    position: absolute;
+    right: 22px;
+    top: 16px;
+    max-height: 390px;
+    border-top: 1px solid #ECECF4;
+    overflow: hidden;
+}
+.settlementRecordPop .fixedBox ul li{
+    height: 36px;
+    line-height: 36px;
+    padding-left: 16px;
+    font-size: 12px;
+    color: #393953;
+    background: #fff;
+    min-width: 80px;
+    border-left: 1px solid #ECECF4;
+    display: block;
+}
+.settlementRecordPop .fixedBox ul li.bomr{
+    /* opacity: 0; */
+}
+.settlementRecordPop .bomr{
+    border-left: none !important;
+}
+.settlementRecordPop .fixedBox ul li:nth-child(1){
+    background: #F4F4F8;
+    border-right: 1px solid #ECECF4;
+    height: 36px;
+}

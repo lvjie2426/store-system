@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>医疗器械</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <!--Bootstrap样式引入结束-->
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <link rel="stylesheet" href="../resource/css/style.css">
+    <!--标签样式重置结束-->
+    <!--公用组件样式-->
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <!--公用组件样式结束-->
+    <!--单页样式-->
+    <link rel="stylesheet" href="../resource/css/yanjing/medical.css">
+    <!--单页样式结束-->
+
+</head>
+<body class="body-bg">
+<div class="header clear">
+    <ul class="tab-ul clear">
+        <li class="active">销售记录</li>
+        <li>入库记录</li>
+        <li>退货记录</li>
+    </ul>
+    <ol class="clear">
+        <li class="right-info active">
+            <div class="selectBox" id="selectCustomer">
+                <div class="select-box-header">
+                    <span class="text">顾客姓名</span><i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">1</li>
+                        <li value="02">2</li>
+                        <li value="03">3</li>
+                    </ul>
+                </div>
+            </div>
+            <input type="search" class="search-box" placeholder="搜索姓名">
+        </li>
+        <li class="right-info">
+            <div class="selectBox" id="selectBrand1">
+                <div class="select-box-header">
+                    <span class="text">品牌</span><i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">1</li>
+                        <li value="02">2</li>
+                        <li value="03">3</li>
+                    </ul>
+                </div>
+            </div>
+            <input type="search" class="search-box" placeholder="搜索品牌">
+        </li>
+        <li class="right-info">
+            <div class="selectBox" id="selectBrand2">
+                <div class="select-box-header">
+                    <span class="text">品牌</span><i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">1</li>
+                        <li value="02">2</li>
+                        <li value="03">3</li>
+                    </ul>
+                </div>
+            </div>
+            <input type="search" class="search-box" placeholder="搜索品牌">
+        </li>
+    </ol>
+</div>
+<div id="second-bar">
+    <ul class="filter-list clear">
+        <li class="filter-item">
+            <div class="selectBox" id="selectAllSalesStaff">
+                <div class="select-box-header">
+                    <span class="text">所有时间</span><i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">所有时间</li>
+                        <li value="02">近1个月</li>
+                        <li value="03">近3个月</li>
+                        <li value="03">近半年</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="content1 tab-item active">
+    <table id="xsjl-table" data-toggle="table"  class="table table-border"></table>
+</div>
+<div class="content2 tab-item">
+    <table id="rkjl-table" data-toggle="table"  class="table table-border"></table>
+</div>
+<div class="content3 tab-item">
+    <table id="thjl-table" data-toggle="table"  class="table table-border"></table>
+</div>
+<div class="bottom-bar">
+    <span>已选中2项</span>
+    <input type="button" class="print btn btn-primary" value="打印">
+    <input type="button" class="cancel btn btn-gray" value="取消选中">
+</div>
+<div class="content-view"></div>
+
+<!--全局JS引用-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+<!--//日期范围插件开始-->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<!--//日期范围插件结束-->
+
+<script>
+
+    /*销售记录*/
+    var data3 = [
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
+        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"}
+    ];
+    $("#xsjl-table").bootstrapTable({
+        data:data3,                 //被加载的数据。
+        classes:"table",
+        pagination:true,            //是否显示分页
+        pageNumber:1,               //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {checkbox:true,valign:"middle"},
+            {field: "stime", title: "销售时间", align:"left",valign:"middle"},
+            {field: "name", title: "姓名", align:"left",valign:"middle"},
+            {field: "phone", title: "电话", align:"left",valign:"middle"},
+            {field: "brand", title: "品牌", align:"left",valign:"middle"},
+            {field: "series", title: "系列", align:"left",valign:"middle"},
+            {field: "cycle", title: "更换周期", align:"left",valign:"middle"},
+            {field: "quality", title: "保质期", align:"left",valign:"middle"},
+            {field: "buyNum", title: "购买数量", align:"left",valign:"middle"},
+            {field: "business", title: "营业员", align:"center",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary">打印</button>';
+                }
+            }
+
+        ]
+
+    });
+    /*入库记录*/
+    var data4 = [
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"}
+    ];
+    $("#rkjl-table").bootstrapTable({
+        data:data4,                 //被加载的数据。
+        classes:"table",
+        pagination:true,            //是否显示分页
+        pageNumber:1,               //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {checkbox:true,valign:"middle"},
+            {field: "stime", title: "入库时间", align:"left",valign:"middle"},
+            {field: "brand ", title: "品牌", align:"left",valign:"middle"},
+            {field: "series", title: "系列", align:"left",valign:"middle"},
+            {field: "model", title: "型号", align:"left",valign:"middle"},
+            {field: "cycle", title: "更换周期", align:"left",valign:"middle"},
+            {field: "productNum", title: "生产批号", align:"left",valign:"middle"},
+            {field: "quality", title: "保质期", align:"left",valign:"middle"},
+            {field: "num", title: "数量", align:"left",valign:"middle"},
+            {field: "putPerson", title: "入库人", align:"center",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary">打印</button>';
+                }
+            }
+
+        ]
+    });
+    /*退货记录*/
+    var data5 = [
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
+        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"}
+    ];
+    $("#thjl-table").bootstrapTable({
+        data:data5,                 //被加载的数据。
+        classes:"table",
+        pagination:true,            //是否显示分页
+        pageNumber:1,               //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {checkbox:true,valign:"middle"},
+            {field: "stime", title: "退货时间", align:"left",valign:"middle"},
+            {field: "brand ", title: "品牌", align:"left",valign:"middle"},
+            {field: "series", title: "系列", align:"left",valign:"middle"},
+            {field: "model", title: "型号", align:"left",valign:"middle"},
+            {field: "cycle", title: "更换周期", align:"left",valign:"middle"},
+            {field: "productNum", title: "生产批号", align:"left",valign:"middle"},
+            {field: "quality", title: "保质期", align:"left",valign:"middle"},
+            {field: "num", title: "数量", align:"left",valign:"middle"},
+            {field: "putPerson", title: "退货人", align:"center",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary">打印</button>';
+                }
+            }
+        ]
+    });
+    /**
+     * tab切换
+     * */
+    $(".tab-ul li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        $(".tab-item").hide().eq($(this).index()).show();
+        $(".right-info").hide().eq($(this).index()).show();
+    });
+    /**
+     * 所有时间下拉框
+     * */
+    selectTag($("#selectAllSalesStaff"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 顾客姓名下拉框
+     * */
+    selectTag($("#selectCustomer"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 品牌1下拉框
+     * */
+    selectTag($("#selectBrand1"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 品牌2下拉框
+     * */
+    selectTag($("#selectBrand2"),function (ret) {
+        console.log(ret)
+    });
+
+    $("table").click(function showBotBar(){
+        var botBar = $(".bottom-bar");
+        if($(".table tbody tr").hasClass("selected")){
+            botBar.css("display","block");
+        }else{
+            botBar.css("display","none")
+        }
+
+    });
+</script>
+</body>
+</html>

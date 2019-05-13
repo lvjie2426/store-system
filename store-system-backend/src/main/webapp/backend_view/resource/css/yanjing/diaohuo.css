@@ -1,0 +1,560 @@
+/*新增调货样式开始*/
+.outbound-left .top{
+    width: 100%;
+    height: 44px;
+    line-height: 43px;
+    padding:0 8px 0 16px;
+    background-color: rgba(255, 255, 255, 1);
+    border-bottom:1px solid rgba(236, 236, 244, 1);
+}
+.outbound-left .top .title{
+    float:left;
+    width:50%;
+    border-bottom:none;
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+
+}
+.outbound-left .top .select-title{
+    float: right;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: right;
+    font-family: PingFangSC-Semibold;
+    margin-right: 6px;
+}
+.outbound-left .top .selectBox{
+    float: right;
+    width: 120px;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    margin-top:8px;
+}
+.outbound-left-body table{
+    display:none;
+}
+
+.outbound-body-top-hidden{
+    width: 100%;height: 40px;padding: 12px 0 0;
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+    display: block;
+    position:relative;
+    margin-bottom:10px;
+}
+.outbound-body-top-hidden .text-default{
+    float:left;
+    height: 17px;
+    line-height: 14px;
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+}
+.outbound-body-top-hidden .button{
+    position:absolute;
+    right:0;
+    bottom: 0;
+    width: 92px;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+.outbound-body-top-show{
+    display:none;
+    width: 100%;height: 40px;padding: 0;
+    opacity: 1;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+    background-color: rgba(255, 255, 255, 1);
+    position: relative;
+    margin-bottom: 10px;
+}
+.outbound-body-top-show .text-end{
+    float:left;
+}
+.outbound-body-top-show .text-end span{
+    display: inline-block;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+    margin-right:16px;
+}
+.outbound-body-top-show .text-end .tab-lr{
+    float: left;
+    display: inline-block;
+}
+.outbound-body-top-show .text-end .tab-lr .tab-lr-item{
+    float:left;
+    height: 40px;
+    line-height: 38px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    margin-right:24px;
+    cursor: pointer;
+}
+.outbound-body-top-show .text-end .tab-lr .tab-lr-item:hover{
+    border-bottom:2px solid rgba(65, 134, 220, 1);
+}
+.outbound-body-top-show .text-end .tab-lr .tab-lr-item.active{
+    border-bottom:2px solid rgba(65, 134, 220, 1);
+    color: rgba(65, 134, 220, 1);
+}
+.outbound-body-top-show .button{
+    cursor:pointer;
+    position: absolute;
+    right: 0;
+    bottom:0;
+    float:right;
+    width: 92px;
+    height: 28px;
+    line-height: 28px;
+    padding:0 10px;
+    border-radius: 2px;
+    background-color: rgba(87, 184, 219, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+
+
+/*右侧调货单样式中间内容样式*/
+.content-view .outbound-right .right-content{
+    width:100%;
+    height:472px;
+    padding:0 16px 3px;
+    overflow:auto;
+}
+.content-view .outbound-right .right-content .right-content-item .right-item-title{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-view .outbound-right .right-content table{
+    width:100%;
+    height:auto;
+    border: 1px solid rgba(238,238,238,1);
+}
+.content-view .outbound-right .right-content table thead th{
+    background-color:#F4F4F8;
+    height:32px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    border:none;
+    border-bottom: 1px solid rgba(238,238,238,1);
+}
+.content-view .outbound-right .right-content table tbody{
+}
+.content-view .outbound-right .right-content table tbody td{
+    padding:0 12px;
+    background-color: #ffffff;
+    height:32px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    border-top:none;
+}
+.content-view .outbound-right .layui-layer-title{
+    height:44px;
+    border-bottom: 1px solid rgba(238,238,238,1);
+    background-color: #f4f4f8;
+}
+.tab-content-list .tab-content-item{
+    display: none;
+}
+.tab-content-list .tab-content-item.active{
+    display: block;
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-content{
+    padding-top:10px;
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-content .selectBox{
+    margin-right:8px;
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-content input{
+    width: 116px;
+    height: 28px;
+    padding:0 8px;
+    border-radius: 2px;
+    font-size: 12px;
+    border: 1px solid rgba(236, 236, 244, 1);
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    color: #828297;
+    opacity: 1;
+    background-color: #F4F4F8;
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-content input::-webkit-input-placeholder{
+    opacity: 0.6;
+    padding:0;
+    width:116px;
+    height:28px;
+    color: rgba(130, 130, 151, 1);
+}
+.tab-content-list .tab-content-item .outbound-left-body .outbound-body-add{
+    width: 92px;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+    cursor: pointer;
+    float: right;
+
+}
+.content-view .outbound-right .right-content table tbody td .button{
+    color: rgba(221, 91, 75, 1);
+    font-size: 12px;
+    text-align: left;
+    text-decoration: underline;
+    font-family: PingFangSC-Medium;
+}
+/*右侧头部*/
+.outbound-right-head {
+    width: 100%;
+    height: 44px;
+    border-bottom: 1px solid #eee;
+}
+/*右侧调货单底部样式*/
+.outbound-left{
+    position: relative;
+}
+.outbound-right{
+     position:relative;
+ }
+.outbound-right .outbound-foot{
+    background-color: #f4f4f8;
+    box-shadow: 0px -1px 0px 0px rgba(236, 236, 244, 1);
+    width: 100%;height: 44px;padding: 6px;
+    position: absolute;bottom: 0;left: 0;
+}
+.outbound-foot .btn-yj-default32{
+    float: right;
+}
+.outbound-foot .btn-yj-default32.active{
+    background:#4186DC;
+    color: #ffffff;
+}
+/*镜片默认table边框*/
+.layui-form{
+    -webkit-box-shadow: 0 0 0 0 #ffffff;
+    -moz-box-shadow: 0 0 0 0 #ffffff;
+    box-shadow: 0 0 0 0 #ffffff;
+}
+
+
+/*新增调货样式结束*/
+/*莫名其妙*/
+.layui-form.layui-border-box.layui-table-view{
+    background:#FFFFFF;
+}
+
+
+/*查看调货单开始*/
+.layui-cargo{
+    background: #f4f4f8;
+}
+.content-cargo{
+    width:100%;
+    height:100%;
+    background: #f4f4f8;
+    display: none;
+
+}
+.content-cargo .cargo-header{
+    width: 100%;
+    height: 44px;
+    line-height: 43px;
+    padding:0 16px;
+    border-bottom:1px solid #ECECF4;
+}
+.content-cargo .cargo-header .cargo-title{
+    float: left;
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.content-cargo .cargo-header .cargo-shop{
+    float: right;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: right;
+    font-family: Roboto-Bold;
+}
+.content-cargo .cargo-header .cargo-person{
+    float: right;
+    margin-left: 12px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: right;
+    font-family: PingFangSC-Semibold;
+}
+.content-cargo .cargo-content{
+    width:100%;
+    height:470px;
+    padding:0 16px 2px;
+    overflow: auto;
+}
+.content-cargo .cargo-content .cargo-content-list{
+    width:100%;
+    height:auto;
+}
+.content-cargo .cargo-content .cargo-content-item{
+    width:100%;
+    padding-top:16px;
+}
+.content-cargo .cargo-content .cargo-content-item .item-title{
+    margin-bottom:8px;
+    width: 100%;
+    height: 17px;
+    line-height: 17px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+/*重置BS-table的padding*/
+.fixed-table-container{
+    border:none;
+}
+.fixed-table-container tbody td .th-inner,.fixed-table-container thead th .th-inner{
+    padding:0 12px;
+    border:none;
+}
+.bootstrap-table .table:not(.table-condensed),
+.bootstrap-table .table:not(.table-condensed)>tbody>tr>td,
+.bootstrap-table .table:not(.table-condensed)>tbody>tr>th,
+.bootstrap-table .table:not(.table-condensed)>tfoot>tr>td,
+.bootstrap-table .table:not(.table-condensed)>tfoot>tr>th,
+.bootstrap-table .table:not(.table-condensed)>thead>tr>td{
+    padding:0 12px;
+}
+.content-cargo .cargo-content .cargo-content-item .cargo-table{
+    width: 100%;
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+.content-cargo .cargo-content .cargo-content-item .cargo-table thead th{
+    height:32px;
+    line-height:32px;
+    background-color: #f4f4f8;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.content-cargo .cargo-content .cargo-content-item .cargo-table tbody{
+    background-color:#FFFFFF;
+}
+.cargo-content-item .fixed-table-container .fixed-table-body tbody tr td{
+    border-top: none;
+}
+
+.content-cargo .cargo-content .cargo-content-item .cargo-table tbody tr td{
+    height: 32px;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+
+
+
+
+
+.content-cargo .cargo-bottom{
+    width: 100%;
+    height: 45px;
+    background-color: rgba(244, 244, 248, 1);
+    border-top: 1px solid rgba(236, 236, 244, 1);
+    padding:0 6px;
+}
+.content-cargo .cargo-bottom .btn-close-win{
+    display:inline-block;
+    float:left;
+    margin-top:6px;
+    width: 68px;
+    height: 32px;
+    line-height: 30px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: PingFangSC-Semibold;
+    cursor: pointer;
+}
+.content-cargo .cargo-bottom .btn-delete-cargo{
+    display:inline-block;
+    float:right;
+    margin-top:6px;
+    width: 68px;
+    height: 32px;
+    line-height:32px;
+    border-radius: 2px;
+    background-color: rgba(221, 91, 75, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: PingFangSC-Semibold;
+    cursor: pointer;
+}
+/*查看调货单结束*/
+
+/*删除调货开始*/
+.delete-cargo{
+    width:100%;
+    background-color:#FFFFFF;
+    overflow: hidden;
+    display: none;
+}
+.delete-cargo .del-cargo-header{
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    padding-left:16px;
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(221, 91, 75, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+.delete-cargo .del-cargo-content{
+    width:100%;
+    height:41px;
+    line-height: 41px;
+    padding-left:16px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.delete-cargo .del-cargo-bot{
+    height:44px;
+    padding:6px;
+}
+.delete-cargo .del-cargo-bot .btn-n{
+    float:right;
+    width: 44px;
+    height: 32px;
+    line-height: 30px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+    cursor: pointer;
+}
+.delete-cargo .del-cargo-bot .btn-y{
+    float:right;
+    margin-left:8px;
+    width: 44px;
+    height: 32px;
+    line-height:30px;
+    border-radius: 2px;
+    background-color: rgba(221, 91, 75, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+    cursor: pointer;
+}
+.log-false{
+    display: none;
+    position:absolute;
+    left:0;
+    bottom: 45px;
+    width: 100%;
+    height: 44px;
+    padding: 8px;
+    background-color: rgba(244, 244, 248, 1);
+    box-shadow: 0px -1px 0px 0px rgba(236, 236, 244, 1);
+}
+.log-false .selectBox{
+    float:left;
+    min-width: 100px;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 0.1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    color: rgba(65, 134, 220, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.log-false .log-num{
+    float: left;
+    margin-left: 8px;
+    width: 140px;
+    height: 28px;
+    line-height: 26px;
+    padding:0 8px;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 0.1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    opacity: 0.6;
+    color: rgba(65, 134, 220, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    cursor: pointer;
+}
+.log-true{
+    display: none;
+    position:absolute;
+    left:0;
+    bottom: 45px;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    background-color: rgba(65, 134, 220, 1);
+    box-shadow: 0px -1px 0px 0px rgba(236, 236, 244, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: Roboto-Medium;
+}
+/*删除调货结束*/

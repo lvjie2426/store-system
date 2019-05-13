@@ -28,7 +28,6 @@
             var $this = this.element,
                 $toggle = this.settings.toggle,
                 obj = this;
-
             if (this.isIE() <= 9) {
                 $this.find("li.active").has("ul").children("ul").collapse("show");
                 $this.find("li").not(".active").has("ul").children("ul").collapse("hide");
@@ -61,7 +60,14 @@
                 if ($toggle) {
                     $(this).parent("li").siblings().removeClass("active").children("ul.in").collapse("hide");
                 }
-
+            });
+            $this.find("li").children("a").on("click" + "." + pluginName, function(e) {
+                e.preventDefault();
+                if($(this).attr("href") !== "#" && $(this).attr("href") !== ""){
+                    if ($toggle) {
+                        $(this).parent("li").addClass('active').siblings().removeClass("active").children("ul.in").collapse("hide");
+                    }
+                }
             });
         },
 

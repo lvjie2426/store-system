@@ -46,7 +46,7 @@ function initSelectSubject(dom,url,multiple,nomin){
 
 function formatSubject(item) {
     if (item.loading) return item;
-    var markup = '<div> <p class="text-primary">学科名称：' + item.name|| item.text + '</p>';
+    var markup = '<div> <p class="text-primary">学校名称：' + item.name|| item.text + '</p>';
     //markup += '这里可以添加其他选项...';
     markup += ' </div>';
     return markup;

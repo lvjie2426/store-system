@@ -1,0 +1,555 @@
+/*
+顾客管理的css
+*/
+body {
+    background-color: #ECECF3;
+}
+
+/* 头部开始 */
+header {
+    width: 100%;
+    height: 52px;
+    background-color: #fff;
+    line-height: 52px;
+}
+
+.ruku {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+header>ul {
+    float: left;
+}
+
+header>ul li {
+    margin: 0 24px;
+    font-size: 14px;
+    color: #393953;
+    /*width:48px;*/
+    height: 50px;
+    float: left;
+    font-weight: bold;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+header>button,
+header>div {
+    float: right;
+}
+
+header>div input {
+    width: 120px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    border: 1px solid #ECECF4;
+    padding-left: 8px;
+    margin-right: 12px;
+}
+
+input::-webkit-input-placeholder {
+    color: #828297;
+}
+
+input::-moz-placeholder {
+    color: #828297;
+}
+
+input:-ms-input-placeholder {
+    color: #828297;
+}
+
+.xuan {
+    color: #393953;
+    border-bottom: 2px solid #393953;
+}
+
+header>div button {
+    float: left;
+    margin-top: 12px;
+    margin-right: 12px;
+    padding: 0 10px;
+    font-size: 12px;
+    border-radius: 2px;
+    line-height: 28px;
+    background-color: rgba(65, 134, 220, 0.1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    color: rgba(65, 134, 220, 1);
+
+}
+
+header>div button:first-child {
+    color: #FFFFFF;
+    background-color: rgba(87, 184, 219, 1);
+
+}
+
+header>div button:nth-child(3) {
+    color: #FFFFFF;
+    background-color: rgba(65, 134, 220, 1);
+}
+
+/* 二级头部开始 */
+.headerTwo {
+    height: 32px;
+    border-bottom: 1px solid #E0E0EA;
+    border-top: 1px solid #E0E0EA;
+    width: 100%;
+    background: #F4F4F8;
+}
+
+.hdTwo {
+    height: 100%;
+    float: left;
+    background: #F4F4F8;
+    border: none;
+    border-right: 1px solid #E0E0EA;
+}
+
+/* 头部结束 */
+/* 主体内容开始 */
+.main {
+    width: 100%;
+    padding: 10px 60px;
+    overflow: hidden;
+    color: #393953;
+}
+
+/* 主体内容头部 */
+.mainHeader {
+    width: 100%;
+    background: #fff;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.mainHeader .titleBox {
+    padding: 0 10px;
+    width: 100%;
+    line-height: 44px;
+    height: 44px;
+    border-bottom: 1px solid #ECECF4;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.mainHeader .tab-ul {
+    display: inline-block;
+    height: 100%;
+}
+
+.mainHeader .tab-ul li {
+    height: 44px;
+    line-height: 44px;
+}
+
+.mainHeader .yj-date {
+    display: inline-block;
+}
+
+.dataStatistics {
+    width: 100%;
+}
+
+.dataStatistics .menWomenProportion {
+    padding: 24px;
+    width: 25.8%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.menWomenProportion .totalNum,
+.menWomenProportion .menWomenBox,
+.menWomenProportion .women {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.vertical {
+    width: 2px;
+    height: 100%;
+    background: #F4F4F8;
+    margin: 0 16px;
+    display: inline-block;
+    height: 58px;
+}
+
+
+.menWomenProportion .totalNum h1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.dataDetailed {
+    width: 70%;
+    display: inline-block;
+    padding: 24px 0;
+    height: 100%;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.dataDetailed li {
+    width: 25%;
+    text-align: center;
+    display: inline-block;
+    float: left;
+}
+
+.dataDetailed li h1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+/* form表单样式 */
+.formBox {
+    width: 100%;
+    margin-top: 12px;
+    border-radius: 3px;
+}
+
+.formBox td {
+    border: none !important;
+    height: 48px;
+}
+
+.formBox .certified,
+.formBox .uncertified {
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: #F4F4F8;
+}
+
+.formBox .uncertified {
+    color: #fff;
+    background: #54B677;
+}
+
+/* 会等级弹窗 */
+.memberLevelPop {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    display: none;
+}
+
+/* 会员等级设置弹窗 */
+.addLevelPop{
+    display: none;
+}
+.addLevelPop .settingBox {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.settingBox li {
+    height: 28px;
+    line-height: 28px;
+    margin-bottom: 12px;
+    width: 100%;
+    overflow: hidden;
+}
+.settingBox li .topic {
+    display: inline-block;
+    float: left;
+    width: 25%;
+    color: #828297;
+    height: 100%;
+}
+.settingBox li .inputContent{
+    width: 75%;
+    float: left;
+    height: 100%;
+}
+.addLevelPop input[type="text"],.addLevelPop input[type="number"]{
+    height: 100%;
+    padding-left: 8px;
+    box-sizing: border-box;
+    width: 66px;
+    border: 1px solid #ECECF4;
+    border-radius: 2px;
+    height: 28px;
+}
+.jsrSet{
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 0 16px;
+    height: 50px;
+}
+.jsrSet input[type='radio']{
+    display: inline-block;
+    margin-top: 10px;
+}
+.jsrSet .textInput{
+    display: inline-block;
+    width: 100%;
+    color: #000;
+    margin-left: 2%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 当前页面公用样式 */
+.fl {
+    float: left;
+}
+
+.m0 {
+    margin: 0 !important;
+}
+
+.fr {
+    float: right;
+}
+
+.fcHui {
+    color: #828297;
+}
+
+.ml8 {
+    margin-left: 8px;
+}
+
+.fs14 {
+    font-size: 14px;
+}
+.hide{
+    display: none;
+}
+.mb16 {
+    margin-bottom: 16px;
+}
+
+.menC {
+    color: #4186DC;
+}
+
+.womenC {
+    color: #DA698B;
+}
+
+.btnEedit {
+    background: #4186DC;
+}
+
+.btnRecord {
+    background: #57B8DB;
+}
+
+.btnRemove {
+    background: #DD5B4B;
+}
+
+.btn {
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    color: #fff;
+    border-radius: 2px;
+}
+.pd10{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 16px;
+    border: none;
+    border-top: 1px solid #ECECF4;
+    border-bottom: 1px solid #ECECF4;
+}
+label{
+    font-weight: normal;
+    vertical-align: top;
+    margin: 0;
+}
+/* 滚动条 */
+
+
+
+/* 滚动条公共样式 */
+.h::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+
+.h::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.h::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    transition: all 3s;
+}
+
+/* 覆盖样式 */
+.layui-layer-content::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+.layui-layer-content::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.layui-layer-content::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    transition: all 3s;
+}
+.layui-layer-title {
+    background: #fff !important;
+    cursor: inherit !important;
+}
+
+.layui-layer-title span {
+    color: #393953 !important;
+    font-weight: normal;
+    height: 100%;
+    display: inline-block;
+    width: 80%;
+}
+
+.layui-layer-title button {
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    margin-top: 8px;
+    padding: 0 10px;
+    border: none;
+    background: #4186DC;
+    color: #fff;
+    outline: none;
+    font-weight: normal;
+    font-size: 12px;
+}
+.layui-layer-btn a{
+    height: 32px !important;
+    line-height: 32px !important;
+    margin: 0 0 6px 8px !important;
+    padding: 0 9px !important;
+}
+
+.layui-layer-btn {
+    border-top: 1px solid #ECECF4;
+}
+.btn{
+    font-size: 12px !important;
+}
+.btn.focus,
+.btn:focus,
+.btn:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.jsrForm input[type="radio"]{
+    display: none;
+} 
+.jsrForm label{
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+    padding-left:20px;
+    display: inline-block;
+    position: relative;
+    color: #393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.jsrForm label:active{
+}
+.jsrForm label:after{
+    content: "";
+    display: block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    width:14px;
+    height:14px;
+    background-color: #F4F4F8;
+    border:1px solid rgba(130,130,151,0.2);
+    border-radius: 100%;
+    position: absolute;
+    top: 8px;
+    left: 0;
+    z-index:9999;
+}
+.jsrForm input:checked+label:after{
+    width: 6px;
+    height: 6px;
+    background-color:#FFF;
+    border: 5px solid #4186DC;
+}
+
+
+
+#jsrChecked{
+    display: none;
+}
+#jsrCheckedLab{
+    padding-left:20px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    position: relative;
+}
+#jsrCheckedLab:after{
+    content: '';
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(130, 130, 151, 0.2);
+    position:absolute;
+    left:0;
+    top:0px;
+}
+#jsrCheckedLab i{
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:19920323;
+    color: #FFFFFF;
+    font-size: 12px;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 1);
+    font-weight: 200;
+    display: none;
+    text-align: center;
+}
+#jsrChecked:checked+label i{
+    display: block;
+}

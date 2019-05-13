@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>眼睛-商品管理-盘点</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <!--Bootstrap样式引入结束-->
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <!--标签样式重置结束-->
+    <!--本页面样式开始-->
+    <link rel="stylesheet" href="../resource/css/yanjing/timeWorkbench.css">
+    <!--本页面样式结束-->
+    <style>
+        header>div select{
+            outline: none;
+            height: 28px;
+            line-height: 28px;
+            /*appearance: none;*/
+            /*-webkit-appearance: none;*/
+            /*-moz-appearance: none;*/
+            padding-left: 8px;
+            width: 80px;
+            border-radius: 2px;
+            color:#828297 ;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+        }
+        header>div div{
+            float: right;
+            margin-top: 12px;
+            margin-right: 12px;
+            padding: 0 10px;
+            font-size: 12px;
+            border-radius: 2px;
+            line-height: 28px;
+            border: 1px solid rgba(65, 134, 220, 0.1);
+            color:#FFFFFF;
+            background-color: rgba(65, 134, 220, 1);
+        }
+        .orderCon{
+            width:100%;
+            height:32px;
+            line-height: 32px;
+            background-color: rgba(244, 244, 248, 1);
+        }
+        .orderCon .timeBox{
+            padding-left: 10px;
+            float:left;
+            line-height: 32px;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            border-right: 2px solid #ECECF4;
+        }
+        .orderCon .timeBox em{
+            width: 16px;
+            height: 16px;
+            border-radius: 0px;
+            border: 2px solid rgba(130, 130, 151, 1);
+            margin-left: 39px;
+            margin-top: 8px;
+            margin-right: 8px;
+            float: right;
+        }
+        .orderCon select{
+            float: left;
+            outline: none;
+            height: 32px;
+            line-height: 32px;
+            /*appearance: none;*/
+            /*-webkit-appearance: none;*/
+            /*-moz-appearance: none;*/
+            padding-left: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 2px;
+            color:#828297 ;
+            border:none;
+            border-right: 2px solid #ECECF4;
+        }
+    </style>
+</head>
+<body>
+<!--头部 &#45;&#45; 开始-->
+<header>
+    <ul>
+        <li><em></em> 商品盘点</li>
+    </ul>
+    <div>
+        <div>新增盘点</div>
+    </div>
+</header>
+<!--内容头部&#45;&#45;开始-->
+<div class="orderCon">
+    <div class="timeBox">
+        开始日期 - 结束日期  <em></em>
+    </div>
+    <select name="" id="">
+        <option value="">全部类型</option>
+    </select>
+</div>
+<!--今日概览 &#45;&#45; 开始-->
+<div class="list" id="Today">
+</div>
+<!--今日概览 &#45;&#45; 结束-->
+<!--资金管理 &#45;&#45; 开始-->
+<div class="monManagement" id="monMan">
+</div>
+<!--资金管理 &#45;&#45; 结束-->
+</body>
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js"></script>
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+<script>
+    //今日概览与资金管理来回切换
+    function switchPage(self,type){
+        if(type == 1){
+            $(self).next().removeClass('xuan');
+            $(self).addClass('xuan');
+            $('#Today').css('display','block');
+            $('#monMan').css('display','none');
+        }else{
+            $(self).prev().removeClass('xuan');
+            $(self).addClass('xuan');
+            $('#monMan').css('display','block');
+            $('#Today').css('display','none');
+        }
+    }
+</script>
+</html>

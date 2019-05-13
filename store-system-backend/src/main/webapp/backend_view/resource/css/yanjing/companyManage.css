@@ -1,0 +1,51 @@
+/*公司管理页面公共css*/
+input::-webkit-input-placeholder{
+  color: #b3b3c0;
+  font-weight: normal;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+  color:#b3b3c0;
+  font-weight: normal;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+  color:#b3b3c0;
+  font-weight: normal;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+  color:#b3b3c0;
+  font-weight: normal;
+}
+/*定宽90%居中*/
+.wrap90 {
+  width: 90%;
+  margin: 0 auto;
+}
+.txtOverflow{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/*弹窗样式覆盖*/
+.layui-layer-content p,
+.layui-layer-btn a.layui-layer-btn0,
+.layui-layer-btn a.layui-layer-btn1{
+  margin: 0;
+}
+/*弹窗底部按钮样式1*/
+.content-view-submit .layui-layer-btn a{
+  height: 32px;
+  line-height: 32px;
+  border: 1px solid #ececf4;
+  font-size: 12px;
+  padding: 0 10px;
+  margin-left: 8px;
+}
+.content-view-submit .layui-layer-btn a.canSave.layui-layer-btn1,
+.content-view-submit .layui-layer-btn a.layui-layer-btn0{
+  background: #f3f3f7;
+  color: #828297;
+}
+.content-view-submit .layui-layer-btn a.layui-layer-btn1{
+  background: #f3f3f7;
+  color: #b0b0bf;
+}

@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAiBI,uBAAO;EACL,KAAK,EAAC,KAAK;EACX,MAAM,EAAC,IAAI;EACX,MAAM,EAAC,MAAM;EAEb,0BAAE;IACA,MAAM,EAAC,IAAI;IACX,WAAW,EAAC,IAAI",
+"sources": ["../../sass/layout/market.scss"],
+"names": [],
+"file": "market.css"
+}

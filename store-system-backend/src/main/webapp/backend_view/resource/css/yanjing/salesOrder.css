@@ -1,0 +1,2457 @@
+/*公用代码*/
+
+.mt15 {
+    margin-top: 15px;
+}
+
+.hide {
+    display: none !important;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+
+.ml4 {
+    margin-left: 4px;
+}
+
+.pl12 {
+    padding-left: 12px;
+}
+
+a {
+    display: block;
+}
+
+input {
+    line-height: normal;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+.fs14 {
+    font-size: 14px;
+}
+
+i {
+    font-style: normal;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.ov {
+    width: 100%;
+    overflow: hidden;
+}
+
+.ml16 {
+    margin-left: 16px;
+}
+
+
+.btnBlue {
+    color: #4186DC !important;
+    cursor: pointer;
+}
+
+.btnBlack {
+    color: #555;
+    cursor: pointer;
+}
+
+.btnRed {
+    color: #DD5B4B;
+    cursor: pointer;
+}
+
+.br {
+    border-bottom: 1px solid #ECECF4;
+}
+
+/* 头部开始 */
+
+.headerBox {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border-bottom: 1px solid #F4F4F8;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+}
+
+.headerBox .ruku {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+}
+
+.headerBox h3 {
+    display: inline-block;
+    color: #393953;
+    font-size: 14px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.headerBox span.text {
+    opacity: 0.6;
+    color: #828297;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.headerBox .rightBox {
+    display: inline-block;
+    float: right;
+}
+
+.headerBox .rightBox .orderProvisional {
+    display: inline-block;
+    min-width: 90px;
+    width: 20%;
+    margin-right: 8px;
+}
+
+.headerBox .rightBox .orderProvisional #jt {
+    margin-left: 0;
+}
+
+.headerBox .rightBox .intention {
+    display: inline-block;
+    border-radius: 2px;
+    color: #B4B4C1;
+    background-color: #ffffff;
+    border: 1px solid #ececf4;
+    padding: 4px 13px;
+    vertical-align: top;
+    font-size: 12px;
+    outline: none;
+}
+
+/* 头部结束 */
+
+/* 主体内容 */
+
+.main {
+    width: 90%;
+    margin: 0 auto;
+    padding: 62px 0 50px;
+}
+
+/* 主体公用样式结束 */
+
+/* 主体顾客信息 */
+
+.main .mainCustomerInfo {
+    /*顾客信息*/
+    width: 100%;
+    background: #fff;
+    border-radius: 3px;
+    border: 1px solid #ECECF4;
+    margin-bottom: 10px;
+}
+
+.main .mainCustomerInfo .telephoneNumBox {
+    float: right;
+}
+
+.main .mainCustomerInfo .telephoneNumBox .searchTypeBox {
+    display: inline-block;
+    width: 100px;
+    height: 28px;
+}
+
+.main .mainCustomerInfo .contentBox {
+    padding: 8px 16px;
+}
+
+.main .mainCustomerInfo .contentBox h4 {
+    display: block;
+    margin: 6px 0;
+    color: #393953;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo {
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #ECECF4;
+    padding-bottom: 16px;
+}
+.main .mainCustomerInfo .contentBox .fromInfo .layui-form{
+    display: block;
+    width: 100%;
+    height:28px;
+    line-height: 28px;
+}
+
+
+.main .mainCustomerInfo .contentBox .fromInfo .nameInput {
+    vertical-align: top;
+    margin-right: 6px;
+    width: 8.3%;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .phoneNum,
+.main .mainCustomerInfo .contentBox .fromInfo .dateBox,
+.main .mainCustomerInfo .contentBox .fromInfo .ageNum,
+.main .mainCustomerInfo .contentBox .fromInfo .occupationTypeBox {
+    display: inline-block;
+    vertical-align: top;
+    width: 12.4%;
+    margin-right: 6px;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .dateBox {
+    display: inline-block;
+    margin-right: 6px;
+    max-height: 28px;
+    width: 12.4%;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .dateBox #tests {
+    width: 100%;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox {
+    display: inline-block;
+    margin-right: 6px;
+    width: 14%;
+    height: 28px;
+    position: relative;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox input {
+    width: 100%;
+    border-radius: 2px;
+    background-color: #f4f4f8;
+    border: 1px solid #ececf4;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox span.tuiJianRen {
+    position: absolute;
+    left: 0;
+    top: -20px;
+    color: #393953;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox .layui-edge {
+    display: none;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .benderBox {
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 6px;
+    width: 80px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .benderBox span {
+    line-height: 26px;
+    text-align: center;
+    display: inline-block;
+    width: 50%;
+    background-color: #ffffff;
+    border: 1px solid #ececf4;
+    box-sizing: border-box;
+    float: left;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .benderBox span:nth-child(2) {
+    border-left: none;
+}
+
+.main .mainCustomerInfo .contentBox .fromInfo .benderBox span.active {
+    color: #828297;
+    background: #F4F4F8;
+}
+
+.main .mainCustomerInfo .footerBox {
+    padding: 8px 16px;
+}
+
+.main .mainCustomerInfo .footerBox .memberInfo {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.main .mainCustomerInfo .footerBox .memberInfo h4 {
+    color: #393953;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.main .mainCustomerInfo .footerBox .memberInfo .registerMember,
+.main .mainCustomerInfo .footerBox .memberInfo .wxNoBind {
+    display: inline-block;
+    border-radius: 2px;
+    background-color: #4186dc;
+    padding: 2px 6px;
+    color: #fff;
+    margin-left: 8px;
+    cursor: pointer;
+    height: auto;
+    line-height: normal;
+}
+
+.main .mainCustomerInfo .footerBox .memberInfo .wxNoBind {
+    float: right;
+    background-color: #54b677;
+}
+
+.main .mainCustomerInfo .footerBox .memberInfo .textInfoBox {
+    margin-top: 16px;
+}
+
+.main .mainCustomerInfo .footerBox .memberInfo .textInfoBox .textInfo {
+    display: inline-block;
+    color: #000;
+    margin-right: 16px;
+}
+
+.main .mainCustomerInfo .footerBox .memberInfo .textInfoBox .textInfo span {
+    display: inline-block;
+    color: #828297;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background-color: #f4f4f8;
+}
+
+.main .mainCustomerInfo .footerBox .memberInfo .textInfoBox .textInfo b {
+    color: #4186DC;
+    font-weight: normal;
+}
+
+/* 主体顾客信息结束 */
+
+/* 主体验光信息开始 */
+
+.main .optometryInfo {
+    width: 100%;
+    background: #fff;
+    border-radius: 3px;
+    border: 1px solid #ECECF4;
+    margin-bottom: 10px;
+}
+
+.main .optometryInfo .selectBox {
+    min-width: 100px;
+    width: 100px;
+    float: right;
+}
+
+.main .optometryInfo .titleBox {
+    padding: 0 8px 0 16px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+.main .optometryInfo .tagDateBox {
+    display: inline-block;
+    float: right;
+    height: 35px;
+    line-height: 35px;
+    margin-right: 16px;
+}
+
+.main .optometryInfo .tagDateBox ul {
+    width: 100%;
+    height: 100%;
+}
+
+.main .optometryInfo .tagDateBox ul li {
+    line-height: 30px;
+    height: 100%;
+}
+
+.main .optometryInfo .tagDateBox ul li span {
+    color: #9C9CAD !important;
+    margin-left: 4px;
+    padding: 0 6px;
+    border-radius: 2px;
+    background-color: #f4f4f8;
+}
+
+.main .optometryInfo .contentBox .leftBox {
+    float: left;
+    width: 28%;
+    padding: 16px;
+    box-sizing: border-box;
+    border-right: 1px solid #ECECF4;
+}
+
+.main .optometryInfo .contentBox .leftBox h4 {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.main .optometryInfo .contentBox .leftBox .dateNameInfo {
+    display: inline-block;
+    width: 38%;
+}
+
+.main .optometryInfo .contentBox .leftBox .dateNameInfo #optometristName {
+    float: none;
+}
+
+.main .optometryInfo .contentBox .leftBox .dateBox {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 3%;
+    width: 57.5%;
+}
+
+.main .optometryInfo .contentBox .leftBox .dateBox input {
+    width: 100%;
+}
+
+.main .optometryInfo .contentBox .leftBox textarea {
+    padding: 10px 12px;
+    box-sizing: border-box;
+    border: 1px solid #ECECF4;
+    max-height: 98px;
+    width: 100%;
+}
+
+.main .optometryInfo .contentBox .rightBox {
+    float: right;
+    width: 72%;
+    padding: 0 16px 12px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox {
+    width: 100%;
+    overflow: hidden;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox .tab-ul {
+    float: left;
+    height: 40px;
+    margin-bottom: 12px;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox .tab-ul li {
+    height: 40px;
+    line-height: 40px;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox .tab-ul li:hover {
+    color: #4C8DDE;
+    border-color: #4C8DDE;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox .tab-ul li.active {
+    color: #4C8DDE;
+    border-bottom: 2px solid #4C8DDE;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox .tab-ul li:nth-child(1) {
+    margin-left: 8px;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox .btnBox {
+    float: right;
+    margin: 8px 0 12px;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox .btnBox button {
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    outline: none;
+    width: 44px;
+    height: 28px;
+    border-radius: 2px;
+    background-color: #4186dc;
+    vertical-align: middle;
+}
+
+.main .optometryInfo .contentBox .rightBox .tagBox .btnBox .btnEmpty {
+    color: #8A8A9D;
+    border: 1px solid #ECECF4;
+    background-color: #F4F4F8;
+}
+
+.main .optometryInfo .contentBox .rightBox .visionForm {
+    width: 100%;
+    position: relative;
+}
+
+.main .optometryInfo .contentBox .rightBox .visionForm .formLeftBorder,
+.main .optometryInfo .contentBox .rightBox .visionForm .formRightBorder {
+    background: #ECECF4;
+    width: 1px;
+    height: 95%;
+    position: absolute;
+    top: 0;
+}
+
+.main .optometryInfo .contentBox .rightBox .visionForm .formRightBorder {
+    right: 0;
+}
+
+.main .optometryInfo .contentBox .rightBox .visionForm .formLeftBorder {
+    left: 0;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox {
+    position: relative;
+    bottom: 0;
+    margin-top: 28px;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox {
+    display: inline-block;
+    width: 60%;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox .companyBox,
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox .selectBox {
+    display: inline-block;
+    float: none;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox #eye,
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox #glasses {
+    min-width: 1%;
+    width: 31%;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox #eye i,
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox #glasses i {
+    margin-left: 5px;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox #eye {
+    width: 17%;
+    background: #EBF2FB;
+    border-color: #E0EAF8;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox #eye span.text {
+    color: #5492DF;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox .companyBox {
+    width: 24%;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox .companyBox input {
+    display: inline-block;
+    width: 55%;
+    box-sizing: border-box;
+    float: left;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox .companyBox span {
+    display: inline-block;
+    width: 40%;
+    text-align: center;
+    border: 1px solid #ECECF4;
+    border-left: none;
+    line-height: 26px;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .resultInfoBox {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 39%;
+}
+
+.main .optometryInfo .contentBox .rightBox .rightFooterBox .resultInfoBox .selectBox {
+    min-width: 41%;
+    width: 41%;
+    margin-left: 8px;
+}
+
+/* 主体验光信息结束 */
+
+/* 主体订单信息结束 */
+
+.main .orderInfo {
+    width: 100%;
+    background: #fff;
+    border-radius: 3px;
+    border: 1px solid #ECECF4;
+    margin-bottom: 10px;
+}
+
+.main .orderInfo .btnBox {
+    width: auto;
+    float: right;
+}
+
+.main .orderInfo .btnBox .btn {
+    font-size: 12px;
+    padding: 5px 12px;
+    margin-left: 8px;
+    border-radius: 2px;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.main .orderInfo .btnBox .addRoutineCommodity {
+    background: #4186DC;
+}
+
+.main .orderInfo .btnBox .addIntegralCommodity {
+    background: #57B8DB;
+}
+
+.main .orderInfo .btnBox .seeHistoryOrder {
+    background: #fff;
+    border: 1px solid #EEEEF5;
+    color: #828297;
+}
+
+.main .orderInfo .leftBox {
+    float: left;
+    width: 28%;
+    padding: 16px;
+    box-sizing: border-box;
+    border-right: 1px solid #ECECF4;
+}
+
+.main .orderInfo .leftBox h4 {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.main .orderInfo .leftBox .saleMachiningPeople {
+    width: 100%;
+}
+
+.main .orderInfo .leftBox .saleMachiningPeople>div {
+    display: inline-block;
+    width: 48%;
+}
+
+.main .orderInfo .leftBox .saleMachiningPeople .saleBox {
+    margin-right: 2%;
+    color: #000;
+}
+
+.main .orderInfo .leftBox .costAdditional {
+    width: 100%;
+}
+
+.main .orderInfo .leftBox .costAdditional .costAdditionalSelect,
+.main .orderInfo .leftBox .costAdditional .moneyNum,
+.main .orderInfo .leftBox .costAdditional .addOrder {
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.main .orderInfo .leftBox .costAdditional .addOrder {
+    background: #4186DC;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 2px;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.main .orderInfo .leftBox .costAdditional .moneyNum {
+    width: 37%;
+}
+
+.main .orderInfo .leftBox .costAdditional .costAdditionalSelect {
+    width: 38%;
+    margin: 0;
+}
+
+.main .orderInfo .leftBox .costAdditional .costAdditionalSelect i {
+    margin-left: 0;
+}
+
+.main .orderInfo .leftBox textarea {
+    padding: 10px 12px;
+    box-sizing: border-box;
+    border: 1px solid #ECECF4;
+    max-height: 98px;
+    width: 100%;
+}
+
+.main .orderInfo .rightBox {
+    float: right;
+    width: 72%;
+    padding: 0 16px 12px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.main .orderInfo .rightBox .rightHeadBox {
+    width: 100%;
+    margin: 12px 0;
+}
+
+.main .orderInfo .rightBox .rightHeadBox .barCode,
+.main .orderInfo .rightBox .rightHeadBox .btnCustomized {
+    display: inline-block;
+}
+
+.main .orderInfo .rightBox .rightHeadBox .barCode {
+    width: 26.5%;
+}
+
+.main .orderInfo .rightBox .rightHeadBox .btnCustomized {
+    float: right;
+    background: #fff;
+    border: 1px solid #EEEEF5;
+    color: #828297;
+    font-size: 12px;
+    padding: 5px 12px;
+    margin-left: 8px;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.main .orderInfo .rightBox .rightFormBox {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.main .orderInfo .rightBox .rightFormBox table {
+    width: 100%;
+    border-right: 1px solid #ECECF4;
+    border-left: 1px solid #ECECF4;
+    border-top: 1px solid #ECECF4;
+    border-bottom: 1px solid #ECECF4;
+    table-layout: fixed;
+    text-align: left;
+}
+
+.main .orderInfo .rightBox .rightFormBox table td,
+.main .orderInfo .rightBox .rightFormBox table th {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.main .orderInfo .rightBox .rightFormBox table td {
+    border-right: 0px;
+    border-left: 1px solid #ECECF4;
+    border-top: 0px;
+    border-bottom: 1px solid #ECECF4;
+}
+
+.main .orderInfo .rightBox .rightFormBox table td:nth-child(1) {
+    border-left: 0px;
+}
+
+.main .orderInfo .rightBox .rightFormBox table thead {
+    width: 100%;
+    background: #F4F4F8;
+    color: #828297;
+}
+
+.main .orderInfo .rightBox .rightFormBox table thead tr {
+    display: inline-block;
+    width: 100%;
+}
+
+.main .orderInfo .rightBox .rightFormBox table thead tr th {
+    box-sizing: border-box;
+    border: none;
+    padding: 7px 0 7px 8px;
+    width: 10%;
+    float: left;
+}
+
+.main .orderInfo .rightBox .rightFormBox table thead tr th:nth-child(1) {
+    width: 40%;
+}
+
+.main .orderInfo .rightBox .rightFormBox table thead tr th:nth-last-child(1) {
+    width: 20%;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody {
+    display: inline-block;
+    width: 100%;
+    max-height: 216px;
+    min-height: 216px;
+    height: 216px;
+    overflow: auto;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    transition: all 3s;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody.active::-webkit-scrollbar-thumb {
+    border-radius: .1rem;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody tr {
+    float: left;
+    display: inline-block;
+    width: 100%;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody tr td {
+    padding: 0 8px;
+    box-sizing: border-box;
+    min-height: 31px;
+    line-height: 31px;
+    float: left;
+    width: 10%;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody tr td input {
+    width: 100%;
+    background: #F4F4F8;
+    padding: 0 0 0 6px;
+    height: 20px;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody tr td input::placeholder {
+    color: #B7B7C5;
+    font-weight: bold;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody tr td u {
+    color: #9595A7;
+    cursor: pointer;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody tr td:nth-child(1) {
+    width: 40%;
+}
+
+.main .orderInfo .rightBox .rightFormBox table tbody tr td:nth-last-child(1) {
+    width: 20%;
+}
+
+.main .orderInfo .rightBox .rightFormBox table .discount {
+    background: #FDF2F1;
+    color: #DD5B4B;
+}
+
+.main .orderInfo .rightBox .rightFormBox table .discount td:nth-child(1) {
+    width: 70% !important;
+}
+
+.main .orderInfo .rightBox .rightFormBox table .discount u {
+    color: #DD5B4B;
+}
+
+.main .orderInfo .rightBox .rightFormBox .nullInfo {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+}
+
+.main .orderInfo .rightBox .rightFooterBox {
+    width: 100%;
+    line-height: 28px;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .amountMoney {
+    float: left;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .amountMoney div {
+    display: inline-block;
+    color: #393953;
+    font-weight: 500;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .amountMoney div span {
+    font-size: 16px;
+    color: #4186DC;
+    font-weight: 600;
+    margin-right: 16px;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .actualMoney {
+    float: right;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .actualMoney div {
+    display: inline-block;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .actualMoney div span {
+    margin-left: 8px;
+    width: 58%;
+    border: 1px solid #ECECF4;
+    display: inline-block;
+    min-height: 28px;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .actualMoney div span b {
+    font-weight: normal;
+    display: inline-block;
+    width: 25%;
+    border-right: 1px solid #ECECF4;
+    text-align: center;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .actualMoney div span input {
+    width: 70%;
+    box-sizing: border-box;
+    border: none;
+}
+
+.main .orderInfo .rightBox .rightFooterBox .actualMoney div i {
+    margin-left: 8px;
+    padding: 7px 8px;
+    color: #B8B8C6;
+    font-weight: bold;
+    font-style: normal;
+    border-radius: 2px;
+    background-color: #f4f4f8;
+    border: 1px solid #ececf4;
+}
+
+/*覆盖样式*/
+
+.selectBox {
+    width: 100%;
+    -webkit-appearance: none;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+    box-sizing: border-box;
+}
+.layui-layer-btn a {
+    height: 32px !important;
+    line-height: 30px !important;
+    padding: 0 9px !important;
+    margin: 0 0 6px 8px !important;
+}
+
+.selectBox:hover {
+    border-color: #D2D2D2 !important;
+}
+.btn.active, .btn:active{
+    box-shadow: none !important;
+}
+.selectBox .optionBox {
+    box-shadow: 0px 0px 0px 1px #e2e2e2;
+}
+
+
+.selectBox .optionBox li>i {
+    font-size: 16px;color: #828297;
+    margin-right: 8px;
+}
+
+.main .layui-input {
+    height: 100%;
+}
+
+.main .layui-input-block {
+    margin: 0;
+    min-height: 28px;
+    height: 100%;
+}
+
+.main .layui-form-item {
+    margin: 0;
+    display: inline-block;
+}
+
+#salesOrder .verify .content .input-list .input-item .member-input {
+    width: 100% !important;
+}
+
+#salesOrder .verify .content {
+    padding: 0 5% !important;
+}
+
+/* 主体公用样式开始 */
+
+.main .titleBox {
+    width: 100%;
+    padding: 8px 8px 8px 16px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ECECF4;
+}
+
+.main .titleBox h4 {
+    display: inline-block;
+    color: #393953;
+    font-size: 13px;
+    margin: 0;
+    padding-top: 7px;
+}
+
+.main input {
+    padding: 5px 0 5px 8px;
+    border-radius: 2px;
+    background-color: #ffffff;
+    border: 1px solid #ececf4;
+    box-sizing: border-box;
+}
+
+.main input::placeholder {
+    color: #B5B5C2;
+}
+
+b {
+    font-weight: normal;
+}
+
+/*表单代码*/
+
+.tableContent {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tableContent::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+
+.tableContent::-webkit-scrollbar {
+    height: 5px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.tableContent::-webkit-scrollbar-thumb {
+    border-radius: .1rem;
+    background-color: rgba(0, 0, 0, 0);
+    transition: all 3s;
+}
+
+.tableContent.active::-webkit-scrollbar-thumb {
+    border-radius: .1rem;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.tableContent table {
+    width: 100%;
+    background: #F4F4F8;
+    border: none;
+}
+
+.tableContent table input {
+    border: none;
+    padding: 0 0 0 8px;
+    width: 100%;
+    height: 100%;
+}
+
+.tableContent table input:focus {
+    background: #F4F4F8;
+}
+
+.tableContent table thead {
+    border-bottom: 1px solid #ECECF4;
+}
+
+.tableContent table thead th {
+    text-align: center;
+    padding: 8px 0;
+    min-width: 72px;
+    
+    border: 1px solid #E4E4EA;
+}
+
+.tableContent table thead th:nth-child(1) {
+    width: auto;
+    /*min-width: auto;*/
+}
+
+.tableContent table tbody th {
+    background: #fff;
+    height: 32px;
+    padding: 0 12px;
+    width: auto;
+    border: 1px solid #E4E4EA;
+}
+
+.tableContent table tbody td {
+    height: 32px;
+    border: 1px solid #E4E4EA;
+}
+
+.tableContent table tbody td span {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 32px;
+    background: #fff;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+.tableContent .someTime {
+    display: none;
+}
+
+/*弹窗区*/
+
+/*注册成为会员弹窗*/
+
+.register-member,
+.verify,
+.card-pay {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 !important;
+}
+
+.register-member .content,
+.verify .content,
+.card-pay .content {
+    box-sizing: border-box;
+}
+
+.register-member .content .send-code,
+.verify .content .send-code,
+.card-pay .content .send-code {
+    cursor: pointer;
+}
+
+.register-member .content .send-code.active,
+.verify .content .send-code.active,
+.card-pay .content .send-code.active {
+    color: #828297 !important;
+}
+
+.layui-layer-btn0 {
+    float: right;
+}
+
+.layui-layer-title {
+    box-sizing: border-box;
+    border: none !important;
+    background: #fff !important;
+}
+
+.layui-layer-title .set-title {
+    height: 44px;
+    line-height: 44px;
+}
+
+/* 定制弹窗 */
+
+.popupCustomized {
+    border-top: 1px solid #ECECF4;
+    width: 100%;
+    display: none;
+}
+
+.popupCustomized .tagBox {
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid #ECECF4;
+}
+
+.popupCustomized .tab-ul {
+    width: 100%;
+    height: 40px;
+}
+
+.popupCustomized .tab-ul li {
+    height: 40px;
+    line-height: 40px;
+}
+
+.popupCustomized .popMainContent {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 16px 0;
+}
+
+.popupCustomized .popMainContent .content {
+    width: 100%;
+    display: none;
+}
+
+.popupCustomized .popMainContent .content.boxLens {
+    margin-bottom: 50px;
+    display: block;
+}
+
+.popupCustomized .boxInvisibleEye {
+    margin-bottom: 50px;
+}
+
+.popupCustomized .brand,
+.popupCustomized .series {
+    display: inline-block;
+    width: 47%;
+    float: left;
+}
+
+.popupCustomized .cycleSelect {
+    width: 47%;
+}
+
+.popupCustomized .brand {
+    margin-right: 4.9%;
+}
+
+.popupCustomized h4 {
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: #393953;
+}
+
+.popupCustomized input::placeholder {
+    color: #828297;
+}
+
+.popupCustomized input {
+    box-sizing: border-box;
+    padding: 5px 0 6px 8px;
+}
+
+.popMainContent .eyeCustomized h4 {
+    width: 100%;
+}
+
+.popMainContent .eyeCustomized .num {
+    width: 46%;
+    margin-right: 4.9%;
+    float: left;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+
+.popMainContent .colorModel input {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+
+.popMainContent .colorModel>div {
+    width: 47%;
+    display: inline-block;
+    float: left;
+}
+
+.popMainContent .colorModel .model {
+    margin-right: 4.9%;
+}
+
+.popMainContent .eyeCustomized .reMoney {
+    width: 47%;
+    float: left;
+    overflow: hidden;
+}
+
+.popMainContent .eyeCustomized .reMoney span {
+    width: 20%;
+    border: 1px solid #ECECF4;
+    border-right: none;
+    text-align: center;
+    padding: 7px 0 6px;
+    display: inline-block;
+    float: left;
+}
+
+.popMainContent .eyeCustomized .reMoney .numMoney {
+    width: 79%;
+    display: inline-block;
+    border: 1px solid #ECECF4;
+    float: left;
+}
+
+.popMainContent .eyeCustomized .reMoney {
+    width: 47%;
+    float: left;
+}
+
+.popMainContent .eyeDegrees {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 32px;
+    background: #F4F4F8;
+    color: #89899C;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.popMainContent .eyeDegrees>div {
+    display: inline-block;
+    margin-right: 12px;
+}
+
+.popMainContent .eyeDegrees span {
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(130, 130, 151, 0.12);
+    padding: 2px 5px;
+    margin-right: 8px;
+}
+
+/* 定制弹窗覆盖下拉框样式 */
+
+.zi_dingyi_input_Box {
+    box-sizing: border-box;
+}
+
+.zi_dingyi_input_Box input {
+    width: 68% !important;
+}
+
+/* 历史记录弹窗 */
+
+.historyRecord,
+.branchCommodity,
+.intentionalCustomer {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid #ECECF4;
+    border-bottom: 1px solid #ECECF4;
+    padding-top: 44px;
+}
+.historyRecord{
+    padding: 0;
+}
+
+.historyRecord .content,
+.branchCommodity .content,
+.intentionalCustomer .content {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+}
+
+#salesOrder thead {
+    background: #f3f3f7;
+    border-bottom: 1px solid #ebebf3;
+}
+
+.btnSeeHistory,
+.btnChoice {
+    color: #fff;
+    background: #4186DC;
+    text-align: center;
+    border-radius: 2px;
+    padding: 4px 0;
+    width: 44px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.branchCommodity {
+    padding-top: 54px;
+}
+
+.branchCommodity .bcHeader,
+.intentionalCustomer .icHeader {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    font-size: 13px;
+    color: #393953;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #ECECF4;
+    padding: 0 16px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #FFF;
+    z-index: 357;
+}
+
+.branchCommodity .content {
+    padding: 0 16px 16px;
+    box-sizing: border-box;
+}
+
+.branchCommodity .bcHeader h3,
+.intentionalCustomer .icHeader h3 {
+    display: inline-block;
+    float: left;
+    line-height: 44px;
+    width: 60%;
+}
+
+.branchCommodity .bcHeader input,
+.intentionalCustomer .icHeader input {
+    float: right;
+    width: 17.5%;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    padding: 4px 0 4px 8px;
+    box-sizing: border-box;
+    margin-left: 4px;
+    margin-top: 8px;
+    max-height: 28px;
+}
+
+.branchCommodity .bcHeader .selectBox,
+.intentionalCustomer .icHeader .selectBox {
+    display: inline-block;
+    float: right;
+    width: 14%;
+    margin-top: 8px;
+}
+
+.branchCommodity .bcHeader .selectBox i,
+.intentionalCustomer .icHeader .selectBox i {
+    margin-left: 0;
+}
+
+/* 添加常规商品弹窗 */
+
+.addRoutineCommodityPop {
+    display: none;
+    width: 100%;
+    padding-top: 44px;
+}
+
+.addRoutineCommodityPop .routineHeader {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ECECF4;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.addRoutineCommodityPop .routineHeader h3 {
+    margin-left: 8px;
+    color: #393953;
+    float: left;
+    height: 44px;
+    line-height: 44px;
+    width: 70%;
+}
+
+.addRoutineCommodityPop .routineHeader .seachRoutine {
+    float: right;
+    width: 13%;
+    border-radius: 2px;
+    background-color: #F4F4F8;
+    border: 1px solid #ECECF4;
+    padding: 4px 0 4px 8px;
+    box-sizing: border-box;
+    margin-left: 4px;
+    margin-top: 8px;
+}
+
+.addRoutineCommodityPop .content {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #ECECF4;
+}
+
+/* 推荐列表 */
+
+.addRoutineCommodityPop .recommendList {
+    width: 18%;
+    height: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    float: left;
+}
+
+.recommendList h4 {
+    color: #DD5B4B;
+    font-size: 12px;
+}
+
+.recommendList h4>i {
+    margin-right: 4px;
+}
+
+.recommendList .recommendUL {
+    width: 100%;
+    padding: 0;
+}
+
+.recommendUL li {
+    margin-top: 10px;
+}
+
+.recommendUL li>input {
+    max-width: 86%;
+    text-align: left;
+    vertical-align: middle;
+    height: 28px;
+    line-height: 17px;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.btn-blue {
+    background-color: rgba(65, 134, 220, 0.1);
+    color: #4186DC;
+    border: 1px solid rgba(65, 134, 220, 0.1);
+}
+
+.btn-red {
+    background-color: rgba(221, 91, 75, 0.1);
+    color: #DD5B4B;
+    border: 1px solid rgba(221, 91, 75, 0.1);
+}
+
+.btn-green {
+    background-color: rgba(87, 184, 219, 0.1);
+    color: #57B8DB;
+    border: 1px solid rgba(87, 184, 219, 0.1);
+}
+
+/* 常规数据列表 */
+
+.addRoutineCommodityPop .dataListForm {
+    width: 82%;
+    float: right;
+    border-left: 1px solid #ECECF4;
+    box-sizing: border-box;
+}
+
+.dataListForm .tab-ul {}
+
+.dataListForm .tab-ul {
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #ECECF4;
+}
+
+.dataListForm .tab-ul li {
+    height: 40px;
+    line-height: 40px;
+}
+
+.brandTabBox {
+    width: 100%;
+    overflow: hidden;
+    margin-top: -2px;
+}
+
+.brandTabBox .brandRightTab {
+    width: 12.8%;
+    float: left;
+}
+
+.brandTabBox .brandRightTab ul {
+    padding: 0;
+    width: 100%;
+}
+
+.brandTabBox .brandRightTab ul li {
+    width: 100%;
+    margin: 14px 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: #9494A5;
+}
+
+.brandTabBox .brandRightTab ul li.active {
+    color: #4186DC;
+    border-right: 3px solid #4186DC;
+}
+
+.brandTabBox .brandRightTab ul li span {
+    display: block;
+    width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 auto;
+}
+
+.brandTabBox .formBox {
+    border-left: 1px solid #ECECF4;
+    width: 87%;
+    float: right;
+    box-sizing: border-box;
+    float: right;
+}
+
+.addRoutineCommodityPop .fixed-table-container {
+    border: none !important;
+}
+
+/* 全局固定底部 */
+.winFooterBox {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    overflow: hidden;
+    padding: 8px 12px;
+}
+
+.winFooterBox button {
+    padding: 8px 16px;
+    background: #F4F4F8;
+    border: 1px solid #ECECF4;
+    float: right;
+    margin-right: 10px;
+    color: #AFAFBE;
+}
+
+/* 付款弹窗 */
+.yourclass {
+    background-color: #ECECF4 !important;
+}
+
+.uncollectedFunds {
+    display: none;
+    padding-top: 44px;
+}
+
+.uncollectedFunds .title {
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+    font-weight: 600;
+    height: 44px;
+    line-height: 44px;
+    font-size: 13px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ECECF4 !important;
+    z-index: 998;
+}
+
+.uncollectedFunds .ufHeader {
+    width: 100%;
+    padding: 0 16px;
+    line-height: 36px;
+    height: 36px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #E1E1EB;
+}
+
+.ufHeader li {
+    display: inline-block;
+    color: #828297;
+    font-size: 12px;
+}
+
+.ufHeader li span {
+    margin-right: 4px;
+    color: #393953;
+    font-weight: 600;
+    margin: 0 8px 0 4px;
+}
+
+.uncollectedFunds .content {
+    width: 100%;
+    background: #fff;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.conTitle {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.conTitle h4 {
+    display: inline-block;
+    float: left;
+    font-weight: 600;
+}
+
+.conTitle span {
+    display: inline-block;
+    float: right;
+}
+
+.uncollectedFunds .formBox {
+    width: 100%;
+}
+
+.uncollectedFunds .formBox li {
+    width: 100%;
+    overflow: hidden;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ECECF4;
+    border-bottom: none;
+    font-size: 12px;
+}
+
+.uncollectedFunds .topic {
+    width: 65%;
+    height: 100%;
+    border-right: 1px solid #ECECF4;
+    padding-left: 8px;
+    box-sizing: border-box;
+    float: left;
+}
+
+.uncollectedFunds .valueBox {
+    width: 35%;
+    float: right;
+    height: 100%;
+    padding-left: 8px;
+    box-sizing: border-box;
+    color: #BABAC6;
+    overflow: hidden;
+}
+
+.uncollectedFunds .valueBox input {
+    border: none;
+    color: #000;
+}
+
+.uncollectedFunds .valueBox input::placeholder {
+    color: #BABAC6;
+}
+
+.uncollectedFunds .conTail {
+    background: #F4F4F8;
+    border: 1px solid #ECECF4;
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    overflow: hidden;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+.uncollectedFunds .conTail .total {
+    float: right;
+    font-size: 14px;
+    color: #DD5B4B;
+    font-weight: bold;
+}
+
+.uncollectedFunds .conTail span {
+    float: left;
+}
+
+.uncollectedFunds textarea {
+    margin-top: 12px;
+    resize: none;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    border: 1px solid #ECECF4;
+    max-height: 60px;
+    width: 100%;
+}
+
+.uncollectedFunds textarea::placeholder {
+    color: #BABAC6;
+}
+
+.noPickUp {
+    display: inline-block;
+    float: left;
+    margin-top: 12px;
+}
+
+.noPickUp label {
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.noPickUp input {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #E4E4EA;
+    margin-top: 0;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+/* 小票 */
+.smallTicket {
+    width: 42.5%;
+    float: right;
+    background: #fff;
+    padding: 20px 16px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+.smallTicket .stTitle {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.stTitle span {
+    display: inline-block;
+    width: 18%;
+    border-top: 1px dashed #000;
+    height: 5px;
+}
+
+.stHeader {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #F1F1F7;
+}
+
+.stTitle h3 {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.smallTicket li {
+    width: 100%;
+    overflow: hidden;
+    margin: 6px 0;
+}
+
+.infoOptometry {
+    padding: 16px 0;
+    border-bottom: 1px solid #F1F1F7;
+}
+
+.infoOptometry h3 {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.infoOptometry li {
+    width: 100%;
+    padding: 2px 0;
+    margin: 10px 0 0;
+}
+
+.infoOptometry li span {
+    border: 1px solid #393953;
+    color: #000;
+    border-radius: 2px;
+    padding: 0 5px;
+    margin-right: 8px;
+    font-size: 11px
+}
+
+.purchaseItems ul {
+    position: relative;
+    padding: 16px 0;
+    border-bottom: 1px solid #F4F4F8;
+}
+
+.purchaseItems li {
+    width: 100%;
+    list-style: disc;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.purchaseItems li::before {
+    content: '';
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: #000;
+    display: block;
+    position: absolute;
+    left: -7px;
+    margin-top: -7px;
+}
+
+.purchaseItems li span {
+    display: inline-block;
+    float: left;
+    color: #393953;
+    font-size: 12px;
+}
+
+.purchaseItems .text {
+    width: 60%;
+}
+
+.purchaseItems .num {
+    width: 15%;
+    padding-left: 8px;
+    box-sizing: border-box;
+}
+
+.purchaseItems .price {
+    width: 25%;
+    text-align: right
+}
+
+.reduction,
+.payment {
+    padding: 16px 0 16px;
+    border-bottom: 1px solid #F4F4F8;
+}
+
+.payment,
+.noteText,
+.threePacks,
+.address {
+    padding: 16px 0 16px;
+    border-top: 1px solid #F4F4F8;
+}
+
+.address .fr {
+    display: inline-block;
+    width: 70%;
+    text-align: right;
+}
+
+.smallTicket h6 {
+    width: 100%;
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.smallTicket li {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+#smallTicketBg {
+    background: url('../../images/huabian.png')no-repeat;
+    display: inline-block;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 12px;
+    background-size: 120% 70%;
+}
+
+
+
+
+/* 支付弹窗 */
+.paymentPopup {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #ECECF4;
+    display: none;
+
+}
+
+.paymentPopup .speedProgress {
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    border-top: 1px solid #ECECF4;
+    border-bottom: 1px solid #ECECF4;
+    background: #F4F4F8;
+    overflow: hidden;
+}
+
+.paymentPopup .speedProgress li {
+    width: 33.333%;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    color: #828297;
+    position: relative;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.paymentPopup .speedProgress li.active {
+    color: #4186DC;
+}
+
+.paymentPopup .speedProgress li .icon-ico_arrow_down {
+    position: absolute;
+    right: -9px;
+    top: 30%;
+    border: 1px solid #ECECF4;
+    border-radius: 50%;
+    width: 17px;
+    height: 17px;
+    color: #828297 !important;
+    transform: rotate(-85deg);
+    -ms-transform: rotate(-85deg);
+    /* IE 9 */
+    -moz-transform: rotate(-85deg);
+    /* Firefox */
+    -webkit-transform: rotate(-85deg);
+    /* Safari 和 Chrome */
+    -o-transform: rotate(-85deg);
+    text-align: center;
+}
+
+.paymentPopup .speedProgress li .icon-ico_arrow_down::before {
+    position: absolute;
+    top: -13px;
+    left: 0;
+}
+
+.paymentPopup .inputBox {
+    width: 40%;
+    margin: 0 auto;
+    padding: 69px 0 109px;
+    text-align: center;
+}
+
+.paymentPopup .inputBox span,
+.paymentPopup .sweepCodeImg span,
+.paymentPopup .successBox span {
+    font-size: 12px;
+    color: #828297;
+    margin-bottom: 16px;
+}
+
+.paymentPopup .moneyNum {
+    border: none;
+    border-bottom: 1px solid #ECECF4;
+    font-weight: bold;
+    text-align: center;
+    font-size: 48px;
+    max-width: 160px;
+}
+
+.paymentPopup .sweepCodeImg,
+.paymentPopup .successBox {
+    padding: 69px 0 109px;
+    width: 26.7%;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+#sweepCode,
+#successImg {
+    max-height: 160px;
+    display: block;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+#reimburse {
+    color: #DD5B4B;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+/* 横向小票 */
+.horizontalTicket {
+    padding: 28px 30px;
+    background: #fff;
+    display: none;
+}
+
+.horizontalTicket .huiColor {
+    color: #828297;
+}
+
+.horizontalTicket .titleBox .fl {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.horizontalTicket .titleBox .fr {
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+.horizontalTicket .titleBox .fr i {
+    font-style: 16px;
+}
+
+.horizontalTicket .titleBox .ov {
+    margin-bottom: 4px;
+}
+
+.horizontalTicket .titleBox {
+    padding-bottom: 16px;
+}
+
+.horizontalTicket .pd10 {
+    padding: 10px 0;
+}
+
+.horizontalTicket .info {
+    width: 20%;
+    font-size: 14px;
+}
+
+.infoContent .purchaseItems {
+    width: 80%;
+    border-right: 1px solid #ECECF4;
+    box-sizing: border-box;
+}
+
+.infoContent .purchaseItems li span {
+    color: #828297;
+}
+
+.infoContent .purchaseItems li {
+    margin-bottom: 8px;
+}
+
+.infoContent .purchaseItems li:nth-last-child(1) {
+    margin: 0;
+}
+
+.infoContent .purchaseItems .text {
+    width: 70%;
+}
+
+.infoContent .purchaseItems .num,
+.infoContent .purchaseItems .price {
+    width: 15%;
+    padding-right: 5px;
+    box-sizing: border-box;
+}
+
+.infoContent .optInfo {
+    width: 20%;
+}
+
+.infoContent .item {
+    height: 76px;
+    overflow: hidden;
+}
+
+.infoContent .item>div {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 12px;
+}
+
+.infoContent .item span {
+    display: block;
+    margin-bottom: 6px;
+}
+
+
+
+
+
+
+
+
+/* 单选框样式 */
+input[type=checkbox] {
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 15px;
+    height: 15px;
+    position: relative;
+}
+
+input[type=checkbox]:after {
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    top: -2px;
+    left: -1px;
+    content: " ";
+    background-color: #F4F4F8;
+    color: #fff;
+    display: inline-block;
+    visibility: visible;
+    padding: 0px 4px;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+}
+
+input[type=checkbox]:checked:after {
+    content: "✓";
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: text-top;
+    background: #4186DC;
+    border: 1px solid #ddd;
+}
+
+
+
+
+
+/*离职员工操作弹窗*/
+.layui-layer-removeStaff-tan .layui-layer-title {
+    color: #DD5B4B;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.layui-layer-removeStaff-tan .layui-layer-content p {
+    color: #393953;
+    font-size: 12px;
+    margin: 0;
+    padding: 12px 16px;
+    font-weight: 600;
+}
+
+.layui-layer-removeStaff-tan .layui-layer-btn a {
+    width: 44px;
+    height: 32px;
+    font-size: 12px;
+    line-height: 32px;
+    margin: 0 0 0 8px;
+    padding: 0;
+    border: 1px solid #dedede;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-align: center;
+}
+
+.layui-layer-removeStaff-tan .layui-layer-btn a.layui-layer-btn1 {
+    color: #828297;
+    background: #f3f3f7;
+}
+
+.layui-layer-removeStaff-tan .layui-layer-btn a.layui-layer-btn0 {
+    color: #fff;
+    background: #dc5a4b;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 滚动条公共样式 */
+
+.h::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+
+.h::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.h::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    transition: all 3s;
+}
+
+
+.fixed-table-container::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    opacity: 0;
+}
+
+.fixed-table-container::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(245, 245, 245, 0);
+}
+
+.fixed-table-container::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    transition: all 3s;
+}
+.fixed-table-container{
+    overflow: auto;
+}
+
+
+
+
+/* 验证弹出框 */
+#salesOrder .register-member,
+#salesOrder .verify,
+#salesOrder .card-pay {
+    background-color: #fff;
+}
+.layui-form-item{
+    margin: 0;
+}
+#salesOrder .verify .content {
+    padding: 0 5% !important;
+}
+
+#salesOrder .verify .content .input-list .input-item .member-input,
+#salesOrder .register-member .content .input-list .input-item .member-input,
+#salesOrder .card-pay .content .input-list .input-item .member-input {
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 8px;
+    border: 1px solid #ECECF4;
+    border-radius: 2px;
+    font-size: 12px;
+    color: #828297;
+    height: 32px;
+    margin-bottom: 10px;
+}
+
+#salesOrder .verify .content .input-list .or-item i {
+    display: inline-block;
+    width: 33.3333%;
+    height: 2px;
+    background-color: #F4F4F8;
+    vertical-align: middle;
+}
+
+.verify .content .input-list .or-item span {
+    color: #828297;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#salesOrder .register-member .content .input-list .two .send-code,
+#salesOrder .verify .content .input-list .two .send-code,
+#salesOrder .card-pay .content .input-list .two .send-code {
+    height: 17px;
+    line-height: 17px;
+    font-size: 12px;
+    color: #4186DC;
+    position: absolute;
+    top: 7px;
+    right: 15%;
+}
+
+#salesOrder .register-member .content .input-list .two,
+#salesOrder .verify .content .input-list .two,
+#salesOrder .card-pay .content .input-list .two {
+    position: relative;
+}
+
+#salesOrder .register-member .content .input-list .input-item .member-input {
+    width: 100%;
+    height: 32px;
+    margin-bottom: 10px;
+}
+
+#salesOrder .register-member .content,
+#salesOrder .verify .content,
+#salesOrder .card-pay .content {
+    width: 100%;
+    padding-left: 6.6666%;
+    padding-right: 6.6666%;
+}
+
+#salesOrder .card-pay .content .input-list .input-item .one-line-rec-select {
+    height: 35px;
+    line-height: 35px;
+    padding-left: 20px;
+    margin-left: 4.4444%;
+    text-align: left;
+    color: #393953;
+    position: relative;
+}
+
+#salesOrder .card-pay .content .input-list .input-item .member-input {
+    width: 100%;
+}
+
+.cckXK {
+    width: 100%;
+    margin: 0;
+}
+
+.cckXK .layui-form-item .layui-input-block .layui-unselect.layui-form-checkbox span {
+    display: block;
+    width: auto;
+    text-align: left;
+    color: #393953;
+    font-size: 12px;
+}
+
+.cckXK .layui-form-item .layui-input-block .layui-unselect.layui-form-checkbox i {
+    margin-left: 5px;
+}
+
+.cckXK .layui-form-item .layui-input-block .layui-form-checked[lay-skin=primary] i {
+    border: none;
+    background-color: #4186DC;
+    color: #fff;
+}
+
+.cckXK .layui-form-item .layui-input-block .layui-form-checkbox[lay-skin=primary]:hover i {
+    border: 1px solid #dcdce3;
+}
+
+.layui-input-block {
+    margin-left: 0;
+    min-height: 0;
+}

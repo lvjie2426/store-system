@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>眼睛-商品管理-调货</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/layui/css/layui.css" rel="stylesheet">
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <link rel="stylesheet" href="../resource/css/style.css">
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <!--标签样式重置结束-->
+    <!--本页面样式开始-->
+    <link rel="stylesheet" href="../resource/css/yanjing/goodsManage.css">
+    <link rel="stylesheet" href="../resource/css/yanjing/diaohuo.css">
+    <!--本页面样式结束-->
+    <style>
+        body{
+            background-color: #ECECF3;
+        }
+    </style>
+</head>
+<body>
+<div class="yj-header">
+    <ul class="tab-ul">
+        <li onclick="chooseGoodsType(this,1)" class="active">发起的调货</li>
+        <li onclick="chooseGoodsType(this,2)">调货请求</li>
+    </ul>
+    <div class="yj-header-right">
+        <button class="btn btn-primary" onclick="addGoods()">新增调货</button>
+    </div>
+</div>
+<div class="goods-header">
+    <div class="selectBox" id="select-form">
+        <div class="yj-header-time">
+            <div class="yj-date">
+                <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="goods-body">
+    <ul class="contUl" id="showUl">
+        <li class="item">
+            <div class="head">
+                <span class="mainCont-head-left">2018.02.04 12:00:39</span>
+                <span>发起人:<em>总仓</em></span>
+            </div>
+            <div class="body">
+                <div class="top">
+                    <ul>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X10</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X20</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X200</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">商品A</span>
+                            <span>-20</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">商品B</span>
+                            <span>+9</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bottom">
+                    <div>共5种商品</div>
+                    <div>数量总计:100</div>
+                </div>
+            </div>
+            <div class="foot">
+                <span class="txt">暂无单号</span>
+                <button class="btn btn-primary">编辑</button>
+            </div>
+        </li>
+        <li class="item">
+            <div class="head">
+                <span class="mainCont-head-left">2018.02.04 12:00:39</span>
+                <span>发起人:<em>总仓</em></span>
+            </div>
+            <div class="body">
+                <div class="top">
+                    <ul>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X10</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X20</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X200</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">商品A</span>
+                            <span>-20</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">商品B</span>
+                            <span>+9</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bottom">
+                    <div>共5种商品</div>
+                    <div>数量总计:100</div>
+                </div>
+            </div>
+            <div class="foot">
+                <span class="txt">顺丰: <em>2397186457839</em></span>
+                <button class="btn btn-order">查看</button>
+            </div>
+        </li>
+        <li class="item">
+            <div class="head">
+                <span class="mainCont-head-left">2018.02.04 12:00:39</span>
+                <span>发起人:<em>总仓</em></span>
+            </div>
+            <div class="body">
+                <div class="top">
+                    <ul>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X10</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X20</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X200</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">商品A</span>
+                            <span>-20</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">商品B</span>
+                            <span>+9</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bottom">
+                    <div>共5种商品</div>
+                    <div>数量总计:100</div>
+                </div>
+            </div>
+            <div class="foot">
+                <span class="txt">顺丰: <em>2397186457839</em></span>
+                <button class="btn btn-order">查看</button>
+            </div>
+        </li>
+    </ul>
+    <table id="yj-table" data-toggle="table"  class="table table-border"></table>
+</div>
+
+<div class="content-view content-view-outbound">
+    <div class="outbound-left">
+        <div class="top">
+            <span class="title layui-layer-title">添加商品</span>
+            <div class="selectBox" id="selectShop">
+                <div class="select-box-header">
+                    <span class="text">门店</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">门店1</li>
+                        <li value="02">门店2</li>
+                        <li value="03">门店3</li>
+                        <li value="04">门店4</li>
+                        <li value="05">门店5</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="select-title">选择门店</span>
+        </div>
+        <ul class="tab-ul">
+            <li class="active">镜片</li>
+            <li>镜架</li>
+            <li>隐形眼镜</li>
+            <li>太阳镜</li>
+            <li>护理产品</li>
+            <li>其它商品</li>
+        </ul>
+        <ul class="tab-content-list">
+            <!--镜片1-->
+            <li class="tab-content-item active">
+                <div class="outbound-left-body">
+                    <div class="outbound-body-option">
+                        <div class="selectBox" id="pp-select">
+                            <div class="select-box-header">
+                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">品牌A</li>
+                                    <li value="02">品牌B</li>
+                                    <li value="03">品牌32</li>
+                                    <li value="04">品牌4</li>
+                                    <li value="05">品牌5</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox" id="xl-select">
+                            <div class="select-box-header">
+                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">系列A</li>
+                                    <li value="02">系列B</li>
+                                    <li value="03">系列C</li>
+                                    <li value="04">系列D</li>
+                                    <li value="05">系列E</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outbound-body-tag">
+                        <div class="tag-list">A品牌A系列</div>
+                        <div class="tag-list">B品牌$系列</div>
+                        <div class="tag-list">F品牌0系列</div>
+                    </div>
+                    <div class="outbound-body-top-hidden">
+                        <span class="text-default">请先选择门店、品牌和系列</span>
+                        <div class="button">添加至调货单</div>
+                    </div>
+                    <div class="outbound-body-top-show clearfix">
+                        <div class="text-end clearfix">
+                            <span>A品牌A系列</span>
+                            <ul class="tab-lr clearfix">
+                                <li class="tab-lr-item active">右</li>
+                                <li class="tab-lr-item">左</li>
+                            </ul>
+                        </div>
+                        <div class="button">添加至调货单</div>
+                    </div>
+                    <table class="layui-hide yj-layui-table" id="outboundTable" lay-filter="outboundEvent"></table>
+                </div>
+            </li>
+            <!--镜架2-->
+            <li class="tab-content-item ">
+                <div class="outbound-left-body">
+                    <div class="outbound-body-option" >
+                        <div class="selectBox" id="pp-select2">
+                            <div class="select-box-header">
+                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">品牌A</li>
+                                    <li value="02">品牌B</li>
+                                    <li value="03">品牌32</li>
+                                    <li value="04">品牌4</li>
+                                    <li value="05">品牌5</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="xl-select2">
+                            <div class="select-box-header">
+                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">系列A</li>
+                                    <li value="02">系列B</li>
+                                    <li value="03">系列C</li>
+                                    <li value="04">系列D</li>
+                                    <li value="05">系列E</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="cz-select2">
+                            <div class="select-box-header">
+                                <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">材质A</li>
+                                    <li value="02">材质B</li>
+                                    <li value="03">材质C</li>
+                                    <li value="04">材质D</li>
+                                    <li value="05">材质E</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outbound-body-tag">
+                        <div class="tag-list">A品牌A系列</div>
+                        <div class="tag-list">B品牌$系列</div>
+                        <div class="tag-list">F品牌0系列</div>
+                    </div>
+                    <div class="outbound-body-content">
+                        <div class="selectBox" id="xh-select2">
+                            <div class="select-box-header">
+                                <span class="text">型号</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">型号A</li>
+                                    <li value="02">型号B</li>
+                                    <li value="03">型号32</li>
+                                    <li value="04">型号4</li>
+                                    <li value="05">型号5</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="sh-select2">
+                            <div class="select-box-header">
+                                <span class="text">色号</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">色号A</li>
+                                    <li value="02">色号B</li>
+                                    <li value="03">色号C</li>
+                                    <li value="04">色号D</li>
+                                    <li value="05">色号E</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="number" placeholder="数量">
+                    </div>
+                    <div class="outbound-body-add">
+                            添加至调货单
+                    </div>
+                </div>
+            </li>
+            <!--隐形眼镜3-->
+            <li class="tab-content-item">
+                <div class="outbound-left-body">
+                    <div class="outbound-body-option" >
+                        <div class="selectBox" id="pp-select3">
+                            <div class="select-box-header">
+                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">品牌A</li>
+                                    <li value="02">品牌B</li>
+                                    <li value="03">品牌32</li>
+                                    <li value="04">品牌4</li>
+                                    <li value="05">品牌5</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="xl-select3">
+                            <div class="select-box-header">
+                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">系列A</li>
+                                    <li value="02">系列B</li>
+                                    <li value="03">系列C</li>
+                                    <li value="04">系列D</li>
+                                    <li value="05">系列E</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outbound-body-tag">
+                        <div class="tag-list">A品牌A系列</div>
+                        <div class="tag-list">B品牌$系列</div>
+                        <div class="tag-list">F品牌0系列</div>
+                    </div>
+                    <div class="outbound-body-content">
+                        <div class="selectBox" id="ballNum-select3">
+                            <div class="select-box-header">
+                                <span class="text">球镜度数</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">-0.25</li>
+                                    <li value="02">-0.25</li>
+                                    <li value="03">-0.25</li>
+                                    <li value="04">-0.25</li>
+                                    <li value="05">-0.25</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="proNum-select3">
+                            <div class="select-box-header">
+                                <span class="text">生产批号</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">A3548265</li>
+                                    <li value="02">A3548265</li>
+                                    <li value="03">A3548265</li>
+                                    <li value="04">A3548265</li>
+                                    <li value="05">A3548265</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="number" placeholder="数量">
+                    </div>
+                    <div class="outbound-body-add">
+                        添加至调货单
+                    </div>
+                </div>
+            </li>
+            <!--太阳镜4-->
+            <li class="tab-content-item">
+                <div class="outbound-left-body">
+                    <div class="outbound-body-option" >
+                        <div class="selectBox" id="pp-select4">
+                            <div class="select-box-header">
+                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">品牌A</li>
+                                    <li value="02">品牌B</li>
+                                    <li value="03">品牌32</li>
+                                    <li value="04">品牌4</li>
+                                    <li value="05">品牌5</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="xl-select4">
+                            <div class="select-box-header">
+                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">系列A</li>
+                                    <li value="02">系列B</li>
+                                    <li value="03">系列C</li>
+                                    <li value="04">系列D</li>
+                                    <li value="05">系列E</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="cz-select4">
+                            <div class="select-box-header">
+                                <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">材质A</li>
+                                    <li value="02">材质B</li>
+                                    <li value="03">材质C</li>
+                                    <li value="04">材质D</li>
+                                    <li value="05">材质E</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outbound-body-tag">
+                        <div class="tag-list">A品牌A系列</div>
+                        <div class="tag-list">B品牌$系列</div>
+                        <div class="tag-list">F品牌0系列</div>
+                    </div>
+                    <div class="outbound-body-content">
+                        <div class="selectBox" id="xh-select4">
+                            <div class="select-box-header">
+                                <span class="text">型号</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">型号A</li>
+                                    <li value="02">型号B</li>
+                                    <li value="03">型号32</li>
+                                    <li value="04">型号4</li>
+                                    <li value="05">型号5</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="sh-select4">
+                            <div class="select-box-header">
+                                <span class="text">色号</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">色号A</li>
+                                    <li value="02">色号B</li>
+                                    <li value="03">色号C</li>
+                                    <li value="04">色号D</li>
+                                    <li value="05">色号E</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="number" placeholder="数量">
+                    </div>
+                    <div class="outbound-body-add">
+                        添加至调货单
+                    </div>
+                </div>
+            </li>
+            <!--护理产品5-->
+            <li class="tab-content-item">
+                <div class="outbound-left-body">
+                    <div class="outbound-body-option" >
+                        <div class="selectBox" id="pp-select5">
+                            <div class="select-box-header">
+                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">品牌A</li>
+                                    <li value="02">品牌B</li>
+                                    <li value="03">品牌32</li>
+                                    <li value="04">品牌4</li>
+                                    <li value="05">品牌5</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="xl-select5">
+                            <div class="select-box-header">
+                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">系列A</li>
+                                    <li value="02">系列B</li>
+                                    <li value="03">系列C</li>
+                                    <li value="04">系列D</li>
+                                    <li value="05">系列E</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outbound-body-tag">
+                        <div class="tag-list">A品牌A系列</div>
+                        <div class="tag-list">B品牌$系列</div>
+                        <div class="tag-list">F品牌0系列</div>
+                    </div>
+                    <div class="outbound-body-content">
+                        <div class="selectBox" id="proNum-select5">
+                            <div class="select-box-header">
+                                <span class="text">生产批号</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">A63548112</li>
+                                    <li value="02">A63548112</li>
+                                    <li value="03">A63548112</li>
+                                    <li value="04">A63548112</li>
+                                    <li value="05">A63548112</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="number" placeholder="数量">
+                    </div>
+                    <div class="outbound-body-add">
+                        添加至调货单
+                    </div>
+                </div>
+            </li>
+            <!--其他商品6-->
+            <li class="tab-content-item">
+                <div class="outbound-left-body">
+                    <div class="outbound-body-option" >
+                        <div class="selectBox" id="pp-select6">
+                            <div class="select-box-header">
+                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">品牌A</li>
+                                    <li value="02">品牌B</li>
+                                    <li value="03">品牌32</li>
+                                    <li value="04">品牌4</li>
+                                    <li value="05">品牌5</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="xl-select6">
+                            <div class="select-box-header">
+                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">系列A</li>
+                                    <li value="02">系列B</li>
+                                    <li value="03">系列C</li>
+                                    <li value="04">系列D</li>
+                                    <li value="05">系列E</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outbound-body-tag">
+                        <div class="tag-list">A品牌A系列</div>
+                        <div class="tag-list">B品牌$系列</div>
+                        <div class="tag-list">F品牌0系列</div>
+                    </div>
+                    <div class="outbound-body-content">
+                        <div class="selectBox" id="xh-select6">
+                            <div class="select-box-header">
+                                <span class="text">型号</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">A6521124211</li>
+                                    <li value="02">A6521124211</li>
+                                    <li value="03">A6521124211</li>
+                                    <li value="04">A6521124211</li>
+                                    <li value="05">A6521124211</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox"  id="gd-select6">
+                            <div class="select-box-header">
+                                <span class="text">光度</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">8</li>
+                                    <li value="02">8</li>
+                                    <li value="03">8</li>
+                                    <li value="04">8</li>
+                                    <li value="05">8</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="number" placeholder="数量">
+                    </div>
+                    <div class="outbound-body-add">
+                        添加至调货单
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="outbound-foot">
+            <button class="btn btn-yj">关闭窗口</button>
+        </div>
+    </div>
+    <div class="outbound-right">
+        <div class="outbound-right-head">
+            <div class="layui-layer-title">调货单</div>
+            <div class="outbound-right-head-right">
+                <span>发起人</span>
+                <div class="selectBox" id="selectBox">
+                    <div class="select-box-header">
+                        <span class="text">李小东</span> <i class="iconfont icon-ico_arrow_down" id=""></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="right-content">
+            <li class="right-content-item">
+                <div class="right-item-title">镜片</div>
+                <table class="" id="rightTable1" lay-filter="outboundEvent"></table>
+            </li>
+            <li class="right-content-item">
+                <div class="right-item-title">镜架</div>
+                <table class="" id="rightTable2" lay-filter="outboundEvent"></table>
+            </li>
+            <li class="right-content-item">
+                <div class="right-item-title">隐形眼镜</div>
+                <table class="" id="rightTable3" lay-filter="outboundEvent"></table>
+            </li>
+        </ul>
+        <div class="outbound-foot">
+            <button class="btn btn-yj-default32 active">确认调货</button>
+        </div>
+    </div>
+</div>
+<!--查看调货单开始-->
+<div class="content-cargo">
+    <div class="cargo-header clearfix">
+        <div class="cargo-title">调货单</div>
+        <div class="cargo-person">
+            <span>发起人:</span>
+            <span>李晓东</span>
+        </div>
+        <div class="cargo-shop">
+            <span>被调店铺:</span>
+            <span id="carg-shop">江苏无锡世贸中心店</span>
+        </div>
+    </div>
+    <div class="cargo-content">
+        <ul class="cargo-content-list">
+            <li class="cargo-content-item">
+                <div class="item-title">镜片</div>
+                <table class=" cargo-table" id="cargo-table1"></table>
+            </li>
+            <li class="cargo-content-item">
+                <div class="item-title">镜架</div>
+                <table class=" cargo-table" id="cargo-table2"></table>
+            </li>
+            <li class="cargo-content-item">
+                <div class="item-title">隐形眼镜</div>
+                <table class=" cargo-table" id="cargo-table3"></table>
+            </li>
+            <li class="cargo-content-item">
+                <div class="item-title">护理产品</div>
+                <table class=" cargo-table" id="cargo-table4"></table>
+            </li>
+            <li class="cargo-content-item">
+                <div class="item-title">其他商品</div>
+                <table class=" cargo-table" id="cargo-table5"></table>
+            </li>
+        </ul>
+    </div>
+    <div class="log-false">
+        <div class="selectBox" id="selectLog">
+            <div class="select-box-header">
+                <span class="text">物流服务商</span> <i class="iconfont icon-ico_arrow_down" id=""></i>
+            </div>
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <li value="01">1</li>
+                    <li value="02">2</li>
+                    <li value="03">3</li>
+                    <li value="04">4</li>
+                    <li value="05">5</li>
+                </ul>
+            </div>
+        </div>
+        <div class="log-num">物流单号</div>
+    </div>
+    <div class="log-true">
+        顺丰: 2397186457839
+    </div>
+    <div class="cargo-bottom">
+        <div class="btn-close-win" onclick="layer.closeAll()">关闭窗口</div>
+        <div class="btn-delete-cargo" onclick="deleteCarge()">删除调货</div>
+    </div>
+</div>
+<!--查看调货单结束-->
+<!--删除调货开始-->
+<div class="delete-cargo">
+    <div class="del-cargo-header">删除调货</div>
+    <div class="del-cargo-content">确定删除调货？</div>
+    <div class="del-cargo-bot">
+        <div class="btn-y">确定</div>
+        <div class="btn-n" onclick="layer.closeAll()">取消</div>
+    </div>
+</div>
+<!--删除调货结束-->
+
+<!--js依赖开始-->
+<!--bootstrap依赖于jQuery，jQuery.js必须放在BS.js之前-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js"></script>
+<!--js依赖结束-->
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+
+<script src="../resource/common/common.js"></script>
+<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/yanjing/daterange.js"></script>
+
+</body>
+</html>
+
+<script>
+    //新增调货弹窗下拉框value值
+    var shop,brand,series;
+    var date1 = new dateRange(".yj-header-time");
+    date1.init();
+    var $table =  $('#yj-table');
+    var data = [{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1}];
+    var TableInit = function (callback) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable('destroy')
+            $table.bootstrapTable({
+                data:data,
+                classes:"table",
+                pagination:true,        //是否显示分页
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 6,
+                pageList: [6,12,18],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign:"center",
+                clickToSelect:true,
+                paginationLoop:false,
+                columns:[],
+                onPreBody:function (data) {
+                    if(callback){
+                        callback(data,this)
+                    }
+                }
+            });
+        };
+        return oTableInit;
+    };
+
+    var Table = new TableInit(openSet);
+    Table.Init();
+
+    function openSet(data,_this) {
+        var html = '';
+        for(var i=(_this.pageNumber-1)*_this.pageSize;i<_this.pageNumber*_this.pageSize;i++){
+            html+= '<li class="item">'+
+                    '<div class="head">'+
+                        '<span class="mainCont-head-left">2018.02.04 12:00:39</span>'+
+                        '<span>发起人:<em>总仓${i}</em></span>'+
+                    '</div>'+
+                    '<div class="body">'+
+                        '<div class="top">'+
+                            '<ul>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
+                                    '<span>X10</span>'+
+                                '</li>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
+                                    '<span>X20</span>'+
+                                '</li>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
+                                    '<span>X200</span>'+
+                                '</li>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">商品A</span>'+
+                                    '<span>-20</span>'+
+                                '</li>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">商品B</span>'+
+                                    '<span>+9</span>'+
+                                '</li>'+
+                            '</ul>'+
+                        '</div>'+
+                        '<div class="bottom">'+
+                            '<div>共5种商品</div>'+
+                            '<div>数量总计:100</div>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="foot">'+
+                        '<span class="txt">顺丰: <em>2397186457839</em></span>'+
+                        '<button class="btn btn-order" onclick="openCargo()">查看</button>'+
+                    '</div>'+
+                '</li>';
+        }
+        $("#showUl").html(html);
+    }
+    function setApply(data,_this) {
+        var html = '';
+        for(var i=(_this.pageNumber-1)*_this.pageSize;i<_this.pageNumber*_this.pageSize;i++){
+            html+= '<li class="item">'+
+                    '<div class="head">'+
+                        '<span class="mainCont-head-left">2018.02.04 12:00:39</span>'+
+                        '<span>遵义市旗舰店 · 吕晓丽</span>'+
+                    '</div>'+
+                    '<div class="body">'+
+                        '<div class="top">'+
+                            '<ul>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
+                                    '<span>X10</span>'+
+                                '</li>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
+                                    '<span>X20</span>'+
+                                '</li>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
+                                    '<span>X200</span>'+
+                                '</li>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">商品A</span>'+
+                                    '<span>-20</span>'+
+                                '</li>'+
+                                '<li>'+
+                                    '<span class="txtOverflow">商品B</span>'+
+                                    '<span>+9</span>'+
+                                '</li>'+
+                            '</ul>'+
+                        '</div>'+
+                        '<div class="bottom">'+
+                            '<div>共5种商品</div>'+
+                            '<div>数量总计:100</div>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="foot">'+
+                        '<span class="txt">顺丰: <em>2397186457839</em></span>'+
+                        '<button class="btn btn-danger">同意调货</button>'+
+                    '</div>'+
+                '</li>';
+        }
+        $("#showUl").html(html);
+    }
+    function chooseGoodsType(self,value){
+        goodsType = value;
+        if(goodsType == 1){
+            var Table = new TableInit(openSet);
+            Table.Init();
+        }else{
+            var Table = new TableInit(setApply);
+            Table.Init();
+        }
+        $(self).addClass('active').siblings().removeClass('active')
+    }
+    /**
+     * 查看调货单弹窗
+     * */
+    function openCargo(){
+        layer.open({
+            type: 1,shade: 0.01,title:null,
+            skin: 'layui-cargo', //样式类名
+            area: ['380px', '560px'],
+            anim: 0,
+            closeBtn: 0, //不显示关闭按钮
+            resize:false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-cargo'),
+        });
+
+    }
+    /**
+     * 删除调货弹窗
+     * */
+    function deleteCarge(){
+        layer.open({
+            type: 1,shade: 0.01,title:null,
+            skin: 'del-cargo', //样式类名
+            area: ['240px', '130px'],
+            anim: 0,
+            closeBtn: 0, //不显示关闭按钮
+            resize:false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.delete-cargo')
+        })
+    }
+    /**
+     * 打开新增调货弹窗
+     * */
+    function addGoods() {
+        layer.open({
+            type: 1,shade: 0.01,title:null,
+            skin: 'layui-layer-outbound', //样式类名
+            area: ['960px', '560px'],
+            anim: 0,
+            closeBtn: 0, //不显示关闭按钮
+            resize:false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-outbound'),
+            success: function(layero, index){
+                $('.layui-layer-outbound .layui-layer-content').height(560+'px');
+                var boundData = [{num:"库存",num0l:"库存",num0r:"出库",num1l:"库存",num1r:"出库",num2l:"库存",num2r:"出库",num3l:"库存",num3r:"出库",num4l:"库存",num4r:"出库",num5l:"库存",num5r:"出库",num6l:"库存",num6r:"出库",num7l:"库存",num7r:"出库",num8l:"库存",num8r:"出库",num9l:"库存",num9r:"出库",num10l:"库存",num10r:"出库",num11l:"库存",num11r:"出库",num12l:"库存",num12r:"出库",num13l:"库存",num13r:"出库",num14l:"库存",num14r:"出库",num15l:"库存",num15r:"出库",num16l:"库存",num16r:"出库",num17l:"库存",num17r:"出库"
+                },{
+                    num:'-0.25',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-0.50',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-0.75',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-1.00',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-1.25',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-1.50',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-1.75',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-2.00',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-2.25',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-2.50',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-2.75',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-3.00',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-3.25',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-3.50',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-3.75',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-4.00',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-0.25',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-0.25',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                },{
+                    num:'-0.25',num0l:"12",num0r:"0",num1l:"0",num1r:"1",num2l:"4",num2r:"2",num3l:"36",num3r:"2",num4l:"0",num4r:"0",num5l:"12",num5r:"0",num6l:"1",num6r:"0",num7l:"1",num7r:"10",num8l:"1",num8r:"4",num9l:"0",num9r:"4",num10l:"52",num10r:"21",num11l:"0",num11r:"0",num12l:"4",num12r:"41",num13l:"5",num13r:"4",num14l:"4",num14r:"0",num15l:"45",num15r:"1",num16l:"25",num16r:"5",num17l:"12",num17r:"12"
+                }];
+                layui.use('table', function(){
+                    var table = layui.table;
+                    table.render({
+                        elem: '#outboundTable'
+                        ,data:boundData
+                        ,width: 488
+                        ,height: 260
+                        ,unresize:true
+                        ,cols: [[
+                            {field:'num', width:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'}
+                            ,{field:'num0l',width:60, title: '+0.00', edit:'text',unresize:true}
+                            ,{field:'num0r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num1l', width:60, title: '-0.25', edit:'text',unresize:true}
+                            ,{field:'num1r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num2l', width:60, title: '-0.50', edit:'text',unresize:true}
+                            ,{field:'num2r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num3l', width:60, title: '-0.75', edit:'text',unresize:true}
+                            ,{field:'num3r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num4l', width:60, title: '-1.00', edit:'text',unresize:true}
+                            ,{field:'num4r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num5l', width:60, title: '-1.25', edit:'text',unresize:true}
+                            ,{field:'num5r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num6l', width:60, title: '-1.50', edit:'text',unresize:true}
+                            ,{field:'num6r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num7l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num7r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num8l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num8r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num9l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num9r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num10l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num10r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num11l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num11r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num12l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num12r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num13l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num13r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num14l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num14r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num15l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num15r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num16l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num16r', width:60, title: '', edit:'text',unresize:true}
+                            ,{field:'num17l', width:60, title: '-1.75', edit:'text',unresize:true}
+                            ,{field:'num17r', width:60, title: '', edit:'text',unresize:true}
+                        ]]
+                    });
+                    //监听单元格事件
+                    table.on('edit(outboundEvent)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                        console.log(obj.value); //得到修改后的值
+                        console.log(obj.field); //当前编辑的字段名
+                        console.log(obj.data); //所在行的所有相关数据
+                    });
+                });
+                $('.outbound-foot button').click(function () {
+                    layer.close(index)
+                })
+            }
+        });
+
+    }
+
+    /**
+     * 选择门店下拉框
+     * */
+    selectTag($("#selectShop"),function (ret) {
+        shop = ret.value;
+        threeIsEmpty();
+    });
+
+    /**
+     * 品牌下拉框
+     * */
+    selectTag($("#pp-select"),function (ret) {
+        brand = ret.value;
+        threeIsEmpty();
+    });
+
+    /**
+     * 系列下拉框
+     * */
+    selectTag($("#xl-select"),function (ret) {
+        series = ret.value;
+        threeIsEmpty();
+    });
+
+    /**
+     * 系列下拉框
+     * */
+    selectTag($("#selectBox"),function (ret) {
+    });
+
+    /**
+     * 镜架下拉框
+     * */
+    selectTag($("#pp-select2"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#xl-select2"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#cz-select2"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#xh-select2"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#sh-select2"),function (ret) {
+        console.log(ret);
+    });
+    /**
+     * 太阳镜下拉框
+     * */
+    selectTag($("#pp-select4"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#xl-select4"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#cz-select4"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#xh-select4"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#sh-select4"),function (ret) {
+        console.log(ret);
+    });
+    /**
+     * 护理产品下拉框
+     * */
+    selectTag($("#pp-select5"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#xl-select5"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#proNum-select5"),function (ret) {
+        console.log(ret);
+    });
+    /**
+     * 隐形眼镜下拉框
+     * */
+    selectTag($("#pp-select3"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#xl-select3"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#ballNum-select3"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#proNum-select3"),function (ret) {
+        console.log(ret);
+    });
+
+    /**
+     * 其他商品下拉框
+     * */
+    selectTag($("#pp-select6"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#xl-select6"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#xh-select6"),function (ret) {
+        console.log(ret);
+    });
+    selectTag($("#gd-select6"),function (ret) {
+        console.log(ret);
+    });
+
+
+
+
+    /**
+     * 新增调货弹窗tab切换
+     * */
+    $(".outbound-left>.tab-ul li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        $(".tab-content-list .tab-content-item").hide().eq($(this).index()).show();
+        //$(".right-info").hide().eq($(this).index()).show();
+    });
+
+    /**
+     * 新增调货弹窗镜片左右tab切换
+     * */
+    $(".tab-lr>li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        //$(".tab-item").hide().eq($(this).index()).show();
+        //$(".right-info").hide().eq($(this).index()).show();
+    });
+
+    /**
+     * 检测门店品牌系列是否为空，显示对应内容
+     * */
+    function threeIsEmpty(){
+        console.log(shop,brand,series);
+        
+        if(quakooUtils.isNotBlack(shop)&&quakooUtils.isNotBlack(brand)&&quakooUtils.isNotBlack(series)){
+            $(".outbound-body-top-hidden").css("display","none");
+            $(".outbound-body-top-show").css("display","block");
+            $(".outbound-left-body table").css("display","block")
+
+        }else{
+            $(".outbound-body-top-hidden").css("display","block");
+            $(".outbound-body-top-show").css("display","none");
+            $(".outbound-left-body table").css("display","none")
+        }
+    }
+
+    /*右侧调货单内容*/
+    //镜片
+    var dataRight1 = [{name:"名称A",qNum:"-0.25",sNum:"-0.50",num:"8"},{name:"名称A",qNum:"-0.25",sNum:"-0.50",num:"8"},{name:"名称A",qNum:"-0.25",sNum:"-0.50",num:"8"}];
+    var columns1=[
+        {field: "name", title: "名称", align:"left",valign:"middle"},
+        {field: "qNum", title: "球镜度数", align:"left",valign:"middle"},
+        {field: "sNum", title: "散光度数", align:"left",valign:"middle"},
+        {field: "num", title: "数量", align:"left",valign:"middle"},
+        {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                return '<span class="button">移除</span>';
+            }
+        }
+    ];
+    //镜架
+    var dataRight2 = [{name:"名称A",type:"型号A",colour:"色号A",num:"8"},{name:"名称A",type:"型号A",colour:"色号A",num:"8"},{name:"名称A",type:"型号A",colour:"色号A",num:"8"}];
+    var columns2=[
+        {field: "name", title: "名称", align:"left",valign:"middle"},
+        {field: "type", title: "型号", align:"left",valign:"middle"},
+        {field: "colour", title: "色号", align:"left",valign:"middle"},
+        {field: "num", title: "数量", align:"left",valign:"middle"},
+        {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                return '<span class="button">移除</span>';
+            }
+        }
+    ];
+    //隐形眼镜
+    var dataRight3 = [{name:"名称A",qNum:"-0.25",sNum:"-0.50",proNum:"16428"},{name:"名称A",qNum:"-0.25",sNum:"-0.50",proNum:"8456134"},{name:"名称A",qNum:"-0.25",sNum:"-0.50",proNum:"8928654"}];
+    var columns3=[
+        {field: "name", title: "名称", align:"left",valign:"middle"},
+        {field: "qNum", title: "球镜度数", align:"left",valign:"middle"},
+        {field: "sNum", title: "散光度数", align:"left",valign:"middle"},
+        {field: "proNum", title: "生产批号", align:"left",valign:"middle"},
+        {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                return '<span class="button">移除</span>';
+            }
+        }
+    ];
+    var dataRight4 = [{name:"名称A",proNum:"A3548789",expDate:"2018.03.30"+"<br/>"+"2019.03.30",num:"8"},{name:"名称A",proNum:"A3548789",expDate:"2018.03.30"+"<br/>"+"2019.03.30",num:"8"},{name:"名称A",proNum:"A3548789",expDate:"2018.03.30"+"<br/>"+"2019.03.30",num:"8"}];
+    //护理产品
+    var columns4=[
+        {field: "name", title: "名称", align:"left",valign:"middle"},
+        {field: "proNum", title: "生产批号", align:"left",valign:"middle"},
+        {field: "expDate", title: "保质期", align:"left",valign:"middle"},
+        {field: "num", title: "数量", align:"left",valign:"middle"},
+        {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                return '<span class="button">移除</span>';
+            }
+        }
+    ];
+    //其他商品
+    var dataRight5 = [{name:"名称A",type:"A12342",lumNum:"-0.50",num:"8"},{name:"名称A",type:"A12342",lumNum:"-0.50",num:"8"},{name:"名称A",type:"A12342",lumNum:"-0.50",num:"8"}];
+    var columns5=[
+        {field: "name", title: "名称", align:"left",valign:"middle"},
+        {field: "type", title: "型号", align:"left",valign:"middle"},
+        {field: "lumNum", title: "光度", align:"left",valign:"middle"},
+        {field: "num", title: "数量", align:"left",valign:"middle"},
+        {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                return '<span class="button">移除</span>';
+            }
+        }
+    ];
+    $("#rightTable1").bootstrapTable({
+        data:dataRight1,                 //被加载的数据。
+        classes:"table-cargo",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:columns1
+    });
+    $("#rightTable2").bootstrapTable({
+        data:dataRight2,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:columns2
+    });
+    $("#rightTable3").bootstrapTable({
+        data:dataRight3,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:columns3
+    });
+    $("#rightTable4").bootstrapTable({
+        data:dataRight4,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:columns4
+    });
+    $("#rightTable5").bootstrapTable({
+        data:dataRight5,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:columns5
+    });
+
+    /**
+     * 查看调货单表格
+     * */
+    /*镜片*/
+    var cargoData1 = [
+        {
+            name:"名称A",ballNum:"-0.25",sNum:"-50",num:"3"
+        },{
+            name:"名称A",ballNum:"-0.25",sNum:"-50",num:"3"
+        },{
+            name:"名称A",ballNum:"-0.25",sNum:"-50",num:"3"
+        }
+    ];
+    var cargoColumns1 = [
+        {
+            field:"name",title:"名称",align:"left",valign:"middle"
+        },{
+            field:"ballNum",title:"球镜度数",align:"left",valign:"middle"
+        },{
+            field:"sNum",title:"散光度数",align:"left",valign:"middle"
+        },{
+            field:"num",title:"数量",align:"left",valign:"middle"
+        }
+    ];
+    $("#cargo-table1").bootstrapTable({
+        data:cargoData1,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:cargoColumns1,
+    });
+    /*镜架*/
+    var cargoData2 = [
+        {
+            name:"名称A",type:"A3673427112",colour:"色号A",num:"3"
+        },{
+            name:"名称A",type:"A3673427112",colour:"色号A",num:"3"
+        },{
+            name:"名称A",type:"A3673427112",colour:"色号A",num:"3"
+        }
+    ];
+    var cargoColumns2 = [
+        {
+            field:"name",title:"名称",align:"left",valign:"middle"
+        },{
+            field:"type",title:"型号",align:"left",valign:"middle"
+        },{
+            field:"colour",title:"色号",align:"left",valign:"middle"
+        },{
+            field:"num",title:"数量",align:"left",valign:"middle"
+        }
+    ];
+    $("#cargo-table2").bootstrapTable({
+        data:cargoData2,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:cargoColumns2,
+    });
+    /*隐形眼镜*/
+    var cargoData3 = [
+        {
+            name:"名称A",ballNum:"-0.25",sNum:"50",num:"3"
+        },{
+            name:"名称A",ballNum:"-0.25",sNum:"50",num:"3"
+        },{
+            name:"名称A",ballNum:"-0.25",sNum:"50",num:"3"
+        }
+    ];
+    var cargoColumns3 = [
+        {
+            field:"name",title:"名称",align:"left",valign:"middle"
+        },{
+            field:"ballNum",title:"球镜度数",align:"left",valign:"middle"
+        },{
+            field:"sNum",title:"散光度数",align:"left",valign:"middle"
+        },{
+            field:"num",title:"数量",align:"left",valign:"middle"
+        }
+    ];
+    $("#cargo-table3").bootstrapTable({
+        data:cargoData3,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:cargoColumns3,
+    });
+    /*护理产品*/
+    var cargoData4 = [
+        {
+            name:"名称A",proNum:"2015452",expDate:"2018.03.23"+"<br/>"+"2020.08.30",num:"3"
+        },{
+            name:"名称A",proNum:"2015452",expDate:"2018.03.23"+"<br/>"+"2020.08.30",num:"3"
+        },{
+            name:"名称A",proNum:"2015452",expDate:"2018.03.23"+"<br/>"+"2020.08.30",num:"3"
+        }
+    ];
+    var cargoColumns4 = [
+        {
+            field:"name",title:"名称",align:"left",valign:"middle"
+        },{
+            field:"proNum",title:"生产日期",align:"left",valign:"middle"
+        },{
+            field:"expDate",title:"保质期",align:"left",valign:"middle"
+        },{
+            field:"num",title:"数量",align:"left",valign:"middle"
+        }
+    ];
+    $("#cargo-table4").bootstrapTable({
+        data:cargoData4,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:cargoColumns4,
+    });
+    /*其他商品*/
+    var cargoData5 = [
+        {
+            name:"名称A",type:"型号A36",gNum:"50",num:"3"
+        },{
+            name:"名称A",type:"型号A36",gNum:"50",num:"3"
+        },{
+            name:"名称A",type:"型号A36",gNum:"50",num:"3"
+        }
+    ];
+    var cargoColumns5 = [
+        {
+            field:"name",title:"名称",align:"left",valign:"middle"
+        },{
+            field:"type",title:"型号",align:"left",valign:"middle"
+        },{
+            field:"gNum",title:"光度",align:"left",valign:"middle"
+        },{
+            field:"num",title:"数量",align:"left",valign:"middle"
+        }
+    ];
+    $("#cargo-table5").bootstrapTable({
+        data:cargoData5,                 //被加载的数据。
+        classes:"table",
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:cargoColumns5,
+    });
+
+</script>

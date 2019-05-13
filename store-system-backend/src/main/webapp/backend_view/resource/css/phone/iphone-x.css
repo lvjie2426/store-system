@@ -1,0 +1,401 @@
+.marvel-device {
+    display: inline-block;
+    position: relative;
+    -webkit-box-sizing: content-box !important;
+    box-sizing: content-box !important
+}
+
+.iphone-x .screen {
+    background: -webkit-linear-gradient(left top, #48cbe0 , #0068b7) no-repeat fixed top; /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #48cbe0, #0068b7) no-repeat fixed top; /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #48cbe0, #0068b7) no-repeat fixed top; /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #48cbe0 , #0068b7) no-repeat fixed top; /* 标准的语法（必须放在最后） */
+
+}
+.hidden-phone{
+    display: block;
+}
+.iphone-x .screen:before {
+    content: '';
+    width: 140%;
+    height: 100%;
+    position: absolute;
+    top: -30%;
+    right: -70%;
+    /*background: radial-gradient(ellipse at center, #3e4ff9 0%, rgba(62, 79, 249, 0) 64%)*/
+}
+
+.iphone-x .screen:after {
+    content: '';
+    width: 140%;
+    height: 140%;
+    position: absolute;
+    bottom: -50%;
+    left: -30%;
+    /*background: radial-gradient(ellipse at center, #f7ede1 0%, rgba(247, 237, 225, 0) 70%);*/
+    -webkit-transform: rotate(30deg);
+    transform: rotate(30deg)
+}
+
+
+/*添加的样式*/
+#iphone-x{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+}
+/*遮罩层*/
+.mask{
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.marvel-device .screen {
+    width: 100%;
+    position: relative;
+    height: 100%;
+    z-index: 3;
+    background: white;
+    overflow: hidden;
+    display: block;
+    border-radius: 1px;
+    -webkit-box-shadow: 0 0 0 3px #111;
+    box-shadow: 0 0 0 3px #111
+}
+
+.marvel-device .top-bar, .marvel-device .bottom-bar {
+    height: 3px;
+    background: black;
+    width: 100%;
+    display: block
+}
+
+.marvel-device.iphone-x {
+    width: 300px;
+    height: 600px;
+    padding: 26px;
+    background: #fdfdfd;
+    -webkit-box-shadow: inset 0 0 11px 0 black;
+    box-shadow: inset 0 0 11px 0 black;
+    border-radius: 66px
+}
+
+.marvel-device.iphone-x .overflow {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 66px;
+    overflow: hidden
+}
+
+.marvel-device.iphone-x .shadow {
+    border-radius: 100%;
+    width: 90px;
+    height: 90px;
+    position: absolute;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, rgba(255, 255, 255, 0) 60%)
+}
+
+.marvel-device.iphone-x .shadow--tl {
+    top: -20px;
+    left: -20px
+}
+
+.marvel-device.iphone-x .shadow--tr {
+    top: -20px;
+    right: -20px
+}
+
+.marvel-device.iphone-x .shadow--bl {
+    bottom: -20px;
+    left: -20px
+}
+
+.marvel-device.iphone-x .shadow--br {
+    bottom: -20px;
+    right: -20px
+}
+
+.marvel-device.iphone-x:before {
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    position: absolute;
+    top: 5px;
+    content: '';
+    left: 5px;
+    border-radius: 61px;
+    background: black;
+    z-index: 1
+}
+
+.marvel-device.iphone-x .inner-shadow {
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    position: absolute;
+    top: 10px;
+    overflow: hidden;
+    left: 10px;
+    border-radius: 56px;
+    -webkit-box-shadow: inset 0 0 15px 0 rgba(255, 255, 255, 0.66);
+    box-shadow: inset 0 0 15px 0 rgba(255, 255, 255, 0.66);
+    z-index: 1
+}
+
+.marvel-device.iphone-x .inner-shadow:before {
+    -webkit-box-shadow: inset 0 0 20px 0 #FFFFFF;
+    box-shadow: inset 0 0 20px 0 #FFFFFF;
+    width: 100%;
+    height: 116%;
+    position: absolute;
+    top: -8%;
+    content: '';
+    left: 0;
+    border-radius: 200px / 112px;
+    z-index: 2
+}
+
+.marvel-device.iphone-x .screen {
+    border-radius: 40px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    overflow-y: scroll;
+    padding: 34px 10px;
+}
+
+
+.marvel-device.iphone-x .top-bar, .marvel-device.iphone-x .bottom-bar {
+    width: 100%;
+    position: absolute;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.1);
+    left: 0
+}
+
+.marvel-device.iphone-x .top-bar {
+    top: 80px
+}
+
+.marvel-device.iphone-x .bottom-bar {
+    bottom: 80px
+}
+
+.marvel-device.iphone-x .volume, .marvel-device.iphone-x .volume:before, .marvel-device.iphone-x .volume:after, .marvel-device.iphone-x .sleep {
+    width: 3px;
+    background: #b5b5b5;
+    position: absolute
+}
+
+.marvel-device.iphone-x .volume {
+    left: -3px;
+    top: 116px;
+    height: 32px
+}
+
+.marvel-device.iphone-x .volume:before {
+    height: 62px;
+    top: 62px;
+    content: '';
+    left: 0
+}
+
+.marvel-device.iphone-x .volume:after {
+    height: 62px;
+    top: 140px;
+    content: '';
+    left: 0
+}
+
+.marvel-device.iphone-x .sleep {
+    height: 96px;
+    top: 200px;
+    right: -3px
+}
+
+.marvel-device.iphone-x .camera {
+    width: 6px;
+    height: 6px;
+    top: 9px;
+    border-radius: 100%;
+    position: absolute;
+    left: 154px;
+    background: #0d4d71
+}
+
+.marvel-device.iphone-x .speaker {
+    height: 6px;
+    width: 60px;
+    left: 50%;
+    position: absolute;
+    top: 9px;
+    margin-left: -30px;
+    background: #171818;
+    border-radius: 6px
+}
+
+.marvel-device.iphone-x .notch {
+    position: absolute;
+    width: 210px;
+    height: 30px;
+    top: 26px;
+    left: 75px;
+    z-index: 4;
+    background: black;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px
+}
+
+.marvel-device.iphone-x .notch:before, .marvel-device.iphone-x .notch:after {
+    content: '';
+    height: 8px;
+    position: absolute;
+    top: 0;
+    width: 8px
+}
+
+.marvel-device.iphone-x .notch:after {
+    background: radial-gradient(circle at bottom left, transparent 0, transparent 70%, black 70%, black 100%);
+    left: -8px
+}
+
+.marvel-device.iphone-x .notch:before {
+    background: radial-gradient(circle at bottom right, transparent 0, transparent 70%, black 70%, black 100%);
+    right: -8px
+}
+
+.marvel-device.iphone-x.landscape {
+    height: 375px;
+    width: 812px
+}
+
+.marvel-device.iphone-x.landscape .top-bar, .marvel-device.iphone-x.landscape .bottom-bar {
+    width: 8px;
+    height: 100%;
+    top: 0
+}
+
+.marvel-device.iphone-x.landscape .top-bar {
+    left: 80px
+}
+
+.marvel-device.iphone-x.landscape .bottom-bar {
+    right: 80px;
+    bottom: auto;
+    left: auto
+}
+
+.marvel-device.iphone-x.landscape .volume, .marvel-device.iphone-x.landscape .volume:before, .marvel-device.iphone-x.landscape .volume:after, .marvel-device.iphone-x.landscape .sleep {
+    height: 3px
+}
+
+.marvel-device.iphone-x.landscape .inner-shadow:before {
+    height: 100%;
+    width: 116%;
+    left: -8%;
+    top: 0;
+    border-radius: 112px / 200px
+}
+
+.marvel-device.iphone-x.landscape .volume {
+    bottom: -3px;
+    top: auto;
+    left: 116px;
+    width: 32px
+}
+
+.marvel-device.iphone-x.landscape .volume:before {
+    width: 62px;
+    left: 62px;
+    top: 0
+}
+
+.marvel-device.iphone-x.landscape .volume:after {
+    width: 62px;
+    left: 140px;
+    top: 0
+}
+
+.marvel-device.iphone-x.landscape .sleep {
+    width: 96px;
+    left: 200px;
+    top: -3px;
+    right: auto
+}
+
+.marvel-device.iphone-x.landscape .camera {
+    left: 9px;
+    bottom: 154px;
+    top: auto
+}
+
+.marvel-device.iphone-x.landscape .speaker {
+    width: 6px;
+    height: 60px;
+    left: 9px;
+    top: 50%;
+    margin-top: -30px;
+    margin-left: 0
+}
+
+.marvel-device.iphone-x.landscape .notch {
+    height: 210px;
+    width: 30px;
+    left: 26px;
+    bottom: 108px;
+    top: auto;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 0
+}
+
+.marvel-device.iphone-x.landscape .notch:before, .marvel-device.iphone-x.landscape .notch:after {
+    left: 0
+}
+
+.marvel-device.iphone-x.landscape .notch:after {
+    background: radial-gradient(circle at bottom right, transparent 0, transparent 70%, black 70%, black 100%);
+    bottom: -8px;
+    top: auto
+}
+
+.marvel-device.iphone-x.landscape .notch:before {
+    background: radial-gradient(circle at top right, transparent 0, transparent 70%, black 70%, black 100%);
+    top: -8px
+}
+
+.iphone-x .screen img{
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    margin-bottom: 10px;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar
+{
+    width: 3px;
+    height: 9px;
+    background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}

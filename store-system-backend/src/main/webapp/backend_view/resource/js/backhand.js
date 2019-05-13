@@ -42,11 +42,17 @@ $(document).ready(function () {
     });
 
 
-    // 菜单切换
+    /*// 菜单切换
     $('.navbar-minimalize').click(function () {
         $("body").toggleClass("mini-navbar");
         SmoothlyMenu();
-    });
+    });*/
+    // 菜单切换
+    $('.navbar-minimalize')[0].onclick = function () {
+        $("body").toggleClass("mini-navbar");
+        $(".navbar-minimalize i").toggleClass("icon-ico_menu_expand");
+        SmoothlyMenu();
+    };
 
 
     // 侧边栏高度
@@ -113,6 +119,7 @@ function SmoothlyMenu() {
             function () {
                 $('#side-menu').fadeIn(500);
             }, 100);
+
     } else if ($('body').hasClass('fixed-sidebar')) {
         $('#side-menu').hide();
         setTimeout(

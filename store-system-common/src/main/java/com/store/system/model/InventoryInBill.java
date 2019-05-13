@@ -54,6 +54,8 @@ public class InventoryInBill implements Serializable {
 
     private int check; //审核状态
 
+    private int type;
+
     @SortKey
     private long ctime;
 

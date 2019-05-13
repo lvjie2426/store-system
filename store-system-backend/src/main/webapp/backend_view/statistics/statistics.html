@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="renderer" content="webkit">
+  <title>统计数据</title>
+  <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+  <link href="../resource/layui/css/layui.css" rel="stylesheet">
+  <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../resource/css/reset.css" rel="stylesheet">
+  <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+  <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+  <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+  <link href="../resource/css/animate.css" rel="stylesheet">
+  <link href="../resource/css/style.css" rel="stylesheet">
+  <link href="../resource/css/common.css" rel="stylesheet">
+  <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+  <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+  <link rel="stylesheet" href="../resource/css/common.css">
+  <link rel="stylesheet" href="../resource/css/yanjing/statistics.css">
+</head>
+<body>
+<!--首页内容-->
+<div class="statContainer">
+  <div class="title">
+    <span><i class="icon iconfont icon-ico_statistics_fille"></i></span>
+    <span>统计数据</span>
+    <span class="_btn" onclick="addRepertory()">新增入库</span>
+  </div>
+  <div class="mainCont wrap90">
+    <div class="box box01">
+      <div class="head">
+        <div class="txt01">销售统计</div>
+        <div>
+          <span class="_btn" onclick="selectShop('box01')">多店对比</span>
+        </div>
+        <div class="timeBox yj-demo-time yj-demo-time01">
+          <div class="yj-date">
+            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+          </div>
+        </div>
+        <div class="tabBox">
+          <ul class="tab-ul">
+            <li class="">本周</li>
+            <li class="active">本月</li>
+            <li class="">近半年</li>
+          </ul>
+        </div>
+      </div>
+      <div class="body clearfix">
+        <div class="left">
+          <div class="chartCont" id="chartCont01">
+          </div>
+          <div class="_btn prev"><</div>
+          <div class="_btn next">></div>
+        </div>
+        <div class="right">
+          <ul class="clearfix">
+            <li class="active">产品分类销售额占比</li>
+            <li>客单价分布占比</li>
+          </ul>
+          <div class="percentCont percentCont01">
+            <!--js插入，百分比div-->
+          </div>
+          <div class="bottomBox clearfix">
+            <span><em class="_bgColor01"></em>眼镜</span>
+            <span><em class="_bgColor02"></em>镜片</span>
+            <span><em class="_bgColor03"></em>隐形眼镜</span>
+            <span><em class="_bgColor04"></em>太阳镜</span>
+            <span><em class="_bgColor05"></em>护理产品</span>
+            <span><em class="_bgColor06"></em>其它</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box box02">
+      <div class="head">
+         <div class="txt01">客单价同价</div>
+        <div class="timeBox yj-demo-time yj-demo-time02">
+          <div class="yj-date">
+            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+          </div>
+        </div>
+        <div class="tabBox">
+          <ul class="tab-ul">
+            <li class="">本周</li>
+            <li class="active">本月</li>
+            <li class="">近半年</li>
+          </ul>
+        </div>
+      </div>
+      <div class="body">
+        <ul class="contUl clearfix">
+          <li class="item">
+            <div class="left">
+              <p><i class="icon iconfont icon-ico_lens"></i></p>
+              <p>镜片</p>
+              <p class="_color01">199</p>
+              <p>平均客单价 | 元</p>
+            </div>
+            <div class="right">
+              <p class="title">客单价分布比例</p>
+              <div class="percentCont percentCont02">
+                <!--js插入百分比div-->
+              </div>
+              <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+              </div>
+            </div>
+          </li>
+          <li class="item">
+            <div class="left">
+              <p><i class="icon iconfont icon-ico_frame"></i></p>
+              <p>镜架</p>
+              <p class="_color02">199</p>
+              <p>平均客单价 | 元</p>
+            </div>
+            <div class="right">
+              <p class="title">客单价分布比例</p>
+              <div class="percentCont percentCont03">
+                <!--js插入百分比div-->
+              </div>
+              <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+              </div>
+            </div>
+          </li>
+          <li class="item">
+            <div class="left">
+              <p><i class="icon iconfont icon-ico_contact_lens"></i></p>
+              <p>隐形眼镜</p>
+              <p class="_color03">199</p>
+              <p>平均客单价 | 元</p>
+            </div>
+            <div class="right">
+              <p class="title">客单价分布比例</p>
+              <div class="percentCont percentCont04">
+                <!--js插入百分比div-->
+              </div>
+              <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+              </div>
+            </div>
+          </li>
+          <li class="item">
+            <div class="left">
+              <p><i class="icon iconfont icon-ico_sunglasses"></i></p>
+              <p>太阳镜</p>
+              <p class="_color04">199</p>
+              <p>平均客单价 | 元</p>
+            </div>
+            <div class="right">
+              <p class="title">客单价分布比例</p>
+              <div class="percentCont percentCont05">
+                <!--js插入百分比div-->
+              </div>
+              <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+              </div>
+            </div>
+          </li>
+          <li class="item">
+            <div class="left">
+              <p><i class="icon iconfont icon-ico_care_solution"></i></p>
+              <p>护理产品</p>
+              <p class="_color05">199</p>
+              <p>平均客单价 | 元</p>
+            </div>
+            <div class="right">
+              <p class="title">客单价分布比例</p>
+              <div class="percentCont percentCont06">
+                <!--js插入百分比div-->
+              </div>
+              <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+              </div>
+            </div>
+          </li>
+          <li class="item">
+            <div class="left">
+              <p><i class="icon iconfont icon-ico_more"></i></p>
+              <p>其它</p>
+              <p class="_color05">199</p>
+              <p>平均客单价 | 元</p>
+            </div>
+            <div class="right">
+              <p class="title">客单价分布比例</p>
+              <div class="percentCont percentCont07">
+                <!--js插入百分比div-->
+              </div>
+              <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="box box03">
+      <div class="head">
+        <div class="txt01">顾客统计</div>
+        <div>
+          <span class="_btn" onclick="selectShop('box03')">多店对比</span>
+        </div>
+        <div class="timeBox yj-demo-time yj-demo-time03">
+          <div class="yj-date">
+            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+          </div>
+        </div>
+        <div class="tabBox">
+          <ul class="tab-ul">
+            <li class="">本周</li>
+            <li class="active">本月</li>
+            <li class="">近半年</li>
+          </ul>
+        </div>
+      </div>
+      <div class="body clearfix">
+        <div class="left">
+          <div class="chartCont" id="chartCont02">
+          </div>
+          <div class="_btn prev"><</div>
+          <div class="_btn next">></div>
+        </div>
+        <div class="right">
+          <div class="sex">
+            <div class="male">
+              <p class="clearfix">
+                <span class="sexIcon"><i class="icon iconfont icon-ico_male"></i></span>
+                <span>男性</span>
+              </p>
+              <p>59%</p>
+              <p>共456789人</p>
+            </div>
+            <div class="female">
+              <p class="clearfix">
+                <span class="sexIcon"><i class="icon iconfont icon-ico_female"></i></span>
+                <span>女性</span>
+              </p>
+              <p>41%</p>
+              <p>共456789人</p>
+            </div>
+          </div>
+          <div class="chart">
+            <p class="title">各年龄段顾客数量占比</p>
+            <div class="percentCont percentCont08">
+              <!--js插入百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+              <span><em class="_bgColor01"></em>0-10</span>
+              <span><em class="_bgColor02"></em>11-20</span>
+              <span><em class="_bgColor03"></em>21-40</span>
+              <span><em class="_bgColor04"></em>41-60</span>
+              <span><em class="_bgColor05"></em>60+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box box04">
+      <div class="head">
+         <div class="txt01">库存总值统计</div>
+        <div class="timeBox yj-demo-time yj-demo-time04">
+          <div class="yj-date">
+            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+          </div>
+        </div>
+        <div class="tabBox">
+          <ul class="tab-ul">
+            <li class="">本周</li>
+            <li class="active">本月</li>
+            <li class="">近半年</li>
+          </ul>
+        </div>
+      </div>
+      <div class="body clearfix">
+        <div class="left">
+          <p><i class="icon iconfont icon-ico_cash"></i></p>
+          <p class="txtOverflow">6524589元</p>
+          <p>库存总值</p>
+        </div>
+        <ul>
+          <li>
+            <p>
+              <span><i class="icon iconfont icon-ico_lens"></i>镜片</span>
+              <span>12345687元</span>
+            </p>
+            <p>占比20%</p>
+          </li>
+          <li>
+            <p>
+              <span><i class="icon iconfont icon-ico_frame"></i>镜架</span>
+              <span>12345687元</span>
+            </p>
+            <p>占比20%</p>
+          </li>
+          <li>
+            <p>
+              <span><i class="icon iconfont icon-ico_contact_lens"></i>隐形眼镜</span>
+              <span>12345687元</span>
+            </p>
+            <p>占比20%</p>
+          </li>
+          <li>
+            <p>
+              <span><i class="icon iconfont icon-ico_sunglasses"></i>太阳镜</span>
+              <span>12345687元</span>
+            </p>
+            <p>占比20%</p>
+          </li>
+          <li>
+            <p>
+              <span><i class="icon iconfont icon-ico_care_solution"></i>护理产品</span>
+              <span>12345687元</span>
+            </p>
+            <p>占比20%</p>
+          </li>
+          <li>
+            <p>
+              <span><i class="icon iconfont icon-ico_more"></i>其它</span>
+              <span>12345687元</span>
+            </p>
+            <p>占比20%</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!--新增入库弹窗-->
+<div class="content-view content-view-enter clearfix">
+  <!--左边-->
+  <div class="leftBox">
+    <div class="head">
+      <span class="title layui-layer-title">添加商品</span>
+      <div class="check_box">
+        <input type="checkbox" name="condition" id="condition2" checked="checked">
+        <label for="condition2">赠单入库</label>
+      </div>
+    </div>
+    <div class="body">
+      <ul class="tab-ul">
+        <li class="active">镜片</li>
+        <li>镜架</li>
+        <li>隐形眼镜</li>
+        <li>太阳镜</li>
+        <li>护理产品</li>
+        <li>其它商品</li>
+      </ul>
+      <div class="cont">
+        <div class="choiceBox">
+          <div class="box01">
+            <div class="selectBox" id="ppSelect">
+              <div class="select-box-header">
+                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+              </div>
+              <div class="optionBox" style="display: none;">
+                <ul class="optionUL">
+                  <li value="01">发</li>
+                  <li value="02">发起</li>
+                  <li value="03">发起人</li>
+                  <li value="04">发起人一</li>
+                  <li value="05">发起人二</li>
+                </ul>
+              </div>
+            </div>
+            <div class="selectBox" id="xlSelect">
+              <div class="select-box-header">
+                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
+              </div>
+              <div class="optionBox" style="display: none;">
+                <ul class="optionUL">
+                  <li value="01">发</li>
+                  <li value="02">发起</li>
+                  <li value="03">发起人</li>
+                  <li value="04">发起人一</li>
+                  <li value="05">发起人二</li>
+                </ul>
+              </div>
+            </div>
+            <div class="selectBox" id="czSelect">
+              <div class="select-box-header">
+                <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
+              </div>
+              <div class="optionBox" style="display: none;">
+                <ul class="optionUL">
+                  <li value="01">发</li>
+                  <li value="02">发起</li>
+                  <li value="03">发起人</li>
+                  <li value="04">发起人一</li>
+                  <li value="05">发起人二</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="box02">
+            <span>品牌A系列B</span>
+            <span>品牌A系列B</span>
+            <span>品牌A系列B</span>
+          </div>
+        </div>
+        <div class="inputBox clearfix">
+          <div class="selectBox" id="dsSelect">
+            <div class="select-box-header">
+              <span class="text">球镜度数</span> <i class="iconfont icon-ico_arrow_down"></i>
+            </div>
+            <div class="optionBox" style="display: none;">
+              <ul class="optionUL">
+                <li value="01">0.25</li>
+                <li value="02">0.25</li>
+                <li value="03">0.25</li>
+                <li value="04">0.25</li>
+                <li value="05">0.25</li>
+              </ul>
+            </div>
+          </div>
+          <div class="selectBox" id="gdSelect">
+            <div class="select-box-header">
+              <span class="text">光度</span> <i class="iconfont icon-ico_arrow_down"></i>
+            </div>
+            <div class="optionBox" style="display: none;">
+              <ul class="optionUL">
+                <li value="01">0.25</li>
+                <li value="02">0.25</li>
+                <li value="03">0.25</li>
+                <li value="04">0.25</li>
+                <li value="05">0.25</li>
+              </ul>
+            </div>
+          </div>
+          <input placeholder="数量" type="number">
+          <input placeholder="生产批号" type="number">
+          <input placeholder="型号" type="text">
+          <input placeholder="型号" type="text">
+          <input placeholder="色号" type="text">
+          <div class="expiryDate">
+            <div class="expiryDate-demo-time">
+              <div class="yj-date">
+                <span>保质期</span><i class="iconfont icon-ico_calendar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="addBtn _btn canAdd">添加至入库单</div>
+        <div class="check_box">
+          <input type="checkbox" name="condition" id="condition1" checked="checked">
+          <label for="condition1">简易入库</label>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <a class="layui-layer-btn0">关闭窗口</a>
+    </div>
+  </div>
+  <!--右边-->
+  <div class="rightBox">
+    <div class="head">
+      <span class="title">入库单</span>
+      <div class="selectBox" id="perSelect">
+        <div class="select-box-header">
+          <span class="text">马化腾</span> <i class="iconfont icon-ico_arrow_down"></i>
+        </div>
+        <div class="optionBox">
+          <ul class="optionUL">
+            <li value="01">发</li>
+            <li value="02">发起</li>
+            <li value="03">发起人</li>
+            <li value="04">发起人一</li>
+            <li value="05">发起人二</li>
+          </ul>
+        </div>
+      </div>
+      <span class="person">入库人:</span>
+    </div>
+    <div class="body">
+      <!--带滚动-->
+      <div class="itemDiv _scroll">
+        <p class="name">眼镜</p>
+        <div class="box">
+          <div class="thead">
+            <span>名称</span>
+            <span>球镜度数</span>
+            <span>散光度数</span>
+            <span>数量</span>
+            <span>保质期</span>
+            <span>生产批号</span>
+          </div>
+          <ul class="tbody">
+            <li>
+              <span>名称A</span>
+              <span>型号A</span>
+              <span class="line16">20180402<br/>20190806
+            </span>
+              <span>色号A</span>
+              <span>8</span>
+              <span>5449685</span>
+            </li>
+            <li>
+              <span>名称A</span>
+              <span>型号A</span>
+              <span class="line16">20180402<br/>20190806
+            </span>
+              <span>色号A</span>
+              <span>8</span>
+              <span>5449685</span>
+            </li>
+            <li>
+              <span>名称A</span>
+              <span>型号A</span>
+              <span class="line16">20180402<br/>20190806
+            </span>
+              <span>色号A</span>
+              <span>8</span>
+              <span>5449685</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="itemDiv">
+        <p class="name">眼镜</p>
+        <div class="box">
+          <div class="thead">
+            <span>名称</span>
+            <span>球镜度数</span>
+            <span>散光度数</span>
+            <span>数量</span>
+            <span class="removeLi">操作</span>
+          </div>
+          <ul class="tbody">
+            <li>
+              <span>名称A</span>
+              <span>型号A</span>
+              <span>色号A</span>
+              <span>8</span>
+              <span class="remove">移除</span>
+            </li>
+            <li>
+              <span>名称A</span>
+              <span>型号A</span>
+              <span>色号A</span>
+              <span>8</span>
+              <span class="remove">移除</span>
+            </li>
+            <li>
+              <span>名称A</span>
+              <span>型号A</span>
+              <span>色号A</span>
+              <span>8</span>
+              <span class="remove">移除</span>
+            </li>
+            <li>
+              <span>名称A</span>
+              <span>型号A</span>
+              <span>色号A</span>
+              <span>8</span>
+              <span class="remove">移除</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="itemDiv">
+        <p class="name">眼镜</p>
+        <div class="box">
+          <div class="thead">
+            <span>名称</span>
+            <span>球镜度数</span>
+            <span>散光度数</span>
+            <span>数量</span>
+            <span class="removeLi">操作</span>
+          </div>
+          <ul class="tbody">
+            <li>
+              <span>名称A</span>
+              <span>型号A</span>
+              <span>色号A</span>
+              <span>8</span>
+              <span class="remove">移除</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <a class="layui-layer-btn1 cannotCreat">确认入库</a>
+      <div class="formBox">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <input type="checkbox" value="打印出库单" name="like1[write]" lay-skin="primary" lay-filter="print" title="打印出库单"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><span>打印出库单</span><i class="layui-icon layui-icon-ok"></i></div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="formBox">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <input type="checkbox" value="打印条码" name="like1[write]" lay-skin="primary" lay-filter="print" title="打印条码"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><span>打印条码</span><i class="layui-icon layui-icon-ok"></i></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--查看不可入库弹窗-->
+<div class="content-view content-view-checkRepertory">
+  <div class="body">
+    <!--带滚动-->
+    <div class="itemDiv _scroll">
+      <p class="name">眼镜</p>
+      <div class="box">
+        <div class="thead">
+          <span>名称</span>
+          <span>球镜度数</span>
+          <span>散光度数</span>
+          <span>数量</span>
+          <span>保质期</span>
+          <span>生产批号</span>
+        </div>
+        <ul class="tbody">
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span class="line16">20180402<br/>20190806
+            </span>
+            <span>色号A</span>
+            <span>8</span>
+            <span>5449685</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span class="line16">20180402<br/>20190806
+            </span>
+            <span>色号A</span>
+            <span>8</span>
+            <span>5449685</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span class="line16">20180402<br/>20190806
+            </span>
+            <span>色号A</span>
+            <span>8</span>
+            <span>5449685</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span class="line16">20180402<br/>20190806
+            </span>
+            <span>色号A</span>
+            <span>8</span>
+            <span>5449685</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span class="line16">20180402<br/>20190806
+            </span>
+            <span>色号A</span>
+            <span>8</span>
+            <span>5449685</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--不带滚动-->
+    <div class="itemDiv">
+      <p class="name">眼镜</p>
+      <div class="box">
+        <div class="thead">
+          <span>名称</span>
+          <span>球镜度数</span>
+          <span>散光度数</span>
+          <span>数量</span>
+        </div>
+        <ul class="tbody">
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="itemDiv">
+      <p class="name">眼镜</p>
+      <div class="box">
+        <div class="thead">
+          <span>名称</span>
+          <span>球镜度数</span>
+          <span>散光度数</span>
+          <span>数量</span>
+        </div>
+        <ul class="tbody">
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="itemDiv">
+      <p class="name">眼镜</p>
+      <div class="box">
+        <div class="thead">
+          <span>名称</span>
+          <span>球镜度数</span>
+          <span>散光度数</span>
+          <span>数量</span>
+        </div>
+        <ul class="tbody">
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+          <li>
+            <span>名称A</span>
+            <span>型号A</span>
+            <span>色号A</span>
+            <span>8</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="_btn layui-layer-btn0">关闭窗口</span>
+    <span class="_btn _bgColor01">打印入库单</span>
+    <span class="_btn _bgColor02">打印条码</span>
+  </div>
+</div>
+<!--选择多家门店弹窗-->
+<div class="content-view content-view-selectShop">
+  <ul>
+
+  </ul>
+</div>
+<!--全局js-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<!--时间插件引用的css-->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/yanjing.js"></script>
+<!--//日期范围插件开始-->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<script src="../resource/js/echarts.js"></script>
+<script>
+
+  data01 = [
+    {title:'眼镜',id:'yanjing'},
+    {title:'镜片',id:'jingpian'},
+    {title:'镜架',id:'jingjia'},
+    {title:'隐形眼镜',id:'yinxing'},
+    {title:'太阳镜',id:'taiyang'},
+    {title:'护理产品',id:'huli'},
+    {title:'其他产品',id:'qita'},
+    {title:'水杯',id:'shuibei'}
+  ]
+  var color01 = ['#4186DC','#57B8DB','#DD5B4B','#54B677','#7D65C5','#F0983F']
+  var color02 = ['#4286DA','#3D7BC8','#3770B5','#3265A4','#2B5992']
+  var color03 = ['#57B7DA','#50A8C8','#4998B6','#4189A3','#3A7A91']
+  var color04 = ['#DC5A4B','#CA5245','#B74B40','#A54338','#923C31']
+  var color05 = ['#52B577','#4CA66D','#449763','#3E8859','#37784F']
+  var color06 = ['#7d65c3','#735db3','#6854a2','#5e4c93','#534382']
+  var color07 = ['#ef9741','#db8a3b','#c77e36','#b37130','#9f642b']
+  var dataPercent01 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+  var dataPercent02 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+  var dataPercent03 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+  var dataPercent04 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+  var dataPercent05 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+  var dataPercent06 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+  var dataPercent07 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+
+  echartsInit();
+  setPercent(dataPercent01,$('.percentCont01'),color01)
+  setPercent(dataPercent02,$('.percentCont02'),color02)
+  setPercent(dataPercent03,$('.percentCont03'),color03)
+  setPercent(dataPercent04,$('.percentCont04'),color04)
+  setPercent(dataPercent05,$('.percentCont05'),color05)
+  setPercent(dataPercent06,$('.percentCont06'),color06)
+  setPercent(dataPercent07,$('.percentCont07'),color07)
+  setPercent(dataPercent07,$('.percentCont08'),color01)
+  layui.use(['form'], function(){
+    form = layui.form
+    form.on('checkbox(print)', function (data) {
+
+    });
+  })
+  //日期范围初始化
+  //下拉框初始化
+  selectTag($("#perSelect"), function (ret) {/*console.log(ret)*/})
+  selectTag($("#ppSelect"), function (ret) {/*console.log(ret)*/})
+  selectTag($("#xlSelect"), function (ret) {/*console.log(ret)*/})
+  selectTag($("#czSelect"), function (ret) {/*console.log(ret)*/})
+  //日期范围插件开始
+  var date1 = new dateRange(".yj-demo-time01");
+  var date2 = new dateRange(".yj-demo-time02");
+  var date3 = new dateRange(".yj-demo-time03");
+  var date4 = new dateRange(".yj-demo-time04");
+  var date5 = new dateRange(".expiryDate-demo-time",true);
+  date1.init()
+  date2.init()
+  date3.init()
+  date4.init()
+  date5.init()
+  //tab切换
+  $(".tab-ul li,.box01 .right ul li").click(function(){
+    $(this).addClass('active').siblings().removeClass('active')
+  });
+  //选择多家门店弹窗
+  function selectShop(str) {
+    layer.open({
+      type: 1,
+      shade: 0.01,
+      title: '添加要进行对比的门店',
+      skin: 'content-view-selectShop-tan', //样式类名
+      anim: 0,
+      area: ['360px','440px'],
+      closeBtn: 0, //不显示关闭按钮
+      resize: false,
+      shadeClose: true, //开启遮罩关闭
+      content: $('.content-view-selectShop'), //容器对象
+      btn: ['取消', '确定'],
+      yes: function (index) {
+        layer.close(index);
+      },
+      btn2: function (index) {
+        var arr = []
+        $('.content-view-selectShop .icon-ico_circle_cross_fil').each(function (i,el) {
+          arr.push($(el).siblings('span').text())
+        })
+        $('.content-view-selectShop ul').html('');
+        //多选门店头部显示店铺名
+        if(arr.length>0){
+          arr = arr.reverse()
+          if(str == 'box01'){
+            $('.box01 .txt01').hide();
+            $('.box01 .head ._btn').css({'border':'none','color':'#4186DC'});
+            $('.box01 .head .shopName').remove()
+            for(var i=0;i<arr.length;i++){
+              $('.box01 .head').prepend('<div class="shopName">'+arr[i]+'</div>')
+            }
+
+          }else if(str == 'box03'){
+            $('.box03 .head ._btn').css({'border':'none','color':'#4186DC'});
+            $('.box03 .txt01').hide();
+            $('.box03 .head .shopName').remove()
+            for(var i=0;i<arr.length;i++){
+              $('.box03 .head').prepend('<div class="shopName">'+arr[i]+'</div>')
+            }
+          }
+        }
+        layer.close(index);
+      },
+      success: function (layero, index) {
+        for(var i = 0;i<20;i++){
+          var li = '<li><span>'+'精益眼镜分店'+i+'</span><i class="icon iconfont icon-ico_circle_plus_fill"></i></li>'
+          $('.content-view-selectShop ul').append(li)
+        }
+        $('.content-view-selectShop .iconfont').click(function () {
+          if($(this).hasClass('icon-ico_circle_plus_fill')){
+            $(this).removeClass('icon-ico_circle_plus_fill').addClass('icon-ico_circle_cross_fil')
+          }else {
+            $(this).removeClass('icon-ico_circle_cross_fil').addClass('icon-ico_circle_plus_fill')
+          }
+        })
+      }
+    });
+  }
+  //设置百分比div然后添加入容器 (传入数据 容器 颜色)
+  function setPercent(data,el,color) {
+    var total = data.reduce(function (a,b) {return a+b})
+    for(var i = 0;i<data.length;i++){
+      var width = toPercent(data[i]/total,10);
+      var width2 = toPercent(data[i]/total,0);
+      var span = "<span>" +'|<br/>'+'|<br/>'+ width2 +"</span>"
+      if(i%2 != 0){
+        var span = "<span>"+width2+'<br/>'+'|<br/>'+'|<br/>'+"</span>"
+      }
+      var div =
+          "<div class='percentDiv' style='width:"+width+";"+"background:"+color[i]+";position: relative "+" '>" +
+            span +
+            "<div class='hoverBox'>"+'<div class="triangle-down"></div>'+'销售额:'+data[i]+'元'+"</div>"+
+          "</div>";
+      el.append(div)
+    }
+    $('.percentDiv').hover(function () {
+      $(this).find('.hoverBox').show();
+    },function () {
+      $(this).find('.hoverBox').hide();
+    })
+    function toPercent(point,i){
+      var str=Number(point*100).toFixed(i);
+      str+="%";
+      return str;
+    }
+  }
+  //新增入库弹窗
+  function addRepertory(){
+    layer.open({
+      type: 1,
+      shade: 0.01,
+      title: null,
+      skin: 'content-view-tan content-view-enter-tan', //样式类名
+      anim: 0,
+      area: ['960px','560px'],
+      closeBtn: 0, //不显示关闭按钮
+      resize: false,
+      shadeClose: true, //开启遮罩关闭
+      content: $('.content-view-enter'), //容器对象
+      btn: null,
+      yes: function (index) {
+
+      },
+      btn2: function (index) {
+
+      },
+      success: function (layero, index) {
+        $('.content-view-enter-tan .layui-layer-content').height(560);
+        // //底部按钮点击关闭弹窗
+        $('.content-view-enter-tan .layui-layer-btn0').click(function () {
+          layer.close(index);
+        });
+        $('.content-view-enter-tan .layui-layer-btn1').click(function () {
+          layer.close(index);
+        });
+      }
+    });
+  }
+  //新增弹窗右侧内容
+  function addRightList() {
+    for(var i = 0;i<data01.length;i++){
+      var li01 = '<li class="'+ data01[i].id +' '+'item' +'" style="display: block">' +
+          '<div class="title">'+data01[i].title+'</div>' +
+          '<div class="box">' +
+          '<div class="top">' +
+          '<span>品牌·系列</span>' +
+          '<span>当前库存</span>' +
+          '<span>操作</span>' +
+          '</div>' +
+          '<ul>'  +
+          '</ul>' +
+          '</div>' +
+          '</li>'
+      $('.content-view-enter .rightBox .contUl').append(li01);
+    }
+  }
+  //查看不可修改入库单弹窗
+  function checkRepertory(){
+    layer.open({
+      type: 1,
+      shade: 0.01,
+      title: '<span>入库单</span><span>入库人:耨耨耨</span>',
+      skin: 'content-view-tan content-view-checkRepertory-tan', //样式类名
+      anim: 0,
+      area: ['380px','560px'],
+      closeBtn: 0, //不显示关闭按钮
+      resize: false,
+      shadeClose: true, //开启遮罩关闭
+      content: $('.content-view-checkRepertory'), //容器对象
+      btn: null,
+      yes: function (index) {
+
+      },
+      btn2: function (index) {
+
+      },
+      success: function (layero, index) {
+        $('.content-view-checkRepertory .layui-layer-btn0').click(function () {
+          layer.close(index)
+        })
+      }
+    });
+  }
+  //echarts初始化
+  function echartsInit(){
+    start = 0
+    start2 = 0
+    end = 6
+    end2 = 6
+    Xdata = []
+    shopNum = ['旗舰店A','旗舰店B','旗舰店B'] //传入门店数组 ajax传入
+    var seriseArr = []//放入options下series的数组
+    var obj = {type: 'line', smooth:true}//统计图显示样式，固定为line
+    for (var i = 0;i<shopNum.length;i++){
+      seriseArr.push(obj)
+    }
+    getRandomNum = function() {
+      var Range = 100 - 0;
+      var Rand = Math.random();
+      return  Math.round(Rand * Range);
+    }
+
+    for (var i =0;i<20;i++){
+      var day = '3.'+(1+i)
+      Xdata.push(day)
+    }
+    //echarts配置项
+    option = {
+      color:['#4186DC','#57B8DB','#DD5B4B'],
+      //底部缩放拉条
+      grid:{
+        right:'5%',
+        // containLabel:true
+      },
+      dataZoom:{
+        show:false,
+        zoomLock:true,
+        type:'slider',
+        // start:0,
+        // end:70
+        minValueSpan: 7,
+        maxValueSpan: 7,
+        startValue:start,
+        endValue:end
+      },
+      //标题
+      title:{
+        text:'销售额走势图',
+        textStyle:{
+          color: '#393953',
+          fontSize: 12,
+          lineHeight:17,
+          // align:'center'
+        },
+        subtext: '单位(元)',
+        subtextStyle: {
+          color: '#828297',
+          fontSize: 12,
+          lineHeight:17,
+          // align:'center'
+        },
+      },
+      //右上角图列组件
+      legend: {
+        type:'scroll',
+        icon:'roundRect',//'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+        itemWidth:10,//icon宽高
+        itemHeight:4,//icon宽高
+        itemGap:16,//间距
+        right:50,
+        top:0,
+        width:300,//组件宽度超出滚动
+        textStyle:{
+          color:'#828297',
+          fontSize:12,
+        }
+      },
+      //提示组件
+      tooltip: {
+        show:true,
+        trigger: 'axis',//鼠标悬停显示详细item、axis、none,axis多用在有轴
+        axisPointer: {
+          type: 'line',//鼠标悬停显示详情形式line,shadow,cross
+          axis:'x',//显示x或y轴内容
+          //snap:false
+          lineStyle:{
+            type: 'dotted',
+            shadowColor: '#000',
+            shadowBlur: 15,
+          }
+        }
+      },
+      //数据传入
+      dataset: {//统计图主要数据
+        source: {
+          'xAxis': Xdata,
+          '旗舰店A': [getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum()],
+          '旗舰店B': [getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum()],
+          '旗舰店C': [getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum()],
+          '旗舰店D': [getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum()],
+          '旗舰店E': [getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum()],
+          '旗舰店F': [getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum(), getRandomNum(),getRandomNum(),getRandomNum(),getRandomNum()]
+        }
+      },
+      xAxis: {
+        // show:false,
+        // name:'日期',
+        // nameLocation:'end',
+        type: 'category',//value,time,log
+        // axisLine:{
+        //   show:false
+        // }
+      },
+      yAxis: {
+        // show:false,
+        type: 'value',
+        // axisLine:{
+        //   show:false
+        // }
+      },
+      series: seriseArr,
+    };
+    myChart = echarts.init(document.getElementById('chartCont01'));
+    myChart2 = echarts.init(document.getElementById('chartCont02'));
+    myChart.setOption(option);
+    myChart2.setOption(option);
+
+    $('.mainCont .box01 .prev').click(function () {
+      if(start == 0){
+        start = 0 ;
+        return false;
+      }
+      start--;
+      end--;
+      myChart.dispatchAction({
+        type: 'dataZoom',
+        startValue: start,
+        endValue:end
+      })
+    })
+    $('.mainCont .box01 .next').click(function () {
+      if(end>=Xdata.length-1){
+        end = Xdata.length-1
+        return false;
+      }
+      start++;
+      end++;
+      myChart.dispatchAction({
+        type: 'dataZoom',
+        startValue: start,
+        endValue:end
+      })
+    })
+
+
+    $('.mainCont .box03 .prev').click(function () {
+      if(start2 == 0){
+        start2 = 0 ;
+        return false;
+      }
+      start2--;
+      end2--;
+      myChart2.dispatchAction({
+        type: 'dataZoom',
+        startValue: start2,
+        endValue:end2
+      })
+    })
+    $('.mainCont .box03 .next').click(function () {
+      if(end2>=Xdata.length-1){
+        end2 = Xdata.length-1
+        return false;
+      }
+      start2++;
+      end2++;
+      myChart2.dispatchAction({
+        type: 'dataZoom',
+        startValue: start2,
+        endValue:end2
+      })
+    })
+  }
+
+  window.onresize = function () {
+    myChart.resize();
+    myChart2.resize();
+  }
+  //获取随机数函数
+  function getRandomNum(a,b) {
+    var Range = b - a;
+    var Rand = Math.random();
+    return  (Math.round(Rand * Range)+50);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="renderer" content="webkit">
+  <title>$Title$</title>
+  <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+  <link href="../resource/layui/css/layui.css" rel="stylesheet">
+  <link href="../resource/css/reset.css" rel="stylesheet">
+  <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+  <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+  <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+  <link href="../resource/css/animate.css" rel="stylesheet">
+  <link href="../resource/css/style.css" rel="stylesheet">
+  <link href="../resource/css/common.css" rel="stylesheet">
+  <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+  <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+  <link rel="stylesheet" href="../resource/css/common.css">
+  <link rel="stylesheet" href="../resource/css/yanjing/companyManage.css">
+  <style>
+    input{
+      background-color: #fff;
+    }
+    /*时间插件 隐藏时间*/
+    .dwcc div.mbsc-w-p:nth-child(2) .dwfl:nth-child(1){
+      display: none;
+    }
+    html,body{
+      touch-action: none;
+    }
+    /*主要内容*/
+    .staffManageCont {
+      position: relative;
+      min-height: 200px;
+      background: #ebebf3;
+    }
+    /*主要内容头部*/
+    .staffManageCont .contHeader {
+      width: 100%;
+      height: 53px;
+      border-bottom: 1px solid #dfdfe9;
+      background: #fff;
+    }
+
+    /*主要内容头部左边*/
+    .staffManageCont .contHeader .headLeft {
+      width: 20%;
+      line-height: 48px;
+      float: left;
+      height: 100%;
+      color: #393953;
+      font-weight: bold;
+      margin-left: 24px;
+    }
+
+    /*主要内容头部右边*/
+    .staffManageCont .contHeader .headRight {
+      width: 60%;
+      float: right;
+      height: 100%;
+    }
+
+    .staffManageCont .contHeader .headRight .child {
+      float: right;
+      margin: 12px 12px 12px 0;
+    }
+
+    .staffManageCont .contHeader .headRight .newShop,
+    .staffManageCont .contHeader .headRight .payroll {
+      width: 68px;
+      height: 28px;
+      line-height: 28px;
+      background: #4186DC;
+      color: #fff;
+      border-radius: 2px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .staffManageCont .contHeader .headRight input {
+      width: 128px;
+      height: 28px;
+      line-height: 28px;
+      padding: 0 8px;
+      color: #000;
+      border-radius: 2px;
+      border: 1px solid #ececf4;
+    }
+
+    .staffManageCont .contHeader .headRight select {
+      width: 68px;
+      height: 28px;
+      line-height: 28px;
+      border-radius: 2px;
+      border: 1px solid #ececf4;
+      margin-right: 4px !important;
+      color: #828297;
+    }
+
+    .staffManageCont .contHeader .headRight .payroll {
+      width: 117px;
+      background: #57B8DB;
+    }
+
+    /*过滤器*/
+    .staffManageCont .filter {
+      width: 100%;
+      height: 32px;
+      background: #f3f3f7;
+      border-bottom: 1px solid #dfdfe9;
+      font-size: 0;
+    }
+
+    .staffManageCont .filter .selectBox {
+      font-size: 12px;
+      height: 100%;
+      padding: 0 8px;
+      border: 1px solid #dfdfe9;
+      color: #828297;
+      border-bottom: none;
+      border-top: none;
+      background: #f3f3f7;
+    }
+
+    .staffManageCont .filter .selectBox ul {
+      border: 1px solid #dfdfe9;
+    }
+
+    /*表格content*/
+    .staffManageCont .tableCont {
+      border-radius: 2px;
+      overflow: hidden;
+      padding: 12px 0 50px 0;
+    }
+
+    .staffManageCont .tableCont .fixed-table-container {
+      border: 1px solid #dfdfe9;
+    }
+
+    /*表头*/
+    .staffManageCont .tableCont .th-inner {
+      color: #828297;
+      font-weight: 600;
+    }
+
+    /*表格body*/
+    .staffManageCont .tableCont tbody tr {
+      height: 48px;
+    }
+
+    .staffManageCont .tableCont tbody tr td {
+      color: #393953;
+    }
+
+    /*按钮样式*/
+    .staffManageCont .tableCont tbody tr td .btn-status {
+      color: #fff;
+      height: 28px;
+      line-height: 28px;
+      margin: 4px;
+      cursor: pointer;
+    }
+
+    .staffManageCont .tableCont tbody tr td .btn-edit {
+      background: #4186DC;
+    }
+
+    .staffManageCont .tableCont tbody tr td .btn-salary {
+      background: #57B8DB;
+    }
+
+    /*开启未开启功能css(可复用)*/
+    .staffManageCont .tableCont tbody tr td .handleBox {
+      position: relative;
+      height: 16px;
+      width: 60px;
+    }
+
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-form,
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-form-item {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-form-item {
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-form-label {
+      width: 24px;
+      float: none;
+      display: block;
+      padding: 0;
+      margin: 0 2px 0 2px;
+    }
+
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-input-block {
+      height: 100% !important;
+      width: 24px;
+      min-height: 0;
+      margin: 0 2px 0 2px;
+    }
+
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-form-switch {
+      position: absolute;
+      height: 16px;
+      line-height: 14px;
+      width: 24px;
+      min-width: 24px;
+      padding: 0 0;
+      margin-top: 0;
+      border: 1px solid #d2d2d2;
+      border-radius: 20px;
+    }
+
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-form-onswitch {
+      border-color: #4186DC;
+      background-color: #4186DC;
+    }
+
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-form-switch i {
+      top: 1px;
+      width: 12px;
+      height: 12px;
+      left: 2px;
+    }
+
+    .staffManageCont .tableCont tbody tr td .handleBox .layui-form-onswitch i {
+      left: 100%;
+      margin-left: -15px;
+      background-color: #fff;
+    }
+    /*开启未开启功能css结束*/
+    /*导入工资弹窗*/
+    .importSalaryTanBox-tan .content {
+      width: 600px;
+      border-radius: 2px;
+      background: #fefefe;
+    }
+
+    /*内容头部*/
+    .importSalaryTanBox-tan .content .head {
+      height: 45px;
+      border-bottom: 1px solid #ebebf3;
+    }
+
+    .importSalaryTanBox-tan .content .head span {
+      display: block;
+      width: 108px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      margin: 8px;
+    }
+
+    .importSalaryTanBox-tan .content .head span.title.layui-layer-title {
+      float: left;
+      color: #393953;
+      font-size: 13px;
+      margin-left: 16px;
+      font-weight: 600;
+      display: block;
+      line-height: 28px;
+      height: 28px;
+      color: #393953;
+      font-size: 13px;
+      font-weight: 600;
+      float: left;
+      width: 200px;
+      border: none;
+      background: #fefefe;
+      padding: 0;
+      text-align: left;
+    }
+    .importSalaryTanBox-tan .content .head span.updataBtn {
+      float: right;
+      border-radius: 2px;
+      background: #57B8DB;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    /*内容体*/
+    .importSalaryTanBox-tan .content .body {
+      width: 568px;
+      height: 470px;
+      margin: 0 auto;
+      padding-top: 15px;
+      overflow-x:hidden ;
+      overflow-y: scroll;
+    }
+
+    .importSalaryTanBox-tan .content .body .cmMain-table2 thead {
+      background: #f3f3f7;
+      border-bottom: 1px solid #ebebf3;
+    }
+
+    .importSalaryTanBox-tan .content .body .cmMain-table2 thead .th-inner {
+      color: #828297;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .importSalaryTanBox-tan .content .body .cmMain-table2 tbody tr {
+      height: 36px;
+      color: #393953;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .importSalaryTanBox-tan .content .body .cmMain-table2 tbody tr:hover {
+      background: #f3f3f7;
+    }
+
+    .importSalaryTanBox-tan .content .body .cmMain-table2 tbody td {
+      border: 0px;
+      padding: 0 8px;
+    }
+
+    .importSalaryTanBox-tan .content .body .cmMain-table2 tbody i.icon-ico_check {
+      color: #54B677;
+    }
+
+    .importSalaryTanBox-tan .content .body .cmMain-table2 tbody i.icon-ico_exchange {
+      font-weight: normal;
+      color: #57B8DB;
+    }
+
+    .importSalaryTanBox-tan .content .body .cmMain-table2 tbody .waiting {
+      color: #828297;
+    }
+
+    /*内容尾部*/
+    .importSalaryTanBox-tan .layui-layer-btn {
+      padding: 13px 6px;
+    }
+
+    .importSalaryTanBox-tan .layui-layer-btn .layui-layer-btn0 {
+      width: 68px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 2px;
+      text-align: center;
+      border: 1px solid #ebebf3;
+      margin: 0;
+      padding: 0;
+      background-color: #f3f3f7;
+      color: #828297;
+      font-size: 12px;
+    }
+
+    /*导入工资弹窗结束*/
+    /*工资单弹窗*/
+    .salaryListTanBox-tan .content {
+      border-radius: 2px;
+      background: #ebebf3;
+    }
+
+    /*工资单头部*/
+    .salaryListTanBox-tan .head {
+      height: 44px;
+      padding: 0;
+    }
+
+    .salaryListTanBox-tan .head span {
+      display: block;
+      height: 18px;
+      line-height: 18px;
+      float: left;
+      margin-top: 13px;
+      color: #828297;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .salaryListTanBox-tan .head span:nth-child(1) {
+      color: #393953;
+      font-size: 13px;
+    }
+
+    .salaryListTanBox-tan .head span:nth-child(2) {
+      margin-left: 10px;
+      font-size: 13px;
+    }
+
+    .salaryListTanBox-tan .head span:nth-child(3) {
+      float: right;
+      margin-left: 16px;
+    }
+
+    .salaryListTanBox-tan .head span:nth-child(4) {
+      float: right;
+      margin-left: 16px;
+    }
+
+    /*工资单body*/
+    .salaryListTanBox-tan .content {
+      position: relative;
+      height: auto;
+      overflow-x: scroll;
+      overflow-y: hidden;
+    }
+
+    .salaryListTanBox-tan .content .salaryUl {
+      height: auto;
+      margin-bottom: 0;
+      /*display: flex;*/
+      /*flex-direction: row;*/
+      /*flex-wrap: nowrap;*/
+      white-space: nowrap;
+      padding: 14px 0 14px 20px;
+    }
+    .salaryListTanBox-tan .content .salaryUl .item {
+      width: 160px;
+      min-width: 160px;
+      height: auto;
+      margin-right: 16px;
+      background: #fff;
+      border-radius: 2px;
+      border: 1px solid #ebebf3;
+      display: inline-block;
+    }
+    .salaryListTanBox-tan .content .salaryUl .item .top {
+      padding: 16px;
+      background: #f3f3f7;
+      border-bottom: 1px solid #ebebf3;
+    }
+    .salaryListTanBox-tan .content .salaryUl .item .top p{
+      margin: 0;
+    }
+    .salaryListTanBox-tan .content .salaryUl .item .top p:nth-child(1) {
+      font-size: 12px;
+      color: #828297;
+    }
+    .salaryListTanBox-tan .content .salaryUl .item .top p:nth-child(1) span:nth-child(2) {
+      float: right;
+    }
+
+    .salaryListTanBox-tan .content .salaryUl .item .top p:nth-child(2) {
+      font-size: 20px;
+      color: #393953;
+    }
+
+    .salaryListTanBox-tan .content .salaryUl .item .bottom {
+      padding: 10px 16px;
+    }
+
+    .salaryListTanBox-tan .content .salaryUl .item .bottom p {
+      height: 28px;
+      font-size: 12px;
+      line-height: 28px;
+      margin: 0;
+    }
+    .salaryListTanBox-tan .content .salaryUl .item .bottom p span {
+      display: block;
+      float: left;
+    }
+    .salaryListTanBox-tan .content .salaryUl .item .bottom p.red span{
+      color: #DD5B4B!important;
+    }
+    .salaryListTanBox-tan .content .salaryUl .item .bottom p span:nth-child(1) {
+      color: #828293;
+      min-width: 50px;
+    }
+
+    .salaryListTanBox-tan .content .salaryUl .item .bottom p span:nth-child(2) {
+      color: #393953;
+      margin-left: 10px;
+    }
+
+    /*滚动条样式*/
+    .salaryListTanBox-tan .content::-webkit-scrollbar-track {
+      background-color: rgba(0, 0, 0, 0);
+      border-radius: 10px;
+      opacity: 0;
+    }
+
+    .salaryListTanBox-tan .content::-webkit-scrollbar {
+      height: 5px;
+      background-color: rgba(245, 245, 245, 0);
+    }
+
+    .salaryListTanBox-tan .content::-webkit-scrollbar-thumb {
+      border-radius: .1rem;
+      background-color: rgba(0, 0, 0, 0);
+      transition: all 3s;
+    }
+
+    .salaryListTanBox-tan .content.active::-webkit-scrollbar-thumb {
+      border-radius: .1rem;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    /*工资单尾部*/
+    .salaryListTanBox-tan .layui-layer-btn {
+
+    }
+
+    .salaryListTanBox-tan .layui-layer-btn a {
+      width: auto;
+      height: 32px;
+      text-align: center;
+      line-height: 32px;
+      margin: 0;
+      padding: 0 10px;
+      border: none;
+      background: #f3f3f7;
+      color: #828297;
+      border-radius: 2px;
+      font-weight: 400;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    /*工资单弹窗结束*/
+    /*编辑员工弹窗*/
+    .layui-layer-editStff-tan {
+      border-radius: 2px;
+      background: #fefefe;
+    }
+
+    /*头部*/
+    .layui-layer-editStff-tan .head {
+      height: 44px;
+      padding: 0 12px;
+      border-bottom: 1px solid #ebebf3;
+    }
+
+    .layui-layer-editStff-tan .head span {
+      display: block;
+      float: left;
+      height: 42px;
+      line-height: 42px;
+      font-weight: 600;
+    }
+
+    .layui-layer-editStff-tan .head span:nth-child(1) {
+      color: #393953;
+    }
+
+    .layui-layer-editStff-tan .head span:nth-child(2) {
+      color: #828297;
+      font-weight: 100;
+      margin-left: 6px;
+    }
+
+    .layui-layer-editStff-tan .head span:nth-child(3) {
+      font-size: 12px;
+      color: #DD5B4B;
+      float: right;
+      cursor: pointer;
+    }
+
+    /*body*/
+    .layui-layer-editStff-tan .body {
+      height: 212px;
+      border-bottom: 1px solid #ebebf3;
+    }
+
+    .layui-layer-editStff-tan .body .myUl {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 0;
+    }
+
+    .layui-layer-editStff-tan .body .myUl .item {
+      width: 48%;
+      height: 70px;
+      float: left;
+      margin-left: 2%;
+    }
+
+    .layui-layer-editStff-tan .body .myUl .item > div {
+      color: #000;
+      font-size: 12px;
+      box-sizing: border-box;
+    }
+
+    .layui-layer-editStff-tan .body .myUl .item > div:nth-child(1) {
+      text-align: left;
+      margin-top: 12px;
+    }
+
+    .layui-layer-editStff-tan .body .myUl .item > div:nth-child(2) {
+      width: 156px;
+      height: 28px;
+      border: 1px solid #ececf4;
+      border-radius: 2px;
+      margin-top: 6px;
+    }
+
+    .layui-layer-editStff-tan .body .myUl .item input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      padding: 7px 8px;
+    }
+    /*编辑员工弹窗结束*/
+    /*离职员工操作弹窗*/
+    .layui-layer-removeStaff-tan .layui-layer-title {
+      color: #DD5B4B;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .layui-layer-removeStaff-tan .layui-layer-content p {
+      color: #393953;
+      font-size: 12px;
+      margin: 0;
+      padding: 12px 16px;
+      font-weight: 600;
+    }
+
+    .layui-layer-removeStaff-tan .layui-layer-btn a {
+      width: 44px;
+      height: 32px;
+      font-size: 12px;
+      line-height: 32px;
+      margin: 0 0 0 8px;
+      padding: 0;
+      border: 1px solid #dedede;
+      color: #333;
+      border-radius: 2px;
+      font-weight: 400;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .layui-layer-removeStaff-tan .layui-layer-btn a.layui-layer-btn0 {
+      color: #828297;
+      background: #f3f3f7;
+    }
+
+    .layui-layer-removeStaff-tan .layui-layer-btn a.layui-layer-btn1 {
+      color: #fff;
+      background: #dc5a4b;
+    }
+    /*离职员工操作弹窗结束*/
+    /*添加新员工弹窗*/
+    .layui-layer-addStaff-tan .layui-layer-title{
+      font-size: 13px;
+    }
+    .layui-layer-addStaff-tan .content-view-newStaff p{
+      padding: 20px 36px 0 36px;
+      color: #393953;
+      font-size: 12px;
+    }
+    .layui-layer-addStaff-tan .content-view-newStaff div.qrCode{
+      width: 160px;
+      height: 160px;
+      margin: 10px auto;
+    }
+    /*.layui-layer-addStaff-tan .content-view-newStaff div.qrCode img{*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*}*/
+    .layui-layer-addStaff-tan .layui-layer-btn{
+      border-top: 1px solid #eee;
+    }
+    .layui-layer-addStaff-tan .layui-layer-btn a{
+      height: 32px;
+      line-height: 32px;
+      border: 1px solid #eee;
+      background: #f3f3f7;
+      color: #828297;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+    /*添加新员工弹窗结束*/
+  </style>
+</head>
+<body>
+<div class="staffManageCont">
+  <div class="contHeader">
+    <div class="headLeft">员工管理</div>
+    <div class="headRight">
+      <div class="child newShop" onclick="addStaff()">创建员工</div>
+      <input class="child " type="text" placeholder="搜索员工">
+      <div class="selectBox child" id="selectBox">
+        <div class="select-box-header">
+          <span class="text">姓名</span> <i class="iconfont icon-ico_arrow_down"></i>
+        </div>
+        <div class="optionBox">
+          <ul class="optionUL">
+            <li value="01">1</li>
+            <li value="02">2</li>
+            <li value="03">3</li>
+            <li value="04">4</li>
+            <li value="05">5</li>
+          </ul>
+        </div>
+      </div>
+      <div class="child payroll" onclick="updataSalary()">导入10月份工资单</div>
+    </div>
+  </div>
+  <div class="filter">
+    <div class="selectBox" id="selectBox2">
+      <div class="select-box-header">
+        <span class="text">杭州西湖旗舰店</span> <i class="iconfont icon-ico_arrow_down"></i>
+      </div>
+      <div class="optionBox">
+        <ul class="optionUL">
+          <li value="01">杭州西湖旗舰店1</li>
+          <li value="02">杭州西湖旗舰店2</li>
+          <li value="03">杭州西湖旗舰店3</li>
+          <li value="04">杭州西湖旗舰店4</li>
+          <li value="05">杭州西湖旗舰店5</li>
+        </ul>
+      </div>
+    </div>
+    <div class="selectBox" id="selectBox3">
+      <div class="select-box-header">
+        <span class="text">全部性别</span> <i class="iconfont icon-ico_arrow_down"></i>
+      </div>
+      <div class="optionBox">
+        <ul class="optionUL">
+          <li value="01">男</li>
+          <li value="02">女</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tableCont wrap90">
+    <table id="yj-table" data-toggle="table" class="cmMain-table table table-border"></table>
+  </div>
+</div>
+<!--导入工资弹窗-->
+<div class="content-view importSalaryTanBox" style="display:none">
+  <div class="content">
+    <div class="head">
+      <span class="title layui-layer-title">导入10月份工资单</span>
+      <span class="updataBtn">上传工资单Excel</span>
+    </div>
+    <div class="body">
+      <table border="0" cellpadding="0" cellspacing="0" id="yj-table2" data-toggle="table"
+             class="cmMain-table2 table table-border"></table>
+    </div>
+  </div>
+</div>
+<!--工资单弹窗-->
+<div class="content-view salaryListTanBox" style="display:none">
+  <div class="content">
+    <ul class="salaryUl clearfix">
+
+    </ul>
+  </div>
+</div>
+<!--编辑员工弹窗-->
+<div class="content-view content-view-editStff" style="display:none">
+  <div class="head">
+    <span>梨花</span>
+    <span class="moveTitle">杭州西湖区旗舰店</span>
+    <span onclick="removeStaff()">离职该员工</span>
+  </div>
+  <div class="body">
+    <ul class="myUl">
+      <li class="item">
+        <div>职位</div>
+        <div class="selectBox" id="selectBox4">
+          <div class="select-box-header">
+            <span class="text">验光师/店长</span> <i class="iconfont icon-ico_arrow_down"></i>
+          </div>
+          <div class="optionBox">
+            <ul class="optionUL">
+              <li value="01">店员1</li>
+              <li value="02">店员2</li>
+              <li value="03">店员3</li>
+              <li value="04">店员4</li>
+              <li value="05">店员5</li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="item">
+        <div>性别</div>
+        <div class="selectBox" id="selectBox5">
+          <div class="select-box-header">
+            <span class="text">男</span> <i class="iconfont icon-ico_arrow_down"></i>
+          </div>
+          <div class="optionBox">
+            <ul class="optionUL">
+              <li value="01">男</li>
+              <li value="02">女</li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="item">
+        <div>手机号</div>
+        <div>
+          <input type="number" placeholder="请输入手机号">
+        </div>
+      </li>
+      <li class="item">
+        <div>电子邮箱</div>
+        <div>
+          <input type="email" placeholder="请输入邮箱">
+        </div>
+      </li>
+      <li class="item">
+        <div>入职时间</div>
+        <div>
+          <div class="settings" style="display:none;">
+            <select name="demo" id="demo">
+              <option value="date">日期</option>
+            </select>
+          </div>
+          <input name="test" id="tests" data-type="day" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期" data-type="time"/>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<!--离职员工操作弹窗-->
+<div class="content-view content-view-removeStaff" style="display:none">
+  <p>这将禁用该员工的账号及一切操作</p>
+</div>
+<!--新增员工弹窗-->
+<div class="content-view content-view-newStaff" style="display: none;">
+  <p>扫描二维码并在手机上新增员工</p>
+  <div class="qrCode"></div>
+</div>
+<!--全局js-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<!--时间插件引用的css-->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+<script>
+  //表格插件
+  var data =
+      [
+        {
+          name: '测试',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试1',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试2',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试3',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试4',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试5',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试6',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试7',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试8',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试9',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+        {
+          name: '测试10',
+          job: '店长/验光师',
+          sex: '女',
+          tel: '11111111111',
+          email: '111111111111@qq.com',
+          time: '2018.08.03',
+          perId: '211111111111111111',
+          status: '启用',
+          handle: '编辑'
+        },
+      ];
+  var data2 =
+      [
+        {name: '精益眼镜旗舰店1', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店2', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店3', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店4', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店5', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店6', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店7', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店8', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店9', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店10', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店11', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店12', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店13', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店14', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店15', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店16', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店17', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店18', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
+        {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'}
+      ];
+  //是否为管理员
+  var admin = true;
+  var adminHandle = '';
+  if (admin) {
+    adminHandle = '<div class="layui-input-block">' + '<input id="shopIsOpen" type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest">' + '</div>'
+  }
+  //员工开启关闭功能
+  layui.use(['form', 'layedit', 'laydate'], function () {
+    form = layui.form;
+    form.on('switch(switchTest)', function (data) {
+      var isOpenTxt = $(this).parent().siblings('.layui-form-label')
+      isOpenTxt.text(this.checked == true ? '启用' : '停用')
+    });
+  })
+
+  //自定义Status内容
+  var tableCustomStatus = '<div class="handleBox">' + '<form class="layui-form">' + '<div class="layui-form-item">' + adminHandle + '<label class="layui-form-label">停用</label>' + '</div>' + '</form>' + '</div>'
+  //自定义Handle内容
+  var tableCustomHandle = '<div class="btn-status btn-edit" onclick="showStffEdit()">编辑</div>' + '<div class="btn-status btn-salary" onclick="showSalaryList()">工资单</div>';
+  selectTag($("#selectBox"), function (ret) {/**/
+  })
+  selectTag($("#selectBox2"), function (ret) {/**/
+  })
+  selectTag($("#selectBox3"), function (ret) {/**/
+  })
+  selectTag($("#selectBox4"), function (ret) {/**/
+  })
+  selectTag($("#selectBox5"), function (ret) {/**/
+  })
+  //主页bootstrapTable
+  $(".cmMain-table").bootstrapTable({
+    data: data,
+    classes: "table",
+    pagination: true,        //是否显示分页
+    pageNumber: 1,                       //初始化加载第一页，默认第一页
+    pageSize: 10,
+    pageList: [5, 10, 15, 20],
+    sortable: false,
+    sortOrder: "asc",
+    showColumns: true,
+    strictSearch: true,
+    locale: "zh-CN",
+    paginationHAlign: "center",
+    clickToSelect: true,
+    smartDisplay: false,
+    columns: [
+      {field: "name", title: "姓名", align: "left", valign: "middle"},
+      {field: "job", title: "职位", align: "left", valign: "middle"},
+      {field: "sex", title: "性别", align: "left", valign: "middle"},
+      {field: "tel", title: "手机号", align: "left", valign: "middle"},
+      {field: "email", title: "电子邮箱", align: "left", valign: "middle"},
+      {field: "time", title: "入职时间", align: "left", valign: "middle"},
+      {field: "perId", title: "身份证号", align: "left", valign: "middle"},
+      {
+        field: "status", title: "状态", align: "left", valign: "middle",
+        formatter: function (value, row, index) {//循环自定义内容
+          return tableCustomStatus
+        }
+      },
+      {
+        field: "handle", title: "操作", align: "left", valign: "middle",
+        formatter: function (value, row, index) {//循环自定义内容
+          return tableCustomHandle
+        }
+      },
+    ],
+    onPageChange: function (number, size) {
+      form.render();
+    }
+  });
+  //导入工资bootstrapTable
+  $(".cmMain-table2").bootstrapTable({
+    data: data2,
+    classes: "table",
+    pagination: true,        //是否显示分页
+    pageNumber: 1,                       //初始化加载第一页，默认第一页
+    pageSize: 10,
+    pageList: [5, 10, 15, 20],
+    sortable: false,
+    sortOrder: "asc",
+    showColumns: true,
+    strictSearch: true,
+    locale: "zh-CN",
+    paginationHAlign: "center",
+    clickToSelect: true,
+    columns: [
+      {field: "name", title: "门店名称", align: "left", valign: "middle"},
+      {field: "perNum", title: "应发工资", align: "left", valign: "middle"},
+      {field: "actualNum", title: "实发工资人数", align: "left", valign: "middle"},
+      {
+        field: "status", title: "状态", align: "left", valign: "middle",
+        formatter: function (value, row, index) {//循环自定义内容
+          //正在上传
+          var icon = '<i class="icon iconfont icon-ico_check"></i>'
+          var txt = '<span class="sunccess">上传成功</span>'
+          //上传中
+          // var icon = '<i class="icon iconfont icon-ico_exchange"></i>'
+          // var txt = '<span class="sunccess">上传中</span>'
+          //等待中
+          // var txt = '<span class="waiting">等待中</span>'
+          // var icon = ''
+          return icon + txt
+        }
+      }
+    ],
+    onPageChange: function (number, size) {
+      form.render();
+    }
+  });
+  //上传工资单弹窗
+  function updataSalary() {
+    layer.open({
+      type: 1,
+      shade: 0.01,
+      title: null,
+      skin: 'importSalaryTanBox-tan', //样式类名
+      anim: 0,
+      area: ['606px', 'auto'],
+      closeBtn: 0, //不显示关闭按钮
+      resize: false,
+      shadeClose: true, //开启遮罩关闭
+      content: $('.importSalaryTanBox'),
+      btn: ['关闭窗口'],
+      yes: function (index) {
+        layer.close(index);
+      },
+      btn2: function (index) {
+        return false;
+      },
+      success: function (index) {
+        $('.importSalaryTanBox-tan .layui-layer-content').height(515);
+      }
+    });
+  }
+  //工资单弹窗
+  function showSalaryList() {
+    var li =
+        '<li class="item">' +
+        '        <div class="top">' +
+        '          <p><span>应发工资</span><span>8月</span></p>' +
+        '          <p>12000</p>' +
+        '        </div>' +
+        '        <div class="bottom">' +
+        '          <p>' +
+        '            <span>基本工资</span>' +
+        '            <span>2000</span>' +
+        '          </p>' +
+        '          <p>' +
+        '            <span>基本工资</span>' +
+        '            <span>2000</span>' +
+        '          </p>' +
+        '          <p>' +
+        '            <span>基本工资</span>' +
+        '            <span>2000</span>' +
+        '          </p>' +
+        '          <p>' +
+        '            <span>基本工资</span>' +
+        '            <span>2000</span>' +
+        '          </p>' +
+        '          <p>' +
+        '            <span>基本工资</span>' +
+        '            <span>2000</span>' +
+        '          </p>' +
+        '          <p>' +
+        '            <span>基本工资</span>' +
+        '            <span>2000</span>' +
+        '          </p>' +
+        '          <p class="red">' +
+        '            <span>基本工资</span>' +
+        '            <span>2000</span>' +
+        '          </p>' +
+        '          <p>' +
+        '            <span>基本工资</span>' +
+        '            <span>2000</span>' +
+        '          </p>' +
+        '        </div>' +
+        '      </li>'
+    for (var i =0;i<20;i++){
+      $('.salaryListTanBox .salaryUl').append(li)
+    }
+    layer.open({
+      type: 1,
+      shade: 0.01,
+      title: '<div class="head">' + '<span>工资单</span>' + '<span>小芳</span>' + '<span>年休假期:&nbsp;<em>10</em></span>' + '<span>可用假期:&nbsp;<em>3</em></span>' + '</div>',
+      skin: 'salaryListTanBox-tan', //样式类名
+      anim: 0,
+      area: ['600px', 'auto'],
+      closeBtn: 0, //不显示关闭按钮
+      resize: false,
+      shadeClose: true, //开启遮罩关闭
+      content: $('.salaryListTanBox'),
+      btn: ['关闭窗口'],
+      yes: function (index) {
+        layer.close(index);
+      },
+      btn2: function (index) {
+        layer.close(index);
+      },
+      success: function (index) {
+        scrollXfn()//横向滑动
+      }
+    });
+  }
+  //显示员工编辑弹窗
+  function showStffEdit() {
+    layer.open({
+      type: 1,
+      shade: 0.01,
+      title: null,
+      skin: 'layui-layer-editStff-tan content-view-submit', //样式类名
+      anim: 0,
+      move:$('.content-view-editStff .moveTitle'),
+      area: ['360px', 'auto'],
+      closeBtn: 0, //不显示关闭按钮
+      resize: false,
+      shadeClose: true, //开启遮罩关闭
+      content: $('.content-view-editStff'),
+      btn: ['取消','保存'],
+      yes: function (index) {
+        layer.close(index);
+      },
+      btn2: function (index) {
+        layer.close(index);
+        return false;
+      },
+      success: function (layero, index) {
+        _StffEdit = index
+      }
+    });
+  }
+  //离职该员工点击弹窗
+  function removeStaff() {
+    layer.open({
+      type: 1,
+      shade: 0.01,
+      title: '确定离职该员工？',
+      skin: 'layui-layer-removeStaff-tan', //样式类名
+      anim: 0,
+      area: ['240px', '130px'],
+      closeBtn: 0, //不显示关闭按钮
+      resize: false,
+      shadeClose: false, //开启遮罩关闭
+      content: $('.content-view-removeStaff'),
+      btn: ['取消', '确定'],
+      yes: function (index) {
+        // layer.close(_StffEdit);
+        layer.close(index);
+      },
+      btn2: function (index) {
+        layer.close(_StffEdit);
+        layer.close(index);
+      },
+      success: function (index) {
+
+      }
+    });
+  }
+  // 横向滚动方法
+  function scrollXfn() {
+    var z_type = true;
+    $('.salaryListTanBox .content').hover(function () {
+      // $(document).bind('mousewheel', function (event, delta) {
+      //   return false;
+      // });
+      $('body').css('overflow','hidden')
+      $(this).addClass('active');
+      z_type = false;
+    }, function () {
+      // $(document).unbind('mousewheel');
+      $('body').css('overflow','auto')
+      $(this).removeClass('active');
+      z_type = true;
+    })
+    document.addEventListener('DOMMouseScroll', handler, false);
+    document.addEventListener('mousewheel', handler, false);
+    function handler(event) {
+      if (z_type) return;
+      var detail = event.wheelDelta || event.detail;
+      var moveForwardStep = 1;
+      var moveBackStep = -1;
+      var step = 0;
+      if (detail < 0) {
+        step = moveForwardStep * 100;
+      } else {
+        step = moveBackStep * 100;
+      }
+      $('.salaryListTanBox .content')[0].scrollLeft += step;
+    }
+  }
+  //添加员工弹窗
+  function addStaff() {
+    layer.open({
+      type: 1,
+      shade: 0.01,
+      title: '新增员工',
+      skin: 'layui-layer-addStaff-tan', //样式类名
+      anim: 0,
+      area: ['240px', '320px'],
+      closeBtn: 0, //不显示关闭按钮
+      resize: false,
+      shadeClose: true, //开启遮罩关闭
+      content: $('.content-view-newStaff'),
+      btn: ['关闭窗口'],
+      yes: function (index) {
+        layer.close(index);
+      },
+      btn2: function (index) {
+        return false;
+      },
+      success: function (layero, index) {
+
+      }
+    });
+  }
+  // 时间插件JS开始
+  $(function () {
+    var curr = new Date().getFullYear();
+    var opt = {};
+    opt.date = {preset: 'date'};
+    opt.datetime = {preset: 'datetime'};
+    opt.time = {preset: 'time'};
+
+    opt.default = {
+      theme: 'mbsc-android-holo', //皮肤样式
+      display: 'bubble', //显示方式
+      mode: 'scroller', //日期选择模式
+      dateFormat: 'yyyy-mm-dd',
+      lang: 'zh',
+      showNow: true,
+      nowText: "今天",
+      typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+    };
+    $('.settings').bind('change', function () {
+      var demo = 'datetime';
+      if (!demo.match(/select/i)) {
+        $('.demo-test-' + demo).val('');
+      }
+      $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+      $('.demo').hide();
+      $('.demo-' + demo).show();
+    });
+    $('#demo').trigger('change');
+    return curr;
+  });
+</script>
+</body>
+</html>

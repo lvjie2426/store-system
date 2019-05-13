@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>眼睛-实时工作台</title>
+    <!-- bootstrap样式开始 -->
+    <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <!-- bootstrap样式结束 -->
+    <!--时间插件引用的css-->
+    <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+    <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+    <!--时间插件引用的css结束-->
+    <!-- layui样式 -->
+    <link rel="stylesheet" href="../resource/layui/css/layui.css">
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!-- 清除默认样式 -->
+    <link rel="stylesheet" href="../resource/css/style.css">
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <!-- 公共样式 -->
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <!-- 当前页面样式 -->
+    <link rel="stylesheet" href="../resource/css/yanjing/timeWorkbench.css">
+</head>
+
+<body>
+
+    <!--头部开始-->
+    <header>
+        <ul>
+            <li class="xuan">今日概览</li>
+            <li>资金管理</li>
+        </ul>
+    </header>
+    <!--头部结束-->
+    <!--今日概览开始-->
+    <div class="winBox list" id="Today">
+        <ul>
+            <li>
+                <div>
+                    <i class="iconfont  ico_stock_in_filled icon-ico_stock_in_filled" style="color: #57B8DB;"></i>
+                </div>
+                <span>入库</span>
+            </li>
+            <li>
+                <div>
+                    <i class="iconfont ico_stock_out_filled icon-ico_stock_out_filled" style="color: #4186DC;"></i>
+                </div>
+                <span>出库</span>
+            </li>
+            <li>
+                <div>
+                    <i class="iconfont ico_exchange icon-ico_exchange" style="color:#DD5B4B;"></i>
+                </div>
+                <span>调货</span>
+            </li>
+            <li>
+                <div>
+                    <i class="iconfont ico_inventory_filled icon-ico_inventory_filled" style="color:#7D65C5;"></i>
+                </div>
+                <span>盘点</span>
+            </li>
+        </ul>
+        <div style="clear: both"></div>
+        <div class="salesData">
+            <div class="salesDataTop">
+                <ul>
+                    <li class="suanZ">今日</li>
+                    <li>昨日</li>
+                    <li>本周</li>
+                    <li>本月</li>
+                </ul>
+                <div class="moreSales">更多数据</div>
+                <div class="yj-demo-time">
+                    <i class="i iconfont ico_arrow_left icon-ico_arrow_left"></i>
+                    <div class="yj-date">
+                        <span>开始时间-结束时间</span>
+                    </div>
+                    <i class="i iconfont ico_arrow_right icon-ico_arrow_right"></i>
+                </div>
+            </div>
+            <div class="salesDatacen">
+                <ul>
+                    <li>
+                        <div>
+                            <span>9000</span>
+                            <div>
+                                <i class="iconfont ico_increase_filled icon-ico_increase_filled"
+                                    style="color:#54B677;"></i>
+                                <em>10%</em>
+                            </div>
+                        </div>
+                        <div>
+                            销售额|元
+                        </div>
+                        <div style="clear: both"></div>
+                    </li>
+                    <li>
+                        <div>
+                            <span>32</span>
+                            <div>
+                                <i class="iconfont ico_decrease_filled icon-ico_decrease_filled"
+                                    style="color:#DD5B4B;"></i>
+                                <em style="color:#DD5B4B;">6%</em>
+                            </div>
+                        </div>
+                        <div>
+                            销售单数|单
+                        </div>
+                        <div style="clear: both"></div>
+                    </li>
+                    <li>
+                        <div>
+                            <span>282</span>
+                        </div>
+                        <div>
+                            客单价|元
+                        </div>
+                        <div style="clear: both"></div>
+                    </li>
+                    <li>
+                        <div>
+                            <span>1019</span>
+                        </div>
+                        <div>
+                            毛利润|元
+                        </div>
+                        <div style="clear: both"></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="salesDatabot">
+                <p>去年同期</p>
+                <ul>
+                    <li>
+                        <span>销售额</span>
+                        <em>9027 元</em>
+                    </li>
+                    <li>
+                        <span>销售单数</span>
+                        <em>40 单</em>
+                    </li>
+                    <li>
+                        <span>客单价</span>
+                        <em>200 元</em>
+                    </li>
+                    <li>
+                        <span>毛利润</span>
+                        <em>1019 元</em>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="questRewards">
+            <div class="questRewardsTop">
+                <div>
+                    <p>日常任务和奖励</p>
+                    <span>销售奖励为本月数据</span>
+                </div>
+                <div class="btnCmyRoyalty">
+                    提成商品清单
+                </div>
+            </div>
+            <div class="questRewardsBanner">
+                <div class="gradual btnLeft">
+                    <span class="iconfont ico_arrow_left icon-ico_arrow_left"></span>
+                </div>
+                <ul class="clearfix">
+                </ul>
+                <div class="gradual btnRight">
+                    <span class="iconfont ico_arrow_right icon-ico_arrow_right"></span>
+                </div>
+            </div>
+            <div class="questRewardsContent">
+                <div class="taskReward">
+                    <h3>任务奖励&nbsp;&nbsp;￥13890</h3>
+                    <div class="content">
+                        <table data-toggle="table" class="table table-border" id="taskReward"></table>
+                    </div>
+                </div>
+                <div class="salesIncentives">
+                    <h3>销售奖励&nbsp;&nbsp;￥8890</h3>
+                    <div class="content">
+                        <table data-toggle="table" class="table table-border" id="salesIncentives">
+                        </table>
+                        <!-- <span>暂无销售记录</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--今日概览结束-->
+    <!-- 资金管理 -->
+    <div class="winBox monManagement" id="monMan">
+        <div class="cashDetailedBox">
+            <div class="cashBox br">
+                <div class="cashTitle bomr">
+                    <h3 class="dib">现金管理</h3>
+                    <button class="btnCloseCash butn btnRemove fr">结算现金</button>
+                    <button class="btnOrdinary fr btnSettlementRecord">结算记录</button>
+                </div>
+                <ul class="cashContent bomr">
+                    <li>
+                        <h2>9500</h2><span class="fcHui">未结算金额&nbsp;|&nbsp;元</span>
+                    </li>
+                    <li>
+                        <h2 class="womenC">9500</h2><span class="fcHui">现金部分&nbsp;|&nbsp;元</span>
+                    </li>
+                    <li>
+                        <h2 class="womenC">9500</h2><span class="fcHui">现金单数&nbsp;|&nbsp;笔</span>
+                    </li>
+                </ul>
+                <div class="cashFooter">
+                    <span class="fl fcHui">上次结算</span>
+                    <span class="fr fcHui">01.04 21:52-01.05 22:02</span>
+                </div>
+            </div>
+            <div class="detailedBox br">
+                <div class="detailedTitle bomr">
+                    <h3>今日资金明细</h3>
+                    <span><i style="background: #57B8DB;"></i> 支出</span>
+                    <span><i></i> 收入</span>
+                </div>
+                <div class="totalBox fl">
+                    <div style="margin-bottom: 16px;">
+                        <h2>9000</h2>
+                        <span class="fcHui">收入&nbsp;|&nbsp;元</span>
+                    </div>
+                    <div class=" ">
+                        <h2>220</h2>
+                        <span class="fcHui">支出&nbsp;|&nbsp;元</span>
+                    </div>
+                </div>
+                <div style="width:75.2%;" class="fr">
+                    <div id="echarts"></div>
+                </div>
+            </div>
+        </div>
+        <div class="formBox">
+            <h2 style="padding: 13px 16px;">今日出入账明细</h2>
+            <table data-toggle="table" class="table table-border" id="todaysDetails">
+            </table>
+        </div>
+    </div>
+    <!-- 弹窗 -->
+    <div class="popup">
+        <div class="closeCashPop">
+            <div class="titleBox clearfix bomr">
+                <h3 class="fl">现金结算</h3>
+                <div class="selectBox fr" id="closeCashSele">
+                    <div class="select-box-header">
+                        <span class="text">临时订单</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+                <span class="fcHui fr">结算人</span>
+            </div>
+            <div class="titleBox clearfix bomr">
+                <span class="fcHui">销售额</span><em>￥12000</em>
+                <span class="fcHui">现金</span><em>￥4000</em>
+                <span class="fcHui">其他</span><em>￥8000</em>
+            </div>
+            <div class="inputContent">
+                <div class="inpBox">
+                    <h3>现金总金额</h3>
+                    <input type="number" placeholder="金额" class="xjZje">
+                </div>
+                <div class="inpBox">
+                    <h3>预留金</h3>
+                    <input type="number" placeholder="金额">
+                </div>
+                <div class="inpBox">
+                    <h3>上缴现金</h3>
+                    <input type="number" placeholder="金额">
+                </div>
+                <div class="inpBox">
+                    <h3>差额</h3>
+                    <input type="number" placeholder="金额">
+                </div>
+            </div>
+        </div>
+        <div class="cmyRoyaltyPop">
+            <ul class="tab-ul">
+                <li class="active">镜片</li>
+                <li>镜架</li>
+                <li>隐形眼镜</li>
+                <li>太阳镜</li>
+                <li>护理产品</li>
+                <li>其他商品</li>
+                <li>特殊商品</li>
+            </ul>
+            <div class="formContent">
+                <table data-toggle="table" class="table table-border" id="cmyRoyaltyForm" border="0">
+                </table>
+            </div>
+        </div>
+        <div class="settlementRecordPop" style="display:none">
+            <div style=" border:  1px solid #ECECF4;">
+                <div class="formSetRecord">
+                    <div class="header">
+                        <ul class="clearfix">
+                            <li style="min-width: 160px;">结算时间</li>
+                            <li>销售额</li>
+                            <li>现金收款</li>
+                            <li>其他收款</li>
+                            <li>原预留金</li>
+                            <li>结算现金</li>
+                            <li>差额</li>
+                            <li>预留金</li>
+                            <li>结算人</li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="bomr">2017年</div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">01.04 21:52-01.05 22:02</li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="bomr">2018年</div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="bomr">2018年</div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li style="min-width: 160px;">
+                                    01.04 21:52-01.05 22:02
+                                </li>
+                                <li>￥2010</li>
+                                <li>￥1000</li>
+                                <li>￥1010</li>
+                                <li>￥500</li>
+                                <li>￥1000</li>
+                                <li>-</li>
+                                <li>￥500</li>
+                                <li>乔立</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="fixedBox">
+                    <ul>
+                        <li>结算人</li>
+                        <li>1</li>
+                        <li class="bomr"></li>
+                        <li>2</li>
+                        <li>3</li>
+                        <li>4</li>
+                        <li class="bomr"></li>
+                        <li>5</li>
+                        <li>6</li>
+                        <li>7</li>
+                        <li>8</li>
+                        <li class="bomr"></li>
+                        <li>9</li>
+                        <li>10</li>
+                        <li>11</li>
+                        <li>12</li>
+                    </ul>
+                </div>
+            </div>
+            <table id="yj-page-table" data-toggle="table" class="table table-border"></table>
+        </div>
+    </div>
+</body>
+<!--全局js-->
+<!-- jq库 -->
+<script src="../resource/js/jquery.min.js"></script>
+<!-- bootstrap UI需要依赖的js -->
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<!-- layui需要依赖的js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+<!-- 公司内部库 -->
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<!-- 全局公共js -->
+<script src="../resource/js/yanjing.js"></script>
+<!-- 时间插件js -->
+<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+<!-- 时间范围插件 -->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<!-- echarts插件 -->
+<script src="../resource/js/echarts.js"></script>
+<!-- <link href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css" rel="stylesheet"> -->
+
+<!-- <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script> -->
+<!-- 当前页面逻辑 -->
+<script>
+    // 时间范围插件开始
+    var dt = new dateRange(".yj-demo-time");
+    dt.init()
+
+
+    // 当前页面模块化
+    var timeWorkbench = (function () {
+        // 数据挂载
+        $date = $.myData = {
+            taskReward: [
+                { name: '月销售额任务', date: '2018.01.20 2018.05.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 100 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 40 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80 }, { name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80 }],
+            salesIncentives: [
+                { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }, { name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元' }],
+            todaysDetails: [{ orderNum: '2018061700030', date: '', name: '', number: '', money: '', mode: '', type: '', saleName: '', btn: '' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' }, { orderNum: '2018061700030', date: '2018.06.17 12:52', name: '林俊', number: '18828172818', money: '￥198', mode: '支付方式', type: '订单状态', saleName: '老马', btn: '操作' },
+            ],
+            cmyRoyaltyForm: [{ name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' },
+            { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }, { name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元' }
+            ]
+        }
+
+        // 数据表单初始化函数
+        var formBox = function fromBox() {
+            var columns = [
+                { field: "name", title: "商品名称", align: "left", valign: "middle", width: '50%' },
+                { field: "company", title: "单位", align: "left", valign: "middle" },
+                { field: "teamRoy", title: "团队提成", align: "left", valign: "middle" },
+                { field: "personalRoy", title: "个人提成", align: "left", valign: "middle" },
+                {
+                    field: 'btn', title: "操作", align: "left", valign: "middle", formatter: function () {
+                        return "<buttom class='btnSetOrder'>查看订单</buttom>"
+                    }
+                },
+            ], columns2 = [
+                { field: "name", title: "商品名称", align: "left", valign: "middle", width: '50%' },
+                { field: "company", title: "单位", align: "left", valign: "middle" },
+                { field: "teamRoy", title: "团队提成", align: "left", valign: "middle" },
+                { field: "personalRoy", title: "个人提成", align: "left", valign: "middle" }
+            ]
+            $("#taskReward").bootstrapTable({
+                data: $date.taskReward,
+                classes: "table",
+                pagination: false,        //是否显示分页
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                sortable: false,
+                height: 398,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                sidePagination: $date.taskReward, //表示服务端请求
+                columns: [
+                    { field: "name", title: "任务名称", align: "left", valign: "middle" },
+                    { field: "date", title: "截止时间", align: "left", valign: "middle" },
+                    { field: "prize", title: "奖励", align: "left", valign: "middle" },
+                    { field: "amount", title: "任务量", align: "left", valign: "middle" },
+                    { field: "oknum", title: "已完成", align: "left", valign: "middle" },
+                    {
+                        field: "degree", title: "进度", align: "left", valign: "middle", formatter: function ( v, e) {
+                            return v>=100?"<span class='end'><i class='iconfont icon-ico_check'></i></span>":canvasFn(v, 14);
+                        }
+                    }
+                ]
+            });
+            $("#salesIncentives").bootstrapTable({
+                data: $date.salesIncentives,
+                classes: "table",
+                pagination: false,        //是否显示分页
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                height: 398,
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                columns: [
+                    { field: "name", title: "商品名称", align: "left", valign: "middle", sortable: true },
+                    { field: "royalty", title: "提成", align: "left", valign: "middle", sortable: true },
+                    { field: "oknum", title: "完成量", align: "left", valign: "middle", sortable: true },
+                    { field: "reward", title: "奖励", align: "left", valign: "middle", sortable: true },
+                ]
+            });
+            $("#todaysDetails").bootstrapTable({
+                data: $date.todaysDetails,
+                classes: "table",
+                pagination: true,        //是否显示分页
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,
+                pageList: [5, 10, 15, 20],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                height: 564,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                columns: [
+                    { field: "orderNum", title: "订单号", align: "left", valign: "middle" },
+                    { field: "date", title: "时间", align: "left", valign: "middle" },
+                    { field: "name", title: "顾客姓名", align: "left", valign: "middle" },
+                    { field: "number", title: "手机号", align: "left", valign: "middle" },
+                    { field: "money", title: "出入账金额", align: "left", valign: "middle" },
+                    { field: "mode", title: "支付方式", align: "left", valign: "middle" },
+                    {
+                        field: "type", title: "订单状态", align: "left", valign: "middle",
+                        formatter: function (a, b, c) {
+                            return '<span class="spanType span1">已完成<span>'
+                        }
+                    },
+                    { field: "saleName", title: "销售员", align: "left", valign: "middle" },
+                    {
+                        field: "btn", title: "操作", align: "left", valign: "middle", formatter: function () {
+                            return "<buttom class='btnViewOrder'>查看订单</buttom>"
+                        }
+                    },
+
+                ]
+            });
+            $('#cmyRoyaltyForm').bootstrapTable({
+                data: $date.cmyRoyaltyForm,
+                classes: "table",
+                pagination: true,        //是否显示分页
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,
+                pageList: [5, 10, 15, 20],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                height: 400,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                columns: 1 == 2 ? columns : columns2
+            });
+            /*卡片分页-抵用券营销*/
+            var $table = $("#yj-page-table");
+            var data1 = [{ id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }];
+            var TableInit = function (callback) {
+                var oTableInit = new Object();
+                //初始化Table
+                oTableInit.Init = function () {
+                    $table.bootstrapTable('destroy');
+                    $table.bootstrapTable({
+                        data: data1,
+                        classes: "table",
+                        pagination: true,        //是否显示分页
+                        pageNumber: 1,                       //初始化加载第一页，默认第一页
+                        pageSize: 6,
+                        pageList: [6, 12, 18],
+                        sortable: false,
+                        sortOrder: "asc",
+                        showColumns: true,
+                        strictSearch: true,
+                        locale: "zh-CN",
+                        paginationHAlign: "center",
+                        clickToSelect: true,
+                        paginationLoop: false,
+                        columns: [],
+                        onPreBody: function (data) {
+                            if (callback) {
+                                callback(data, this)
+                            }
+                        }
+                    });
+                };
+                return oTableInit;
+            };
+            var Table = new TableInit(manage);
+            Table.Init();
+            function manage(data, _this) {
+                var html = '';
+                var html2 = '';
+                for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
+                    html += '<div class="item">'+
+                            '<ul>'+
+                                '<li style="min-width: 160px;">'+
+                                    '01.04 21:52-01.05 22:02'+
+                                '</li>'+
+                                '<li>￥2010</li>'+
+                                '<li>￥1000</li>'+
+                                '<li>￥1010</li>'+
+                                '<li>￥500</li>'+
+                                '<li>￥1000</li>'+
+                                '<li>-</li>'+
+                                '<li>￥500</li>'+
+                            '</ul>'+
+                        '</div>';
+                    html2 += '<li>1</li>';
+                }
+                $('.fixedBox ul').html(html2)
+                $('.fixedBox ul').prepend('<li>结算</li>')
+                var h = 0;
+                $('.fixedBox ul li').each(function (index, item) {
+                    h += $(item).outerHeight();
+                })
+                $('.fixedBox').height(h);
+                $(".formSetRecord .content").html(html);
+                $('.formSetRecord').on('scroll', function () {
+                    $('.fixedBox').scrollTop($(this).scrollTop());
+                })
+                var w = 0;
+                $(".formSetRecord .header ul li").each(function (index, item) {
+                    w += $(item).outerWidth();
+                })
+                $('.formSetRecord .header').width(w);
+                $('.formSetRecord .content').width(w);
+            }
+        }
+
+        // 当前页面切换区函数
+        var tabBox = function header() {
+            // 今日概览tab资金管理
+            $('header>ul>li').on('click', function () {
+                $(this).addClass('xuan').siblings().removeClass('xuan');
+                $('.winBox').hide(0);
+                $('.winBox').eq($(this).index()).show(0);
+                chart();
+            });
+            // 总数据日期切换
+            $('.salesDataTop>ul>li').on('click', function () {
+                $(this).addClass('suanZ').siblings().removeClass('suanZ');
+            });
+        }
+
+        //日常任务和奖励轮播
+        var questRewardsBanner = function questRewardsBanner() {
+            var a = ' <i class="iconfont ico_medal_first icon-ico_medal_first" style="color:#EDC74E"></i>',
+                b = ' <i class="iconfont ico_medal_first icon-ico_medal_first" style="color:#B9B9B9"></i>',
+                c = ' <i class="iconfont ico_medal_first icon-ico_medal_first" style="color:#C99F7E"></i>',
+                ul = $('.questRewardsBanner>ul'),
+                quW = $('.questRewardsBanner').outerWidth();
+            for (var i = 0; i < 10; i++) {
+                var span;
+                if (i == 1) span = '<span>全店' + a + '</span>';
+                if (i == 2) span = '<span>全店' + b + '</span>';
+                if (i == 3) span = '<span>全店' + c + '</span>';
+                if (i !== 1 && i !== 2 && i !== 3) span = '<span>全店</span>';
+                ul.append('<li>' + span + '<h2>22088<em>元</em></h2></li>');
+            }
+            var liW = ul.children('li').outerWidth(),
+                ulW = (ul.children('li').length * liW),
+                isRen = true;
+            ul.css('width', ulW + 'px');
+            $('.questRewardsBanner .btnLeft>span').on('click', function () {
+                $('.questRewardsBanner .btnRight').show();
+                var ulLeft = parseFloat(ul.css('left'));
+                if (!isRen) return;
+                isRen = false;
+                if (ulLeft >= 0 - liW) {
+                    ulLeft = -liW;
+                    $(this).parent().hide();
+                };
+                ul.animate({
+                    "left": (ulLeft + liW) + 'px'
+                }, 200, function () {
+                    isRen = true;
+                });
+            })
+            $('.questRewardsBanner .btnRight>span').on('click', function () {
+                $('.questRewardsBanner .btnLeft').show();
+                var ulLeft = parseFloat(ul.css('left'));
+                if (!isRen) return;
+                isRen = false;
+                if ((-ulLeft + quW) >= ulW - liW) {
+                    ulLeft = -(ulW - quW - liW);
+                    $(this).parent().hide();
+                };
+                ul.animate({
+                    "left": (ulLeft - liW) + 'px'
+                }, 200, function () {
+                    isRen = true;
+                });
+            })
+
+        }
+
+        // canvas进度圈
+        function canvasFn(element, number) {
+
+            var dom = null;
+            dom = $('<canvas class="canvas" width="16" height="16"></canvas>')[0];
+
+            var aaa = canFor(dom, element);
+
+            function canFor(canvas, num) {
+                var context = canvas.getContext('2d'),  //获取画图环境，指明为2d
+                    centerX = canvas.width / 2,   //Canvas中心点x轴坐标
+                    centerY = canvas.height / 2,  //Canvas中心点y轴坐标
+                    rad = Math.PI * 2 / 100, //将360度分成100份，那么每一份就是rad度
+                    speed = num; //加载的快慢就靠它了
+
+                //绘制5像素宽的运动外圈
+                function blueCircle(n) {
+                    context.save();
+                    context.strokeStyle = "#DD5B4B"; //设置描边样式
+                    context.lineWidth = 2; //设置线宽
+                    context.beginPath(); //路径开始
+                    context.arc(centerX, centerY, number / 2, -Math.PI / 2, -Math.PI / 2 + n * rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+                    context.stroke(); //绘制
+                    context.closePath(); //路径结束
+                    context.restore();
+                }
+
+                //绘制白色外圈
+                function whiteCircle() {
+                    context.save();
+                    context.beginPath();
+                    context.lineWidth = 2; //设置线宽
+                    context.strokeStyle = "#FBEEED";
+                    context.arc(centerX, centerY, number / 2, 0, Math.PI * 2, false);
+                    context.stroke();
+                    context.closePath();
+                    context.restore();
+                }
+
+                function inte() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    whiteCircle();
+                    blueCircle(speed);
+                    var ele = $('<img src=""/>')[0];
+                    ele.src = canvas.toDataURL("image/png");
+                    return ele
+                }
+
+                return inte();
+            }
+
+            //新Image对象，可以理解为DOM
+
+            // canvas.toDataURL 返回的是一串Base64编码的URL
+            // 指定格式 PNG
+            var D = document.createElement('div');
+            D.appendChild(aaa);
+            return D.innerHTML;
+        }
+
+        // 数据统计图
+        var chart = function chart() {
+            var app = echarts.init(document.getElementById('echarts'));
+            var option = {
+                color: ['#DD5B4B', '#57B8DB'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'none'
+                    },
+                    backgroundColor: '#393953'
+                    , formatter: function (data) {
+                        return (data[0].value == 0 ? '' : '收入：' + data[0].value + "<br/>") + (data[1].value == 0 ? '' : '支出：' + data[1].value);
+                    }
+                },
+                grid: { left: '15%', top: '20%', },
+                title: {
+                    subtext: '单位：百元',
+                    right: '40',
+                    top: '-5'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['支付宝', '微信', '现金', '银行卡', '储值卡'],
+                    axisTick: {
+                        show: false
+                    }, axisLine: {
+                        show: false
+                    }, offset: 3
+                }
+                ,
+                yAxis: {
+                    type: 'value', axisTick: {
+                        show: false
+                    }, axisLine: {
+                        show: false
+                    }, offset: 10, splitNumber: 2
+                }
+                ,
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: 10,
+                        barCategoryGap: 10,
+                        data: [32, 0, 54, 99, 28]
+                    },
+                    {
+                        type: 'bar',
+                        barWidth: 10,
+                        data: [94, 23, 12, 0, 12]
+                    }
+                ]
+            };
+            window.onresize = function () {
+                app.resize();
+            }
+            app.setOption(option);
+        }
+
+        // 弹窗
+        var popup = function popup() {
+            function addAlert(a) {
+                layer.closeAll()
+                var index = layer.open({
+                    type: 1,
+                    skin: 'layui-layer-demo', //样式类名
+                    area: a.data.area,
+                    anim: 0,
+                    closeBtn: 0,
+                    title: a.data.title,
+                    shade: 0.03,
+                    shadeClose: true, //开启遮罩关闭
+                    scrollbar: false,
+                    content: a.data.popupBox,
+                    btn: a.data.btn,
+                    move: a.data.move,
+                    resize: false,
+                    yes: function () {
+                    },
+                    btn2: function () {
+                        //    取消
+                        console.log(a);
+                    },
+                    success: function (layero, index) {
+                        a.data.fn(layero);
+                    }
+                });
+            }
+
+            $('.btnCloseCash').bind('click', {
+                title: false,
+                popupBox: $('.closeCashPop'),
+                btn: ['确认结算', '取消'],
+                area: ['360px'],
+                move: $('.closeCashPop .titleBox h3'),
+                fn: function (layero) {
+                    layero.find('.layui-layer-btn0').addClass('btnRemove');
+                    console.log(layero.append('<div class="ov"><span class="fcHui">结算时间</span><span class="fcHui fr">06.17 22:11 - 06.19 21:59</span></div>'))
+                }
+            }, addAlert);
+            $('.btnCmyRoyalty').bind('click', {
+                title: "提成商品",
+                popupBox: $('.cmyRoyaltyPop'),
+                btn: ['确认结算', '关闭窗口'],
+                area: ['720px'],
+                fn: function (layero) {
+                    layero.find('.layui-layer-btn0').hide();
+                }
+            }, addAlert);
+
+            // 现金结算记录
+            function settlementRecord(a) {
+                layer.closeAll()
+                var index = layer.open({
+                    type: 1,
+                    skin: 'layui-layer-demo', //样式类名
+                    area: ['720px', '560px'],
+                    anim: 0,
+                    closeBtn: 0,
+                    title: '现金结算记录',
+                    shade: 0.03,
+                    shadeClose: true, //开启遮罩关闭
+                    scrollbar: false,
+                    content: $('.settlementRecordPop'),
+                    resize: false,
+                    btn: ['确认结算', '关闭窗口']
+                })
+            }
+            $('.btnSettlementRecord').on('click', settlementRecord);
+        }
+
+
+        // 下拉框执行函数
+        var select = function select() {
+            // 现金结算弹窗
+            selectTag($("#closeCashSele"))
+        }
+        return {
+            init: function () {
+                popup();
+                select();
+                questRewardsBanner();
+                tabBox();
+                formBox();
+            }
+        }
+    })();
+    timeWorkbench.init();
+
+</script>
+
+</html>

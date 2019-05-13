@@ -1,17 +1,54 @@
-var serverUrl = "http://127.0.0.1:10004"; //
-
-
+﻿var serverUrl = "http://xiuqiangback.ikid06.cn";//秀强线上服务器//
+ var serverUrl = "http://127.0.0.1:10004";//本地服务器mvn
+// var serverUrl = "http://39.107.247.82:10004";//测试服务器
 var loginUrl = serverUrl + "/login/in"; //登录 userName=456&password=456&code=xxxx
 var loginCodeUrl = serverUrl + "/login/verifyCode"; //登录验证码
+// var serverToken = '?token=bPra5sVLqHa24nmIdLBpXhnRP%2FtJhO1pr3vZ3v%2FOA8A%3D';
+// app 快捷功能管理
+// var functionPortAllList = serverUrl + '/functionPort/getAllList';
+
+//获取集团管理员的轮播图列表
+var getAllBannerLists = serverUrl + '/banner/getAllBannerLists';
+//获取某学校的轮播图列表
+var getAllListBySchool = serverUrl + '/banner/getAllListBySchool';
+//搜索轮播图
+var getBannerListByTepes = serverUrl + '/banner/getBannerListByTepes';
+
+//家长用户
+var getUserList = serverUrl + '/user/getAllList'; //获取家长用户列表
+var seekUserList = serverUrl + '/user/searchUser'; //搜索家长用户
+var seekParentList = serverUrl + '/user/searchParents'; //搜索家长用户
+
+//App快捷功能管理
+var AppGetList = serverUrl + '/functionPort/getAllList'; //获取App快捷功能管理列表
+var AppSeek = serverUrl + '/functionPort/getAllListByType'; //App快捷功能管理搜索
+// var AppGetListBySchool = serverUrl + '/functionPort/getAllListBySchool';
+
+var getAllTeachers = serverUrl + '/backend/getAllTeachers';
+
+var updateTeachers = serverUrl + '/clazz/updateTeachers';
+
+var exportScoreLog = serverUrl + '/scoreLog/exportScoreLog';
 
 
+//热部署接口
+var getAllHotList = serverUrl + '/hotupdate/getAllList'; //获取所有列表
+var addHot = serverUrl + '/hotupdate/add';//添加
+var upDateHot = serverUrl + '/hotupdate/update';//更新
+var deleteHot = serverUrl + '/hotupdate/delete';//删除
 
+    if (window.location.pathname.indexOf('login/login.html') >= 0) {
 
-
-
-if (window.location.pathname.indexOf('login/login.html') >= 0) {
 } else {
     checkUser();
+}
+
+function checkUser() {
+    /*var user = getUserInfo();
+    if (user) {} else {
+        window.parent.window.location.href = '../login/login.html';
+        //openNewWindow('login.html')
+    }*/
 }
 
 //===================公用方法=============================
@@ -74,13 +111,13 @@ function openNewWindow(url, params) {
 
 
 
-function checkUser() {
-    var user = getUserInfo();
-    if (user) {} else {
-        window.parent.window.location.href = '../login/login.html';
-        //openNewWindow('login.html')
-    }
-}
+// function checkUser() {
+//     var user = getUserInfo();
+//     if (user) {} else {
+//         window.parent.window.location.href = '../login/login.html';
+//         //openNewWindow('login.html')
+//     }
+// }
 
 function setUserInfo(user) {
     localStorage.setItem('user_admin', JSON.stringify(user));
@@ -273,6 +310,53 @@ function formatDateTimeYMD(timeStamp, flag) {
     }
 
 };
+//时间格式转换
+oDays = function(time){
+    return new Date(time).format("yyyy-MM-dd");
+};
+var formatTimeToYMDHM = function(time){
+    return new Date(time).format("yyyy-MM-dd hh:mm");
+};
+var formatTimeToAlls = function(time){
+    return new Date(time).format("yyyy.MM.dd hh:mm");
+};
+var formatTimeToAll = function(time){
+    return new Date(time).format("yyyy.MM.dd");
+};
+var formatTimeToMinute = function(time){
+    return new Date(time).format("hh:mm");
+};
+var formatTimeToDateCh = function (time){
+    return new Date(time).format("yyyy/MM/dd hh:mm");
+};
+var formatTimeToAllList = function(time){
+    return new Date(time).format("yyyyMMdd");
+};
+var formatTimeToHM = function(time){
+    return new Date(time).format("hh:mm");
+};
+Date.prototype.format = function(format) {
+    var date = {
+        "M+": this.getMonth() + 1,
+        "d+": this.getDate(),
+        "h+": this.getHours(),
+        "m+": this.getMinutes(),
+        "s+": this.getSeconds(),
+        "q+": Math.floor((this.getMonth() + 3) / 3),
+        "S+": this.getMilliseconds()
+    };
+    if (/(y+)/i.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    for (var k in date) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+        }
+    }
+    return format;
+};
+
 
 //克隆对象
 function cloneObj(obj) {
@@ -296,7 +380,7 @@ function handleCommon(url, params, msgStr, func) {
     layer.msg(msgStr, {
         shade: [0.1, '##f5f5f5'],
         time: 0 //不自动关闭
-            ,
+        ,
         btn: ['确定', '取消'],
         yes: function (index) {
             layer.close(index);
@@ -312,8 +396,15 @@ function uploadIcon() {
     $("#uploadForm input").click();
 }
 
+//   =================== 文档上传
+function uploadWord() {
+    $("#wordForm input").click();
+}
+
+
 /*--------------图片上传后台-----------*/
 $("#uploadForm input").change(function () {
+    var index = layer.load(1, {time: 1*500});
     $('#photoCover').val($(this).val());
     var formData = new FormData($(this).parent()[0]);
     $.ajax({
@@ -327,6 +418,7 @@ $("#uploadForm input").change(function () {
         dataType: "json",
         success: function (result) {
             if (result.ok != undefined) {
+                // console.log(result.ok)
                 $("#iconView").attr('src', result.ok);
                 $("#iconView").show();
                 var data = JSON.stringify(result);
@@ -345,6 +437,44 @@ $("#uploadForm input").change(function () {
         }
     });
 })
+
+/*--------------文档上传-----------*/
+$("#wordForm input").change(function () {
+    var index = layer.load(1, {time: 1*500});
+    $('#wordCover').val($(this).val());
+    var formData = new FormData($(this).parent()[0]);
+    $.ajax({
+        url: serverUrl + '/storage/handle', //Server script to process data
+        type: 'POST',
+        data: formData,
+        sync: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function (result) {
+            // console.log(result)
+            if (result.ok != undefined) {
+                // console.log(result.ok)
+
+                var data = JSON.stringify(result);
+                $("#coverPdf").val(result.ok);
+            } else {
+                layer.msg('上传失败！', {
+                    icon: 2
+                });
+            }
+
+        },
+        error: function () {
+            layer.msg('上传失败！', {
+                icon: 2
+            });
+        }
+    });
+})
+
+
 
 //缩略图
 function ImageThumb(value, width, height) {
@@ -499,7 +629,6 @@ FileInput.prototype = {
             temp.push(map);
             _this.fileObj = temp;
             //				$('.btn-file').hide()
-
             if (_this.fileObj.length >= checknum) {
                 uploadButton.attr("disabled", "disabled")
             } else {
@@ -555,7 +684,6 @@ FileInput.prototype = {
         select.fileinput('disable');
     }
 }
-
 /*-----------------------ajax请求------------------------------*/
 function myAjax(url, param, func) {
     if (!url.startsWith(serverUrl)) {
@@ -570,7 +698,6 @@ function myAjax(url, param, func) {
         type: "post",
         dataType: "json",
         data: param,
-        traditional: true,//这里设置为true
         success: function (data) {
             layer.close(index);
             if (typeof func == 'function') {
@@ -650,15 +777,15 @@ function createObject(key) {
     var object = new Object();
     object.key = key;
     object.storeParam = function (pageParam) {
-            var _this = this;
+        var _this = this;
 
-            if (isNotBlank(pageParam.pager)) {
-                sessionStorage.setItem("pager" + _this.key, JSON.stringify(pageParam.pager));
-            }
-            if (isNotBlank(pageParam.parameters)) {
-                sessionStorage.setItem("parameters" + _this.key, JSON.stringify(pageParam.parameters));
-            }
-        },
+        if (isNotBlank(pageParam.pager)) {
+            sessionStorage.setItem("pager" + _this.key, JSON.stringify(pageParam.pager));
+        }
+        if (isNotBlank(pageParam.parameters)) {
+            sessionStorage.setItem("parameters" + _this.key, JSON.stringify(pageParam.parameters));
+        }
+    },
         object.recoverParam = function () {
             var _this = this;
             var pager = sessionStorage.getItem("pager" + _this.key);
@@ -781,6 +908,22 @@ function addMenuItem(dataUrl, menuName, paramFlag) {
     }
     return false;
 }
+
+//关闭iframe自己，请在iframe里调用
+function closeMyselfInIframe() {
+    var thisHref = window.location.href;
+    var A = document.createElement('a');
+    $mainBody = $(window.parent.document).find("body");
+    $mainBody.find("iframe.J_iframe").each(function () {
+        var thissrc = $(this).attr("src");
+        A.href = thissrc;
+        var Href = A.href;
+        if (Href  === thisHref) {
+            $mainBody.find('.page-tabs-content .J_menuTab[data-id="' + $(this).data("id") + '"] i').click();
+        }
+    });
+}
+
 //刷新iframe
 function refreshTab(dataUrl) {
     var dataSrc = dataUrl.split('?')[0];
@@ -876,4 +1019,6 @@ function getQueryString(name) {
         return unescape(r[2]);
     return null;
 }
+
+
 

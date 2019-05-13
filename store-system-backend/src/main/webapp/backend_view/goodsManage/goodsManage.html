@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>眼睛-商品管理-商品列表</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/layui/css/layui.css" rel="stylesheet">
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <link rel="stylesheet" href="../resource/css/style.css">
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <!--标签样式重置结束-->
+    <!--本页面样式开始-->
+    <link rel="stylesheet" href="../resource/css/yanjing/goodsManage.css">
+    <!--本页面样式结束-->
+    <style>
+        body{
+            background-color: #ECECF3;
+        }
+    </style>
+</head>
+<body>
+    <div class="yj-header">
+        <ul class="tab-ul">
+            <li onclick="chooseGoodsType(this,1)" class="active">镜片</li>
+            <li onclick="chooseGoodsType(this,2)">镜架</li>
+            <li onclick="chooseGoodsType(this,3)">隐形眼镜</li>
+            <li onclick="chooseGoodsType(this,4)">太阳镜</li>
+            <li onclick="chooseGoodsType(this,5)">护理产品</li>
+            <li onclick="chooseGoodsType(this,6)">其它商品</li>
+            <li onclick="chooseGoodsType(this,7)">特殊商品</li>
+        </ul>
+        <div class="yj-header-right">
+            <button class="btn btn-info" onclick="suppliers()">设置供应商</button>
+            <div class="selectBox" id="selectBox">
+                <div class="select-box-header">
+                    <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                </div>
+
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">系列1</li>
+                        <li value="02">系列2</li>
+                        <li value="03">系列3</li>
+                        <li value="04">系列4</li>
+                        <li value="05">系列5</li>
+                    </ul>
+                </div>
+            </div>
+            <input type="text" placeholder="搜索商品" class="yj-input">
+            <button class="btn btn-primary" onclick="addGoods()">新增商品</button>
+        </div>
+    </div>
+    <div class="goods-header">
+        <div class="selectBox" id="select-form">
+            <div class="select-box-header">
+                <span class="text">供应商来源</span> <i class="iconfont icon-ico_arrow_down" ></i>
+            </div>
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <li value="01">系列1</li>
+                    <li value="02">系列2</li>
+                    <li value="03">系列3</li>
+                    <li value="04">系列4</li>
+                    <li value="05">系列5</li>
+                </ul>
+            </div>
+        </div>
+        <div class="selectBox" id="select-type">
+            <div class="select-box-header">
+                <span class="text">全部商品类型</span> <i class="iconfont icon-ico_arrow_down" ></i>
+            </div>
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <li value="01">系列1</li>
+                    <li value="02">系列2</li>
+                    <li value="03">系列3</li>
+                    <li value="04">系列4</li>
+                    <li value="05">系列5</li>
+                </ul>
+            </div>
+        </div>
+        <div class="selectBox" id="select-status">
+            <div class="select-box-header">
+                <span class="text">全部销售状态</span> <i class="iconfont icon-ico_arrow_down" ></i>
+            </div>
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <li value="01">系列1</li>
+                    <li value="02">系列2</li>
+                    <li value="03">系列3</li>
+                    <li value="04">系列4</li>
+                    <li value="05">系列5</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="goods-body">
+        <table id="yj-table" data-toggle="table"  class="table table-border"></table>
+    </div>
+    <!--新增商品-->
+    <div class="content-view content-view-addgoods">
+        <div class="layui-yj-header">
+            <div class="layui-layer-title">
+                <div>新增镜片</div>
+            </div>
+            <div class="title-right" >
+                销售状态<div class="yj-search active" onclick="changeYjStatus(this)"><i></i></div>
+            </div>
+        </div>
+
+        <div class="goods-select-box">
+            <div class="goods-select">
+                <div class="goods-select-title">品牌</div>
+                <div class="selectBox" id="select-pinpai">
+                    <div class="select-box-header">
+                        <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">系列</div>
+                <div class="selectBox" id="select-xilie">
+                    <div class="select-box-header">
+                        <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">焦点</div>
+                <div class="selectBox" id="select-jiaodian">
+                    <div class="select-box-header">
+                        <span class="text">焦点</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">折射率</div>
+                <div class="selectBox" id="select-zheshelv">
+                    <div class="select-box-header">
+                        <span class="text">折射率</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">功能</div>
+                <div class="selectBox" id="select-gongneng">
+                    <div class="select-box-header">
+                        <span class="text">功能</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">供应商</div>
+                <div class="selectBox" id="select-gongyingshang">
+                    <div class="select-box-header">
+                        <span class="text">供应商</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">现货范围</div>
+                <div class="goods-range-body" onclick="openGoodsRange('现货')">设定现货范围</div>
+            </div>
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">定制范围</div>
+                <div class="goods-range-body" onclick="openGoodsRange('定制')">设定定制范围</div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="defaultGoods"  name="like1[write]" lay-skin="primary" title="常规商品" checked >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="goods-vip-btn">
+                <div class="goods-vip-left">会员折扣</div>
+                <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                    <div class="yj-radio">
+                        <input type="radio">
+                    </div>
+                    <span>参与会员折扣</span>
+                    <em onclick="openSettingVip(this)">设置</em>
+                </div>
+            </div>
+            <div class="goods-select-box">
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">零售价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                </div>
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">提成</div>
+                    <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="goods-select-box" style="display: none">
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">积分价</div>
+                <div class="goods-range-body" onclick="openZeroPrice()">设定积分价</div>
+            </div>
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">兑换数量上限</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select " style="width: 100%;height: auto;">
+                <div class="goods-select-title">有效期</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item" pane="">
+                        <div class="layui-input-block yj-check-input">
+                            <input type="checkbox" name=""  lay-filter="kucun" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div style="clear: both"></div>
+
+        </div>
+        <!--<div class="goods-type">-->
+            <!---->
+        <!--</div>-->
+    </div>
+    <!--新增特殊商品-->
+    <div class="content-view content-view-addtsgoods">
+        <div class="layui-yj-header">
+            <div class="layui-layer-title">
+                <div>新增特殊商品</div>
+            </div>
+            <div class="title-right" >
+                销售状态<div class="yj-search active" onclick="changeYjStatus(this)"><i></i></div>
+            </div>
+        </div>
+
+        <div class="goods-select-box">
+            <div class="goods-select goods-select-img" style="width: 100%">
+                <div class="goods-select-title">商品主图</div>
+                <div class="selectBox" >
+                    <i class="iconfont icon-ico_plus"></i>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">名称</div>
+                <div class="selectBox" >
+                    <input type="text" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">库存</div>
+                <div class="selectBox" >
+                    <input type="text" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">成本价</div>
+                <div class="selectBox" >
+                    <input type="text" class="yj-input">
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="defaultGoods"  name="like1[write]" lay-skin="primary" title="常规商品" checked >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="goods-vip-btn">
+                <div class="goods-vip-left">会员折扣</div>
+                <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                    <div class="yj-radio">
+                        <input type="radio">
+                    </div>
+                    <span>参与会员折扣</span>
+                    <em onclick="openSettingVip(this)">设置</em>
+                </div>
+            </div>
+            <div class="goods-select-box">
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">零售价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                </div>
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">提成</div>
+                    <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="goods-select-box" style="display: none">
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">积分价</div>
+                <div class="goods-range-body" onclick="openZeroPrice()">设定积分价</div>
+            </div>
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">兑换数量上限</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select " style="width: 100%;height: auto;">
+                <div class="goods-select-title">有效期</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item" pane="">
+                        <div class="layui-input-block yj-check-input">
+                            <input type="checkbox" name=""  lay-filter="kucun" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div style="clear: both"></div>
+
+        </div>
+    </div>
+    <!--新增护理产品-->
+    <div class="content-view content-view-addhlgoods">
+        <div class="layui-yj-header">
+            <div class="layui-layer-title">
+                <div>新增护理产品</div>
+            </div>
+            <div class="title-right" >
+                销售状态<div class="yj-search active" onclick="changeYjStatus(this)"><i></i></div>
+            </div>
+        </div>
+        <div class="goods-select-box">
+            <div class="goods-select">
+                <div class="goods-select-title">品牌</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">系列</div>
+                <div class="selectBox">
+                    <div class="select-box-header">
+                        <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">类型</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">焦点</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">包装</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">折射率</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">开瓶寿命/天*</div>
+                <div class="selectBox">
+                    <input type="text" class="yj-input">
+                </div>
+                <span>*设定后会短信自动提醒顾客</span>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">质保时长/天</div>
+                <div class="selectBox">
+                    <input type="text" class="yj-input">
+                </div>
+            </div>
+            <div style="clear: both"></div>
+
+            <div class="goods-select">
+                <div class="goods-select-title">供应商</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">供应商</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="defaultGoods"  name="like1[write]" lay-skin="primary" title="常规商品" checked >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="goods-vip-btn">
+                <div class="goods-vip-left">会员折扣</div>
+                <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                    <div class="yj-radio">
+                        <input type="radio">
+                    </div>
+                    <span>参与会员折扣</span>
+                    <em onclick="openSettingVip(this)">设置</em>
+                </div>
+            </div>
+            <div class="goods-select-box">
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">零售价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                </div>
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">提成</div>
+                    <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="goods-select-box" style="display: none">
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">积分价</div>
+                <div class="goods-range-body" onclick="openZeroPrice()">设定积分价</div>
+            </div>
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">兑换数量上限</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select " style="width: 100%;height: auto;">
+                <div class="goods-select-title">有效期</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item" pane="">
+                        <div class="layui-input-block yj-check-input">
+                            <input type="checkbox" name=""  lay-filter="kucun" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div style="clear: both"></div>
+
+        </div>
+    </div>
+    <!--新增隐形眼镜-->
+    <div class="content-view content-view-addyxgoods">
+        <div class="layui-yj-header">
+            <div class="layui-layer-title">
+                <div>新增隐形眼镜</div>
+            </div>
+            <div class="title-right" >
+                销售状态<div class="yj-search active" onclick="changeYjStatus(this)"><i></i></div>
+            </div>
+        </div>
+        <div class="goods-select-box">
+            <div class="goods-select">
+                <div class="goods-select-title">品牌</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">系列</div>
+                <div class="selectBox">
+                    <div class="select-box-header">
+                        <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">类型</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">焦点</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">更换周期</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">折射率</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">包装</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">折射率</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">质保时长/天*</div>
+                <div class="selectBox">
+                    <input type="text" class="yj-input">
+                </div>
+                <span>*设定后会短信自动提醒顾客</span>
+            </div>
+            <div style="clear: both"></div>
+
+            <div class="goods-select">
+                <div class="goods-select-title">供应商</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">供应商</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="defaultGoods"  name="like1[write]" lay-skin="primary" title="常规商品" checked >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="goods-vip-btn">
+                <div class="goods-vip-left">会员折扣</div>
+                <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                    <div class="yj-radio">
+                        <input type="radio">
+                    </div>
+                    <span>参与会员折扣</span>
+                    <em onclick="openSettingVip(this)">设置</em>
+                </div>
+            </div>
+            <div class="goods-select-box">
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">零售价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                </div>
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">提成</div>
+                    <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="scoreGoods" name="" lay-skin="primary" title="积分商品" >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="goods-select-box" style="display: none">
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">积分价</div>
+                <div class="goods-range-body" onclick="openZeroPrice()">设定积分价</div>
+            </div>
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">兑换数量上限</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select " style="width: 100%;height: auto;">
+                <div class="goods-select-title">有效期</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item" pane="">
+                        <div class="layui-input-block yj-check-input">
+                            <input type="checkbox" name=""  lay-filter="kucun" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div style="clear: both"></div>
+
+        </div>
+    </div>
+    <!--新增镜架-->
+    <div class="content-view content-view-addtyqtgoods">
+        <div class="layui-yj-header">
+            <div class="layui-layer-title">
+                <div>新增镜架</div>
+            </div>
+            <div class="title-right" >
+                销售状态<div class="yj-search active" onclick="changeYjStatus(this)"><i></i></div>
+            </div>
+        </div>
+        <div class="goods-select-box">
+            <div class="goods-select">
+                <div class="goods-select-title">品牌</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">系列</div>
+                <div class="selectBox">
+                    <div class="select-box-header">
+                        <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="goods-select">
+                <div class="goods-select-title">质保时长/天</div>
+                <div class="selectBox">
+                    <input type="text" class="yj-input">
+                </div>
+            </div>
+
+            <div class="goods-select">
+                <div class="goods-select-title">供应商</div>
+                <div class="selectBox" >
+                    <div class="select-box-header">
+                        <span class="text">供应商</span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="defaultGoods" name="like1[write]" lay-skin="primary" title="常规商品" checked >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="goods-vip-btn">
+                <div class="goods-vip-left">会员折扣</div>
+                <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                    <div class="yj-radio">
+                        <input type="radio">
+                    </div>
+                    <span>参与会员折扣</span>
+                    <em onclick="openSettingVip(this)">设置</em>
+                </div>
+            </div>
+            <div class="goods-select-box">
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">零售价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                </div>
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">提成</div>
+                    <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="scoreGoods" name="" lay-skin="primary" title="积分商品" >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="goods-select-box" style="display: none">
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">积分价</div>
+                <div class="goods-range-body" onclick="openZeroPrice()">设定积分价</div>
+            </div>
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">兑换数量上限</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select " style="width: 100%;height: auto;">
+                <div class="goods-select-title">有效期</div>
+                <div class="">
+                    <input type="text" placeholder="搜索商品" class="yj-input">
+                </div>
+            </div>
+            <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item" pane="">
+                        <div class="layui-input-block yj-check-input">
+                            <input type="checkbox" lay-filter="kucun" name="" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+
+    <!--设置会员折扣的弹出框-->
+    <div class="content-view content-view-yj">
+        <table class="table  table-self">
+            <tr>
+                <th>会员等级</th>
+                <th>折扣</th>
+            </tr>
+            <tr>
+                <td>A级会员</td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>AA级会员</td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>AAA级会员</td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>AAAA级会员</td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>AAAAAA级会员</td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+        </table>
+    </div>
+    <!--设置提成的弹出框-->
+    <div class="content-view content-view-ticheng">
+        <div class="ticheng-checkbox">
+            <form class="layui-form" action="">
+                <div class="layui-input-block" style="float:left;">
+                    <input type="checkbox" name="" lay-skin="primary"  title="团体统一提成" >
+                </div>
+                <div class="layui-input-block" style="float:left;">
+                    <input type="checkbox" name="" lay-skin="primary" title="个人统一提成" >
+                </div>
+            </form>
+        </div>
+        <table class="table  table-self table-ticheng">
+            <tr>
+                <th>门店名称</th>
+                <th>团体</th>
+                <th>个人</th>
+            </tr>
+            <tr>
+                <td>A门店</td>
+                <td><input type="text" placeholder="0"></td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>A门店</td>
+                <td><input type="text" placeholder="0"></td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>A门店</td>
+                <td><input type="text" placeholder="0"></td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>A门店</td>
+                <td><input type="text" placeholder="0"></td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td>A门店</td>
+                <td><input type="text" placeholder="0"></td>
+                <td><input type="text" placeholder="0"></td>
+            </tr>
+        </table>
+    </div>
+    <!--设置现货范围-->
+    <div class="content-view content-view-range">
+        <div class="yj-content-body">
+            <div class="range-header">
+                <div class="now-goods-range">
+                    <em></em>现货范围
+                </div>
+                <div class="dingzhi-range">
+                    <em></em>定制范围
+                </div>
+            </div>
+            <table class="layui-hide yj-layui-table" id="rangeEvent" lay-filter="rangeEvent"></table>
+        </div>
+    </div>
+    <!--设定价格-->
+    <div class="content-view content-view-price">
+        <div class="layui-yj-header">
+            <div class="layui-layer-title">
+                <div>设定价格<span>规格: 片</span></div>
+            </div>
+            <div class="title-right" onclick="openRedTip()" >
+                设置预警库存
+            </div>
+        </div>
+        <ul class="tab-ul">
+            <li class="active">零售价/元</li>
+            <li>批发价/元</li>
+            <li>备货量/片</li>
+            <li>积分价/分</li>
+        </ul>
+        <div class="price-table-box">
+            <table class="layui-hide yj-layui-table" id="priceEvent" lay-filter="priceEvent"></table>
+        </div>
+    </div>
+    <!--设置预警库存-->
+    <div class="content-view content-view-yujing">
+        <div class="goods-type">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block yj-check-input">
+                        <input type="checkbox" name="" lay-filter="kucun" lay-skin="primary" title="当现货库存为0的产品达到<input readonly='' class='yj-input' placeholder='数量'>个提醒" >
+                    </div>
+                </div>
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block yj-check-input">
+                        <input type="checkbox" name="" lay-filter="kucun" lay-skin="primary" title="当总库存少于备货量百分之<input readonly='' class='yj-input' placeholder='数量'>提醒" >
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!--js依赖开始-->
+    <!--bootstrap依赖于jQuery，jQuery.js必须放在BS.js之前-->
+    <script src="../resource/js/jquery.min.js"></script>
+    <script src="../resource/js/bootstrap.js"></script>
+    <!--js依赖结束-->
+
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+    <script src="../resource/layui/layui.js"></script>
+
+    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakoo/project.js"></script>
+
+    <script src="../resource/common/common.js"></script>
+    <script src="../resource/js/yanjing.js"></script>
+
+    <script>
+        var goodsType=1;//商品类型
+        var columns;        //其它商品的表格
+        var columnsTeshu;   //特殊商品的表格
+        var $table =  $('#yj-table');
+        var data = [{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1}]
+        var TableInit = function (columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $table.bootstrapTable('destroy')
+                $table.bootstrapTable({
+                    data:data,
+                    classes:"table",
+                    pagination:true,        //是否显示分页
+                    pageNumber:1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,
+                    pageList: [5, 10, 15, 20],
+                    sortable: false,
+                    sortOrder: "asc",
+                    showColumns: true,
+                    strictSearch: true,
+                    locale: "zh-CN",
+                    paginationHAlign:"center",
+                    clickToSelect:true,
+                    paginationLoop:false,
+                    columns:columns
+                });
+            };
+            return oTableInit;
+        };
+        columns = [
+            {checkbox: true, valign:"middle"},
+            {field: "id", title: "品牌", valign:"middle"},
+            {field: "", title: "系列", valign:"middle",formatter: function (value, row, index) {
+                    return '系列名称';
+                }
+            },
+            {field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
+                    return '100·2';
+                }
+            },
+            {field: "", title: "可用数量", valign:"middle",formatter: function (value, row, index) {
+                    return '100';
+                }
+            },
+            {field: "", title: "零售价", valign:"middle",formatter: function (value, row, index) {
+                    return '￥10';
+                }
+            },
+            {field: "", title: "成本价", valign:"middle",formatter: function (value, row, index) {
+                    return '￥10';
+                }
+            },
+            {field: "", title: "提成", valign:"middle",formatter: function (value, row, index) {
+                    return '<span class="goods-ticheng">团</span>';
+                }
+            },
+            {field: "", title: "库存总值", valign:"middle",formatter: function (value, row, index) {
+                    return '￥10000';
+                }
+            },
+            {field: "", title: "销售状态", valign:"middle",events: {"click .yj-search":function (e,value, row, index) {
+                        quakooUtils.stopEventBubble()
+                        $(this).toggleClass('active')
+                    }},formatter: function (value, row, index) {
+                    return '<div class="yj-search" onclick="changeYjStatus(this)"><i></i></div>';
+                }
+            },
+            {field: "", title: "操作", valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary" style="margin-right: 8px;">库存详情</button><button class="btn btn-info">编辑</button>';
+                }
+            }
+        ];
+
+        columnsTeshu = [
+            {checkbox: true,valign:"middle"},
+            {field: "", title: "主图", valign:"middle",formatter: function (value, row, index) {
+                    return '<img class="yj-table-img" src="../resource/img/a8.jpg">';
+                }
+            },
+            {field: "", title: "名称", valign:"middle",formatter: function (value, row, index) {
+                    return '系列名称';
+                }
+            },
+            {field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
+                    return '100·2';
+                }
+            },
+            {field: "", title: "可用数量", valign:"middle",formatter: function (value, row, index) {
+                    return '100';
+                }
+            },
+            {field: "", title: "积分价", valign:"middle",formatter: function (value, row, index) {
+                    return '￥10';
+                }
+            },
+            {field: "", title: "成本价", valign:"middle",formatter: function (value, row, index) {
+                    return '￥10';
+                }
+            },
+
+            {field: "", title: "库存总值", valign:"middle",formatter: function (value, row, index) {
+                    return '￥10000';
+                }
+            },
+            {field: "", title: "销售状态", valign:"middle",formatter: function (value, row, index) {
+                    return '<div class="yj-search" onclick="changeYjStatus(this)"><i></i></div>';
+                }
+            },
+            {field: "", title: "操作", valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary" style="margin-right: 8px;">编辑</button><button class="btn btn-danger">删除</button>';
+                }
+            }
+        ];
+        var Table = new TableInit(columnsTeshu);
+        Table.Init();
+
+        // 下拉选择JS开始
+        selectTag($("#selectBox"),function (ret) {
+            console.log(ret)
+        })
+        selectTag($("#select-form"),function (ret) {
+            console.log(ret)
+        })
+        selectTag($("#select-type"),function (ret) {
+            console.log(ret)
+        })
+        selectTag($("#select-status"),function (ret) {
+            console.log(ret)
+        })
+        selectTag($("#select-pinpai"),function (ret) {
+            $('#select-pinpai').find('.text').css('color','#393953')
+            console.log(ret)
+        })
+        layui.use('form', function(){
+            var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+            form.render();
+        });
+
+        function chooseGoodsType(self,value){
+            goodsType = value;
+            if(goodsType == 7){
+                var Table = new TableInit(columnsTeshu);
+                Table.Init();
+            }else{
+                var Table = new TableInit(columns);
+                Table.Init();
+            }
+            $(self).addClass('active').siblings().removeClass('active')
+        }
+
+        //设置供应商
+        function suppliers(){
+
+        }
+        //添加商品
+        function addGoods() {
+            if(goodsType==7){
+                layer.open({
+                    type: 1,shade: 0.01,title:'新增特殊商品',
+                    skin: 'layui-layer-add-goods layui-layer-addtsgoods', //样式类名
+                    // area: ['360px', '535px'],
+                    anim: 0,
+                    maxWidth:'360',
+                    closeBtn: 0, //不显示关闭按钮
+                    resize:false,
+                    shadeClose: true, //开启遮罩关闭
+                    content: $('.content-view-addtsgoods'),
+                    btn: ['取消','新增'],
+                    yes: function(index, layero){
+                        layer.close(index)
+                    },
+                    btn2: function(){
+                        alert(1)
+                        return false;
+                    },
+                    success: function(layero, index){
+                        checkGoodsType()
+                    }
+                });
+            }else if(goodsType==5){
+                layer.open({
+                    type: 1,shade: 0.01,title:'新增护理产品',
+                    skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
+                    // area: ['360px', '535px'],
+                    anim: 0,
+                    maxWidth:'360',
+                    closeBtn: 0, //不显示关闭按钮
+                    resize:false,
+                    shadeClose: true, //开启遮罩关闭
+                    content: $('.content-view-addhlgoods'),
+                    btn: ['取消','新增'],
+                    yes: function(index, layero){
+                        layer.close(index)
+                    },
+                    btn2: function(){
+                        alert(1)
+                        return false;
+                    },
+                    success: function(layero, index){
+                        checkGoodsType()
+                    }
+                });
+            }else if(goodsType==3){
+                layer.open({
+                    type: 1,shade: 0.01,title:'新增镜片',
+                    skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
+                    // area: ['360px', '535px'],
+                    anim: 0,
+                    maxWidth:'360',
+                    closeBtn: 0, //不显示关闭按钮
+                    resize:false,
+                    shadeClose: true, //开启遮罩关闭
+                    content: $('.content-view-addyxgoods'),
+                    btn: ['取消','新增'],
+                    yes: function(index, layero){
+                        layer.close(index)
+                    },
+                    btn2: function(){
+                        alert(1)
+                        return false;
+                    },
+                    success: function(layero, index){
+                        checkGoodsType()
+                    }
+                });
+            }else if(goodsType==1){
+                layer.open({
+                    type: 1,shade: 0.01,title:'新增镜片',
+                    skin: 'layui-layer-add-goods', //样式类名
+                    // area: ['360px', '535px'],
+                    anim: 0,
+                    maxWidth:'360',
+                    closeBtn: 0, //不显示关闭按钮
+                    resize:false,
+                    shadeClose: true, //开启遮罩关闭
+                    content: $('.content-view-addgoods'),
+                    btn: ['取消','新增'],
+                    yes: function(index, layero){
+                        layer.close(index)
+                    },
+                    btn2: function(){
+                        alert(1)
+                        return false;
+                    },
+                    success: function(layero, index){
+                        checkGoodsType()
+                    }
+                });
+            }else{
+                layer.open({
+                    type: 1,shade: 0.01,title:'新增镜架/太阳镜/其它商品',
+                    skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
+                    // area: ['360px', '535px'],
+                    anim: 0,
+                    maxWidth:'360',
+                    closeBtn: 0, //不显示关闭按钮
+                    resize:false,
+                    shadeClose: true, //开启遮罩关闭
+                    content: $('.content-view-addtyqtgoods'),
+                    btn: ['取消','新增'],
+                    yes: function(index, layero){
+                        layer.close(index)
+                    },
+                    btn2: function(){
+                        alert(1)
+                        return false;
+                    },
+                    success: function(layero, index){
+                        checkGoodsType()
+                    }
+                });
+            }
+
+        }
+
+        //监听选择常规商品和积分商品
+        function checkGoodsType() {
+            $('.yj-check-input input').click(function (e) {
+                quakooUtils.stopEventBubble(e)
+            })
+            layui.use('form', function(){
+                var form = layui.form;
+                // 常规商品
+                form.on('checkbox(defaultGoods)', function(data){
+                    if(data.elem.checked){
+                        //是否被选中，true或者false
+                        $(data.othis).parents('.goods-type').next().slideDown();
+                    }else{
+                        $(data.othis).parents('.goods-type').next().slideUp();
+                    }
+                });
+                //积分商品
+                form.on('checkbox(scoreGoods)', function(data){
+                    if(data.elem.checked){
+                        //是否被选中，true或者false
+                        $(data.othis).parents('.goods-type').next().slideDown();
+                    }else{
+                        $(data.othis).parents('.goods-type').next().slideUp();
+                    }
+                });
+                //库存
+                form.on('checkbox(kucun)', function(data){
+                    if(data.elem.checked){
+                        //是否被选中，true或者false
+                        $(data.othis).find('input').attr('readonly',false)
+                    }else{
+                        $(data.othis).find('input').attr('readonly','readonly').val('')
+                    }
+                });
+            });
+        }
+
+        //改变销售状态
+        function changeYjStatus(self) {
+            quakooUtils.stopEventBubble()
+            $(self).toggleClass('active')
+        }
+        //改变会员折扣
+        function changeVipStatus(self) {
+            quakooUtils.stopEventBubble()
+            $(self).toggleClass('active')
+        }
+        //打开会员折扣
+        function openSettingVip(self) {
+            if($(self).parent().hasClass('active')){
+                layer.open({
+                    type: 1,shade: 0.01,title:'设置会员折扣',
+                    skin: 'layui-layer-yj layui-layer-vip', //样式类名
+                    anim: 0,
+                    area:['360px','auto'],
+                    closeBtn: 0, //不显示关闭按钮
+                    resize:false,
+                    shadeClose: true, //开启遮罩关闭
+                    content: $('.content-view-yj'),
+                    btn: ['取消','确定'],
+                    yes: function(index, layero){
+                        layer.close(index)
+                    },
+                    btn2: function(){
+                        return false;
+                    },
+                    success: function(layero, index){
+
+                    }
+                });
+            }
+            quakooUtils.stopEventBubble()
+        }
+        //设定现货范围
+        function openGoodsRange(title) {
+            layer.open({
+                type: 1,shade: 0.01,title:'设定'+title+'范围<span>点击或框选单元格来设定</span>',
+                skin: 'layui-layer-yj', //样式类名
+                anim: 0,
+                area:['720px','560px'],
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-range'),
+                btn: ['取消','保存'],
+                yes: function(index, layero){
+                    layer.close(index)
+                },
+                btn2: function(index, layero){
+                    layer.close(index)
+                    return false;
+                },
+                success: function(layero, index){
+                    setRange(title)
+                }
+            });
+        }
+
+        //设定零售价
+        function openZeroPrice() {
+            layer.open({
+                type: 1,shade: 0.01,
+                skin: 'layui-layer-yj layui-layer-add-goods layui-layer-view-price', //样式类名
+                anim: 0,
+                area:['720px','560px'],
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-price'),
+                btn: ['取消','保存'],
+                yes: function(index, layero){
+                    layer.close(index)
+                },
+                btn2: function(){
+                    return false;
+                },
+                success: function(layero, index){
+                    $('.layui-layer-view-price .layui-layer-content').height(560-42+'px')
+                    $('.layui-layer-view-price .layui-layer-btn').append('<div class="view-price-add"><input class="yj-input" placeholder="输入数量" type="number"><button class="btn btn-primary">键入</button></div>')
+                    setPrice()
+                }
+            });
+        }
+        //设置预警库存
+        function openRedTip() {
+            layer.open({
+                type: 1,shade: 0.01,title:"设置预警库存",
+                skin: 'layui-layer-yj layui-layer-yujing', //样式类名
+                anim: 0,
+                area:['360px','188px'],
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-yujing'),
+                btn: ['取消','确定'],
+                yes: function(index, layero){
+                    layer.close(index)
+                },
+                btn2: function(){
+                    return false;
+                },
+                success: function(layero, index){
+
+                }
+            });
+        }
+        //设定提成
+        function openSettingTicheng() {
+            layer.open({
+                type: 1,shade: 0.01,title:'设定提成',
+                skin: 'layui-layer-yj layui-layer-ticheng', //样式类名
+                anim: 0,
+                area:['360px','auto'],
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-ticheng'),
+                btn: ['取消','确定'],
+                yes: function(index, layero){
+                    layer.close(index)
+                },
+                btn2: function(){
+                    return false;
+                },
+                success: function(layero, index){
+
+                }
+            });
+        }
+        //初始化范围表格
+        function setRange(title) {
+            var rangeData = [{num:'+0.00'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'}];
+            layui.use('table', function(){
+                var table = layui.table;
+                table.render({
+                    elem: '#rangeEvent'
+                    ,data:rangeData
+                    ,width: 688
+                    ,height: 416
+                    ,unresize:true
+                    ,cols: [[
+                        {field:'num', width:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'}
+                        ,{field:'', width:60, title: '+0.00', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-0.25', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-0.50', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-0.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.00', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.25', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.50', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                    ]]
+                });
+                //监听单元格事件
+                table.on('tool(rangeEvent)', function(obj){
+                    if(title=='现货'){
+                        $(this).toggleClass('activenow')
+                    }else if(title=='定制'){
+                        $(this).toggleClass('active')
+                    }
+                    var data = obj.data;
+                    if(obj.event === 'setSign'){
+                        console.log(data)
+                    }
+                });
+            });
+        }
+        //初始化价格表格
+        function setPrice() {
+            var rangeData = [{num:'+0.00'},{num:'+0.00'},{num:'+0.00'},{num:'+0.00'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'}];
+            layui.use('table', function(){
+                var table = layui.table;
+                table.render({
+                    elem: '#priceEvent'
+                    ,data:rangeData
+                    ,width: 688
+                    ,height: 416
+                    ,limit:40
+                    ,unresize:true
+                    ,cols: [[
+                        {field:'num', width:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'}
+                        ,{field:'', width:60, title: '+0.00', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-0.25', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-0.50', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-0.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.00', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.25', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.50', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
+                    ]]
+                });
+                //监听单元格事件
+                table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                    console.log(obj.value); //得到修改后的值
+                    console.log(obj.field); //当前编辑的字段名
+                    console.log(obj.data); //所在行的所有相关数据
+                });
+            });
+        }
+    </script>
+</body>
+</html>

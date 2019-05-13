@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>营销管理</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/layui/css/layui.css">
+    <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+    <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+    <!--Bootstrap样式引入结束-->
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <!--标签样式重置结束-->
+    <!--公用组件样式-->
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <!--公用组件样式结束-->
+    <!--单页样式-->
+    <link rel="stylesheet" href="../resource/css/yanjing/market.css">
+    <!--单页样式结束-->
+
+</head>
+<body class="body-bg">
+<div class="header clear"   >
+    <ul class="tab-ul clear">
+        <li class="active">抵用券营销</li>
+        <li>短信营销</li>
+        <li>短信群发</li>
+        <li>任务奖励</li>
+    </ul>
+    <ol>
+        <li class="right-info active">
+            <button onclick="newVouchers1()">新增抵用券</button>
+        </li>
+        <li class="right-info">
+            <span>剩余 1200 条信息可用</span>
+        </li>
+        <li class="right-info">
+            <span>剩余 1200 条信息可用</span>
+            <button onclick="newVouchers3()">新增短信群发</button>
+        </li>
+        <li class="right-info">
+            <button onclick="createTask()">创建任务</button>
+        </li>
+    </ol>
+</div>
+<div class="content">
+    <ul>
+        <li class="tab-item first active">
+            <ol class="clear" id="card-list1">
+                <li class="card-item">
+                    <div class="top">
+                        <div class="switch active fr">
+                            <span class="off">未开启</span>
+                            <span class="on">已启用</span>
+                            <span class="switch-btn"><i></i></span>
+                        </div>
+                        <div class="text fl">满100减10抵用券</div>
+                    </div>
+                    <div class="middle-cont">
+                        <div class="item">
+                            <div class="text-top">获取条件</div>
+                            <div class="text-bot">消费满500元</div>
+                        </div>
+                        <div class="item">
+                            <div class="text-top">抵用券描述</div>
+                            <div class="text-bot">消费满100元减10元</div>
+                        </div>
+                        <div class="item">
+                            <div class="text-top">有效期</div>
+                            <div class="text-bot">2018.5.30-2019.5.30</div>
+                        </div>
+                    </div>
+                    <div class="bot-cont">
+                        <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
+                        <span class="button button-thin-red">删除</span>
+                    </div>
+                </li>
+                <li class="card-item">
+                    <div class="top">
+                        <div class="switch active fr">
+                            <span class="off">未开启</span>
+                            <span class="on">已启用</span>
+                            <span class="switch-btn"><i></i></span>
+                        </div>
+                        <div class="text fl">满100减10抵用券</div>
+                    </div>
+                    <div class="middle-cont">
+                        <div class="item">
+                            <div class="text-top">获取条件</div>
+                            <div class="text-bot">消费满500元</div>
+                        </div>
+                        <div class="item">
+                            <div class="text-top">抵用券描述</div>
+                            <div class="text-bot">消费满100元减10元</div>
+                        </div>
+                        <div class="item">
+                            <div class="text-top">有效期</div>
+                            <div class="text-bot">2018.5.30-2019.5.30</div>
+                        </div>
+                    </div>
+                    <div class="bot-cont">
+                        <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
+                        <span class="button button-thin-red">删除</span>
+                    </div>
+                </li>
+                <li class="card-item">
+                    <div class="top">
+                        <div class="switch fr">
+                            <span class="off">未开启</span>
+                            <span class="on">已启用</span>
+                            <span class="switch-btn"><i></i></span>
+                        </div>
+                        <div class="text fl">满100减10抵用券</div>
+                    </div>
+                    <div class="middle-cont">
+                        <div class="item">
+                            <div class="text-top">获取条件</div>
+                            <div class="text-bot">消费满500元</div>
+                        </div>
+                        <div class="item">
+                            <div class="text-top">抵用券描述</div>
+                            <div class="text-bot">消费满100元减10元</div>
+                        </div>
+                        <div class="item">
+                            <div class="text-top">有效期</div>
+                            <div class="text-bot">2018.5.30-2019.5.30</div>
+                        </div>
+                    </div>
+                    <div class="bot-cont">
+                        <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
+                        <span class="button button-thin-red">删除</span>
+                    </div>
+                </li>
+                <li class="card-item">
+                    <div class="top">
+                        <div class="switch fr">
+                            <span class="off">未开启</span>
+                            <span class="on">已启用</span>
+                            <span class="switch-btn"><i></i></span>
+                        </div>
+                        <div class="text fl">满100减10抵用券</div>
+                    </div>
+                    <div class="middle-cont">
+                        <div class="item">
+                            <div class="text-top">获取条件</div>
+                            <div class="text-bot">消费满500元</div>
+                        </div>
+                        <div class="item">
+                            <div class="text-top">抵用券描述</div>
+                            <div class="text-bot">消费满100元减10元</div>
+                        </div>
+                        <div class="item">
+                            <div class="text-top">有效期</div>
+                            <div class="text-bot">2018.5.30-2019.5.30</div>
+                        </div>
+                    </div>
+                    <div class="bot-cont">
+                        <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
+                        <span class="button button-thin-red">删除</span>
+                    </div>
+                </li>
+            </ol>
+            <table id="yj-page-table" data-toggle="table"  class="table table-border"></table>
+        </li>
+        <li class="tab-item section ">
+            <ol class="clear" id="yj-page-note-table">
+                <li class="card-item">
+                    <div class="inner">
+                        <div class="top">
+                            <div class="text">
+                                <div class="main">消费信息提醒</div>
+                                <div class="vice">消费后发送信息至顾客的手机或微信中</div>
+                            </div>
+                            <div class="switch">
+                                <span class="off">未开启</span>
+                                <span class="on">已启用</span>
+                                <span class="switch-btn"><i></i></span>
+                            </div>
+                        </div>
+                        <div class="cont">
+                            <div class="off"  onclick="newVouchers2()">
+                                <i class="iconfont icon-ico_setting_filled"></i>
+                                <span>设置</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="card-item">
+                    <div class="inner">
+                        <div class="top">
+                            <div class="text">
+                                <div class="main">消费信息提醒</div>
+                                <div class="vice">消费后发送信息至顾客的手机或微信中</div>
+                            </div>
+                            <div class="switch active">
+                                <span class="off">未开启</span>
+                                <span class="on">已启用</span>
+                                <span class="switch-btn"><i></i></span>
+                            </div>
+                        </div>
+                        <div class="cont">
+                            <div class="on">
+                                <div class="message-top">
+                                    <span class="fl">短信内容</span>
+                                    <input class="fr button-thin" type="button" onclick="newVouchers2()" value="编辑">
+                                </div>
+                                <div class="message-cont">
+                                    尊敬的xxx你好，你在xxxx你好，你在xxxxx消费了xx尊敬的xxx你好，你在xxxxx消费了xxx元，欢迎你下次再来。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </li>
+        <li class="tab-item">
+            <table id="dxqf-table" data-toggle="table"  class="table table-border"></table>
+        </li>
+        <li class="tab-item">
+            <table id="rwjl-table" data-toggle="table"  class="table table-border"></table>
+        </li>
+    </ul>
+
+</div>
+<div class="content-view1">
+    <div class="lay-header">
+        <span class="lay-title">新增抵用券</span>
+        <div class="switch active fr">
+            <span class="off">未开启</span>
+            <span class="on">已启用</span>
+            <span class="switch-btn"><i></i></span>
+        </div>
+    </div>
+    <div class="lay-content">
+        <ol>
+            <li class="lay-row title clear">
+                <div class="left">抵用券标题</div>
+                <input class="right" type="text" placeholder="抵用券标题">
+            </li>
+            <li class="lay-row describe clear">
+                <div class="left">抵用券描述</div>
+                <div class="right">
+                    <strong>消费满</strong>
+                    <em></em>
+                    <input type="number" placeholder="数值">
+                    <em></em>
+                    <div class="selectBox" id="selectBox1">
+                        <div class="select-box-header">
+                            <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
+                        </div>
+                        <div class="optionBox">
+                            <ul class="optionUL">
+                                <li value="01">元</li>
+                                <li value="02">美元</li>
+                                <li value="03">日元</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <em></em>
+                    <strong>减</strong>
+                    <em></em>
+                    <input type="number" placeholder="数值">
+                    <em></em>
+                    <div class="selectBox" id="selectBox2">
+                        <div class="select-box-header">
+                            <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
+                        </div>
+                        <div class="optionBox">
+                            <ul class="optionUL">
+                                <li value="01">元</li>
+                                <li value="02">美元</li>
+                                <li value="03">日元</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="lay-row clear">
+                <div class="left">获取条件</div>
+                <div class="right radio-button">
+                    <div class="box">
+                        <input type="radio" name="condition" id="condition1" checked="checked">
+                        <label for="condition1">
+                            <div class="selectBox" id="selectBox3">
+                                <div class="select-box-header">
+                                    <span class="text">全场通用</span><i class="iconfont icon-ico_arrow_down"></i>
+                                </div>
+                                <div class="optionBox">
+                                    <ul class="optionUL">
+                                        <li value="01">1</li>
+                                        <li value="02">2</li>
+                                        <li value="03">3</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="box">
+                        <input type="radio" name="condition" id="condition2">
+                        <label for="condition2">
+                            <span>消费满</span>
+                            <input type="number" placeholder="数值"/>
+                            <div class="selectBox" id="selectBox4">
+                                <div class="select-box-header">
+                                    <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
+                                </div>
+                                <div class="optionBox">
+                                    <ul class="optionUL">
+                                        <li value="01">元</li>
+                                        <li value="02">美元</li>
+                                        <li value="03">日元</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </li>
+            <li class="lay-row time clear">
+                <div class="left">有效期</div>
+                <div class="right">
+                    <div class="yj-demo-time">
+                        <div class="yj-date">
+                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="lay-row clear">
+                <div class="left">排序</div>
+                <input class="right" placeholder="排序序号">
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="content-view2">
+    <div class="top-name layui-layer-title ">
+        编辑隐形眼镜药水消费提醒
+    </div>
+    <div id="moveBox" >
+        <div id="moveBar" ondragover="allowDrop(event)" ondrop="drop(event)" >
+            <div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)" >顾客姓名</div>
+            <div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)" >消费时间</div>
+            <div class="movebar" id="moveBar3" draggable="true" ondragstart="drag(event)"  >门店名称</div>
+            <div class="movebar" id="moveBar4" draggable="true" ondragstart="drag(event)"  >消费金额</div>
+            <div class="movebar" id="moveBar5" draggable="true" ondragstart="drag(event)"  >诸葛村夫</div>
+        </div>
+        <div class="fill">
+            <div class="fill-tip">编辑输入框中的内容或拖动字段</div>
+            <div class="fill-box">
+                <div class="fill-div" id="fill-div" onclick="changeArea()" ondragover="allowDrop(event)" ondrop="drop(event)" >尊敬的你好，你在消费了元，欢迎你下次再来。</div>
+                <textarea name="" onclick="textareaClick()" onblur="textareaBlur()" class="fill-text" id="fill-text" >尊敬的你好，你在消费了元，欢迎你下次再来。</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-view3">
+    <div class="top-name">
+        新增短信群发
+    </div>
+    <div class="customer">
+        <div class="title">面向顾客</div>
+        <div class="contents">
+            <ol>
+                <li class="item clear">
+                    <div class="left">属性</div>
+                    <div class="right radio-button">
+                        <input type="radio" name="property" id="pro1" checked="checked">
+                        <label for="pro1">全部</label>
+                        <input type="radio" name="property" id="pro2">
+                        <label for="pro2">会员</label>
+                        <input type="radio" name="property" id="pro3">
+                        <label for="pro3">非会员</label>
+                    </div>
+                </li>
+                <li class="item clear">
+                    <div class="left">性别</div>
+                    <div class="right radio-button">
+                        <input type="radio" name="sex" id="sex1" checked="checked">
+                        <label for="sex1">全部</label>
+                        <input type="radio" name="sex" id="sex2">
+                        <label for="sex2">男</label>
+                        <input type="radio" name="sex" id="sex3">
+                        <label for="sex3">女</label>
+                    </div>
+                </li>
+                <li class="item clear">
+                    <div class="left">职业</div>
+                    <div class="right">
+                        <div class="selectBox" id="selectBox5">
+                            <div class="select-box-header">
+                                <span class="text">全部职业</span><i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="01">1</li>
+                                    <li value="02">2</li>
+                                    <li value="03">3</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="item clear">
+                    <div class="left">年龄</div>
+                    <div id="slide1" class=" right"></div>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="sms">
+        <div class="title">短信内容</div>
+        <div class="mid-content">
+            <div class="label-button">
+                <input type="button" value="消费时间">
+                <input type="button" value="顾客性别">
+            </div>
+            <div class="content-area">
+                <input type="text" placeholder="编辑输入框中的内容或拖动字段">
+                <p>尊敬的xxx，你好，你在xxx消费了xxx元，欢迎你下次再来。</p>
+            </div>
+        </div>
+    </div>
+    <div class="time">
+        <div class="title">发送时间</div>
+        <div class="send-time">
+            <div class="settings" style="display:none;">
+                <select name="demo" id="demo">
+                    <option value="date">日期</option>
+                </select>
+            </div>
+            <input name="test" id="send-time" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="发送时间" data-type="time"/>
+            <i class="iconfont icon-ico_calendar"></i>
+        </div>
+    </div>
+</div>
+<div class="create-task">
+    <div class="create-task-header">
+        <ul class="create-task-header-tab clear">
+            <li class="active" >创建团队任务</li>
+            <li id="person-task">创建个人任务</li>
+            <li class="move"></li>
+        </ul>
+    </div>
+    <ul class="task-tab">
+        <li class="task-item">
+            <div class="task-first clear">
+                <div class="first-item fl">
+                    <div class="text">任务名称</div>
+                    <input type="text" class="name" placeholder="名称">
+                </div>
+                <div class="first-item fr">
+                    <div class="text">任务门店</div>
+                    <button type="button" class="shop" onclick="selectShop()">选择门店<i class="iconfont icon-ico_list"></i></button>
+                </div>
+            </div>
+            <div class="task-second">
+                <input type="radio" name="sales" id="money" checked="checked">
+                <label for="money">销售额奖励</label>
+                <input type="radio" name="sales" id="number">
+                <label for="number">销售量奖励</label>
+            </div>
+            <div class="task-third">
+                <input type="radio" name="salesNum" id="allShop" >
+                <label for="allShop">
+                    <span>全店总销售额达到</span>
+                    <input type="number" placeholder="金额">
+                    <span>元</span>
+                </label>
+                <input type="radio" name="salesNum" id="selectProduct" checked="checked">
+                <label for="selectProduct">
+                    <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i></button>
+                    <span>销售额达到</span>
+                    <input type="number" placeholder="金额">
+                    <span>元</span>
+                </label>
+                <div class="award">
+                    <div class="award-text">奖励</div>
+                    <input type="number" placeholder="输入金额">
+                </div>
+                <div class="mission-time clear">
+                    <div class="mission-text">任务时间</div>
+                    <div class="yj-demo-time">
+                        <div class="yj-date">
+                            <span>选择截止时间</span><i class="iconfont icon-ico_calendar"></i>
+                        </div>
+                    </div>
+                    <div class="send-time">
+                        <div class="settings" style="display:none;">
+                            <select name="demo" id="demo1">
+                                <option value="date">日期</option>
+                            </select>
+                        </div>
+                        <input name="test" id="se-time" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="选择截止时间" data-type="time"/>
+                        <i class="iconfont icon-ico_calendar"></i>
+                    </div>
+                    <input type="checkbox" id="time-frame">
+                    <label for="time-frame">选择时间段</label>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="task-object">
+    <div class="tash-header layui-layer-title">选择任务对象</div>
+    <div class="content">
+        <div class="table">
+            <table id="yj-table" data-toggle="table"  class="table"></table>
+        </div>
+    </div>
+</div>
+<div class="task-shop scroll-content">
+    <div class="task-header">选择任务门店</div>
+    <div class="content">
+        <div class="table-box">
+            <table id="shop-table" data-toggle="table"  class="table"></table>
+        </div>
+    </div>
+</div>
+<div class="task-product">
+    <div class="task-header">选择任务产品</div>
+    <ul class="product-tab clear">
+        <li class="product-item active">镜片</li>
+        <li class="product-item">镜架</li>
+        <li class="product-item">隐形眼镜</li>
+        <li class="product-item">太阳镜</li>
+        <li class="product-item">其他商品</li>
+    </ul>
+    <ol class="product-list-tab">
+        <li class="product-list-item active">
+            <table id="jp-table" data-toggle="table"  class="table"></table>
+        </li>
+        <li class="product-list-item"></li>
+        <li class="product-list-item"></li>
+        <li class="product-list-item"></li>
+        <li class="product-list-item"></li>
+    </ol>
+</div>
+<div class="delete-task">
+    <div class="delete-header layui-layer-title">确定删除任务？</div>
+    <div class="content">此操作不可撤销</div>
+</div>
+<!--全局JS引用-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+<!--//日期范围插件开始-->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<script src="../resource/js/yanjing/tuodong.js"></script>
+<!--//日期范围插件结束-->
+
+<script>
+
+    /*卡片分页-抵用券营销*/
+    var $table = $("#yj-page-table");
+    var data1 = [{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1}];
+    var TableInit = function (callback) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable('destroy');
+            $table.bootstrapTable({
+                data:data1,
+                classes:"table",
+                pagination:true,        //是否显示分页
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 6,
+                pageList: [6,12,18],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign:"center",
+                clickToSelect:true,
+                paginationLoop:false,
+                columns:[],
+                onPreBody:function (data) {
+                    if(callback){
+                        callback(data,this)
+                    }
+                }
+            });
+        };
+        return oTableInit;
+    };
+    var Table = new TableInit(manage);
+    Table.Init();
+    function manage(data,_this) {
+        var html = '';
+        for(var i=(_this.pageNumber-1)*_this.pageSize;i<_this.pageNumber*_this.pageSize;i++){
+            html+= '<li class="card-item">'+
+                    '<div class="top">'+
+                        '<div class="switch active fr">'+
+                            '<span class="off">未开启</span>'+
+                            '<span class="on">已启用</span>'+
+                            '<span class="switch-btn"><i></i></span>'+
+                        '</div>'+
+                        '<div class="text fl">满100减10抵用券</div>'+
+                    '</div>'+
+                    '<div class="middle-cont">'+
+                        '<div class="item">'+
+                            '<div class="text-top">获取条件</div>'+
+                            '<div class="text-bot">消费满500元</div>'+
+                        '</div>'+
+                        '<div class="item">'+
+                            '<div class="text-top">抵用券描述</div>'+
+                            '<div class="text-bot">消费满100元减10元</div>'+
+                        '</div>'+
+                        '<div class="item">'+
+                            '<div class="text-top">有效期</div>'+
+                            '<div class="text-bot">2018.5.30-2019.5.30</div>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="bot-cont">'+
+                        '<span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>'+
+                        '<span class="button button-thin-red">删除</span>'+
+                    '</div>'+
+                '</li>';
+        }
+        $("#card-list1").html(html);
+    }
+    /*卡片分页-短信营销*/
+    var $tableNote = $("#yj-page-note-table");
+    var data2 = [{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1}];
+    var TableInit = function (callback) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $tableNote.bootstrapTable('destroy');
+            $tableNote.bootstrapTable({
+                data:data2,
+                classes:"table",
+                pagination:true,        //是否显示分页
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 6,
+                pageList: [6,12,18],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign:"center",
+                clickToSelect:true,
+                paginationLoop:false,
+                columns:[],
+                onPreBody:function (data) {
+                    if(callback){
+                        callback(data,this)
+                    }
+                }
+            });
+        };
+        return oTableInit;
+    };
+    var Table = new TableInit(note);
+    Table.Init();
+    function note(data,_this) {
+        var html = '';
+        for(var i=(_this.pageNumber-1)*_this.pageSize;i<_this.pageNumber*_this.pageSize;i++){
+            console.log(i%2);
+            if(i%2==0){
+                html+= '<li class="card-item">'+
+                    '<div class="inner">'+
+                        '<div class="top">'+
+                            '<div class="text">'+
+                                '<div class="main">消费信息提醒</div>'+
+                                '<div class="vice">消费后发送信息至顾客的手机或微信中</div>'+
+                            '</div>'+
+                            '<div class="switch">'+
+                                '<span class="off">未开启</span>'+
+                                '<span class="on">已启用</span>'+
+                                '<span class="switch-btn"><i></i></span>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="cont">'+
+                            '<div class="off"  onclick="newVouchers2()">'+
+                                '<i class="iconfont icon-ico_setting_filled"></i>'+
+                                '<span>设置</span>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</li>';
+            }else if(i%2==1){
+                html+= '<li class="card-item">'+
+                    '<div class="inner">'+
+                        '<div class="top">'+
+                            '<div class="text">'+
+                                '<div class="main">消费信息提醒</div>'+
+                                '<div class="vice">消费后发送信息至顾客的手机或微信中</div>'+
+                            '</div>'+
+                            '<div class="switch active">'+
+                                '<span class="off">未开启</span>'+
+                                '<span class="on">已启用</span>'+
+                                '<span class="switch-btn"><i></i></span>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="cont">'+
+                            '<div class="on">'+
+                                '<div class="message-top">'+
+                                    '<span class="fl">短信内容</span>'+
+                                    '<input class="fr button-thin" type="button" onclick="newVouchers2()" value="编辑">'+
+                                '</div>'+
+                                '<div class="message-cont">'+
+                                    '尊敬的xxx你好，你在xxxx你好，你在xxxxx消费了xx尊敬的xxx你好，你在xxxxx消费了xxx元，欢迎你下次再来。'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</li>';
+            }
+            html+= '<li class="card-item">'+
+                    '<div class="inner">'+
+                        '<div class="top">'+
+                            '<div class="text">'+
+                                '<div class="main">消费信息提醒</div>'+
+                                '<div class="vice">消费后发送信息至顾客的手机或微信中</div>'+
+                            '</div>'+
+                            '<div class="switch">'+
+                                '<span class="off">未开启</span>'+
+                                '<span class="on">已启用</span>'+
+                                '<span class="switch-btn"><i></i></span>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="cont">'+
+                            '<div class="off"  onclick="newVouchers2()">'+
+                                '<i class="iconfont icon-ico_setting_filled"></i>'+
+                                '<span>设置</span>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</li>';
+        }
+        $("#yj-page-note-table").html(html);
+    }
+    /**
+     * 圆环
+     * */
+    /**
+     * 滑块
+     * */
+
+    /**
+     * 短信群发
+     * */
+    var data3 = [{ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
+        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"}
+    ];
+    $("#dxqf-table").bootstrapTable({
+        data:data3,                 //被加载的数据。
+        classes:"table",
+        pagination:true,            //是否显示分页
+        pageNumber:1,               //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {field: "ctime", title: "创建时间", align:"left",valign:"middle"},
+            {field: "stime", title: "发送时间", align:"left",valign:"middle"},
+            {field: "customer", title: "面向顾客", align:"left",valign:"middle"},
+            {field: "note", title: "短信内容", align:"left",valign:"middle"},
+            {field: "numbers", title: "送达条数", align:"left",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary">编辑</button>';
+                }
+            }
+        ]
+
+    });
+
+    /**
+     * 任务奖励
+     * */
+    var data4 = [{taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"60"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"10"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"50"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"60"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"80"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"80"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"20"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"0"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"80"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"80"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"100"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"100"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"100"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"80"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"50"},
+        {taskName:"月销售额任务",deadline:"2018.01.20 - 2018.05.20",award:"2000元",taskNum:"50000元",completed:"50000元",taskTracker:"团队",progress:"70"}];
+    $("#rwjl-table").bootstrapTable({
+        data:data4,
+        classes:"table",
+        pagination:true,        //是否显示分页
+        pageNumber:1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {field: "taskName", title: "任务名称", align:"left",valign:"middle"},
+            {field: "deadline", title: "截止时间", align:"left",valign:"middle"},
+            {field: "award", title: "奖励", align:"left",valign:"middle"},
+            {field: "taskNum", title: "任务量", align:"left",valign:"middle"
+            },{
+                field: "completed", title: "已完成", align:"left",valign:"middle"
+            },{
+                field: "taskTracker", title: "任务执行", align:"center",valign:"middle"
+            },{
+                field: "progress", title: "进度", align:"center",valign:"middle",formatter:function (value,row,index) {
+                    var html;
+                    if(value>=100){
+                        html = "<span class='end'><i class='iconfont icon-ico_check'></i></span>"
+                    }else{
+                        html = "<canvas class='canvas' width='24' data-value='"+value+"' height='24'></canvas>";
+                    }
+                    return html;
+                }
+            },{
+                field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary" style="margin-right: 8px;">编辑</button><button class="btn btn-danger" style="margin-right: 8px;">删除</button>';
+                }
+            }
+        ],
+        onPostBody:function(){
+            canvasFn();
+        },
+        success:function () {
+
+        }
+
+    });
+    function canvasFn() {
+        var element =document.getElementsByClassName('canvas');
+        for ( var i = 0; i < element.length; i++) {
+            var item = element[i];
+            canFor(item,item.getAttribute('data-value'));
+        }
+        function canFor(document, value) {
+            var context = document.getContext('2d'), //获取画图环境，指明为2d
+                centerX = document.width / 2, //document中心点x轴坐标
+                centerY = document.height / 2, //Canvas中心点y轴坐标
+                rad = Math.PI * 2 / 100; //将360度分成100份，那么每一份就是rad度
+                //speed = 10;加载的快慢就靠它了
+            //绘制圆环背景
+            function whiteCircle() {
+                context.save();
+                context.beginPath();
+                context.lineWidth = 2; //设置线宽
+                context.strokeStyle = "#FBEEED";
+                context.arc(centerX, centerY, 10, 0, Math.PI * 2, false);
+                context.stroke();
+                context.closePath();
+                context.restore();
+            }
+            //绘制进度
+            function blueCircle(value) {
+                context.save();
+                context.strokeStyle = "#DD5B4B"; //设置描边样式
+                context.lineWidth = 2; //设置线宽
+                context.beginPath(); //路径开始
+                context.arc(centerX, centerY, 10, -Math.PI / 2, -Math.PI / 2 + rad * value, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+                context.stroke(); //绘制
+                context.closePath(); //路径结束
+                context.restore();
+            }
+            whiteCircle();
+            blueCircle(value);
+        }
+    };
+$()
+
+
+    /**
+     * 选择任务门店
+     * */
+    var data5=[{shopName:"杭州市西湖区湖滨银泰店"},{shopName:"杭州市旗舰店"},{shopName:"杭州市西湖区湖滨银泰店"},{shopName:"杭州市旗舰店"},{shopName:"杭州市西湖区湖滨银泰店"},{shopName:"杭州市旗舰店"},{shopName:"杭州市西湖区湖滨银泰店"},{shopName:"杭州市旗舰店"},{shopName:"杭州市西湖区湖滨银泰店"},{shopName:"杭州市旗舰店"},{shopName:"杭州市西湖区湖滨银泰店"},{shopName:"杭州市旗舰店"}];
+    $("#yj-table").bootstrapTable({
+        data:data5,
+        classes:"table",
+        pagination:false,//是否显示分页
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {checkbox: true, align:"center",valign:"middle"},
+            {field: "shopName", title: "门店名称", align:"left",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+                }
+            }
+        ]
+
+    });
+    /**
+     * 选择任务产品
+     * */
+    var data6 =[{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"},{brand:"品牌A",series:"系列A",model:"型号A",color:"色号A"}];
+    $("#jp-table").bootstrapTable({
+        data:data6,
+        classes:"table",
+        pagination:true,
+        pageNumber:1,
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {checkbox: true, align:"center",valign:"middle"},
+            {field: "brand", title: "品牌", align:"left",valign:"middle"},
+            {field: "series", title: "系列", align:"left",valign:"middle"},
+            {field: "model", title: "型号", align:"left",valign:"middle"},
+            {field: "color", title: "色号", align:"left",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+                }
+            }
+        ]
+
+    });
+    /**
+     * 选择任务对象
+     * */
+    var data7 = [{}];
+    $("#shop-table").bootstrapTable({
+        data:data5,
+        classes:"table",
+        pagination:false,//是否显示分页
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {checkbox: true, align:"center",valign:"middle"},
+            {field: "shopName", title: "门店名称", align:"left",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+                }
+            }
+        ]
+
+    });
+
+    /**
+     * 弹窗新增抵用券
+     * */
+    function newVouchers1(){
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'dialog-voucher', //样式类名
+            area: ['360px', '390px'],
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:null,
+            move:".lay-title",
+            content: $('.content-view1'),
+            btn: ['取消', '新增'],
+            yes: function(index){
+                layer.close(index)
+            },
+            btn2: function(){},
+            success: function(layero, index){
+
+            }
+        });
+        /*laydate.render({
+            elem: '#startTime',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#endTime',
+            type: 'datetime'
+        });*/
+
+    }
+
+    /**
+     * 弹窗编辑短信营销
+     * */
+    function newVouchers2(){
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo layui-layer-dx', //样式类名
+            area: ['360px', '290px'],
+            anim: 0,
+            closeBtn:0,
+            title:"",
+            content: $('.content-view2'),
+            resize:false,
+            btn: ['取消', '保存修改'],
+            yes: function(index, layero){
+                layer.close(index)
+            },
+            btn2: function(){
+
+                return false;
+            },
+            success: function(layero, index){
+                $('.layui-layer-dx .layui-layer-content').css('height',290-44+'px')
+                $('.layui-layer-dx .layui-layer-btn').css({'background-color':'rgba(244, 244, 248, 1)','box-shadow':'0px -1px 0px 0px rgba(236, 236, 244, 1)'})
+            }
+        });
+
+    }
+
+
+    /**
+     * 弹窗新增短信群发
+     * */
+    function newVouchers3(){
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['360px', 'auto'],
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:null,
+            move:".top-name",
+            content: $('.content-view3'),
+            btn: ['取消', '新增'],
+            yes: function(index){
+                layer.close(index);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                console.log(layui)
+                console.log(layui.slider)
+                layui.use('slider', function(){
+                    var slider = layui.slider;
+                    slider.render({
+                        elem: '#slide1',
+                        value: [30, 70],//滑块默认值
+                        range: true,
+                        theme: 'rgba(130,130,151,0.4)' //主题色
+                    });
+                });
+            }
+        });
+
+    }
+
+    /**
+     * 弹窗创建任务
+     * */
+    function createTask(){
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['360px', 'auto'],
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:null,
+            move:".move",
+            content: $('.create-task'),
+            btn:['取消','确定']
+        });
+    }
+
+    /**
+     * 弹窗选择任务产品
+     * */
+    function selectProduct(){
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['720px', '600px'],
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:null,
+            move:".task-header",
+            content: $('.task-product'),
+            btn: ['关闭窗口'],
+            yes: function(index){
+                layer.close(index);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+            }
+        });
+
+    }
+
+    /**
+     * 弹窗选择任务对象
+     * */
+    function selectObject(){
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['360px', '448px'],
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:"",
+            content: $('.task-object'),
+            btn: ['关闭窗口'],
+            yes: function(index){
+                layer.close(index);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+            }
+        });
+
+    }
+
+    /**
+     * 弹窗选择任务门店
+     * */
+    function selectShop(){
+        var index = layer.open({
+            width:360,
+            height:308,
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'dialog-shop', //样式类名
+            area: ['360px', '308px'],
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:null,
+            move:".task-header",
+            content: $('.task-shop'),
+            btn: ["关闭窗口"],
+            yes: function(index){
+                layer.close(index);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+            }
+        });
+
+    }
+
+    /**
+     * 弹窗删除任务
+     * */
+    function deleteTask(){
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['360px', '308px'],
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:"",
+            content: $('.delete-task'),
+            btn: ['关闭窗口'],
+            yes: function(index){
+                layer.close(index);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+            }
+        });
+    }
+
+    /**
+     * tab切换
+     * */
+    $(".tab-ul li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        $(".tab-item").hide().eq($(this).index()).show();
+        $(".right-info").hide().eq($(this).index()).show();
+    });
+    /**
+     * 创建任务弹窗tab切换
+     * */
+    $(".create-task-header-tab li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        $(".task-item").hide().eq($(this).index()).show();
+    });
+    /**
+     * 选择任务产品tab切换
+     * */
+    $(".product-tab .product-item").click(function () {
+        $(this).addClass("active").siblings().removeClass("active");
+        $(".product-list-item").removeClass("active").eq($(this).index()).addClass("active");
+    });
+    /**
+     * 开关切换
+     * */
+    $(".switch-btn").click(function(){
+        $(this).parent(".switch").toggleClass('active');
+    });
+    /**
+     * 下拉框
+     * */
+
+    selectTag($("#selectBox1"),function (ret) {
+        console.log(ret)
+    });
+    selectTag($("#selectBox2"),function (ret) {
+        console.log(ret)
+    });
+    selectTag($("#selectBox3"),function (ret) {
+        console.log(ret)
+    });
+    selectTag($("#selectBox4"),function (ret) {
+        console.log(ret)
+    });
+    selectTag($("#selectBox5"),function (ret) {
+        console.log(ret)
+    });
+
+    // 时间插件JS开始
+    $(function () {
+        var curr = new Date().getFullYear();
+        var opt = {};
+        opt.date = {preset: 'date'};
+        opt.datetime = {preset: 'datetime'};
+        opt.time = {preset: 'time'};
+
+        opt.default = {
+            theme: 'mbsc-android-holo', //皮肤样式
+            display: 'bubble', //显示方式
+            mode: 'scroller', //日期选择模式
+            dateFormat: 'yyyy-mm-dd',
+            lang: 'zh',
+            showNow: true,
+            nowText: "今天",
+            typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+        };
+        $('.settings').bind('change', function () {
+            var demo = 'datetime';
+            if (!demo.match(/select/i)) {
+                $('.demo-test-' + demo).val('');
+            }
+            $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+            $('.demo').hide();
+            $('.demo-' + demo).show();
+        });
+        $('#demo').trigger('change');
+        return curr;
+    });
+    // 时间插件JS结束
+    //日期范围插件开始
+    var date1 = new dateRange(".yj-demo-time",true);
+    date1.init()
+    //日期范围插件结束
+
+
+
+</script>
+</body>
+</html>

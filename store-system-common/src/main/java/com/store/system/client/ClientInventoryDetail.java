@@ -1,6 +1,5 @@
 package com.store.system.client;
 
-import com.oracle.tools.packager.mac.MacAppBundler;
 import com.store.system.model.InventoryDetail;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

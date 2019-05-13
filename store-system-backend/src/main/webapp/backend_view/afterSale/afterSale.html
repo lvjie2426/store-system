@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>售后处理</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <!--Bootstrap样式引入结束-->
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <!--标签样式重置结束-->
+    <!--公用组件样式-->
+    <link rel="stylesheet" href="../resource/css/style.css">
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <!--公用组件样式结束-->
+    <!--单页样式-->
+    <link rel="stylesheet" href="../resource/css/yanjing/afterSale.css">
+    <!--单页样式结束-->
+
+</head>
+<body class="body-bg" id="body">
+<div class="header clear">
+    <ul class="tab-ul clear">
+        <li class="active">售后处理</li>
+        <li>售后记录</li>
+    </ul>
+    <div class="right-info">
+        <div class="selectBox" id="selectBox">
+            <div class="select-box-header">
+                <span class="text">顾客姓名</span><i class="iconfont icon-ico_arrow_down"></i>
+            </div>
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <li value="01">1</li>
+                    <li value="02">2</li>
+                    <li value="03">3</li>
+                </ul>
+            </div>
+        </div>
+        <input type="search" class="search-box" placeholder="搜索顾客姓名">
+    </div>
+</div>
+<div class="content-main">
+    <div class="no-order">搜索订单号、顾客姓名或手机号</div>
+    <ul class="content-inner">
+        <li class="tab-item">
+            <table id="as-table" data-toggle="table"  class="table table-border"></table>
+        </li>
+        <li class="tab-item">
+            <table id="record-table" data-toggle="table"  class="table table-border"></table>
+        </li>
+    </ul>
+
+</div>
+
+<div class="content-view1">
+    <div class="dialog-header">
+        <ul class="dialog-tab-ul">
+            <li class="active">本次</li>
+            <li>2018.10.27</li>
+        </ul>
+        <div class="order-num">
+            <input type="button" value="订单号">
+            <span>201893918377418</span>
+        </div>
+    </div>
+    <div class="dialog-content">
+        <div class="customer">
+            <div class="customer-title">顾客信息</div>
+            <ul class="customer-info">
+                <li class="info-item">
+                    <button type="button">姓名</button>
+                    <span>李秀波</span>
+                </li>
+                <li class="info-item">
+                    <button type="button">年龄</button>
+                    <span>李秀波</span>
+                </li>
+                <li class="info-item">
+                    <button type="button">订单金额</button>
+                    <span>李秀波</span>
+                </li>
+                <li class="info-item">
+                    <button type="button">折扣</button>
+                    <span>李秀波</span>
+                </li>
+                <li class="info-item">
+                    <button type="button">验光师</button>
+                    <span>李秀波</span>
+                </li>
+                <li class="info-item">
+                    <button type="button">加工师</button>
+                    <span>李秀波</span>
+                </li>
+            </ul>
+            <div class="remark">备注: 老顾客了，多多关照一下</div>
+        </div>
+        <div class="optometry">
+            <div class="optometry-top clear">
+                <div class="optometry-title">验光信息</div>
+                <div class="selectBox" id="selectOptometry">
+                    <div class="select-box-header">
+                        <span class="text">更多验光记录</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="optometry-date-tab clear">
+                    <li class="optometry-date-item active">本次</li>
+                    <li class="optometry-date-item">
+                        <span>2018.10.27</span>
+                        <button type="button">隐形</button>
+                    </li>
+                    <li class="optometry-date-item">
+                        <span>2018.10.27</span>
+                        <button type="button">通用</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="optometry-content">
+                <div class="optometry-content-top clear">
+                    <ul class="optometry-content-top-tab-list clear">
+                        <li class="active">远用</li>
+                        <li>隐形</li>
+                        <li>近用</li>
+                        <li>渐进多焦点</li>
+                    </ul>
+                    <input type="button" class="savebtn btn btn-default" value="保存">
+                    <input type="button" class="clearbtn btn btn-gray" value="清空">
+                </div>
+                <div class="tableContent">
+                    <table border="" class="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;"
+                           class="thisTime">
+                        <thead>
+                        <tr>
+                            <th> </th>
+                            <th>裸眼视力</th>
+                            <th>球镜(S)</th>
+                            <th>柱镜(C)</th>
+                            <th>轴位(A)</th>
+                            <th>矫正视力</th>
+                            <th>远瞳距</th>
+                            <th>近瞳距</th>
+                            <th>ADD</th>
+                            <th>瞳高</th>
+                            <th>远瞳距</th>
+                            <th>近瞳距</th>
+                            <th>ADD</th>
+                            <th>瞳高</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th>R</th>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+
+                        </tr>
+                        <tr>
+                            <th>L</th>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+                            <td><input type="text" placeholder="请输入"></td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="optometry-content-bot clear">
+                    <div class="kuang">
+                        <input type="text" placeholder="远用瞳距">
+                        <span class="mm">mm</span>
+                    </div>
+                    <div class="selectBox" id="select-site">
+                        <div class="select-box-header">
+                            <span class="text">右眼</span><i class="iconfont icon-ico_arrow_down"></i>
+                        </div>
+                        <div class="optionBox">
+                            <ul class="optionUL">
+                                <li value="01">左眼</li>
+                                <li value="02">右眼</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="selectBox" id="select-property">
+                        <div class="select-box-header">
+                            <span class="text">佩戴属性</span><i class="iconfont icon-ico_arrow_down"></i>
+                        </div>
+                        <div class="optionBox">
+                            <ul class="optionUL">
+                                <li value="01">1</li>
+                                <li value="02">2</li>
+                                <li value="03">3</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="selectBox" id="select-suggest">
+                        <div class="select-box-header">
+                            <span class="text">验光建议</span><i class="iconfont icon-ico_arrow_down"></i>
+                        </div>
+                        <div class="optionBox">
+                            <ul class="optionUL">
+                                <li value="01">1</li>
+                                <li value="02">2</li>
+                                <li value="03">3</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="selectBox" id="select-results">
+                        <div class="select-box-header">
+                            <span class="text">验光结果</span><i class="iconfont icon-ico_arrow_down"></i>
+                        </div>
+                        <div class="optionBox">
+                            <ul class="optionUL">
+                                <li value="01">1</li>
+                                <li value="02">2</li>
+                                <li value="03">3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="order">
+            <div class="order-header">
+                <div class="order-title">订单信息</div>
+                <button type="button" class="fr btn btn-primary add">添加</button>
+                <input type="text" class="fr money" placeholder="金额" >
+                <div class="selectBox fr" id="selectOrder">
+                    <div class="select-box-header">
+                        <span class="text">附加收费</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="order-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>商品名称</th>
+                            <th>数量</th>
+                            <th>零售价</th>
+                            <th>会员折扣</th>
+                            <th>小计</th>
+                            <th>质保状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>HYDRON 海抛
+                            <span class="sign-btn">定制商品</span>
+                            <div class="selectBox small-select selectBatch" id="selectBatch">
+                                <div class="select-box-header">
+                                    <span class="text">选择批号</span><i class="iconfont icon-ico_arrow_down"></i>
+                                </div>
+                                <div class="optionBox">
+                                    <ul class="optionUL">
+                                        <li value="01">1</li>
+                                        <li value="02">2</li>
+                                        <li value="03">3</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>￥30</td>
+                        <td>
+                            <input type="number" class="discount" placeholder="10.0">
+                        </td>
+                        <td>￥24</td>
+                        <td><i class="indate indate-danger"></i>过期</td>
+                        <td>
+                            <span class="change" onclick="change()">更换</span>
+                            <span class="sales-return" onclick="salesReturn()">退货</span>
+                            <span class="breakage" onclick="breakage()">报损</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>HYDRON 海昌透明黑色单片年抛</td>
+                        <td>1</td>
+                        <td>￥30</td>
+                        <td>
+                            <input type="number" class="discount" placeholder="10.0">
+                        </td>
+                        <td>￥24</td>
+                        <td><i class="indate indate-going"></i>保修中</td>
+                        <td>
+                            <span class="change" onclick="change()">更换</span>
+                            <span class="sales-return"  onclick="salesReturn()">退货</span>
+                            <span class="breakage " onclick="breakage()">报损</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>HYDRON 海昌sadsafgd透明黑年抛<span class="sign-btn">加工中心</span></td>
+                        <td>1</td>
+                        <td>￥30</td>
+                        <td>
+                            <input type="number" class="discount" placeholder="10.0">
+                        </td>
+                        <td>￥24</td>
+                        <td><i class="indate indate-renew"></i>换新</td>
+                        <td>
+                            <span class="change" onclick="change()">更换</span>
+                            <span class="sales-return" onclick="salesReturn()">退货</span>
+                            <span class="breakage " onclick="breakage()">报损</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>HYDRON 片年抛<span class="sign-btn">调货商品</span></td>
+                        <td>1</td>
+                        <td>￥30</td>
+                        <td>
+                            <input type="number" class="discount" placeholder="10.0">
+                        </td>
+                        <td>￥24</td>
+                        <td>过期</td>
+                        <td>
+                            <span class="change" onclick="change()">更换</span>
+                            <span class="sales-return" onclick="salesReturn()">退货</span>
+                            <span class="breakage " onclick="breakage()">报损</span>
+                        </td>
+                    </tr>
+                    <tr class="promotion">
+                        <td colspan="4">促销减免</td>
+                        <td colspan="3">-￥38</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="order-bottom">
+                <div class="fl origin">
+                    <span class="text">原价共计</span>
+                    <span class="money">￥55</span>
+                </div>
+                <div class="fl last">
+                    <span class="text">上次支付</span>
+                    <span class="money">￥47.5</span>
+                </div>
+                <div class="fr extra">
+                    <span class="text">额外支付</span>
+                    <span class="case">
+                        <i>￥</i><input type="number" placeholder="0">
+                    </span>
+                </div>
+                <div class="fr ">
+                    <span class="text">退款金额</span>
+                    <span class="case">
+                        <i>￥</i><input type="number" placeholder="0">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="bot clear">
+            <div class="bot-item">
+                <span class="name">售后原因</span>
+                <div class="selectBox small-select selectBatch" id="select-why">
+                    <div class="select-box-header">
+                        <span class="text">售后原因</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="bot-item">
+                <span class="name">售后原因</span>
+                <div class="selectBox small-select selectBatch" id="select-who">
+                    <div class="select-box-header">
+                        <span class="text">操作人</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="03">3</li>
+                            <li value="03">3</li>
+                            <li value="03">3</li>
+                            <li value="03">3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-bottom">
+        <button type="button" class="closewin btn btn-gray">关闭窗口</button>
+        <button type="button" class="submit btn btn-primary">提交订单</button>
+        <button type="button" class="save btn btn-order">保存订单</button>
+    </div>
+</div>
+<div class="content-view-change">
+    <div class="header">
+        <span class="title">全部镜片</span>
+        <input type="text" placeholder="搜索系列">
+    </div>
+    <div class="content clear">
+        <ul class="left-tab">
+            <li class="left-item active">澳洲明月</li>
+            <li class="left-item">美国暴龙</li>
+            <li class="left-item">宝丽来</li>
+            <li class="left-item">Calvin Kle</li>
+        </ul>
+        <ul class="right-content">
+            <li class="right-item">
+                <table id="brand-table-1" data-toggle="table"  class="table table-border"></table>
+            </li>
+            <li class="right-item">
+                <table id="brand-table-2" data-toggle="table"  class="table table-border"></table>
+            </li>
+            <li class="right-item">
+                <table id="brand-table-3" data-toggle="table"  class="table table-border"></table>
+            </li>
+            <li class="right-item">
+                <table id="brand-table-4" data-toggle="table"  class="table table-border"></table>
+            </li>
+        </ul>
+    </div>
+    <div class="bottom clear">
+        <div class="wear-tear">
+            <input type="checkbox" id="wear-tear">
+            <label for="wear-tear">损耗原商品<i class="iconfont">&#xe6a8;</i></label>
+        </div>
+        <div class="close-win">
+            关闭窗口
+        </div>
+    </div>
+</div>
+<div class="content-view-salesReturn">
+    <div class="header">确定退货</div>
+    <div class="content">确定将「HYDRON 海昌透明黑色单片年抛」退货？</div>
+    <div class="bot clear">
+        <span class="confirm">确定</span>
+        <span class="cancel">取消</span>
+    </div>
+</div>
+<div class="content-view-breakage">
+    <div class="header">确定报损</div>
+    <div class="content">确定将「HYDRON 海昌透明黑色单片年抛」报损？</div>
+    <div class="bot clear">
+        <span class="confirm">确定</span>
+        <span class="cancel">取消</span>
+    </div>
+</div>
+
+<!--全局JS引用-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+
+<script>
+
+
+    var data3 = [
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"}
+    ];
+    var data1 = [
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>',afterNum:"10次"},
+        {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-grays">已完成</div>',afterNum:"10次"}
+    ];
+    $("#as-table").bootstrapTable({
+        data:data3,                 //被加载的数据。
+        classes:"table",
+        pagination:true,            //是否显示分页
+        pageNumber:1,               //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {field: "onum", title: "订单号", align:"left",valign:"middle"},
+            {field: "otime", title: "销售时间", align:"left",valign:"middle"},
+            {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
+            {field: "phoneNum", title: "联系方式", align:"left",valign:"middle"},
+            {field: "closingPrice", title: "成交金额", align:"left",valign:"middle"},
+            {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
+            {field: "afterNum", title: "售后次数", align:"center",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary" onclick="goAfter()">进行售后</button>';
+                }
+            }
+
+        ]
+
+    });
+    $("#record-table").bootstrapTable({
+        data:data1,                 //被加载的数据。
+        classes:"table",
+        pagination:true,            //是否显示分页
+        pageNumber:1,               //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {field: "oNum", title: "订单号", align:"left",valign:"middle"},
+            {field: "lastTime", title: "最后一次售后", align:"left",valign:"middle"},
+            {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
+            {field: "phoneNum", title: "联系方式", align:"left",valign:"middle"},
+            {field: "afterWhy", title: "售后原因", align:"left",valign:"middle"},
+            {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
+            {field: "oStatus", title: "订单状态", align:"left",valign:"middle"},
+            {field: "afterNum", title: "售后次数", align:"center",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary">查看</button>';
+                }
+            }
+
+        ]
+
+    });
+    /**
+     * 更换弹窗数据接口
+     * */
+    var brand1 = [
+        {
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        },{
+            serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
+        }
+    ];
+    $("#brand-table-1").bootstrapTable({
+        data:brand1,                 //被加载的数据。
+        classes:"table",
+        pagination:true,            //是否显示分页
+        pageNumber:1,               //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {field: "serice", title: "系列", align:"left",valign:"middle"},
+            {field: "ballEye", title: "球镜度数", align:"left",valign:"middle"},
+            {field: "degree", title: "散光度数", align:"left",valign:"middle"},
+            {field: "price", title: "价格", align:"left",valign:"middle"},
+            {field: "stock", title: "可用库存", align:"left",valign:"middle"},
+            {field: "source", title: "来源", align:"left",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary">选择</button>';
+                }
+            }
+        ]
+    });
+
+    /**
+     * 主页tab切换
+     * */
+    $(".tab-ul li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        $(".tab-item").hide().eq($(this).index()).show();
+        showTable();//显示表格
+        //$(".right-info").hide().eq($(this).index()).show();
+    });
+    /**
+     * 弹窗tab切换
+     * */
+    $(".dialog-tab-ul li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        //$(".dialog-tab-item").hide().eq($(this).index()).show();
+        //$(".right-info").hide().eq($(this).index()).show();
+    });
+    /**
+     * 弹窗验光信息 时间tab切换
+     * */
+    $(".optometry-date-tab .optometry-date-item").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        //$(".dialog-tab-item").hide().eq($(this).index()).show();
+        //$(".right-info").hide().eq($(this).index()).show();
+    });
+    /**
+     * 弹窗验光信息 种类tab切换
+     * */
+    $(".optometry-content-top-tab-list li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        //$(".dialog-tab-item").hide().eq($(this).index()).show();
+        //$(".right-info").hide().eq($(this).index()).show();
+    });
+    /**
+     * 更换弹窗tab切换
+     * */
+    $(".content-view-change .content .left-tab .left-item").click(function () {
+        $(this).addClass('active').siblings().removeClass('active');
+        $(".content-view-change .content .right-content .right-item").hide().eq($(this).index()).show();
+    })
+    /**
+     * 下拉框
+     * */
+    selectTag($("#selectBox"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 验光信息下拉框
+     * */
+    selectTag($("#select-site"),function (ret) {
+        console.log(ret)
+    });
+    selectTag($("#select-property"),function (ret) {
+        console.log(ret)
+    });
+    selectTag($("#select-results"),function (ret) {
+        console.log(ret)
+    });
+    selectTag($("#select-suggest"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 验光记录下拉框
+     * */
+    selectTag($("#selectOptometry"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 订单信息下拉框
+     * */
+    selectTag($("#selectOrder"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 订单信息批号下拉框
+     * */
+    selectTag($("#selectBatch"),function (ret) {
+        console.log(ret)
+    });
+
+    /**
+     * 售后原因下拉框
+     * */
+    selectTag($("#select-why"),function (ret) {
+        console.log(ret)
+    });
+
+    /**
+     * 操作人下拉框
+     * */
+    selectTag($("#select-who"),function (ret) {
+        console.log(ret)
+    });
+
+    /**
+     * 弹窗进行售后
+     * */
+    function goAfter() {
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo layui-layer-view1', //样式类名
+            area: ['960px', '560px'],
+            anim: 0,
+            closeBtn:0,
+            title:"",
+            content: $('.content-view1'),
+            btn: "",
+            yes: function(){
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                $(".layui-layer-view1 .closewin").click(function () {
+                    layer.close(index);
+                })
+            }
+        });
+    }
+    /**
+     * 弹窗更换
+     * */
+    function change(type) {
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo layui-layer-change', //样式类名
+            area: ['720px', '528px'],
+            anim: 0,
+            closeBtn:0,
+            title:"",
+            content: $('.content-view-change'),
+            btn: "",
+            yes: function(){
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                $(".layui-layer-change .close-win").click(function () {
+                    layer.close(index);
+                })
+            }
+        });
+    }
+    /**
+     * 弹窗退货
+     * */
+    function salesReturn() {
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo .layui-layer-salesReturn', //样式类名
+            area: ['240px', '146px'],
+            anim: 0,
+            closeBtn:0,
+            title:"",
+            content: $('.content-view-salesReturn'),
+            btn: "",
+            yes: function(){
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                $('.content-view-salesReturn .cancel').click(function () {
+                    layer.close(index)
+                })
+            }
+        });
+    }
+    /**
+     * 弹窗报损
+     * */
+    function breakage() {
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo layui-layer-breakage', //样式类名
+            area: ['240px', '146px'],
+            anim: 0,
+            closeBtn:0,
+            title:"",
+            content: $('.content-view-breakage'),
+            btn: "",
+            yes: function(){
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                $('.layui-layer-breakage .cancel').click(function () {
+                    layer.close(index)
+                })
+            }
+        });
+    }
+    /**
+     * 显示表格
+     * */
+    function showTable(){
+        $(".no-order").css("display","none");
+        $(".content-inner").css("display","block");
+    }
+
+</script>
+</body>
+</html>

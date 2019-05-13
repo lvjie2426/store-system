@@ -1,12 +1,12 @@
 
 //刷新所有地区
-// function updataData(){
-//   var url = "/area/getAllList";
-//   myAjax(url,"",handle);
-//   function handle(data,param){
-//     localStorage.setItem("area",JSON.stringify(data));
-//   }
-// }
+function updataData(){
+  var url = "/area/getAllList";
+  myAjax(url,"",handle);
+  function handle(data,param){
+    localStorage.setItem("area",JSON.stringify(data));
+  }
+}
 
 function initAllAreaData(){
   var totalArea = localStorage.getItem("area");
@@ -14,7 +14,7 @@ function initAllAreaData(){
   if(isNotBlank(totalArea)){
     AreaData = JSON.parse(totalArea);
   }else{
-    // updataData();
+    updataData();
   }
 
   for(var i in AreaData){

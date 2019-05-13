@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>支付dome</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <!--Bootstrap样式引入结束-->
+    <!--layui样式引入开始-->
+    <link rel="stylesheet" href="../resource/layui/css/layui.css">
+
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+    <!--layui样式引入介绍-->
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <!--标签样式重置结束-->
+    <!--本页面样式开始-->
+    <link rel="stylesheet" href="../resource/css/main.css">
+    <!--临时less编译-->
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #aaa;
+        }
+        /*弹窗*/
+        #popupBox {
+            display: none;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #popupBox #popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin: -73px 0 0 -120px;
+            width: 240px;
+            border-radius: 2px;
+            z-index: 99999;
+            background: #ffff;
+        }
+        #popupBox #popup .title {
+            padding: 13px 16px;
+            font-weight: 600;
+            font-family: PingFangSC-Semibold;
+            background-color: #ffffff;
+            font-size: 13px;
+            border-radius: 2px;
+            color: #4186DC;
+        }
+        #popupBox #popup .content {
+            padding: 12px 16px;
+            line-height: 14px;
+            color: #393953;
+            font-size: 12px;
+            font-family: Roboto-Medium;
+        }
+        #popupBox #popup .btnBox {
+            width: 100%;
+            overflow: hidden;
+            padding: 6px;
+            box-sizing: border-box;
+            font-size: 12px;
+            font-family: Roboto-Medium;
+        }
+        #popupBox #popup .btnBox .btnDetermine,
+        #popupBox #popup .btnBox .btnCancel {
+            outline: none;
+            border: none;
+            color: #fff;
+            margin-left: 8px;
+            width: 44px;
+            height: 32px;
+            border-radius: 2px;
+            background-color: #4186DC;
+            float: right;
+            cursor: pointer;
+        }
+        #popupBox #popup .btnBox .btnCancel {
+            color: #828297;
+            background-color: #f4f4f8;
+            border: 1px solid #ececf4;
+        }
+        #popupBox .bg {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 9999;
+        }
+        /*支付*/
+        .selectPayment {
+            background: #fff;
+            display: block;
+            width: 360px;
+            border-radius: 2px;
+            position: fixed;
+            left: 50%;
+            margin-left: -180px;
+            overflow: hidden;
+            color: #393953;
+        }
+        .selectPayment .grWX.active {
+            display: block;
+        }
+        .selectPayment .grWX.active .textDescribe {
+            display: none;
+        }
+        .selectPayment .gyWX.active {
+            display: block;
+        }
+        .selectPayment .gyWX.active .textDescribe {
+            display: block;
+        }
+        .selectPayment .public.active {
+            display: block;
+            border-top: 1px solid #ECECF4;
+        }
+        .selectPayment .public.active h4 {
+            margin: 0 0 7px 16px;
+        }
+        .selectPayment .grZFB.active {
+            display: block;
+        }
+        .selectPayment .mainContent {
+            /*个人微信*/
+            display: none;
+            font-size: 12px;
+            padding: 10px 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        .selectPayment .mainContent .wxNum,
+        .selectPayment .mainContent .zfbNum {
+            display: inline-block;
+            width: 47%;
+            margin-left: 16px;
+        }
+        .selectPayment .mainContent .wxNum input,
+        .selectPayment .mainContent .zfbNum input {
+            margin-top: 6px;
+            width: 100%;
+            padding-left: 5%;
+            line-height: 28px;
+            border-radius: 2px;
+            background-color: #ffffff;
+            border: 1px solid #ECECF4;
+        }
+        .selectPayment .mainContent .wxNum input::placeholder,
+        .selectPayment .mainContent .zfbNum input::placeholder {
+            color: #828297;
+        }
+        .selectPayment .mainContent .stateBox {
+            display: inline-block;
+        }
+        .selectPayment .mainContent .stateBox .layui-form-label {
+            float: none;
+            width: 100%;
+            text-align: left;
+            margin: 0;
+            padding: 0 15px;
+        }
+        .selectPayment .mainContent .textDescribe {
+            display: block;
+            width: 100%;
+            padding: 0 16px;
+            box-sizing: border-box;
+            color: #828297;
+            font-size: 12px;
+            font-family: '粗体';
+            line-height: 20px;
+        }
+        .selectPayment .footerBox {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+            border-top: 1px solid #ECECF4;
+            overflow: hidden;
+        }
+        .selectPayment .footerBox button {
+            float: right;
+            margin-left: 6px;
+            padding: 8px 10px;
+            border-radius: 3px;
+            background-color: #F4F4F8;
+            border: 1px solid #ececf4;
+            color: #828297;
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .selectPayment .footerBox .btnDetermine {
+            color: #B0B0BE;
+        }
+        .selectPayment .footerBox .btnDetermine.active {
+            background: #4186DC;
+            color: #fff;
+        }
+        /*覆盖layui样式*/
+        .layui-form-radio > i:hover,
+        .layui-form-radioed > i {
+            color: #4186DC;
+        }
+        .layui-input-block {
+            margin-left: 16px;
+        }
+        .layui-form-radio > i {
+            font-size: 16px;
+        }
+        .layui-form-radio {
+            margin: 6px 6px 0 0;
+        }
+        .layui-form-radio div {
+            font-size: 12px;
+        }
+        /*# sourceMappingURL=paymentDome.css.map */
+    </style>
+</head>
+<body>
+<!--未设置支付方式时点击「创建门店」按钮-->
+<div id="dianji" style="padding: 20px;background: #fff;margin: 20px;display: inline-block;">未设置支付方式时点击「创建门店」按钮</div>
+<div id="popupBox" class="popupBox">
+
+</div>
+
+<!--选择微信支付/个人微信-->
+<div class="selectPayment" id="selectPayment">
+    <ul class="tab-ul" style="border-bottom: 1px solid #ECECF4;">
+        <li class="active">微信支付</li>
+        <li>支付宝支付</li>
+    </ul>
+    <!--个人微信-->
+    <div class="mainContent grWX active">
+        <form class="layui-form" action="example">
+            <div class="layui-form-item optWxZfb">
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="公用微信" title="公用微信">
+                    <input type="radio" name="sex" value="个人微信" title="个人微信" checked="">
+                </div>
+            </div>
+        </form>
+        <div class="wxNum">
+            <span>个人收款微信号</span>
+            <input type="text" placeholder="输入微信号">
+        </div>
+        <form class="layui-form stateBox" action="example">
+            <div class="layui-form-item " style="margin: 0;">
+                <label class="layui-form-label">单选框</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="启用" title="启用" checked="">
+                    <input type="radio" name="sex" value="禁用" title="禁用">
+                </div>
+            </div>
+        </form>
+        <span class="textDescribe">用户门店扫码支付，不需与公众号同一主体，如个体结算到个人账号</span>
+    </div>
+    <!--个人支付宝-->
+    <div class="mainContent grZFB active gyZFB">
+        <form class="layui-form" action="example">
+            <div class="layui-form-item optWxZfb">
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="公用支付宝" title="公用支付宝">
+                    <input type="radio" name="sex" value="个人支付宝" title="个人支付宝" checked="">
+                </div>
+            </div>
+        </form>
+        <div class="zfbNum">
+            <span>个人收款支付宝账号</span>
+            <input type="text" placeholder="输入支付宝账号">
+        </div>
+        <form class="layui-form stateBox" action="example">
+            <div class="layui-form-item " style="margin: 0;">
+                <label class="layui-form-label">单选框</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="启用" title="启用" checked="">
+                    <input type="radio" name="sex" value="禁用" title="禁用">
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--公用微信-->
+    <div class="mainContent gyWX active" style="border-top: 1px  solid #ECECF4;">
+        <div class="wxNum">
+            <span>子商户号</span>
+            <input type="text" placeholder="子商户号">
+        </div>
+        <form class="layui-form stateBox" action="example">
+            <div class="layui-form-item " style="margin: 0;">
+                <label class="layui-form-label">单选框</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="启用" title="启用" checked="">
+                    <input type="radio" name="sex" value="禁用" title="禁用">
+                </div>
+            </div>
+        </form>
+        <span class="textDescribe">用于客户直接手机微信公众号内支付，需与公众号同一主体，如公司结算到对公账户</span>
+    </div>
+
+    <div class="mainContent public active">
+        <h4>已使用的门店</h4>
+        <span class="textDescribe">杭州市西湖区湖滨银泰店，杭州市西湖区西溪印象城店，杭州市旗舰店</span>
+    </div>
+    <div class="footerBox">
+        <button class="btnDetermine">确定</button>
+        <button class="btnCancel">取消</button>
+    </div>
+</div>
+
+
+<!--js依赖开始-->
+<!--bootstrap依赖于jQuery，jQuery.js必须放在BS.js之前-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js"></script>
+<!--js依赖结束-->
+<!-- 全局js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!--layui form-->
+<script src="../resource/layui/layui.js"></script>
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script>
+
+    $.fn.popupPlug = function (title, content, callback) {
+        var str = '<div id="popup" class="popup"><div class="title">' + title + '</div><div class="content">' + content + '</div><div class="btnBox"><button class="btnDetermine">\u786E\u5B9A</button><button class="btnCancel">\u53D6\u6D88</button></div></div><div class="bg"></div>';
+        var popupBox = $('#popupBox');
+        popupBox.append(str);
+        this.on('click', function () {
+            popupBox.show(500);
+        });
+        popupBox.on('click', function (ev) {
+            var tg = $(ev.target);
+            if (tg.hasClass('btnCancel')) popupBox.hide(500);
+            if (tg.hasClass('btnDetermine')) callback() || popupBox.hide(500);
+        });
+    };
+    $('#dianji').popupPlug('确定退货？', '确定将「HYDRON 海昌透明黑色单片年抛」退货？', function () {
+        alert(1);
+    });
+    $(".tab-ul li").click(function () {
+        $(this).addClass('active').siblings().removeClass('active')
+    });
+
+
+    layui.use(['form', 'layedit', 'laydate']);
+</script>
+</body>
+</html>

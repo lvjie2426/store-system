@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>订单管理</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <!--Bootstrap样式引入结束-->
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <!--标签样式重置结束-->
+    <!--公用组件样式-->
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <!--公用组件样式结束-->
+    <!--单页样式-->
+    <link rel="stylesheet" href="../resource/css/yanjing/ordersManage.css">
+    <!--单页样式结束-->
+
+</head>
+<body class="body-bg">
+<div class="header clear">
+    <ul class="tab-ul clear">
+        <li class="active">全部订单</li>
+        <li>未完成订单</li>
+        <li>作废订单</li>
+    </ul>
+
+    <ol class="clear">
+        <li class="right-info active">
+            <div class="selectBox" id="selectCustomer">
+                <div class="select-box-header">
+                    <span class="text">顾客名称</span><i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">1</li>
+                        <li value="02">2</li>
+                        <li value="03">3</li>
+                    </ul>
+                </div>
+            </div>
+            <input type="search" class="search-box" placeholder="搜索顾客姓名">
+        </li>
+    </ol>
+</div>
+<div id="second-bar">
+    <ul class="filter-list clear">
+        <li class="filter-item">
+             <div class="yj-demo-time">
+                <div class="yj-date">
+                    <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                </div>
+            </div>
+        </li>
+        <li class="filter-item">
+            <div class="selectBox" id="selectAllSalesStaff">
+                <div class="select-box-header">
+                    <span class="text">全部销售员</span><i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">1</li>
+                        <li value="02">2</li>
+                        <li value="03">3</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        <li class="filter-item">
+            <div class="selectBox" id="selectAllState">
+                <div class="select-box-header">
+                    <span class="text">全部状态</span>
+                    <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">1</li>
+                        <li value="02">2</li>
+                        <li value="03">3</li>
+                        <li value="04">4</li>
+                        <li value="05">5</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <table id="dxqf-table" data-toggle="table"  class="table table-border"></table>
+</div>
+<div class="content-view"></div>
+
+<!--全局JS引用-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+<!--//日期范围插件开始-->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<!--//日期范围插件结束-->
+
+<script>
+    // 时间插件JS开始
+    $(function () {
+        var curr = new Date().getFullYear();
+        var opt = {};
+        opt.date = {preset: 'date'};
+        opt.datetime = {preset: 'datetime'};
+        opt.time = {preset: 'time'};
+
+        opt.default = {
+            theme: 'mbsc-android-holo', //皮肤样式
+            display: 'bubble', //显示方式
+            mode: 'scroller', //日期选择模式
+            dateFormat: 'yyyy-mm-dd',
+            lang: 'zh',
+            showNow: true,
+            nowText: "今天",
+            typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+        };
+        $('.settings').bind('change', function () {
+            var demo = 'datetime';
+            if (!demo.match(/select/i)) {
+                $('.demo-test-' + demo).val('');
+            }
+            $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+            $('.demo').hide();
+            $('.demo-' + demo).show();
+        });
+        $('#demo').trigger('change');
+        return curr;
+    });
+    // 时间插件JS结束
+    //日期范围插件开始
+    var date1 = new dateRange(".yj-demo-time");
+    date1.init();
+    //日期范围插件结束
+
+
+    var data3 = [
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>'},
+        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-grays">已完成</div>'}
+    ];
+    $("#dxqf-table").bootstrapTable({
+        data:data3,                 //被加载的数据。
+        classes:"table",
+        pagination:true,            //是否显示分页
+        pageNumber:1,               //初始化加载第一页，默认第一页
+        pageSize: 10,
+        pageList: [5, 10, 15, 20],
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign:"center",
+        clickToSelect:true,
+        columns:[
+            {checkbox:true,valign:"middle"},
+            {field: "onum", title: "订单号", align:"left",valign:"middle"},
+            {field: "otime", title: "时间", align:"left",valign:"middle"},
+            {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
+            {field: "phoneNum", title: "手机号", align:"left",valign:"middle"},
+            {field: "oriPrice", title: "原价", align:"left",valign:"middle"},
+            {field: "closingPrice", title: "成交金额", align:"left",valign:"middle"},
+            {field: "discount", title: "折扣", align:"left",valign:"middle"},
+            {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
+            {field: "oStatus", title: "订单状态", align:"center",valign:"middle"},
+            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary">查看</button>';
+                }
+            }
+
+        ]
+
+    });
+    /**
+     * tab切换
+     * */
+    $(".tab-ul li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        //$(".tab-item").hide().eq($(this).index()).show();
+        //$(".right-info").hide().eq($(this).index()).show();
+    });
+    /**
+     * 全部销售人员下拉框
+     * */
+    selectTag($("#selectAllSalesStaff"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 顾客姓名下拉框
+     * */
+    selectTag($("#selectCustomer"),function (ret) {
+        console.log(ret)
+    });
+    /**
+     * 全部状态下拉框
+     * */
+    selectTag($("#selectAllState"),function (ret) {
+        console.log(ret)
+    });
+
+</script>
+</body>
+</html>
