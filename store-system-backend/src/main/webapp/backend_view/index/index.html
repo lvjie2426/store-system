@@ -218,7 +218,6 @@
 
 <!-- 第三方插件 -->
 <script src="../resource/js/plugins/pace/pace.min.js"></script>
-<script src="../resource/common/common.js?" +Math.random()></script>
 
 
 <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
@@ -226,20 +225,20 @@
 <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
 <script src="../resource/js/lib/quakoo/Config.js"></script>
 <script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
 <script src="../resource/js/template-native.js"></script>
 <script src="../resource/js/yanjing.js"></script>
 
 <!--门店列表开始-->
 <script type="text/html" id="shopList">
     <%for(var i=0;i < list.length;i++){%>
-        <li value="'<%=list[i].name%>'"><%=list[i].text%></li>
+        <li value="'<%=list[i].name%>'" shopId="'<%=list[i].id%>'"><%=list[i].name%></li>
     <%}%>
 </script>
 <!--门店列表结束-->
 
 
 <script>
-    console.log(JSON.stringify(quakooUser.getUserInfo()));
     var sid = quakooUser.getUserInfo().sid;
     var name = quakooUser.getUserInfo().name;
     getSubordinateStore();
@@ -248,21 +247,27 @@
         quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid,name:name},function (ret) {
             if(ret&&ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
-                    for(var i = 0;i<ret.data.length;i++){
-                        ret.data[i].text = (i+1)+". "+ret.data[i].name;
-                    }
                     var data = {list:ret.data};
                     var html = template("shopList", data);
                     document.getElementById("shopUl").innerHTML = html;
+                    /**下拉框*/
+                    selectTag($('#selectBox'), function (ret) {
+
+                        if(window.localStorage){
+                            if(typeof ret.id == "string"){ret.id=parseInt(ret.id.replace(/\'/g,'').replace(/\"/g,''))}
+                            localStorage.setItem("sel_ShopId",ret.id);
+                            localStorage.setItem("sel_ShopName",ret.text);
+                        }else{
+                            console.log("不支持本地存储");
+                        }
+                    });
                 }
             }
         });
     }
     $(function () {
         /*下拉框*/
-        selectTag($('#selectBox'), function (ret) {
 
-        });
         selectTag($('#select-admin'))
     });
 

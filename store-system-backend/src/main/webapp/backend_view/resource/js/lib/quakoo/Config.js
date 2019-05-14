@@ -69,19 +69,19 @@ var Config = (function(_super){
 
     //=======================公司管理 开始====================
     /**获取公司下门店列表*/
-    _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
+    _proto.getUrl_subordinate_getSub = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
 
     //=======================公司管理 结束====================
 
     //=======================企业端（营销管理） 开始====================
     /**获取公司下门店列表*/
-    _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
+    _proto.getUrl_subordinate_getSu = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
 
     //=======================企业端（营销管理） 结束====================
 
     //=======================商品管理 开始====================
     /**获取公司下门店列表*/
-    _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
+    _proto.getUrl_subordinate_ge = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
 
     //=======================商品管理 结束====================
 
