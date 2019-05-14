@@ -44,7 +44,7 @@ if (window.location.pathname.indexOf('login/login.html') >= 0) {
 }
 
 function checkUser() {
-    var user = getUserInfo();
+    var user = quakooUser.getUserInfo();
     if (user) {} else {
         window.parent.window.location.href = '../login/login.html';
     }
