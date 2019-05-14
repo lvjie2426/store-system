@@ -820,7 +820,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<String> getAllUserJob(long subid) throws Exception {
         Set<String> jobs = Sets.newConcurrentHashSet();
-        List<User> users = userDao.getAllList(subid,User.userType_backendUser,User.status_nomore);
+        List<User> users = userDao.getAllList(subid,User.userType_user,User.status_nomore);
         if(users!=null&&users.size()>0){
             for(User user:users){
                 jobs.add(user.getJob());
