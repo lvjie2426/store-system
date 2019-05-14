@@ -282,7 +282,6 @@
         /**获取门店下顾客的所有职业*/
         function getAllUserJob(subid){
             quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{subid:subid},function (ret) {
-                console.log(JSON.stringify(ret));
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
                         var data = {list:ret.data};
@@ -298,63 +297,44 @@
         }
         /**获取门店下所有顾客*/
         function getSubCustomerPager(subid){
-            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:0},function (ret) {
-                    if(quakooUtils.isNotBlack(ret.rows)){
-                        /*for(var i=0;i<ret.rows.length;i++){
-                            data[i] = {};
-                            data[i].name = ret.rows[i].userName;
-                            data[i].number = ret.rows[i].phone;
-                            if(ret.rows[i].sex==0){
-                                data[i].gender = "-";
-                            }else if(ret.rows[i].sex ==1){
-                                data[i].gender = "男";
-                            }else if(ret.rows[i].sex ==2){
-                                data[i].gender = "女";
-                            }
-                            data[i].grade = "等待接口";
-                            data[i].integral = "等待接口";
-                            data[i].money = ret.rows[i].money;
-                            if(ret.rows[i].weixinId){
-                                data[i].wxrz = true;
-                            }else{
-                                data[i].wxrz = false;
-                            }
-                            data[i].freq= ret.rows[i].payCount;
+            $('#yj-table').bootstrapTable('destroy');
+            $("#yj-table").bootstrapTable({
+                url:config.getUrl_user_getSubCustomerPager(),
+                method: 'get',
+                classes: "table",
+                pagination: true,        //是否显示分页
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 8,
+                pageList: [5, 10, 15, 20],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                columns: [
+                    { field: "name", title: "姓名", align: "left", valign: "middle" },
+                    { field: "phone", title: "手机号", align: "left", valign: "middle" },
+                    { field: "sex", title: "性别", align: "left", valign: "middle" },
+                    { field: "money", title: "会员等级", align: "left", valign: "middle" },
+                    { field: "money", title: "积分", align: "left", valign: "middle" },
+                    { field: "money", title: "储存金额", align: "left", valign: "middle" },
+                    { field: "subName", title: "微信认证", align: "left", valign: "middle", formatter: function (value, row, index) { return value ? '<span class="certified">已认证</span>' : '<span class="uncertified">未认证</span>' } },
+                    { field: "payCount", title: "消费次数", align: "left", valign: "middle" },
+                    {
+                        field: "btn", title: "操作", align: "left", valign: "middle", width: '180px', formatter: function () {
+                            return '<button class="btn btnEedit">编辑</button><button class="btn btnRecord ml8">历史订单</button>'
                         }
-                        console.log(JSON.stringify(data));*/
-                        data = [{"name":"1788888888","number":"1788888888","gender":"-","grade":"等待接口","integral":"等待接口","money":0,"wxrz":false,"freq":0},{"name":"1799999999","number":"1799999999","gender":"-","grade":"等待接口","integral":"等待接口","money":0,"wxrz":false,"freq":0}]
-                        $("#yj-table").bootstrapTable({
-                            data: data,
-                            classes: "table",
-                            pagination: true,        //是否显示分页
-                            pageNumber: 1,                       //初始化加载第一页，默认第一页
-                            pageSize: 8,
-                            pageList: [5, 10, 15, 20],
-                            sortable: false,
-                            sortOrder: "asc",
-                            showColumns: true,
-                            strictSearch: true,
-                            locale: "zh-CN",
-                            paginationHAlign: "center",
-                            clickToSelect: true,
-                            columns: [
-                                { field: "name", title: "姓名", align: "left", valign: "middle" },
-                                { field: "number", title: "手机号", align: "left", valign: "middle" },
-                                { field: "gender", title: "性别", align: "left", valign: "middle" },
-                                { field: "grade", title: "会员等级", align: "left", valign: "middle" },
-                                { field: "integral", title: "积分", align: "left", valign: "middle" },
-                                { field: "money", title: "储存金额", align: "left", valign: "middle" },
-                                { field: "wxrz", title: "微信认证", align: "left", valign: "middle", formatter: function (value, row, index) { return value ? '<span class="certified">已认证</span>' : '<span class="uncertified">未认证</span>' } },
-                                { field: "freq", title: "消费次数", align: "left", valign: "middle" },
-                                {
-                                    field: "btn", title: "操作", align: "left", valign: "middle", width: '180px', formatter: function () {
-                                        return '<button class="btn btnEedit">编辑</button><button class="btn btnRecord ml8">历史订单</button>'
-                                    }
-                                }
-                            ]
-
-                        });
                     }
+                ],
+                queryParams:function (param) {
+                    param.subid = subid;
+                    param.userType = 0;
+                    param.token = quakooUser.getUserInfo().token;
+                    return param
+                }
 
             });
         }
