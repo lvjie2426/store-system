@@ -166,7 +166,7 @@ public class ProductController extends BaseController {
     /**
      * 获取公司的所有商品SPU
      * method_name: getSPUPager
-     * params: [subid, cid, pid, bid, sid, pager, request, response, model]
+     * params: [subid, cid, pid, bid, sid, pager, request, response, model,name]
      * return: org.springframework.web.servlet.ModelAndView
      * creat_user: lihao
      * creat_date: 2019/3/2
@@ -178,12 +178,14 @@ public class ProductController extends BaseController {
                                     @RequestParam(value = "pid", defaultValue = "0") long pid,
                                     @RequestParam(value = "bid", defaultValue = "0") long bid,
                                     @RequestParam(value = "sid", defaultValue = "0") long sid,
+                                    @RequestParam(value = "name", defaultValue = "") String name,
+                                    @RequestParam(value = "saleStatus", defaultValue = "-1") int saleStatus,
                                     Pager pager,
                                     HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             if(subordinate.getPid() > 0) subid = subordinate.getPid();
-            pager = productService.getSPUBackPager(pager, subid, cid, pid, bid, sid);
+            pager = productService.getSPUBackPager(pager, subid, cid, pid, bid, sid,name,saleStatus);
             return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -239,6 +241,19 @@ public class ProductController extends BaseController {
         try {
             List<ClientProductSKU> res = productService.getSaleSKUAllList(subid, spuid);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/updateSaleStatus")
+    public ModelAndView updateSaleStatus(@RequestParam(value = "id") long id,
+                                   @RequestParam(value = "open") int open,
+                                   HttpServletRequest request, HttpServletResponse response,
+                                   Model model) throws Exception {
+        try {
+            boolean sign = productService.updateSaleStatus(id,open);
+            return this.viewNegotiating(request,response, new ResultClient(true, sign));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }

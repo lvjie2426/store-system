@@ -408,5 +408,13 @@
             </list>
         </property>
     </bean>
+    <bean id="userGradeCategoryDiscountDao" class="com.store.system.dao.impl.UserGradeCategoryDiscountDaoImpl">
+        <property name="tableName" value="usergrade_category_discount" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
 
 </beans>

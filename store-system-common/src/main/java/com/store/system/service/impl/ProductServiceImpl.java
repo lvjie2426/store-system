@@ -86,22 +86,22 @@ public class ProductServiceImpl implements ProductService {
         long bid = productSPU.getBid();
         long sid = productSPU.getSid();
         Map<Long, Object> properties = productSPU.getProperties();
-        if(subid == 0) throw new StoreSystemException("SPU店铺不能为空");
-        if(cid == 0) throw new StoreSystemException("SPU类目不能为空");
-        if(bid == 0) throw new StoreSystemException("SPU品牌不能为空");
+        if (subid == 0) throw new StoreSystemException("SPU店铺不能为空");
+        if (cid == 0) throw new StoreSystemException("SPU类目不能为空");
+        if (bid == 0) throw new StoreSystemException("SPU品牌不能为空");
 
         int count = productSPUDao.getCount(type, subid, pid, cid, bid, sid);
-        if(count > 0) throw new StoreSystemException("已添加此产品的SPU");
+        if (count > 0) throw new StoreSystemException("已添加此产品的SPU");
 
 
         List<ProductPropertyName> spuNames = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
-        for(Iterator<ProductPropertyName> it = spuNames.iterator(); it.hasNext();) {
+        for (Iterator<ProductPropertyName> it = spuNames.iterator(); it.hasNext(); ) {
             ProductPropertyName name = it.next();
-            if(name.getType() != ProductPropertyName.type_spu) it.remove();
+            if (name.getType() != ProductPropertyName.type_spu) it.remove();
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(spuNames, "id");
-        for(long nameId : nameIds) {
-            if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
+        for (long nameId : nameIds) {
+            if (!properties.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
         }
     }
 
@@ -109,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
     public boolean updateSPU(ProductSPU productSPU) throws Exception {
         checkSPU(productSPU);
         Subordinate subordinate = subordinateDao.load(productSPU.getSubid());
-        if(subordinate.getPid() > 0) productSPU.setSubid(subordinate.getPid());
+        if (subordinate.getPid() > 0) productSPU.setSubid(subordinate.getPid());
         boolean res = productSPUDao.update(productSPU);
         return res;
     }
@@ -125,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductSPU addSPU(ProductSPU productSPU) throws Exception {
         checkSPU(productSPU);
         Subordinate subordinate = subordinateDao.load(productSPU.getSubid());
-        if(subordinate.getPid() > 0) productSPU.setSubid(subordinate.getPid());
+        if (subordinate.getPid() > 0) productSPU.setSubid(subordinate.getPid());
         productSPU = productSPUDao.insert(productSPU);
         return productSPU;
     }
@@ -134,22 +134,22 @@ public class ProductServiceImpl implements ProductService {
         Map<Long, Object> properties = productSKU.getProperties();
         long spuid = productSKU.getSpuid();
         String code = productSKU.getCode();
-        if(spuid == 0) throw new StoreSystemException("SPU不能为空");
-        if(StringUtils.isBlank(code)) throw new StoreSystemException("产品编码不能为空");
+        if (spuid == 0) throw new StoreSystemException("SPU不能为空");
+        if (StringUtils.isBlank(code)) throw new StoreSystemException("产品编码不能为空");
 
         int count = productSKUDao.getCount(spuid, code);
-        if(count > 0) throw new StoreSystemException("已添加此产品的SKU");
+        if (count > 0) throw new StoreSystemException("已添加此产品的SKU");
 
         ProductSPU productSPU = productSPUDao.load(productSKU.getSpuid());
         long cid = productSPU.getCid();
         List<ProductPropertyName> skuNames = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
-        for(Iterator<ProductPropertyName> it = skuNames.iterator(); it.hasNext();) {
+        for (Iterator<ProductPropertyName> it = skuNames.iterator(); it.hasNext(); ) {
             ProductPropertyName name = it.next();
-            if(name.getType() != ProductPropertyName.type_sku) it.remove();
+            if (name.getType() != ProductPropertyName.type_sku) it.remove();
         }
         Set<Long> nameIds = nameFieldSetUtils.fieldList(skuNames, "id");
-        for(long nameId : nameIds) {
-            if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
+        for (long nameId : nameIds) {
+            if (!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
         }
     }
 
@@ -169,23 +169,23 @@ public class ProductServiceImpl implements ProductService {
         productSPUDao.update(productSPU);
 
         long spuid = productSPU.getId();
-        if(addProductSKUList.size() > 0) {
-            for(ProductSKU productSKU : addProductSKUList) {
+        if (addProductSKUList.size() > 0) {
+            for (ProductSKU productSKU : addProductSKUList) {
                 productSKU.setSpuid(spuid);
                 productSKUDao.insert(productSKU);
             }
         }
 
-        if(updateProductSKUList.size() > 0) {
-            for(ProductSKU productSKU : updateProductSKUList) {
+        if (updateProductSKUList.size() > 0) {
+            for (ProductSKU productSKU : updateProductSKUList) {
                 productSKUDao.update(productSKU);
             }
         }
 
-        if(delSkuids.size() > 0) {
+        if (delSkuids.size() > 0) {
             List<ProductSKU> delProductSKUList = productSKUDao.load(delSkuids);
-            for(ProductSKU productSKU : delProductSKUList) {
-                if(null != productSKU) {
+            for (ProductSKU productSKU : delProductSKUList) {
+                if (null != productSKU) {
                     productSKU.setStatus(ProductSKU.status_delete);
                     productSKUDao.update(productSKU);
                 }
@@ -195,27 +195,27 @@ public class ProductServiceImpl implements ProductService {
 
     private void check(ProductSPU productSPU, List<ProductSKU> productSKUList) throws StoreSystemException {
         Map<Long, Object> properties = productSPU.getProperties();
-        if(productSPU.getSubid() == 0) throw new StoreSystemException("SPU店铺不能为空");
-        if(productSPU.getCid() == 0) throw new StoreSystemException("SPU类目不能为空");
-        if(productSPU.getBid() == 0) throw new StoreSystemException("SPU品牌不能为空");
+        if (productSPU.getSubid() == 0) throw new StoreSystemException("SPU店铺不能为空");
+        if (productSPU.getCid() == 0) throw new StoreSystemException("SPU类目不能为空");
+        if (productSPU.getBid() == 0) throw new StoreSystemException("SPU品牌不能为空");
 
         long cid = productSPU.getCid();
         List<ProductPropertyName> names = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
         Set<Long> spuNames = Sets.newHashSet();
         Set<Long> skuNames = Sets.newHashSet();
-        for(ProductPropertyName name : names) {
-            if(name.getType() == ProductPropertyName.type_spu) spuNames.add(name.getId());
+        for (ProductPropertyName name : names) {
+            if (name.getType() == ProductPropertyName.type_spu) spuNames.add(name.getId());
             else skuNames.add(name.getId());
         }
 
-        for(long nameId : spuNames) {
-            if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
+        for (long nameId : spuNames) {
+            if (!properties.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
         }
 
-        for(ProductSKU productSKU : productSKUList) {
+        for (ProductSKU productSKU : productSKUList) {
             properties = productSKU.getProperties();
-            for(long nameId : skuNames) {
-                if(!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
+            for (long nameId : skuNames) {
+                if (!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
             }
         }
     }
@@ -224,9 +224,9 @@ public class ProductServiceImpl implements ProductService {
     public void add(ProductSPU productSPU, List<ProductSKU> productSKUList) throws Exception {
         check(productSPU, productSKUList);
         productSPU = productSPUDao.insert(productSPU);
-        if(null == productSPU) throw new StoreSystemException("SPU添加错误");
+        if (null == productSPU) throw new StoreSystemException("SPU添加错误");
         long spuid = productSPU.getId();
-        for(ProductSKU productSKU : productSKUList) {
+        for (ProductSKU productSKU : productSKUList) {
             productSKU.setSpuid(spuid);
             productSKUDao.insert(productSKU);
         }
@@ -238,7 +238,7 @@ public class ProductServiceImpl implements ProductService {
         ClientProductSPU clientProductSPU = transformClient(productSPU);
         List<ProductSKU> productSKUList = productSKUDao.getAllList(id, ProductSKU.status_nomore);
         List<ClientProductSKU> skuList = Lists.newArrayList();
-        for(ProductSKU one : productSKUList) {
+        for (ProductSKU one : productSKUList) {
             ClientProductSKU clientProductSKU = new ClientProductSKU(one);
             skuList.add(clientProductSKU);
         }
@@ -248,12 +248,12 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList) throws Exception {
         List<ClientProductSPU> res = Lists.newArrayList();
-        if(productSPUList.size() == 0) return res;
+        if (productSPUList.size() == 0) return res;
         Set<Long> pids = Sets.newHashSet();
         Set<Long> cids = Sets.newHashSet();
         Set<Long> bids = Sets.newHashSet();
         Set<Long> sids = Sets.newHashSet();
-        for(ProductSPU one : productSPUList) {
+        for (ProductSPU one : productSPUList) {
             pids.add(one.getPid());
             cids.add(one.getCid());
             bids.add(one.getBid());
@@ -267,16 +267,16 @@ public class ProductServiceImpl implements ProductService {
         Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
         List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
         Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
-        for(ProductSPU one : productSPUList) {
+        for (ProductSPU one : productSPUList) {
             ClientProductSPU client = new ClientProductSPU(one);
             ProductProvider provider = providerMap.get(client.getPid());
-            if(null != provider) client.setProviderName(provider.getName());
+            if (null != provider) client.setProviderName(provider.getName());
             ProductCategory category = categoryMap.get(client.getCid());
-            if(null != category) client.setCategoryName(category.getName());
+            if (null != category) client.setCategoryName(category.getName());
             ProductBrand brand = brandMap.get(client.getBid());
-            if(null != brand) client.setBrandName(brand.getName());
+            if (null != brand) client.setBrandName(brand.getName());
             ProductSeries series = seriesMap.get(client.getSid());
-            if(null != series) client.setSeriesName(series.getName());
+            if (null != series) client.setSeriesName(series.getName());
             res.add(client);
         }
         return res;
@@ -285,30 +285,30 @@ public class ProductServiceImpl implements ProductService {
     private ClientProductSPU transformClient(ProductSPU productSPU) throws Exception {
         ClientProductSPU clientProductSPU = new ClientProductSPU(productSPU);
         ProductProvider provider = productProviderDao.load(clientProductSPU.getPid());
-        if(null != provider) clientProductSPU.setProviderName(provider.getName());
+        if (null != provider) clientProductSPU.setProviderName(provider.getName());
         ProductCategory category = productCategoryDao.load(clientProductSPU.getCid());
-        if(null != category) clientProductSPU.setCategoryName(category.getName());
+        if (null != category) clientProductSPU.setCategoryName(category.getName());
         ProductBrand brand = productBrandDao.load(clientProductSPU.getBid());
-        if(null != brand) clientProductSPU.setBrandName(brand.getName());
+        if (null != brand) clientProductSPU.setBrandName(brand.getName());
         ProductSeries series = productSeriesDao.load(clientProductSPU.getSid());
-        if(null != series) clientProductSPU.setSeriesName(series.getName());
+        if (null != series) clientProductSPU.setSeriesName(series.getName());
         return clientProductSPU;
     }
 
     @Override
     public boolean delSKU(long id) throws Exception {
         ProductSKU productSKU = productSKUDao.load(id);
-        if(null != productSKU) {
+        if (null != productSKU) {
             productSKU.setStatus(ProductSKU.status_delete);
             return productSKUDao.update(productSKU);
         }
         return false;
-     }
+    }
 
     @Override
     public boolean delSPU(long id) throws Exception {
         ProductSPU productSPU = productSPUDao.load(id);
-        if(null != productSPU) {
+        if (null != productSPU) {
             productSPU.setStatus(ProductSPU.status_delete);
             return productSPUDao.update(productSPU);
         }
@@ -316,36 +316,44 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid) throws Exception {
+    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid, String name,int saleStatus) throws Exception {
         String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore;
         String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore;
         String limit = " limit %d , %d ";
-        if(subid > 0) {
+        if (subid > 0) {
             sql += " and subid = " + subid;
             sqlCount += " and subid = " + subid;
         }
-        if(cid > 0) {
+        if (cid > 0) {
             sql += " and cid = " + cid;
             sqlCount += " and cid = " + cid;
         }
-        if(pid > 0) {
+        if (pid > 0) {
             sql += " and pid = " + pid;
             sqlCount += " and pid = " + pid;
         }
-        if(bid > 0) {
+        if (bid > 0) {
             sql += " and bid = " + bid;
             sqlCount += " and bid = " + bid;
         }
-        if(sid > 0) {
+        if (sid > 0) {
             sql += " and sid = " + sid;
             sqlCount += " and sid = " + sid;
+        }
+        if (StringUtils.isNotBlank(name)) {
+            sql += " and `name` like '%" + name + "%'";
+            sqlCount += " and `name` like '%" + name + "%'";
+        }
+        if (saleStatus > -1) {
+            sql += " and saleStatus = " + saleStatus;
+            sqlCount += " and saleStatus = " + saleStatus;
         }
         sql = sql + " order  by `sort` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         List<ClientProductSPU> data = Lists.newArrayList();
-        for(ProductSPU one : productSPUList) {
+        for (ProductSPU one : productSPUList) {
             ClientProductSPU clientProductSPU = new ClientProductSPU(one);
             data.add(clientProductSPU);
         }
@@ -357,7 +365,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ClientProductSPU selectSPU(int type, long subid, long pid, long cid, long bid, long sid) throws Exception {
         int count = productSPUDao.getCount(type, subid, pid, cid, bid, sid);
-        if(count == 0) throw new StoreSystemException("没有此类产品");
+        if (count == 0) throw new StoreSystemException("没有此类产品");
         List<ProductSPU> productSPUList = productSPUDao.getAllList(type, subid, pid, cid, bid, sid);
         ProductSPU productSPU = productSPUList.get(0);
         ClientProductSPU clientProductSPU = transformClient(productSPU);
@@ -369,11 +377,11 @@ public class ProductServiceImpl implements ProductService {
         String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + pSubid;
         String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + pSubid;
         String limit = " limit %d , %d ";
-        if(cid > 0) {
+        if (cid > 0) {
             sql += " and cid = " + cid;
             sqlCount += " and cid = " + cid;
         }
-        if(bid > 0) {
+        if (bid > 0) {
             sql += " and bid = " + bid;
             sqlCount += " and bid = " + bid;
         }
@@ -382,10 +390,10 @@ public class ProductServiceImpl implements ProductService {
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         List<ClientProductSPU> data = transformClients(productSPUList);
-        for(ClientProductSPU one : data) {
+        for (ClientProductSPU one : data) {
             int num = 0;
             List<InventoryDetail> details = inventoryDetailDao.getAllListBySubAndSPU(subid, one.getId());
-            for(InventoryDetail detail : details) {
+            for (InventoryDetail detail : details) {
                 num += detail.getNum();
             }
             one.setCanUseNum(num);
@@ -401,17 +409,17 @@ public class ProductServiceImpl implements ProductService {
         List<ClientProductSKU> res = Lists.newArrayList();
         Set<Long> wids = Sets.newHashSet();
         Set<Long> sids = Sets.newHashSet();
-        for(ProductSKU one : list) {
+        for (ProductSKU one : list) {
             ClientProductSKU client = new ClientProductSKU(one);
             int num = 0;
             List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(one.getId());
             List<ClientInventoryDetail> details = Lists.newArrayList();
             List<ClientInventoryDetail> otherDetails = Lists.newArrayList();
-            for(InventoryDetail detail : allDetails) {
+            for (InventoryDetail detail : allDetails) {
                 wids.add(detail.getWid());
                 sids.add(detail.getSubid());
                 ClientInventoryDetail clientInventoryDetail = new ClientInventoryDetail(detail);
-                if(detail.getSubid() == subid) {
+                if (detail.getSubid() == subid) {
                     details.add(clientInventoryDetail);
                     num += detail.getNum();
                 } else {
@@ -428,22 +436,29 @@ public class ProductServiceImpl implements ProductService {
         List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(sids));
         Map<Long, Subordinate> subordinateMap = subordinateMapUtils.listToMap(subordinates, "id");
 
-        for(ClientProductSKU one : res) {
+        for (ClientProductSKU one : res) {
             List<ClientInventoryDetail> details = one.getDetails();
-            for(ClientInventoryDetail detail : details) {
+            for (ClientInventoryDetail detail : details) {
                 InventoryWarehouse warehouse = warehouseMap.get(detail.getWid());
-                if(null != warehouse) detail.setWarehouseName(warehouse.getName());
+                if (null != warehouse) detail.setWarehouseName(warehouse.getName());
                 Subordinate subordinate = subordinateMap.get(detail.getSubid());
-                if(null != subordinate) detail.setSubName(subordinate.getName());
+                if (null != subordinate) detail.setSubName(subordinate.getName());
             }
             List<ClientInventoryDetail> otherDetails = one.getOtherDetails();
-            for(ClientInventoryDetail otherDetail : otherDetails) {
+            for (ClientInventoryDetail otherDetail : otherDetails) {
                 InventoryWarehouse warehouse = warehouseMap.get(otherDetail.getWid());
-                if(null != warehouse) otherDetail.setWarehouseName(warehouse.getName());
+                if (null != warehouse) otherDetail.setWarehouseName(warehouse.getName());
                 Subordinate subordinate = subordinateMap.get(otherDetail.getSubid());
-                if(null != subordinate) otherDetail.setSubName(subordinate.getName());
+                if (null != subordinate) otherDetail.setSubName(subordinate.getName());
             }
         }
         return res;
+    }
+
+    @Override
+    public boolean updateSaleStatus(long id, int open) throws Exception {
+        ProductSKU productSKU = productSKUDao.load(id);
+        productSKU.setSaleStatus(open);
+        return  productSKUDao.update(productSKU);
     }
 }

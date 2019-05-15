@@ -9,6 +9,7 @@ import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +26,8 @@ public class ProductSKU implements Serializable {
 
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
+    public static final int sale_status_open=0;//开启
+    public static final int sale_status_close=1;//关闭
 
     @PrimaryKey
     private long id;
@@ -38,6 +41,8 @@ public class ProductSKU implements Serializable {
     @HyperspaceColumn(isJson = true)
     private Map<Long, Object> properties; //属性json
 
+    private List<ProductCustomRange> productCustomRangeList;//定制范围
+
     private int retailPrice; //零售价(分)
 
     private int costPrice; //成本价(分)
@@ -49,6 +54,7 @@ public class ProductSKU implements Serializable {
     private String other; //附加属性
 
     private int status;
+    private int saleStatus;
 
     @SortKey
     private long sort;

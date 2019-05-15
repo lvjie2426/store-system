@@ -153,7 +153,7 @@ public class User implements Serializable {
     public static void main(String[] agrs) throws Exception {
         Map<String, Long> map = new HashMap<>();
         map.put("id", 2L);
-        map.put("rand", 2523232L);
+        map.put("rand", 25232323L);
         System.out.println(Base64Util.encode(AESUtils.encrypt(JsonUtils.objectMapper.writeValueAsBytes(map), key)));
 
     }

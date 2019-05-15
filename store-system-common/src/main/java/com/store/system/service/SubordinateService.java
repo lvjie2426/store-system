@@ -27,4 +27,6 @@ public interface SubordinateService {
 	public boolean updateStore(Subordinate subordinate)throws Exception;
 
     public Pager getSubordinateStoreByName(Pager pager,long sid, String name)throws Exception;
+
+	public boolean updateStatus(long id, int status)throws Exception;
 }
