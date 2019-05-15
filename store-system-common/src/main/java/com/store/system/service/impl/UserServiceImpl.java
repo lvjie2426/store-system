@@ -834,7 +834,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<String> getAllUserJob(long subid) throws Exception {
         Set<String> jobs = Sets.newConcurrentHashSet();
-        List<User> users = userDao.getAllList(subid,User.userType_user,User.status_nomore);
+        String sql = "SELECT * FROM `user` where psid = " + subid + " and `status` = " + User.status_nomore;
+        List<User> users = this.jdbcTemplate.query(sql, rowMapper);
         if(users!=null&&users.size()>0){
             for(User user:users){
                 jobs.add(user.getJob());
