@@ -155,6 +155,13 @@ public class SubordinateServiceImpl implements SubordinateService {
 	}
 
 	@Override
+	public boolean updateStatus(long id, int status) throws Exception {
+		Subordinate subordinate=subordinateDao.load(id);
+		subordinate.setStatus(status);
+		return subordinateDao.update(subordinate);
+	}
+
+	@Override
 	public boolean delete(long id) throws Exception {
 		Subordinate subordinate=subordinateDao.load(id);
 		subordinate.setStatus(Subordinate.status_delete);

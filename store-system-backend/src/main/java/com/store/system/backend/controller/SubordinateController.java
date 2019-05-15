@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -138,6 +139,29 @@ public class SubordinateController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }
 
+    }
+    /**
+     * create by: zhangmeng
+     * description: 企业下门店 开启/关闭
+     * create time: 2019/05/15 0015 17:14:50
+     *
+     * @Param: id
+     * @Param: status
+     * @Param: request
+     * @Param: response
+     * @Param: model
+     * @return
+     */
+    @RequestMapping("/updateOpen")
+    public ModelAndView updateOpen(@RequestParam(value = "id") long id,
+                                   @RequestParam(value = "status") int status, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+
+        try {
+            boolean res = subordinateService.updateStatus(id, status);
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
     }
 
 }

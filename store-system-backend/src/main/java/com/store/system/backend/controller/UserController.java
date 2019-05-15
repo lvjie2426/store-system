@@ -197,12 +197,12 @@ public class UserController extends BaseController {
     //获取所有顾客的职业
     @RequestMapping("/getAllUserJob")
     public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,
-                                      @RequestParam(value = "subid") long subid )throws Exception{
+                                      @RequestParam(value = "psid") long psid )throws Exception{
         try{
-            Subordinate subordinate = subordinateService.load(subid);
+            Subordinate subordinate = subordinateService.load(psid);
             long pSubid = subordinate.getPid();
             if(pSubid != 0) throw new StoreSystemException("公司ID错误");
-            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(subid)));
+            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(psid)));
         }catch (Exception e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
         }
