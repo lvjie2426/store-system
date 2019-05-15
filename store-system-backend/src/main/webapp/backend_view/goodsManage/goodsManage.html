@@ -30,18 +30,18 @@
 </head>
 <body>
     <div class="yj-header">
-        <ul class="tab-ul">
-            <li onclick="chooseGoodsType(this,1)" class="active">镜片</li>
+        <ul class="tab-ul" id="categoryDom">
+            <!--<li onclick="chooseGoodsType(this,1)" class="active">镜片</li>
             <li onclick="chooseGoodsType(this,2)">镜架</li>
             <li onclick="chooseGoodsType(this,3)">隐形眼镜</li>
             <li onclick="chooseGoodsType(this,4)">太阳镜</li>
             <li onclick="chooseGoodsType(this,5)">护理产品</li>
             <li onclick="chooseGoodsType(this,6)">其它商品</li>
-            <li onclick="chooseGoodsType(this,7)">特殊商品</li>
+            <li onclick="chooseGoodsType(this,7)">特殊商品</li>-->
         </ul>
         <div class="yj-header-right">
             <button class="btn btn-info" onclick="suppliers()">设置供应商</button>
-            <div class="selectBox" id="selectBox">
+            <!--<div class="selectBox" id="selectBox">
                 <div class="select-box-header">
                     <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" ></i>
                 </div>
@@ -55,39 +55,20 @@
                         <li value="05">系列5</li>
                     </ul>
                 </div>
-            </div>
+            </div>-->
             <input type="text" placeholder="搜索商品" class="yj-input">
             <button class="btn btn-primary" onclick="addGoods()">新增商品</button>
         </div>
     </div>
     <div class="goods-header">
         <div class="selectBox" id="select-form">
-            <div class="select-box-header">
-                <span class="text">供应商来源</span> <i class="iconfont icon-ico_arrow_down" ></i>
-            </div>
-            <div class="optionBox">
-                <ul class="optionUL">
-                    <li value="01">系列1</li>
-                    <li value="02">系列2</li>
-                    <li value="03">系列3</li>
-                    <li value="04">系列4</li>
-                    <li value="05">系列5</li>
-                </ul>
-            </div>
+
         </div>
         <div class="selectBox" id="select-type">
-            <div class="select-box-header">
-                <span class="text">全部商品类型</span> <i class="iconfont icon-ico_arrow_down" ></i>
-            </div>
-            <div class="optionBox">
-                <ul class="optionUL">
-                    <li value="01">系列1</li>
-                    <li value="02">系列2</li>
-                    <li value="03">系列3</li>
-                    <li value="04">系列4</li>
-                    <li value="05">系列5</li>
-                </ul>
-            </div>
+
+        </div>
+        <div class="selectBox" id="select-series">
+
         </div>
         <div class="selectBox" id="select-status">
             <div class="select-box-header">
@@ -95,11 +76,8 @@
             </div>
             <div class="optionBox">
                 <ul class="optionUL">
-                    <li value="01">系列1</li>
-                    <li value="02">系列2</li>
-                    <li value="03">系列3</li>
-                    <li value="04">系列4</li>
-                    <li value="05">系列5</li>
+                    <li value="0">已销售</li>
+                    <li value="1">未销售</li>
                 </ul>
             </div>
         </div>
@@ -1089,24 +1067,80 @@
     <script src="../resource/layui/layui.js"></script>
 
     <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakoo/Config.js"></script>
     <script src="../resource/js/lib/quakoo/project.js"></script>
-
-    <script src="../resource/common/common.js"></script>
+    <script src="../resource/common/common.js?" +Math.random()></script>
+    <script src="../resource/js/template-native.js"></script>
     <script src="../resource/js/yanjing.js"></script>
+    <!--一级类别-->
+    <script type="text/html" id="categoryTmp">
+        <%for(var i=0;i< list.length;i++){%>
+            <%if(list[i].pid==0){%>
+                <li id="category<%=list[i].id%>" onclick="chooseGoodsType('<%=list[i].id%>')"><%=list[i].name%></li>
+            <%}%>
+        <%}%>
+    </script>
+    <!--供应商-->
+    <script type="text/html" id="providerTmp">
+        <div class="select-box-header">
+            <span class="text">供应商来源</span> <i class="iconfont icon-ico_arrow_down" ></i>
+        </div>
+        <div class="optionBox">
+            <ul class="optionUL">
+                <%for(var i=0;i< list.length;i++){%>
+                <li value="<%=list[i].id%>"><%=list[i].name%></li>
+                <%}%>
+            </ul>
+        </div>
+    </script>
+    <!--品牌-->
+    <script type="text/html" id="brandTmp">
+        <div class="select-box-header">
+            <span class="text">全部商品类型</span> <i class="iconfont icon-ico_arrow_down" ></i>
+        </div>
+        <div class="optionBox">
+            <ul class="optionUL">
+                <%for(var i=0;i< list.length;i++){%>
+                <li value="<%=list[i].id%>"><%=list[i].name%></li>
+                <%}%>
+            </ul>
+        </div>
+    </script>
+    <!--系列-->
+    <script type="text/html" id="seriesTmp">
+        <div class="select-box-header">
+            <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" ></i>
+        </div>
+        <div class="optionBox">
+            <ul class="optionUL">
+                <%for(var i=0;i< list.length;i++){%>
+                <li value="<%=list[i].id%>"><%=list[i].name%></li>
+                <%}%>
+            </ul>
+        </div>
+    </script>
 
     <script>
+        var cid = '';//类目id
+        var pid = '';//供应商ID
+        var bid = '';//品牌ID
+        var sid = '';//系列ID
+        var name = '';//搜索关键字
+        var saleStatus = '';//销售状态0开启1关闭
+
         var goodsType=1;//商品类型
         var columns;        //其它商品的表格
         var columnsTeshu;   //特殊商品的表格
         var $table =  $('#yj-table');
-        var data = [{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1},{id:1}]
         var TableInit = function (columns) {
             var oTableInit = new Object();
             //初始化Table
             oTableInit.Init = function () {
                 $table.bootstrapTable('destroy')
                 $table.bootstrapTable({
-                    data:data,
+                    url:config.getUrl_product_getSPUPager(),
                     classes:"table",
                     pagination:true,        //是否显示分页
                     pageNumber:1,                       //初始化加载第一页，默认第一页
@@ -1120,7 +1154,18 @@
                     paginationHAlign:"center",
                     clickToSelect:true,
                     paginationLoop:false,
-                    columns:columns
+                    columns:columns,
+                    queryParams:function (param) {
+                        if(cid){param.cid = cid;}
+                        if(bid){param.bid = bid;}
+                        if(pid){param.pid = pid;}
+                        if(sid){param.sid = sid;}
+                        if(name){param.name = name;}
+                        if(saleStatus){param.saleStatus = saleStatus;}
+                        param.subid = quakooUser.getUserInfo().psid;
+                        param.token = quakooUser.getUserInfo().token;
+                        return param
+                    }
                 });
             };
             return oTableInit;
@@ -1209,22 +1254,72 @@
                 }
             }
         ];
-        var Table = new TableInit(columnsTeshu);
-        Table.Init();
 
-        // 下拉选择JS开始
-        selectTag($("#selectBox"),function (ret) {
-            console.log(ret)
+
+        //获取一级类目
+        quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:quakooUser.getUserInfo().psid},function (ret) {
+            if(ret && ret.success){
+                if(ret.data.length>0){
+                    var html = template('categoryTmp',{list:ret.data});
+                    $('#categoryDom').html(html);
+                    chooseGoodsType(ret.data[0].id)
+                }
+
+            }
         })
-        selectTag($("#select-form"),function (ret) {
-            console.log(ret)
+        //获取供应商
+        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:quakooUser.getUserInfo().psid},function (ret) {
+            if(ret && ret.success){
+                var html = template('providerTmp',{list:ret.data});
+                $('#select-form').html(html);
+                selectTag($("#select-form"),function (ret) {
+                    console.log(ret)
+                    pid = ret.value;
+                    chooseGoodsType()
+                })
+            }
         })
-        selectTag($("#select-type"),function (ret) {
+        //获取品牌
+        quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:quakooUser.getUserInfo().psid},function (ret) {
             console.log(ret)
+            if(ret && ret.success){
+                var html = template('brandTmp',{list:ret.data});
+                $('#select-type').html(html);
+                selectTag($("#select-type"),function (data) {
+                    if(data.value){
+                        bid = data.value;
+                        chooseGoodsType()
+                        //获取品牌下的系列列表
+                        quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:data.value},function (ret1) {
+                            console.log(ret1)
+                            if(ret1 && ret1.success){
+                                if(ret1.data.length>0){
+                                    var html = template('seriesTmp',{list:ret1.data});
+                                    $('#select-series').html(html).show();
+                                    selectTag($("#select-series"),function (series) {
+                                        sid = series.value;
+                                        chooseGoodsType()
+                                    })
+                                }else{
+                                    $('#select-series').hide();
+                                }
+                            }
+                        })
+                    }else{
+                        $('#select-series').hide();
+                    }
+                })
+            }
         })
+
+
+        //选择销售状态
         selectTag($("#select-status"),function (ret) {
-            console.log(ret)
+            saleStatus = ret.value;
+            chooseGoodsType()
         })
+
+
         selectTag($("#select-pinpai"),function (ret) {
             $('#select-pinpai').find('.text').css('color','#393953')
             console.log(ret)
@@ -1234,16 +1329,20 @@
             form.render();
         });
 
-        function chooseGoodsType(self,value){
-            goodsType = value;
-            if(goodsType == 7){
+
+        function chooseGoodsType(value){
+            if(value){
+                cid = value;
+            }
+            if($('#category'+cid).text()=='特殊商品'){
                 var Table = new TableInit(columnsTeshu);
                 Table.Init();
             }else{
                 var Table = new TableInit(columns);
                 Table.Init();
             }
-            $(self).addClass('active').siblings().removeClass('active')
+            goodsType = value;
+            $('#category'+cid).addClass('active').siblings().removeClass('active');
         }
 
         //设置供应商

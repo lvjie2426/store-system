@@ -68,6 +68,8 @@ var Config = (function(_super){
     _proto.getUrl_user_updateCustomer = function(){return this.serverUrl + '/user/updateCustomer';};
 
     //=======================顾客管理 结束====================
+
+    //=======================会员等级 开始====================
     /**查询某个门店下的所有会员级别列表（查询会员列表）*/
     _proto.getUrl_usergrade_getAllList = function(){return this.serverUrl + '/usergrade/getAllList';};
     /**添加会员级别*/
@@ -76,7 +78,6 @@ var Config = (function(_super){
     _proto.getUrl_usergrade_update = function(){return this.serverUrl + '/usergrade/update';};
     /**删除当前会员级别*/
     _proto.getUrl_usergrade_del = function(){return this.serverUrl + '/usergrade/del';};
-    //=======================会员等级 开始====================
     //=======================会员等级 结束====================
 
     //=======================公司管理 开始====================
@@ -92,8 +93,17 @@ var Config = (function(_super){
     //=======================企业端（营销管理） 结束====================
 
     //=======================商品管理 开始====================
-    /**获取公司下门店列表*/
-    _proto.getUrl_subordinate_ge = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
+    /**获取企业类目列表*/
+    _proto.getUrl_productCategory_getSubAllList = function(){return this.serverUrl + '/productcategory/getSubAllList';};
+    /**获取供应商*/
+    _proto.getUrl_productProvider_getSubAllList = function(){return this.serverUrl + '/productprovider/getSubAllList';};
+    /**获取门店下的品牌*/
+    _proto.getUrl_productBrand_getSubAllList = function(){return this.serverUrl + '/productbrand/getSubAllList';};
+    /**获取品牌下系列列表*/
+    _proto.getUrl_productSeries_getSubAllList = function(){return this.serverUrl + '/productseries/getSubAllList';};
+    /**获取商品列表*/
+    _proto.getUrl_product_getSPUPager = function(){return this.serverUrl + '/product/getSPUPager';};
+
 
     //=======================商品管理 结束====================
 

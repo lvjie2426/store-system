@@ -49,6 +49,7 @@
 
 .yj-header-right input {
     margin-right: 10px;
+    margin-left: 10px;
     float: left;
 }
 
@@ -85,6 +86,12 @@
     color: rgba(130, 130, 151, 1);
     font-size: 11px;
     font-family: PingFangSC-Medium;
+}
+.selectBox{
+    min-width: 150px;
+}
+#select-series{
+    display: none;
 }
 
 /* .table>tbody>tr>td,
