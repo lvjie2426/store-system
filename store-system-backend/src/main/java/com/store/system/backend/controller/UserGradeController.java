@@ -61,7 +61,7 @@ public class UserGradeController extends BaseController {
                                    HttpServletRequest request, HttpServletResponse response, Model model, Pager pager) throws Exception {
         try {
             pager = userGradeService.getByPager(pager,subid);
-            return this.viewNegotiating(request,response, new ResultClient(true, new PagerResult<>(pager)));
+            return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
