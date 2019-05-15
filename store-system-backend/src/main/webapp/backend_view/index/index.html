@@ -232,7 +232,7 @@
 <!--门店列表开始-->
 <script type="text/html" id="shopList">
     <%for(var i=0;i < list.length;i++){%>
-        <li value="'<%=list[i].name%>'" shopId="'<%=list[i].id%>'"><%=list[i].name%></li>
+        <li value="'<%=list[i].id%>'"><%=list[i].name%></li>
     <%}%>
 </script>
 <!--门店列表结束-->
@@ -244,6 +244,7 @@
     /**获取公司下门店列表*/
     function getSubordinateStore(){
         quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid},function (ret) {
+            console.log('公司下门店列表：',ret);
             if(ret&&ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
                     console.log("门店列表数据：",ret.data);
@@ -255,7 +256,8 @@
                     document.getElementById("shopDefaultText").innerHTML = ret.data[0].name;
                     /**下拉框*/
                     selectTag($('#selectBox'), function (ret) {
-                        quakooDb.setItem("sel_ShopId",ret.sid); //sava 门店ID
+                        console.log(ret);
+                        quakooDb.setItem("sel_ShopId",ret.value); //sava 门店ID
                         quakooDb.setItem("sel_ShopName",ret.text); //save 门店名字
                     });
                 }

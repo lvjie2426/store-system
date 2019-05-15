@@ -41,7 +41,7 @@ function selectTag(ele, callback) {
         ele.find('.text').text(content);
         if (callback) {
             if ($(this).attr('value')) {
-                callback({el:ele, value: $(this).attr('value'),id:$(this).attr('shopId'), text: content })
+                callback({el:ele, value: $(this).attr('value'), text: content })
             } else {
                 callback({el:ele,  value: content, text: content })
             }

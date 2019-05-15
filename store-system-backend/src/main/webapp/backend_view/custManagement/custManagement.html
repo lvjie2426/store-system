@@ -288,8 +288,8 @@
 
 
         /**获取公司下顾客的所有职业*/
-        function getAllUserJob(subid){
-            quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{subid:subid},function (ret) {
+        function getAllUserJob(psid){
+            quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{psid:psid},function (ret) {
                 console.log('公司下顾客所有职业：',ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
