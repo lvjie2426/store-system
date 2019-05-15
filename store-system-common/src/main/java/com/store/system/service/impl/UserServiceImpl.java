@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
@@ -833,15 +834,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<String> getAllUserJob(long subid) throws Exception {
-        Set<String> jobs = Sets.newConcurrentHashSet();
-        String sql = "SELECT * FROM `user` where psid = " + subid + " and `status` = " + User.status_nomore;
+        String sql = "SELECT * FROM `user` where psid = " + subid + " and `status` = " + User.status_nomore + " and userType = " + User.userType_user;
+        TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
         List<User> users = this.jdbcTemplate.query(sql, rowMapper);
-        if(users!=null&&users.size()>0){
-            for(User user:users){
-                jobs.add(user.getJob());
-            }
-        }
-        return jobs;
+        return fieldSetUtils.fieldList(users,"job");
     }
 
 }
