@@ -834,9 +834,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<String> getAllUserJob(long subid) throws Exception {
-        String sql = "SELECT * FROM `user` where psid = " + subid + " and `status` = " + User.status_nomore + " and userType = " + User.userType_user;
         TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
-        List<User> users = this.jdbcTemplate.query(sql, rowMapper);
+        List<User> users = userDao.getAllLists(subid,User.userType_user,User.status_nomore);
         return fieldSetUtils.fieldList(users,"job");
     }
 
