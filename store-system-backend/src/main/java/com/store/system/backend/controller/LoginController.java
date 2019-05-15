@@ -53,15 +53,6 @@ public class LoginController extends BaseController {
                 cache.delete(verifyCode + uuid);
                 return this.viewNegotiating(request, response, new ResultClient("用户名密码错误"));
             }
-            if (StringUtils.isBlank(uuid) || StringUtils.isBlank(code)) {
-                cache.delete(verifyCode + uuid);
-                return this.viewNegotiating(request, response, new ResultClient("验证码不正确"));
-            }
-            String oldCode = cache.getString(verifyCode + uuid);
-            if (!code.equalsIgnoreCase(oldCode)) {
-                cache.delete(verifyCode + uuid);
-                return this.viewNegotiating(request, response, new ResultClient("验证码不正确"));
-            }
             User user=new User();
             user.setUserName(userName);
             user.setPassword(password);
