@@ -264,24 +264,33 @@
     </script>
 
     <script>
-        var data = [];//用户数据
+        var psid;     //企业ID
+        var subid;    //门店ID
         /**初始化页面*/
         $(function () {
             initPage();
         });
         function initPage(){
-            var subid;
-            if(window.localStorage){
-                subid = window.localStorage.sel_ShopId;
+            psid = quakooUser.getUserInfo().psid;//企业ID(公司ID)
+            subid = quakooDb.getItem("sel_ShopId");//门店ID
+            if(typeof subid == "string"){subid=parseInt(subid.replace(/\'/g,'').replace(/\"/g,''))}
+            console.log(psid);
+            getAllUserJob(psid);       //获取公司下所有职业
+            getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
+/*
+            if(shopType == 0){
+                getCustomerPager(psid,config.getUrl_user_getCustomerPager());//公司下顾客
+            }else if(shopType ==1){
+                getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
             }
-            getAllUserJob(subid);  //获取职业
-            getSubCustomerPager(subid);        //用户表单
+*/
         }
 
 
-        /**获取门店下顾客的所有职业*/
+        /**获取公司下顾客的所有职业*/
         function getAllUserJob(subid){
             quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{subid:subid},function (ret) {
+                console.log('公司下顾客所有职业：',ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
                         var data = {list:ret.data};
@@ -295,11 +304,11 @@
                 }
             });
         }
-        /**获取门店下所有顾客*/
-        function getSubCustomerPager(subid){
+        /**获取顾客方法（包括公司和门店，只是URL不同）*/
+        function getCustomerPager(subid,url){
             $('#yj-table').bootstrapTable('destroy');
             $("#yj-table").bootstrapTable({
-                url:config.getUrl_user_getSubCustomerPager(),
+                url:url,
                 method: 'get',
                 classes: "table",
                 pagination: true,        //是否显示分页
@@ -324,7 +333,7 @@
                     { field: "subName", title: "微信认证", align: "left", valign: "middle", formatter: function (value, row, index) { return value ? '<span class="certified">已认证</span>' : '<span class="uncertified">未认证</span>' } },
                     { field: "payCount", title: "消费次数", align: "left", valign: "middle" },
                     {
-                        field: "btn", title: "操作", align: "left", valign: "middle", width: '180px', formatter: function () {
+                        field: "btn", title: "操作", align: "left", valign: "middle", width: '180', formatter: function () {
                             return '<button class="btn btnEedit">编辑</button><button class="btn btnRecord ml8">历史订单</button>'
                         }
                     }
@@ -338,6 +347,7 @@
 
             });
         }
+
         /**from表单函数执行*/
         function formBox(subid) {
             getSubCustomerPager(subid);    //获取门店下所有顾客
@@ -457,8 +467,7 @@
                 selectTag($("#grade"));
                 // 全部性别
                 selectTag($("#gender"));
-                // 全部职业
-                selectTag($("#occupation"));
+
             }
 
             return {
