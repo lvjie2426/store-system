@@ -116,7 +116,6 @@ header>div button:nth-child(3) {
 .main {
     width: 100%;
     padding: 10px 60px;
-    overflow: hidden;
     color: #393953;
 }
 
