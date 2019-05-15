@@ -260,30 +260,32 @@
         <%for(var i =0;i< list.length;i++){%>
             <li value="'<%=list[i]%>'"><%=list[i]%></li>
         <%}%>
-
-
     </script>
 
     <script>
-        var psid;     //企业ID
-        var subid;    //门店ID
-        var cusJob,cusSex,cusPhone;//工作，性别，电话
+        var psid;                                            //企业ID
+        var subid;                                           //门店ID
+        var cusJob,cusSex,cusPhone;                          //工作，性别，电话
         /**初始化页面*/
         $(function () {
             initPage();
         });
+        /**初始化函数*/
         function initPage(){
-            psid = quakooUser.getUserInfo().psid;//企业ID(公司ID)
-            subid = quakooDb.getItem("sel_ShopId");//门店ID
+            // 时间范围开始
+            var date1 = new dateRange(".yj-demo-time");
+            date1.init();                                     //时间初始化
+            psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
+            subid = quakooDb.getItem("sel_ShopId");           //门店ID
             if(typeof subid == "string"){subid=parseInt(subid.replace(/\'/g,'').replace(/\"/g,''))}
-            console.log(psid);
-            selectTag($("#gender"),function (ret) {
+            selectTag($("#searchTypeBox"));                   // 头部手机号
+            selectTag($("#grade"));                           // 全部会员等级
+            selectTag($("#gender"),function (ret){           // 全部性别
                 cusSex = ret.value;
                 getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
-            }); // 全部性别
-            getAllUserJob(psid);       //获取公司下所有职业
+            });
+            getAllUserJob(psid);                              //获取公司下所有职业
             getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
-
             getAllList(psid,config.getUrl_usergrade_getAllList());//查询企业下的会员列表
         }
         /**获取公司下顾客的所有职业*/
@@ -340,9 +342,9 @@
                     }
                 ],
                 queryParams:function (param) {
-                    param.job = cusJob||null;
-                    param.sex = cusSex||null;
-                    param.phone = cusPhone||null;
+                    if(cusJob){param.job = cusJob}
+                    if(cusSex){param.sex = cusSex}
+                    if(cusPhone){param.phone = cusPhone}
                     param.subid = subid;
                     param.userType = 0;
                     param.token = quakooUser.getUserInfo().token;
@@ -392,121 +394,63 @@
             });
         }
 
-        /**from表单函数执行*/
-        function formBox(subid) {
-            // 会员等级from
-            var memberLevelPop = [
-                { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }, { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }, { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }, { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }, { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }, { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }, { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }, { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }, { name: '地主', condition: '满0积分', integral: '1积分=10000元', getinteg: '1元=10000积分', btn: '' }]
-            $("#memberLevelPop").bootstrapTable({
-                data: memberLevelPop,
-                classes: "table",
-                pagination: true,        //是否显示分页
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 5,
-                pageList: [5, 10, 15, 20],
-                sortable: false,
-                sortOrder: "asc",
-                showColumns: true,
-                strictSearch: true,
-                locale: "zh-CN",
-                paginationHAlign: "center",
-                clickToSelect: true,
-                columns: [
-                    { field: "name", title: "等级称号", align: "left", valign: "middle" },
-                    { field: "condition", title: "等级条件", align: "left", valign: "middle" },
-                    { field: "integral", title: "积分抵现", align: "left", valign: "middle" },
-                    { field: "getinteg", title: "积分获取", align: "left", valign: "middle" },
-                    {
-                        field: "btn", title: "操作", align: "left", valign: "middle", width: '180px',
-                        formatter: function () {
-                            return '<button class="btn btnEedit">编辑</button><button class="btn btnRemove ml8">删除</button>';
-                        }
-                    }
-                ]
+        /**新增会员等级*/
+        function add(){
+            quakooData.ajaxGetData(config.getUrl_usergrade_add(),{},function (ret) {
+                console.log("新增会员等级返回数据：",ret)
             });
-
         }
-
-        var custManagement = (function () {
-
-            //头部js
-            var header = function header() {
-                // 时间范围开始
-                var date1 = new dateRange(".yj-demo-time");
-                date1.init()
-                // 时间范围结束
-            };
-
-
-            // 弹窗函数执行
-            // 会员等级设置
-            function levelSetting(a) {
-                var layerIndex = layer.open({
-                    type: 1,
-                    skin: 'layui-layer-demo', //样式类名
-                    area: a.data.area,
-                    anim: 0,
-                    closeBtn: 0,
-                    title: a.data.title,
-                    shade: 0.3,
-                    shadeClose: true, //开启遮罩关闭
-                    scrollbar: false,
-                    content: a.data.popupBox,
-                    btn: a.data.btn,
-                    resize:false,
-                    move: '.sMove',
-                    yes: function () {
-                        layer.close()
-                    },
-                    btn2: function () {
-                    },
-                    success: function (layero, index) {
-                        a.data.fn();
-                    },
-                });
+        /**会员等级设置*/
+        function levelSetting(a) {
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                area: a.data.area,
+                anim: 0,
+                closeBtn: 0,
+                title: a.data.title,
+                shade: 0.3,
+                shadeClose: true, //开启遮罩关闭
+                scrollbar: false,
+                content: a.data.popupBox,
+                btn: a.data.btn,
+                resize:false,
+                move: '.sMove',
+                yes: function () {
+                    layer.close()
+                },
+                btn2: function () {
+                },
+                success: function (layero, index) {
+                    a.data.fn();
+                },
+            });
+        }
+        $('.btnLevelSetting').bind('click', {
+            area: ['720px'],
+            title: '<div class="titleBox"><span class="sMove">会员等级设置</span><button class="addLevel fr">新增等级</button></div>',
+            popupBox: $('.memberLevelPop'),
+            btn: ['', '关闭窗口'],
+            fn: function () {
+                $('.layui-layer-btn0').hide();
             }
-            $('.btnLevelSetting').bind('click', {
-                area: ['720px'],
-                title: '<div class="titleBox"><span class="sMove">会员等级设置</span><button class="addLevel fr">新增等级</button></div>',
-                popupBox: $('.memberLevelPop'),
-                btn: ['', '关闭窗口'],
-                fn: function () {
-                    $('.layui-layer-btn0').hide();
-                }
-            }, levelSetting);
-            $(document).on('click', '.addLevel', {
-                area: ['360px'],
-                title: '<div class="titleBox"><span  class="sMove">会员等级设置</span></div>',
-                popupBox: $('.addLevelPop'),
-                btn: ['新增', '取消'],
-                fn: function () {
-                    $('.layui-layer-btn0').css('float', 'right');
-                }
-            }, levelSetting);
+        }, levelSetting);
+        $(document).on('click', '.addLevel', {
+            area: ['360px'],
+            title: '<div class="titleBox"><span class="sMove">新增等级</span></div>',
+            popupBox: $('.addLevelPop'),
+            btn: ['新增', '取消'],
+            yes:function(){
 
-            $('#jsrChecked').change(function () {
-                $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';
-            })
-
-
-            //下拉框执行函数区
-            var selectImplementBox = function selectImplementBox() {
-                // 头部手机号
-                selectTag($("#searchTypeBox"));
-                // 全部会员等级
-                selectTag($("#grade"));
-
-
+            },
+            fn: function () {
+                $('.layui-layer-btn0').css('float', 'right');
             }
+        }, levelSetting);
 
-            return {
-                init: function () {
-                    header();
-                    selectImplementBox();
-                }
-            }
-        })();
-        custManagement.init();
+        $('#jsrChecked').change(function () {
+            $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';
+        });
     </script>
 
 </body>
