@@ -1,6 +1,8 @@
 package com.store.system.backend.controller;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.UserGrade;
@@ -56,10 +58,10 @@ public class UserGradeController extends BaseController {
 
     @RequestMapping("/getAllList")
     public ModelAndView getAllList(@RequestParam(value = "subid") long subid,
-                                 HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+                                   HttpServletRequest request, HttpServletResponse response, Model model, Pager pager) throws Exception {
         try {
-            List<UserGrade> grades = userGradeService.getAllList(subid);
-            return this.viewNegotiating(request,response, new ResultClient(true, grades));
+            pager = userGradeService.getByPager(pager,subid);
+            return this.viewNegotiating(request,response, new ResultClient(true, new PagerResult<>(pager)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }

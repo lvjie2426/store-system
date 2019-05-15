@@ -1,13 +1,20 @@
 package com.store.system.service.impl;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.ext.RowMapperHelp;
+import com.store.system.client.ClientUser;
 import com.store.system.dao.UserGradeDao;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.User;
 import com.store.system.model.UserGrade;
 import com.store.system.service.UserGradeService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +23,8 @@ public class UserGradeServiceImpl implements UserGradeService {
 
     @Resource
     private UserGradeDao userGradeDao;
-
+    @Resource
+    private JdbcTemplate jdbcTemplate;
     @Resource
     private SubordinateDao subordinateDao;
 
@@ -61,6 +69,21 @@ public class UserGradeServiceImpl implements UserGradeService {
         List<UserGrade> list = userGradeDao.getAllList(subid);
         Collections.sort(list);
         return list;
+    }
+
+    @Override
+    public Pager getByPager(Pager pager,long subid) throws Exception {
+        String sql = "SELECT * FROM `user_grade` where subid = " + subid ;
+        String sqlCount = "SELECT COUNT(id) FROM `user_grade` where subid = " + subid ;
+        String limit = " limit %d , %d ";
+        sql = sql + " order  by `ctime` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<UserGrade> userGrades = this.jdbcTemplate.query(sql,new RowMapperHelp<UserGrade>(UserGrade.class));
+        count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        pager.setData(userGrades);
+        pager.setTotalCount(count);
+        return pager;
     }
 
     @Override
