@@ -6,6 +6,7 @@ import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
+import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
 import com.google.common.collect.Lists;
@@ -30,7 +31,8 @@ public class UserServiceImpl implements UserService {
     private UserGradeDao userGradeDao;
     @Resource
     private UserDao userDao;
-
+    @Resource
+    private SubordinateService subordinateService;
     @Resource
     private LoginUserPoolDao loginUserPoolDao;
 
@@ -355,6 +357,18 @@ public class UserServiceImpl implements UserService {
             }
         }
         ClientUserOnLogin clientUserOnLogin = new ClientUserOnLogin(dbUser);
+        Subordinate subordinate = subordinateService.load(clientUserOnLogin.getSid());
+        Subordinate pSubordinate = subordinateService.load(clientUserOnLogin.getPsid());
+        if(subordinate!=null){
+            if(subordinate.getName()!=null){
+                clientUserOnLogin.setSName(subordinate.getName());//公司名称
+            }
+        }
+        if(pSubordinate!=null){
+            if(pSubordinate.getName()!=null){
+                clientUserOnLogin.setSubName(pSubordinate.getName());//门店名称
+            }
+        }
         return clientUserOnLogin;
     }
 

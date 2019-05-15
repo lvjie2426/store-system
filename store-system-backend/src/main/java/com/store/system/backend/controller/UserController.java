@@ -201,7 +201,7 @@ public class UserController extends BaseController {
         try{
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
-            if(pSubid == 0) throw new StoreSystemException("分店ID错误");
+            if(pSubid != 0) throw new StoreSystemException("公司ID错误");
             return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(subid)));
         }catch (Exception e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));

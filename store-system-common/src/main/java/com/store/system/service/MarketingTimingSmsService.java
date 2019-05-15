@@ -19,4 +19,5 @@ public interface MarketingTimingSmsService {
 
     public void sendSMS(MarketingTimingSms marketingTimingSms) throws Exception;
 
+    public boolean updateById(MarketingTimingSms marketingTimingSms) throws Exception;
 }
