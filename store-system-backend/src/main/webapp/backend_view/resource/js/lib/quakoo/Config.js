@@ -68,6 +68,16 @@ var Config = (function(_super){
     _proto.getUrl_user_updateCustomer = function(){return this.serverUrl + '/user/updateCustomer';};
 
     //=======================顾客管理 结束====================
+    /**查询某个门店下的所有会员级别列表（查询会员列表）*/
+    _proto.getUrl_usergrade_getAllList = function(){return this.serverUrl + '/usergrade/getAllList';};
+    /**添加会员级别*/
+    _proto.getUrl_usergrade_add = function(){return this.serverUrl + '/usergrade/add';};
+    /**编辑会员级别信息*/
+    _proto.getUrl_usergrade_update = function(){return this.serverUrl + '/usergrade/update';};
+    /**删除当前会员级别*/
+    _proto.getUrl_usergrade_del = function(){return this.serverUrl + '/usergrade/del';};
+    //=======================会员等级 开始====================
+    //=======================会员等级 结束====================
 
     //=======================公司管理 开始====================
     /**获取公司下门店列表*/

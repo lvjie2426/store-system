@@ -247,7 +247,6 @@
             console.log('公司下门店列表：',ret);
             if(ret&&ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
-                    console.log("门店列表数据：",ret.data);
                     var data = {list:ret.data};
                     var html = template("shopList", data);
                     document.getElementById("shopUl").innerHTML = html;
