@@ -355,6 +355,14 @@ public class UserServiceImpl implements UserService {
             }
         }
         ClientUserOnLogin clientUserOnLogin = new ClientUserOnLogin(dbUser);
+        Subordinate subordinate = subordinateDao.load(clientUserOnLogin.getSid());
+        Subordinate pSubordinate = subordinateDao.load(clientUserOnLogin.getPsid());
+        if(subordinate!=null){
+            clientUserOnLogin.setSName(pSubordinate.getName());//公司名称
+        }
+        if(pSubordinate!=null){
+            clientUserOnLogin.setSubName(subordinate.getName());//门店名称
+        }
         return clientUserOnLogin;
     }
 

@@ -16,13 +16,9 @@ import javax.annotation.Resource;
 @Data
 public class ClientUserOnLogin extends User {
 
-    @Resource
-    private SubordinateService subordinateService;
     private String token;
-
+    private String sName;//公司名称
     private String subName;//门店名称
-
-    private String  sName;//公司名称
     public ClientUserOnLogin() {
     }
 
@@ -32,18 +28,6 @@ public class ClientUserOnLogin extends User {
             this.setPassword(null);
             this.setRand(-1);
             this.token = user.createToken();
-            if(user.getPsid()>0){
-               Subordinate subordinate =  subordinateService.load(user.getPsid());
-               if(subordinate!=null){
-                   this.setSName(subordinate.getName());
-               }
-            }
-            if(user.getSid()>0){
-                Subordinate subordinate = subordinateService.load(user.getSid());
-                if(subordinate!=null){
-                    this.setSubName(subordinate.getName());
-                }
-            }
         } catch (Exception e) {
             throw new IllegalStateException("user construction error!");
         }
