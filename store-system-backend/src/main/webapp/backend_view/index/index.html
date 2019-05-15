@@ -84,7 +84,7 @@
                 <li class="nav-header">
                     <div class="selectBox" id="selectBox">
                         <div class="select-box-header">
-                            <span class="text">精益眼镜旗舰店</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            <span class="text" id="shopDefaultText">精益眼镜旗舰店</span> <i class="iconfont icon-ico_arrow_down"></i>
                         </div>
                         <div class="optionBox">
                             <ul class="optionUL" id="shopUl">
@@ -232,34 +232,33 @@
 <!--门店列表开始-->
 <script type="text/html" id="shopList">
     <%for(var i=0;i < list.length;i++){%>
-        <li value="'<%=list[i].name%>'" shopId="'<%=list[i].id%>'"><%=list[i].name%></li>
+        <li value="'<%=list[i].id%>'"><%=list[i].name%></li>
     <%}%>
 </script>
 <!--门店列表结束-->
-
-
 <script>
-    var sid = quakooUser.getUserInfo().sid;
-    var name = quakooUser.getUserInfo().name;
-    getSubordinateStore();
+    console.log("登录用户信息：",quakooUser.getUserInfo())
+    var sid = quakooUser.getUserInfo().psid;//企业ID
+
+    getSubordinateStore();//获取公司下门店
     /**获取公司下门店列表*/
     function getSubordinateStore(){
-        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid,name:name},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid},function (ret) {
+            console.log('公司下门店列表：',ret);
             if(ret&&ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
+                    console.log("门店列表数据：",ret.data);
                     var data = {list:ret.data};
                     var html = template("shopList", data);
                     document.getElementById("shopUl").innerHTML = html;
+                    /**默认加载第一个店*/
+                    quakooDb.setItem("sel_ShopId",ret.data[0].id); //sava 门店ID
+                    document.getElementById("shopDefaultText").innerHTML = ret.data[0].name;
                     /**下拉框*/
                     selectTag($('#selectBox'), function (ret) {
-
-                        if(window.localStorage){
-                            if(typeof ret.id == "string"){ret.id=parseInt(ret.id.replace(/\'/g,'').replace(/\"/g,''))}
-                            localStorage.setItem("sel_ShopId",ret.id);
-                            localStorage.setItem("sel_ShopName",ret.text);
-                        }else{
-                            console.log("不支持本地存储");
-                        }
+                        console.log(ret);
+                        quakooDb.setItem("sel_ShopId",ret.value); //sava 门店ID
+                        quakooDb.setItem("sel_ShopName",ret.text); //save 门店名字
                     });
                 }
             }
