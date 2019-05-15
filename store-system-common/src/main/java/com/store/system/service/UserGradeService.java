@@ -1,6 +1,8 @@
 package com.store.system.service;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.model.UserGrade;
+import com.sun.jimi.core.util.P;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ public interface UserGradeService {
 
 
     public List<UserGrade> getAllList(long subid) throws Exception;
+
+    public Pager getByPager(Pager pager, long subid) throws Exception;
 
     public UserGrade loadGrade(long subid, long score) throws Exception;
 

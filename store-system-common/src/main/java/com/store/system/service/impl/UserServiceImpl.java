@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
@@ -833,14 +834,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<String> getAllUserJob(long subid) throws Exception {
-        Set<String> jobs = Sets.newConcurrentHashSet();
-        List<User> users = userDao.getAllList(subid,User.userType_user,User.status_nomore);
-        if(users!=null&&users.size()>0){
-            for(User user:users){
-                jobs.add(user.getJob());
-            }
-        }
-        return jobs;
+        TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
+        List<User> users = userDao.getAllLists(subid,User.userType_user,User.status_nomore);
+        return fieldSetUtils.fieldList(users,"job");
     }
 
 }
