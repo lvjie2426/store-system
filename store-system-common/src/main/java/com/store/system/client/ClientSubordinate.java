@@ -13,6 +13,7 @@ public class ClientSubordinate extends Subordinate {
 
     public ClientSubordinate(Subordinate subordinate) {
         try {
+            if(subordinate != null)
             BeanUtils.copyProperties(this, subordinate);
         } catch (Exception e) {
             throw new IllegalStateException("ClientSubordinate construction error!");

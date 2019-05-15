@@ -47,7 +47,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     public boolean update(ProductCategory productCategory) throws Exception {
         check(productCategory);
-        boolean res = productCategoryDao.update(productCategory);
+        ProductCategory load = productCategoryDao.load(productCategory.getId());
+        load.setName(productCategory.getName());
+        boolean res = productCategoryDao.update(load);
         return res;
     }
 

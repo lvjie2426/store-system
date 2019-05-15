@@ -46,6 +46,7 @@ public class MarketingTimingSms implements Serializable {
     private long subid;
 
     private String content;
+    private String job;
 
     @HyperspaceColumn(isJson = true)
     private List<String> tags;
@@ -72,5 +73,6 @@ public class MarketingTimingSms implements Serializable {
     public static void main(String[] args) {
         String str = "@var(user_name)";
         System.out.println(str.replace("@var(","").replace(")",""));
+
     }
 }

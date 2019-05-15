@@ -80,7 +80,7 @@ public class MarketingTimingSmsServiceImpl implements MarketingTimingSmsService 
     public boolean del(long id) throws Exception {
         MarketingTimingSms marketingTimingSms = marketingTimingSmsDao.load(id);
         if (marketingTimingSms != null) {
-            marketingTimingSms.setStatus(marketingTimingSms.status_delete);
+            marketingTimingSms.setStatus(MarketingTimingSms.status_delete);
             return marketingTimingSmsDao.update(marketingTimingSms);
         }
         return false;
@@ -152,6 +152,15 @@ public class MarketingTimingSmsServiceImpl implements MarketingTimingSmsService 
         SubmailUtils.multiSend(multiItems, marketingTimingSms.getContent());
     }
 
+    @Override
+    public boolean updateById(MarketingTimingSms marketingTimingSms) throws Exception {
+        check(marketingTimingSms);
+        MarketingTimingSms load = marketingTimingSmsDao.load(marketingTimingSms.getId());
+        load.setContent(marketingTimingSms.getContent());
+        load.setTags(marketingTimingSms.getTags());
+        boolean res = marketingTimingSmsDao.update(load);
+        return res;
+    }
 
 
 }
