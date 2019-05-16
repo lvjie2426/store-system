@@ -25,7 +25,7 @@ public class UserGradeCategoryDiscountServiceImpl implements UserGradeCategoryDi
 
         for(UserGradeCategoryDiscount li:list){
             UserGradeCategoryDiscount userGradeCategoryDiscount=new UserGradeCategoryDiscount();
-            userGradeCategoryDiscount.setCId(li.getCId());
+            userGradeCategoryDiscount.setSpuId(li.getSpuId());
             userGradeCategoryDiscount.setDiscount(li.getDiscount());
             userGradeCategoryDiscount.setUgId(li.getUgId());
             userGradeCategoryDiscountDao.insert(userGradeCategoryDiscount);
