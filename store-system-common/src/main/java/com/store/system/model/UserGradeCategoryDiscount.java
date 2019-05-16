@@ -18,7 +18,7 @@ import lombok.Data;
 public class UserGradeCategoryDiscount {
 
     @CombinationKey
-    private long cId;//类目
+    private long spuId;//类目
     private int discount; //折扣
     @CombinationKey
     @ShardingKey
