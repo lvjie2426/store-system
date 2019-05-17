@@ -233,7 +233,7 @@ public class ProductServiceImpl implements ProductService {
             productSKU.setSpuid(spuid);
             productSKUDao.insert(productSKU);
         }
-        userGradeCategoryDiscountService.addDiscount(ugDiscountList);
+        userGradeCategoryDiscountService.addDiscount(ugDiscountList,spuid);
 
     }
 
