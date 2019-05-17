@@ -821,7 +821,7 @@ public class UserServiceImpl implements UserService {
             Object[] args = new Object[objects.size()];
             objects.toArray(args);
             users = this.jdbcTemplate.query(sql, rowMapper,args);
-            count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+            count = this.jdbcTemplate.queryForObject(sqlCount, args,Integer.class);
         }else{
             users = this.jdbcTemplate.query(sql, rowMapper);
             count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
