@@ -36,9 +36,10 @@
                     style="background: url(../resource/img/ruku.jpg)no-repeat;background-size: 100% 100%;"></i>顾客管理</li>
         </ul>
         <div>
-            <button class="btnLevelSetting">会员等级设置</button>
+            <button class="btnLevelSetting" onclick="levelSetting()">会员等级设置</button>
             <button>导出Excel</button>
             <button>导入顾客</button>
+<!--
             <div class="selectBox" id="searchTypeBox">
                 <div class="select-box-header">
                     <span class="text">手机号</span> <i class="iconfont icon-ico_arrow_down"></i>
@@ -53,7 +54,8 @@
                     </ul>
                 </div>
             </div>
-            <input type="text" placeholder="搜索手机号">
+-->
+            <input type="text" placeholder="搜索手机号" id="searchPhoneNum">
         </div>
     </header>
     <!-- 二级头部 -->
@@ -63,7 +65,7 @@
                 <span class="text">全部会员等级</span> <i class="iconfont icon-ico_arrow_down"></i>
             </div>
             <div class="optionBox">
-                <ul class="optionUL">
+                <ul class="optionUL" id="memberNameUl">
                     <li value="01">1</li>
                     <li value="02">2</li>
                     <li value="03">3</li>
@@ -169,38 +171,38 @@
                 <li>
                     <div class="topic">等级称号</div>
                     <div class="inputContent">
-                        <input type="text" placeholder="称号" style="width: 100%;">
+                        <input type="text" placeholder="称号" style="width: 100%;" id="grade-title">
                     </div>
                 </li>
                 <li>
                     <div class="topic">等级条件</div>
                     <div class="inputContent">
-                        满&nbsp;<input type="number" placeholder="数值">&nbsp;积分获取此称号
+                        满&nbsp;<input type="number" placeholder="数值" id="grade-condition">&nbsp;积分获取此称号
                     </div>
                 </li>
                 <li>
                     <div class="topic">积分抵现</div>
                     <div class="inputContent">
-                        <input type="number" placeholder="数值">&nbsp;积分=&nbsp;<input type="number"
-                            placeholder="金额">&nbsp;元
+                        <input type="number" placeholder="数值" id="fornow-num">&nbsp;积分=&nbsp;<input type="number"
+                            placeholder="金额" id="fornow-money">&nbsp;元
                     </div>
                 </li>
                 <li>
                     <div class="topic">&nbsp;</div>
                     <div class="inputContent">
-                        最高可抵现百分之&nbsp;<input type="number" placeholder="数值">
+                        最高可抵现百分之&nbsp;<input type="number" placeholder="数值" id="fornow-max">
                     </div>
                 </li>
                 <li>
                     <div class="topic">积分获取</div>
                     <div class="inputContent">
-                        <input type="number" placeholder="金额">&nbsp;元=&nbsp;<input type="number">&nbsp;积分
+                        <input type="number" placeholder="金额" id="get-money">&nbsp;元=&nbsp;<input type="number" id="get-num">&nbsp;积分
                     </div>
                 </li>
                 <li class="m0">
                     <div class="topic">会员默认折扣</div>
                     <div class="inputContent">
-                        <input type="number" placeholder="数值" style="width: 100%;">
+                        <input type="number" placeholder="数值" style="width: 100%;" id="discount">
                     </div>
                 </li>
             </ul>
@@ -213,7 +215,7 @@
                     <input type="radio" name="condition" id="condition1" checked="checked">
                     <label for="condition1">
                         <div class="textInput fl">
-                            被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值">&nbsp;比例的积分
+                            被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer1">&nbsp;比例的积分
                         </div>
                     </label>
                 </div>
@@ -221,7 +223,7 @@
                     <input type="radio" name="condition" id="condition2">
                     <label for="condition2">
                         <div class="textInput fl">
-                            被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值">&nbsp;比例的积分
+                            被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer2">&nbsp;比例的积分
                         </div>
                     </label>
 
@@ -254,7 +256,12 @@
     <!--//日期范围插件开始-->
     <script src="../resource/js/yanjing/daterange.js"></script>
     <!-- 当前页面逻辑 -->
-
+    <!--会员等级下拉框-->
+    <script type="text/html" id="memberNameList">
+        <%for(var i = 0;i< list.length;i++){%>
+            <li value="'<%=list[i].id%>'"><%=list[i].title%></li>
+        <%}%>
+    </script>
     <!--职业下拉框-->
     <script type="text/html" id="jobList">
         <%for(var i =0;i< list.length;i++){%>
@@ -265,7 +272,7 @@
     <script>
         var psid;                                            //企业ID
         var subid;                                           //门店ID
-        var cusJob,cusSex,cusPhone;                          //工作，性别，电话
+        var member,cusJob,cusSex,cusPhone;                   //会员等级，工作，性别，电话
         /**初始化页面*/
         $(function () {
             initPage();
@@ -278,17 +285,48 @@
             psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
             subid = quakooDb.getItem("sel_ShopId");           //门店ID
             if(typeof subid == "string"){subid=parseInt(subid.replace(/\'/g,'').replace(/\"/g,''))}
-            selectTag($("#searchTypeBox"));                   // 头部手机号
-            selectTag($("#grade"));                           // 全部会员等级
-            selectTag($("#gender"),function (ret){           // 全部性别
+            //selectTag($("#searchTypeBox"));                   // 头部手机号下拉框
+            selectTag($("#gender"),function (ret){            // 全部性别
                 cusSex = ret.value;
                 getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
             });
+            selGetAllList();                                  //查询会员列表（渲染下拉框）                                          //
             getAllUserJob(psid);                              //获取公司下所有职业
             getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
-            getAllList(psid,config.getUrl_usergrade_getAllList());//查询企业下的会员列表
+            searchPhoneNum()                                  //手机号搜索
+
         }
-        /**获取公司下顾客的所有职业*/
+        /**手机号搜索*/
+        function searchPhoneNum(){
+            document.getElementById('searchPhoneNum').onkeypress = function(e){
+                var keycode = e.keyCode;
+                if(keycode=='13') {
+                    document.getElementById('searchPhoneNum').blur();
+                    e.preventDefault();
+                    keyWord =  document.getElementById('searchPhoneNum').value;
+                    if(quakooUtils.isBlack(keyWord)){
+                        alert('请输入手机号');
+                        return ;
+                    }
+                    cusPhone =keyWord;
+                    getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());
+                }
+            }
+            $(document).on('input propertychange','#seek',function (e) {
+                if (e.type === "input" || e.orignalEvent.propertyName === "value") {
+                    if(this.value.length == 0){
+                        api.closeFrameGroup({name:"search"});
+                        flag = true;
+                        document.activeElement.focus();
+                        document.getElementById('searchBtn').style.display = 'block';
+                    }else{
+                        // document.activeElement.blur();
+                    }
+                }
+            });
+
+        }
+        /**获取公司下顾客的所有职业(职业下拉框)*/
         function getAllUserJob(psid){
             quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{psid:psid},function (ret) {
                 console.log('公司下顾客所有职业：',ret);
@@ -304,6 +342,19 @@
                         });
                     }
                 }
+            });
+        }
+        /**查询会员列表（渲染下拉框）*/
+        function selGetAllList(){
+            quakooData.ajaxGetData(config.getUrl_usergrade_getAllList(),{subid:psid},function (ret) {
+                console.log('公司会员等级列表：',ret);
+                var data = {list:ret.rows};
+                var html = template("memberNameList", data);
+                document.getElementById("memberNameUl").innerHTML = html;
+                selectTag($("#grade"),function (ret) { //全部会员等级
+                    member =ret.value;
+                    getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());
+                });
             });
         }
 
@@ -364,7 +415,7 @@
                 pagination: true,        //是否显示分页
                 sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 8,
+                pageSize: 4,
                 pageList: [5, 10, 15, 20],
                 sortable: false,
                 sortOrder: "asc",
@@ -380,8 +431,11 @@
                     { field: "gainScore", title: "积分获取", align: "left", valign: "middle" },
                     {
                         field: "btn", title: "操作", align: "left", valign: "middle", width: '180',
-                        formatter: function () {
-                            return '<button class="btn btnEedit">编辑</button><button class="btn btnRemove ml8">删除</button>';
+                        formatter: function (value,row,index) {
+                            var rows = "addDialog("+JSON.stringify(row).replace(/\"/g,'\'')+")";
+                            var html;
+                            html = '<button class="btn btnEedit" onclick="'+rows+'">编辑</button><button class="btn btnRemove ml8" onclick="del(' + row.id + ')" >删除</button>';
+                            return html;
                         }
                     }
                 ],
@@ -394,59 +448,151 @@
             });
         }
 
-        /**新增会员等级*/
-        function add(){
-            quakooData.ajaxGetData(config.getUrl_usergrade_add(),{},function (ret) {
-                console.log("新增会员等级返回数据：",ret)
-            });
-        }
-        /**会员等级设置*/
-        function levelSetting(a) {
+        /**新增等级弹窗&&(编辑等级弹窗)*/
+        function addDialog(data){
+            var title;
+            var btnArr;
+            /**回显信息*/
+            if(data){//编辑
+                $("#grade-title").val(data.title);
+                $("#grade-condition").val(data.conditionScore);
+                $("#fornow-num").val(data.substituteScore);
+                $("#fornow-money").val(data.substituteMoney);
+                $("#fornow-max").val(data.substituteRate);
+                $("#get-money").val(data.gainMoney);
+                $("#get-num").val(data.gainScore);
+                $("#discount").val(data.discount);
+                if(data.introducer){
+                    $('#jsrChecked').attr("checked","checked");
+                    $('.jsrForm')[0].className = "jsrForm";
+                    if(data.introducer[1]){
+                        $("#condition1").attr("checked","false");
+                        $('#introducer1').val(data.introducer[1]);
+                    }else if(data.introducer[2]){
+                        $("#condition2").attr("checked","checked");
+                        $('#introducer2').val(data.introducer[2]);
+                    }
+                }
+                title = '<div class="titleBox"><span class="sMove">新增等级</span></div>';
+                btnArr = ['新增', '取消'];
+            }else{//添加
+                $("#grade-title").val("");
+                $("#grade-condition").val("");
+                $("#fornow-num").val("");
+                $("#fornow-money").val("");
+                $("#fornow-max").val("");
+                $("#get-money").val("");
+                $("#get-num").val("");
+                $("#discount").val("");
+                $('#jsrChecked').attr("checked",false);
+                $('.jsrForm')[0].className = "jsrForm hide";
+                title = '<div class="titleBox"><span class="sMove">编辑等级</span></div>'
+                btnArr = ['编辑', '取消'];
+            }
             layer.open({
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
-                area: a.data.area,
+                area: '360px',
                 anim: 0,
                 closeBtn: 0,
-                title: a.data.title,
+                title: title,
                 shade: 0.3,
                 shadeClose: true, //开启遮罩关闭
                 scrollbar: false,
-                content: a.data.popupBox,
-                btn: a.data.btn,
+                content: $('.addLevelPop'),
+                btn: btnArr,
                 resize:false,
                 move: '.sMove',
                 yes: function () {
-                    layer.close()
+                    data?addAndEdit(config.getUrl_usergrade_update()):addAndEdit(config.getUrl_usergrade_add());
                 },
                 btn2: function () {
                 },
                 success: function (layero, index) {
-                    a.data.fn();
+
                 },
             });
         }
-        $('.btnLevelSetting').bind('click', {
-            area: ['720px'],
-            title: '<div class="titleBox"><span class="sMove">会员等级设置</span><button class="addLevel fr">新增等级</button></div>',
-            popupBox: $('.memberLevelPop'),
-            btn: ['', '关闭窗口'],
-            fn: function () {
-                $('.layui-layer-btn0').hide();
-            }
-        }, levelSetting);
-        $(document).on('click', '.addLevel', {
-            area: ['360px'],
-            title: '<div class="titleBox"><span class="sMove">新增等级</span></div>',
-            popupBox: $('.addLevelPop'),
-            btn: ['新增', '取消'],
-            yes:function(){
 
-            },
-            fn: function () {
-                $('.layui-layer-btn0').css('float', 'right');
+        /**新增和编辑会员等级接口*/
+        function addAndEdit(url){
+            var title = $("#grade-title").val();
+            var conditionScore = $("#grade-condition").val();
+            var substituteScore = $("#fornow-num").val();
+            var substituteMoney = $("#fornow-money").val();
+            var substituteRate = $("#fornow-max").val();
+            var gainMoney = $("#get-money").val();
+            var gainScore = $("#get-num").val();
+            var discount = $("#discount").val();
+            if($("#introducer1")){
+                var introducer1 = $("#introducer1").val();
             }
-        }, levelSetting);
+            if($("#introducer2")){
+                var introducer2 = $("#introducer2").val();
+            }
+            if(quakooUtils.isNotBlack(title)&&quakooUtils.isNotBlack(conditionScore)&&quakooUtils.isNotBlack(substituteScore)&&quakooUtils.isNotBlack(substituteMoney)&&quakooUtils.isNotBlack(substituteRate)&&quakooUtils.isNotBlack(gainMoney)&&quakooUtils.isNotBlack(gainScore)&&quakooUtils.isNotBlack(discount)){
+                var param={};
+                param.subid = psid;//公司ID
+                param.title = title;//名称
+                param.conditionScore = conditionScore;//达到等级条件
+                param.substituteScore = substituteScore;//积分抵现-积分
+                param.substituteMoney = substituteMoney;//积分抵现-金额
+                param.substituteRate = substituteRate;//最高抵现比例 %
+                param.gainMoney = gainMoney;//积分获取-金额
+                param.gainScore = gainScore;//积分获取-积分
+                param.discount=discount;//会员折扣比例 %
+                if(introducer1){
+                    param.introducer={"1":introducer1};
+                }
+                if(introducer2){
+                    param.introducer={"2":introducer2*100};
+                }
+                console.log("新增会员等级的参数：",param);
+                quakooData.ajaxGetData(url,param,function (ret) {
+                    console.log("新增会员等级返回数据：",ret);
+                    layer.close(layer.index);
+                    getAllList(psid,config.getUrl_usergrade_getAllList());
+                });
+            }else{
+                alert("请填写完表格");
+                return
+            }
+
+        }
+
+
+        /**删除会员等级*/
+        function del(id){
+            quakooData.ajaxGetData(config.getUrl_usergrade_del(),{id:id},function (ret) {
+                console.log("删除会员等级：",ret);
+                getAllList(psid,config.getUrl_usergrade_getAllList());
+            })
+        }
+
+        /**会员等级设置*/
+        function levelSetting() {
+            getAllList(psid,config.getUrl_usergrade_getAllList());//查询企业下的会员列表
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                area: ['720px','344px'],
+                anim: 0,
+                closeBtn: 0,
+                title: '<div class="titleBox"><span class="sMove">会员等级设置</span><button class="addLevel fr" onclick="addDialog()">新增等级</button></div>',
+                shade: 0.3,
+                shadeClose: true, //开启遮罩关闭
+                scrollbar: false,
+                content: $('.memberLevelPop'),
+                btn:'关闭窗口',
+                resize:false,
+                move: '.sMove',
+                yes: function () {
+                    add()
+                },
+                btn2: function () {
+                },
+            });
+        }
 
         $('#jsrChecked').change(function () {
             $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';

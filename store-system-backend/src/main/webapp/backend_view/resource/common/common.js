@@ -1,4 +1,4 @@
-﻿// var serverUrl = "http://xiuqiangback.ikid06.cn";//秀强线上服务器//
+﻿﻿// var serverUrl = "http://xiuqiangback.ikid06.cn";//秀强线上服务器//
 //  var serverUrl = "http://127.0.0.1:10004";//本地服务器mvn
 // var serverUrl = "http://39.107.247.82:20005";//测试服务器
 // var serverUrl = "http://192.168.1.30:20005";//李浩杰服务器
