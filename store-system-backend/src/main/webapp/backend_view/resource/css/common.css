@@ -41,6 +41,15 @@ input{
     padding: 0 10px;
     box-sizing: border-box;
 }
+.select-box-header{
+    overflow: hidden;
+}
+.select-box-header span{
+    max-width: 77%;overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    float: left;
+}
 .selectBoxNoBorder {
     border: none;
 }

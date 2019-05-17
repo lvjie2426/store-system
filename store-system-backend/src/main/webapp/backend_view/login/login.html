@@ -101,7 +101,7 @@
         var uuid;
 		function reload() {
             uuid=guid();
-            $("#code").attr("src",loginCodeUrl+"?uuid="+uuid);
+            $("#code").attr("src",config.getUrl_web_user_loginCodeUrl()+"?uuid="+uuid);
         }
 		function login(){
 		    var loginJson={};

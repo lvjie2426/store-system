@@ -28,7 +28,7 @@ var Config = (function(_super){
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.30:20005";
         /**马文军*/
-        this.serverUrl = "http://192.168.1.28:20005";
+        this.serverUrl = "http://192.168.1.21:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -93,6 +93,8 @@ var Config = (function(_super){
     //=======================企业端（营销管理） 结束====================
 
     //=======================商品管理 开始====================
+    /**获取企业类目列表*/
+    _proto.getUrl_productPropertyvalue_getAllList = function(){return this.serverUrl + '/productpropertyvalue/getAllList';};
     /**获取企业类目列表*/
     _proto.getUrl_productCategory_getSubAllList = function(){return this.serverUrl + '/productcategory/getSubAllList';};
     /**获取供应商*/

@@ -85,7 +85,7 @@ dateRange.prototype.drawCal = function(iYear, iMonth ,iDays, endiYear, endiMonth
             '</div>'+
         '</div>'+
         '<div class="yj-date-btn">'+
-            '<button class="btn btn-primary">确定</button>'+
+            '<button class="btn btn-primary" type="button">确定</button>'+
         '</div>'+
     '</div>';
     return htmlstr;
@@ -103,22 +103,27 @@ dateRange.prototype.bindEnvent = function(){
             }
         }
     }
-    this.dom.find('.yj-date').click(function (e) {
+    this.dom.find('.yj-date')[0].onclick = function (e) {
+        quakooUtils.stopEventBubble(e)
         if(_this.dom.find('.yj-date-box').css('display')=='none'){
             $('.yj-date-box').fadeOut('fast');
             _this.dom.find('.yj-date-box').fadeIn('fast');
+
             if(_this.fixed){
-                _this.dom.find('.yj-date-box').css({'position':'fixed','top':e.clientY-e.offsetY+30,'left':e.clientX-e.offsetX});
+                if(e.clientY + _this.dom.find('.yj-date-box')[0].offsetHeight >document.body.clientHeight){
+                    _this.dom.find('.yj-date-box').css({'position':'fixed','top':e.clientY-e.offsetY - _this.dom.find('.yj-date-box')[0].offsetHeight,'left':e.clientX-e.offsetX});
+                }else{
+                    _this.dom.find('.yj-date-box').css({'position':'fixed','top':e.clientY-e.offsetY+30,'left':e.clientX-e.offsetX});
+                }
             }
         }else{
             $('.yj-date-box').fadeOut('fast');
             _this.dom.find('.yj-date-box').fadeOut('fast');
         }
-        quakooUtils.stopEventBubble(e)
-    })
-    $('body').on('click',function () {
+    }
+    document.body.onclick = function(){
         _this.dom.find('.yj-date-box').fadeOut('fast');
-    })
+    }
     this.dom.find('.yj-date-box').on('click',function (e) {
         quakooUtils.stopEventBubble(e)
     })

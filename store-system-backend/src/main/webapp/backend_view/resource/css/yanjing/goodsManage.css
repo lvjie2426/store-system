@@ -35,7 +35,6 @@
 .yj-header-right {
     padding-top: 12px;
     float: right;
-    height: 28px;
 }
 
 .yj-header-right button {
@@ -49,7 +48,7 @@
 
 .yj-header-right input {
     margin-right: 10px;
-    margin-left: 10px;
+    margin-left: 20px;
     float: left;
 }
 

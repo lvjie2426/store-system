@@ -20,8 +20,7 @@ function selectTag(ele, callback) {
         }
         quakooUtils.stopEventBubble(e)
     }
-
-    ele.on('click', function (event) {
+    ele[0].onclick = function(event){
         $(".ON").find('.select-box-header i').removeClass('icon-ico_arrow_up');
         if(event.preventDefault){
             event.preventDefault();
@@ -29,16 +28,18 @@ function selectTag(ele, callback) {
             window.event.returnValue == false;
         }
         return opDN(optionBox.css('display')=='none' ? true : false, event);
-    });
-    $(document).on('click', function () {
+    }
+
+    document.body.onclick = function(){
         return opDN(false);
-    });
+    }
+
     ele.find('.optionUL>li').on('click', function (event) {
         content = $(this).contents().filter(function (index, content) {
             return content.nodeType === 3;
         }).text();
         opDN(false, event);
-        ele.find('.text').text(content);
+        ele.find('.text').text(content).css('color','#393953');
         if (callback) {
             if ($(this).attr('value')) {
                 callback({el:ele, value: $(this).attr('value'), text: content })
@@ -66,7 +67,7 @@ function selectTag(ele, callback) {
         ele.find('.btn_conten').on('click', function (event) {
             content = $(this).parent().children('input').val();
             if (content == '') return alert('内容不能为空');
-            ele.find('.text').text(content);
+            ele.find('.text').text(content).css('color','#393953');
             if (callback) {
                 callback({el:ele,  text: content, value: content })
             }

@@ -266,7 +266,8 @@
     $(function () {
         /*下拉框*/
 
-        selectTag($('#select-admin'))
+        selectTag($('#select-admin'));
+        getDefaultValue()
     });
 
     function include_js(path) {
@@ -283,6 +284,15 @@
     function logout() {
         quakooUser.removeUserInfo()
         window.location.href="../login/login.html";
+    }
+    
+    
+    function getDefaultValue() {
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:1},function (data) {
+            if(data && data.success){
+
+            }
+        })
     }
 </script>
 
