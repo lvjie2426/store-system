@@ -35,7 +35,7 @@ public class UserGradeCategoryDiscountController  extends BaseController {
                                    @RequestParam(value = "list", required = false, defaultValue = "")  List<UserGradeCategoryDiscount> list
                                    ,Model model) throws Exception {
 
-        userGradeCategoryDiscountService.addDiscount(list);
+//        userGradeCategoryDiscountService.addDiscount(list,null); 暂时用不到这个
         return this.viewNegotiating(request,response,new PagerResult<>(pager));
     }
 
