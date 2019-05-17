@@ -38,7 +38,7 @@ public class Payment implements Serializable{
     private long psid; //所属企业ID
     @CombinationKey
     private int payType; //支付类型
-
+    @CombinationKey
     private int type;
 
     private String merchantsWx; //商户微信号

@@ -65,6 +65,7 @@ public class SubordinateController extends BaseController {
                                          Model model) throws Exception {
         try {
             subordinate = subordinateService.insert(subordinate);
+            //设置支付方式
             payment.setSubid(subordinate.getId());
             payment.setPsid(subordinate.getPid());
             paymentService.insert(payment);
