@@ -4,7 +4,9 @@ import com.store.system.client.ClientSubordinate;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.Payment;
 import com.store.system.model.Subordinate;
+import com.store.system.service.PaymentService;
 import com.store.system.service.SubordinateService;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.model.pagination.Pager;
@@ -31,6 +33,8 @@ public class SubordinateController extends BaseController {
 
     @Autowired
     private SubordinateService subordinateService;
+    @Autowired
+    private PaymentService paymentService;
 
 
 //    @RequestMapping("/getSubordinatePager")
@@ -57,10 +61,13 @@ public class SubordinateController extends BaseController {
 
     @RequestMapping("/addSubordinate")
     public ModelAndView searchSubordinateCode(HttpServletRequest request, HttpServletResponse response,
-                                         Subordinate subordinate,
+                                         Subordinate subordinate,Payment payment,
                                          Model model) throws Exception {
         try {
             subordinate = subordinateService.insert(subordinate);
+            payment.setSubid(subordinate.getId());
+            payment.setPsid(subordinate.getPid());
+            paymentService.insert(payment);
             return this.viewNegotiating(request,response, new ResultClient(subordinate));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
