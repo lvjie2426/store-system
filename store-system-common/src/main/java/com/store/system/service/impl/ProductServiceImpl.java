@@ -16,6 +16,7 @@ import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.ProductService;
+import com.store.system.service.UserGradeCategoryDiscountService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
+    @Resource
+    private UserGradeCategoryDiscountService userGradeCategoryDiscountService;
 
     private void checkSPU(ProductSPU productSPU) throws StoreSystemException {
         int type = productSPU.getType();
@@ -221,7 +224,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList) throws Exception {
+    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception {
         check(productSPU, productSKUList);
         productSPU = productSPUDao.insert(productSPU);
         if (null == productSPU) throw new StoreSystemException("SPU添加错误");
@@ -230,6 +233,8 @@ public class ProductServiceImpl implements ProductService {
             productSKU.setSpuid(spuid);
             productSKUDao.insert(productSKU);
         }
+        userGradeCategoryDiscountService.addDiscount(ugDiscountList,spuid);
+
     }
 
     @Override

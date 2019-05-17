@@ -108,9 +108,13 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public InventoryCheckBill add(InventoryCheckBill inventoryCheckBill) throws Exception {
+    public InventoryCheckBill add(InventoryCheckBill inventoryCheckBill, List<Long> list) throws Exception {
         check(inventoryCheckBill);
-        return inventoryCheckBillDao.insert(inventoryCheckBill);
+        for(Long li:list){
+            inventoryCheckBill.setSubid(li);
+            inventoryCheckBillDao.insert(inventoryCheckBill);
+        }
+        return inventoryCheckBill;
     }
 
     @Override
@@ -200,6 +204,11 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         pager.setData(data);
         pager.setTotalCount(count);
         return pager;
+    }
+
+    @Override
+    public InventoryCheckBill getEndById(long id) throws Exception {
+        return inventoryCheckBillDao.load(id);
     }
 
     private List<ClientInventoryCheckBill> transformClients(List<InventoryCheckBill> checkBills) throws Exception {

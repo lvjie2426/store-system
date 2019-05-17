@@ -72,10 +72,12 @@ public class InventoryCheckBillController extends BaseController {
     }
 
     @RequestMapping("/add")
-    public ModelAndView add(InventoryCheckBill inventoryCheckBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView add(InventoryCheckBill inventoryCheckBill,
+                            @RequestParam(value = "subids", required = false, defaultValue = "") List<Long> subids,
+                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            inventoryCheckBill = inventoryCheckBillService.add(inventoryCheckBill);
-            return this.viewNegotiating(request,response, new ResultClient(inventoryCheckBill));
+             inventoryCheckBillService.add(inventoryCheckBill,subids);
+            return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
@@ -135,17 +137,37 @@ public class InventoryCheckBillController extends BaseController {
 
     @RequestMapping("/getCreatePager")
     public ModelAndView getCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        User user = UserUtils.getUser(request);
-        long createUid = user.getId();
-        pager = inventoryCheckBillService.getCreatePager(pager, createUid);
-        return this.viewNegotiating(request,response, new PagerResult<>(pager));
+        try {
+            User user = UserUtils.getUser(request);
+            long createUid = user.getId();
+            pager = inventoryCheckBillService.getCreatePager(pager, createUid);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     @RequestMapping("/getCheckPager")
     public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryCheckBillService.getCheckPager(pager, subid);
-        return this.viewNegotiating(request,response, new PagerResult<>(pager));
+        try {
+            pager = inventoryCheckBillService.getCheckPager(pager, subid);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
+    @RequestMapping("/getEnd")
+    public ModelAndView getEnd(@RequestParam(value = "id") long id
+                                    , HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+
+        try {
+            return this.viewNegotiating(request,response, new ResultClient(inventoryCheckBillService.getEndById(id)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
+
 
 }

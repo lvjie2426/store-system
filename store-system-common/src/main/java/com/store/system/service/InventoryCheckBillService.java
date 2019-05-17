@@ -3,9 +3,11 @@ package com.store.system.service;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.model.InventoryCheckBill;
 
+import java.util.List;
+
 public interface InventoryCheckBillService {
 
-    public InventoryCheckBill add(InventoryCheckBill inventoryCheckBill) throws Exception;
+    public InventoryCheckBill add(InventoryCheckBill inventoryCheckBill, List<Long> list) throws Exception;
 
     public boolean update(InventoryCheckBill inventoryCheckBill) throws Exception;
 
@@ -23,4 +25,5 @@ public interface InventoryCheckBillService {
 
     public Pager getCheckPager(Pager pager, long subid) throws Exception;
 
+    public  InventoryCheckBill getEndById(long id)throws Exception;
 }

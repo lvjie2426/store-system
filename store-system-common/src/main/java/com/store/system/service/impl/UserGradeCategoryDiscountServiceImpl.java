@@ -21,13 +21,13 @@ public class UserGradeCategoryDiscountServiceImpl implements UserGradeCategoryDi
    private UserGradeCategoryDiscountDao userGradeCategoryDiscountDao;
 
     @Override
-    public void addDiscount(List<UserGradeCategoryDiscount> list) throws Exception {
+    public void addDiscount(List<UserGradeCategoryDiscount> list,long spuid) throws Exception {
 
         for(UserGradeCategoryDiscount li:list){
             UserGradeCategoryDiscount userGradeCategoryDiscount=new UserGradeCategoryDiscount();
-            userGradeCategoryDiscount.setCId(li.getCId());
+            userGradeCategoryDiscount.setSpuid(spuid);
             userGradeCategoryDiscount.setDiscount(li.getDiscount());
-            userGradeCategoryDiscount.setUgId(li.getUgId());
+            userGradeCategoryDiscount.setUgid(li.getUgid());
             userGradeCategoryDiscountDao.insert(userGradeCategoryDiscount);
         }
 

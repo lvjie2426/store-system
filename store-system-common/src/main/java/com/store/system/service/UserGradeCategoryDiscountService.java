@@ -10,5 +10,5 @@ import java.util.List; /**
  **/
 
 public interface UserGradeCategoryDiscountService {
-  public   void addDiscount(List<UserGradeCategoryDiscount> list) throws Exception;
+  public   void addDiscount(List<UserGradeCategoryDiscount> list,long spuid) throws Exception;
 }
