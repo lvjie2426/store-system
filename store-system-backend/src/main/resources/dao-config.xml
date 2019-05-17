@@ -417,4 +417,13 @@
         </property>
     </bean>
 
+    <bean id="paymentDao" class="com.store.system.dao.impl.PaymentDaoImpl">
+        <property name="tableName" value="payment" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

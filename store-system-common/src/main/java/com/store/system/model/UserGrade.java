@@ -1,11 +1,13 @@
 package com.store.system.model;
 
+import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
+import java.util.Map;
 
 import java.io.Serializable;
 
@@ -20,6 +22,9 @@ import java.io.Serializable;
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure, identityType = IdentityType.origin_indentity)
 @Data
 public class UserGrade implements Serializable, Comparable<UserGrade> {
+
+    public static final int introducer_score=1;//相应比例的积分
+    public static final int introducer_money=2;//现金储值
 
     @PrimaryKey
     private long id;
@@ -41,6 +46,9 @@ public class UserGrade implements Serializable, Comparable<UserGrade> {
     private int gainScore; //积分获取-积分数值
 
     private double discount; //会员折扣
+
+    @HyperspaceColumn(isJson = true)
+    private Map<Long,Object> introducer; //介绍人
 
     @SortKey
     private long ctime;
