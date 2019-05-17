@@ -5,6 +5,7 @@ import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
+import com.store.system.model.UserGradeCategoryDiscount;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface ProductService {
 
     public ProductSKU addSKU(ProductSKU productSKU) throws Exception;
 
-    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList) throws Exception;
+    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception;
 
     public ClientProductSPU loadSPU(long id) throws Exception;
 

@@ -12,8 +12,10 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
 import com.store.system.model.Subordinate;
+import com.store.system.model.UserGradeCategoryDiscount;
 import com.store.system.service.ProductService;
 import com.store.system.service.SubordinateService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,7 +67,9 @@ public class ProductController extends BaseController {
      * creat_time: 14:49
      **/
     @RequestMapping("/add")
-    public ModelAndView add(ProductSPU productSPU, @RequestParam(value = "skuJson") String skuJson,
+    public ModelAndView add(ProductSPU productSPU,
+                            @RequestParam(value = "skuJson") String skuJson,
+                            @RequestParam(value = "ugDiscount") String ugDiscount,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ProductSKU> productSKUList = null;
@@ -74,7 +78,16 @@ public class ProductController extends BaseController {
             } catch (Exception e) {
                 throw new StoreSystemException("sku格式错误");
             }
-            productService.add(productSPU, productSKUList);
+            List<UserGradeCategoryDiscount> ugDiscountList = null;
+            try {
+                if(StringUtils.isNotBlank(ugDiscount)){
+                    ugDiscountList = JsonUtils.fromJson(ugDiscount, new TypeReference<List<UserGradeCategoryDiscount>>() {});
+                }
+
+            } catch (Exception e) {
+                throw new StoreSystemException("会员折扣格式错误");
+            }
+            productService.add(productSPU, productSKUList,ugDiscountList);
             return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
