@@ -87,9 +87,26 @@ var Config = (function(_super){
     //=======================公司管理 结束====================
 
     //=======================企业端（营销管理） 开始====================
-    /**获取公司下门店列表*/
-    _proto.getUrl_subordinate_getSu = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
-
+    /**新增短信群发*/
+    _proto.getUrl_marketingtimingsms_add = function(){return this.serverUrl + '/marketingtimingsms/add';};
+    /**获取短信群发列表*/
+    _proto.getUrl_marketingtimingsms_getCheckPager = function(){return this.serverUrl + '/marketingtimingsms/getCheckPager';};
+    /**编辑短信群发*/
+    _proto.getUrl_marketingtimingsms_update = function(){return this.serverUrl + '/marketingtimingsms/update';};
+    /**新增抵用卷*/
+    _proto.getUrl_marketingcoupon_add = function(){return this.serverUrl + '/marketingcoupon/add';};
+    /**启用/关闭抵用卷*/
+    _proto.getUrl_marketingcoupon_updateOpen = function(){return this.serverUrl + '/marketingcoupon/updateOpen';};
+    /**删除抵用卷*/
+    _proto.getUrl_marketingcoupon_del = function(){return this.serverUrl + '/marketingcoupon/del';};
+    /**获取抵用卷列表*/
+    _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
+    /**更新抵用卷排序*/
+    _proto.getUrl_marketingcoupon_updateSort = function(){return this.serverUrl + '/marketingcoupon/updateSort';};
+    /**设置短信营销（待定）*/
+    //_proto.getUrl_subordinate_getSu = function(){return this.serverUrl + '/marketingtimingsms/add';};
+    /**编辑短信营销(待定)*/
+    //_proto.getUrl_subordinate_getSu = function(){return this.serverUrl + '/marketingtimingsms/add';};
     //=======================企业端（营销管理） 结束====================
 
     //=======================商品管理 开始====================

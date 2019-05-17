@@ -337,7 +337,7 @@
                         document.getElementById("jobUl").innerHTML = html;
                         // 全部职业
                         selectTag($("#occupation"),function (ret) {
-                            cusJob = ret.val;
+                            cusJob = ret.value;
                             getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());
                         });
                     }

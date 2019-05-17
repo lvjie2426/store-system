@@ -31,7 +31,7 @@
 
 </head>
 <body class="body-bg">
-<div class="header clear"   >
+<div class="header clear">
     <ul class="tab-ul clear">
         <li class="active">抵用券营销</li>
         <li>短信营销</li>
@@ -236,7 +236,7 @@
 <div class="content-view1">
     <div class="lay-header">
         <span class="lay-title">新增抵用券</span>
-        <div class="switch active fr">
+        <div class="switch active fr" id="voucherSwitch">
             <span class="off">未开启</span>
             <span class="on">已启用</span>
             <span class="switch-btn"><i></i></span>
@@ -246,14 +246,14 @@
         <ol>
             <li class="lay-row title clear">
                 <div class="left">抵用券标题</div>
-                <input class="right" type="text" placeholder="抵用券标题">
+                <input class="right" type="text" placeholder="抵用券标题" id="voucherTitle">
             </li>
             <li class="lay-row describe clear">
                 <div class="left">抵用券描述</div>
                 <div class="right">
                     <strong>消费满</strong>
                     <em></em>
-                    <input type="number" placeholder="数值">
+                    <input type="number" placeholder="数值" id="describefull">
                     <em></em>
                     <div class="selectBox" id="selectBox1">
                         <div class="select-box-header">
@@ -261,16 +261,15 @@
                         </div>
                         <div class="optionBox">
                             <ul class="optionUL">
-                                <li value="01">元</li>
-                                <li value="02">美元</li>
-                                <li value="03">日元</li>
+                                <li value="1">元</li>
+                                <li value="2">个</li>
                             </ul>
                         </div>
                     </div>
                     <em></em>
                     <strong>减</strong>
                     <em></em>
-                    <input type="number" placeholder="数值">
+                    <input type="number" placeholder="数值" id="describeSubtract">
                     <em></em>
                     <div class="selectBox" id="selectBox2">
                         <div class="select-box-header">
@@ -278,9 +277,8 @@
                         </div>
                         <div class="optionBox">
                             <ul class="optionUL">
-                                <li value="01">元</li>
-                                <li value="02">美元</li>
-                                <li value="03">日元</li>
+                                <li value="1">元</li>
+                                <li value="2">%</li>
                             </ul>
                         </div>
                     </div>
@@ -298,9 +296,9 @@
                                 </div>
                                 <div class="optionBox">
                                     <ul class="optionUL">
-                                        <li value="01">1</li>
-                                        <li value="02">2</li>
-                                        <li value="03">3</li>
+                                        <li value="1">全场通用</li>
+                                        <li value="2">消费金额</li>
+                                        <li value="3">消费个数</li>
                                     </ul>
                                 </div>
                             </div>
@@ -310,16 +308,15 @@
                         <input type="radio" name="condition" id="condition2">
                         <label for="condition2">
                             <span>消费满</span>
-                            <input type="number" placeholder="数值"/>
+                            <input type="number" placeholder="数值" id="conditionFull"/>
                             <div class="selectBox" id="selectBox4">
                                 <div class="select-box-header">
                                     <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
                                 </div>
                                 <div class="optionBox">
                                     <ul class="optionUL">
-                                        <li value="01">元</li>
-                                        <li value="02">美元</li>
-                                        <li value="03">日元</li>
+                                        <li value="1">元</li>
+                                        <li value="2">个</li>
                                     </ul>
                                 </div>
                             </div>
@@ -339,7 +336,7 @@
             </li>
             <li class="lay-row clear">
                 <div class="left">排序</div>
-                <input class="right" placeholder="排序序号">
+                <input class="right" placeholder="排序序号" id="voucherSort">
             </li>
         </ol>
     </div>
@@ -552,22 +549,40 @@
     <div class="content">此操作不可撤销</div>
 </div>
 <!--全局JS引用-->
+<!-- jq库 -->
 <script src="../resource/js/jquery.min.js"></script>
+<!-- bootstrap UI需要依赖的js -->
 <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-<script src="../resource/js/lib/quakoo/project.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<!-- layui需要依赖的js -->
 <script src="../resource/js/plugins/layer/layer.js"></script>
 <script src="../resource/layui/layui.js"></script>
+<!-- 公司内部库 -->
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
+<!-- 全局公共js -->
 <script src="../resource/js/yanjing.js"></script>
-<script src="../resource/js/mobiscroll.2.13.2.js"></script>
 <!--//日期范围插件开始-->
 <script src="../resource/js/yanjing/daterange.js"></script>
-<script src="../resource/js/yanjing/tuodong.js"></script>
 <!--//日期范围插件结束-->
+<script src="../resource/js/yanjing/tuodong.js"></script>
 
 <script>
+    var psid;                                            //企业ID
+    /**初始化页面*/
+    $(function () {
+        initPage();
+    });
+    /**初始化函数*/
+    function initPage() {
+        psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
+    }
 
     /*卡片分页-抵用券营销*/
     var $table = $("#yj-page-table");
@@ -1005,10 +1020,58 @@ $()
 
     });
 
+    /**获取数据抵用券新增抵用券*/
+    function addVoucher() {
+        var title = $("#voucherTitle").val();              //抵用券名字
+        var descFull = $("#describefull").val();           //抵用券满
+        var descFullType = 1;
+        selectTag($("#selectBox1"),function (ret) {        //抵用券满类型
+            descFullType = ret.value;
+        });
+        var descSubtract = $("#describeSubtract").val();   //描述-消费减
+        var descSubtractType = 1;
+        selectTag($("#selectBox1"),function (ret) {        //抵用券减类型
+            descSubtractType = ret.value;
+        });
+        if($("#condition1").attr("checked")){              //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+            var conditionType=1;
+            selectTag($("#selectBox3"),function (ret) {
+                conditionType = ret.value;
+            });
+        }
+        if($("#condition2").attr("checked")){              ////获取条件-消费满
+            var conditionFull = $("#conditionFull").val();
+        }
+        var sort = $("#voucherSort").val();                //排序
+        var voucherSwitch = $("#voucherSwitch");
+        if(voucherSwitch.hasClass("active")){              //抵用券是否开启
+            var open = 1;
+        }else{
+            var open =2;
+        }
+        var param={};
+        param.subid = psid;                          //公司id
+        param.title = title;                         //标题
+        param.startTime = startTime;                 //起始时间
+        param.endTime = endTime;                     //结束时间
+        param.conditionFull = conditionFull;         //获取条件-消费满
+        param.conditionType = conditionType;         //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+        param.descSubtract = descSubtract;           //描述-消费减
+        param.descSubtractType = descSubtractType;   //描述-消费减 类型(1-金额 2-百分比)
+        param.descFull = descFull;                   //描述-消费满
+        param.descFullType = descFullType;           //描述-消费满 类型(1-金额 2-个数)
+        param.sort = sort;                           //排序
+        param.open = open;                           //抵用券开启||关闭
+        quakooData.ajaxGetData(config.getUrl_marketingtimingsms_add(),{},function (data) {
+            console.log(data);
+        })
+    }
+    
     /**
      * 弹窗新增抵用券
      * */
     function newVouchers1(){
+
         var index = layer.open({
             type: 1,
             shade: 0.01,
@@ -1025,7 +1088,9 @@ $()
             yes: function(index){
                 layer.close(index)
             },
-            btn2: function(){},
+            btn2: function(){
+                addVoucher();//提交抵用券
+            },
             success: function(layero, index){
 
             }
@@ -1270,15 +1335,11 @@ $()
      * 下拉框
      * */
 
-    selectTag($("#selectBox1"),function (ret) {
-        console.log(ret)
-    });
+
     selectTag($("#selectBox2"),function (ret) {
         console.log(ret)
     });
-    selectTag($("#selectBox3"),function (ret) {
-        console.log(ret)
-    });
+
     selectTag($("#selectBox4"),function (ret) {
         console.log(ret)
     });
@@ -1319,7 +1380,9 @@ $()
     // 时间插件JS结束
     //日期范围插件开始
     var date1 = new dateRange(".yj-demo-time",true);
-    date1.init()
+    date1.init();
+    var dateArr = date1.getTime();
+    console.log(dateArr);
     //日期范围插件结束
 
 
