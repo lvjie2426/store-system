@@ -1,5 +1,6 @@
 package com.store.system.service;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.model.MarketingCoupon;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface MarketingCouponService {
     public boolean updateSort(long id, long sort) throws Exception;
 
     public boolean del(long id) throws Exception;
+
+    public Pager getBackPager(Pager pager, long subid) throws Exception;
 
     public List<MarketingCoupon> getAllList(long subid) throws Exception;
 

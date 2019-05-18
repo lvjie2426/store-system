@@ -59,13 +59,13 @@ public class ProductSPU implements Serializable {
 
     private int status;
 
-    @SortKey
     private long sort;
 
     private String other; //附加属性
 
     private String ext; //扩展字段
 
+    @SortKey
     private long ctime;
 
     private long utime;

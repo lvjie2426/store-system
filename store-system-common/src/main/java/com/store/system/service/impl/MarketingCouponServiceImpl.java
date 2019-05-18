@@ -1,12 +1,16 @@
 package com.store.system.service.impl;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.dao.MarketingCouponDao;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.MarketingCoupon;
+import com.store.system.model.MarketingTimingSms;
 import com.store.system.model.Subordinate;
 import com.store.system.service.MarketingCouponService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +26,11 @@ public class MarketingCouponServiceImpl implements MarketingCouponService {
 
     @Resource
     private SubordinateDao subordinateDao;
+
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+
+    private RowMapperHelp<MarketingCoupon> rowMapper = new RowMapperHelp<>(MarketingCoupon.class);
 
     private void check(MarketingCoupon marketingCoupon) throws StoreSystemException {
         if(StringUtils.isBlank(marketingCoupon.getTitle())) throw new StoreSystemException("标题不能为空");
@@ -78,6 +87,22 @@ public class MarketingCouponServiceImpl implements MarketingCouponService {
     public List<MarketingCoupon> getAllList(long subid) throws Exception {
         List<MarketingCoupon> res = marketingCouponDao.getAllList(subid, MarketingCoupon.status_nomore);
         return res;
+    }
+
+    @Override
+    public Pager getBackPager(Pager pager, long subid) throws Exception {
+        String sql = "SELECT * FROM `marketing_coupon` where `status` = " + MarketingCoupon.status_nomore
+                + " and subid = " + subid;
+        String sqlCount = "SELECT COUNT(id) FROM `marketing_coupon` where `status` = " + MarketingCoupon.status_nomore
+                + " and subid = " + subid;
+        String limit = " limit %d , %d ";
+        sql = sql + " order  by `sort` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<MarketingCoupon> list = this.jdbcTemplate.query(sql, rowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        pager.setData(list);
+        pager.setTotalCount(count);
+        return pager;
     }
 
     @Override

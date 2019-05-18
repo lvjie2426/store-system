@@ -1,6 +1,8 @@
 package com.store.system.backend.controller;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.MarketingCoupon;
@@ -67,11 +69,11 @@ public class MarketingCouponController extends BaseController {
     }
 
     @RequestMapping("/getAllList")
-    public ModelAndView getAllList(@RequestParam(value = "subid") long subid,
+    public ModelAndView getAllList(@RequestParam(value = "subid") long subid,Pager pager,
                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            List<MarketingCoupon> coupons = marketingCouponService.getAllList(subid);
-            return this.viewNegotiating(request,response, new ResultClient(true, coupons));
+            pager = marketingCouponService.getBackPager(pager,subid);
+            return this.viewNegotiating(request,response,  new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }

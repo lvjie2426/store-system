@@ -17,16 +17,14 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.ProductService;
 import com.store.system.service.UserGradeCategoryDiscountService;
+import com.store.system.util.ArithUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -364,12 +362,7 @@ public class ProductServiceImpl implements ProductService {
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
-        List<ClientProductSPU> data = Lists.newArrayList();
-        for (ProductSPU one : productSPUList) {
-            ClientProductSPU clientProductSPU = new ClientProductSPU(one);
-            data.add(clientProductSPU);
-        }
-        pager.setData(data);
+        pager.setData(transformClients(productSPUList));
         pager.setTotalCount(count);
         return pager;
     }
@@ -473,4 +466,5 @@ public class ProductServiceImpl implements ProductService {
         productSKU.setSaleStatus(open);
         return  productSKUDao.update(productSKU);
     }
+
 }

@@ -68,8 +68,8 @@ public class ProductController extends BaseController {
      **/
     @RequestMapping("/add")
     public ModelAndView add(ProductSPU productSPU,
-                            @RequestParam(value = "skuJson") String skuJson,
-                            @RequestParam(value = "ugDiscount") String ugDiscount,
+                            @RequestParam(required = false,value = "skuJson") String skuJson,
+                            @RequestParam(required = false,value = "ugDiscount") String ugDiscount,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ProductSKU> productSKUList = null;
