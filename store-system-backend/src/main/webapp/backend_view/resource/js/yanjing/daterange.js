@@ -294,8 +294,21 @@ dateRange.prototype.drawCalendar = function(iYear, iMonth ,iDays) {
     return htmls.join('');
 }
 dateRange.prototype.getTime = function() {
-    return [this.checkStart,this.checkEnd];
-}
+    var add0 = function(m){
+        return m < 10 ? '0' + m: m
+    };
+    var startArr = this.checkStart.split(".");
+    add0(startArr[1]);
+    add0(startArr[2]);
+    var endArr = this.checkEnd.split(".");
+    add0(endArr[1]);
+    add0(endArr[2]);
+    var startTime = startArr[0]+"-"+startArr[1]+"-"+startArr[2];
+    var endTime = endArr[0]+"-"+endArr[1]+"-"+endArr[2];
+    var startTimeStamp = new Date(startTime).getTime();
+    var endTimeStamp = new Date(endTime).getTime();
+    return [startTime,endTime,startTimeStamp,endTimeStamp];
+};
 
 /*
 var calUtil = {

@@ -223,7 +223,7 @@
                     <input type="radio" name="condition" id="condition2">
                     <label for="condition2">
                         <div class="textInput fl">
-                            被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer2">&nbsp;比例的积分
+                            被介绍人每次消费，介绍人可以获得&nbsp;<input type="number" placeholder="金额" id="introducer2">&nbsp;元的现储值
                         </div>
                     </label>
 
@@ -293,7 +293,7 @@
             selGetAllList();                                  //查询会员列表（渲染下拉框）                                          //
             getAllUserJob(psid);                              //获取公司下所有职业
             getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
-            searchPhoneNum()                                  //手机号搜索
+            searchPhoneNum();                                  //手机号搜索
 
         }
         /**手机号搜索*/
@@ -486,7 +486,7 @@
                 $("#discount").val("");
                 $('#jsrChecked').attr("checked",false);
                 $('.jsrForm')[0].className = "jsrForm hide";
-                title = '<div class="titleBox"><span class="sMove">编辑等级</span></div>'
+                title = '<div class="titleBox"><span class="sMove">编辑等级</span></div>';
                 btnArr = ['编辑', '取消'];
             }
             layer.open({
@@ -536,9 +536,9 @@
                 param.title = title;//名称
                 param.conditionScore = conditionScore;//达到等级条件
                 param.substituteScore = substituteScore;//积分抵现-积分
-                param.substituteMoney = substituteMoney;//积分抵现-金额
+                param.substituteMoney = substituteMoney*100;//积分抵现-金额
                 param.substituteRate = substituteRate;//最高抵现比例 %
-                param.gainMoney = gainMoney;//积分获取-金额
+                param.gainMoney = gainMoney*100;//积分获取-金额
                 param.gainScore = gainScore;//积分获取-积分
                 param.discount=discount;//会员折扣比例 %
                 if(introducer1){
