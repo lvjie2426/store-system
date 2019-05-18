@@ -204,6 +204,10 @@ public class ProductServiceImpl implements ProductService {
         if (productSPU.getCid() == 0) throw new StoreSystemException("SPU类目不能为空");
         if (productSPU.getBid() == 0) throw new StoreSystemException("SPU品牌不能为空");
 
+        int count = productSPUDao.getCount(productSPU.getType(), productSPU.getSubid(), productSPU.getPid(),
+                productSPU.getCid(), productSPU.getBid(), productSPU.getSid());
+        if (count > 0) throw new StoreSystemException("已添加此产品的SPU");
+
         long cid = productSPU.getCid();
         List<ProductPropertyName> names = productPropertyNameDao.getAllList(cid, ProductPropertyName.status_nomore);
         Set<Long> spuNames = Sets.newHashSet();
