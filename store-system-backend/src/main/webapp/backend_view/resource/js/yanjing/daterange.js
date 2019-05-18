@@ -17,6 +17,9 @@ dateRange.prototype.init = function(){
 }
 dateRange.prototype.draw = function(){
     var str = this.drawCal(this.showYear,this.showMonth,this.showDays,this.showYearEnd,this.showMonthEnd,this.showDaysEnd);
+    if(this.dom.find('.yj-date-box')){
+        this.dom.find('.yj-date-box').remove()
+    }
     this.dom.append(str);
 }
 dateRange.prototype.drawCal = function(iYear, iMonth ,iDays, endiYear, endiMonth, endiDays) {

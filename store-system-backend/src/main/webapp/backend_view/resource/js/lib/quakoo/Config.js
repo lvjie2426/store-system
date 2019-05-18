@@ -110,7 +110,7 @@ var Config = (function(_super){
     //=======================企业端（营销管理） 结束====================
 
     //=======================商品管理 开始====================
-    /**获取企业类目列表*/
+    /**获取商品的属性的值列表*/
     _proto.getUrl_productPropertyvalue_getAllList = function(){return this.serverUrl + '/productpropertyvalue/getAllList';};
     /**获取企业类目列表*/
     _proto.getUrl_productCategory_getSubAllList = function(){return this.serverUrl + '/productcategory/getSubAllList';};
@@ -122,6 +122,8 @@ var Config = (function(_super){
     _proto.getUrl_productSeries_getSubAllList = function(){return this.serverUrl + '/productseries/getSubAllList';};
     /**获取商品列表*/
     _proto.getUrl_product_getSPUPager = function(){return this.serverUrl + '/product/getSPUPager';};
+    /**获取商品列表*/
+    _proto.getUrl_product_add = function(){return this.serverUrl + '/product/add';};
 
 
     //=======================商品管理 结束====================

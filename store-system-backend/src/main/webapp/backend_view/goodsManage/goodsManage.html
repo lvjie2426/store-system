@@ -133,10 +133,10 @@
 
                 </div>
             </div>
-            <div class="goods-select goods-range">
+            <!--<div class="goods-select goods-range">
                 <div class="goods-select-title">现货范围</div>
                 <div class="goods-range-body" onclick="openGoodsRange('现货')">设定现货范围</div>
-            </div>
+            </div>-->
             <div class="goods-select goods-range">
                 <div class="goods-select-title">定制范围</div>
                 <div class="goods-range-body" onclick="openGoodsRange('定制')">设定定制范围</div>
@@ -182,7 +182,7 @@
             <div class="goods-select-radio-box goods-select-box" style="display: none">
                 <div class="goods-select goods-range">
                     <div class="goods-select-title">积分价</div>
-                    <div class="goods-range-body" onclick="openZeroPrice()">设定积分价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice(4)">设定积分价</div>
                 </div>
                 <div class="goods-select goods-range">
                     <div class="goods-select-title">兑换数量上限</div>
@@ -823,31 +823,8 @@
 
     <!--设置会员折扣的弹出框-->
     <div class="content-view content-view-yj">
-        <table class="table  table-self">
-            <tr>
-                <th>会员等级</th>
-                <th>折扣</th>
-            </tr>
-            <tr>
-                <td>A级会员</td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td>AA级会员</td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td>AAA级会员</td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td>AAAA级会员</td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td>AAAAAA级会员</td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
+        <table class="table  table-self" id="vipDom">
+
         </table>
     </div>
     <!--设置提成的弹出框-->
@@ -899,9 +876,9 @@
     <div class="content-view content-view-range">
         <div class="yj-content-body">
             <div class="range-header">
-                <div class="now-goods-range">
+               <!-- <div class="now-goods-range">
                     <em></em>现货范围
-                </div>
+                </div>-->
                 <div class="dingzhi-range">
                     <em></em>定制范围
                 </div>
@@ -919,11 +896,11 @@
                 设置预警库存
             </div>
         </div>
-        <ul class="tab-ul">
-            <li class="active">零售价/元</li>
-            <li>批发价/元</li>
-            <li>备货量/片</li>
-            <li>积分价/分</li>
+        <ul class="tab-ul" id="setPriceBtn">
+            <li class="active" onclick="setPrice(1)">零售价/元</li>
+            <li onclick="setPrice(2)">批发价/元</li>
+            <li onclick="setPrice(3)">备货量/片</li>
+            <li onclick="setPrice(4)">积分价/分</li>
         </ul>
         <div class="price-table-box">
             <table class="layui-hide yj-layui-table" id="priceEvent" lay-filter="priceEvent"></table>
@@ -986,13 +963,27 @@
         <div class="optionBox">
             <ul class="optionUL">
                 <%for(var i=0;i< list.length;i++){%>
-                <li value="<%=list[i].id%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
+                <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
                 <%}%>
             </ul>
         </div>
     </script>
+    <!--会员等级-->
+    <script type="text/html" id="vipTmp">
+        <tr>
+            <th>会员等级</th>
+            <th>折扣</th>
+        </tr>
+        <%for(var i=0;i< list.length;i++){%>
+        <tr>
+            <td><%=list[i].title%></td>
+            <td><input type="text" data-id="<%=list[i].id%>" class="vipInput" placeholder=""></td>
+        </tr>
+        <%}%>
+    </script>
 
     <script>
+        var subid = quakooUser.getUserInfo().psid;//企业id
         var cid = '';//类目id
         var pid = '';//供应商ID
         var bid = '';//品牌ID
@@ -1000,11 +991,14 @@
         var name = '';//搜索关键字
         var saleStatus = '';//销售状态0开启1关闭
 
+        var ballData = '';//球数据
+        var columnData = '';//柱数据
+
         var params = {};//添加商品所需要的参数  key  类目id；value：所需参数
 
         var columns;        //其它商品的表格
         var columnsTeshu;   //特殊商品的表格
-        var $table =  $('#yj-table');
+        var $table =  $('#yj-table');//商品列表表格
         var TableInit = function (columns) {
             var oTableInit = new Object();
             //初始化Table
@@ -1128,7 +1122,7 @@
 
 
         //获取一级类目
-        quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:quakooUser.getUserInfo().psid},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
                 if(ret.data.length>0){
                     var html = template('categoryTmp',{list:ret.data});
@@ -1138,7 +1132,7 @@
             }
         })
         //获取供应商
-        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:quakooUser.getUserInfo().psid},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
                 //商品列表的筛选
                 var html = template('selectTagTmp',{title:'供应商',list:ret.data});
@@ -1160,8 +1154,7 @@
             }
         })
         //获取品牌
-        quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:quakooUser.getUserInfo().psid},function (ret) {
-            console.log(ret)
+        quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
                 var html = template('selectTagTmp',{title:'全部商品类型',list:ret.data});
                 //商品列表的筛选
@@ -1211,6 +1204,22 @@
                 })
             }
         })
+        //获取属性-球
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:15},function (ret) {
+            if(ret && ret.success){
+                ballData = ret.data.sort(function (a,b) {
+                    return b.content-a.content;
+                });
+            }
+        })
+        //获取属性-柱
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:16},function (ret) {
+            if(ret && ret.success){
+                columnData = ret.data.sort(function (a,b) {
+                    return b.content-a.content;
+                });
+            }
+        })
 
 
         //选择销售状态
@@ -1245,7 +1254,6 @@
         }
         //添加商品
         function addGoods() {
-            var params = {};
             if($('#category'+cid).text()=='镜架'){
                 layer.open({
                     type: 1,shade: 0.01,title:'新增镜架',
@@ -1294,8 +1302,15 @@
                         layer.close(index)
                     },
                     btn2: function(){
-                        alert(1)
-                        return false;
+                        console.log(params[cid])
+                        params[cid].skuJson = JSON.stringify(params[cid].skuJson);
+                        params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+                        params[cid].properties = JSON.stringify(params[cid].properties);
+                        params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
+                        console.log(params[cid])
+                        quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
+                            console.log(ret)
+                        })
                     },
                     success: function(layero, index){
                         if(quakooUtils.isBlack(params[cid])){
@@ -1304,20 +1319,25 @@
                         checkGoodsType()
                         //供应商
                         selectTag($("#select-jp-provider"),function (ret) {
-                            params[cid] .pid = ret.value;
+                            params[cid].pid = ret.value;
                         })
-                        params[cid] .cid = cid;
+                        params[cid].subid = subid;
+                        params[cid].cid = cid;
+                        params[cid].properties = {};
+                        params[cid].skuJson = [];
+                        params[cid].productCustomRangeList = [];
+                        params[cid].type = params[cid].type? params[cid].type:0;
                         //新增镜片的品牌
                         selectTag($("#select-jp-brand"),function (ret) {
                             params[cid] .bid = ret.value;
                             //获取品牌下的系列列表
-                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
+                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
                                 if(ret1 && ret1.success){
                                     if(ret1.data.length>0){
                                         var html = template('selectTagTmp',{title:'系列',list:ret1.data});
                                         $('#select-jp-series').html(html);
                                         selectTag($("#select-jp-series"),function (series) {
-                                            params[cid] .sid = series.value;
+                                            params[cid].sid = series.value;
                                         })
                                     }
                                 }
@@ -1328,25 +1348,26 @@
                             var html = template('selectTagTmp',{title:'焦点',list:ret.data});
                             $('#select-jp-jiaodian').html(html);
                             selectTag($("#select-jp-jiaodian"),function (data) {
-                                console.log(data)
+                                params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
                             })
                         })
                         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:2},function (ret) {
                             var html = template('selectTagTmp',{title:'折射率',list:ret.data});
                             $('#select-jp-zheshelv').html(html);
                             selectTag($("#select-jp-zheshelv"),function (data) {
-                                console.log(data)
+                                console.log(data.el)
+                                console.log(data.el.find('.optionUL li').attr('data-pnid'))
+                                params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
                             })
                         })
                         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:3},function (ret) {
                             var html = template('selectTagTmp',{title:'功能',list:ret.data});
                             $('#select-jp-gongneng').html(html);
                             selectTag($("#select-jp-gongneng"),function (data) {
-                                console.log(data)
+                                params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
                             })
                         })
-                        var date1 = new dateRange("#yj-time-jp",true);
-                        date1.init()
+
 
                     }
                 });
@@ -1479,11 +1500,17 @@
             layui.use('form', function(){
                 var form = layui.form;
                 form.on('radio()', function(data){
+                    if(params[cid].type == data.value){
+                        return
+                    }
                     $('.goods-select-radio-box').slideUp();
                     $('.goods-select-radio-box').eq(data.value).slideDown();
                     params[cid].type = data.value;
-                    // console.log(data.elem); //得到radio原始DOM对象
-                    // console.log(data.value); //被点击的radio的value值
+                    if(data.value==1){
+                        var date1 = new dateRange("#yj-time-jp",true);
+                        date1.init()
+                        console.log(date1.getTime())
+                    }
                 });
                 //库存
                 form.on('checkbox(kucun)', function(data){
@@ -1514,7 +1541,7 @@
                     type: 1,shade: 0.01,title:'设置会员折扣',
                     skin: 'layui-layer-yj layui-layer-vip', //样式类名
                     anim: 0,
-                    area:['360px','auto'],
+                    area:['360px','336px'],
                     closeBtn: 0, //不显示关闭按钮
                     resize:false,
                     shadeClose: true, //开启遮罩关闭
@@ -1524,16 +1551,37 @@
                         layer.close(index)
                     },
                     btn2: function(){
-                        return false;
+                        var arr = [];
+                        $('.vipInput').each(function (index,item) {
+                            if(quakooUtils.isNotBlack(item.value)){
+                                var obj = {};
+                                obj.ugid = item.getAttribute('data-id');
+                                obj.discount = item.value;
+                                arr.push(obj)
+                            }
+                        })
+                        params[cid].ugDiscount = arr;
                     },
                     success: function(layero, index){
-
+                        quakooData.ajaxGetData(config.getUrl_usergrade_getAllList(),{subid:subid},function (ret) {
+                            var html = template('vipTmp',{list:ret.rows});
+                            $('#vipDom').html(html);
+                            $('.vipInput').each(function (index,item) {
+                                item.oninput = function(){
+                                    if(!quakooUtils.isNum(this.value)){
+                                        layer.msg('折扣必须是数字');
+                                        this.value = ''
+                                    }
+                                }
+                            })
+                        })
                     }
                 });
             }
             quakooUtils.stopEventBubble()
         }
         //设定现货范围
+        var momentRangeData = {};//暂时存储定位范围信息
         function openGoodsRange(title) {
             layer.open({
                 type: 1,shade: 0.01,title:'设定'+title+'范围<span>点击或框选单元格来设定</span>',
@@ -1549,8 +1597,13 @@
                     layer.close(index)
                 },
                 btn2: function(index, layero){
-                    layer.close(index)
-                    return false;
+                    params[cid].productCustomRangeList = [];
+                    for(var i in momentRangeData){
+                        if(momentRangeData[i]){
+                            params[cid].productCustomRangeList.push(momentRangeData[i])
+                        }
+                    }
+                    momentRangeData = {};
                 },
                 success: function(layero, index){
                     setRange(title)
@@ -1559,7 +1612,9 @@
         }
 
         //设定零售价
-        function openZeroPrice() {
+        var momentPriceData = {};//暂时存储价格信息
+        function openZeroPrice(type) {
+            type = type?type:1;
             layer.open({
                 type: 1,shade: 0.01,
                 skin: 'layui-layer-yj layui-layer-add-goods layui-layer-view-price', //样式类名
@@ -1574,12 +1629,18 @@
                     layer.close(index)
                 },
                 btn2: function(){
-                    return false;
+                    params[cid].skuJson = [];
+                    for(var i in momentPriceData){
+                        if(momentPriceData[i]){
+                            params[cid].skuJson.push(momentPriceData[i])
+                        }
+                    }
+                    momentPriceData = {};
                 },
                 success: function(layero, index){
                     $('.layui-layer-view-price .layui-layer-content').height(560-42+'px')
                     $('.layui-layer-view-price .layui-layer-btn').append('<div class="view-price-add"><input class="yj-input" placeholder="输入数量" type="number"><button class="btn btn-primary">键入</button></div>')
-                    setPrice()
+                    setPrice(type)
                 }
             });
         }
@@ -1631,7 +1692,28 @@
         }
         //初始化范围表格
         function setRange(title) {
-            var rangeData = [{num:'+0.00'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'}];
+            if(params[cid] && params[cid].productCustomRangeList){
+                for(var i=0;i<params[cid].productCustomRangeList.length;i++){
+                    momentRangeData[params[cid].productCustomRangeList[i].ballId+''+params[cid].productCustomRangeList[i].columnId] = params[cid].productCustomRangeList[i];
+                }
+            }
+            var cols = [];//球
+            var rangeData = [];//柱
+            cols.push({field:'num', minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+            for(var i=0;i<ballData.length;i++){
+                (function (i) {
+                    cols.push({field:'', minWidth:60,align:'center', title: ballData[i].content, id:ballData[i].id, event: 'setSign',unresize:true,templet:function (d) {
+                            if(momentRangeData[ballData[i].id+''+d.id]){
+                                return '<div class="active"></div>'
+                            }else{
+                                return '<div></div>'
+                            }
+                        }})
+                })(i)
+            }
+            for(var i=0;i<columnData.length;i++){
+                rangeData.push({num:columnData[i].content,id:columnData[i].id})
+            }
             layui.use('table', function(){
                 var table = layui.table;
                 table.render({
@@ -1640,45 +1722,93 @@
                     ,width: 688
                     ,height: 416
                     ,unresize:true
-                    ,cols: [[
-                        {field:'num', width:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'}
-                        ,{field:'', width:60, title: '+0.00', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-0.25', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-0.50', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-0.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.00', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.25', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.50', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
-                    ]]
+                    ,cols: [cols]
                 });
                 //监听单元格事件
                 table.on('tool(rangeEvent)', function(obj){
                     if(title=='现货'){
-                        $(this).toggleClass('activenow')
+                        $(this).find('div').toggleClass('active')
                     }else if(title=='定制'){
-                        $(this).toggleClass('active')
-                    }
-                    var data = obj.data;
-                    if(obj.event === 'setSign'){
-                        console.log(data)
+                        if(obj.event === 'setSign'){
+                            if($(this).find('div').hasClass('active')){
+                                momentRangeData[ballData[$(this).index()-1].id+''+obj.data.id] = '';
+                            }else{
+                                momentRangeData[ballData[$(this).index()-1].id+''+obj.data.id] = {ballId:ballData[$(this).index()-1].id,columnId:obj.data.id}
+                            }
+                            $(this).find('div').toggleClass('active')
+                        }
                     }
                 });
             });
         }
-        //初始化价格表格
-        function setPrice() {
-            var rangeData = [{num:'+0.00'},{num:'+0.00'},{num:'+0.00'},{num:'+0.00'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'}];
+        //初始化价格表格 type  1零售价  2批发价  3备货量   4积分价
+        function setPrice(type) {
+            if(params[cid].type==0){
+                if(type==4){
+                    layer.msg('该模块属于积分商品')
+                    return ;
+                }
+            }
+            var cols = [];//球
+            var rangeData = [];//柱
+            cols.push({field:'num', minWidth:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+            if(type==1){
+                if(params[cid] && params[cid].skuJson){
+                    for(var i=0;i<params[cid].skuJson.length;i++){
+                        momentPriceData[params[cid].skuJson[i].properties[0].ballId+''+params[cid].skuJson[i].properties[0].columnId] = params[cid].skuJson[i];
+                    }
+                }
+                for(var i=0;i<ballData.length;i++){
+                    (function (i) {
+                        cols.push({field:'', minWidth:60, title: ballData[i].content, edit:'text',unresize:true,templet:function (d) {
+                                if(momentPriceData[ballData[i].id+''+d.id]){
+                                    return momentPriceData[ballData[i].id+''+d.id].retailPrice
+                                }else{
+                                    return ''
+                                }
+                            }})
+                    })(i)
+                }
+                $('#setPriceBtn li').eq(type-1).addClass('active').siblings().removeClass('active');
+            }else{
+                if(quakooUtils.isNotBlack(momentPriceData)){
+                    $('#setPriceBtn li').eq(type-1).addClass('active').siblings().removeClass('active');
+                    for(var i=0;i<ballData.length;i++){
+                        (function (i) {
+                            cols.push({field: '', minWidth: 60, title: ballData[i].content, edit: 'text', unresize: true,
+                                templet: function (d) {
+                                    if(type==2){
+                                        if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].costPrice!=undefined) {
+                                            return momentPriceData[ballData[i].id + '' + d.id].costPrice
+                                        } else {
+                                            return ''
+                                        }
+                                    }else if(type==3){
+                                        if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].num) {
+                                            return momentPriceData[ballData[i].id + '' + d.id].num
+                                        } else {
+                                            return ''
+                                        }
+                                    }else if(type==4){
+                                        if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].integralPrice) {
+                                            return momentPriceData[ballData[i].id + '' + d.id].integralPrice
+                                        } else {
+                                            return ''
+                                        }
+                                    }
+                                }
+                            })
+                        })(i)
+                    }
+                }else{
+                    layer.msg('请先设置零售价');
+                    setPrice(1)
+                    return
+                }
+            }
+            for(var i=0;i<columnData.length;i++){
+                rangeData.push({num:columnData[i].content,id:columnData[i].id})
+            }
             layui.use('table', function(){
                 var table = layui.table;
                 table.render({
@@ -1688,35 +1818,47 @@
                     ,height: 416
                     ,limit:40
                     ,unresize:true
-                    ,cols: [[
-                        {field:'num', width:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'}
-                        ,{field:'', width:60, title: '+0.00', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-0.25', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-0.50', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-0.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.00', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.25', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.50', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                        ,{field:'', width:60, title: '-1.75', edit:'text',unresize:true}
-                    ]]
+                    ,cols: [cols]
                 });
                 //监听单元格事件
                 table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                    console.log(obj.value); //得到修改后的值
-                    console.log(obj.field); //当前编辑的字段名
-                    console.log(obj.data); //所在行的所有相关数据
+                    if(type==1){
+                        var param = {};
+                        param.properties = {ballId:ballData[obj.field-1].id,columnId:obj.data.id};
+                        param.retailPrice = obj.value;
+                        momentPriceData[ballData[obj.field-1].id+''+obj.data.id] = param;
+                    }else if(type==2){
+                        if(momentPriceData[ballData[obj.field-1].id+''+obj.data.id] && momentPriceData[ballData[obj.field-1].id+''+obj.data.id].retailPrice){
+                            momentPriceData[ballData[obj.field-1].id+''+obj.data.id].costPrice = obj.value
+                        }else{
+                            layer.msg('请先设置该球柱的零售价')
+                            this.value = ''
+                            return
+                        }
+                    }else if(type==3){
+                        if(momentPriceData[ballData[obj.field-1].id+''+obj.data.id] && momentPriceData[ballData[obj.field-1].id+''+obj.data.id].retailPrice){
+                            momentPriceData[ballData[obj.field-1].id+''+obj.data.id].num = obj.value
+                        }else{
+                            layer.msg('请先设置该球柱的零售价')
+                            this.value = ''
+                            return
+                        }
+                    }else if(type==4){
+                        if(momentPriceData[ballData[obj.field-1].id+''+obj.data.id] && momentPriceData[ballData[obj.field-1].id+''+obj.data.id].retailPrice){
+                            momentPriceData[ballData[obj.field-1].id+''+obj.data.id].integralPrice = obj.value
+                        }else{
+                            layer.msg('请先设置该球柱的零售价')
+                            this.value = ''
+                            return
+                        }
+                    }
+
+                    // console.log(obj.value); //得到修改后的值
+                    // console.log(obj.field); //当前编辑的字段名
+                    // console.log(obj.data); //所在行的所有相关数据
                 });
             });
+
         }
     </script>
 </body>
