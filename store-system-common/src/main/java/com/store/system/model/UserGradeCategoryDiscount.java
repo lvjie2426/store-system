@@ -5,7 +5,10 @@ import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.ShardingKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
+import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @program: store-system
@@ -13,9 +16,9 @@ import lombok.Data;
  * @author: zhangmeng
  * @create: 2019-05-15 15:07
  **/
-@HyperspaceDomain(domainType = HyperspaceDomainType.listDataStructure)
+@HyperspaceDomain(domainType = HyperspaceDomainType.listDataStructure, identityType = IdentityType.human)
 @Data
-public class UserGradeCategoryDiscount {
+public class UserGradeCategoryDiscount implements Serializable{
     @CombinationKey
     @ShardingKey
     private long ugid;//会员等级id

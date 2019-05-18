@@ -19,6 +19,7 @@ import com.store.system.service.InventoryInBillService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Iterator;
@@ -100,6 +101,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     }
 
     @Override
+    @Transactional
     public void pass(long id, long checkUid) throws Exception {
         lock.lock();
         try {

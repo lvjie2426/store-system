@@ -18,6 +18,7 @@ import com.store.system.model.*;
 import com.store.system.service.InventoryOutBillService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -125,6 +126,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     }
 
     @Override
+    @Transactional
     public void pass(long id, long checkUid) throws Exception {
         lock.lock();
         try {

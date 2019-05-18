@@ -748,77 +748,73 @@
             </div>
             <div style="clear: both"></div>
         </div>
-        <div class="goods-type">
-            <form class="layui-form" action="">
+        <form class="layui-form" action="">
+            <div class="goods-type">
                 <div class="layui-form-item" pane="">
                     <div class="layui-input-block">
-                        <input type="checkbox" lay-filter="defaultGoods" name="like1[write]" lay-skin="primary" title="常规商品" checked >
+                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked >
                     </div>
-                </div>
-            </form>
-        </div>
-        <div>
-            <div class="goods-vip-btn">
-                <div class="goods-vip-left">会员折扣</div>
-                <div class="goods-vip-right" onclick="changeVipStatus(this)">
-                    <div class="yj-radio">
-                        <input type="radio">
-                    </div>
-                    <span>参与会员折扣</span>
-                    <em onclick="openSettingVip(this)">设置</em>
                 </div>
             </div>
-            <div class="goods-select-box">
+            <div class="goods-select-radio-box">
+                <div class="goods-vip-btn">
+                    <div class="goods-vip-left">会员折扣</div>
+                    <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                        <div class="yj-radio"></div>
+                        <span>参与会员折扣</span>
+                        <em onclick="openSettingVip(this)">设置</em>
+                    </div>
+                </div>
+                <div class="goods-select-box">
+                    <div class="goods-select goods-range">
+                        <div class="goods-select-title">零售价</div>
+                        <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                    </div>
+                    <div class="goods-select goods-range">
+                        <div class="goods-select-title">提成</div>
+                        <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+            <div class="goods-type">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select-radio-box goods-select-box" style="display: none">
                 <div class="goods-select goods-range">
-                    <div class="goods-select-title">零售价</div>
-                    <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                    <div class="goods-select-title">积分价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice(4)">设定积分价</div>
                 </div>
                 <div class="goods-select goods-range">
-                    <div class="goods-select-title">提成</div>
-                    <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                    <div class="goods-select-title">兑换数量上限</div>
+                    <div class="">
+                        <input type="text" placeholder="搜索商品" class="yj-input">
+                    </div>
+                </div>
+                <div class="goods-select " style="width: 100%;height: auto;">
+                    <div class="goods-select-title">有效期</div>
+                    <div class="yj-demo-time" id="yj-time-jp">
+                        <div class="yj-date">
+                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item" pane="">
+                            <div class="layui-input-block yj-check-input">
+                                <input type="checkbox" name=""  lay-filter="kucun" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div style="clear: both"></div>
             </div>
-        </div>
-        <div class="goods-type">
-            <form class="layui-form" action="">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="checkbox" lay-filter="scoreGoods" name="" lay-skin="primary" title="积分商品" >
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="goods-select-box" style="display: none">
-            <div class="goods-select goods-range">
-                <div class="goods-select-title">积分价</div>
-                <div class="goods-range-body" onclick="openZeroPrice()">设定积分价</div>
-            </div>
-            <div class="goods-select goods-range">
-                <div class="goods-select-title">兑换数量上限</div>
-                <div class="">
-                    <input type="text" placeholder="搜索商品" class="yj-input">
-                </div>
-            </div>
-            <div class="goods-select " style="width: 100%;height: auto;">
-                <div class="goods-select-title">有效期</div>
-                <div class="yj-demo-time" id="yj-time-jj">
-                    <div class="yj-date">
-                        <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
-                <form class="layui-form" action="">
-                    <div class="layui-form-item" pane="">
-                        <div class="layui-input-block yj-check-input">
-                            <input type="checkbox" lay-filter="kucun" name="" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div style="clear: both"></div>
-        </div>
+        </form>
     </div>
 
     <!--设置会员折扣的弹出框-->
@@ -923,7 +919,21 @@
             </form>
         </div>
     </div>
-
+    <!--镜片库存详情-->
+    <div class="content-view content-view-numInfo">
+        <div class="layui-yj-header">
+            <div class="layui-layer-title">
+                <div>A品牌A系列<span>9217个</span></div>
+            </div>
+            <div class="title-right title-num-info-right" >
+                <div class="iconfont icon-ico_table active" onclick="setNumInfo(1)"></div>
+                <div class="iconfont icon-ico_list" onclick="setNumInfo(2)"></div>
+            </div>
+        </div>
+        <div class="price-table-box">
+            <table class="layui-hide yj-layui-table" id="numInfoEvent" lay-filter="numInfoEvent"></table>
+        </div>
+    </div>
 
     <!--js依赖开始-->
     <!--bootstrap依赖于jQuery，jQuery.js必须放在BS.js之前-->
@@ -1008,6 +1018,7 @@
                     url:config.getUrl_product_getSPUPager(),
                     classes:"table",
                     pagination:true,        //是否显示分页
+                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                     pageNumber:1,                       //初始化加载第一页，默认第一页
                     pageSize: 10,
                     pageList: [5, 10, 15, 20],
@@ -1074,7 +1085,7 @@
                 }
             },
             {field: "", title: "操作", valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary" style="margin-right: 8px;">库存详情</button><button class="btn btn-info">编辑</button>';
+                    return '<button class="btn btn-primary" type="button" onclick="openNumInfo()" style="margin-right: 8px;">库存详情</button><button class="btn btn-info">编辑</button>';
                 }
             }
         ];
@@ -1147,9 +1158,7 @@
 
                 //新增镜架的供应商
                 $('#select-jj-provider').html(html);
-                selectTag($("#select-jj-provider"),function (ret) {
-                    console.log(ret)
-                })
+
 
             }
         })
@@ -1184,24 +1193,8 @@
                 })
                 //新增镜片的品牌
                 $('#select-jp-brand').html(html);
-
-
                 //新增镜架的品牌
                 $('#select-jj-brand').html(html);
-                selectTag($("#select-jj-brand"),function (ret) {
-                    //获取品牌下的系列列表
-                    quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
-                        if(ret1 && ret1.success){
-                            if(ret1.data.length>0){
-                                var html = template('selectTagTmp',{title:'系列',list:ret1.data});
-                                $('#select-jj-series').html(html);
-                                selectTag($("#select-jj-series"),function (series) {
-                                    console.log(series)
-                                })
-                            }
-                        }
-                    })
-                })
             }
         })
         //获取属性-球
@@ -1219,6 +1212,26 @@
                     return b.content-a.content;
                 });
             }
+        })
+        //获取属性-焦点
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:1},function (ret) {
+            var html = template('selectTagTmp',{title:'焦点',list:ret.data});
+            $('#select-jp-jiaodian').html(html);
+        })
+        //获取属性-折射率
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:2},function (ret) {
+            var html = template('selectTagTmp',{title:'折射率',list:ret.data});
+            $('#select-jp-zheshelv').html(html);
+        })
+        //获取属性-功能
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:3},function (ret) {
+            var html = template('selectTagTmp',{title:'功能',list:ret.data});
+            $('#select-jp-gongneng').html(html);
+        })
+        //获取属性-质保时长/4
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:4},function (ret) {
+            var html = template('selectTagTmp',{title:'质保时长',list:ret.data});
+            $('#select-jj-day').html(html);
         })
 
 
@@ -1254,7 +1267,7 @@
         }
         //添加商品
         function addGoods() {
-            if($('#category'+cid).text()=='镜架'){
+            if($('#category'+cid).text()=='镜架' || $('#category'+cid).text()=='太阳镜' || $('#category'+cid).text()=='其它商品'){
                 layer.open({
                     type: 1,shade: 0.01,title:'新增镜架',
                     skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
@@ -1270,20 +1283,50 @@
                         layer.close(index)
                     },
                     btn2: function(){
-                        alert(1)
-                        return false;
+                        params[cid].skuJson = JSON.stringify(params[cid].skuJson);
+                        params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+                        params[cid].name = '镜架';
+
+                        params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
+                        console.log(params[cid])
+                        quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
+                            console.log(ret)
+                        })
                     },
                     success: function(layero, index){
+                        if(quakooUtils.isBlack(params[cid])){
+                            params[cid] = {};
+                        }
                         checkGoodsType()
-                        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:4},function (ret) {
-                            console.log()
-                            var html = template('selectTagTmp',{title:'天数',list:ret.data});
-                            $('#select-jj-day').html(html);
-                            selectTag($("#select-jj-day"),function (data) {
-                                console.log(data)
+                        params[cid].subid = subid;
+                        params[cid].cid = cid;
+                        params[cid].properties = {};
+                        params[cid].skuJson = [];
+                        params[cid].productCustomRangeList = [];
+                        params[cid].type = params[cid].type? params[cid].type:0;
+                        //品牌/系列
+                        selectTag($("#select-jj-brand"),function (ret) {
+                            //获取品牌下的系列列表
+                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
+                                if(ret1 && ret1.success){
+                                    if(ret1.data.length>0){
+                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
+                                        $('#select-jj-series').html(html);
+                                        selectTag($("#select-jj-series"),function (series) {
+                                            console.log(series)
+                                        })
+                                    }
+                                }
                             })
                         })
-
+                        //质保时长
+                        selectTag($("#select-jj-day"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
+                        //供应商
+                        selectTag($("#select-jj-provider"),function (ret) {
+                            params[cid].pid = ret.value;
+                        })
                     }
                 });
             }else if($('#category'+cid).text()=='镜片'){
@@ -1302,10 +1345,11 @@
                         layer.close(index)
                     },
                     btn2: function(){
-                        console.log(params[cid])
+                        // console.log(params[cid])
                         params[cid].skuJson = JSON.stringify(params[cid].skuJson);
                         params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
-                        params[cid].properties = JSON.stringify(params[cid].properties);
+                        params[cid].name = '镜片';
+
                         params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
                         console.log(params[cid])
                         quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
@@ -1344,36 +1388,18 @@
                             })
                         })
                         //焦点
-                        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:1},function (ret) {
-                            var html = template('selectTagTmp',{title:'焦点',list:ret.data});
-                            $('#select-jp-jiaodian').html(html);
-                            selectTag($("#select-jp-jiaodian"),function (data) {
-                                params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                            })
+                        selectTag($("#select-jp-jiaodian"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
                         })
-                        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:2},function (ret) {
-                            var html = template('selectTagTmp',{title:'折射率',list:ret.data});
-                            $('#select-jp-zheshelv').html(html);
-                            selectTag($("#select-jp-zheshelv"),function (data) {
-                                console.log(data.el)
-                                console.log(data.el.find('.optionUL li').attr('data-pnid'))
-                                params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                            })
+                        selectTag($("#select-jp-zheshelv"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
                         })
-                        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:3},function (ret) {
-                            var html = template('selectTagTmp',{title:'功能',list:ret.data});
-                            $('#select-jp-gongneng').html(html);
-                            selectTag($("#select-jp-gongneng"),function (data) {
-                                params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                            })
+                        selectTag($("#select-jp-gongneng"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
                         })
-
-
                     }
                 });
-            }
-            return
-            if(goodsType==7){
+            }else if($('#category'+cid).text()=='特殊商品'){
                 layer.open({
                     type: 1,shade: 0.01,title:'新增特殊商品',
                     skin: 'layui-layer-add-goods layui-layer-addtsgoods', //样式类名
@@ -1389,14 +1415,61 @@
                         layer.close(index)
                     },
                     btn2: function(){
-                        alert(1)
-                        return false;
+                        // console.log(params[cid])
+                        params[cid].skuJson = JSON.stringify(params[cid].skuJson);
+                        params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+                        params[cid].name = '镜片';
+
+                        params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
+                        console.log(params[cid])
+                        quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
+                            console.log(ret)
+                        })
                     },
                     success: function(layero, index){
+                        if(quakooUtils.isBlack(params[cid])){
+                            params[cid] = {};
+                        }
                         checkGoodsType()
+                        //供应商
+                        selectTag($("#select-jp-provider"),function (ret) {
+                            params[cid].pid = ret.value;
+                        })
+                        params[cid].subid = subid;
+                        params[cid].cid = cid;
+                        params[cid].properties = {};
+                        params[cid].skuJson = [];
+                        params[cid].productCustomRangeList = [];
+                        params[cid].type = params[cid].type? params[cid].type:0;
+                        //新增镜片的品牌
+                        selectTag($("#select-jp-brand"),function (ret) {
+                            params[cid] .bid = ret.value;
+                            //获取品牌下的系列列表
+                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
+                                if(ret1 && ret1.success){
+                                    if(ret1.data.length>0){
+                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
+                                        $('#select-jp-series').html(html);
+                                        selectTag($("#select-jp-series"),function (series) {
+                                            params[cid].sid = series.value;
+                                        })
+                                    }
+                                }
+                            })
+                        })
+                        //焦点
+                        selectTag($("#select-jp-jiaodian"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
+                        selectTag($("#select-jp-zheshelv"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
+                        selectTag($("#select-jp-gongneng"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
                     }
                 });
-            }else if(goodsType==5){
+            }else if($('#category'+cid).text()=='护理产品'){
                 layer.open({
                     type: 1,shade: 0.01,title:'新增护理产品',
                     skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
@@ -1412,14 +1485,61 @@
                         layer.close(index)
                     },
                     btn2: function(){
-                        alert(1)
-                        return false;
+                        // console.log(params[cid])
+                        params[cid].skuJson = JSON.stringify(params[cid].skuJson);
+                        params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+                        params[cid].name = '镜片';
+
+                        params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
+                        console.log(params[cid])
+                        quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
+                            console.log(ret)
+                        })
                     },
                     success: function(layero, index){
+                        if(quakooUtils.isBlack(params[cid])){
+                            params[cid] = {};
+                        }
                         checkGoodsType()
+                        //供应商
+                        selectTag($("#select-jp-provider"),function (ret) {
+                            params[cid].pid = ret.value;
+                        })
+                        params[cid].subid = subid;
+                        params[cid].cid = cid;
+                        params[cid].properties = {};
+                        params[cid].skuJson = [];
+                        params[cid].productCustomRangeList = [];
+                        params[cid].type = params[cid].type? params[cid].type:0;
+                        //新增镜片的品牌
+                        selectTag($("#select-jp-brand"),function (ret) {
+                            params[cid] .bid = ret.value;
+                            //获取品牌下的系列列表
+                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
+                                if(ret1 && ret1.success){
+                                    if(ret1.data.length>0){
+                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
+                                        $('#select-jp-series').html(html);
+                                        selectTag($("#select-jp-series"),function (series) {
+                                            params[cid].sid = series.value;
+                                        })
+                                    }
+                                }
+                            })
+                        })
+                        //焦点
+                        selectTag($("#select-jp-jiaodian"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
+                        selectTag($("#select-jp-zheshelv"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
+                        selectTag($("#select-jp-gongneng"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
                     }
                 });
-            }else if(goodsType==3){
+            }else if($('#category'+cid).text()=='隐形眼镜'){
                 layer.open({
                     type: 1,shade: 0.01,title:'新增隐形眼镜',
                     skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
@@ -1435,61 +1555,61 @@
                         layer.close(index)
                     },
                     btn2: function(){
-                        alert(1)
-                        return false;
+                        // console.log(params[cid])
+                        params[cid].skuJson = JSON.stringify(params[cid].skuJson);
+                        params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+                        params[cid].name = '镜片';
+
+                        params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
+                        console.log(params[cid])
+                        quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
+                            console.log(ret)
+                        })
                     },
                     success: function(layero, index){
+                        if(quakooUtils.isBlack(params[cid])){
+                            params[cid] = {};
+                        }
                         checkGoodsType()
-                    }
-                });
-            }else if(goodsType==1){
-                layer.open({
-                    type: 1,shade: 0.01,title:'新增镜片',
-                    skin: 'layui-layer-add-goods', //样式类名
-                    // area: ['360px', '535px'],
-                    anim: 0,
-                    maxWidth:'360',
-                    closeBtn: 0, //不显示关闭按钮
-                    resize:false,
-                    shadeClose: true, //开启遮罩关闭
-                    content: $('.content-view-addgoods'),
-                    btn: ['取消','新增'],
-                    yes: function(index, layero){
-                        layer.close(index)
-                    },
-                    btn2: function(){
-                        alert(1)
-                        return false;
-                    },
-                    success: function(layero, index){
-                        checkGoodsType()
-                    }
-                });
-            }else{
-                layer.open({
-                    type: 1,shade: 0.01,title:'新增镜架/太阳镜/其它商品',
-                    skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
-                    // area: ['360px', '535px'],
-                    anim: 0,
-                    maxWidth:'360',
-                    closeBtn: 0, //不显示关闭按钮
-                    resize:false,
-                    shadeClose: true, //开启遮罩关闭
-                    content: $('.content-view-addtyqtgoods'),
-                    btn: ['取消','新增'],
-                    yes: function(index, layero){
-                        layer.close(index)
-                    },
-                    btn2: function(){
-                        alert(1)
-                        return false;
-                    },
-                    success: function(layero, index){
-                        checkGoodsType()
+                        //供应商
+                        selectTag($("#select-jp-provider"),function (ret) {
+                            params[cid].pid = ret.value;
+                        })
+                        params[cid].subid = subid;
+                        params[cid].cid = cid;
+                        params[cid].properties = {};
+                        params[cid].skuJson = [];
+                        params[cid].productCustomRangeList = [];
+                        params[cid].type = params[cid].type? params[cid].type:0;
+                        //新增镜片的品牌
+                        selectTag($("#select-jp-brand"),function (ret) {
+                            params[cid] .bid = ret.value;
+                            //获取品牌下的系列列表
+                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
+                                if(ret1 && ret1.success){
+                                    if(ret1.data.length>0){
+                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
+                                        $('#select-jp-series').html(html);
+                                        selectTag($("#select-jp-series"),function (series) {
+                                            params[cid].sid = series.value;
+                                        })
+                                    }
+                                }
+                            })
+                        })
+                        //焦点
+                        selectTag($("#select-jp-jiaodian"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
+                        selectTag($("#select-jp-zheshelv"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
+                        selectTag($("#select-jp-gongneng"),function (data) {
+                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
+                        })
                     }
                 });
             }
-
         }
 
         //监听选择常规商品和积分商品
@@ -1824,7 +1944,9 @@
                 table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
                     if(type==1){
                         var param = {};
-                        param.properties = {ballId:ballData[obj.field-1].id,columnId:obj.data.id};
+                        param.properties = {};
+                        param.properties[ballData[0].pnid] = ballData[obj.field-1].content;
+                        param.properties[columnData[0].pnid] = obj.data.num;
                         param.retailPrice = obj.value;
                         momentPriceData[ballData[obj.field-1].id+''+obj.data.id] = param;
                     }else if(type==2){
@@ -1860,6 +1982,72 @@
             });
 
         }
+        //打开库存详情弹窗
+        function openNumInfo() {
+            layer.open({
+                type: 1,shade: 0.01,
+                skin: 'layui-layer-yj layui-layer-add-goods layui-layer-view-price', //样式类名
+                anim: 0,
+                area:['720px','560px'],
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-numInfo'),
+                btn: ['关闭窗口','打印条码'],
+                yes: function(index, layero){
+                    layer.close(index)
+                },
+                btn2:function(){
+
+                },
+                success: function(layero, index){
+                    $('.layui-layer-view-price .layui-layer-content').height(560-42+'px')
+                    setNumInfo(1)
+                }
+            });
+        }
+        //打开库存详情表格
+        function setNumInfo(type) {
+            if(type==1){
+                var cols = [];//球
+                var rangeData = [];//柱
+                cols.push({field:'num', minWidth:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+                if(params[cid] && params[cid].skuJson){
+                    for(var i=0;i<params[cid].skuJson.length;i++){
+                        momentPriceData[params[cid].skuJson[i].properties[0].ballId+''+params[cid].skuJson[i].properties[0].columnId] = params[cid].skuJson[i];
+                    }
+                }
+                for(var i=0;i<ballData.length;i++){
+                    (function (i) {
+                        cols.push({field:'', minWidth:60, title: ballData[i].content,unresize:true,templet:function (d) {
+                                if(momentPriceData[ballData[i].id+''+d.id]){
+                                    return momentPriceData[ballData[i].id+''+d.id].retailPrice
+                                }else{
+                                    return ''
+                                }
+                            }})
+                    })(i)
+                }
+                for(var i=0;i<columnData.length;i++){
+                    rangeData.push({num:columnData[i].content,id:columnData[i].id})
+                }
+                layui.use('table', function(){
+                    var table = layui.table;
+                    table.render({
+                        elem: '#numInfoEvent'
+                        ,data:rangeData
+                        ,width: 688
+                        ,height: 416
+                        ,limit:40
+                        ,unresize:true
+                        ,cols: [cols]
+                    });
+                });
+            }else if(type==2){
+
+            }
+        }
+
     </script>
 </body>
 </html>

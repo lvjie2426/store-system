@@ -203,6 +203,20 @@
     font-size: 12px;
     font-family: PingFangSC-Semibold;
 }
+.title-num-info-right{
+    padding: 8px 0;
+}
+.title-num-info-right div{
+    width: 28px;height: 28px;float: left;
+    line-height: 28px;text-align: center;
+    color: #828297;
+}
+.title-num-info-right div.active{
+    color: #393953;
+}
+.title-num-info-right div:first-of-type{
+    border-right: 1px solid rgba(236, 236, 244, 1);
+}
 
 .title-right .yj-search {
     margin-left: 8px;
