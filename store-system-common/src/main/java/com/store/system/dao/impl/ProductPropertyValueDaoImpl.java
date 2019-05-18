@@ -26,4 +26,10 @@ public class ProductPropertyValueDaoImpl extends CacheBaseDao<ProductPropertyVal
         return null;
     }
 
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
+    public int getCount(long pnid, int status) throws DataAccessException {
+        return 0;
+    }
+
 }

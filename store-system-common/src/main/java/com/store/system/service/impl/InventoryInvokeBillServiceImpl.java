@@ -20,6 +20,7 @@ import com.store.system.model.*;
 import com.store.system.service.InventoryInvokeBillService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -167,6 +168,7 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
     }
 
     @Override
+    @Transactional
     public void pass(long id, long checkUid, long outUid) throws Exception {
         lock.lock();
         try {

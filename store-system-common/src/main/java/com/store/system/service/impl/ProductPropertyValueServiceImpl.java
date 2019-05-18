@@ -3,9 +3,11 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
+import com.store.system.dao.ProductPropertyNameDao;
 import com.store.system.dao.ProductPropertyValueDao;
 import com.store.system.dao.ProductPropertyValuePoolDao;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.ProductPropertyName;
 import com.store.system.model.ProductPropertyValue;
 import com.store.system.model.ProductPropertyValuePool;
 import com.store.system.service.ProductPropertyValueService;
@@ -26,6 +28,9 @@ public class ProductPropertyValueServiceImpl implements ProductPropertyValueServ
     @Resource
     private ProductPropertyValuePoolDao productPropertyValuePoolDao;
 
+    @Resource
+    private ProductPropertyNameDao productPropertyNameDao;
+
     private TransformFieldSetUtils poolFieldSetUtils = new TransformFieldSetUtils(ProductPropertyValuePool.class);
 
     private TransformMapUtils mapUtils = new TransformMapUtils(ProductPropertyValue.class);
@@ -33,6 +38,14 @@ public class ProductPropertyValueServiceImpl implements ProductPropertyValueServ
     private void check(ProductPropertyValue productPropertyValue) throws StoreSystemException {
         String content = productPropertyValue.getContent();
         if(StringUtils.isBlank(content)) throw new StoreSystemException("内容不能为空");
+
+        long pnid = productPropertyValue.getPnid();
+        ProductPropertyName productPropertyName = productPropertyNameDao.load(pnid);
+        int multiple = productPropertyName.getMultiple();
+        if(multiple == ProductPropertyName.multiple_no) {
+            int count = productPropertyValueDao.getCount(pnid, ProductPropertyValue.status_nomore);
+            if(count >= 1) throw new StoreSystemException("不能有多余的值");
+        }
     }
 
     @Override

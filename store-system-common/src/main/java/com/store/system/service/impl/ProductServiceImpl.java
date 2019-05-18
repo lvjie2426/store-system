@@ -20,6 +20,7 @@ import com.store.system.service.UserGradeCategoryDiscountService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Iterator;
@@ -164,6 +165,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void change(ProductSPU productSPU, List<ProductSKU> addProductSKUList, List<ProductSKU> updateProductSKUList,
                        List<Long> delSkuids) throws Exception {
         List<ProductSKU> productSKUList = Lists.newArrayList(addProductSKUList);
@@ -224,6 +226,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception {
         check(productSPU, productSKUList);
         productSPU = productSPUDao.insert(productSPU);

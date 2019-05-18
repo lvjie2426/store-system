@@ -17,6 +17,7 @@ import com.store.system.model.*;
 import com.store.system.service.InventoryCheckBillService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -108,6 +109,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
+    @Transactional
     public InventoryCheckBill add(InventoryCheckBill inventoryCheckBill, List<Long> list) throws Exception {
         check(inventoryCheckBill);
         for(Long li:list){
