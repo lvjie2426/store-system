@@ -41,7 +41,6 @@ public class ProductSKU implements Serializable {
     @HyperspaceColumn(isJson = true)
     private Map<Long, Object> properties; //属性json
 
-    @HyperspaceColumn(isJson = true)
     private List<ProductCustomRange> productCustomRangeList;//定制范围
 
     private int retailPrice; //零售价(分)
@@ -55,7 +54,7 @@ public class ProductSKU implements Serializable {
     private String other; //附加属性
 
     private int status;
-    private int saleStatus;
+    private int saleStatus;// 销售状态
 
     @SortKey
     private long sort;

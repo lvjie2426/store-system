@@ -65,6 +65,9 @@ public class ProductSPU implements Serializable {
 
     private String ext; //扩展字段
 
+    private long integralStartTime;// 积分商品兑换开始时间
+    private long integralEndTime;//积分商品兑换结束时间
+    private int integralNum; // 积分商品兑换数量上限
     @SortKey
     private long ctime;
 
