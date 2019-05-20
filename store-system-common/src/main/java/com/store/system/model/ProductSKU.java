@@ -26,8 +26,6 @@ public class ProductSKU implements Serializable {
 
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
-    public static final int sale_status_open=0;//开启
-    public static final int sale_status_close=1;//关闭
 
     @PrimaryKey
     private long id;
@@ -54,7 +52,6 @@ public class ProductSKU implements Serializable {
     private String other; //附加属性
 
     private int status;
-    private int saleStatus;// 销售状态
 
     @SortKey
     private long sort;
