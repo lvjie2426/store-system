@@ -462,9 +462,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean updateSaleStatus(long id, int open) throws Exception {
-        ProductSKU productSKU = productSKUDao.load(id);
-        productSKU.setSaleStatus(open);
-        return  productSKUDao.update(productSKU);
+        ProductSPU productSPU = productSPUDao.load(id);
+        productSPU.setSaleStatus(open);
+        return  productSPUDao.update(productSPU);
     }
 
 }
