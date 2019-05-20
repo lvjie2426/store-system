@@ -379,23 +379,23 @@
             <ol>
                 <li class="item clear">
                     <div class="left">属性</div>
-                    <div class="right radio-button">
-                        <input type="radio" name="property" id="pro1" checked="checked">
+                    <div class="right radio-button" id="pro">
+                        <input type="radio" name="property" id="pro1" value="0" checked="checked">
                         <label for="pro1">全部</label>
-                        <input type="radio" name="property" id="pro2">
+                        <input type="radio" name="property" id="pro2" value="1">
                         <label for="pro2">会员</label>
-                        <input type="radio" name="property" id="pro3">
+                        <input type="radio" name="property" id="pro3" value="2">
                         <label for="pro3">非会员</label>
                     </div>
                 </li>
                 <li class="item clear">
                     <div class="left">性别</div>
-                    <div class="right radio-button">
-                        <input type="radio" name="sex" id="sex1" checked="checked">
+                    <div class="right radio-button" id="sex">
+                        <input type="radio" name="sex" id="sex1" value="0" checked="checked">
                         <label for="sex1">全部</label>
-                        <input type="radio" name="sex" id="sex2">
+                        <input type="radio" name="sex" value="1" id="sex2">
                         <label for="sex2">男</label>
-                        <input type="radio" name="sex" id="sex3">
+                        <input type="radio" name="sex" value="2" id="sex3">
                         <label for="sex3">女</label>
                     </div>
                 </li>
@@ -407,10 +407,7 @@
                                 <span class="text">全部职业</span><i class="iconfont icon-ico_arrow_down"></i>
                             </div>
                             <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">1</li>
-                                    <li value="02">2</li>
-                                    <li value="03">3</li>
+                                <ul class="optionUL" id="jobUl">
                                 </ul>
                             </div>
                         </div>
@@ -426,13 +423,14 @@
     <div class="sms">
         <div class="title">短信内容</div>
         <div class="mid-content">
-            <div class="label-button">
-                <input type="button" value="消费时间">
-                <input type="button" value="顾客性别">
+            <div class="label-button" id="newMsgTags">
+                <input type="button" value="顾客姓名">
+                <input type="button" value="门店名称">
+                <input type="button" value="消费金额">
             </div>
             <div class="content-area">
                 <input type="text" placeholder="编辑输入框中的内容或拖动字段">
-                <p>尊敬的xxx，你好，你在xxx消费了xxx元，欢迎你下次再来。</p>
+                <p id="newMsg">尊敬的xxx，你好，你在xxx消费了xxx元，欢迎你下次再来。</p>
             </div>
         </div>
     </div>
@@ -582,47 +580,70 @@
 
 <!--抵用券营销-->
 <script type="text/html" id="voucherList">
-    <%for(var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++){%>
-        <li class="card-item">
-            <div class="top">
-                <%%>
-                <%if(list[i].open == 1){%>
-                    <div class="switch active fr">
-                        <span class="on">已启用</span>
-                        <span class="switch-btn"><i></i></span>
-                    </div>
-                <%}else if(list[i].open == 2){%>
-                    <div class="switch fr">
-                        <span class="off">未开启</span>
-                        <span class="switch-btn"><i></i></span>
-                    </div>
+    <%for(var i = 0; i < list.length; i++){%>
+    <li class="card-item">
+        <div class="top">
+            <%if(list[i].open == 1){%>
+            <div class="switch active fr" onclick="updateOpen('<%=list[i].id%>',2)">
+                <span class="on">已启用</span>
+                <span class="switch-btn"><i></i></span>
+            </div>
+            <%}else if(list[i].open == 2){%>
+            <div class="switch fr" onclick="updateOpen('<%=list[i].id%>',1)">
+                <span class="off">未开启</span>
+                <span class="switch-btn"><i></i></span>
+            </div>
+            <%}%>
+            <div class="text fl"><%=list[i].title%></div>
+        </div>
+        <div class="middle-cont">
+            <div class="item">
+                <div class="text-top">获取条件</div>
+                <%if(list[i].conditionType == 1){%>
+                <div class="text-bot">全场通用</div>
+                <%}else if(list[i].conditionType == 2){%>
+                <div class="text-bot">消费满<%=list[i].conditionFull%>元</div>
+                <%}else if(list[i].conditionType == 3){%>
+                <div class="text-bot">消费满<%=list[i].conditionFull%>个</div>
                 <%}%>
-                <div class="text fl"><%=list[i].title%></div>
             </div>
-            <div class="middle-cont">
-                <div class="item">
-                    <div class="text-top">获取条件</div>
-                    <div class="text-bot">消费满500元</div>
-                </div>
-                <div class="item">
-                    <div class="text-top">抵用券描述</div>
+            <div class="item">
+                <div class="text-top">抵用券描述</div>
+                <%if(list[i].descFullType == 1&&list[i].descSubtractType ==1){%>
+                <div class="text-bot">消费满<%=list[i].descFull%>元减<%=list[i].descSubtract%>元</div>
+                <%}else if(list[i].descFullType == 1&&list[i].descSubtractType ==2){%>
+                <div class="text-bot">消费满<%=list[i].descFull%>元减<%=list[i].descSubtract%>%</div>
+                <%}else if(list[i].descFullType == 2&&list[i].descSubtractType ==1){%>
+                <div class="text-bot">消费满<%=list[i].descFull%>个减<%=list[i].descSubtract%>元</div>
+                <%}else if(list[i].descFullType == 1&&list[i].descSubtractType ==1){%>
+                <div class="text-bot">消费满<%=list[i].descFull%>个减<%=list[i].descSubtract%>%</div>
+                <%}%>
+            </div>
+            <div class="item">
+                <div class="text-top">有效期</div>
+                <div class="text-bot"><%=list[i].startTime%> - <%=list[i].endTime%></div>
+            </div>
+        </div>
+        <div class="bot-cont">
+            <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
+            <span class="button button-thin-red" onclick="delVoucher('<%=list[i].id%>')">删除</span>
+        </div>
+    </li>
 
-                    <div class="text-bot">消费满100元减10元</div>
-                </div>
-                <div class="item">
-                    <div class="text-top">有效期</div>
-                    <div class="text-bot">2018.5.30-2019.5.30</div>
-                </div>
-            </div>
-            <div class="bot-cont">
-                <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
-                <span class="button button-thin-red">删除</span>
-            </div>
-        </li>
     <%}%>
 </script>
+
+<!--职业下拉框-->
+<script type="text/html" id="jobList">
+    <%for(var i =0;i< list.length;i++){%>
+    <li value="'<%=list[i]%>'"><%=list[i]%></li>
+    <%}%>
+</script>
+
+
 <script>
     var psid;                                             //企业ID
+    var subid;                                            //门店ID
     /**初始化页面*/
     $(function () {
         initPage();
@@ -630,135 +651,103 @@
     /**初始化函数*/
     function initPage() {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
-        console.log("psid:", psid);
-
-
-        /*卡片分页-抵用券营销*/
-        var $table = $("#yj-page-table");
-        var TableInit = function (callback) {
-            var oTableInit = new Object();
-            //初始化Table
-            oTableInit.Init = function () {
-                console.log(config.getUrl_marketingcoupon_getAllList(), "23", psid, "234332", quakooUser.getUserInfo().token);
-                $table.bootstrapTable('destroy');
-                $table.bootstrapTable({
-                    url: config.getUrl_marketingcoupon_getAllList(),
-                    method: 'get',
-                    classes: "table",
-                    pagination: true,                    //是否显示分页
-                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                    pageNumber: 1,                       //初始化加载第一页，默认第一页
-                    pageSize: 6,
-                    pageList: [6, 12, 18],
-                    sortable: false,
-                    sortOrder: "asc",
-                    showColumns: true,
-                    strictSearch: true,
-                    locale: "zh-CN",
-                    paginationHAlign: "center",
-                    clickToSelect: true,
-                    paginationLoop: false,
-                    columns: [],
-                    queryParams: function (param) {
-                        param.subid = psid;
-                        param.token = quakooUser.getUserInfo().token;
-                        return param
-                    },
-                    onPreBody: function (data) {
-                        if (callback) {
-                            callback(data, this)
-                        }
-                    }
-                });
-            };
-            return oTableInit;
-        };
-        var Table = new TableInit(manage);
+        subid = quakooDb.getItem("sel_ShopId");          //门店ID
         Table.Init();
+    }
 
-        function manage(data, _this) {
-            var data = {list:data,_this:_this};
-            var html = template("voucherList",data);
-
-            console.log(data);
-/*
-            var html = '';
-            for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
-                html += '<li class="card-item">' +
-                    '<div class="top">' +
-                    '<div class="switch active fr">' +
-                    '<span class="off">未开启</span>' +
-                    '<span class="on">已启用</span>' +
-                    '<span class="switch-btn"><i></i></span>' +
-                    '</div>' +
-                    '<div class="text fl">满100减10抵用券</div>' +
-                    '</div>' +
-                    '<div class="middle-cont">' +
-                    '<div class="item">' +
-                    '<div class="text-top">获取条件</div>' +
-                    '<div class="text-bot">消费满500元</div>' +
-                    '</div>' +
-                    '<div class="item">' +
-                    '<div class="text-top">抵用券描述</div>' +
-                    '<div class="text-bot">消费满100元减10元</div>' +
-                    '</div>' +
-                    '<div class="item">' +
-                    '<div class="text-top">有效期</div>' +
-                    '<div class="text-bot">2018.5.30-2019.5.30</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="bot-cont">' +
-                    '<span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>' +
-                    '<span class="button button-thin-red">删除</span>' +
-                    '</div>' +
-                    '</li>';
+    /*卡片分页-抵用券营销*/
+    var $table = $("#yj-page-table");
+    var TableInit = function (callback) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable('destroy');
+            $table.bootstrapTable({
+                url: config.getUrl_marketingcoupon_getAllList(),
+                method: 'get',
+                classes: "table",
+                pagination: true,                    //是否显示分页
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 6,
+                pageList: [6, 12, 18],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                paginationLoop: false,
+                columns: [],
+                queryParams: function (param) {
+                    param.subid = psid;
+                    param.token = quakooUser.getUserInfo().token;
+                    return param
+                },
+                onPreBody: function () {
+                    if (callback) {
+                        callback(this)
+                    }
+                }
+            });
+        };
+        return oTableInit;
+    };
+    var Table = new TableInit(manage);
+    function manage(_this) {
+        var arr = [];
+        for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
+            if(_this.data[i]){
+                _this.data[i].startTime = quakooUtils.formatTimeToDateDianLY(_this.data[i].startTime);
+                _this.data[i].endTime = quakooUtils.formatTimeToDateDianLY(_this.data[i].endTime);
+                arr.push(_this.data[i])
             }
-*/
-            $("#card-list1").html(html);
         }
-
-        /*卡片分页-短信营销*/
-        var $tableNote = $("#yj-page-note-table");
-        var data2 = [{id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}];
-        var TableInit = function (callback) {
-            var oTableInit = new Object();
-            //初始化Table
-            oTableInit.Init = function () {
-                $tableNote.bootstrapTable('destroy');
-                $tableNote.bootstrapTable({
-                    data: data2,
-                    classes: "table",
-                    pagination: true,        //是否显示分页
-                    pageNumber: 1,                       //初始化加载第一页，默认第一页
-                    pageSize: 6,
-                    pageList: [6, 12, 18],
-                    sortable: false,
-                    sortOrder: "asc",
-                    showColumns: true,
-                    strictSearch: true,
-                    locale: "zh-CN",
-                    paginationHAlign: "center",
-                    clickToSelect: true,
-                    paginationLoop: false,
-                    columns: [],
-                    onPreBody: function (data) {
-                        if (callback) {
-                            callback(data, this)
-                        }
+        var html = template("voucherList",{list:arr});
+        $("#card-list1").html(html);
+    }
+    /*卡片分页-短信营销*/
+/*
+    var $tableNote = $("#yj-page-note-table");
+    var data2 = [{id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}];
+    var TableInit = function (callback) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $tableNote.bootstrapTable('destroy');
+            $tableNote.bootstrapTable({
+                data: data2,
+                classes: "table",
+                pagination: true,        //是否显示分页
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 6,
+                pageList: [6, 12, 18],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                paginationLoop: false,
+                columns: [],
+                onPreBody: function (data) {
+                    if (callback) {
+                        callback(data, this)
                     }
-                });
-            };
-            return oTableInit;
+                }
+            });
         };
-        var Table = new TableInit(note);
-        Table.Init();
-
-        function note(data, _this) {
-            var html = '';
-            for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
-                console.log(i % 2);
-                if (i % 2 == 0) {
-                    html += '<li class="card-item">' +
+        return oTableInit;
+    };
+    var Table = new TableInit(note);
+    Table.Init();
+    function note(data, _this) {
+        var html = '';
+        for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
+            if (i % 2 == 0) {
+                html += '<li class="card-item">' +
                         '<div class="inner">' +
                         '<div class="top">' +
                         '<div class="text">' +
@@ -779,8 +768,8 @@
                         '</div>' +
                         '</div>' +
                         '</li>';
-                } else if (i % 2 == 1) {
-                    html += '<li class="card-item">' +
+            } else if (i % 2 == 1) {
+                html += '<li class="card-item">' +
                         '<div class="inner">' +
                         '<div class="top">' +
                         '<div class="text">' +
@@ -806,8 +795,8 @@
                         '</div>' +
                         '</div>' +
                         '</li>';
-                }
-                html += '<li class="card-item">' +
+            }
+            html += '<li class="card-item">' +
                     '<div class="inner">' +
                     '<div class="top">' +
                     '<div class="text">' +
@@ -828,9 +817,137 @@
                     '</div>' +
                     '</div>' +
                     '</li>';
-            }
-            $("#yj-page-note-table").html(html);
         }
+        $("#yj-page-note-table").html(html);
+    }
+*/
+    /**获取数据抵用券新增抵用券*/
+    function addVoucher(descFullType,descSubtractType,conditionType,conditionFull) {
+        var title = $("#voucherTitle").val();              //抵用券名字
+        var descFull = $("#describefull").val();           //抵用券满
+        descFullType = descFullType||1;                    //抵用券满类型
+        var descSubtract = $("#describeSubtract").val();   //描述-消费减
+        descSubtractType = descSubtractType||1;            //抵用券减类型
+        conditionType = conditionType;                     //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+        if(conditionType ==2||conditionType==3){           //获取条件消费满
+            var conditionFull = $("#conditionFull").val();
+        }
+        var sort = $("#voucherSort").val();                //排序
+        var voucherSwitch = $("#voucherSwitch");
+        if(voucherSwitch.hasClass("active")){              //抵用券是否开启
+            var open = 1;
+        }else{
+            var open =2;
+        }
+        var startTime= date1.getTime()[2];                    //开始时间
+        var endTime= date1.getTime()[3];                      //结束时间
+
+
+        //判断是否为空
+        if(quakooUtils.isNotBlack(startTime)){
+            if(quakooUtils.isNotBlack(title)){
+                if(quakooUtils.isNotBlack(descFull) && descFull >= 0){
+                    if(quakooUtils.isNotBlack(descSubtract) && descSubtract >= 0){
+                        if(sort < 0){
+                            layer.msg("请输入正确的排序");
+                            return
+                        }else{
+                            var param={};
+                            param.subid = psid;                          //公司id
+                            param.title = title;                         //标题
+                            param.startTime = startTime;                 //起始时间
+                            param.endTime = endTime;                     //结束时间
+                            if(conditionFull){
+                                if(conditionFull > 0){
+                                    param.conditionFull = conditionFull;         //获取条件-消费满
+                                }else{
+                                    layer.msg("请输入正确的获取条件的满减数值！");
+                                }
+                            }
+                            param.conditionType = conditionType;         //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+                            param.descSubtract = descSubtract;           //描述-消费减
+                            param.descSubtractType = descSubtractType;   //描述-消费减 类型(1-金额 2-百分比)
+                            param.descFull = descFull;                   //描述-消费满
+                            param.descFullType = descFullType;           //描述-消费满 类型(1-金额 2-个数)
+                            param.sort = sort;                           //排序
+                            param.open = open;                           //抵用券开启||关闭
+                            param.startTime = startTime;                 //起始时间
+                            param.endTime = endTime;                     //起始时间
+                        }
+                    }else{
+                        layer.msg("请输入正确的抵用券减金额！");
+                        return
+                    }
+                }else{
+                    layer.msg("请输入正确的抵用券满金额！");
+                    return
+                }
+            }else{
+                layer.msg("抵用券名字不能为空！");
+                return;
+            }
+        }else{
+            layer.msg("请选择有效期");
+            return
+        }
+        quakooData.ajaxGetData(config.getUrl_marketingcoupon_add(),param,function (data) {
+        })
+    }
+
+    /**
+     * 删除抵用券
+     * */
+    function delVoucher(id){
+        quakooData.ajaxGetData(config.getUrl_marketingcoupon_del(),{id:id},function(data){
+            Table.Init();
+        })
+    }
+
+    /**启用/关闭抵用卷*/
+    function updateOpen(id,open){
+        quakooData.ajaxGetData(config.getUrl_marketingcoupon_updateOpen(),{open:open,id:id},function(data){
+            Table.Init();
+        })
+    }
+    /**
+     * 编辑抵用券
+     * */
+    function f(){
+    }
+    /**
+     * 获取数据新增短信群发
+     * */
+    function addmessage(job,startAge,endAge,sendTime,content,tags){
+        range = //属性
+        sex = $("#sex").children("input[checked]").value;    //性别
+
+        var param ={};
+        param.subid = subid;                                                                //门店id
+        param.job = job;                                                                    //职业
+        param.startAge = startAge;                                                         //起始年龄
+        param.endAge = endAge;                                                             //结束年龄
+        param.sendTime = sendTime;                                                         //发送时间
+        param.content = content;                                                           //内容
+        param.tags = tags;                                                                 //标签
+        param.range =  $("#pro").children("input[checked]").value;                    //全部0，会员1，非会员2
+        param.sex = $("#sex").children("input[checked]").value;                        //全部0，男1，女2
+        quakooData.ajaxGetData(config.getUrl_marketingtimingsms_add(),param,function(data){
+            console.log(data);
+        })
+    }
+
+
+    /**获取公司下顾客的所有职业(职业下拉框)*/
+    function getAllUserJob(psid){
+        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{psid:psid},function (ret) {
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    var data = {list:ret.data};
+                    var html = template("jobList", data);
+                    document.getElementById("jobUl").innerHTML = html;
+                }
+            }
+        });
     }
     /**
      * 圆环
@@ -1086,91 +1203,6 @@ $()
 
     });
 
-    /**获取数据抵用券新增抵用券*/
-    function addVoucher(descFullType,descSubtractType,conditionType,conditionFull) {
-        var title = $("#voucherTitle").val();              //抵用券名字
-        var descFull = $("#describefull").val();           //抵用券满
-        descFullType = descFullType||1;                    //抵用券满类型
-        var descSubtract = $("#describeSubtract").val();   //描述-消费减
-        descSubtractType = descSubtractType||1;            //抵用券减类型
-        conditionType = conditionType;                     //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
-        if(conditionType ==2||conditionType==3){           //获取条件消费满
-            var conditionFull = $("#conditionFull").val();
-        }
-        var sort = $("#voucherSort").val();                //排序
-        var voucherSwitch = $("#voucherSwitch");
-        if(voucherSwitch.hasClass("active")){              //抵用券是否开启
-            var open = 1;
-        }else{
-            var open =2;
-        }
-        var startTime= date1.getTime()[2];
-        var endTime= date1.getTime()[3];
-
-        console.log(date1.getTime());
-        console.log(startTime);
-
-        //判断是否为空
-        if(quakooUtils.isNotBlack(startTime)){
-            if(quakooUtils.isNotBlack(title)){
-                if(quakooUtils.isNotBlack(descFull) && descFull >= 0){
-                    if(quakooUtils.isNotBlack(descSubtract) && descSubtract >= 0){
-                        if(sort < 0){
-                            layer.msg("请输入正确的排序");
-                            return
-                        }else{
-                            var param={};
-                            param.subid = psid;                          //公司id
-                            param.title = title;                         //标题
-                            param.startTime = startTime;                 //起始时间
-                            param.endTime = endTime;                     //结束时间
-                            if(conditionFull){
-                                if(conditionFull > 0){
-                                    param.conditionFull = conditionFull;         //获取条件-消费满
-                                }else{
-                                    layer.msg("请输入正确的获取条件的满减数值！");
-                                }
-                            }
-                            param.conditionType = conditionType;         //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
-                            param.descSubtract = descSubtract;           //描述-消费减
-                            param.descSubtractType = descSubtractType;   //描述-消费减 类型(1-金额 2-百分比)
-                            param.descFull = descFull;                   //描述-消费满
-                            param.descFullType = descFullType;           //描述-消费满 类型(1-金额 2-个数)
-                            param.sort = sort;                           //排序
-                            param.open = open;                           //抵用券开启||关闭
-                            param.startTime = startTime;                 //起始时间
-                            param.endTime = endTime;                     //起始时间
-                        }
-                    }else{
-                        layer.msg("请输入正确的抵用券减金额！");
-                        return
-                    }
-                }else{
-                    layer.msg("请输入正确的抵用券满金额！");
-                    return
-                }
-            }else{
-                layer.msg("抵用券名字不能为空！");
-                return;
-            }
-        }else{
-            layer.msg("请选择有效期");
-            return
-        }
-        quakooData.ajaxGetData(config.getUrl_marketingcoupon_add(),param,function (data) {
-            console.log(data);
-        })
-    }
-
-    /**开启关闭抵用券*/
-    function updateOpen() {
-        quakooData.ajaxGetData(config.getUrl_marketingcoupon_updateOpen(),{},function (data) {
-            console.log(data);
-        })
-    }
-
-
-
     /**
      * 弹窗新增抵用券
      * */
@@ -1270,6 +1302,7 @@ $()
      * 弹窗新增短信群发
      * */
     function newVouchers3(){
+        var range,sex,msgContent,sendTime,startAge,endAge,job,tags=[];
         var index = layer.open({
             type: 1,
             shade: 0.01,
@@ -1286,19 +1319,31 @@ $()
             yes: function(index){
                 layer.close(index);
             },
-            btn2: function(){},
+            btn2: function(){
+                addmessage();
+            },
             success: function(layero, index){
-                console.log(layui)
-                console.log(layui.slider)
-                layui.use('slider', function(){
+                getAllUserJob(psid);
+                layui.use('slider', function(){   //年龄范围
                     var slider = layui.slider;
                     slider.render({
                         elem: '#slide1',
                         value: [30, 70],//滑块默认值
                         range: true,
-                        theme: 'rgba(130,130,151,0.4)' //主题色
+                        theme: 'rgba(130,130,151,0.4)', //主题色
+                        change: function(value){
+                            startAge = value[0];
+                            endAge = value[1];
+                        }
                     });
                 });
+                selectTag($("#selectBox5"),function (ret) {                       //职业获取
+                    job=ret.value;
+                });
+                msgContent = $("#newMsg").html();
+                $("#newMsgtags input").each(function(){
+                    tags.push($(this).val())
+                })
             }
         });
 
@@ -1475,7 +1520,10 @@ $()
     date1.init();
     //日期范围插件结束
 
-
+    /**获取单选值*/
+    function getValue(_self){
+        var value = $(_self).children('input[checked]').value;
+    }
 
 </script>
 </body>
