@@ -9,6 +9,7 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Permission;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
+import com.store.system.service.ImportFileService;
 import com.store.system.service.PermissionService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -44,6 +46,9 @@ public class UserController extends BaseController {
 
     @Resource
     private SubordinateService subordinateService;
+
+    @Resource
+    private ImportFileService importFileService;
 
     @RequestMapping("/getTree")
     public ModelAndView getTree(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -225,5 +230,19 @@ public class UserController extends BaseController {
         boolean res = userService.updateStatus(id,status);
         return this.viewNegotiating(request, response, new ResultClient(res));
     }
+
+    /////////////////////批量导入顾客信息////////////////////////
+    @RequestMapping("/importUserInfo")
+    public ModelAndView importUserInfo(HttpServletRequest request, HttpServletResponse response,
+                                       @RequestParam(required = false,value = "file") MultipartFile file)throws Exception{
+        try {
+            User user = UserUtils.getUser(request);
+            ResultClient res = importFileService.importUserInFo(file,user);
+            return this.viewNegotiating(request,response,new ResultClient(true,res));
+        }catch (Exception e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+    }
+
 }
 
