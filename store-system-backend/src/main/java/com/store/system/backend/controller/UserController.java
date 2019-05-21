@@ -208,7 +208,7 @@ public class UserController extends BaseController {
             long pSubid = subordinate.getPid();
             if(pSubid != 0) throw new StoreSystemException("公司ID错误");
             return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(psid)));
-        }catch (Exception e){
+        }catch (StoreSystemException e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
         }
     }
@@ -218,7 +218,7 @@ public class UserController extends BaseController {
                                    User user)throws Exception{
         try {
             return this.viewNegotiating(request,response,new ResultClient(true,userService.updateUser(user)));
-        }catch (Exception e){
+        }catch (StoreSystemException e){
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }
     }
@@ -239,7 +239,7 @@ public class UserController extends BaseController {
             User user = UserUtils.getUser(request);
             ResultClient res = importFileService.importUserInFo(file,user);
             return this.viewNegotiating(request,response,new ResultClient(true,res));
-        }catch (Exception e){
+        }catch (StoreSystemException e){
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }
     }

@@ -5,6 +5,7 @@ import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.quakoo.baseFramework.secure.MD5Utils;
 import com.store.system.client.ResultClient;
 import com.store.system.dao.UserDao;
 import com.store.system.exception.StoreSystemException;
@@ -38,7 +39,6 @@ public class ImportFileServiceImpl implements ImportFileService {
         ResultClient res = new ResultClient();
         long sid = user.getSid();//店铺ID
         long psid = user.getPsid();//公司ID
-        try {
             File usersFile = FileUtils.multipartToFile(file);
             String filename = file.getOriginalFilename();
             if(StringUtils.isBlank(filename)){
@@ -48,9 +48,6 @@ public class ImportFileServiceImpl implements ImportFileService {
             importParams.setTitleRows(2);
             List<ImportUser> list = ExcelImportUtil.importExcel(usersFile,ImportUser.class,importParams);
             handleImportUser(list,sid,psid);
-        }catch (Exception e){
-            return new ResultClient(e.getMessage());
-        }
         res.setMsg("导入成功!");
         return res;
     }
@@ -163,6 +160,7 @@ public class ImportFileServiceImpl implements ImportFileService {
         user.setPsid(psid);
         user.setRand(new Random().nextInt(100000000));
         user.setUserType(User.userType_user);
+        user.setPassword(MD5Utils.md5ReStr(user.getPassword().getBytes()));
         return user;
     }
 

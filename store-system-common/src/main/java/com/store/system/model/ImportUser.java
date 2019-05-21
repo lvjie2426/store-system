@@ -33,7 +33,7 @@ public class ImportUser implements Serializable {
     @Excel(name = "微信号")
     private String weChat;
 
-    @Excel(name = "身份证")
+    @Excel(name = "身份证号")
     private String idCard;
 
     @Excel(name = "邮箱")
