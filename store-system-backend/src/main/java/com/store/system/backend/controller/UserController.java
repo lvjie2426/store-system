@@ -1,11 +1,14 @@
 package com.store.system.backend.controller;
 
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.store.system.bean.Result;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.ExportUser;
 import com.store.system.model.Permission;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
@@ -13,11 +16,15 @@ import com.store.system.service.ImportFileService;
 import com.store.system.service.PermissionService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
+import com.store.system.util.FileDownload;
 import com.store.system.util.UserUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.sun.org.apache.xml.internal.security.keys.storage.StorageResolverException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +33,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.jnlp.DownloadService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -49,6 +63,9 @@ public class UserController extends BaseController {
 
     @Resource
     private ImportFileService importFileService;
+
+    @Resource
+    private FileDownload download;
 
     @RequestMapping("/getTree")
     public ModelAndView getTree(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -243,6 +260,57 @@ public class UserController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }
     }
-
+    /////////////////////导入模板下载////////////////////////
+    @RequestMapping("/downloadTemplatesExcel")
+    public ModelAndView downloadTemplatesExcel(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String fileName = "demo.xls";  //下载的文件名
+        download.downloadFile(request, response, fileName);
+        return this.viewNegotiating(request, response, new ResultClient(true));
+    }
+    /////////////////////批量导出顾客信息////////////////////////
+    @RequestMapping("/exportUserInfo")
+    public ModelAndView exportUserInfo(HttpServletRequest request,HttpServletResponse response,
+                                       @RequestParam(value = "subid") long subid,
+                                       @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
+                                       @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
+                                       @RequestParam(required = false,value = "job",defaultValue = "") String job
+                                        )throws Exception{
+        try {
+            List<ExportUser> users = userService.getExportUserInfo(subid,phone,sex,job);
+            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("顾客信息", "顾客信息"),
+                    ExportUser.class, users);
+            if (workbook == null) {
+                return this.viewNegotiating(request, response, new ResultClient("无可查询的顾客信息的数据！"));
+            }
+            // 重置响应对象
+            response.reset();
+            DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            String nowTime = df.format(new Date());
+            String fileName = "顾客信息—" + nowTime + ".xls";
+            final String userAgent = request.getHeader("USER-AGENT");
+            String finalFileName = null;
+            if (StringUtils.contains(userAgent, "MSIE")) {//IE浏览器
+                finalFileName = URLEncoder.encode(fileName, "UTF8");
+            } else if (StringUtils.contains(userAgent, "Mozilla")) {//google,火狐浏览器
+                finalFileName = new String(fileName.getBytes(), "ISO8859-1");
+            } else {
+                finalFileName = URLEncoder.encode(fileName, "UTF8");//其他浏览器
+            }
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + finalFileName + "\"");
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            OutputStream output = response.getOutputStream();
+            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+            workbook.write(bufferedOutPut);
+            bufferedOutPut.flush();
+            bufferedOutPut.close();
+            output.close();
+            return this.viewNegotiating(request, response, new ResultClient("导出成功！"));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
+        }
+    }
 }
 

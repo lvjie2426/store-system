@@ -16,6 +16,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.redis.JedisX;
 import com.quakoo.baseFramework.secure.MD5Utils;
 import com.quakoo.ext.RowMapperHelp;
+import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +24,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -839,4 +841,27 @@ public class UserServiceImpl implements UserService {
         return fieldSetUtils.fieldList(users,"job");
     }
 
+    @Override
+    public List<ExportUser> getExportUserInfo(long subid, String phone, int sex, String job) throws Exception {
+        List<ExportUser> exportUsers = Lists.newArrayList();
+        List<User> userList = userDao.getAllList(subid,phone,sex,job);
+        if(userList.size()==0||userList==null){ throw new StoreSystemException("暂未查询到可导出的信息!"); }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for (User user:userList){
+            ExportUser exportUser = new ExportUser();
+            exportUser.setName(user.getName());
+            exportUser.setAddress(user.getPlace());
+            exportUser.setBirthday(sdf.format(new Date(user.getBirthdate())));
+            exportUser.setDesc(user.getDesc());
+            exportUser.setEmail(user.getMail());
+            exportUser.setJob(user.getJob());
+            exportUser.setMoney(String.valueOf(user.getMoney()));
+            exportUser.setPhone(user.getPhone());
+            exportUser.setScore(String.valueOf(user.getScore()));
+            exportUser.setUserName(user.getUserName());
+            exportUser.setWeChat(user.getWeixinId());
+            exportUsers.add(exportUser);
+        }
+        return exportUsers;
+    }
 }

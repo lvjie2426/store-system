@@ -1,6 +1,7 @@
 package com.store.system.service.impl;
 
 
+import ch.qos.logback.core.util.TimeUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.google.common.collect.Lists;
@@ -13,6 +14,7 @@ import com.store.system.model.ImportUser;
 import com.store.system.model.User;
 import com.store.system.service.ImportFileService;
 import com.store.system.util.FileUtils;
+import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +26,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ImportFileServiceImpl implements ImportFileService {
@@ -79,18 +85,18 @@ public class ImportFileServiceImpl implements ImportFileService {
             user.setSex(sex);
         }
 
-        /**年龄**/
-        if(StringUtils.isNotBlank(importUser.getAge())){
-            int age = Integer.valueOf(importUser.getAge().trim());
-            user.setAge(age);
-        }else{
-            throw new StoreSystemException("导入信息出错,第"+importUser.getNumber()+"行 年龄没有填写!");
-        }
-
         /**出生日期**/
         if(StringUtils.isNotBlank(importUser.getBirthday())){
-            int birthdate = Integer.valueOf(importUser.getBirthday().trim());
-            user.setBirthdate(birthdate);
+            try{
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(importUser.getBirthday()));
+                long birthday = calendar.getTime().getTime();
+                int age = getAge(birthday);
+                user.setBirthdate(birthday);
+                user.setAge(age);
+            }catch (StoreSystemException s){
+                throw new StoreSystemException("导入信息出错,第"+importUser.getNumber()+"行 出生日期格式有误!");
+            }
         }else{
             throw new StoreSystemException("导入信息出错,第"+importUser.getNumber()+"行 出生日期没有填写!");
         }
@@ -174,5 +180,28 @@ public class ImportFileServiceImpl implements ImportFileService {
         }else{
             return 0;
         }
+    }
+
+    public int getAge(long birthday)throws Exception{
+        Calendar calendar = Calendar.getInstance();
+        int yearr = calendar.get(Calendar.YEAR);//获取当前年份
+        int monthh = calendar.get(Calendar.MONTH);//获取当前月份
+        int dayy = calendar.get(Calendar.DATE);//获取天
+
+        calendar.setTime(new Date(birthday));
+        int year = calendar.get(Calendar.YEAR);//获取出生年份
+        int month = calendar.get(Calendar.MONTH);//获取出生月份
+        int day = calendar.get(Calendar.DATE);//获取天
+
+        int age =yearr-year;
+        //如果出生月份小于当前月份,年龄-1
+        if(month<monthh){
+            age--;
+        }else if(month==monthh){
+            if(day>dayy){
+                age--;
+            }
+        }
+        return age;
     }
 }

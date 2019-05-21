@@ -3,6 +3,7 @@ package com.store.system.service;
 
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
+import com.store.system.model.ExportUser;
 import com.store.system.model.Permission;
 import com.store.system.model.User;
 import com.quakoo.baseFramework.model.pagination.Pager;
@@ -110,4 +111,7 @@ public interface UserService {
     public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex,int userType, String job) throws Exception; //获取分店下的顾客
 
     public Set<String> getAllUserJob(long subid)throws Exception;
+
+    ///////////////////////////导出顾客信息//////////////////////////
+    public List<ExportUser> getExportUserInfo(long subid, String phone, int sex, String job)throws Exception;
 }
