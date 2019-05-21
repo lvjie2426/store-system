@@ -39,6 +39,9 @@
             <button class="btnLevelSetting" onclick="levelSetting()">会员等级设置</button>
             <button>导出Excel</button>
             <button>导入顾客</button>
+            <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" onclick="deriveExcel()">
+                <i class="fa fa-arrow-circle-down">下载模板</i>
+            </button>
             <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" id="btn_import" onclick="Improt()">
                 <i class="fa fa-arrow-circle-o-up">导入</i>
             </button>
@@ -683,6 +686,10 @@
 
                 }
             });
+        }
+        //下载模板
+        function deriveExcel() {
+            document.location.href = serverUrl + '/user/downloadTemplatesExcel?token='+encodeURIComponent(quakooUser.getUserInfo().token);
         }
     </script>
 

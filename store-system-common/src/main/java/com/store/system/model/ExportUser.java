@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 @Data
-public class ImportUser implements Serializable {
+public class ExportUser implements Serializable{
     @Excel(name = "序号" )
     private String number;
 
@@ -14,6 +14,9 @@ public class ImportUser implements Serializable {
 
     @Excel(name = "性别")
     private String sex;
+
+    @Excel(name = "年龄")
+    private String age;
 
     @Excel(name = "出生日期")
     private String birthday;

@@ -20,4 +20,6 @@ public interface UserDao extends HDao<User> {
 
     public List<User> getAllLists(long psid, int userType, int status) throws DataAccessException;
 
+    public List<User> getAllList(long subid,String phone,int sex,String job)throws DataAccessException;
+
 }
