@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -35,6 +36,7 @@ public class ImportFileServiceImpl implements ImportFileService {
 
 
     @Override
+    @Transactional
     public ResultClient importUserInFo(MultipartFile file, User user) throws Exception {
         ResultClient res = new ResultClient();
         long sid = user.getSid();//店铺ID
@@ -52,12 +54,12 @@ public class ImportFileServiceImpl implements ImportFileService {
         return res;
     }
     //保存user
-    private void handleImportUser(List<ImportUser> list,long sid,long psid)throws Exception{
-       for(ImportUser importUser:list){
-           User user = getImportUser(importUser,sid,psid);
-           user = userDao.insert(user);
-           logger.info("@@@@@@@@@@"+ JsonUtils.toJson(user));
-       }
+    private void handleImportUser(List<ImportUser> list, long sid, long psid)throws Exception{
+        for(ImportUser importUser:list){
+            User user = getImportUser(importUser,sid,psid);
+            user = userDao.insert(user);
+            logger.info("@@@@@@@@@@"+ JsonUtils.toJson(user));
+        }
     }
 
     //importUser转换User
@@ -160,7 +162,7 @@ public class ImportFileServiceImpl implements ImportFileService {
         user.setPsid(psid);
         user.setRand(new Random().nextInt(100000000));
         user.setUserType(User.userType_user);
-        user.setPassword(MD5Utils.md5ReStr(user.getPassword().getBytes()));
+        user.setPassword(MD5Utils.md5ReStr("1234".getBytes()));
         return user;
     }
 
