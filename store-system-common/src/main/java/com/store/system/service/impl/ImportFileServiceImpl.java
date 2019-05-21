@@ -122,7 +122,7 @@ public class ImportFileServiceImpl implements ImportFileService {
 
         /**身份证号**/
         if(StringUtils.isNotBlank(importUser.getIdCard())){
-            user.setIdCard(importUser.getIdCard().trim());
+            user.setIdCard(importUser.getIdCard().trim().toUpperCase());
         }else{
             throw new StoreSystemException("导入信息出错,第"+importUser.getNumber()+"行 身份证号没有填写!");
         }
