@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="false" scanPeriod="60 seconds" debug="false">
 
-    <property name="log_dir" value="/data/logs/glasses-backend/"/>
+    <property name="log_dir" value="/data/logs/glasses-ext/"/>
     <property name="log_long_history" value="5"/><!-- 5 days -->
     <property name="log_short_history" value="3"/><!-- 3 days -->
     <property name="log_pattern"
