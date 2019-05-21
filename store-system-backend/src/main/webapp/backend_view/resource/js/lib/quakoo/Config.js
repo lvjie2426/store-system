@@ -81,10 +81,31 @@ var Config = (function(_super){
     //=======================会员等级 结束====================
 
     //=======================公司管理 开始====================
-    /**获取公司下门店列表*/
-    _proto.getUrl_subordinate_getSub = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
-
+    /**根据名称搜索门店*/
+    _proto.getUrl_subordinate_getSubordinateStoreByName = function(){return this.serverUrl + '/subordinate/getSubordinateStoreByName';};
+    /**修改企业信息*/
+    _proto.getUrl_subordinate_updateSubordinate = function(){return this.serverUrl + '/subordinate/updateSubordinate';};
+    /**修改企业下门店信息*/
+    _proto.getUrl_subordinate_updateSubordinateStore = function(){return this.serverUrl + '/subordinate/updateSubordinateStore';};
+    /**企业下创建门店*/
+    _proto.getUrl_subordinate_addSubordinateStore = function(){return this.serverUrl + '/subordinate/addSubordinateStore';};
+    /**开启/关闭门店*/
+    _proto.getUrl_subordinate_updateOpen = function(){return this.serverUrl + '/subordinate/updateOpen';};
+    /**获取当前公司信息*/
+    _proto.getUrl_subordinate_getSubordinate = function(){return this.serverUrl + '/subordinate/getSubordinate';};
     //=======================公司管理 结束====================
+
+    //=======================员工管理 开始====================
+    /**获取当前公司信息*/
+    _proto.getUrl_user_updateUser = function(){return this.serverUrl + '/user/updateUser';};
+    /**获取当前公司信息*/
+    _proto.getUrl_user_addCustomer = function(){return this.serverUrl + '/user/addCustomer';};
+    /**获取当前公司信息*/
+    _proto.getUrl_user_updateStatus = function(){return this.serverUrl + '/user/updateStatus';};
+    /**获取当前公司信息*/
+    _proto.getUrl_user_getSubCustomerPager = function(){return this.serverUrl + '/user/getSubCustomerPager';};
+
+    //=======================员工管理 结束====================
 
     //=======================企业端（营销管理） 开始====================
     /**新增短信群发*/

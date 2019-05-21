@@ -1,1004 +1,1129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="renderer" content="webkit">
-  <title>$Title$</title>
-  <link href="../resource/layui/css/layui.css" rel="stylesheet">
-  <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
-  <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-  <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-  <link href="../resource/css/reset.css" rel="stylesheet">
-  <link href="../resource/css/animate.css" rel="stylesheet">
-  <link href="../resource/css/style.css" rel="stylesheet">
-  <link href="../resource/css/common.css" rel="stylesheet">
-  <link rel="stylesheet" href="../resource/fonts/iconfont.css">
-  <link rel="stylesheet" href="../resource/css/yanjing/companyManage.css">
-  <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
-  <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
-  <link rel="stylesheet" href="../resource/css/baiduMap.css">
-  <script src="../resource/js/baiduMap.js"></script>
-  <style>
-    .iw_poi_title {color:#CC5522;font-size:14px;font-weight:bold;overflow:hidden;padding-right:13px;white-space:nowrap}
-    .iw_poi_content {font:12px arial,sans-serif;overflow:visible;padding-top:4px;white-space:-moz-pre-wrap;word-wrap:break-word}
-    input:disabled{
-      background-color: #fff;
-    }
-    /*选择时间插件样式修改*/
-    .dwcc div.mbsc-w-p:nth-child(2) .dwfl:nth-child(2){
-      display: block;
-    }
-    .dwcc div.mbsc-w-p:first-child {
-      display: none !important;
-    }
-    .dwcc div.mbsc-w-p:last-child {
-      display: block !important;
-    }
-    .dwbc .dwbw.dwb-n{
-      display: none;
-    }
-    .mbsc-mobiscroll .dwfl{
-      border-right: none;
-      border-left:1px solid #e2e2e2;
-    }
-    .mbsc-mobiscroll .dwwr{
-      min-width: 160px;
-    }
-    /*主要内容*/
-    .companyManageCont {
-      position: relative;
-      min-height: 200px;
-      background: #ebebf3;
-      box-sizing: border-box;
-    }
-    /*主要内容头部*/
-    .companyManageCont .contHeader{
-      width: 100%;
-      height: 53px;
-      border-bottom: 1px solid #dfdfe9;
-      background: #fff;
-      margin-bottom: 16px;
-    }
-    /*头部左边*/
-    .companyManageCont .contHeader .tab-ul{
-      float: left;
-      width: 30%;
-    }
-    .companyManageCont .contHeader .tab-ul li{
-      color: #828297;
-    }
-    .companyManageCont .contHeader .tab-ul li.active{
-      color: #393953;
-      font-weight: bold;
-    }
-    /*头部右边*/
-    .companyManageCont .contHeader .headRight{
-      width: 60%;
-      float: right;
-      height: 100%;
-    }
-    .companyManageCont .contHeader .headRight .child{
-      float: right;
-      margin: 12px 12px 12px 0;
-    }
-    .companyManageCont .contHeader .headRight .newShop{
-      width: 68px;
-      height: 28px;
-      line-height: 28px;
-      background: #4186DC;
-      color: #fff;
-      border-radius: 2px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .companyManageCont .contHeader .headRight input{
-      width: 128px;
-      height: 28px;
-      line-height: 28px;
-      padding: 0 8px;
-      color: #000;
-      border-radius: 2px;
-      border: 1px solid #ececf4;
-    }
-    /*公司信息*/
-    .companyManageCont .companyMsg {
-      position: relative;
-      min-height: 135px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 2px;
-      border: 1px solid #dfdfe9;
-      box-sizing: border-box;
-    }
-    /*公司信息头部*/
-    .companyManageCont .companyMsg .head {
-      position: relative;
-      width: 100%;
-      height: 44px;
-      border-bottom: 1px solid #dfdfe9;
-    }
-    .companyManageCont .companyMsg .head span {
-      position: absolute;
-      display: inline-block;
-      font-weight: bold;
-      width: 68px;
-      height: 28px;
-      text-align: center;
-      line-height: 26px;
-      top: 7px;
-    }
-    .companyManageCont .companyMsg .head span.msg {
-      color: #393953;
-      font-size: 13px;
-      font-family: PingFangSC-Semibold;
-      left: 8px;
-    }
-    .companyManageCont .companyMsg .head span.editMsg {
-      color: #828297;
-      font-size: 12px;
-      font-family: PingFangSC-Semibold;
-      border: 1px solid #dfdfe9;
-      border-radius: 2px;
-      right: 8px;
-      cursor: pointer;
-    }
-    /*公司信息内容*/
-    .companyManageCont .companyMsg .cont {
-      position: relative;
-      width: 100%;
-      height: 92px;
-    }
-    .companyManageCont .companyMsg .cont div {
-      float: left;
-      height: 40px;
-      margin-top: 26px;
-    }
-    .companyManageCont .companyMsg .cont div .texUp {
-      font-size: 14px;
-      color: #393953;
-      font-weight: bold;
-    }
-    .companyManageCont .companyMsg .cont div .txtDown {
-      font-size: 12px;
-      color: #828297;
-    }
-    .companyManageCont .companyMsg .cont div span {
-      display: block;
-      line-height: 20px;
-    }
-    .companyManageCont .companyMsg .cont div.comImg {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin: 16px;
-    }
-    .companyManageCont .companyMsg .cont div.comImg img {
-      width: 100%;
-      height: 100%;
-    }
-    .companyManageCont .companyMsg .cont div.comName {
-      padding-right: 20px;
-      border-right: 1px solid #ECECF4;
-    }
-    .companyManageCont .companyMsg .cont div.perName,
-    .companyManageCont .companyMsg .cont div.perTel {
-      margin-left: 40px;
-    }
-    /*店铺列表*/
-    .companyManageCont .shopItems {
-      position: relative;
-      min-height: 100px;
-      margin-top: 12px;
-    }
-    .companyManageCont .shopItems .contUl {
-      width: 100%;
-    }
-    /*店铺列表li样式*/
-    .companyManageCont .shopItems .contUl li.item {
-      position: relative;
-      width: 32%;
-      height: 280px;
-      border-radius: 2px;
-      margin-bottom: 16px ;
-      border: 1px solid #dfdfe9;
-      background: #fff;
-      float: left;
-      margin-right: 2%;
-      box-sizing: border-box;
-    }
-    .companyManageCont .shopItems .contUl li.item > div {
-      width: 100%;
-      height: 40px;
-      box-sizing: border-box;
-      position: relative;
-    }
-    /*店铺列表头部*/
-    .companyManageCont .shopItems .contUl li.item .top {
-      background: #f3f3f7;
-      border-bottom: 1px solid #dfdfe9;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .shopName {
-      font-size: 13px;
-      color: #393953;
-      line-height: 40px;
-      font-weight: bold;
-      padding-left: 16px;
-      width: 70%;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle {
-      position: absolute;
-      height: 100%;
-      width: 23%;
-      right: 0;
-      top: 0;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form,
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-item {
-      height: 100%;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-item {
-      margin-bottom: 0;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-label {
-      position: absolute;
-      display: block;
-      padding: 9px 0px;
-      width: 40px;
-      font-weight: 400;
-      line-height: 20px;
-      text-align: left;
-      right: 50px;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-input-block {
-      position: absolute;
-      margin-left: 0;
-      right: 16px;
-      min-height: 40px;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-switch {
-      position: relative;
-      height: 18px;
-      line-height: 16px;
-      width: 28px;
-      min-width: 24px;
-      padding: 0 0;
-      margin-top: 11px;
-      border: 1px solid #d2d2d2;
-      border-radius: 20px;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-onswitch {
-      border-color: #4186DC;
-      background-color: #4186DC;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-switch i {
-      top: 2px;
-      width: 12px;
-      height: 12px;
-      left: 2px;
-    }
-    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-onswitch i {
-      left: 100%;
-      margin-left: -15px;
-      background-color: #fff;
-    }
-    .companyManageCont .shopItems .contUl li.item .middle {
-      /*店铺列表中间部分*/
-      height: 200px;
-    }
-    .companyManageCont .shopItems .contUl li.item .middle p {
-      height: 48px;
-      padding: 0 16px;
-      margin-bottom: 0;
-    }
-    .companyManageCont .shopItems .contUl li.item .middle p span {
-      display: block;
-      font-size: 12px;
-    }
-    .companyManageCont .shopItems .contUl li.item .middle p span.txt1 {
-      padding-top: 8px;
-      color: #828297;
-    }
-    .companyManageCont .shopItems .contUl li.item .middle p span.txt2 {
-      color: #393953;
-      margin-top: 5px;
-      font-weight: bold;
-    }
-    .companyManageCont .shopItems .contUl li.item .bottom {
-      /*店铺列表底部*/
-      border-top: 1px solid #dfdfe9;
-      padding: 6px;
-    }
-    .companyManageCont .shopItems .contUl li.item .bottom button {
-      cursor: pointer;
-      float: right;
-      height: 26px;
-      font-size: 12px;
-      outline: none;
-      border-radius: 2px;
-      margin-left: 6px;
-      padding: 0 10px;
-    }
-    .companyManageCont .shopItems .contUl li.item .bottom button.edit {
-      border: 1px solid #d9e5f6;
-      color: #4186DC;
-      background: #eaf1fa;
-    }
-    .companyManageCont .shopItems .contUl li.item .bottom button.check {
-      color: #fff;
-      background: #4186DC;
-      border: 1px solid #4186DC;
-    }
-    .companyManageCont .shopItems .contUl li.item:nth-child(3n+3) {
-      margin-right: 0;
-    }
-    /*创建门店弹窗*/
-    .content-view-creatShop-tan .layui-layer-title{
-      color: #4186DC;
-      font-size: 13px;
-      border: none;
-    }
-    .content-view-creatShop-tan p.txt01{
-      font-size: 12px;
-      color: #393953;
-      padding: 12px 16px;
-      font-weight: 600;
-    }
-    .content-view-creatShop-tan .layui-layer-btn a{
-      width: 44px;
-      height: 32px;
-      font-size: 12px;
-      line-height: 32px;
-      border-radius: 2px;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      margin-left: 8px;
-    }
-    .content-view-creatShop-tan .layui-layer-btn .layui-layer-btn0 {
-      background: #f3f3f7;
-      color: #828297;
-      border: 1px solid #ebebf3;
-    }
-    .content-view-creatShop-tan .layui-layer-btn .layui-layer-btn1 {
-      background: #4286da;
-      color: #fff;
-      border: none;
-    }
-    /*创建门店弹窗结束*/
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>公司管理</title>
+    <link href="../resource/layui/css/layui.css" rel="stylesheet">
+    <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/reset.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <link rel="stylesheet" href="../resource/css/yanjing/companyManage.css">
+    <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+    <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/css/baiduMap.css">
+    <script src="../resource/js/baiduMap.js"></script>
+    <style>
+        .iw_poi_title {
+            color: #CC5522;
+            font-size: 14px;
+            font-weight: bold;
+            overflow: hidden;
+            padding-right: 13px;
+            white-space: nowrap
+        }
 
-    /*设置支付弹窗*/
-    .content-view-setPay-tan .head {
-      background: #fefefe;
-      height: 44px;
-      padding: 0 16px;
-      position: relative;
-    }
-    .content-view-setPay-tan .head span{
-      display: block;
-      font-size: 13px;
-      color: #393953;
-      margin: 0 16px 0 0;
-      float: left;
-      font-weight: normal;
-      height: 44px;
-      line-height: 44px;
-      box-sizing:border-box;
-      cursor: pointer;
-    }
-    .content-view-setPay-tan .head span.layui-layer-title{
-      position: absolute;
-      width: 160px;
-      height: 100%;
-      top: 0;
-      right: 0;
-      padding: 0;
-      margin: 0;
-      border: none;
-    }
-    .content-view-setPay-tan .head span.active{
-      border-bottom: 2px solid #393953;
-    }
-    /*支付*/
-    .content-view-setPay-tan .selectPayment {
-      background: #fff;
-      display: block;
-      width: 360px;
-      border-radius: 2px;
-      overflow: hidden;
-      color: #393953;
-    }
-    .content-view-setPay-tan .selectPayment .grWX.active {
-      display: block;
-    }
-    .content-view-setPay-tan .selectPayment .gyWX.active {
-      display: block;
-    }
-    .content-view-setPay-tan .selectPayment .gyWX .textDescribe {
-      display: none;
-    }
-    .content-view-setPay-tan .selectPayment .gyWX.active .textDescribe {
-      display: block;
-    }
-    .content-view-setPay-tan .selectPayment .public.active {
-      display: block;
-      border-top: 1px solid #ECECF4;
-    }
-    .content-view-setPay-tan .selectPayment .public.active h4 {
-      margin: 0 0 7px 16px;
-    }
-    .content-view-setPay-tan .selectPayment .grZFB.active {
-      display: block;
-    }
-    .content-view-setPay-tan .selectPayment .mainContent {
-      /*个人微信*/
-      display: none;
-      font-size: 12px;
-      padding: 10px 0;
-      width: 100%;
-      overflow: hidden;
-    }
-    .content-view-setPay-tan .selectPayment .mainContent .wxNum,
-    .content-view-setPay-tan .selectPayment .mainContent .zfbNum {
-      display: inline-block;
-      width: 47%;
-      margin-left: 16px;
-    }
-    .content-view-setPay-tan .selectPayment .mainContent .wxNum input,
-    .content-view-setPay-tan .selectPayment .mainContent .zfbNum input {
-      margin-top: 6px;
-      width: 100%;
-      padding-left: 5%;
-      line-height: 28px;
-      border-radius: 2px;
-      background-color: #ffffff;
-      border: 1px solid #ECECF4;
-    }
-    .content-view-setPay-tan .selectPayment .mainContent .wxNum input::placeholder,
-    .content-view-setPay-tan .selectPayment .mainContent .zfbNum input::placeholder {
-      color: #828297;
-    }
-    .content-view-setPay-tan .selectPayment .mainContent .stateBox {
-      display: inline-block;
-    }
-    .content-view-setPay-tan .selectPayment .mainContent .stateBox .layui-form-label {
-      float: none;
-      width: 100%;
-      text-align: left;
-      margin: 0;
-      padding: 0 15px;
-    }
-    .content-view-setPay-tan .selectPayment .mainContent .textDescribe {
-      display: block;
-      width: 100%;
-      padding: 0 16px;
-      box-sizing: border-box;
-      color: #828297;
-      font-size: 12px;
-      font-family: '粗体';
-      line-height: 20px;
-    }
-    .content-view-setPay-tan .selectPayment .footerBox {
-      width: 100%;
-      padding: 6px;
-      box-sizing: border-box;
-      border-top: 1px solid #ECECF4;
-      overflow: hidden;
-    }
-    .content-view-setPay-tan .selectPayment .footerBox button {
-      float: right;
-      margin-left: 6px;
-      padding: 8px 10px;
-      border-radius: 3px;
-      background-color: #F4F4F8;
-      border: 1px solid #ececf4;
-      color: #828297;
-      font-size: 12px;
-      font-family: PingFangSC-Semibold;
-    }
-    .content-view-setPay-tan .selectPayment .footerBox .btnDetermine {
-      color: #B0B0BE;
-    }
-    .content-view-setPay-tan .selectPayment .footerBox .btnDetermine.active {
-      background: #4186DC;
-      color: #fff;
-    }
-    /*覆盖layui样式*/
-    .content-view-setPay-tan .layui-layer-title{
-      background: #fefefe;
-    }
-    .content-view-setPay-tan .layui-form-radio > i:hover,
-    .content-view-setPay-tan .layui-form-radioed > i {
-      color: #4186DC;
-    }
-    .content-view-setPay-tan .layui-input-block {
-      margin-left: 16px;
-    }
-    .content-view-setPay-tan .layui-form-radio > i {
-      font-size: 16px;
-    }
-    .content-view-setPay-tan .layui-form-radio {
-      margin: 6px 6px 0 0;
-    }
-    .content-view-setPay-tan .layui-form-radio div {
-      font-size: 12px;
-    }
-    /*设置支付弹窗结束*/
-    /*门店设置详细弹窗*/
-    .content-view-shopDes-tan .layui-layer-title{
-      background: #fefefe!important;
-    }
-    .content-view-shopDes > div{
-      min-height: 30px;
-      padding: 0 10px;
-    }
-    .content-view-shopDes > div input{
-      border: 1px solid #ebebf3;
-      height: 28px;
-      line-height: 28px;
-      font-size: 12px;
-      border-radius: 2px;
-      outline: none;
-      padding: 0 8px;
-    }
-    .content-view-shopDes div p.title{
-      color: #393953;
-      font-weight: 600;
-      padding: 8px 2px;
-      font-size: 12px;
-    }
-    .content-view-shopDes div p.title em{
-      color: #828297;
-      margin-left: 4px;
-    }
-    .content-view-shopDes div .cont{
-      width: 100%;
-      height: 28px;
-      line-height: 28px;
-    }
-    .content-view-shopDes div.shopMsg ul{
-      width: 100%;
-      margin-bottom: 0;
-    }
-    .content-view-shopDes div.shopMsg ul li{
-      width: 50%;
-      float: left;
-    }
-    .content-view-shopDes div.shopMsg ul li input{
-      width: 156px;
-      padding: 5px 8px;
-      border-radius: 2px;
-      color: #393953;
-      font-weight: 600;
-    }
-    .content-view-shopDes div.address .inputBox{
-      padding-top: 10px;
-    }
-    .content-view-shopDes div.address .mapDiv{
-      width: 328px;
-      height: 80px;
-    }
-    .content-view-shopDes div.address .inputBox .selectBox{
-      width: 30.5%;
-      height: 28px;
-      margin-right: 1%;
-    }
-    .content-view-shopDes div.address .inputBox .selectBox:last-child{
-      margin-right: 0;
-    }
-    .content-view-shopDes div.address > input{
-      width: 328px;
-      color: #393953;
-      padding: 5px 8px;
-      margin-top: 12px;
-    }
-    .content-view-shopDes div.uploadPic .cont{
-      width: 328px;
-      height: auto;
-    }
-    .content-view-shopDes div.uploadPic .cont span.layui-btn{
-      display: inline-block;
-      width: 100px;
-      height: 100px;
-      line-height: 100px;
-      text-align: center;
-      background: #F4F4F8 ;
-      margin: 0 8px 8px 0;
-    }
-    .content-view-shopDes div.uploadPic .cont span.layui-btn i{
-      color: #828297;
-    }
-    .content-view-shopDes div.uploadPic .cont img{
-      width: 100px;
-      height: 100px;
-      border-radius: 2px;
-      margin: 0 8px 8px 0;
-    }
-    .content-view-shopDes div.openHours .cont > div{
-      width: 47%;
-      height: 28px;
-      float: left;
-      margin-right: 2%;
-      position: relative;
-    }
-    .content-view-shopDes div.openHours .cont > div:last-child{
-      margin-right: 0;
-    }
-    .content-view-shopDes div.openHours .cont > div i{
-      position: absolute;
-      right: 8px;
-      top: 0;
-    }
-    .content-view-shopDes div.openHours .cont > div input{
-      width: 100%;
-      line-height: 28px;
-      font-size: 12px;
-    }
-    .content-view-shopDes div.sanbao input{
-      width: 328px;
-    }
-    .content-view-shopDes div.payType .selectBox{
-      width: 156px;
-      height: 28px;
-    }
-    .content-view-shopDes div.payType .selectBox .text{
-      color: #393953;
-    }
-    .content-view-shopDes div.chuzhi .cont{
-      width: 100%;
-      height: 28px;
-      line-height: 28px;
-    }
-    .content-view-shopDes .layui-form,
-    .content-view-shopDes .layui-form-item,
-    .content-view-shopDes .layui-input-block
-    {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      min-height: 28px;
-    }
-    .content-view-shopDes .layui-unselect{
-      margin: 0 16px 0 0;
-      padding: 0;
-    }
-    .content-view-shopDes .layui-unselect div{
-      font-size: 12px!important;
-      color: #393953;
-    }
-    .content-view-shopDes .layui-unselect i{
-      font-size: 16px!important;
-      color: #4186DC;
-      border: none;
-    }
-    .content-view-shopDes div.jiazhong .selectBox{
-      margin: 12px 0;
-      visibility: hidden;
-    }
-    .content-view-shopDes div.jiazhong .selectBox.active{
-      visibility: visible;
-    }
-    /*门店设置详细弹窗结束*/
-    /*radio圆点*/
-    .content-view .layui-form i.layui-icon{
-      width: 16px!important;
-      height: 16px!important;
-      background: #fff!important;
-      border-radius: 50%;
-      border: 2px solid #ccc;
-      color: rgba(204,204,204,0);
-    }
-    .content-view .layui-form i.layui-icon.layui-anim-scaleSpring,
-    .content-view .layui-form .layui-form-radioed i.layui-icon{
-      width: 16px!important;
-      height: 16px!important;
-      background: #fff!important;
-      border-radius: 50%;
-      border: 5px solid #4186DC;
-      color: rgba(255,255,255,0);
-    }
-  </style>
+        .iw_poi_content {
+            font: 12px arial, sans-serif;
+            overflow: visible;
+            padding-top: 4px;
+            white-space: -moz-pre-wrap;
+            word-wrap: break-word
+        }
+
+        input:disabled {
+            background-color: #fff;
+        }
+
+        /*选择时间插件样式修改*/
+        .dwcc div.mbsc-w-p:nth-child(2) .dwfl:nth-child(2) {
+            display: block;
+        }
+
+        .dwcc div.mbsc-w-p:first-child {
+            display: none !important;
+        }
+
+        .dwcc div.mbsc-w-p:last-child {
+            display: block !important;
+        }
+
+        .dwbc .dwbw.dwb-n {
+            display: none;
+        }
+
+        .mbsc-mobiscroll .dwfl {
+            border-right: none;
+            border-left: 1px solid #e2e2e2;
+        }
+
+        .mbsc-mobiscroll .dwwr {
+            min-width: 160px;
+        }
+
+        /*主要内容*/
+        .companyManageCont {
+            position: relative;
+            min-height: 200px;
+            background: #ebebf3;
+            box-sizing: border-box;
+        }
+
+        /*主要内容头部*/
+        .companyManageCont .contHeader {
+            width: 100%;
+            height: 53px;
+            border-bottom: 1px solid #dfdfe9;
+            background: #fff;
+            margin-bottom: 16px;
+        }
+
+        /*头部左边*/
+        .companyManageCont .contHeader .tab-ul {
+            float: left;
+            width: 30%;
+        }
+
+        .companyManageCont .contHeader .tab-ul li {
+            color: #828297;
+        }
+
+        .companyManageCont .contHeader .tab-ul li.active {
+            color: #393953;
+            font-weight: bold;
+        }
+
+        /*头部右边*/
+        .companyManageCont .contHeader .headRight {
+            width: 60%;
+            float: right;
+            height: 100%;
+        }
+
+        .companyManageCont .contHeader .headRight .child {
+            float: right;
+            margin: 12px 12px 12px 0;
+        }
+
+        .companyManageCont .contHeader .headRight .newShop {
+            width: 68px;
+            height: 28px;
+            line-height: 28px;
+            background: #4186DC;
+            color: #fff;
+            border-radius: 2px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .companyManageCont .contHeader .headRight input {
+            width: 128px;
+            height: 28px;
+            line-height: 28px;
+            padding: 0 8px;
+            color: #000;
+            border-radius: 2px;
+            border: 1px solid #ececf4;
+        }
+
+        /*公司信息*/
+        .companyManageCont .companyMsg {
+            position: relative;
+            min-height: 135px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 2px;
+            border: 1px solid #dfdfe9;
+            box-sizing: border-box;
+        }
+
+        /*公司信息头部*/
+        .companyManageCont .companyMsg .head {
+            position: relative;
+            width: 100%;
+            height: 44px;
+            border-bottom: 1px solid #dfdfe9;
+        }
+
+        .companyManageCont .companyMsg .head span {
+            position: absolute;
+            display: inline-block;
+            font-weight: bold;
+            width: 68px;
+            height: 28px;
+            text-align: center;
+            line-height: 26px;
+            top: 7px;
+        }
+
+        .companyManageCont .companyMsg .head span.msg {
+            color: #393953;
+            font-size: 13px;
+            font-family: PingFangSC-Semibold;
+            left: 8px;
+        }
+
+        .companyManageCont .companyMsg .head span.editMsg {
+            color: #828297;
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            border: 1px solid #dfdfe9;
+            border-radius: 2px;
+            right: 8px;
+            cursor: pointer;
+        }
+
+        /*公司信息内容*/
+        .companyManageCont .companyMsg .cont {
+            position: relative;
+            width: 100%;
+            height: 92px;
+        }
+
+        .companyManageCont .companyMsg .cont div {
+            float: left;
+            height: 40px;
+            margin-top: 26px;
+        }
+
+        .companyManageCont .companyMsg .cont div .texUp {
+            font-size: 14px;
+            color: #393953;
+            font-weight: bold;
+        }
+
+        .companyManageCont .companyMsg .cont div .txtDown {
+            font-size: 12px;
+            color: #828297;
+        }
+
+        .companyManageCont .companyMsg .cont div span {
+            display: block;
+            line-height: 20px;
+        }
+
+        .companyManageCont .companyMsg .cont div.comImg {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 16px;
+        }
+
+        .companyManageCont .companyMsg .cont div.comImg img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .companyManageCont .companyMsg .cont div.comName {
+            padding-right: 20px;
+            border-right: 1px solid #ECECF4;
+        }
+
+        .companyManageCont .companyMsg .cont div.perName,
+        .companyManageCont .companyMsg .cont div.perTel {
+            margin-left: 40px;
+        }
+
+        /*店铺列表*/
+        .companyManageCont .shopItems {
+            position: relative;
+            min-height: 100px;
+            margin-top: 12px;
+        }
+
+        .companyManageCont .shopItems .contUl {
+            width: 100%;
+        }
+
+        /*店铺列表li样式*/
+        .companyManageCont .shopItems .contUl li.item {
+            position: relative;
+            width: 32%;
+            height: 280px;
+            border-radius: 2px;
+            margin-bottom: 16px;
+            border: 1px solid #dfdfe9;
+            background: #fff;
+            float: left;
+            margin-right: 2%;
+            box-sizing: border-box;
+        }
+
+        .companyManageCont .shopItems .contUl li.item > div {
+            width: 100%;
+            height: 40px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /*店铺列表头部*/
+        .companyManageCont .shopItems .contUl li.item .top {
+            background: #f3f3f7;
+            border-bottom: 1px solid #dfdfe9;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .shopName {
+            font-size: 13px;
+            color: #393953;
+            line-height: 40px;
+            font-weight: bold;
+            padding-left: 16px;
+            width: 70%;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle {
+            position: absolute;
+            height: 100%;
+            width: 23%;
+            right: 0;
+            top: 0;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form,
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-item {
+            height: 100%;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-item {
+            margin-bottom: 0;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-label {
+            position: absolute;
+            display: block;
+            padding: 9px 0px;
+            width: 40px;
+            font-weight: 400;
+            line-height: 20px;
+            text-align: left;
+            right: 50px;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-input-block {
+            position: absolute;
+            margin-left: 0;
+            right: 16px;
+            min-height: 40px;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-switch {
+            position: relative;
+            height: 18px;
+            line-height: 16px;
+            width: 28px;
+            min-width: 24px;
+            padding: 0 0;
+            margin-top: 11px;
+            border: 1px solid #d2d2d2;
+            border-radius: 20px;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-onswitch {
+            border-color: #4186DC;
+            background-color: #4186DC;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-switch i {
+            top: 2px;
+            width: 12px;
+            height: 12px;
+            left: 2px;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-onswitch i {
+            left: 100%;
+            margin-left: -15px;
+            background-color: #fff;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .middle {
+            /*店铺列表中间部分*/
+            height: 200px;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .middle p {
+            height: 48px;
+            padding: 0 16px;
+            margin-bottom: 0;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .middle p span {
+            display: block;
+            font-size: 12px;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .middle p span.txt1 {
+            padding-top: 8px;
+            color: #828297;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .middle p span.txt2 {
+            color: #393953;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .bottom {
+            /*店铺列表底部*/
+            border-top: 1px solid #dfdfe9;
+            padding: 6px;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .bottom button {
+            cursor: pointer;
+            float: right;
+            height: 26px;
+            font-size: 12px;
+            outline: none;
+            border-radius: 2px;
+            margin-left: 6px;
+            padding: 0 10px;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .bottom button.edit {
+            border: 1px solid #d9e5f6;
+            color: #4186DC;
+            background: #eaf1fa;
+        }
+
+        .companyManageCont .shopItems .contUl li.item .bottom button.check {
+            color: #fff;
+            background: #4186DC;
+            border: 1px solid #4186DC;
+        }
+
+        .companyManageCont .shopItems .contUl li.item:nth-child(3n+3) {
+            margin-right: 0;
+        }
+
+        /*创建门店弹窗*/
+        .content-view-creatShop-tan .layui-layer-title {
+            color: #4186DC;
+            font-size: 13px;
+            border: none;
+        }
+
+        .content-view-creatShop-tan p.txt01 {
+            font-size: 12px;
+            color: #393953;
+            padding: 12px 16px;
+            font-weight: 600;
+        }
+
+        .content-view-creatShop-tan .layui-layer-btn a {
+            width: 44px;
+            height: 32px;
+            font-size: 12px;
+            line-height: 32px;
+            border-radius: 2px;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            margin-left: 8px;
+        }
+
+        .content-view-creatShop-tan .layui-layer-btn .layui-layer-btn0 {
+            background: #f3f3f7;
+            color: #828297;
+            border: 1px solid #ebebf3;
+        }
+
+        .content-view-creatShop-tan .layui-layer-btn .layui-layer-btn1 {
+            background: #4286da;
+            color: #fff;
+            border: none;
+        }
+
+        /*创建门店弹窗结束*/
+
+        /*设置支付弹窗*/
+        .content-view-setPay-tan .head {
+            background: #fefefe;
+            height: 44px;
+            padding: 0 16px;
+            position: relative;
+        }
+
+        .content-view-setPay-tan .head span {
+            display: block;
+            font-size: 13px;
+            color: #393953;
+            margin: 0 16px 0 0;
+            float: left;
+            font-weight: normal;
+            height: 44px;
+            line-height: 44px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .content-view-setPay-tan .head span.layui-layer-title {
+            position: absolute;
+            width: 160px;
+            height: 100%;
+            top: 0;
+            right: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+
+        .content-view-setPay-tan .head span.active {
+            border-bottom: 2px solid #393953;
+        }
+
+        /*支付*/
+        .content-view-setPay-tan .selectPayment {
+            background: #fff;
+            display: block;
+            width: 360px;
+            border-radius: 2px;
+            overflow: hidden;
+            color: #393953;
+        }
+
+        .content-view-setPay-tan .selectPayment .grWX.active {
+            display: block;
+        }
+
+        .content-view-setPay-tan .selectPayment .gyWX.active {
+            display: block;
+        }
+
+        .content-view-setPay-tan .selectPayment .gyWX .textDescribe {
+            display: none;
+        }
+
+        .content-view-setPay-tan .selectPayment .gyWX.active .textDescribe {
+            display: block;
+        }
+
+        .content-view-setPay-tan .selectPayment .public.active {
+            display: block;
+            border-top: 1px solid #ECECF4;
+        }
+
+        .content-view-setPay-tan .selectPayment .public.active h4 {
+            margin: 0 0 7px 16px;
+        }
+
+        .content-view-setPay-tan .selectPayment .grZFB.active {
+            display: block;
+        }
+
+        .content-view-setPay-tan .selectPayment .mainContent {
+            /*个人微信*/
+            display: none;
+            font-size: 12px;
+            padding: 10px 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .content-view-setPay-tan .selectPayment .mainContent .wxNum,
+        .content-view-setPay-tan .selectPayment .mainContent .zfbNum {
+            display: inline-block;
+            width: 47%;
+            margin-left: 16px;
+        }
+
+        .content-view-setPay-tan .selectPayment .mainContent .wxNum input,
+        .content-view-setPay-tan .selectPayment .mainContent .zfbNum input {
+            margin-top: 6px;
+            width: 100%;
+            padding-left: 5%;
+            line-height: 28px;
+            border-radius: 2px;
+            background-color: #ffffff;
+            border: 1px solid #ECECF4;
+        }
+
+        .content-view-setPay-tan .selectPayment .mainContent .wxNum input::placeholder,
+        .content-view-setPay-tan .selectPayment .mainContent .zfbNum input::placeholder {
+            color: #828297;
+        }
+
+        .content-view-setPay-tan .selectPayment .mainContent .stateBox {
+            display: inline-block;
+        }
+
+        .content-view-setPay-tan .selectPayment .mainContent .stateBox .layui-form-label {
+            float: none;
+            width: 100%;
+            text-align: left;
+            margin: 0;
+            padding: 0 15px;
+        }
+
+        .content-view-setPay-tan .selectPayment .mainContent .textDescribe {
+            display: block;
+            width: 100%;
+            padding: 0 16px;
+            box-sizing: border-box;
+            color: #828297;
+            font-size: 12px;
+            font-family: '粗体';
+            line-height: 20px;
+        }
+
+        .content-view-setPay-tan .selectPayment .footerBox {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+            border-top: 1px solid #ECECF4;
+            overflow: hidden;
+        }
+
+        .content-view-setPay-tan .selectPayment .footerBox button {
+            float: right;
+            margin-left: 6px;
+            padding: 8px 10px;
+            border-radius: 3px;
+            background-color: #F4F4F8;
+            border: 1px solid #ececf4;
+            color: #828297;
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+
+        .content-view-setPay-tan .selectPayment .footerBox .btnDetermine {
+            color: #B0B0BE;
+        }
+
+        .content-view-setPay-tan .selectPayment .footerBox .btnDetermine.active {
+            background: #4186DC;
+            color: #fff;
+        }
+
+        /*覆盖layui样式*/
+        .content-view-setPay-tan .layui-layer-title {
+            background: #fefefe;
+        }
+
+        .content-view-setPay-tan .layui-form-radio > i:hover,
+        .content-view-setPay-tan .layui-form-radioed > i {
+            color: #4186DC;
+        }
+
+        .content-view-setPay-tan .layui-input-block {
+            margin-left: 16px;
+        }
+
+        .content-view-setPay-tan .layui-form-radio > i {
+            font-size: 16px;
+        }
+
+        .content-view-setPay-tan .layui-form-radio {
+            margin: 6px 6px 0 0;
+        }
+
+        .content-view-setPay-tan .layui-form-radio div {
+            font-size: 12px;
+        }
+
+        /*设置支付弹窗结束*/
+        /*门店设置详细弹窗*/
+        .content-view-shopDes-tan .layui-layer-title {
+            background: #fefefe !important;
+        }
+
+        .content-view-shopDes > div {
+            min-height: 30px;
+            padding: 0 10px;
+        }
+
+        .content-view-shopDes > div input {
+            border: 1px solid #ebebf3;
+            height: 28px;
+            line-height: 28px;
+            font-size: 12px;
+            border-radius: 2px;
+            outline: none;
+            padding: 0 8px;
+        }
+
+        .content-view-shopDes div p.title {
+            color: #393953;
+            font-weight: 600;
+            padding: 8px 2px;
+            font-size: 12px;
+        }
+
+        .content-view-shopDes div p.title em {
+            color: #828297;
+            margin-left: 4px;
+        }
+
+        .content-view-shopDes div .cont {
+            width: 100%;
+            height: 28px;
+            line-height: 28px;
+        }
+
+        .content-view-shopDes div.shopMsg ul {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .content-view-shopDes div.shopMsg ul li {
+            width: 50%;
+            float: left;
+        }
+
+        .content-view-shopDes div.shopMsg ul li input {
+            width: 156px;
+            padding: 5px 8px;
+            border-radius: 2px;
+            color: #393953;
+            font-weight: 600;
+        }
+
+        .content-view-shopDes div.address .inputBox {
+            padding-top: 10px;
+        }
+
+        .content-view-shopDes div.address .mapDiv {
+            width: 328px;
+            height: 80px;
+        }
+
+        .content-view-shopDes div.address .inputBox .selectBox {
+            width: 30.5%;
+            height: 28px;
+            margin-right: 1%;
+        }
+
+        .content-view-shopDes div.address .inputBox .selectBox:last-child {
+            margin-right: 0;
+        }
+
+        .content-view-shopDes div.address > input {
+            width: 328px;
+            color: #393953;
+            padding: 5px 8px;
+            margin-top: 12px;
+        }
+
+        .content-view-shopDes div.uploadPic .cont {
+            width: 328px;
+            height: auto;
+        }
+
+        .content-view-shopDes div.uploadPic .cont span.layui-btn {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            background: #F4F4F8;
+            margin: 0 8px 8px 0;
+        }
+
+        .content-view-shopDes div.uploadPic .cont span.layui-btn i {
+            color: #828297;
+        }
+
+        .content-view-shopDes div.uploadPic .cont img {
+            width: 100px;
+            height: 100px;
+            border-radius: 2px;
+            margin: 0 8px 8px 0;
+        }
+
+        .content-view-shopDes div.openHours .cont > div {
+            width: 47%;
+            height: 28px;
+            float: left;
+            margin-right: 2%;
+            position: relative;
+        }
+
+        .content-view-shopDes div.openHours .cont > div:last-child {
+            margin-right: 0;
+        }
+
+        .content-view-shopDes div.openHours .cont > div i {
+            position: absolute;
+            right: 8px;
+            top: 0;
+        }
+
+        .content-view-shopDes div.openHours .cont > div input {
+            width: 100%;
+            line-height: 28px;
+            font-size: 12px;
+        }
+
+        .content-view-shopDes div.sanbao input {
+            width: 328px;
+        }
+
+        .content-view-shopDes div.payType .selectBox {
+            width: 156px;
+            height: 28px;
+        }
+
+        .content-view-shopDes div.payType .selectBox .text {
+            color: #393953;
+        }
+
+        .content-view-shopDes div.chuzhi .cont {
+            width: 100%;
+            height: 28px;
+            line-height: 28px;
+        }
+
+        .content-view-shopDes .layui-form,
+        .content-view-shopDes .layui-form-item,
+        .content-view-shopDes .layui-input-block {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            min-height: 28px;
+        }
+
+        .content-view-shopDes .layui-unselect {
+            margin: 0 16px 0 0;
+            padding: 0;
+        }
+
+        .content-view-shopDes .layui-unselect div {
+            font-size: 12px !important;
+            color: #393953;
+        }
+
+        .content-view-shopDes .layui-unselect i {
+            font-size: 16px !important;
+            color: #4186DC;
+            border: none;
+        }
+
+        .content-view-shopDes div.jiazhong .selectBox {
+            margin: 12px 0;
+            visibility: hidden;
+        }
+
+        .content-view-shopDes div.jiazhong .selectBox.active {
+            visibility: visible;
+        }
+
+        /*门店设置详细弹窗结束*/
+        /*radio圆点*/
+        .content-view .layui-form i.layui-icon {
+            width: 16px !important;
+            height: 16px !important;
+            background: #fff !important;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            color: rgba(204, 204, 204, 0);
+        }
+
+        .content-view .layui-form i.layui-icon.layui-anim-scaleSpring,
+        .content-view .layui-form .layui-form-radioed i.layui-icon {
+            width: 16px !important;
+            height: 16px !important;
+            background: #fff !important;
+            border-radius: 50%;
+            border: 5px solid #4186DC;
+            color: rgba(255, 255, 255, 0);
+        }
+    </style>
 </head>
 <body>
 <div class="companyManageCont">
-  <div class="contHeader">
-    <ul class="tab-ul">
-      <li class="active">门店管理</li>
-      <li>支付方式</li>
-    </ul>
-    <div class="headRight">
-      <div class="child newShop" onclick="creatShop()">创建门店</div>
-      <input class="child" type="text" placeholder="搜索门店">
-      <div class="selectBox child" id="selectBox">
-        <div class="select-box-header">
-          <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-        </div>
-        <div class="optionBox">
-          <ul class="optionUL">
-            <li value="01">1</li>
-            <li value="02">2</li>
-            <li value="03">3</li>
-            <li value="04">4</li>
-            <li value="05">5</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="companyMsg wrap90">
-    <div class="head">
-      <span class="msg">公司信息</span>
-      <span class="editMsg">编辑信息</span>
-    </div>
-    <div class="cont">
-      <div class="comImg">
-        <img class="comImg" src="../resource/img/a1.jpg" alt="公司头像">
-      </div>
-      <div class="comName">
-        <span class="texUp">南京市火焰科技有限公司</span>
-        <span class="txtDown">江苏省南京市江宁区西溪天堂软件园</span>
-      </div>
-      <div class="perName">
-        <span class="texUp">李菲菲</span>
-        <span class="txtDown">负责人</span>
-      </div>
-      <div class="perTel">
-        <span class="texUp">13888888888</span>
-        <span class="txtDown">手机号</span>
-      </div>
-    </div>
-  </div>
-  <div class="shopItems wrap90 clearfix">
-    <ul class="contUl clearfix">
-
-    </ul>
-  </div>
-  <!--创建门店弹窗-->
-  <div class="content-view content-view-creatShop" style="display:none">
-    <p class="txt01">设置前请先设置支付方式</p>
-  </div>
-  <!--设置支付方式弹窗-->
-  <div class="content-view content-view-setPay" style="display:none">
-    <div class="head">
-      <span class="active" onclick="payType(this,1)">微信支付</span>
-      <span onclick="payType(this,2)">支付宝支付</span>
-      <span class="layui-layer-title"></span>
-    </div>
-    <!--选择微信支付/个人微信-->
-    <div class="selectPayment">
-      <!--个人/共用微信-->
-      <div class="mainContent active grWX">
-        <form class="layui-form" action="">
-          <div class="layui-form-item optWxZfb">
-            <div class="layui-input-block">
-              <input type="radio" name="grWX" lay-filter="grWX" value="gy" title="公用微信" checked="">
-              <input type="radio" name="grWX" lay-filter="grWX" value="gr" title="个人微信">
+    <div class="contHeader">
+        <ul class="tab-ul">
+            <li class="active">门店管理</li>
+            <li>支付方式</li>
+        </ul>
+        <div class="headRight">
+            <div class="child newShop" onclick="creatShop()">创建门店</div>
+            <input class="child" type="text" placeholder="搜索门店" id="searchShop">
+            <div class="selectBox child" id="selectBox">
+                <div class="select-box-header">
+                    <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">1</li>
+                        <li value="02">2</li>
+                        <li value="03">3</li>
+                        <li value="04">4</li>
+                        <li value="05">5</li>
+                    </ul>
+                </div>
             </div>
-          </div>
-        </form>
-        <div class="wxNum">
-          <span>商户号</span>
-          <input type="text" placeholder="输入微信号">
         </div>
-        <form class="layui-form stateBox" action="">
-          <div class="layui-form-item " style="margin: 0;">
-            <label class="layui-form-label">状态</label>
-            <div class="layui-input-block">
-              <input type="radio" name="grWXnum" value="open" title="启用" checked="">
-              <input type="radio" name="grWXnum" value="close" title="禁用">
-            </div>
-          </div>
-        </form>
-        <span class="textDescribe">用户门店扫码支付，不需与公众号同一主体，如个体结算到个人账号</span>
-      </div>
-      <!--个人支付宝-->
-      <div class="mainContent grZFB gyZFB">
-        <form class="layui-form" action="example">
-          <div class="layui-form-item optWxZfb">
-            <div class="layui-input-block">
-              <input type="radio" name="grZFB" lay-filter="grZFB" value="gy" title="共用支付宝" checked="">
-              <input type="radio" name="grZFB" lay-filter="grZFB" value="gr" title="个人支付宝">
-            </div>
-          </div>
-        </form>
-        <div class="zfbNum">
-          <span>商户号</span>
-          <input type="text" placeholder="输入支付宝账号">
-        </div>
-        <form class="layui-form stateBox" action="example">
-          <div class="layui-form-item " style="margin: 0;">
-            <label class="layui-form-label">状态</label>
-            <div class="layui-input-block">
-              <input type="radio" name="grZFBnum" value="open" title="启用" checked="">
-              <input type="radio" name="grZFBnum" value="close" title="禁用">
-            </div>
-          </div>
-        </form>
-      </div>
-      <!--公用微信-->
-      <div class="mainContent gyWX active" style="border-top: 1px  solid #ECECF4;">
-        <div class="wxNum">
-          <span>子商户号</span>
-          <input type="text" placeholder="子商户号">
-        </div>
-        <form class="layui-form stateBox" action="example">
-          <div class="layui-form-item " style="margin: 0;">
-            <label class="layui-form-label">单选框</label>
-            <div class="layui-input-block">
-              <input type="radio" name="sex" value="启用" title="启用" checked="">
-              <input type="radio" name="sex" value="禁用" title="禁用">
-            </div>
-          </div>
-        </form>
-        <span class="textDescribe">用于客户直接手机微信公众号内支付，需与公众号同一主体，如公司结算到对公账户</span>
-      </div>
-      <!--底部提示-->
-      <div class="mainContent public active">
-        <h4>已使用的门店</h4>
-        <span class="textDescribe">杭州市西湖区湖滨银泰店，杭州市西湖区西溪印象城店，杭州市旗舰店</span>
-      </div>
     </div>
-  </div>
-  <!--门店详细弹窗-->
-  <div class="content-view content-view-shopDes">
-    <div class="shopMsg">
-      <ul class="clearfix">
-        <li class="clearfix">
-          <p class="title">门店名称</p>
-          <input type="text" placeholder="名称">
-        </li>
-        <li>
-          <p class="title">门店简码</p>
-          <input type="text" placeholder="简码">
-        </li>
-        <li>
-          <p class="title">门店电话</p>
-          <input type="number" placeholder="电话">
-        </li>
-      </ul>
+    <div class="companyMsg wrap90">
+        <div class="head">
+            <span class="msg">公司信息</span>
+            <span class="editMsg">编辑信息</span>
+        </div>
+        <div class="cont" id="comInfo">
+        </div>
     </div>
-    <div class="address">
-      <p class="title">门店地址</p>
-      <div class="mapDiv" id="mapDiv"></div>
-      <div class="inputBox">
-        <div class="selectBox" id="province">
-          <div class="select-box-header">
-            <span class="text">北京市</span> <i class="iconfont icon-ico_arrow_down"></i>
-          </div>
-          <div class="optionBox">
-            <ul class="optionUL">
-              <li value="01">1</li>
-              <li value="02">2</li>
-              <li value="03">3</li>
-              <li value="04">4</li>
-              <li value="05">5</li>
+    <div class="shopItems wrap90 clearfix">
+        <ul class="contUl clearfix" id="shopUl">
+        </ul>
+    </div>
+    <!--创建门店弹窗-->
+    <div class="content-view content-view-creatShop" style="display:none">
+        <p class="txt01">设置前请先设置支付方式</p>
+    </div>
+    <!--设置支付方式弹窗-->
+    <div class="content-view content-view-setPay" style="display:none">
+        <div class="head">
+            <span class="active" onclick="payType(this,1)">微信支付</span>
+            <span onclick="payType(this,2)">支付宝支付</span>
+            <span class="layui-layer-title"></span>
+        </div>
+        <!--选择微信支付/个人微信-->
+        <div class="selectPayment">
+            <!--个人/共用微信-->
+            <div class="mainContent active grWX">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item optWxZfb">
+                        <div class="layui-input-block">
+                            <input type="radio" name="grWX" lay-filter="grWX" value="gy" title="公用微信" checked="">
+                            <input type="radio" name="grWX" lay-filter="grWX" value="gr" title="个人微信">
+                        </div>
+                    </div>
+                </form>
+                <div class="wxNum">
+                    <span>商户号</span>
+                    <input type="text" placeholder="输入微信号">
+                </div>
+                <form class="layui-form stateBox" action="">
+                    <div class="layui-form-item " style="margin: 0;">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="grWXnum" value="open" title="启用" checked="">
+                            <input type="radio" name="grWXnum" value="close" title="禁用">
+                        </div>
+                    </div>
+                </form>
+                <span class="textDescribe">用户门店扫码支付，不需与公众号同一主体，如个体结算到个人账号</span>
+            </div>
+            <!--个人支付宝-->
+            <div class="mainContent grZFB gyZFB">
+                <form class="layui-form" action="example">
+                    <div class="layui-form-item optWxZfb">
+                        <div class="layui-input-block">
+                            <input type="radio" name="grZFB" lay-filter="grZFB" value="gy" title="共用支付宝" checked="">
+                            <input type="radio" name="grZFB" lay-filter="grZFB" value="gr" title="个人支付宝">
+                        </div>
+                    </div>
+                </form>
+                <div class="zfbNum">
+                    <span>商户号</span>
+                    <input type="text" placeholder="输入支付宝账号">
+                </div>
+                <form class="layui-form stateBox" action="example">
+                    <div class="layui-form-item " style="margin: 0;">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="grZFBnum" value="open" title="启用" checked="">
+                            <input type="radio" name="grZFBnum" value="close" title="禁用">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--公用微信-->
+            <div class="mainContent gyWX active" style="border-top: 1px  solid #ECECF4;">
+                <div class="wxNum">
+                    <span>子商户号</span>
+                    <input type="text" placeholder="子商户号">
+                </div>
+                <form class="layui-form stateBox" action="example">
+                    <div class="layui-form-item " style="margin: 0;">
+                        <label class="layui-form-label">单选框</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="sex" value="启用" title="启用" checked="">
+                            <input type="radio" name="sex" value="禁用" title="禁用">
+                        </div>
+                    </div>
+                </form>
+                <span class="textDescribe">用于客户直接手机微信公众号内支付，需与公众号同一主体，如公司结算到对公账户</span>
+            </div>
+            <!--底部提示-->
+            <div class="mainContent public active">
+                <h4>已使用的门店</h4>
+                <span class="textDescribe">杭州市西湖区湖滨银泰店，杭州市西湖区西溪印象城店，杭州市旗舰店</span>
+            </div>
+        </div>
+    </div>
+    <!--门店详细弹窗-->
+    <div class="content-view content-view-shopDes">
+        <div class="shopMsg">
+            <ul class="clearfix">
+                <li class="clearfix">
+                    <p class="title">门店名称</p>
+                    <input type="text" placeholder="名称">
+                </li>
+                <li>
+                    <p class="title">门店简码</p>
+                    <input type="text" placeholder="简码">
+                </li>
+                <li>
+                    <p class="title">门店电话</p>
+                    <input type="number" placeholder="电话">
+                </li>
             </ul>
-          </div>
         </div>
-        <div class="selectBox" id="city01">
-          <div class="select-box-header">
-            <span class="text">朝阳区</span> <i class="iconfont icon-ico_arrow_down"></i>
-          </div>
-          <div class="optionBox">
-            <ul class="optionUL">
-              <li value="01">1</li>
-              <li value="02">2</li>
-              <li value="03">3</li>
-              <li value="04">4</li>
-              <li value="05">5</li>
-            </ul>
-          </div>
-        </div>
-        <div class="selectBox" id="area01">
-          <div class="select-box-header">
-            <span class="text">小红门</span> <i class="iconfont icon-ico_arrow_down"></i>
-          </div>
-          <div class="optionBox">
-            <ul class="optionUL">
-              <li value="01">1</li>
-              <li value="02">2</li>
-              <li value="03">3</li>
-              <li value="04">4</li>
-              <li value="05">5</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <input type="text" placeholder="请输入具体门牌号">
-    </div>
-    <div class="uploadPic">
-      <p class="title">上传门店照片<em>1-9张</em></p>
-      <div class="cont layui-upload">
-        <span type="button" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
-      </div>
-    </div>
-    <div class="openHours">
-      <p class="title">营业时间</p>
-      <div class="cont">
-        <div>
-          <input name="test" id="tests01" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="选择开市时间" data-type="minute"/>
-          <i class="icon iconfont icon-ico_calendar"></i>
-          <div class="settings" style="display:none;">
-            <select name="demo" id="demo01">
-              <option value="date">日期</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <input name="test" id="tests02" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="选择闭市时间" data-type="minute"/>
-          <i class="icon iconfont icon-ico_calendar"></i>
-          <div class="settings" style="display:none;">
-            <select name="demo" id="demo02">
-              <option value="date">日期</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="sanbao">
-      <p class="title">三包政策</p>
-      <input type="text" placeholder="三包政策(显示在小票上)">
-    </div>
-    <div class="payType">
-      <p class="title">支付方式</p>
-      <div class="selectBox" id="payType">
-        <div class="select-box-header">
-          <span class="text">公用微信</span> <i class="iconfont icon-ico_arrow_down"></i>
-        </div>
-        <div class="optionBox">
-          <ul class="optionUL">
-            <li value="01">个人微信</li>
-            <li value="02">公用微信</li>
-            <li value="03">个人支付宝</li>
-            <li value="04">公用支付宝</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="chuzhi">
-      <p class="title">储值方式</p>
-      <div class="cont">
-        <form class="layui-form">
-          <div class="layui-form-item">
-            <div class="layui-input-block">
-              <input type="radio" name="chuzhi" value="本店自由" title="本店自由" checked="">
-              <input type="radio" name="chuzhi" value="与其他店共有" title="与其他店共有">
+        <div class="address">
+            <p class="title">门店地址</p>
+            <div class="mapDiv" id="mapDiv"></div>
+            <div class="inputBox">
+                <div class="selectBox" id="province">
+                    <div class="select-box-header">
+                        <span class="text">北京市</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="selectBox" id="city01">
+                    <div class="select-box-header">
+                        <span class="text">朝阳区</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="selectBox" id="area01">
+                    <div class="select-box-header">
+                        <span class="text">小红门</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                            <li value="04">4</li>
+                            <li value="05">5</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="jiazhong">
-      <p class="title">加工方式</p>
-      <div class="cont">
-        <form class="layui-form">
-          <div class="layui-form-item">
-            <div class="layui-input-block">
-              <input type="radio" name="jiagong" lay-filter="jiagong" value="own" title="本店加工">
-              <input type="radio" name="jiagong" lay-filter="jiagong" value="other" title="其它加工中心加工" checked="">
+            <input type="text" placeholder="请输入具体门牌号">
+        </div>
+        <div class="uploadPic">
+            <p class="title">上传门店照片<em>1-9张</em></p>
+            <div class="cont layui-upload">
+                <span type="button" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="selectBox active" id="jiagong">
-        <div class="select-box-header">
-          <span class="text">选择加工中心</span> <i class="iconfont icon-ico_arrow_down"></i>
         </div>
-        <div class="optionBox">
-          <ul class="optionUL">
-            <li value="01">加工中心1</li>
-            <li value="02">加工中心2</li>
-            <li value="03">加工中心3</li>
-            <li value="04">加工中心4</li>
-          </ul>
+        <div class="openHours">
+            <p class="title">营业时间</p>
+            <div class="cont">
+                <div>
+                    <input name="test" id="tests01"
+                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                           placeholder="选择开市时间" data-type="minute"/>
+                    <i class="icon iconfont icon-ico_calendar"></i>
+                    <div class="settings" style="display:none;">
+                        <select name="demo" id="demo01">
+                            <option value="date">日期</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <input name="test" id="tests02"
+                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                           placeholder="选择闭市时间" data-type="minute"/>
+                    <i class="icon iconfont icon-ico_calendar"></i>
+                    <div class="settings" style="display:none;">
+                        <select name="demo" id="demo02">
+                            <option value="date">日期</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="sanbao">
+            <p class="title">三包政策</p>
+            <input type="text" placeholder="三包政策(显示在小票上)">
+        </div>
+        <div class="payType">
+            <p class="title">支付方式</p>
+            <div class="selectBox" id="payType">
+                <div class="select-box-header">
+                    <span class="text">公用微信</span> <i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">个人微信</li>
+                        <li value="02">公用微信</li>
+                        <li value="03">个人支付宝</li>
+                        <li value="04">公用支付宝</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="chuzhi">
+            <p class="title">储值方式</p>
+            <div class="cont">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="radio" name="chuzhi" value="本店自由" title="本店自由" checked="">
+                            <input type="radio" name="chuzhi" value="与其他店共有" title="与其他店共有">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="jiazhong">
+            <p class="title">加工方式</p>
+            <div class="cont">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="radio" name="jiagong" lay-filter="jiagong" value="own" title="本店加工">
+                            <input type="radio" name="jiagong" lay-filter="jiagong" value="other" title="其它加工中心加工"
+                                   checked="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="selectBox active" id="jiagong">
+                <div class="select-box-header">
+                    <span class="text">选择加工中心</span> <i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">加工中心1</li>
+                        <li value="02">加工中心2</li>
+                        <li value="03">加工中心3</li>
+                        <li value="04">加工中心4</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <!--全局js-->
 <script src="../resource/js/jquery.min.js"></script>
@@ -1008,301 +1133,407 @@
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
 <script src="../resource/js/plugins/layer/layer.js"></script>
 <script src="../resource/layui/layui.js"></script>
+<!-- 公司内部库 -->
 <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
 <script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/template-native.js"></script>
+<script src="../resource/common/common.js"></script>
+
+<!-- 全局公共js -->
 <script src="../resource/js/yanjing.js"></script>
 <script src="../resource/js/mobiscroll.2.13.2.js"></script>
+<!--模板公司信息-->
+<script type="text/html" id="comInfoList">
+    <div class="comImg">
+        <img class="comImg" src="<%=list.icon%>" alt="公司头像">
+    </div>
+    <div class="comName">
+        <span class="texUp"><%=list.name%></span>
+        <span class="txtDown"><%=list.address%></span>
+    </div>
+    <div class="perName">
+        <span class="texUp"><%=list.adminUserName%></span>
+        <span class="txtDown">负责人</span>
+    </div>
+    <div class="perTel">
+        <span class="texUp"><%=list.adminPhone%></span>
+        <span class="txtDown">手机号</span>
+    </div>
+</script>
+<!--模板门店列表-->
+<script type="text/html" id="shopList">
+    <%for(var i=0;i< list.length;i++){%>
+    <li class="item">
+        <div class="top">
+            <p class="shopName txtOverflow"><%=list[i].name%></p>
+            <div class="handle">
+                <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">未开启</label>
+                                <div class="layui-input-block">
+                                    <input id="shopIsOpen" type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest">
+                                </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+        <div class="middle">
+                <p class="Id">
+                        <span class="txt1">门店简码</span>
+                        <span class="txt2 txtOverflow"><%=list[i].storeCode%></span>
+                    </p>
+                <p class="addr">
+                        <span class="txt1">门店地址</span>
+                        <span class="txt2 txtOverflow"><%=list[i].address%></span>
+                    </p>
+                <p class="tel">
+                        <span class="txt1">联系方式</span>
+                        <span class="txt2 txtOverflow"><%=list[i].phone%></span>
+                    </p>
+                <p class="payMode">
+                        <span class="txt1">收款方式</span>
+                        <%if(list[i].payType==1){%>
+                            <span class="txt2 txtOverflow">个人微信</span>
+                        <%}else if(list[i].payType==2){%>
+                            <span class="txt2 txtOverflow">公共微信</span>
+                        <%}else if(list[i].payType==3){%>
+                            <span class="txt2 txtOverflow">公共支付宝</span>
+                        <%}else if(list[i].payType==4){%>
+                            <span class="txt2 txtOverflow">个人支付宝</span>
+                        <%}%>
+                    </p>
+            </div>
+        <div class="bottom">
+                <a href="./staffManage.html"><button class="check">查看员工</button></a>
+                <button class="edit">编辑</button>
+        </div>
+    </li>
+    <%}%>
+</script>
 <script>
-  //初始化layui模块，并监听事件
-  layui.use(['form', 'layedit', 'laydate'], function () {
-    form = layui.form
-    //店铺开启关闭功能
-    form.on('switch(switchTest)', function (data) {
-      var isOpenTxt = this.parentNode.previousElementSibling
-      this.checked == true ? isOpenTxt.innerHTML = '已开启' : isOpenTxt.innerHTML = '未开启'
+    var sid;      //企业ID
+    $(function () {
+        initPage();
     });
-  })
-  //头部切换
-  $(".tab-ul li").click(function () {
-    $(this).addClass('active').siblings().removeClass('active')
-  });
-  //页面中的select
-  selectTag($("#selectBox"), function (ret) {/*console.log(ret)*/})
-  selectTag($("#province"), function (ret) {/*console.log(ret)*/})
-  selectTag($("#city01"), function (ret) {/*console.log(ret)*/})
-  selectTag($("#area01"), function (ret) {/*console.log(ret)*/})
-  selectTag($("#payType"), function (ret) {/*console.log(ret)*/})
-  selectTag($("#jiagong"), function (ret) {/*console.log(ret)*/})
-  //创建门店弹窗
-  function creatShop() {
-    layer.open({
-      type: 1,
-      shade: 0.01,
-      title: '设置支付方式',
-      skin: 'content-view-creatShop-tan', //样式类名
-      anim: 0,
-      area: ['240px', 'auto'],
-      closeBtn: 0, //不显示关闭按钮
-      resize: false,
-      shadeClose: true, //开启遮罩关闭
-      content: $('.content-view-creatShop'), //容器对象
-      btn: ['取消', '设置'],
-      yes: function (index) {
-        layer.close(index);
-      },
-      btn2: function (index) {
-        layer.close(index);
-        setPay();
-      },
-      success: function (layero, index) {
-        payTypeSwitch();
-      }
-    });
-  }
-  //门店详细弹窗
-  function shopDes() {
-    mapInit()
-    layer.open({
-      type: 1,
-      shade: 0.01,
-      title: '创建门店',
-      skin: 'content-view-shopDes-tan content-view-submit', //样式类名
-      anim: 0,
-      area: ['370px','550px'],
-      closeBtn: 0, //不显示关闭按钮
-      resize: false,
-      shadeClose: true, //开启遮罩关闭
-      content: $('.content-view-shopDes'), //容器对象
-      btn: ['取消', '保存'],
-      yes: function (index) {
-        layer.close(index);
-      },
-      btn2: function (index) {
-        layer.close(index);
-      },
-      success: function (layero, index) {
-        form.on('radio(jiagong)', function (data) {
-          if(data.value == 'own'){
-            $('#jiagong').removeClass('active')
-          }else {
-            $('#jiagong').addClass('active')
-          }
-        });
-        upploadPic()
-      }
-    });
-  }
-  //支付方式切换
-  function payType(el, type) {
-    //公众微信
-    if (type == 1) {
-      $(el).addClass('active').siblings().removeClass('active');
-      $('.selectPayment .grWX,.selectPayment .gyWX').addClass('active')
-      $('.selectPayment .grZFB').removeClass('active')
-      if($("input[name='grWX']:checked").val() == 'gy'){
-        $('.selectPayment .public').addClass('active')
-        $('.selectPayment .gyWX').addClass('active')
-        $('.selectPayment .grWX').find('.wxNum').find('span').html('商户号')
-        $('.selectPayment .grWX').find('.textDescribe').show()
-      }else{
-        $('.selectPayment .public').removeClass('active')
-        $('.selectPayment .gyWX').removeClass('active')
-        $('.selectPayment .grWX ').find('.wxNum').find('span').html('个人收款微信号')
-        $('.selectPayment .grWX').find('.textDescribe').hide()
-      }
+    function initPage() {
+        sid = quakooUser.getUserInfo().psid;          //企业ID
+        getShopList();                                //获取当前企业下门店列表
+        searchShop();                                 //根据名称搜索门店
+        getComInfo();                                 //获取当前公司信息
     }
-    //公众支付宝
-    if (type == 2) {
-      $(el).addClass('active').siblings().removeClass('active');
-      $('.selectPayment .grZFB').addClass('active');
-      $('.selectPayment .grWX,.selectPayment .gyWX').removeClass('active')
-      if($("input[name='grZFB']:checked").val() == 'gy'){
-        $('.selectPayment .public').addClass('active')
-        $('.selectPayment .grZFB ').find('.zfbNum').find('span').html('商户号')
-      }else{
-        $('.selectPayment .public').removeClass('active')
-        $('.selectPayment .grZFB ').find('.zfbNum').find('span').html('个人收款支付宝账号')
-      }
-    }
-  }
-  //公众个人切换
-  function payTypeSwitch() {
-    form.on('radio(grWX)', function (data) {
-      if (data.value == 'gy') {
-        $('.selectPayment .public').addClass('active')
-        $('.selectPayment .gyWX').addClass('active')
-        $('.selectPayment .grWX').find('.wxNum').find('span').html('商户号')
-        $('.selectPayment .grWX').find('.textDescribe').show()
-      } else if (data.value == 'gr') {
-        $('.selectPayment .public').removeClass('active')
-        $('.selectPayment .gyWX').removeClass('active')
-        $('.selectPayment .grWX ').find('.wxNum').find('span').html('个人收款微信号')
-        $('.selectPayment .grWX').find('.textDescribe').hide()
-      }
-    });
-    form.on('radio(grZFB)', function (data) {
-      if (data.value == 'gy') {
-        $('.selectPayment .public').addClass('active')
-        $('.selectPayment .grZFB ').find('.zfbNum').find('span').html('商户号')
-      } else if (data.value == 'gr') {
-        $('.selectPayment .public').removeClass('active')
-        $('.selectPayment .grZFB ').find('.zfbNum').find('span').html('个人收款支付宝账号')
-      }
-    });
-  }
-  //设置支付方式弹窗
-  function setPay() {
-    layer.open({
-      type: 1,
-      shade: 0.01,
-      title:null,
-      skin: 'content-view-setPay-tan content-view-submit', //样式类名
-      anim: 0,
-      area: ['370px', 'auto'],
-      closeBtn: 0, //不显示关闭按钮
-      resize: false,
-      shadeClose: true, //开启遮罩关闭
-      content: $('.content-view-setPay'), //容器对象
-      btn: ['取消', '确定'],
-      yes: function (index) {
-        layer.close(index);
-      },
-      btn2: function (index) {
-        layer.close(index);
-        shopDes();
-      },
-      success: function (layero, index) {
-        $('.content-view-setPay-tan .layui-layer-content').height(415);
-      }
-    });
-  }
-  //店铺li
-  var shopItem = '<li class="item">' +
-      '<div class="top">' +
-      '<p class="shopName txtOverflow">杭州市旗舰店</p>' +
-      '<div class="handle">' +
-      '<form class="layui-form">' +
-      '                            <div class="layui-form-item">' +
-      '                                <label class="layui-form-label">未开启</label>' +
-      '                                <div class="layui-input-block">' +
-      '                                    <input id="shopIsOpen" type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest">' +
-      '                                </div>' +
-      '                            </div>' +
-      '                        </form>' +
-      '                    </div>' +
-      '                </div>' +
-      '                <div class="middle">' +
-      '                    <p class="Id">' +
-      '                        <span class="txt1">门店密码</span>' +
-      '                        <span class="txt2 txtOverflow">SH128</span>' +
-      '                    </p>' +
-      '                    <p class="addr">' +
-      '                        <span class="txt1">门店密码</span>' +
-      '                        <span class="txt2 txtOverflow">北京市朝阳区雍和宫</span>' +
-      '                    </p>' +
-      '                    <p class="tel">' +
-      '                        <span class="txt1">门店密码</span>' +
-      '                        <span class="txt2 txtOverflow">0571 3183 2188</span>' +
-      '                    </p>' +
-      '                    <p class="payMode">' +
-      '                        <span class="txt1">门店密码</span>' +
-      '                        <span class="txt2 txtOverflow">个人微信</span>' +
-      '                    </p>' +
-      '                </div>' +
-      '                <div class="bottom">' +
-      '                    <a href="./staffManage.html"><button class="check">查看员工</button></a>' +
-      '                    <button class="edit">编辑</button>' +
-      '                </div>' +
-      '            </li>'
-  for (var i = 0; i < 10; i++) {
-    $('.shopItems .contUl').append(shopItem)
-  }
-  $(function () {
-    var curr = new Date().getFullYear();
-    var opt = {};
-    opt.date = {preset: 'date'};
-    opt.datetime = {preset: 'datetime'};
-    opt.time = {preset: 'time'};
-
-    opt.default = {
-      theme: 'mbsc-android-holo', //皮肤样式
-      display: 'bubble', //显示方式
-      mode: 'scroller', //日期选择模式
-      dateFormat: 'yyyy-mm-dd',
-      lang: 'zh',
-      showNow: true,
-      nowText: "今天",
-      typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
-    };
-    $('.settings').bind('change', function () {
-      var demo = 'datetime';
-      if (!demo.match(/select/i)) {
-        $('.demo-test-' + demo).val('');
-      }
-      $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
-      $('.demo').hide();
-      $('.demo-' + demo).show();
-    });
-    $('#demo01').trigger('change');
-    $('#demo02').trigger('change');
-    return curr;
-  });
-  //上传文件函数
-  function upploadPic() {
-    layui.use('upload', function(){
-      var $ = layui.jquery
-          ,upload = layui.upload;
-      //多图片上传
-      upload.render({
-        elem: '#test2',
-        url: '/upload/',
-        multiple: true,
-        before: function(obj){
-          //预读本地文件示例，不支持ie8
-          obj.preview(function(index, file, result){
-            if($('.content-view-shopDes div.uploadPic .cont img').length>=8){
-              $('.content-view-shopDes div.uploadPic .cont .layui-btn').hide()
+    /**接口——获取当前公司信息*/
+    function getComInfo(){
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinate(),{sid:sid},function(ret){
+            console.log(data);
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    var data = {list:ret.data[0]};
+                    var html = template("comInfoList",data);
+                    document.getElementById("comInfo").innerHTML = html;
+                }
             }
-            $('.content-view-shopDes div.uploadPic .cont').prepend('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
-          });
-        },
-        done: function(res){
-          //上传完毕
-        }
-      });
+        })
+    }
+    /**接口——获取当前企业下门店列表*/
+    function getShopList(){
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid},function(ret){
+            console.log("门店列表信息：",ret);
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    var data = {list:ret.data};
+                    var html = template("shopList",data);
+                    document.getElementById("shopUl").innerHTML = html;
+                }
+            }
+        })
+    }
+    /**接口——根据名称搜索门店*/
+    function searchShop(){
+        var name;
+        document.getElementById('searchShop').onkeypress = function(e){
+            var keycode = e.keyCode;
+            if(keycode=='13') {
+                document.getElementById('searchShop').blur();
+                e.preventDefault();
+                keyWord =  document.getElementById('searchShop').value;
+                if(quakooUtils.isBlack(keyWord)){
+                    layer.msg("请输入门店名称");
+                    return ;
+                }
+                name =keyWord;
+                quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStoreByName(),{sid:sid,name:name},function(data){
+                    console.log(data);
+                })
+            }
+        };
+    }
+    //初始化layui模块，并监听事件
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        form = layui.form;
+        //店铺开启关闭功能
+        form.on('switch(switchTest)', function (data) {
+            var isOpenTxt = this.parentNode.previousElementSibling;
+            this.checked == true ? isOpenTxt.innerHTML = '已开启' : isOpenTxt.innerHTML = '未开启'
+        });
+    })
+    //头部切换
+    $(".tab-ul li").click(function () {
+        $(this).addClass('active').siblings().removeClass('active')
     });
-  }
+    //页面中的select
+    selectTag($("#selectBox"), function (ret) {/*console.log(ret)*/
+    })
+    selectTag($("#province"), function (ret) {/*console.log(ret)*/
+    })
+    selectTag($("#city01"), function (ret) {/*console.log(ret)*/
+    })
+    selectTag($("#area01"), function (ret) {/*console.log(ret)*/
+    })
+    selectTag($("#payType"), function (ret) {/*console.log(ret)*/
+    })
+    selectTag($("#jiagong"), function (ret) {/*console.log(ret)*/
+    })
+    //创建门店弹窗
+    function creatShop() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '设置支付方式',
+            skin: 'content-view-creatShop-tan', //样式类名
+            anim: 0,
+            area: ['240px', 'auto'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-creatShop'), //容器对象
+            btn: ['取消', '设置'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                layer.close(index);
+                setPay();
+            },
+            success: function (layero, index) {
+                payTypeSwitch();
+            }
+        });
+    }
+    //门店详细弹窗
+    function shopDes() {
+        mapInit()
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '创建门店',
+            skin: 'content-view-shopDes-tan content-view-submit', //样式类名
+            anim: 0,
+            area: ['370px', '550px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-shopDes'), //容器对象
+            btn: ['取消', '保存'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                layer.close(index);
+            },
+            success: function (layero, index) {
+                form.on('radio(jiagong)', function (data) {
+                    if (data.value == 'own') {
+                        $('#jiagong').removeClass('active')
+                    } else {
+                        $('#jiagong').addClass('active')
+                    }
+                });
+                upploadPic()
+            }
+        });
+    }
+    //支付方式切换
+    function payType(el, type) {
+        //公众微信
+        if (type == 1) {
+            $(el).addClass('active').siblings().removeClass('active');
+            $('.selectPayment .grWX,.selectPayment .gyWX').addClass('active')
+            $('.selectPayment .grZFB').removeClass('active')
+            if ($("input[name='grWX']:checked").val() == 'gy') {
+                $('.selectPayment .public').addClass('active')
+                $('.selectPayment .gyWX').addClass('active')
+                $('.selectPayment .grWX').find('.wxNum').find('span').html('商户号')
+                $('.selectPayment .grWX').find('.textDescribe').show()
+            } else {
+                $('.selectPayment .public').removeClass('active')
+                $('.selectPayment .gyWX').removeClass('active')
+                $('.selectPayment .grWX ').find('.wxNum').find('span').html('个人收款微信号')
+                $('.selectPayment .grWX').find('.textDescribe').hide()
+            }
+        }
+        //公众支付宝
+        if (type == 2) {
+            $(el).addClass('active').siblings().removeClass('active');
+            $('.selectPayment .grZFB').addClass('active');
+            $('.selectPayment .grWX,.selectPayment .gyWX').removeClass('active')
+            if ($("input[name='grZFB']:checked").val() == 'gy') {
+                $('.selectPayment .public').addClass('active')
+                $('.selectPayment .grZFB ').find('.zfbNum').find('span').html('商户号')
+            } else {
+                $('.selectPayment .public').removeClass('active')
+                $('.selectPayment .grZFB ').find('.zfbNum').find('span').html('个人收款支付宝账号')
+            }
+        }
+    }
+    //公众个人切换
+    function payTypeSwitch() {
+        form.on('radio(grWX)', function (data) {
+            if (data.value == 'gy') {
+                $('.selectPayment .public').addClass('active')
+                $('.selectPayment .gyWX').addClass('active')
+                $('.selectPayment .grWX').find('.wxNum').find('span').html('商户号')
+                $('.selectPayment .grWX').find('.textDescribe').show()
+            } else if (data.value == 'gr') {
+                $('.selectPayment .public').removeClass('active')
+                $('.selectPayment .gyWX').removeClass('active')
+                $('.selectPayment .grWX ').find('.wxNum').find('span').html('个人收款微信号')
+                $('.selectPayment .grWX').find('.textDescribe').hide()
+            }
+        });
+        form.on('radio(grZFB)', function (data) {
+            if (data.value == 'gy') {
+                $('.selectPayment .public').addClass('active')
+                $('.selectPayment .grZFB ').find('.zfbNum').find('span').html('商户号')
+            } else if (data.value == 'gr') {
+                $('.selectPayment .public').removeClass('active')
+                $('.selectPayment .grZFB ').find('.zfbNum').find('span').html('个人收款支付宝账号')
+            }
+        });
+    }
+    //设置支付方式弹窗
+    function setPay() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: null,
+            skin: 'content-view-setPay-tan content-view-submit', //样式类名
+            anim: 0,
+            area: ['370px', 'auto'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-setPay'), //容器对象
+            btn: ['取消', '确定'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                layer.close(index);
+                shopDes();
+            },
+            success: function (layero, index) {
+                $('.content-view-setPay-tan .layui-layer-content').height(415);
+            }
+        });
+    }
+    //店铺li
+    var shopItem ="dsafasd"
+    for (var i = 0; i < 10; i++) {
+        $('.shopItems .contUl').append(shopItem)
+    }
+    $(function () {
+        var curr = new Date().getFullYear();
+        var opt = {};
+        opt.date = {preset: 'date'};
+        opt.datetime = {preset: 'datetime'};
+        opt.time = {preset: 'time'};
 
-  function mapInit() {
-    //创建地图函数：
-      var map = new BMap.Map("mapDiv");//在百度地图容器中创建一个地图
-      var point = new BMap.Point(110.355538,20.025802);//定义一个中心点坐标
-      map.centerAndZoom(point,7);//设定地图的中心点和坐标并将地图显示在地图容器中
-      window.map = map;//将map变量存储在全局
-
-    //地图事件设置函数：
-    function setMapEvent(){
-      map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
-      map.enableScrollWheelZoom();//启用地图滚轮放大缩小
-      map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
-      map.enableKeyboard();//启用键盘上下左右键移动地图
+        opt.default = {
+            theme: 'mbsc-android-holo', //皮肤样式
+            display: 'bubble', //显示方式
+            mode: 'scroller', //日期选择模式
+            dateFormat: 'yyyy-mm-dd',
+            lang: 'zh',
+            showNow: true,
+            nowText: "今天",
+            typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+        };
+        $('.settings').bind('change', function () {
+            var demo = 'datetime';
+            if (!demo.match(/select/i)) {
+                $('.demo-test-' + demo).val('');
+            }
+            $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+            $('.demo').hide();
+            $('.demo-' + demo).show();
+        });
+        $('#demo01').trigger('change');
+        $('#demo02').trigger('change');
+        return curr;
+    });
+    //上传文件函数
+    function upploadPic() {
+        layui.use('upload', function () {
+            var $ = layui.jquery
+                    , upload = layui.upload;
+            //多图片上传
+            upload.render({
+                elem: '#test2',
+                url: '/upload/',
+                multiple: true,
+                before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        if ($('.content-view-shopDes div.uploadPic .cont img').length >= 8) {
+                            $('.content-view-shopDes div.uploadPic .cont .layui-btn').hide()
+                        }
+                        $('.content-view-shopDes div.uploadPic .cont').prepend('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                    });
+                },
+                done: function (res) {
+                    //上传完毕
+                }
+            });
+        });
     }
 
-    //地图控件添加函数：
-    function addMapControl(){
-      //向地图中添加缩放控件
-      var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
-      // map.addControl(ctrl_nav);
-      //向地图中添加缩略图控件
-      var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
-      // map.addControl(ctrl_ove);
-      //向地图中添加比例尺控件
-      var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
-      // map.addControl(ctrl_sca);
+    function mapInit() {
+        //创建地图函数：
+        var map = new BMap.Map("mapDiv");//在百度地图容器中创建一个地图
+        var point = new BMap.Point(110.355538, 20.025802);//定义一个中心点坐标
+        map.centerAndZoom(point, 7);//设定地图的中心点和坐标并将地图显示在地图容器中
+        window.map = map;//将map变量存储在全局
+
+        //地图事件设置函数：
+        function setMapEvent() {
+            map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+            map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+            map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+            map.enableKeyboard();//启用键盘上下左右键移动地图
+        }
+
+        //地图控件添加函数：
+        function addMapControl() {
+            //向地图中添加缩放控件
+            var ctrl_nav = new BMap.NavigationControl({
+                anchor: BMAP_ANCHOR_TOP_LEFT,
+                type: BMAP_NAVIGATION_CONTROL_LARGE
+            });
+            // map.addControl(ctrl_nav);
+            //向地图中添加缩略图控件
+            var ctrl_ove = new BMap.OverviewMapControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, isOpen: 1});
+            // map.addControl(ctrl_ove);
+            //向地图中添加比例尺控件
+            var ctrl_sca = new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT});
+            // map.addControl(ctrl_sca);
+        }
+
+        setMapEvent();//设置地图事件
+        addMapControl();//向地图添加控件
     }
-    setMapEvent();//设置地图事件
-    addMapControl();//向地图添加控件
-  }
 
 </script>
 </body>
