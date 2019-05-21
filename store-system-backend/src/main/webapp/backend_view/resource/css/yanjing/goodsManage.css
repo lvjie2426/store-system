@@ -589,7 +589,7 @@
 }
 
 .goods-select-img .selectBox {
-    width: 60px;
+    width: 60px;min-width: auto;
     height: 60px;
     border-radius: 2px;
     background-color: rgba(244, 244, 248, 1);
@@ -1048,4 +1048,8 @@
 .outbound-right-head-right {
     float: right;
     margin: 8px 8px 0 0;
+}
+
+#numInfoTable input{
+    border: none;
 }

@@ -24,11 +24,11 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-         this.serverUrl = "http://39.107.247.82:20005";
+         // this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.30:20005";
         /**马文军*/
-        //this.serverUrl = "http://192.168.1.21:20005";
+        this.serverUrl = "http://192.168.1.17:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -122,7 +122,7 @@ var Config = (function(_super){
     _proto.getUrl_productSeries_getSubAllList = function(){return this.serverUrl + '/productseries/getSubAllList';};
     /**获取商品列表*/
     _proto.getUrl_product_getSPUPager = function(){return this.serverUrl + '/product/getSPUPager';};
-    /**获取商品列表*/
+    /**增加商品*/
     _proto.getUrl_product_add = function(){return this.serverUrl + '/product/add';};
 
 
