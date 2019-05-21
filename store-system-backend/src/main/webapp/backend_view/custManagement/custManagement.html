@@ -39,6 +39,9 @@
             <button class="btnLevelSetting" onclick="levelSetting()">会员等级设置</button>
             <button>导出Excel</button>
             <button>导入顾客</button>
+            <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" id="btn_import" onclick="Improt()">
+                <i class="fa fa-arrow-circle-o-up">导入</i>
+            </button>
 <!--
             <div class="selectBox" id="searchTypeBox">
                 <div class="select-box-header">
@@ -231,7 +234,28 @@
             </form>
         </div>
     </div>
-
+    <!--导入模板-->
+    <div class="wrapper wrapper-content animated  fadeInDown improt-view" style="display: none">
+        <form method="get" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">选择模版</label>
+                <div class="col-sm-10 ">
+                    <div class="input-group">
+                    <span class="input-group-btn">
+                        <a href="#" style="display: inline-block;height: 30px;background: #eee;width: 100%;position: relative;">
+                            <button type="button" class="btn btn-primary" style="float: right; height: 30px;width: 80px;line-height:16px;outline: none;">选择文件</button>
+                            <input id="file" type="file" style="height: 30px;width: 80px; position: absolute;right:0;outline: none; cursor: pointer;opacity: 0;"
+                                   accept=".csv,*.zip,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                        </a>
+                    </span>
+                    </div>
+                    <span class="help-block m-b-none validate">请上传模板文件</span>
+                    <input id="fileName" type="text" placeholder="请选择文件" style="position: absolute;top: 0;height: 30px; width: 73%; outline: none;" readonly/>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
 
     <!--全局js-->
     <!-- jq库 -->
@@ -250,6 +274,7 @@
     <script src="../resource/js/lib/quakoo/Config.js"></script>
     <script src="../resource/js/lib/quakoo/project.js"></script>
     <script src="../resource/js/template-native.js"></script>
+    <script src="../resource/common/common.js"></script>
 
     <!-- 全局公共js -->
     <script src="../resource/js/yanjing.js"></script>
@@ -597,6 +622,68 @@
         $('#jsrChecked').change(function () {
             $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';
         });
+        //模板导入
+        $('#file').change(function(){
+            $('#fileName').val($('#file').val());
+        });
+        //导入顾客信息模板
+        function Improt() {
+            var index = layer.open({
+
+                type: 1,
+                shade: 0,
+                id: 'areaAdd1', //设定一个id，防止重复弹出
+                title: '导入模板',
+                area: ['500px', '400px'],
+                content: $('.improt-view'),
+                btn: ['确定', '取消'],
+
+                yes: function (index) {
+                    layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+                    var fileObj = document.getElementById("file").files[0]; // js 获取文件对象
+                    if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+                        return;
+                    }
+                    var result = {succ: '导入成功！', fail: '导入失败！'};
+                    var formFile = new FormData();
+                    formFile.append("file", fileObj); //加入文件对象
+                    var token = quakooUser.getUserInfo().token;
+                    alert(token)
+                    $.ajax({
+                        url: serverUrl+"/user/importUserInfo?token="+encodeURIComponent(token),
+                        type: "Post",
+                        dataType: "json",
+                        cache: false,//上传文件无需缓存
+                        processData: false,//用于对data参数进行序列化处理 这里必须false
+                        contentType: false, //必须
+                        data: formFile,
+                        success: function (res) {
+                            var msg = (res.msg == undefined ? '' : res.msg);
+                            if(res.success){
+                                layer.msg(result.succ, {icon: 1, shade: 0.01});
+                                $('.layui-layer-loading').hide();
+                                handleTable("","",serverUrl+"/user/getSubCustomerPager");
+                            } else {
+                                layer.confirm(result.fail+msg, {
+                                    btn: ['知道了'] //按钮
+                                });
+                                $('.layui-layer-loading').hide();
+                            }
+                        },
+                        error: function (err) {
+                            $('.layui-layer-loading').hide();
+                        },
+
+                    });
+
+                },
+
+                shadeClose: false, //开启遮罩关闭
+                success: function (layero, index) {
+
+                }
+            });
+        }
     </script>
 
 </body>
