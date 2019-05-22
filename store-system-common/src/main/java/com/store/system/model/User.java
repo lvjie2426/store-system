@@ -120,6 +120,8 @@ public class User implements Serializable {
 
     private long birthdate;//出生日期
 
+    private long jobDay;//入职日期
+
     private int age; // 年龄
 
 
