@@ -24,11 +24,11 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-         // this.serverUrl = "http://39.107.247.82:20005";
+         this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.30:20005";
         /**马文军*/
-        this.serverUrl = "http://192.168.1.17:20005";
+        // this.serverUrl = "http://192.168.1.17:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -46,6 +46,8 @@ var Config = (function(_super){
 
     }
     var _proto = _super.prototype;
+    /**图片上传地址*/
+    _proto.getUrl_web_img_uploadUrl = function(){return this.serverUrl + '/storage/handle';};
     /**登陆*/
     _proto.getUrl_web_user_loginUrl = function(){return this.serverUrl + '/login/in';};
     /**登陆验证码*/

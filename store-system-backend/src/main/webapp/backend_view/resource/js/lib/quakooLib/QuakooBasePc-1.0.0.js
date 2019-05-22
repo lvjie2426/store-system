@@ -288,3 +288,161 @@ var QuakooData = (function () {
 
     return QuakooData;
 })();
+
+var QuakooImg = (function () {
+    function QuakooImg() {
+    }
+
+    var _proto = QuakooImg.prototype;
+
+
+
+    /**
+     *  获取图片真实尺寸
+     *  @returns {ret}
+     * {
+     * w: int,//图片真实宽度
+     * h: int,//图片真实高度
+     * }
+     */
+    _proto.getImageRealSize=function(url){
+        var obj ={w:0,h:0};
+        if(url){
+            var group=url.split("*");
+            var strs=group[0].split("/");
+            var orgWidth=parseFloat(strs[strs.length-1]);
+            var orgHeight=parseFloat(group[1]);
+            obj.w=orgWidth;
+            obj.h=orgHeight;
+            return obj;
+        }
+        return obj
+    }
+
+
+
+    /**
+     *
+     * 图片处理（压缩变形处理）
+     * @param url 图片地址
+     * @param showWidth 页面上展示宽度
+     * @param showHieght 页面上展示的高度，传'auto'或者0，表示高度不固定。根据图片的实际形状展示。
+     *
+     * @returns {ret}
+     * {
+     * url: '',  //真实的URL
+     * style: '',//裁剪样式（如果showHieght是固定的话）
+     * }
+     */
+    _proto.processImg = function (url,showWidth,showHieght) {
+        if(url&&url.startWith("http")){
+            //从图片地址中获取图片的真实宽高
+            var realSize=this.getImageRealSize(url);
+            var orgWidth=realSize.w;
+            var orgHeight=realSize.h;
+            // 根据         要展示的宽 计算 2倍图所需要的宽度
+            var width = Math.round(showWidth*2);
+            //如果【 图片真实宽度】 大于 【2倍图所需要的宽度】 那么就 对图片 地址  拼接参数 进行 图片 压缩
+            if (width < orgWidth) {
+                var imgTypes = url.substring(url.lastIndexOf("."));
+                var imgName = url.split(imgTypes)[0]+"_"+width+"_0";
+                url = imgName+imgTypes;
+            }
+
+            // 进行图片裁剪  并把裁剪结果 返回
+            if(showHieght&&showHieght>0){
+                //根据   原真实宽高  和 压缩后宽度 计算  ---> 压缩后 高度
+                var h = Math.round((showWidth/orgWidth)*orgHeight);//显示宽度除以图片真实宽度 乘以 图片真实高度
+                //根据 需要高度 与  图片 压缩后 高度 进行比较  判断 是 需要 【左右裁剪 展示中间部分】还是【上下裁剪显示中间部分】 以此来不让图片变形
+                if(showHieght > h){
+                    //【左右裁剪 展示中间部分】  即 高度固定是   showHieght
+                    var w = Math.round((showHieght/orgHeight)*orgWidth);//   算出左右超出部分值
+                    var over = 0-Math.round((w - showWidth)/2);//  通过算出的值左右截取
+                    var obj = {url:url,style:"margin-left:"+over+"px"+"; margin-right:"+over+"px;height:"+showHieght+"px"};
+                    return obj;
+                }else{
+                    var over =  0-Math.round((h - showHieght)/2); //  通过算出的值上下截取
+                    var obj = {url:url,style:"margin-top:"+over+"px"+";margin-bottom:"+over+"px;width:"+showWidth+"px"};
+                    return obj;
+                }
+            }
+        }
+
+        return {url:url};
+    }
+    /**
+     *  获取图片真实尺寸
+     *  @returns {ret}
+     * {
+     * w: int,//图片真实宽度
+     * h: int,//图片真实高度
+     * }
+     */
+    _proto.getImageRealSize=function(url){
+        var obj ={w:0,h:0};
+        if(url){
+            var group=url.split("*");
+            var strs=group[0].split("/");
+            var orgWidth=parseFloat(strs[strs.length-1]);
+            var orgHeight=parseFloat(group[1]);
+            obj.w=orgWidth;
+            obj.h=orgHeight;
+            return obj;
+        }
+        return obj
+    }
+
+
+    /**
+     * 打开相册选择照片或者视频
+     * @param imgNum 最大个数 int
+     * @param type 字符串 img（只有图片）,video（只有视频）,all (所有)
+     * @param callBack
+     */
+    _proto.open=function(callBack){
+        $("#uploadForm input").click();
+        this.upload(callBack)
+    }
+    _proto.upload=function(callBack){
+        document.querySelector("#uploadForm input").onchange = function () {
+            if(this.value){
+                layer.load(1, {time: 500});
+                var formData = new FormData($(this).parent()[0]);
+                $.ajax({
+                    url: config.getUrl_web_img_uploadUrl(), //Server script to process data
+                    type: 'POST',
+                    data: formData,
+                    sync: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ok != undefined) {
+                            if(callBack){
+                                callBack(result)
+                            }
+                        } else {
+                            layer.msg('上传失败！', {
+                                icon: 2
+                            });
+                        }
+                    },
+                    error: function () {
+                        layer.msg('上传失败！', {
+                            icon: 2
+                        });
+                    }
+                });
+            }
+        };
+    }
+
+
+
+
+    Quakoo.class(QuakooImg, 'QuakooImg');
+
+
+    return QuakooImg;
+})();
