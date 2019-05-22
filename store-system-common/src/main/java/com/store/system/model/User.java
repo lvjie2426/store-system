@@ -136,6 +136,10 @@ public class User implements Serializable {
 
     private String ext;// 其他信息（）
 
+    private long userGradeId;//用户会员等级
+
+    private long recommender;//介绍人
+
 
     @SortKey
     private long ctime;

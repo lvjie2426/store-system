@@ -631,6 +631,12 @@ public class UserServiceImpl implements UserService {
                 if(subordinate != null) clientUser.setSubName(subordinate.getName());
             }
             //会员等级
+            if(user!=null&&user.getUserGradeId()>0){
+                UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
+                if(userGrade!=null){
+                    clientUser.setMember(userGrade.getTitle());
+                }
+            }
             //消费次数
             res.add(clientUser);
         }
@@ -788,7 +794,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex, int userType, String job) throws Exception {
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex, int userType, String job, long userGradeId) throws Exception {
         String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String limit = " limit %d , %d ";
@@ -811,6 +817,10 @@ public class UserServiceImpl implements UserService {
         if (sex>-1){
             sql = sql + " AND sex =" + sex;
             sqlCount = sqlCount + " AND sex =" + sex;
+        }
+        if (userGradeId>-0){
+            sql = sql + " AND userGradeId =" + sex;
+            sqlCount = sqlCount + " AND userGradeId =" + sex;
         }
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
