@@ -24,11 +24,11 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-         this.serverUrl = "http://39.107.247.82:20005";
+         // this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.30:20005";
         /**马文军*/
-        // this.serverUrl = "http://192.168.1.17:20005";
+        this.serverUrl = "http://192.168.1.17:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -144,6 +144,13 @@ var Config = (function(_super){
     _proto.getUrl_product_getSPUPager = function(){return this.serverUrl + '/product/getSPUPager';};
     /**增加商品*/
     _proto.getUrl_product_add = function(){return this.serverUrl + '/product/add';};
+    /**删除商品spu*/
+    _proto.getUrl_product_delSPU = function(){return this.serverUrl + '/product/delSPU';};
+    /**根据spu的id加载商品信息*/
+    _proto.getUrl_product_loadSPU = function(){return this.serverUrl + '/product/loadSPU';};
+    /**开启关闭销售状态*/
+    _proto.getUrl_product_updateSaleStatus = function(){return this.serverUrl + '/product/updateSaleStatus';};
+
     //=======================商品管理 结束====================
 
 

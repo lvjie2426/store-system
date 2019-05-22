@@ -56,8 +56,8 @@
                     </ul>
                 </div>
             </div>-->
-            <input type="text" placeholder="搜索商品" class="yj-input">
-            <button class="btn btn-primary" onclick="addGoods()">新增商品</button>
+            <input type="text" placeholder="搜索商品" id="search" class="yj-input">
+            <button class="btn btn-primary" onclick="addGoods(false)">新增商品</button>
         </div>
     </div>
     <div class="goods-header">
@@ -234,11 +234,30 @@
                 </div>
             </div>
             <div class="goods-select">
-                <div class="goods-select-title">名称</div>
-                <div class="selectBox" >
-                    <input type="text" class="yj-input" id="select-tssp-name">
+                <div class="goods-select-title">品牌</div>
+                <div class="selectBox" id="select-tssp-brand">
+
                 </div>
             </div>
+            <div class="goods-select">
+                <div class="goods-select-title">系列</div>
+                <div class="selectBox" id="select-tssp-series">
+
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">供应商</div>
+                <div class="selectBox" id="select-tssp-provider">
+
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">名称</div>
+                <div class="selectBox" >
+                    <input type="text" class="yj-input" placeholder="名称" id="select-tssp-name">
+                </div>
+            </div>
+            <div style="clear: both"></div>
             <div class="goods-select">
                 <div class="goods-select-title">产品编码</div>
                 <div class="selectBox" >
@@ -876,6 +895,20 @@
             <%}%>
         <%}%>
     </script>
+    <!--下拉选择模板带全部-->
+    <script type="text/html" id="selectTagTmpAll">
+        <div class="select-box-header">
+            <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+        </div>
+        <div class="optionBox">
+            <ul class="optionUL">
+                <li value="-1">全部</li>
+                <%for(var i=0;i< list.length;i++){%>
+                <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
+                <%}%>
+            </ul>
+        </div>
+    </script>
     <!--下拉选择模板-->
     <script type="text/html" id="selectTagTmp">
         <div class="select-box-header">
@@ -967,19 +1000,19 @@
             {checkbox: true, valign:"middle"},
             {field: "brandName", title: "品牌", valign:"middle"},
             {field: "seriesName", title: "系列", valign:"middle"},
-            {field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
+            /*{field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
                     return '100·2';
                 }
-            },
+            },*/
             {field: "canUseNum", title: "可用数量", valign:"middle"},
-            {field: "", title: "零售价", valign:"middle",formatter: function (value, row, index) {
+            /*{field: "", title: "零售价", valign:"middle",formatter: function (value, row, index) {
                     return '￥10';
                 }
             },
             {field: "", title: "成本价", valign:"middle",formatter: function (value, row, index) {
                     return '￥10';
                 }
-            },
+            },*/
             {field: "", title: "提成", valign:"middle",formatter: function (value, row, index) {
                     return '<span class="goods-ticheng">团</span>';
                 }
@@ -988,19 +1021,17 @@
                     return '￥10000';
                 }
             },
-            {field: "saleStatus", title: "销售状态", valign:"middle",events: {"click .yj-search":function (e,value, row, index) {
-                        quakooUtils.stopEventBubble()
-                        $(this).toggleClass('active')
-                    }},formatter: function (value, row, index) {
+            {field: "saleStatus", title: "销售状态", valign:"middle",formatter: function (value, row, index) {
                     if(value==0){
-                        return '<div class="yj-search active" onclick="changeYjStatus(this)"><i></i></div>';
+                        return '<div class="yj-search active" onclick="updateSaleStatus(this,'+row.id+')"><i></i></div>';
                     }else{
-                        return '<div class="yj-search" onclick="changeYjStatus(this)"><i></i></div>';
+                        return '<div class="yj-search" onclick="updateSaleStatus(this,'+row.id+')"><i></i></div>';
                     }
                 }
             },
             {field: "", title: "操作", valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary" type="button" onclick="openNumInfo()" style="margin-right: 8px;">库存详情</button><button class="btn btn-info">编辑</button>';
+                    return '<button class="btn btn-primary" type="button" onclick="openNumInfo()" style="margin-right: 8px;">库存详情</button>' +
+                        '<button class="btn btn-info" type="button" onclick="updateGoods('+row.id+')">编辑</button>';
                 }
             }
         ];
@@ -1011,41 +1042,50 @@
                     return '<img class="yj-table-img" src="'+value+'">';
                 }
             },
-            {field: "", title: "名称", valign:"middle",formatter: function (value, row, index) {
-                    return '系列名称';
-                }
-            },
-            {field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
+            {field: "name", title: "名称", valign:"middle"},
+            /*{field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
                     return '100·2';
                 }
-            },
-            {field: "", title: "可用数量", valign:"middle",formatter: function (value, row, index) {
-                    return '100';
-                }
-            },
-            {field: "", title: "积分价", valign:"middle",formatter: function (value, row, index) {
+            },*/
+            {field: "canUseNum", title: "可用数量", valign:"middle"},
+            /*{field: "", title: "积分价", valign:"middle",formatter: function (value, row, index) {
                     return '￥10';
                 }
             },
             {field: "", title: "成本价", valign:"middle",formatter: function (value, row, index) {
                     return '￥10';
                 }
-            },
+            },*/
 
             {field: "", title: "库存总值", valign:"middle",formatter: function (value, row, index) {
                     return '￥10000';
                 }
             },
-            {field: "", title: "销售状态", valign:"middle",formatter: function (value, row, index) {
-                    return '<div class="yj-search" onclick="changeYjStatus(this)"><i></i></div>';
+            {field: "saleStatus", title: "销售状态", valign:"middle",formatter: function (value, row, index) {
+                    if(value==0){
+                        return '<div class="yj-search active" onclick="updateSaleStatus(this,'+row.id+')"><i></i></div>';
+                    }else{
+                        return '<div class="yj-search" onclick="updateSaleStatus(this,'+row.id+')"><i></i></div>';
+                    }
                 }
             },
             {field: "", title: "操作", valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary" style="margin-right: 8px;">编辑</button><button class="btn btn-danger">删除</button>';
+                    return '<button class="btn btn-primary" style="margin-right: 8px;">编辑</button>' +
+                        '<button class="btn btn-danger" type="button" onclick="delGoods('+row.id+')">删除</button>';
                 }
             }
         ];
 
+        //搜索
+        document.getElementById('search').onkeypress = function(e){
+            var keycode = e.keyCode;
+            if(keycode=='13') {
+                document.getElementById('search').blur();
+                e.preventDefault();
+                name =  document.getElementById('search').value;
+                chooseGoodsType()
+            }
+        }
 
         //获取一级类目
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
@@ -1062,7 +1102,8 @@
             if(ret && ret.success){
                 //商品列表的筛选
                 var html = template('selectTagTmp',{title:'供应商',list:ret.data});
-                $('#select-form').html(html);
+                var html1 = template('selectTagTmpAll',{title:'供应商',list:ret.data});
+                $('#select-form').html(html1);
                 selectTag($("#select-form"),function (ret) {
                     pid = ret.value;
                     chooseGoodsType()
@@ -1075,8 +1116,10 @@
 
                 //新增隐形眼镜的供应商
                 $('#select-yxyj-provider').html(html);
-                //新增隐护理产品的供应商
+                //新增护理产品的供应商
                 $('#select-hlcp-provider').html(html);
+                //新增特殊商品的供应商
+                $('#select-tssp-provider').html(html);
 
 
             }
@@ -1085,8 +1128,9 @@
         quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
                 var html = template('selectTagTmp',{title:'全部商品类型',list:ret.data});
+                var html1 = template('selectTagTmpAll',{title:'全部商品类型',list:ret.data});
                 //商品列表的筛选
-                $('#select-type').html(html);
+                $('#select-type').html(html1);
                 selectTag($("#select-type"),function (data) {
                     if(data.value){
                         bid = data.value;
@@ -1095,8 +1139,8 @@
                         quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:data.value},function (ret1) {
                             if(ret1 && ret1.success){
                                 if(ret1.data.length>0){
-                                    var html = template('selectTagTmp',{title:'系列',list:ret1.data});
-                                    $('#select-series').html(html).show();
+                                    var html2 = template('selectTagTmpAll',{title:'系列',list:ret1.data});
+                                    $('#select-series').html(html2).show();
                                     selectTag($("#select-series"),function (series) {
                                         sid = series.value;
                                         chooseGoodsType()
@@ -1118,6 +1162,8 @@
                 $('#select-yxyj-brand').html(html);
                 //新增护理产品的品牌
                 $('#select-hlcp-brand').html(html);
+                //新增特殊商品的品牌
+                $('#select-tssp-brand').html(html);
             }
         })
         //获取属性-球
@@ -1178,7 +1224,6 @@
             $('#select-hlcp-baozhuang').html(html);
         })
 
-
         var jpDate = new dateRange('#yj-time-jp',true);
         jpDate.init()
         var jjDate = new dateRange('#yj-time-jj',true);
@@ -1220,7 +1265,13 @@
 
         }
         //添加商品
-        function addGoods() {
+        function addGoods(isUpdate) {
+            var title = '新增';
+            var btn = ['取消','新增'];
+            if(isUpdate){
+                title = '编辑';
+                btn = ['取消','编辑']
+            }
             if($('#category'+cid).text()=='镜架' || $('#category'+cid).text()=='太阳镜' || $('#category'+cid).text()=='其它商品'){
                 layer.open({
                     type: 1,shade: 0.01,title:'',
@@ -1232,7 +1283,7 @@
                     resize:false,
                     shadeClose: true, //开启遮罩关闭
                     content: $('.content-view-addtyqtgoods'),
-                    btn: ['取消','新增'],
+                    btn: btn,
                     yes: function(index, layero){
                         layer.close(index)
                     },
@@ -1271,12 +1322,11 @@
                         addYjGoods()
                     },
                     success: function(layero, index){
-                        $('#jj-title').html('新建'+$('#category'+cid).text())
-                        if(quakooUtils.isBlack(params[cid])){
-                            params[cid] = {};
-                        }
+                        $('#jj-title').html(title+$('#category'+cid).text())
+                        openYjGoods(isUpdate);
                         layui.use('form', function(){
                             var form = layui.form;
+                            //选择积分还是常规
                             form.on('radio()', function(data){
                                 if(params[cid].type == data.value){
                                     return
@@ -1295,19 +1345,9 @@
                                 }
                             });
                         });
-                        $('.yj-check-input input').click(function (e) {
-                            quakooUtils.stopEventBubble(e)
-                        })
-                        params[cid].subid = subid;
-                        params[cid].cid = cid;
-                        params[cid].properties = {};
-                        params[cid].skuJson = [];
-                        params[cid].productCustomRangeList = [];
-                        params[cid].ugDiscount = [];
-                        params[cid].type = params[cid].type? params[cid].type:0;
                         //品牌/系列
                         selectTag($("#select-jj-brand"),function (ret) {
-                            params[cid] .bid = ret.value;
+                            params[cid].bid = ret.value;
                             $('#select-jj-series').html('');
                             //获取品牌下的系列列表
                             quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
@@ -1330,7 +1370,7 @@
                 });
             }else if($('#category'+cid).text()=='镜片'){
                 layer.open({
-                    type: 1,shade: 0.01,title:'新增镜片',
+                    type: 1,shade: 0.01,title:title+'镜片',
                     skin: 'layui-layer-add-goods', //样式类名
                     // area: ['360px', '535px'],
                     anim: 0,
@@ -1339,7 +1379,7 @@
                     resize:false,
                     shadeClose: true, //开启遮罩关闭
                     content: $('.content-view-addgoods'),
-                    btn: ['取消','新增'],
+                    btn: btn,
                     yes: function(index, layero){
                         layer.close(index)
                     },
@@ -1364,12 +1404,7 @@
                         addYjGoods()
                     },
                     success: function(layero, index){
-                        if(quakooUtils.isBlack(params[cid])){
-                            params[cid] = {};
-                        }
-                        $('.yj-check-input input').click(function (e) {
-                            quakooUtils.stopEventBubble(e)
-                        })
+                        openYjGoods(isUpdate);
                         layui.use('form', function(){
                             var form = layui.form;
                             form.on('radio()', function(data){
@@ -1394,16 +1429,9 @@
                         selectTag($("#select-jp-provider"),function (ret) {
                             params[cid].pid = ret.value;
                         })
-                        params[cid].subid = subid;
-                        params[cid].cid = cid;
-                        params[cid].properties = {};
-                        params[cid].skuJson = [];
-                        params[cid].productCustomRangeList = [];
-                        params[cid].ugDiscount = [];
-                        params[cid].type = params[cid].type? params[cid].type:0;
                         //新增镜片的品牌
                         selectTag($("#select-jp-brand"),function (ret) {
-                            params[cid] .bid = ret.value;
+                            params[cid].bid = ret.value;
                             $('#select-jp-series').html('');
                             //获取品牌下的系列列表
                             quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
@@ -1432,7 +1460,7 @@
                 });
             }else if($('#category'+cid).text()=='特殊商品'){
                 layer.open({
-                    type: 1,shade: 0.01,title:'新增特殊商品',
+                    type: 1,shade: 0.01,title:title+'特殊商品',
                     skin: 'layui-layer-add-goods layui-layer-addtsgoods', //样式类名
                     // area: ['360px', '535px'],
                     anim: 0,
@@ -1441,7 +1469,7 @@
                     resize:false,
                     shadeClose: true, //开启遮罩关闭
                     content: $('.content-view-addtsgoods'),
-                    btn: ['取消','新增'],
+                    btn: btn,
                     yes: function(index, layero){
                         layer.close(index)
                     },
@@ -1474,13 +1502,8 @@
                         addYjGoods()
                     },
                     success: function(layero, index){
-                        if(quakooUtils.isBlack(params[cid])){
-                            params[cid] = {};
-                        }
-                        checkGoodsType()
-                        $('.yj-check-input input').click(function (e) {
-                            quakooUtils.stopEventBubble(e)
-                        })
+                        openYjGoods();
+                        //监听选择常规商品和积分商品
                         layui.use('form', function(){
                             var form = layui.form;
                             form.on('radio()', function(data){
@@ -1501,19 +1524,32 @@
                                 }
                             });
                         });
-                        params[cid].subid = subid;
-                        params[cid].cid = cid;
-                        params[cid].bid = -1;
-                        params[cid].properties = {};
-                        params[cid].skuJson = [];
-                        params[cid].productCustomRangeList = [];
-                        params[cid].ugDiscount = [];
-                        params[cid].type = params[cid].type? params[cid].type:0;
+                        //供应商
+                        selectTag($("#select-tssp-provider"),function (ret) {
+                            params[cid].pid = ret.value;
+                        })
+                        //新增镜片的品牌
+                        selectTag($("#select-tssp-brand"),function (ret) {
+                            params[cid].bid = ret.value;
+                            $('#select-tssp-series').html('');
+                            //获取品牌下的系列列表
+                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
+                                if(ret1 && ret1.success){
+                                    if(ret1.data.length>0){
+                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
+                                        $('#select-tssp-series').html(html);
+                                        selectTag($("#select-tssp-series"),function (series) {
+                                            params[cid].sid = series.value;
+                                        })
+                                    }
+                                }
+                            })
+                        })
                     }
                 });
             }else if($('#category'+cid).text()=='护理产品'){
                 layer.open({
-                    type: 1,shade: 0.01,title:'新增护理产品',
+                    type: 1,shade: 0.01,title:title+'护理产品',
                     skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
                     // area: ['360px', '535px'],
                     anim: 0,
@@ -1522,7 +1558,7 @@
                     resize:false,
                     shadeClose: true, //开启遮罩关闭
                     content: $('.content-view-addhlgoods'),
-                    btn: ['取消','新增'],
+                    btn: btn,
                     yes: function(index, layero){
                         layer.close(index)
                     },
@@ -1556,12 +1592,7 @@
                         addYjGoods()
                     },
                     success: function(layero, index){
-                        if(quakooUtils.isBlack(params[cid])){
-                            params[cid] = {};
-                        }
-                        $('.yj-check-input input').click(function (e) {
-                            quakooUtils.stopEventBubble(e)
-                        })
+                        openYjGoods()
                         layui.use('form', function(){
                             var form = layui.form;
                             form.on('radio()', function(data){
@@ -1586,13 +1617,6 @@
                         selectTag($("#select-hlcp-provider"),function (ret) {
                             params[cid].pid = ret.value;
                         })
-                        params[cid].subid = subid;
-                        params[cid].cid = cid;
-                        params[cid].properties = {};
-                        params[cid].skuJson = [];
-                        params[cid].productCustomRangeList = [];
-                        params[cid].ugDiscount = [];
-                        params[cid].type = params[cid].type? params[cid].type:0;
                         //新增镜片的品牌
                         selectTag($("#select-hlcp-brand"),function (ret) {
                             params[cid] .bid = ret.value;
@@ -1623,7 +1647,7 @@
                 });
             }else if($('#category'+cid).text()=='隐形眼镜'){
                 layer.open({
-                    type: 1,shade: 0.01,title:'新增隐形眼镜',
+                    type: 1,shade: 0.01,title:title+'隐形眼镜',
                     skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
                     // area: ['360px', '535px'],
                     anim: 0,
@@ -1632,7 +1656,7 @@
                     resize:false,
                     shadeClose: true, //开启遮罩关闭
                     content: $('.content-view-addyxgoods'),
-                    btn: ['取消','新增'],
+                    btn: btn,
                     yes: function(index, layero){
                         layer.close(index)
                     },
@@ -1658,12 +1682,8 @@
                         addYjGoods()
                     },
                     success: function(layero, index){
-                        if(quakooUtils.isBlack(params[cid])){
-                            params[cid] = {};
-                        }
-                        $('.yj-check-input input').click(function (e) {
-                            quakooUtils.stopEventBubble(e)
-                        })
+                        openYjGoods()
+
                         layui.use('form', function(){
                             var form = layui.form;
                             form.on('radio()', function(data){
@@ -1688,13 +1708,6 @@
                         selectTag($("#select-yxyj-provider"),function (ret) {
                             params[cid].pid = ret.value;
                         })
-                        params[cid].subid = subid;
-                        params[cid].cid = cid;
-                        params[cid].properties = {};
-                        params[cid].skuJson = [];
-                        params[cid].productCustomRangeList = [];
-                        params[cid].ugDiscount = [];
-                        params[cid].type = params[cid].type? params[cid].type:0;
                         //新增镜片的品牌
                         selectTag($("#select-yxyj-brand"),function (ret) {
                             params[cid] .bid = ret.value;
@@ -1724,21 +1737,45 @@
                         selectTag($("#select-yxyj-baozhuang"),function (data) {
                             params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
                         })
-
                     }
                 });
             }
         }
-
-        //监听选择常规商品和积分商品
-        function checkGoodsType() {
-
+        //编辑商品
+        function updateGoods(id) {
+            quakooData.ajaxGetData(config.getUrl_product_loadSPU(),{id:id},function (data) {
+                console.log(data)
+                if(data.success){
+                    params[cid] = data.data;
+                    addGoods(true)
+                }
+            })
         }
 
         //改变销售状态
         function changeYjStatus(self) {
             quakooUtils.stopEventBubble()
             $(self).toggleClass('active')
+        }
+        //更新销售状态
+        function updateSaleStatus(self,id) {
+            quakooUtils.stopEventBubble()
+            var status;
+            if($(self).hasClass('active')){
+                status = 1;
+            }else{
+                status = 0;
+            }
+            quakooData.ajaxGetData(config.getUrl_product_updateSaleStatus(),{id:id,open:status},function (data) {
+                if(data.success){
+                    if($(self).hasClass('active')){
+                        layer.msg('销售状态已关闭',{icon:1})
+                    }else{
+                        layer.msg('销售状态已开启',{icon:1})
+                    }
+                    $(self).toggleClass('active')
+                }
+            })
         }
         //改变会员折扣
         function changeVipStatus(self) {
@@ -2234,6 +2271,26 @@
             $('.title-num-info-right div').eq(type-1).addClass('active').siblings().removeClass('active');
             $('.numInfoBox').eq(type-1).show().siblings().hide();
         }
+        //新增眼睛弹出框弹出后执行的操作
+        function openYjGoods(isUpdate) {
+            $('.yj-check-input input').click(function (e) {
+                quakooUtils.stopEventBubble(e)
+            })
+           if(isUpdate){
+
+           }else{
+               if(quakooUtils.isBlack(params[cid])){
+                   params[cid] = {};
+               }
+               params[cid].subid = subid;
+               params[cid].cid = cid;
+               params[cid].properties = {};
+               params[cid].skuJson = [];
+               params[cid].productCustomRangeList = [];
+               params[cid].ugDiscount = [];
+               params[cid].type = params[cid].type? params[cid].type:0;
+           }
+        }
         // 新增眼镜
         function addYjGoods() {
             for(var i=0;i<params[cid].skuJson.length;i++){
@@ -2248,11 +2305,9 @@
 
             params[cid].skuJson = JSON.stringify(params[cid].skuJson);
             params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
-
             params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
             console.log(params[cid])
             quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
-                console.log(ret)
                 if(ret.success){
                     layer.msg('添加成功',{icon: 1})
                     chooseGoodsType();
@@ -2270,6 +2325,21 @@
                 $('#cover')[0].style.cssText = obj.style;
                 $('#cover').parent().show();
             })
+        }
+        //删除商品spu
+        function delGoods(id) {
+            quakooUtils.stopEventBubble()
+            layer.confirm('确认删除?', {icon: 2, title:'提示'}, function(index){
+                quakooData.ajaxGetData(config.getUrl_product_delSPU(),{id:id},function (data) {
+                    if(data.success){
+                        layer.msg('删除成功',{icon:1})
+                        chooseGoodsType();
+                        layer.close(index);
+                    }else{
+                        layer.msg(data.msg,{icon:2})
+                    }
+                })
+            });
         }
     </script>
 </body>

@@ -120,6 +120,8 @@ public class User implements Serializable {
 
     private long birthdate;//出生日期
 
+    private long jobDay;//入职日期
+
     private int age; // 年龄
 
 
@@ -135,6 +137,10 @@ public class User implements Serializable {
     private String platVersion;
 
     private String ext;// 其他信息（）
+
+    private long userGradeId;//用户会员等级
+
+    private long recommender;//介绍人
 
 
     @SortKey
