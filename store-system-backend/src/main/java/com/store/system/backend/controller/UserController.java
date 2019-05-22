@@ -22,8 +22,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
-import com.sun.org.apache.xml.internal.security.keys.storage.StorageResolverException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,15 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.jnlp.DownloadService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -270,43 +261,17 @@ public class UserController extends BaseController {
     /////////////////////批量导出顾客信息////////////////////////
     @RequestMapping("/exportUserInfo")
     public ModelAndView exportUserInfo(HttpServletRequest request,HttpServletResponse response,
-                                       @RequestParam(value = "subid") long subid,
+                                       @RequestParam(value = "sid") long sid,
                                        @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
                                        @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
                                        @RequestParam(required = false,value = "job",defaultValue = "") String job
                                         )throws Exception{
         try {
-            List<ExportUser> users = userService.getExportUserInfo(subid,phone,sex,job);
-            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("顾客信息", "顾客信息"),
-                    ExportUser.class, users);
-            if (workbook == null) {
-                return this.viewNegotiating(request, response, new ResultClient("无可查询的顾客信息的数据！"));
-            }
-            // 重置响应对象
-            response.reset();
-            DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            String nowTime = df.format(new Date());
-            String fileName = "顾客信息—" + nowTime + ".xls";
-            final String userAgent = request.getHeader("USER-AGENT");
-            String finalFileName = null;
-            if (StringUtils.contains(userAgent, "MSIE")) {//IE浏览器
-                finalFileName = URLEncoder.encode(fileName, "UTF8");
-            } else if (StringUtils.contains(userAgent, "Mozilla")) {//google,火狐浏览器
-                finalFileName = new String(fileName.getBytes(), "ISO8859-1");
-            } else {
-                finalFileName = URLEncoder.encode(fileName, "UTF8");//其他浏览器
-            }
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + finalFileName + "\"");
-            response.setContentType("application/vnd.ms-excel");
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            OutputStream output = response.getOutputStream();
-            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
-            workbook.write(bufferedOutPut);
-            bufferedOutPut.flush();
-            bufferedOutPut.close();
-            output.close();
+            List<ExportUser> users = userService.getExportUserInfo(sid,phone,sex,job);
+            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("顾客信息", "顾客信息"), ExportUser.class, users);
+            if (workbook == null) { throw new StoreSystemException("无可查询的顾客信息的数据！"); }
+            //导出excel
+            download.exportInfoTemplate(request,response,workbook,"顾客信息");
             return this.viewNegotiating(request, response, new ResultClient("导出成功！"));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));

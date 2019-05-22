@@ -842,21 +842,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ExportUser> getExportUserInfo(long subid, String phone, int sex, String job) throws Exception {
-        String sql = " select * from 'user' where status= "+ User.status_nomore + " and type = " + User.userType_user;
-        if(subid>0){
-            sql = sql + " and psid = " + subid;
+    public List<ExportUser> getExportUserInfo(long sid, String phone, int sex, String job) throws Exception {
+        String sql = " SELECT * FROM `user` WHERE status = "+ User.status_nomore + " AND `userType` = " + User.userType_user;
+        if(sid>0){
+            sql = sql + " AND sid = " + sid;
         }
         if(StringUtils.isNotBlank(phone)){
-            sql = sql + " and `phone` like ?";
+            sql = sql + " AND `phone` LIKE ?";
         }
         if(sex>-1){
-            sql = sql + " and sex = " + sex;
+            sql = sql + " AND sex = " + sex;
         }
         if(StringUtils.isNotBlank(job)){
-            sql = sql + " abd 'job' like ?";
+            sql = sql + " AND `job` LIKE ?";
         }
-        sql = sql + " order  by `ctime` desc";
+        sql = sql + " ORDER  BY `ctime` DESC ";
         List<Object> objects=new ArrayList<>();
         List<User> users = null;
         int count = 0;
@@ -873,6 +873,7 @@ public class UserServiceImpl implements UserService {
         if(users.size()==0||users==null){ throw new StoreSystemException("暂未查询到可导出的信息!"); }
         List<ExportUser> exportUsers = Lists.newArrayList();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        int index = 1;
         for (User user:users){
             ExportUser exportUser = new ExportUser();
             exportUser.setName(user.getName());
@@ -886,6 +887,16 @@ public class UserServiceImpl implements UserService {
             exportUser.setScore(String.valueOf(user.getScore()));
             exportUser.setUserName(user.getUserName());
             exportUser.setWeChat(user.getWeixinId());
+            exportUser.setAge(String.valueOf(user.getAge()));
+            if(user.getSex()==0){
+                exportUser.setSex("未知");
+            }else if(user.getSex()==1){
+                exportUser.setSex("男");
+            }else {
+                exportUser.setSex("女");
+            }
+            exportUser.setIdCard(user.getIdCard());
+            exportUser.setNumber(String.valueOf(index++));
             exportUsers.add(exportUser);
         }
         return exportUsers;

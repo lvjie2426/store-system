@@ -696,11 +696,8 @@
         }
         //导出模板
         function exportExcel() {
-            var subid = quakooUser.getUserInfo().sid;
-            var phone = quakooUser.getUserInfo().phone;
-            var sex = quakooUser.getUserInfo().sex;
-            var job = quakooUser.getUserInfo().job;
-            document.location.href = serverUrl + '/user/exportUserInfo?token='+encodeURIComponent(quakooUser.getUserInfo().token)+"&subid="+subid+ "&phone="+phone+"&sex="+sex+"&job="+job;
+            var sid = quakooUser.getUserInfo().sid;
+            document.location.href = serverUrl + '/user/exportUserInfo?token='+encodeURIComponent(quakooUser.getUserInfo().token)+"&sid=" + sid;
         }
     </script>
 
