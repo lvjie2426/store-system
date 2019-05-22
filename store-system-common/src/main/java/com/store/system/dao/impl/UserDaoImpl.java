@@ -84,9 +84,4 @@ public class UserDaoImpl extends CacheBaseDao<User> implements UserDao {
         return null;
     }
 
-    @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<User> getAllList(long subid, String phone, int sex, String job) throws DataAccessException {
-        return null;
-    }
 }
