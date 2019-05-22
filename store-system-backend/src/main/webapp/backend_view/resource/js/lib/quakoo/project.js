@@ -14,5 +14,6 @@ var quakooDb = new QuakooDb();
 var quakooUtils = new QuakooUtils();
 var quakooUser = new QuakooUser();
 var quakooData = new QuakooData();
+var quakooImg = new QuakooImg();
 
 

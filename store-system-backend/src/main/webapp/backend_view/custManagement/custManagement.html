@@ -42,6 +42,9 @@
             <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" onclick="deriveExcel()">
                 <i class="fa fa-arrow-circle-down">下载模板</i>
             </button>
+            <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" onclick="exportExcel()">
+                <i class="fa fa-arrow-circle-down">导出Excle</i>
+            </button>
             <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" id="btn_import" onclick="Improt()">
                 <i class="fa fa-arrow-circle-o-up">导入</i>
             </button>
@@ -690,6 +693,14 @@
         //下载模板
         function deriveExcel() {
             document.location.href = serverUrl + '/user/downloadTemplatesExcel?token='+encodeURIComponent(quakooUser.getUserInfo().token);
+        }
+        //导出模板
+        function exportExcel() {
+            var subid = quakooUser.getUserInfo().sid;
+            var phone = quakooUser.getUserInfo().phone;
+            var sex = quakooUser.getUserInfo().sex;
+            var job = quakooUser.getUserInfo().job;
+            document.location.href = serverUrl + '/user/exportUserInfo?token='+encodeURIComponent(quakooUser.getUserInfo().token)+"&subid="+subid+ "&phone="+phone+"&sex="+sex+"&job="+job;
         }
     </script>
 

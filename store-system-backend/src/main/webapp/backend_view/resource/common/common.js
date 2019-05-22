@@ -404,7 +404,7 @@ function uploadWord() {
 
 
 /*--------------图片上传后台-----------*/
-$("#uploadForm input").change(function () {
+/*$("#uploadForm input").change(function () {
     var index = layer.load(1, {time: 1*500});
     $('#photoCover').val($(this).val());
     var formData = new FormData($(this).parent()[0]);
@@ -437,7 +437,7 @@ $("#uploadForm input").change(function () {
             });
         }
     });
-})
+})*/
 
 /*--------------文档上传-----------*/
 $("#wordForm input").change(function () {

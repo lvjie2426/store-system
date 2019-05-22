@@ -843,11 +843,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ExportUser> getExportUserInfo(long subid, String phone, int sex, String job) throws Exception {
+        String sql = " select * from 'user' where status= "+ User.status_nomore + " and type = " + User.userType_user;
+        if(subid>0){
+            sql = sql + " and psid = " + subid;
+        }
+        if(StringUtils.isNotBlank(phone)){
+            sql = sql + " and `phone` like ?";
+        }
+        if(sex>-1){
+            sql = sql + " and sex = " + sex;
+        }
+        if(StringUtils.isNotBlank(job)){
+            sql = sql + " abd 'job' like ?";
+        }
+        sql = sql + " order  by `ctime` desc";
+        List<Object> objects=new ArrayList<>();
+        List<User> users = null;
+        int count = 0;
+        if(StringUtils.isNotBlank(job)){objects.add("%"+job+"%");}
+        if(StringUtils.isNotBlank(phone)){objects.add("%"+phone+"%");}
+        if(objects.size()>0) {
+            Object[] args = new Object[objects.size()];
+            objects.toArray(args);
+            users = this.jdbcTemplate.query(sql, rowMapper,args);
+        }else{
+            users = this.jdbcTemplate.query(sql, rowMapper);
+        }
+
+        if(users.size()==0||users==null){ throw new StoreSystemException("暂未查询到可导出的信息!"); }
         List<ExportUser> exportUsers = Lists.newArrayList();
-        List<User> userList = userDao.getAllList(subid,phone,sex,job);
-        if(userList.size()==0||userList==null){ throw new StoreSystemException("暂未查询到可导出的信息!"); }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        for (User user:userList){
+        for (User user:users){
             ExportUser exportUser = new ExportUser();
             exportUser.setName(user.getName());
             exportUser.setAddress(user.getPlace());
