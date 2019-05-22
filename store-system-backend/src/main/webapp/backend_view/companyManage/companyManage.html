@@ -1166,8 +1166,8 @@
             <div class="handle">
                 <form class="layui-form">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">未开启</label>
-                                <div class="layui-input-block">
+                            <label class="layui-form-label" id-data="<%=list[i].id%>">未开启</label>
+                                <div class="layui-input-block" >
                                     <input id="shopIsOpen" type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest">
                                 </div>
                         </div>
@@ -1269,13 +1269,50 @@
             }
         };
     }
+    /**接口——开启关闭门店*/
+    function updataOpen(id,status){
+        quakooData.ajaxGetData(config.getUrl_subordinate_updateOpen(),{id:id,status:status},function(data){
+            console.log(data);
+        })
+    }
+    /**接口——企业下创建门店*/
+    function f(){
+        var param;
+        param.id = id;                                //公司ID
+        param.name = name;                            //门店名字
+        param.storeCode = storeCode;                //门店简码
+        param.phone = phone;                         //门店电话
+        param.storeImg = storeImg;                  //门店照片
+        param.province = province;
+        param.city = city;
+        param.area = area;
+        param.address = address;
+        param.startTime = startTime;
+        param.endTime = endTime;
+        param.payType = payType;
+        param.storedType = storedType;
+        param.processType = processType;
+        param.processId = processId;
+        param.threePolicy = threePolicy;
+
+        quakooData.ajaxGetData(config.getUrl_subordinate_addSubordinateStore(),{},function(ret){
+            console.log(ret);
+        })
+    }
     //初始化layui模块，并监听事件
     layui.use(['form', 'layedit', 'laydate'], function () {
         form = layui.form;
         //店铺开启关闭功能
         form.on('switch(switchTest)', function (data) {
             var isOpenTxt = this.parentNode.previousElementSibling;
-            this.checked == true ? isOpenTxt.innerHTML = '已开启' : isOpenTxt.innerHTML = '未开启'
+            var id = $(isOpenTxt).attr('id-data');
+            if(this.checked == true){
+                updataOpen(id,0);
+                isOpenTxt.innerHTML = '已开启';
+            }else{
+                updataOpen(id,1);
+                isOpenTxt.innerHTML = '未开启';
+            }
         });
     })
     //头部切换
@@ -1437,11 +1474,6 @@
                 $('.content-view-setPay-tan .layui-layer-content').height(415);
             }
         });
-    }
-    //店铺li
-    var shopItem ="dsafasd"
-    for (var i = 0; i < 10; i++) {
-        $('.shopItems .contUl').append(shopItem)
     }
     $(function () {
         var curr = new Date().getFullYear();
