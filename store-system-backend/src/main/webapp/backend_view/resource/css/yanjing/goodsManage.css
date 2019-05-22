@@ -411,10 +411,17 @@
 }
 
 .layui-layer-add-goods .layui-layer-btn .layui-layer-btn1 {
-    color: rgba(130, 130, 151, 1);
+    /*color: rgba(130, 130, 151, 1);
     opacity: 0.6;
     font-size: 12px;
+    font-family: PingFangSC-Semibold;*/
+
+
+    color: rgb(255, 255, 255);
+    font-size: 12px;
     font-family: PingFangSC-Semibold;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 1);
 }
 
 .layui-layer-page .layui-layer-btn {
