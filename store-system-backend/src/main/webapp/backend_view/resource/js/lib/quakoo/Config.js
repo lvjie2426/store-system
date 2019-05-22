@@ -58,7 +58,7 @@ var Config = (function(_super){
     _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
     /**获取门店下顾客的所有职业*/
     _proto.getUrl_user_getAllUserJob = function(){return this.serverUrl + '/user/getAllUserJob';};
-    /**添加顾客*/
+    /**添加顾客(添加员工)*/
     _proto.getUrl_user_addCustomer = function(){return this.serverUrl + '/user/addCustomer';};
     /**获取所属公司的所有顾客*/
     _proto.getUrl_user_getCustomerPager = function(){return this.serverUrl + '/user/getCustomerPager';};
@@ -98,15 +98,12 @@ var Config = (function(_super){
     //=======================公司管理 结束====================
 
     //=======================员工管理 开始====================
-    /**获取当前公司信息*/
+    /**员工信息修改*/
     _proto.getUrl_user_updateUser = function(){return this.serverUrl + '/user/updateUser';};
-    /**获取当前公司信息*/
+    /**添加员工*/
     _proto.getUrl_user_addCustomer = function(){return this.serverUrl + '/user/addCustomer';};
-    /**获取当前公司信息*/
+    /**停用员工*/
     _proto.getUrl_user_updateStatus = function(){return this.serverUrl + '/user/updateStatus';};
-    /**获取当前公司信息*/
-    _proto.getUrl_user_getSubCustomerPager = function(){return this.serverUrl + '/user/getSubCustomerPager';};
-
     //=======================员工管理 结束====================
 
     //=======================企业端（营销管理） 开始====================
@@ -147,8 +144,6 @@ var Config = (function(_super){
     _proto.getUrl_product_getSPUPager = function(){return this.serverUrl + '/product/getSPUPager';};
     /**增加商品*/
     _proto.getUrl_product_add = function(){return this.serverUrl + '/product/add';};
-
-
     //=======================商品管理 结束====================
 
 
