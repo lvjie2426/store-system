@@ -113,5 +113,5 @@ public interface UserService {
     public Set<String> getAllUserJob(long subid)throws Exception;
 
     ///////////////////////////导出顾客信息//////////////////////////
-    public List<ExportUser> getExportUserInfo(long subid, String phone, int sex, String job)throws Exception;
+    public List<ExportUser> getExportUserInfo(long sid, String phone, int sex, String job)throws Exception;
 }

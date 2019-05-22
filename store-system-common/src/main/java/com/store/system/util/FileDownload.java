@@ -5,11 +5,18 @@ import com.quakoo.baseFramework.http.HttpPoolParam;
 import com.quakoo.baseFramework.http.HttpResult;
 import com.quakoo.baseFramework.http.MultiHttpPool;
 import com.quakoo.baseFramework.secure.Base64Util;
+import com.store.system.exception.StoreSystemException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,5 +99,41 @@ public class FileDownload {
         String result3 = result2.replace(str2,"");
         String str3 = "\"}";
         return result3.replace(str3,"");
+    }
+    //重置响应对象
+    public void exportInfoTemplate(HttpServletRequest request, HttpServletResponse response, Workbook workbook,String filename)throws Exception{
+        response.reset();
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String nowTime = df.format(new Date());
+        String fileName = filename + nowTime + ".xls";
+        final String userAgent = request.getHeader("USER-AGENT");
+        String finalFileName = null;
+        if (StringUtils.contains(userAgent, "MSIE")) {//IE浏览器
+            finalFileName = URLEncoder.encode(fileName, "UTF8");
+        } else if (StringUtils.contains(userAgent, "Mozilla")) {//google,火狐浏览器
+            finalFileName = new String(fileName.getBytes(), "ISO8859-1");
+        } else {
+            finalFileName = URLEncoder.encode(fileName, "UTF8");//其他浏览器
+        }
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + finalFileName + "\"");
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        //文件放入输出流
+        OutputStream output = null;
+        BufferedOutputStream bufferedOutPut = null;
+        try{
+             output = response.getOutputStream();
+             bufferedOutPut = new BufferedOutputStream(output);
+            workbook.write(bufferedOutPut);
+
+        }catch (StoreSystemException s){
+            throw new StoreSystemException(s.getMessage());
+        }finally{
+            bufferedOutPut.flush();
+            bufferedOutPut.close();
+            output.close();
+        }
     }
 }
