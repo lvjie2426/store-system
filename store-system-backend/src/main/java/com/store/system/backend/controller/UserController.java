@@ -132,7 +132,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("/updateUserPermissions")
     public ModelAndView updateUserPermissions(@RequestParam(value = "uid", required = false) long uid,
-                                              @RequestParam(value = "pids", required = false, defaultValue = "") List<Long> pids,
+                                              @RequestParam(value = "pids[]", required = false, defaultValue = "") List<Long> pids,
                                               HttpServletRequest request, HttpServletResponse response,Model model) throws Exception {
         if(uid == 0) return super.viewNegotiating(request, response, new ResultClient("用户ID不能为空"));
         boolean res = userService.updateUserPermission(uid, pids);

@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.google.common.collect.Lists;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -9,6 +10,8 @@ import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +40,10 @@ public class ProductSKU implements Serializable {
     private String name; //sku名称
 
     @HyperspaceColumn(isJson = true)
-    private Map<Long, Object> properties; //属性json
+    private Map<Long, Object> properties=new HashMap<Long,Object>(); //属性json
 
-    private List<ProductCustomRange> productCustomRangeList;//定制范围
+    @HyperspaceColumn(isJson = true)
+    private List<ProductCustomRange> productCustomRangeList= Lists.newArrayList();//定制范围
 
     private int retailPrice; //零售价(分)
 
@@ -60,4 +64,19 @@ public class ProductSKU implements Serializable {
 
     private long utime;
 
+    public Map<Long, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<Long, Object> properties) {
+        this.properties = properties;
+    }
+
+    public List<ProductCustomRange> getProductCustomRangeList() {
+        return productCustomRangeList;
+    }
+
+    public void setProductCustomRangeList(List<ProductCustomRange> productCustomRangeList) {
+        this.productCustomRangeList = productCustomRangeList;
+    }
 }
