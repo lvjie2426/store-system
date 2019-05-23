@@ -8,7 +8,7 @@
 *
 */
 (function ($, undefined) {
-      function testProps(props) {
+      function testProps(props) {  //测试道具
         var i;
         for (i in props) {
           if (mod[props[i]] !== undefined) {
