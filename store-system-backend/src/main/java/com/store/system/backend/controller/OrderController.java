@@ -43,12 +43,13 @@ public class OrderController extends BaseController {
                                     @RequestParam(required = false,value = "startTime",defaultValue = "0")long startTime,
                                     @RequestParam(required = false,value = "endTime",defaultValue = "0")long endTime,
                                     @RequestParam(required = false, value = "personnelid",defaultValue = "0") long personnelid,
-                                    @RequestParam(required = false, value = "status",defaultValue = "-1") int status,
+                                    @RequestParam(required = false, value = "status",defaultValue = "0") int status,
                                     @RequestParam(required = false, value = "uid",defaultValue = "0") long uid,
                                     @RequestParam(required = false, value = "name",defaultValue = "") String name,
+                                    @RequestParam(required = false, value = "makeStatus",defaultValue = "0")  int makeStatus,
                                                    Model model) throws Exception {
         try {
-            pager= orderService.getAll(pager,startTime,endTime,personnelid,status,uid,name);
+            pager= orderService.getAll(pager,startTime,endTime,personnelid,status,uid,name, makeStatus);
             return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

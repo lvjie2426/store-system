@@ -20,8 +20,8 @@ import java.util.Map;
 public class Order implements Serializable {
 
     public static final int status_no_pay = 0; //未缴费
-    public static final int status_pay = 1; //已缴费
-    public static final int status_expire = 2; //作废
+    public static final int status_pay = 1; //全部订单
+    public static final int status_expire = 2; //作废订单
     public static final int status_no_ok = 3; //未完成：包含未取货，未加工，欠500（拿走货，没给钱）
 
     public static final int pay_type_ali = 1; //支付宝
@@ -36,8 +36,10 @@ public class Order implements Serializable {
     public static final int marketingtype_coupon = 1; //抵用券
 
     public static final int makestatus_no = 1; //未加工
+    public static final int makestatus_no_pay = 2; //欠款，未支付
     public static final int makestatus_qu_no = 3; //未取货
-    public static final int makestatus_qu_yes = 4; //已取货
+    public static final int makestatus_qu_yes = 4; //已完成
+    public static final int makestatus_invalid = 5; //已作废
 
 
     @PrimaryKey

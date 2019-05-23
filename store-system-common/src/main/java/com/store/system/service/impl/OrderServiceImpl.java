@@ -350,18 +350,19 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name) throws Exception {
+    public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus) throws Exception {
         String sql = "SELECT  *  FROM `order`   where  1=1 ";
         String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1";
         String limit = "  limit %d , %d ";
 
-        if (status == 2) {
+        if (status >0) {
             sql = sql + " and `status` = " + status;
             sqlCount = sqlCount + " and `status` = " + status;
-        } if (status ==3 ) {
-            sql = sql + " and `MakeStatus` = 1 or `MakeStatus` = 3 or (MakeStatus=4 and status=0)" ;
-            sqlCount = sqlCount + "  and `MakeStatus` = 1 or `MakeStatus` = 3 or (MakeStatus=4 and status=0)" ;
-    }
+        }
+        if (makeStatus > 0) {
+            sql = sql + " and `MakeStatus` =  " + makeStatus;
+            sqlCount = sqlCount + "  and `MakeStatus` = " + makeStatus;
+        }
         if (personnelid > 0) {
             sql = sql + " and `personnelid` = " + personnelid;
             sqlCount = sqlCount + " and `personnelid` = " + personnelid;
@@ -377,8 +378,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             sql = sql + " and `uid` =" + uid;
             sqlCount = sqlCount + " and `uid` =" + uid;
         }if (StringUtils.isNotBlank(name)) {
-            sql = sql + " and  `uid` in （select id from user where name like %"+name+"%）";
-            sqlCount = sqlCount + " and  uid in （select id from user where name like %"+name+"%）";
+            sql = sql + " and  `uid` in (select id from `user`  where name like '%"+name+"%')";
+            sqlCount = sqlCount + " and  uid in (select id from `user`  where name like '%"+name+"%')";
         }
         sql = sql + " order  by ctime desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -394,6 +395,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private List<ClientOrder> transformClient(List<Order> orderList) throws Exception {
         List<ClientOrder> clientOrderList = new ArrayList<>();
         for (Order order : orderList) {
+           double totalPrice= order.getTotalPrice()*0.01;
+            order.setTotalPrice(totalPrice);
+            double price= order.getPrice()*0.01;
+            order.setPrice(price);
             ClientOrder clientOrder = new ClientOrder(order);
             User user = userDao.load(order.getUid());
             if (user != null) {
@@ -408,7 +413,12 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
             MarketingCoupon load = marketingCouponDao.load(order.getCouponid());
             if (load != null) {
-                clientOrder.setDescSubtract(load.getDescSubtract());
+                if(load.getDescSubtractType()==MarketingCoupon.desc_subtract_type_money){
+                    clientOrder.setDescSubtract(load.getDescSubtract()*0.01);
+                }else{
+                    clientOrder.setDescSubtract(load.getDescSubtract());
+                }
+
                 clientOrder.setDescSubtractType(load.getDescSubtractType());
             }
             clientOrderList.add(clientOrder);
