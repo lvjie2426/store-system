@@ -706,7 +706,7 @@
     <div class="contHeader">
         <div class="headLeft">员工管理</div>
         <div class="headRight">
-            <div class="child newShop" onclick="addStaff()">创建员工</div>
+            <div class="child newShop" onclick="employee()">创建员工</div>
             <input class="child " type="text" placeholder="搜索员工">
             <div class="selectBox child" id="selectBox">
                 <div class="select-box-header">
@@ -778,7 +778,7 @@
     </div>
 </div>
 <!--编辑员工弹窗-->
-<div class="content-view content-view-editStff" style="display:none">
+<div class="content-view content-view-editStff edit-employees" style="display:none">
     <div class="head">
         <span>梨花</span>
         <span class="moveTitle">杭州西湖区旗舰店</span>
@@ -845,6 +845,82 @@
         </ul>
     </div>
 </div>
+<!--添加员工弹窗-->
+<div class="content-view content-view-editStff add-employees" style="display:none">
+    <div class="body">
+        <ul class="myUl">
+            <li class="item">
+                <div>姓名</div>
+                <div>
+                    <input type="text" placeholder="请输入姓名" id="emp-name">
+                </div>
+            </li>
+            <li class="item">
+                <div>职位</div>
+                <div class="selectBox" id="job-position">
+                    <div class="select-box-header">
+                        <span class="text" id="emp-position">验光师/店长</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">店员1</li>
+                            <li value="02">店员2</li>
+                            <li value="03">店员3</li>
+                            <li value="04">店员4</li>
+                            <li value="05">店员5</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div>性别</div>
+                <div class="selectBox" id="job-sex">
+                    <div class="select-box-header">
+                        <span class="text" id="emp-sex">男</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="1">男</li>
+                            <li value="2">女</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div>手机号</div>
+                <div>
+                    <input type="number" placeholder="请输入手机号" id="emp-phone">
+                </div>
+            </li>
+            <li class="item">
+                <div>电子邮箱</div>
+                <div>
+                    <input type="email" placeholder="请输入邮箱" id="emp-mail">
+                </div>
+            </li>
+            <li class="item">
+                <div>入职时间</div>
+                <div>
+                    <div class="settings" style="display:none;">
+                        <select name="demo" id="demo">
+                            <option value="date">日期</option>
+                        </select>
+                    </div>
+                    <input name="test" id="tests" data-type="day" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期"
+                           data-type="time"/>
+                </div>
+            </li>
+            <li class="item">
+                <div>身份证号</div>
+                <div>
+                    <input type="text" placeholder="请输入身份证号" id="emp-idcard">
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
 <!--离职员工操作弹窗-->
 <div class="content-view content-view-removeStaff" style="display:none">
     <p>这将禁用该员工的账号及一切操作</p>
@@ -903,20 +979,51 @@
         })
     }
     /**接口——添加员工*/
-    function f(){
+    function addEmployees(){
+        var name = $("#emp-name").val();
+        var job = $("#emp-position").html();
+        var phone = $("#emp-phone").val();
+        var sex = 1;
+        selectTag($("#selectBox"), function (ret) { //选择性别
+            sex = ret.value;
+        });
+        var mail = $("#emp-mail").val();
+        var idCard = $("#emp-idcard").val();
+        var jobDay = $("#emp-name").val();
+        if(quakooUtils.isNotBlack(name)){
+            if(quakooUtils.isNotBlack(phone)){
+                if(quakooUtils.isNotBlack(mail)){
+                    if(quakooUtils.isNotBlack(idCard)){
+
+                    }else{
+                        layer.msg("请输入身份证号",{icon:4});
+                        $("#emp-idcard").focus();
+                    }
+                }else{
+                    layer.msg("请输入邮箱",{icon:4});
+                    $("#emp-mail").focus();
+                }
+            }else{
+                layer.msg("请输入手机号",{icon:4});
+                $("#emp-phone").focus();
+            }
+        }else{
+            layer.msg("请输入员工姓名",{icon:4});
+            $("#em-name").focus();
+        }
         var param={};
-        param.job = job;             //职位
-        param.phone = phone;        //电话
-        param.sex = sex;            //性别
-        param.mail = mail;          //邮箱
-        param.psid = psid;          //公司ID
-        param.sid = sid;            //店铺ID
-        param.idCard = idCard;            //店铺ID
-        param.jobDay = jobDay;            //店铺ID
-        param.userType = userType;            //店铺ID
-
+        param.name = name;                  //员工姓名
+        param.job = "普通员工";            //职位
+        param.phone = phone;               //电话
+        param.sex = sex;                   //性别
+        param.mail = mail;                 //邮箱
+        param.psid = psid;                 //公司ID
+        param.sid = subid;                 //店铺ID
+        param.idCard = idCard;            //身份证
+        param.jobDay = jobDay;            //入职时间
+        param.userType = 1;              //0表示顾客，1表示员工
         quakooData.ajaxGetData(config.getUrl_user_addCustomer(),param,function (ret){
-
+            console.log("添加员工：",ret);
         })
     }
     //表格插件
@@ -1093,7 +1200,7 @@
     }
     //员工开启关闭功能
     layui.use(['form', 'layedit', 'laydate'], function () {
-        form = layui.form;
+        var form = layui.form;
         form.on('switch(switchTest)', function (data) {
             var isOpenTxt = $(this).parent().siblings('.layui-form-label')
             isOpenTxt.text(this.checked == true ? '启用' : '停用')
@@ -1111,6 +1218,8 @@
     selectTag($("#selectBox3"), function (ret) {/**/
     })
     selectTag($("#selectBox4"), function (ret) {/**/
+    })
+    selectTag($("#job-position"), function (ret) {/**/
     })
     selectTag($("#selectBox5"), function (ret) {/**/
     })
@@ -1288,6 +1397,31 @@
             }
         });
     }
+    /**弹窗——创建员工*/
+    function employee(){
+        layer.open({
+            type: 1,
+            title: '创建员工临时页面（设计图扫码移动端添加）',
+            content: $('.content-view-editStff.add-employees'),
+            area: ['360px', 'auto'],
+            shade: 0.01,
+            shadeClose: true, //开启遮罩关闭
+            skin: 'layui-layer-editStff-tan content-view-submit', //样式类名
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            btn: ['取消', '创建'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                /**调用添加员工接口*/
+                addEmployees();
+            },
+            success: function (layero, index) {
+                _StffEdit = index
+            }
+        });
+    }
     //显示员工编辑弹窗
     function showStffEdit() {
         layer.open({
@@ -1301,7 +1435,7 @@
             closeBtn: 0, //不显示关闭按钮
             resize: false,
             shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-editStff'),
+            content: $('.content-view-editStff.edit-employees'),
             btn: ['取消', '保存'],
             yes: function (index) {
                 layer.close(index);
