@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
@@ -8,6 +9,8 @@ import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure,
         identityType = IdentityType.origin_indentity)
@@ -16,8 +19,8 @@ public class Order implements Serializable {
 
     public static final int status_no_pay = 0; //未缴费
     public static final int status_pay = 1; //已缴费
-    public static final int status_expire = 2; //已过期
-    public static final int status_refund = 3; //已退款
+    public static final int status_expire = 2; //作废
+    public static final int status_no_ok = 3; //未完成：包含未取货，未加工，欠500（拿走货，没给钱）
 
     public static final int pay_type_ali = 1; //支付宝
     public static final int pay_type_wx = 2; //微信
@@ -28,9 +31,17 @@ public class Order implements Serializable {
     public static final int pay_mode_mini_app = 4; //小程序支付
     public static final int pay_mode_barcode = 5; //条形码支付
 
+    public static final int marketingtype_coupon = 1; //抵用券
+
+    public static final int makestatus_no = 1; //未加工
+    public static final int makestatus_qu_no = 3; //未取货
+    public static final int makestatus_qu_yes = 4; //已取货
+
 
     @PrimaryKey
     private long id;
+    private long uid;// 顾客id
+    private long personnelid;// 员工id
 
     private long passportId;
 
@@ -50,7 +61,15 @@ public class Order implements Serializable {
 
     private String desc; //描述
 
-    private double price;
+    private double totalPrice;//总金额
+    private double price;//实际支付金额
+    private long couponid;//营销券id
+    private int marketingType;//促销类型
+    private int MakeStatus;//加工状态/取货状态
+
+    @HyperspaceColumn(isJson = true)
+    private List<Long> skuids=new ArrayList<>();//skuids
+
 
     private int expireUnitId;
 

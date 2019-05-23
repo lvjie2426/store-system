@@ -3,20 +3,27 @@ package com.store.system.service.impl;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.bean.OrderExpireUnit;
+import com.store.system.client.ClientSubordinate;
 import com.store.system.dao.OrderDao;
 import com.store.system.dao.PayPassportDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Order;
 import com.store.system.model.PayPassport;
+import com.store.system.model.ProductCustom;
 import com.store.system.service.OrderService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.util.*;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,7 +42,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
     @Resource
     private PayPassportDao payPassportDao;
-
+    @Resource
+    private JdbcTemplate jdbcTemplate;
     @Resource
     private OrderDao orderDao;
 
@@ -50,6 +58,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private String wxpayPrePayUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
     private String wxpayRefundUrl = "https://api.mch.weixin.qq.com/secapi/pay/refund";
     private String alipayGateway = "https://openapi.alipay.com/gateway.do?";
+
+    private RowMapperHelp<Order> rowMapper = new RowMapperHelp<>(Order.class);
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -332,6 +342,47 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         }
         orderDao.update(order);
         return res;
+    }
+
+    @Override
+    public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name) throws Exception {
+        String sql = "SELECT  *  FROM `order`   where  1=1 ";
+        String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1";
+        String limit = "  limit %d , %d ";
+
+        if (status == 2) {
+            sql = sql + " and `status` = " + status;
+            sqlCount = sqlCount + " and `status` = " + status;
+        } if (status ==3 ) {
+            sql = sql + " and `MakeStatus` = 1 or `MakeStatus` = 3 or (MakeStatus=4 and status=0)" ;
+            sqlCount = sqlCount + "  and `MakeStatus` = 1 or `MakeStatus` = 3 or (MakeStatus=4 and status=0)" ;
+    }
+        if (personnelid > 0) {
+            sql = sql + " and `personnelid` = " + personnelid;
+            sqlCount = sqlCount + " and `personnelid` = " + personnelid;
+        }
+        if (startTime > 0) {
+            sql = sql + " and `payTime` >" + startTime;
+            sqlCount = sqlCount + " and `payTime` >" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `payTime` <" + endTime;
+            sqlCount = sqlCount + " and `payTime` <" + endTime;
+        } if (uid > 0) {
+            sql = sql + " and `uid` =" + uid;
+            sqlCount = sqlCount + " and `uid` =" + uid;
+        }if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and  `uid` in （select id from user where name like %"+name+"%）";
+            sqlCount = sqlCount + " and  uid in （select id from user where name like %"+name+"%）";
+        }
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<Order> orderList = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        pager.setData(orderList);
+        pager.setTotalCount(count);
+        return pager;
     }
 
     private void waitWxBarcodeOrderRes(File file, PayPassport payPassport, String outTradeNo, Order order) throws Exception {
