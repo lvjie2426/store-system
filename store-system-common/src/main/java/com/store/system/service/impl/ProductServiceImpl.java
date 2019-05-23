@@ -1,15 +1,12 @@
 package com.store.system.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientInventoryDetail;
-import com.store.system.client.ClientInventoryWarehouse;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.dao.*;
@@ -17,14 +14,16 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.ProductService;
 import com.store.system.service.UserGradeCategoryDiscountService;
-import com.store.system.util.ArithUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -238,7 +237,7 @@ public class ProductServiceImpl implements ProductService {
             productSKU.setSpuid(spuid);
             productSKUDao.insert(productSKU);
         }
-        userGradeCategoryDiscountService.addDiscount(ugDiscountList,spuid);
+        if(ugDiscountList.size()>0) userGradeCategoryDiscountService.addDiscount(ugDiscountList,spuid);
 
     }
 

@@ -1,6 +1,7 @@
 package com.store.system.backend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -68,7 +70,7 @@ public class ProductController extends BaseController {
      **/
     @RequestMapping("/add")
     public ModelAndView add(ProductSPU productSPU,
-                            @RequestParam(required = false,value = "skuJson") String skuJson,
+                            @RequestParam(required = true,value = "skuJson") String skuJson,
                             @RequestParam(required = false,value = "ugDiscount") String ugDiscount,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
@@ -78,7 +80,7 @@ public class ProductController extends BaseController {
             } catch (Exception e) {
                 throw new StoreSystemException("sku格式错误");
             }
-            List<UserGradeCategoryDiscount> ugDiscountList = null;
+            List<UserGradeCategoryDiscount> ugDiscountList = Lists.newArrayList();
             try {
                 if(StringUtils.isNotBlank(ugDiscount)){
                     ugDiscountList = JsonUtils.fromJson(ugDiscount, new TypeReference<List<UserGradeCategoryDiscount>>() {});

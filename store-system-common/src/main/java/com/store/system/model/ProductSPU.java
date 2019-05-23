@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.google.common.collect.Lists;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -9,6 +10,8 @@ import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,14 +54,14 @@ public class ProductSPU implements Serializable {
     private String icon;
 
     @HyperspaceColumn(isJson = true)
-    private List<String> covers;
+    private List<String> covers= Lists.newArrayList();
 
     private String name; //产品名称
 
     private String priceRange; //价格区间
 
     @HyperspaceColumn(isJson = true)
-    private Map<Long, Object> properties; //属性json
+    private Map<Long, Object> properties=new HashMap<Long, Object>(); //属性json
 
     private int status;
 
@@ -76,4 +79,19 @@ public class ProductSPU implements Serializable {
 
     private long utime;
 
+    public List<String> getCovers() {
+        return covers;
+    }
+
+    public void setCovers(List<String> covers) {
+        this.covers = covers;
+    }
+
+    public Map<Long, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<Long, Object> properties) {
+        this.properties = properties;
+    }
 }
