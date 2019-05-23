@@ -52,7 +52,7 @@ public class MarketingCoupon implements Serializable {
 
     private int descSubtractType; //描述-减 类型(1-金额 2-百分比)
 
-    private double descSubtract; //描述-减
+    private double descSubtract; //描述-减（折扣代表：减折）
 
     private int conditionType; //获取条件 类型(1-全场通用 2-消费金额 3-消费个数)
 

@@ -6,13 +6,14 @@ import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.bean.OrderExpireUnit;
+import com.store.system.client.ClientOrder;
 import com.store.system.client.ClientSubordinate;
+import com.store.system.dao.MarketingCouponDao;
 import com.store.system.dao.OrderDao;
 import com.store.system.dao.PayPassportDao;
+import com.store.system.dao.UserDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.Order;
-import com.store.system.model.PayPassport;
-import com.store.system.model.ProductCustom;
+import com.store.system.model.*;
 import com.store.system.service.OrderService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.util.*;
@@ -46,6 +47,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private JdbcTemplate jdbcTemplate;
     @Resource
     private OrderDao orderDao;
+    @Resource
+    private UserDao userDao;
+    @Resource
+    private MarketingCouponDao marketingCouponDao;
 
     @Autowired(required = false)
     private OrderPayService orderPayService;
@@ -380,9 +385,37 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         int count = 0;
         List<Order> orderList = this.jdbcTemplate.query(sql, rowMapper);
         count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
-        pager.setData(orderList);
+
+        pager.setData(transformClient(orderList));
         pager.setTotalCount(count);
         return pager;
+    }
+
+    private List<ClientOrder> transformClient(List<Order> orderList) throws Exception {
+        List<ClientOrder> clientOrderList = new ArrayList<>();
+        for (Order order : orderList) {
+            ClientOrder clientOrder = new ClientOrder(order);
+            User user = userDao.load(order.getUid());
+            if (user != null) {
+                clientOrder.setUName(user.getName());
+                clientOrder.setUPhone(user.getPhone());
+            }
+
+            User passportUser = userDao.load(order.getPassportId());
+            if (passportUser != null) {
+                clientOrder.setPersonnelName(passportUser.getName());
+            }
+
+            MarketingCoupon load = marketingCouponDao.load(order.getCouponid());
+            if (load != null) {
+                clientOrder.setDescSubtract(load.getDescSubtract());
+                clientOrder.setDescSubtractType(load.getDescSubtractType());
+            }
+            clientOrderList.add(clientOrder);
+        }
+
+
+        return clientOrderList;
     }
 
     private void waitWxBarcodeOrderRes(File file, PayPassport payPassport, String outTradeNo, Order order) throws Exception {

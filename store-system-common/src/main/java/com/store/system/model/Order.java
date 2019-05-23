@@ -10,7 +10,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure,
         identityType = IdentityType.origin_indentity)
@@ -68,7 +70,8 @@ public class Order implements Serializable {
     private int MakeStatus;//加工状态/取货状态
 
     @HyperspaceColumn(isJson = true)
-    private List<Long> skuids=new ArrayList<>();//skuids
+    //skuids; (long-skuid,object-num,price)
+    private List<OrderSku> skuids=new ArrayList<>();
 
 
     private int expireUnitId;
