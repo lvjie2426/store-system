@@ -426,4 +426,28 @@
         </property>
     </bean>
 
+    <bean id="missionDao" class="com.store.system.dao.impl.MissionDaoImpl">
+        <property name="tableName" value="mission" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="subordinateMissionDao" class="com.store.system.dao.impl.SubordinateMissionPoolDaoImpl">
+        <property name="tableName" value="subordinate_mission_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean><bean id="userMissionPoolDao" class="com.store.system.dao.impl.UserMissionPoolDaoImpl">
+        <property name="tableName" value="user_mission_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>
