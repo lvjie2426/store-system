@@ -336,7 +336,7 @@
                     e.preventDefault();
                     keyWord =  document.getElementById('searchPhoneNum').value;
                     if(quakooUtils.isBlack(keyWord)){
-                        alert('请输入手机号');
+                        layer.msg('请输入手机号');
                         return ;
                     }
                     cusPhone =keyWord;

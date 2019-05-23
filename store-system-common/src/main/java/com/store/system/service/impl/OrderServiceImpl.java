@@ -3,20 +3,28 @@ package com.store.system.service.impl;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.bean.OrderExpireUnit;
+import com.store.system.client.ClientOrder;
+import com.store.system.client.ClientSubordinate;
+import com.store.system.dao.MarketingCouponDao;
 import com.store.system.dao.OrderDao;
 import com.store.system.dao.PayPassportDao;
+import com.store.system.dao.UserDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.Order;
-import com.store.system.model.PayPassport;
+import com.store.system.model.*;
 import com.store.system.service.OrderService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.util.*;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,9 +43,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
     @Resource
     private PayPassportDao payPassportDao;
-
+    @Resource
+    private JdbcTemplate jdbcTemplate;
     @Resource
     private OrderDao orderDao;
+    @Resource
+    private UserDao userDao;
+    @Resource
+    private MarketingCouponDao marketingCouponDao;
 
     @Autowired(required = false)
     private OrderPayService orderPayService;
@@ -50,6 +63,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private String wxpayPrePayUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
     private String wxpayRefundUrl = "https://api.mch.weixin.qq.com/secapi/pay/refund";
     private String alipayGateway = "https://openapi.alipay.com/gateway.do?";
+
+    private RowMapperHelp<Order> rowMapper = new RowMapperHelp<>(Order.class);
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -332,6 +347,85 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         }
         orderDao.update(order);
         return res;
+    }
+
+    @Override
+    public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus) throws Exception {
+        String sql = "SELECT  *  FROM `order`   where  1=1 ";
+        String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1";
+        String limit = "  limit %d , %d ";
+
+        if (status >0) {
+            sql = sql + " and `status` = " + status;
+            sqlCount = sqlCount + " and `status` = " + status;
+        }
+        if (makeStatus > 0) {
+            sql = sql + " and `MakeStatus` =  " + makeStatus;
+            sqlCount = sqlCount + "  and `MakeStatus` = " + makeStatus;
+        }
+        if (personnelid > 0) {
+            sql = sql + " and `personnelid` = " + personnelid;
+            sqlCount = sqlCount + " and `personnelid` = " + personnelid;
+        }
+        if (startTime > 0) {
+            sql = sql + " and `payTime` >" + startTime;
+            sqlCount = sqlCount + " and `payTime` >" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `payTime` <" + endTime;
+            sqlCount = sqlCount + " and `payTime` <" + endTime;
+        } if (uid > 0) {
+            sql = sql + " and `uid` =" + uid;
+            sqlCount = sqlCount + " and `uid` =" + uid;
+        }if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and  `uid` in (select id from `user`  where name like '%"+name+"%')";
+            sqlCount = sqlCount + " and  uid in (select id from `user`  where name like '%"+name+"%')";
+        }
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<Order> orderList = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+
+        pager.setData(transformClient(orderList));
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    private List<ClientOrder> transformClient(List<Order> orderList) throws Exception {
+        List<ClientOrder> clientOrderList = new ArrayList<>();
+        for (Order order : orderList) {
+           double totalPrice= order.getTotalPrice()*0.01;
+            order.setTotalPrice(totalPrice);
+            double price= order.getPrice()*0.01;
+            order.setPrice(price);
+            ClientOrder clientOrder = new ClientOrder(order);
+            User user = userDao.load(order.getUid());
+            if (user != null) {
+                clientOrder.setUName(user.getName());
+                clientOrder.setUPhone(user.getPhone());
+            }
+
+            User passportUser = userDao.load(order.getPassportId());
+            if (passportUser != null) {
+                clientOrder.setPersonnelName(passportUser.getName());
+            }
+
+            MarketingCoupon load = marketingCouponDao.load(order.getCouponid());
+            if (load != null) {
+                if(load.getDescSubtractType()==MarketingCoupon.desc_subtract_type_money){
+                    clientOrder.setDescSubtract(load.getDescSubtract()*0.01);
+                }else{
+                    clientOrder.setDescSubtract(load.getDescSubtract());
+                }
+
+                clientOrder.setDescSubtractType(load.getDescSubtractType());
+            }
+            clientOrderList.add(clientOrder);
+        }
+
+
+        return clientOrderList;
     }
 
     private void waitWxBarcodeOrderRes(File file, PayPassport payPassport, String outTradeNo, Order order) throws Exception {
