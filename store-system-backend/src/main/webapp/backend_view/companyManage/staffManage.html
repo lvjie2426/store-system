@@ -954,8 +954,11 @@
     var psid;                                            //企业ID
     var subid;                                           //门店ID
     $(function () {
+        var preid = window.location.search.replace(/\?subid=/,"");
         psid = quakooUser.getUserInfo().psid;              //企业ID(公司ID)
-        subid = quakooDb.getItem("sel_ShopId");           //门店ID
+        subid = preid||quakooDb.getItem("sel_ShopId");           //门店ID
+        alert(preid)
+        alert(subid)
 
 
         initPage();                                   //初始化页面
