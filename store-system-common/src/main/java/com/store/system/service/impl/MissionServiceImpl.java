@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -101,7 +102,7 @@ public class MissionServiceImpl  implements MissionService {
                     allAmount+=subordinateMissionPool.getPrice();//总价格
                 }
             }
-            allProgress = allAmount/mission.getTarget();//完成度 当前完成数量/目标数量
+            allProgress = getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
         }else{
             //个人任务
             for(Long id:ids){
@@ -112,7 +113,7 @@ public class MissionServiceImpl  implements MissionService {
                     allAmount+=userMissionPool.getPrice();//总价格
                 }
             }
-            allProgress = allAmount/mission.getTarget();//完成度 当前完成数量/目标数量
+            allProgress = getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
         }
         clientMission.setAllProgress(allProgress);  //完成度
         clientMission.setAllAmount(allAmount);      //完成量
@@ -125,5 +126,11 @@ public class MissionServiceImpl  implements MissionService {
             clientMission.add(client);
         }
         return clientMission;
+    }
+    //计算完成度
+    private int getProgress(int now,int target)throws Exception{
+        float a = now;//当前完成目标
+        float b = target;//总目标
+        return (int) (a/b*100);
     }
 }
