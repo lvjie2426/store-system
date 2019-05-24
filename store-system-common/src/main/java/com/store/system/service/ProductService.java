@@ -24,7 +24,7 @@ public interface ProductService {
     public boolean updateSKU(ProductSKU productSKU) throws Exception;
 
     public void change(ProductSPU productSPU, List<ProductSKU> addProductSKUList, List<ProductSKU> updateProductSKUList,
-                       List<Long> delSkuids) throws Exception;
+                       List<Long> delSkuids, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception;
 
     public boolean delSKU(long id) throws Exception;
 

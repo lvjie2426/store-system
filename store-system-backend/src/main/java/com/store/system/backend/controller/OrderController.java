@@ -4,6 +4,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
+import com.store.system.dao.SubordinateDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Subordinate;
 import com.store.system.service.OrderService;
@@ -24,6 +25,8 @@ public class OrderController extends BaseController {
 
     @Resource
     private OrderService orderService;
+    @Resource
+    private SubordinateDao subordinateDao;
 
     /**
      * create by: zhangmeng
@@ -41,6 +44,7 @@ public class OrderController extends BaseController {
     public ModelAndView getSubOrder(HttpServletRequest request, HttpServletResponse response,
                                     Pager pager,
                                     @RequestParam(required = false,value = "startTime",defaultValue = "0")long startTime,
+                                    @RequestParam(required = false,value = "subid",defaultValue = "0")long subid,
                                     @RequestParam(required = false,value = "endTime",defaultValue = "0")long endTime,
                                     @RequestParam(required = false, value = "personnelid",defaultValue = "0") long personnelid,
                                     @RequestParam(required = false, value = "status",defaultValue = "0") int status,
@@ -49,7 +53,9 @@ public class OrderController extends BaseController {
                                     @RequestParam(required = false, value = "makeStatus",defaultValue = "0")  int makeStatus,
                                                    Model model) throws Exception {
         try {
-            pager= orderService.getAll(pager,startTime,endTime,personnelid,status,uid,name, makeStatus);
+            Subordinate subordinate = subordinateDao.load(subid);
+            if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
+            pager= orderService.getAll(pager,startTime,endTime,personnelid,status,uid,name, makeStatus,subid);
             return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

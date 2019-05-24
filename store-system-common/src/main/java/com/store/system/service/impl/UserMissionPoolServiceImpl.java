@@ -17,7 +17,11 @@ public class UserMissionPoolServiceImpl implements UserMissionPoolService{
 
     @Override
     public UserMissionPool load(long mid, long uid) throws Exception {
-        return userMissionPoolDao.load(mid,uid);
+        List<UserMissionPool> res = userMissionPoolDao.getList(mid,uid);
+        if(res!=null&&res.size()>0){
+            return res.get(0);
+        }
+        return null;
     }
 
     @Override

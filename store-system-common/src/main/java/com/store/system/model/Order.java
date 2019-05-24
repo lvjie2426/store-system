@@ -19,8 +19,8 @@ import java.util.Map;
 @Data
 public class Order implements Serializable {
 
-    public static final int status_no_pay = 0; //未缴费
-    public static final int status_pay = 1; //全部订单
+    public static final int status_no_pay = 0; //全部订单
+    public static final int status_pay = 1; // 目前没用-20190523
     public static final int status_expire = 2; //作废订单
     public static final int status_no_ok = 3; //未完成：包含未取货，未加工，欠500（拿走货，没给钱）
 
@@ -46,6 +46,8 @@ public class Order implements Serializable {
     private long id;
     private long uid;// 顾客id
     private long personnelid;// 员工id
+    private long optometryid;// 验光师id
+    private long subid;// 门店id
 
     private long passportId;
 

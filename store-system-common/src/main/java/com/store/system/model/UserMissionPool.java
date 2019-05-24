@@ -1,13 +1,11 @@
 package com.store.system.model;
 
-import com.quakoo.space.annotation.domain.CombinationKey;
-import com.quakoo.space.annotation.domain.HyperspaceDomain;
-import com.quakoo.space.annotation.domain.ShardingKey;
-import com.quakoo.space.annotation.domain.SortKey;
+import com.quakoo.space.annotation.domain.*;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,12 +21,13 @@ import java.util.List;
 public class UserMissionPool implements Serializable {
     @ShardingKey
     @CombinationKey
-    private int mid;//任务ID
+    private long mid;//任务ID
 
     @CombinationKey
-    private int uid;//员工ID
+    private long uid;//员工ID
 
-    private List<Long> oids;//订单ID
+    @HyperspaceColumn(isDbColumn = true)
+    private List<Long> oids=new ArrayList<>();//订单ID
 
     private int number;//实际完成个数
 

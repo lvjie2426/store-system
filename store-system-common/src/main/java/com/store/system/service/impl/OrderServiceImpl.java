@@ -350,19 +350,15 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus) throws Exception {
+    public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus,long subid) throws Exception {
         String sql = "SELECT  *  FROM `order`   where  1=1 ";
         String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1";
         String limit = "  limit %d , %d ";
+        if (subid > 0) {
+            sql = sql + " and `subid` = " + subid;
+            sqlCount = sqlCount + " and `subid` = " + subid;
+        }
 
-        if (status >0) {
-            sql = sql + " and `status` = " + status;
-            sqlCount = sqlCount + " and `status` = " + status;
-        }
-        if (makeStatus > 0) {
-            sql = sql + " and `MakeStatus` =  " + makeStatus;
-            sqlCount = sqlCount + "  and `MakeStatus` = " + makeStatus;
-        }
         if (personnelid > 0) {
             sql = sql + " and `personnelid` = " + personnelid;
             sqlCount = sqlCount + " and `personnelid` = " + personnelid;

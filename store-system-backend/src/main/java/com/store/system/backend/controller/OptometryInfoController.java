@@ -56,11 +56,11 @@ public class OptometryInfoController extends BaseController {
     }
 
     @RequestMapping("/getList")
-    public ModelAndView getList(@RequestParam(value = "cid") long cid,
+    public ModelAndView getList(@RequestParam(value = "uid") long uid,
                                 @RequestParam(value = "size", defaultValue = "10") int size,
                                 HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            List<ClientOptometryInfo> res = optometryInfoService.getList(cid, size);
+            List<ClientOptometryInfo> res = optometryInfoService.getList(uid, size);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

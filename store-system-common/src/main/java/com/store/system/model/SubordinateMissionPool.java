@@ -1,13 +1,14 @@
 package com.store.system.model;
 
-import com.quakoo.space.annotation.domain.CombinationKey;
-import com.quakoo.space.annotation.domain.HyperspaceDomain;
-import com.quakoo.space.annotation.domain.ShardingKey;
-import com.quakoo.space.annotation.domain.SortKey;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.quakoo.space.annotation.domain.*;
 import com.quakoo.space.enums.HyperspaceDomainType;
+import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
+import org.apache.oro.util.Cache;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,18 +20,19 @@ import java.util.List;
  * creat_time: 10:45
  **/
 
-@HyperspaceDomain(domainType = HyperspaceDomainType.listDataStructure)
+@HyperspaceDomain(domainType = HyperspaceDomainType.listDataStructure, identityType = IdentityType.human)
 @Data
 public class SubordinateMissionPool implements Serializable{
 
+    @CombinationKey
     @ShardingKey
-    @CombinationKey
-    private int mid;//任务ID
+    private long mid;//任务ID
 
     @CombinationKey
-    private int sid;//企业ID
+    private long sid;//企业ID
 
-    private List<Long> oids;//订单ID
+    @HyperspaceColumn(isJson = true)
+    private List<Long> oids=new ArrayList<>();//订单ID
 
     private int number;//实际完成个数
 

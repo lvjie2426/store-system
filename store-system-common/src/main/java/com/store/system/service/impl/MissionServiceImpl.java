@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -94,25 +95,29 @@ public class MissionServiceImpl  implements MissionService {
         if(mission.getType()==Mission.type_tem){
             //团队任务
             for(Long id:ids){
-                SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(id,mission.getId());
-                if(mission.getAmountType()==Mission.amountType_number){
-                    allAmount+=subordinateMissionPool.getNumber();//总数量
-                }else{
-                    allAmount+=subordinateMissionPool.getPrice();//总价格
+                SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(mission.getId(),id);
+                if(subordinateMissionPool!=null){
+                    if(mission.getAmountType()==Mission.amountType_number){
+                        allAmount+=subordinateMissionPool.getNumber();//总数量
+                    }else{
+                        allAmount+=subordinateMissionPool.getPrice();//总价格
+                    }
                 }
-                allProgress+=subordinateMissionPool.getProgress();//完成度
             }
+            allProgress += getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
         }else{
             //个人任务
             for(Long id:ids){
-                UserMissionPool userMissionPool = userMissionPoolService.load(id,mission.getId());
-                if(mission.getAmountType()==Mission.amountType_number){
-                    allAmount+=userMissionPool.getNumber();//总数量
-                }else{
-                    allAmount+=userMissionPool.getPrice();//总价格
+                UserMissionPool userMissionPool = userMissionPoolService.load(mission.getId(),id);
+                if(userMissionPool!=null){
+                    if(mission.getAmountType()==Mission.amountType_number){
+                        allAmount+=userMissionPool.getNumber();//总数量
+                    }else{
+                        allAmount+=userMissionPool.getPrice();//总价格
+                    }
                 }
-                allProgress+=userMissionPool.getProgress();//完成度
             }
+            allProgress += getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
         }
         clientMission.setAllProgress(allProgress);  //完成度
         clientMission.setAllAmount(allAmount);      //完成量
@@ -125,5 +130,11 @@ public class MissionServiceImpl  implements MissionService {
             clientMission.add(client);
         }
         return clientMission;
+    }
+    //计算完成度
+    private int getProgress(int now,int target)throws Exception{
+        float a = now;//当前完成目标
+        float b = target;//总目标
+        return (int) (a/b*100);
     }
 }

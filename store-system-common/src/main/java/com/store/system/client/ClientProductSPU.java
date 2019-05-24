@@ -1,6 +1,7 @@
 package com.store.system.client;
 
 import com.store.system.model.ProductSPU;
+import com.store.system.model.UserGradeCategoryDiscount;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
@@ -20,6 +21,7 @@ public class ClientProductSPU extends ProductSPU {
     private String seriesName;
 
     private List<ClientProductSKU> skuList;
+    private List<ClientUserGradeCategoryDiscount> userGradeCategoryDiscountList;
 
     private int canUseNum; //可用库存
 
