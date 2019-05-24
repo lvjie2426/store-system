@@ -982,6 +982,9 @@
     function addEmployees(){
         var name = $("#emp-name").val();
         var job = $("#emp-position").html();
+        selectTag($("#emp-position"),function (ret) {
+           job = ret.val;
+        });
         var phone = $("#emp-phone").val();
         var sex = 1;
         selectTag($("#selectBox"), function (ret) { //选择性别
@@ -1013,7 +1016,7 @@
         }
         var param={};
         param.name = name;                  //员工姓名
-        param.job = "普通员工";            //职位
+        param.job = job;                    //职位
         param.phone = phone;               //电话
         param.sex = sex;                   //性别
         param.mail = mail;                 //邮箱
@@ -1545,7 +1548,7 @@
             theme: 'mbsc-android-holo', //皮肤样式
             display: 'bubble', //显示方式
             mode: 'scroller', //日期选择模式
-            dateFormat: 'yyyy-mm-dd',
+            dateFormat: 'yyyy.mm.dd',
             lang: 'zh',
             showNow: true,
             nowText: "今天",
