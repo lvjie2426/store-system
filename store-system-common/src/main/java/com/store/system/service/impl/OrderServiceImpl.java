@@ -355,14 +355,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1";
         String limit = "  limit %d , %d ";
 
-        if (status >0) {
-            sql = sql + " and `status` = " + status;
-            sqlCount = sqlCount + " and `status` = " + status;
-        }
-        if (makeStatus > 0) {
-            sql = sql + " and `MakeStatus` =  " + makeStatus;
-            sqlCount = sqlCount + "  and `MakeStatus` = " + makeStatus;
-        }
+
         if (personnelid > 0) {
             sql = sql + " and `personnelid` = " + personnelid;
             sqlCount = sqlCount + " and `personnelid` = " + personnelid;

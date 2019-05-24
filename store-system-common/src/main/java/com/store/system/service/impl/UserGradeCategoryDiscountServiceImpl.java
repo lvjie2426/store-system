@@ -34,4 +34,9 @@ public class UserGradeCategoryDiscountServiceImpl implements UserGradeCategoryDi
         }
 
     }
+
+    @Override
+    public List<UserGradeCategoryDiscount> getAllBySPUId(long id) throws Exception {
+        return   userGradeCategoryDiscountDao.getAllBySPUId(id);
+    }
 }

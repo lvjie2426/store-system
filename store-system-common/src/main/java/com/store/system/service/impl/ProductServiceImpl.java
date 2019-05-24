@@ -9,6 +9,7 @@ import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientInventoryDetail;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
+import com.store.system.client.ClientUserGradeCategoryDiscount;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
@@ -20,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -67,13 +65,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private SubordinateDao subordinateDao;
+    @Resource
+    private UserGradeDao userGradeDao;
 
     @Resource
     private InventoryDetailDao inventoryDetailDao;
 
     @Resource
     private InventoryWarehouseDao inventoryWarehouseDao;
-
+    @Resource
+    private UserGradeCategoryDiscountDao userGradeCategoryDiscountDao;
     @Resource
     private JdbcTemplate jdbcTemplate;
     @Resource
@@ -251,8 +252,28 @@ public class ProductServiceImpl implements ProductService {
             ClientProductSKU clientProductSKU = new ClientProductSKU(one);
             skuList.add(clientProductSKU);
         }
+
+       List<UserGradeCategoryDiscount> userGradeCategoryDiscountList= userGradeCategoryDiscountService.getAllBySPUId(id);
+        List<ClientUserGradeCategoryDiscount> clientUserGradeCategoryDiscounts=new ArrayList<>();
+        for(UserGradeCategoryDiscount userGradeCategoryDiscount:userGradeCategoryDiscountList){
+            ClientUserGradeCategoryDiscount clientUserGradeCategoryDiscount=new ClientUserGradeCategoryDiscount();
+            UserGrade load = userGradeDao.load(userGradeCategoryDiscount.getUgid());
+            clientUserGradeCategoryDiscount.setUgName(load.getTitle());
+            clientUserGradeCategoryDiscounts.add(clientUserGradeCategoryDiscount);
+
+        }
+
         clientProductSPU.setSkuList(skuList);
-        return clientProductSPU;
+        clientProductSPU.setUserGradeCategoryDiscountList(clientUserGradeCategoryDiscounts);
+        return transformClientSPU(clientProductSPU);
+    }
+
+    private ClientProductSPU transformClientSPU(ClientProductSPU clientProductSPU) {
+        ClientProductSPU clientProductSPU1=clientProductSPU;
+        List<ClientProductSKU> properties = clientProductSPU1.getSkuList();
+        // sku 属性。
+
+        return  clientProductSPU ;
     }
 
     private List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList) throws Exception {
