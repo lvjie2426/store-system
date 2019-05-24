@@ -100,8 +100,8 @@ public class MissionServiceImpl  implements MissionService {
                 }else{
                     allAmount+=subordinateMissionPool.getPrice();//总价格
                 }
-                allProgress+=subordinateMissionPool.getProgress();//完成度
             }
+            allProgress = allAmount/mission.getTarget();//完成度 当前完成数量/目标数量
         }else{
             //个人任务
             for(Long id:ids){
@@ -111,8 +111,8 @@ public class MissionServiceImpl  implements MissionService {
                 }else{
                     allAmount+=userMissionPool.getPrice();//总价格
                 }
-                allProgress+=userMissionPool.getProgress();//完成度
             }
+            allProgress = allAmount/mission.getTarget();//完成度 当前完成数量/目标数量
         }
         clientMission.setAllProgress(allProgress);  //完成度
         clientMission.setAllAmount(allAmount);      //完成量
