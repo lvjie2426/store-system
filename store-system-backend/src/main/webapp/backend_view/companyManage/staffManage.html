@@ -753,7 +753,7 @@
         </div>
     </div>
     <div class="tableCont wrap90">
-        <table id="yj-table" data-toggle="table" class="cmMain-table table table-border"></table>
+        <table  id="cmMain-table" data-toggle="table" class="cmMain-table table table-border" ></table>
     </div>
 </div>
 <!--导入工资弹窗-->
@@ -906,7 +906,7 @@
                             <option value="date">日期</option>
                         </select>
                     </div>
-                    <input name="test" id="tests" data-type="day" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期"
+                    <input name="test" id="add" data-type="day" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期"
                            data-type="time"/>
                 </div>
             </li>
@@ -920,6 +920,7 @@
         </ul>
     </div>
 </div>
+<table align=""></table>
 
 <!--离职员工操作弹窗-->
 <div class="content-view content-view-removeStaff" style="display:none">
@@ -965,195 +966,150 @@
     }
     /**接口——获取员工列表*/
     function getStaffList(id,name,sex) {
+        var url = config.getUrl_user_getSubCustomerPager();
         var param={};
         param.subid = id;       //门店ID
         param.userType = 1;       //用户类型
+        param.token = quakooUser.getUserInfo().token;
         if(name){                  //姓名
             param.name = name;
         }
         if(sex){
             param.sex = sex;
         }
-        quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(), param, function (ret) {
-            console.log("员工列表：",ret);
-        })
+        var columns = [
+            {field: "name", title: "姓名", align: "left", valign: "middle"},
+            {field: "job", title: "职位", align: "left", valign: "middle"},
+            {field: "sex", title: "性别", align: "left", valign: "middle"},
+            {field: "phone", title: "手机号", align: "left", valign: "middle"},
+            {field: "mail", title: "电子邮箱", align: "left", valign: "middle"},
+            {field: "workingDate", title: "入职时间", align: "left", valign: "middle"},
+            {field: "idCard", title: "身份证号", align: "left", valign: "middle"},
+            {
+                field: "status", title: "状态", align: "left", valign: "middle",
+                formatter: function (value, row, index) {//循环自定义内容
+                    return '<div class="handleBox">' + '<form class="layui-form">' + '<div class="layui-form-item">' + adminHandle + '<label class="layui-form-label">停用</label>' + '</div>' + '</form>' + '</div>';
+                }
+            },
+            {
+                field: "", title: "操作", align: "left", valign: "middle",
+                formatter: function (value, row, index) {//循环自定义内容
+                    var html;
+                    html = '<div class="btn-status btn-edit" onclick="showStffEdit()">编辑</div>' + '<div class="btn-status btn-salary" onclick="showSalaryList()">工资单</div>';
+                    return html;
+                }
+            }
+        ];
+        console.log('mmmm:',url);
+        console.log('mmmm:',param);
+        console.log('mmmm:',columns);
+        ajaxTableData('#cmMain-table',url, param,columns);
     }
+    /**table模板*/
+    function ajaxTableData(domId,url,param,columns){
+        $(domId).bootstrapTable('destroy');
+        $(domId).bootstrapTable({
+            url:url,
+            method: 'get',
+            classes: "table",
+            pagination: true,                     //是否显示分页
+            sidePagination: "server",             //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                        //初始化加载第一页，默认第一页
+            pageSize: 8,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: columns,
+            queryParams:function (params) {
+                for(var i in param){
+                    params[i] = param[i]
+                }
+                console.log('params:::',params);
+                return params;
+            }
+
+        });
+    }
+
     /**接口——添加员工*/
-    function addEmployees(){
+    function addEmployees(index,job,sex){
         var name = $("#emp-name").val();
-        var job = $("#emp-position").html();
-        selectTag($("#emp-position"),function (ret) {
-           job = ret.val;
-        });
+        var job = job||$("#emp-position").html();
         var phone = $("#emp-phone").val();
-        var sex = 1;
-        selectTag($("#selectBox"), function (ret) { //选择性别
-            sex = ret.value;
-        });
+        var sex = sex||1;
         var mail = $("#emp-mail").val();
         var idCard = $("#emp-idcard").val();
-        var jobDay = $("#emp-name").val();
+        var jobDay = $("#add").val().replace(/\./g,',');
+        jobDay = new Date(jobDay).getTime();
         if(quakooUtils.isNotBlack(name)){
             if(quakooUtils.isNotBlack(phone)){
-                if(quakooUtils.isNotBlack(mail)){
-                    if(quakooUtils.isNotBlack(idCard)){
-
+                if(quakooUtils.isMobileNum(phone)){
+                    if(quakooUtils.isNotBlack(mail)){
+                        if(quakooUtils.isEmail(mail)){
+                            if(quakooUtils.isNotBlack(idCard)){
+                                if(quakooUtils.isIDcard(idCard)){
+                                    if(quakooUtils.isNotBlack(jobDay)){
+                                        var param={};
+                                        param.name = name;                  //员工姓名
+                                        param.job = job;                    //职位
+                                        param.phone = phone;               //电话
+                                        param.sex = sex;                   //性别
+                                        param.mail = mail;                 //邮箱
+                                        param.psid = psid;                 //公司ID
+                                        param.sid = subid;                 //店铺ID
+                                        param.idCard = idCard;             //身份证
+                                        param.jobDay = jobDay;             //入职时间
+                                        param.userType = 1;                //0表示顾客，1表示员工
+                                        quakooData.ajaxGetData(config.getUrl_user_add(),param,function (ret){
+                                            if(ret&&ret.success){
+                                                layer.msg("成功创建员工"+name,{icon:1});
+                                                getStaffList(subid);
+                                                setTimeout(function () {
+                                                    layer.close(index);
+                                                },200);
+                                            }else{
+                                                layer.alert(ret.data,{icon:2})
+                                            }
+                                        })
+                                    }else{
+                                        layer.msg("请选择员工入职时间",{icon:4});
+                                        return
+                                    }
+                                }else{
+                                    layer.msg("请输入正确的身份证号",{icon:4});
+                                    return
+                                }
+                            }else{
+                                layer.msg("请输入身份证号",{icon:4});
+                                return
+                            }
+                        }else{
+                            layer.msg("请输入正确邮箱",{icon:4})
+                            return
+                        }
                     }else{
-                        layer.msg("请输入身份证号",{icon:4});
-                        $("#emp-idcard").focus();
+                        layer.msg("请输入邮箱",{icon:4});
+                        return
                     }
                 }else{
-                    layer.msg("请输入邮箱",{icon:4});
-                    $("#emp-mail").focus();
+                    layer.msg("请输入正确手机号",{icon:4});
+                    return
                 }
             }else{
                 layer.msg("请输入手机号",{icon:4});
-                $("#emp-phone").focus();
+                return
             }
         }else{
             layer.msg("请输入员工姓名",{icon:4});
-            $("#em-name").focus();
+            return
         }
-        var param={};
-        param.name = name;                  //员工姓名
-        param.job = job;                    //职位
-        param.phone = phone;               //电话
-        param.sex = sex;                   //性别
-        param.mail = mail;                 //邮箱
-        param.psid = psid;                 //公司ID
-        param.sid = subid;                 //店铺ID
-        param.idCard = idCard;            //身份证
-        param.jobDay = jobDay;            //入职时间
-        param.userType = 1;              //0表示顾客，1表示员工
-        quakooData.ajaxGetData(config.getUrl_user_addCustomer(),param,function (ret){
-            console.log("添加员工：",ret);
-        })
+
     }
-    //表格插件
-    var data =
-        [
-                {
-                    name: '测试',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试1',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试2',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试3',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试4',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试5',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试6',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试7',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试8',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试9',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-                {
-                    name: '测试10',
-                    job: '店长/验光师',
-                    sex: '女',
-                    tel: '11111111111',
-                    email: '111111111111@qq.com',
-                    time: '2018.08.03',
-                    perId: '211111111111111111',
-                    status: '启用',
-                    handle: '编辑'
-                },
-            ];
     var data2 =
         [
                 {name: '精益眼镜旗舰店1', perNum: 20, actualNum: 30, status: '上传成功'},
@@ -1205,15 +1161,11 @@
     layui.use(['form', 'layedit', 'laydate'], function () {
         var form = layui.form;
         form.on('switch(switchTest)', function (data) {
-            var isOpenTxt = $(this).parent().siblings('.layui-form-label')
+            var isOpenTxt = $(this).parent().siblings('.layui-form-label');
             isOpenTxt.text(this.checked == true ? '启用' : '停用')
         });
-    })
+    });
 
-    //自定义Status内容
-    var tableCustomStatus = '<div class="handleBox">' + '<form class="layui-form">' + '<div class="layui-form-item">' + adminHandle + '<label class="layui-form-label">停用</label>' + '</div>' + '</form>' + '</div>'
-    //自定义Handle内容
-    var tableCustomHandle = '<div class="btn-status btn-edit" onclick="showStffEdit()">编辑</div>' + '<div class="btn-status btn-salary" onclick="showSalaryList()">工资单</div>';
     selectTag($("#selectBox"), function (ret) {/**/
     })
     selectTag($("#selectBox2"), function (ret) {/**/
@@ -1226,47 +1178,6 @@
     })
     selectTag($("#selectBox5"), function (ret) {/**/
     })
-    //主页bootstrapTable
-    $(".cmMain-table").bootstrapTable({
-        data: data,
-        classes: "table",
-        pagination: true,        //是否显示分页
-        pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        smartDisplay: false,
-        columns: [
-            {field: "name", title: "姓名", align: "left", valign: "middle"},
-            {field: "job", title: "职位", align: "left", valign: "middle"},
-            {field: "sex", title: "性别", align: "left", valign: "middle"},
-            {field: "tel", title: "手机号", align: "left", valign: "middle"},
-            {field: "email", title: "电子邮箱", align: "left", valign: "middle"},
-            {field: "time", title: "入职时间", align: "left", valign: "middle"},
-            {field: "perId", title: "身份证号", align: "left", valign: "middle"},
-            {
-                field: "status", title: "状态", align: "left", valign: "middle",
-                formatter: function (value, row, index) {//循环自定义内容
-                    return tableCustomStatus
-                }
-            },
-            {
-                field: "handle", title: "操作", align: "left", valign: "middle",
-                formatter: function (value, row, index) {//循环自定义内容
-                    return tableCustomHandle
-                }
-            },
-        ],
-        onPageChange: function (number, size) {
-            form.render();
-        }
-    });
     //导入工资bootstrapTable
     $(".cmMain-table2").bootstrapTable({
         data: data2,
@@ -1402,6 +1313,13 @@
     }
     /**弹窗——创建员工*/
     function employee(){
+        var job,sex;
+        selectTag($("#emp-position"),function (ret) {
+            job = ret.val;
+        });
+        selectTag($("#job-sex"), function (ret) { //选择性别
+            sex = ret.value;
+        });
         layer.open({
             type: 1,
             title: '创建员工临时页面（设计图扫码移动端添加）',
@@ -1418,7 +1336,8 @@
             },
             btn2: function (index) {
                 /**调用添加员工接口*/
-                addEmployees();
+                addEmployees(index,job,sex);
+                return false
             },
             success: function (layero, index) {
                 _StffEdit = index
