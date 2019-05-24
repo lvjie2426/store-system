@@ -95,25 +95,29 @@ public class MissionServiceImpl  implements MissionService {
         if(mission.getType()==Mission.type_tem){
             //团队任务
             for(Long id:ids){
-                SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(id,mission.getId());
-                if(mission.getAmountType()==Mission.amountType_number){
-                    allAmount+=subordinateMissionPool.getNumber();//总数量
-                }else{
-                    allAmount+=subordinateMissionPool.getPrice();//总价格
+                SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(mission.getId(),id);
+                if(subordinateMissionPool!=null){
+                    if(mission.getAmountType()==Mission.amountType_number){
+                        allAmount+=subordinateMissionPool.getNumber();//总数量
+                    }else{
+                        allAmount+=subordinateMissionPool.getPrice();//总价格
+                    }
                 }
             }
-            allProgress = getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
+            allProgress += getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
         }else{
             //个人任务
             for(Long id:ids){
-                UserMissionPool userMissionPool = userMissionPoolService.load(id,mission.getId());
-                if(mission.getAmountType()==Mission.amountType_number){
-                    allAmount+=userMissionPool.getNumber();//总数量
-                }else{
-                    allAmount+=userMissionPool.getPrice();//总价格
+                UserMissionPool userMissionPool = userMissionPoolService.load(mission.getId(),id);
+                if(userMissionPool!=null){
+                    if(mission.getAmountType()==Mission.amountType_number){
+                        allAmount+=userMissionPool.getNumber();//总数量
+                    }else{
+                        allAmount+=userMissionPool.getPrice();//总价格
+                    }
                 }
             }
-            allProgress = getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
+            allProgress += getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
         }
         clientMission.setAllProgress(allProgress);  //完成度
         clientMission.setAllAmount(allAmount);      //完成量

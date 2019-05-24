@@ -2,6 +2,8 @@ package com.store.system.dao.impl;
 
 import com.quakoo.space.CacheBaseDao;
 import com.quakoo.space.annotation.cache.CacheDaoMethod;
+import com.quakoo.space.annotation.dao.HyperspaceDao;
+import com.quakoo.space.enums.HyperspaceType;
 import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.store.system.dao.SubordinateMissionPoolDao;
 import com.store.system.model.SubordinateMissionPool;
@@ -9,6 +11,7 @@ import com.store.system.model.SubordinateMissionPool;
 import java.util.List;
 import java.util.Map;
 
+@HyperspaceDao(type = HyperspaceType.cache)
 public class SubordinateMissionPoolDaoImpl extends CacheBaseDao<SubordinateMissionPool> implements SubordinateMissionPoolDao{
 
     @Override
@@ -18,7 +21,7 @@ public class SubordinateMissionPoolDaoImpl extends CacheBaseDao<SubordinateMissi
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
-    public SubordinateMissionPool load(long mid, long sid) throws Exception {
+    public List<SubordinateMissionPool> getList(long mid, long sid) {
         return null;
     }
 }
