@@ -109,6 +109,7 @@ public class ProductController extends BaseController {
     public ModelAndView change(ProductSPU productSPU, @RequestParam(value = "addSkuJson") String addSkuJson,
                                @RequestParam(value = "updateSkuJson") String updateSkuJson,
                                @RequestParam(value = "delSkuIdJson") String delSkuIdJson,
+                               @RequestParam(required = false,value = "ugDiscount") String ugDiscount,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ProductSKU> addProductSKUList = null;
@@ -129,7 +130,16 @@ public class ProductController extends BaseController {
             } catch (Exception e) {
                 throw new StoreSystemException("删除的sku格式错误");
             }
-            productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds);
+            List<UserGradeCategoryDiscount> ugDiscountList = Lists.newArrayList();
+            try {
+                if(StringUtils.isNotBlank(ugDiscount)){
+                    ugDiscountList = JsonUtils.fromJson(ugDiscount, new TypeReference<List<UserGradeCategoryDiscount>>() {});
+                }
+
+            } catch (Exception e) {
+                throw new StoreSystemException("会员折扣格式错误");
+            }
+            productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds,ugDiscountList);
             return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

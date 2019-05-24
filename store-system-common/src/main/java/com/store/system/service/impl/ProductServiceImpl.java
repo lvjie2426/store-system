@@ -165,7 +165,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void change(ProductSPU productSPU, List<ProductSKU> addProductSKUList, List<ProductSKU> updateProductSKUList,
-                       List<Long> delSkuids) throws Exception {
+                       List<Long> delSkuids, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception {
         List<ProductSKU> productSKUList = Lists.newArrayList(addProductSKUList);
         productSKUList.addAll(updateProductSKUList);
         check(productSPU, productSKUList);
@@ -192,6 +192,11 @@ public class ProductServiceImpl implements ProductService {
                     productSKU.setStatus(ProductSKU.status_delete);
                     productSKUDao.update(productSKU);
                 }
+            }
+        }
+        if (ugDiscountList.size() > 0) {
+            for (UserGradeCategoryDiscount categoryDiscount : ugDiscountList) {
+                userGradeCategoryDiscountDao.update(categoryDiscount);
             }
         }
     }
@@ -256,7 +261,7 @@ public class ProductServiceImpl implements ProductService {
        List<UserGradeCategoryDiscount> userGradeCategoryDiscountList= userGradeCategoryDiscountService.getAllBySPUId(id);
         List<ClientUserGradeCategoryDiscount> clientUserGradeCategoryDiscounts=new ArrayList<>();
         for(UserGradeCategoryDiscount userGradeCategoryDiscount:userGradeCategoryDiscountList){
-            ClientUserGradeCategoryDiscount clientUserGradeCategoryDiscount=new ClientUserGradeCategoryDiscount();
+            ClientUserGradeCategoryDiscount clientUserGradeCategoryDiscount=new ClientUserGradeCategoryDiscount(userGradeCategoryDiscount);
             UserGrade load = userGradeDao.load(userGradeCategoryDiscount.getUgid());
             clientUserGradeCategoryDiscount.setUgName(load.getTitle());
             clientUserGradeCategoryDiscounts.add(clientUserGradeCategoryDiscount);
@@ -265,7 +270,7 @@ public class ProductServiceImpl implements ProductService {
 
         clientProductSPU.setSkuList(skuList);
         clientProductSPU.setUserGradeCategoryDiscountList(clientUserGradeCategoryDiscounts);
-        return transformClientSPU(clientProductSPU);
+        return clientProductSPU;
     }
 
     private ClientProductSPU transformClientSPU(ClientProductSPU clientProductSPU) {

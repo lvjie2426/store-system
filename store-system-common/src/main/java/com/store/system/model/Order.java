@@ -47,6 +47,7 @@ public class Order implements Serializable {
     private long uid;// 顾客id
     private long personnelid;// 员工id
     private long optometryid;// 验光师id
+    private long subid;// 门店id
 
     private long passportId;
 

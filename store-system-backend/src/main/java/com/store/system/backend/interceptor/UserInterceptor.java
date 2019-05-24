@@ -49,6 +49,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
                 }
             }
         }
+
         if (StringUtils.isBlank(token)) {
             logger.info("login error token error!");
             response.setStatus(403);

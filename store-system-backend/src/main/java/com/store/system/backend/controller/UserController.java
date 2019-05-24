@@ -115,6 +115,7 @@ public class UserController extends BaseController {
     @RequestMapping("/add")
     public ModelAndView add(User user, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            user.setPassword("123456");
             ClientUserOnLogin clientUserOnLogin = userService.register(user);
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
         }catch (StoreSystemException e){
