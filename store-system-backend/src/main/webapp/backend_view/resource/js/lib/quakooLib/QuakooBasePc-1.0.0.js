@@ -255,7 +255,7 @@ var QuakooData = (function () {
      */
     _proto._ajaxSubmitData = function(url, data, callback, dataType, sync,addUserToken){
         dataType = dataType?dataType:'json';
-        sync = quakooUtils.isBlack(sync)?true:sync;
+        sync = sync==undefined?true:sync;
         var user = quakooUser.getUserInfo();
         if(addUserToken){
             data.token = user.token;

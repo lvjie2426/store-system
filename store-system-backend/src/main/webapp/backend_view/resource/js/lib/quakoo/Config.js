@@ -146,6 +146,8 @@ var Config = (function(_super){
     _proto.getUrl_product_getSPUPager = function(){return this.serverUrl + '/product/getSPUPager';};
     /**增加商品*/
     _proto.getUrl_product_add = function(){return this.serverUrl + '/product/add';};
+    /**修改商品spu*/
+    _proto.getUrl_product_change = function(){return this.serverUrl + '/product/change';};
     /**删除商品spu*/
     _proto.getUrl_product_delSPU = function(){return this.serverUrl + '/product/delSPU';};
     /**根据spu的id加载商品信息*/
@@ -153,6 +155,8 @@ var Config = (function(_super){
     /**开启关闭销售状态*/
     _proto.getUrl_product_updateSaleStatus = function(){return this.serverUrl + '/product/updateSaleStatus';};
 
+    /**获取所有出库单*/
+    _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryOutBill/getCheckPager';};
     //=======================商品管理 结束====================
 
 

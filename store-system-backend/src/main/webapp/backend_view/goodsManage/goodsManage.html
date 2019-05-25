@@ -86,655 +86,8 @@
         <table id="yj-table" data-toggle="table"  class="table table-border"></table>
     </div>
     <!--新增镜片-->
-    <div class="content-view content-view-addgoods">
-        <div class="layui-yj-header">
-            <div class="layui-layer-title">
-                <div>新增镜片</div>
-            </div>
-            <div class="title-right" >
-                销售状态<div class="yj-search active" id="yj-status-jp" onclick="changeYjStatus(this)"><i></i></div>
-            </div>
-        </div>
+    <div class="content-view content-view-addgoods" id="addGoodsDom">
 
-        <div class="goods-select-box">
-            <div class="goods-select">
-                <div class="goods-select-title">品牌</div>
-                <div class="selectBox" id="select-jp-brand">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">系列</div>
-                <div class="selectBox" id="select-jp-series">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">焦点</div>
-                <div class="selectBox" id="select-jp-jiaodian">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">折射率</div>
-                <div class="selectBox" id="select-jp-zheshelv">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">功能</div>
-                <div class="selectBox" id="select-jp-gongneng">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">供应商</div>
-                <div class="selectBox" id="select-jp-provider">
-
-                </div>
-            </div>
-            <!--<div class="goods-select goods-range">
-                <div class="goods-select-title">现货范围</div>
-                <div class="goods-range-body" onclick="openGoodsRange('现货')">设定现货范围</div>
-            </div>-->
-            <div class="goods-select goods-range">
-                <div class="goods-select-title">定制范围</div>
-                <div class="goods-range-body" onclick="openGoodsRange('定制')">设定定制范围</div>
-            </div>
-            <div style="clear: both"></div>
-        </div>
-        <form class="layui-form" action="">
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-jp">
-                <div class="goods-vip-btn">
-                    <div class="goods-vip-left">会员折扣</div>
-                    <div class="goods-vip-right" onclick="changeVipStatus(this)">
-                        <div class="yj-radio"></div>
-                        <span>参与会员折扣</span>
-                        <em onclick="openSettingVip(this)">设置</em>
-                    </div>
-                </div>
-                <div class="goods-select-box">
-                    <div class="goods-select goods-range">
-                        <div class="goods-select-title">零售价</div>
-                        <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
-                    </div>
-                    <div class="goods-select goods-range">
-                        <div class="goods-select-title">提成</div>
-                        <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
-                    </div>
-                    <div style="clear: both"></div>
-                </div>
-            </div>
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-jp goods-select-box" style="display: none">
-                <div class="goods-select goods-range">
-                    <div class="goods-select-title">积分价</div>
-                    <div class="goods-range-body" onclick="openZeroPrice(1)">设定积分价</div>
-                </div>
-                <div class="goods-select goods-range">
-                    <div class="goods-select-title">兑换数量上限</div>
-                    <div class="">
-                        <input type="text" placeholder="搜索商品" id="select-jp-maxnum" class="yj-input">
-                    </div>
-                </div>
-                <div class="goods-select " style="width: 100%;height: auto;">
-                    <div class="goods-select-title">有效期</div>
-                    <div class="yj-demo-time" id="yj-time-jp">
-                        <div class="yj-date">
-                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
-                    <form class="layui-form" action="">
-                        <div class="layui-form-item" pane="">
-                            <div class="layui-input-block yj-check-input">
-                                <input type="checkbox" name=""  lay-filter="kucun-jp" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div style="clear: both"></div>
-
-            </div>
-        </form>
-    </div>
-    <!--新增特殊商品-->
-    <div class="content-view content-view-addtsgoods">
-        <div class="layui-yj-header">
-            <div class="layui-layer-title">
-                <div>新增特殊商品</div>
-            </div>
-            <div class="title-right" >
-                销售状态<div class="yj-search active" id="yj-status-tssp"  onclick="changeYjStatus(this)"><i></i></div>
-            </div>
-        </div>
-
-        <div class="goods-select-box">
-            <div class="goods-select goods-select-img" style="width: 100%">
-                <div class="goods-select-title">商品主图</div>
-                <div class="selectBox"  onclick="uploadTsspIcon()">
-                    <div>
-                        <img src="" id="cover" alt="">
-                    </div>
-                    <i class="iconfont icon-ico_plus"></i>
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">品牌</div>
-                <div class="selectBox" id="select-tssp-brand">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">系列</div>
-                <div class="selectBox" id="select-tssp-series">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">供应商</div>
-                <div class="selectBox" id="select-tssp-provider">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">名称</div>
-                <div class="selectBox" >
-                    <input type="text" class="yj-input" placeholder="名称" id="select-tssp-name">
-                </div>
-            </div>
-            <div style="clear: both"></div>
-            <div class="goods-select">
-                <div class="goods-select-title">产品编码</div>
-                <div class="selectBox" >
-                    <input type="text" class="yj-input" placeholder="产品编码" id="select-tssp-code">
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">库存</div>
-                <div class="selectBox" >
-                    <input type="text" class="yj-input" placeholder="库存" id="select-tssp-num">
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">成本价</div>
-                <div class="selectBox" >
-                    <input type="text" class="yj-input" placeholder="成本价"  id="select-tssp-costPrice">
-                </div>
-            </div>
-            <div style="clear: both"></div>
-        </div>
-        <form class="layui-form" action="">
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-tssp"></div>
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-tssp goods-select-box" style="display: none">
-                <div class="goods-select">
-                    <div class="goods-select-title">积分价</div>
-                    <div class="selectBox" >
-                        <input type="text" class="yj-input" placeholder="积分价"  id="select-tssp-jifen">
-                    </div>
-                </div>
-                <div class="goods-select">
-                    <div class="goods-select-title">兑换数量上限</div>
-                    <div class="">
-                        <input type="text" placeholder="数量" id="select-tssp-maxnum" class="yj-input">
-                    </div>
-                </div>
-                <div class="goods-select " style="width: 100%;height: auto;">
-                    <div class="goods-select-title">有效期</div>
-                    <div class="yj-demo-time" id="yj-time-tssp">
-                        <div class="yj-date">
-                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
-                    <form class="layui-form" action="">
-                        <div class="layui-form-item" pane="">
-                            <div class="layui-input-block yj-check-input">
-                                <input type="checkbox" name=""  lay-filter="kucun-tssp" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div style="clear: both"></div>
-
-            </div>
-        </form>
-    </div>
-    <!--新增护理产品-->
-    <div class="content-view content-view-addhlgoods">
-        <div class="layui-yj-header">
-            <div class="layui-layer-title">
-                <div>新增护理产品</div>
-            </div>
-            <div class="title-right" >
-                销售状态<div class="yj-search active" id="yj-status-hlcp" onclick="changeYjStatus(this)"><i></i></div>
-            </div>
-        </div>
-        <div class="goods-select-box">
-            <div class="goods-select">
-                <div class="goods-select-title">品牌</div>
-                <div class="selectBox" id="select-hlcp-brand">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">系列</div>
-                <div class="selectBox" id="select-hlcp-series">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">类型</div>
-                <div class="selectBox" id="select-hlcp-type" >
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">包装</div>
-                <div class="selectBox" id="select-hlcp-baozhuang">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">开瓶寿命/天*</div>
-                <div class="selectBox">
-                    <input type="text" class="yj-input" id="select-hlcp-shouming">
-                </div>
-                <span>*设定后会短信自动提醒顾客</span>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">质保时长/天</div>
-                <div class="selectBox">
-                    <input type="text" class="yj-input" id="select-hlcp-day">
-                </div>
-            </div>
-            <div style="clear: both"></div>
-
-            <div class="goods-select">
-                <div class="goods-select-title">供应商</div>
-                <div class="selectBox" id="select-hlcp-provider">
-
-                </div>
-            </div>
-            <div style="clear: both"></div>
-        </div>
-        <form class="layui-form" action="">
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-hlcp">
-                <div class="goods-vip-btn">
-                    <div class="goods-vip-left">会员折扣</div>
-                    <div class="goods-vip-right" onclick="changeVipStatus(this)">
-                        <div class="yj-radio"></div>
-                        <span>参与会员折扣</span>
-                        <em onclick="openSettingVip(this)">设置</em>
-                    </div>
-                </div>
-                <div class="goods-select-box">
-                    <div class="goods-select">
-                        <div class="goods-select-title">产品编码</div>
-                        <div class="selectBox" >
-                            <input type="text" class="yj-input" id="select-hlcp-code-0">
-                        </div>
-                    </div>
-                    <div class="goods-select">
-                        <div class="goods-select-title">零售价</div>
-                        <div class="selectBox">
-                            <input type="text" class="yj-input" placeholder="零售价" id="select-hlcp-lingshou">
-                        </div>
-                    </div>
-                    <div class="goods-select">
-                        <div class="goods-select-title">成本价</div>
-                        <div class="selectBox">
-                            <input type="text" class="yj-input" placeholder="成本价" id="select-hlcp-chengben">
-                        </div>
-                    </div>
-                    <div style="clear: both"></div>
-                    <div class="goods-select goods-range">
-                        <div class="goods-select-title">提成</div>
-                        <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
-                    </div>
-                    <div style="clear: both"></div>
-                </div>
-            </div>
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-hlcp goods-select-box" style="display: none">
-                <div class="goods-select">
-                    <div class="goods-select-title">产品编码</div>
-                    <div class="selectBox" >
-                        <input type="text" class="yj-input" id="select-hlcp-code-1">
-                    </div>
-                </div>
-                <div class="goods-select">
-                    <div class="goods-select-title">积分价</div>
-                    <div class="selectBox">
-                        <input type="text" class="yj-input" placeholder="积分价" id="select-hlcp-jifen">
-                    </div>
-                </div>
-                <div class="goods-select">
-                    <div class="goods-select-title">兑换数量上限</div>
-                    <div class="">
-                        <input type="text" placeholder="数量" id="integralNum-hlcp" class="yj-input">
-                    </div>
-                </div>
-                <div class="goods-select " style="width: 100%;height: auto;">
-                    <div class="goods-select-title">有效期</div>
-                    <div class="yj-demo-time" id="yj-time-hlcp">
-                        <div class="yj-date">
-                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
-                    <form class="layui-form" action="">
-                        <div class="layui-form-item" pane="">
-                            <div class="layui-input-block yj-check-input">
-                                <input type="checkbox" name=""  lay-filter="kucun-hlcp" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div style="clear: both"></div>
-
-            </div>
-        </form>
-    </div>
-    <!--新增隐形眼镜-->
-    <div class="content-view content-view-addyxgoods">
-        <div class="layui-yj-header">
-            <div class="layui-layer-title">
-                <div>新增隐形眼镜</div>
-            </div>
-            <div class="title-right" >
-                销售状态<div class="yj-search active" id="yj-status-yxyj" onclick="changeYjStatus(this)"><i></i></div>
-            </div>
-        </div>
-        <div class="goods-select-box">
-            <div class="goods-select">
-                <div class="goods-select-title">品牌</div>
-                <div class="selectBox" id="select-yxyj-brand" >
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">系列</div>
-                <div class="selectBox" id="select-yxyj-series">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">类型</div>
-                <div class="selectBox" id="select-yxyj-type">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">更换周期</div>
-                <div class="selectBox" id="select-yxyj-zhouqi">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">包装</div>
-                <div class="selectBox" id="select-yxyj-baozhuang">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">质保时长/天*</div>
-                <div class="selectBox">
-                    <input type="text" class="yj-input" id="select-yxyj-day">
-                </div>
-                <span>*设定后会短信自动提醒顾客</span>
-            </div>
-            <div style="clear: both"></div>
-
-            <div class="goods-select">
-                <div class="goods-select-title">供应商</div>
-                <div class="selectBox"  id="select-yxyj-provider">
-
-                </div>
-            </div>
-            <div style="clear: both"></div>
-        </div>
-        <form class="layui-form" action="">
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-yxyj">
-                <div class="goods-vip-btn">
-                    <div class="goods-vip-left">会员折扣</div>
-                    <div class="goods-vip-right" onclick="changeVipStatus(this)">
-                        <div class="yj-radio"></div>
-                        <span>参与会员折扣</span>
-                        <em onclick="openSettingVip(this)">设置</em>
-                    </div>
-                </div>
-                <div class="goods-select-box">
-                    <div class="goods-select goods-range">
-                        <div class="goods-select-title">零售价</div>
-                        <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
-                    </div>
-                    <div class="goods-select goods-range">
-                        <div class="goods-select-title">提成</div>
-                        <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
-                    </div>
-                    <div style="clear: both"></div>
-                </div>
-            </div>
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-yxyj goods-select-box" style="display: none">
-                <div class="goods-select goods-range">
-                    <div class="goods-select-title">积分价</div>
-                    <div class="goods-range-body" onclick="openZeroPrice(1)">设定积分价</div>
-                </div>
-                <div class="goods-select goods-range">
-                    <div class="goods-select-title">兑换数量上限</div>
-                    <div class="">
-                        <input type="text" placeholder="数量" id="select-yxyj-maxnum" class="yj-input">
-                    </div>
-                </div>
-                <div class="goods-select " style="width: 100%;height: auto;">
-                    <div class="goods-select-title">有效期</div>
-                    <div class="yj-demo-time" id="yj-time-yxyj">
-                        <div class="yj-date">
-                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
-                    <form class="layui-form" action="">
-                        <div class="layui-form-item" pane="">
-                            <div class="layui-input-block yj-check-input">
-                                <input type="checkbox" name=""  lay-filter="kucun-yxyj" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div style="clear: both"></div>
-
-            </div>
-        </form>
-    </div>
-    <!--新增镜架-->
-    <div class="content-view content-view-addtyqtgoods">
-        <div class="layui-yj-header">
-            <div class="layui-layer-title">
-                <div id="jj-title"></div>
-            </div>
-            <div class="title-right" >
-                销售状态<div class="yj-search active" id="yj-status-jj" onclick="changeYjStatus(this)"><i></i></div>
-            </div>
-        </div>
-        <div class="goods-select-box">
-            <div class="goods-select">
-                <div class="goods-select-title">品牌</div>
-                <div class="selectBox" id="select-jj-brand">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">系列</div>
-                <div class="selectBox" id="select-jj-series">
-
-                </div>
-            </div>
-            <div class="goods-select">
-                <div class="goods-select-title">质保时长/天</div>
-                <div class="selectBox" >
-                    <input type="text" class="yj-input" id="select-jj-day">
-                </div>
-            </div>
-
-            <div class="goods-select">
-                <div class="goods-select-title">供应商</div>
-                <div class="selectBox" id="select-jj-provider">
-
-                </div>
-            </div>
-
-            <div style="clear: both"></div>
-        </div>
-        <form class="layui-form" action="">
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-jj">
-                <div class="goods-vip-btn">
-                    <div class="goods-vip-left">会员折扣</div>
-                    <div class="goods-vip-right" onclick="changeVipStatus(this)">
-                        <div class="yj-radio"></div>
-                        <span>参与会员折扣</span>
-                        <em onclick="openSettingVip(this)">设置</em>
-                    </div>
-                </div>
-                <div class="goods-select-box">
-                    <div class="goods-select">
-                        <div class="goods-select-title">产品编码</div>
-                        <div class="selectBox" >
-                            <input type="text" class="yj-input" id="select-jj-code-0">
-                        </div>
-                    </div>
-                    <div class="goods-select">
-                        <div class="goods-select-title">零售价</div>
-                        <div class="selectBox">
-                            <input type="text" class="yj-input" placeholder="零售价" id="select-jj-lingshou">
-                        </div>
-                    </div>
-                    <div class="goods-select">
-                        <div class="goods-select-title">成本价</div>
-                        <div class="selectBox">
-                            <input type="text" class="yj-input" placeholder="成本价" id="select-jj-chengben">
-                        </div>
-                    </div>
-                    <div style="clear: both"></div>
-                    <div class="goods-select goods-range">
-                        <div class="goods-select-title">提成</div>
-                        <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
-                    </div>
-                    <div style="clear: both"></div>
-                </div>
-            </div>
-            <div class="goods-type">
-                <div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
-                    </div>
-                </div>
-            </div>
-            <div class="goods-radio-box-jj goods-select-box" style="display: none">
-                <div class="goods-select">
-                    <div class="goods-select-title">产品编码</div>
-                    <div class="selectBox" >
-                        <input type="text" placeholder="产品编码" class="yj-input" id="select-jj-code-1">
-                    </div>
-                </div>
-                <div class="goods-select">
-                    <div class="goods-select-title">积分价</div>
-                    <div class="">
-                        <input type="text" placeholder="积分价" class="yj-input" id="select-jj-jifen">
-                    </div>
-                </div>
-                <div class="goods-select">
-                    <div class="goods-select-title">兑换数量上限</div>
-                    <div class="">
-                        <input type="text" placeholder="数量" class="yj-input" id="select-jj-maxnum">
-                    </div>
-                </div>
-                <div class="goods-select " style="width: 100%;height: auto;">
-                    <div class="goods-select-title">有效期</div>
-                    <div class="yj-demo-time" id="yj-time-jj">
-                        <div class="yj-date">
-                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
-                    <form class="layui-form" action="">
-                        <div class="layui-form-item" pane="">
-                            <div class="layui-input-block yj-check-input">
-                                <input type="checkbox" name=""  lay-filter="kucun-jj" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div style="clear: both"></div>
-            </div>
-        </form>
     </div>
 
     <!--设置会员折扣的弹出框-->
@@ -804,14 +157,7 @@
     </div>
     <!--设定价格-->
     <div class="content-view content-view-price">
-        <div class="layui-yj-header">
-            <div class="layui-layer-title">
-                <div>设定价格<span>规格: 片</span></div>
-            </div>
-            <div class="title-right" onclick="openRedTip()" >
-                设置预警库存
-            </div>
-        </div>
+
         <ul class="tab-ul" id="setPriceBtn">
             <li class="active" onclick="setPrice(1)">产品编码</li>
             <li onclick="setPrice(2)">零售价/元</li>
@@ -931,9 +277,544 @@
         <%for(var i=0;i< list.length;i++){%>
         <tr>
             <td><%=list[i].title%></td>
-            <td><input type="text" data-id="<%=list[i].id%>" class="vipInput" placeholder=""></td>
+            <%if(list[i].value){%>
+                <td><input type="text" value="<%=list[i].value%>" data-id="<%=list[i].id%>" class="vipInput" placeholder=""></td>
+            <%}else{%>
+                <td><input type="text" data-id="<%=list[i].id%>" class="vipInput" placeholder=""></td>
+            <%}%>
         </tr>
         <%}%>
+    </script>
+    <!--增加商品弹出框-->
+    <script type="text/html" id="addGoodsTmp">
+        <div class="goods-select-box">
+            <%if(list.categoryName=='特殊商品'){%>
+            <div class="goods-select goods-select-img" style="width: 100%">
+                <div class="goods-select-title">商品主图</div>
+                <div class="selectBox"  onclick="uploadTsspIcon()">
+                    <%if(list.icon){%>
+                    <div style="display: block;">
+                        <img src="<%=list.newIcon%>" id="cover" alt="" style="<%=list.style%>">
+                    </div>
+                    <%}%>
+                    <i class="iconfont icon-ico_plus"></i>
+                </div>
+            </div>
+            <%}%>
+
+            <div class="goods-select">
+                <div class="goods-select-title">品牌</div>
+                <div class="selectBox" id="yj-add-brand">
+                    <div class="select-box-header">
+                        <span class="text"><%if(list.brandName){%><%=list.brandName%><%}else{%>品牌<%}%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< brandData.length;i++){%>
+                            <li value="<%=brandData[i].id%>"><%=brandData[i].name%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">系列</div>
+                <div class="selectBox" id="yj-add-series">
+                    <div class="select-box-header">
+                        <span class="text"><%if(list.seriesName){%><%=list.seriesName%><%}else{%>系列<%}%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                </div>
+            </div>
+            <%if(list.categoryName=='镜片'){%>
+            <div class="goods-select">
+                <div class="goods-select-title">焦点</div>
+                <div class="selectBox" id="yj-add-jiaodian">
+                    <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[1]){%>
+                                <%for(var i=0;i< jiaodianData.length;i++){%>
+                                    <%if(list.properties[1]==jiaodianData[i].id){%>
+                                        <%=jiaodianData[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                焦点
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< jiaodianData.length;i++){%>
+                            <li value="<%=jiaodianData[i].id%>" data-pnid="<%=jiaodianData[i].pnid%>"><%=jiaodianData[i].content%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">折射率</div>
+                <div class="selectBox" id="yj-add-zheshelv">
+                    <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[2]){%>
+                                <%for(var i=0;i< zheshelvData.length;i++){%>
+                                    <%if(list.properties[2]==zheshelvData[i].id){%>
+                                        <%=zheshelvData[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                折射率
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< zheshelvData.length;i++){%>
+                            <li value="<%=zheshelvData[i].id%>" data-pnid="<%=zheshelvData[i].pnid%>"><%=zheshelvData[i].content%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">功能</div>
+                <div class="selectBox" id="yj-add-gongneng">
+                    <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[3]){%>
+                                <%for(var i=0;i< gongnengData.length;i++){%>
+                                    <%if(list.properties[3]==gongnengData[i].id){%>
+                                        <%=gongnengData[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                功能
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< gongnengData.length;i++){%>
+                            <li value="<%=gongnengData[i].id%>" data-pnid="<%=gongnengData[i].pnid%>"><%=gongnengData[i].content%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+            <%if(list.categoryName=='隐形眼镜'){%>
+            <div class="goods-select">
+                <div class="goods-select-title">类型</div>
+                <div class="selectBox" id="yj-add-type">
+                    <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[5]){%>
+                                <%for(var i=0;i< typeData.length;i++){%>
+                                    <%if(list.properties[5]==typeData[i].id){%>
+                                        <%=typeData[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                类型
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< typeData.length;i++){%>
+                            <li value="<%=typeData[i].id%>" data-pnid="<%=typeData[i].pnid%>"><%=typeData[i].content%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">更换周期</div>
+                <div class="selectBox" id="yj-add-zhouqi">
+                    <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[5]){%>
+                                <%for(var i=0;i< zhouqiData.length;i++){%>
+                                    <%if(list.properties[5]==zhouqiData[i].id){%>
+                                        <%=zhouqiData[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                更换周期
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< zhouqiData.length;i++){%>
+                            <li value="<%=zhouqiData[i].id%>" data-pnid="<%=zhouqiData[i].pnid%>"><%=zhouqiData[i].content%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">包装</div>
+                <div class="selectBox" id="yj-add-baozhuang">
+                    <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[5]){%>
+                                <%for(var i=0;i< baozhuangData.length;i++){%>
+                                    <%if(list.properties[5]==baozhuangData[i].id){%>
+                                        <%=baozhuangData[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                包装
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< baozhuangData.length;i++){%>
+                            <li value="<%=baozhuangData[i].id%>" data-pnid="<%=baozhuangData[i].pnid%>"><%=baozhuangData[i].content%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+            <%if(list.categoryName=='镜架' || list.categoryName=='隐形眼镜' || list.categoryName=='太阳镜'|| list.categoryName=='护理产品' || list.categoryName=='其它商品'){%>
+            <div class="goods-select">
+                <div class="goods-select-title">质保时长/天</div>
+                <div class="selectBox" >
+                    <%if(list.categoryName=='镜架'){%>
+                        <%if(list.properties && list.properties[4]){%>
+                            <input type="text" placeholder="天数" value="<%=list.properties[4]%>" class="yj-input" id="yj-add-day" data-pnid="4">
+                        <%}else{%>
+                            <input type="text" placeholder="天数"  class="yj-input" id="yj-add-day" data-pnid="4">
+                        <%}%>
+                    <%}else if(list.categoryName=='隐形眼镜'){%>
+                        <%if(list.properties && list.properties[5]){%>
+                        <input type="text" placeholder="天数" value="<%=list.properties[5]%>" class="yj-input" id="yj-add-day" data-pnid="5">
+                        <%}else{%>
+                        <input type="text" placeholder="天数"  class="yj-input" id="yj-add-day" data-pnid="5">
+                        <%}%>
+                    <%}else if(list.categoryName=='太阳镜'){%>
+                        <%if(list.properties && list.properties[9]){%>
+                        <input type="text" placeholder="天数" value="<%=list.properties[9]%>" class="yj-input" id="yj-add-day" data-pnid="9">
+                        <%}else{%>
+                        <input type="text" placeholder="天数"  class="yj-input" id="yj-add-day" data-pnid="9">
+                        <%}%>
+                    <%}else if(list.categoryName=='护理产品'){%>
+                    <%if(list.properties && list.properties[13]){%>
+                        <input type="text" placeholder="天数" value="<%=list.properties[13]%>" class="yj-input" id="yj-add-day" data-pnid="13">
+                        <%}else{%>
+                        <input type="text" placeholder="天数"  class="yj-input" id="yj-add-day" data-pnid="13">
+                        <%}%>
+                    <%}else{%>
+                        <%if(list.properties && list.properties[14]){%>
+                        <input type="text" placeholder="天数" value="<%=list.properties[14]%>" class="yj-input" id="yj-add-day" data-pnid="14">
+                        <%}else{%>
+                        <input type="text" placeholder="天数"  class="yj-input" id="yj-add-day" data-pnid="14">
+                        <%}%>
+                    <%}%>
+                </div>
+            </div>
+            <%}%>
+
+            <%if(list.categoryName=='护理产品'){%>
+            <div class="goods-select">
+                <div class="goods-select-title">类型</div>
+                <div class="selectBox" id="yj-add-type-10">
+                    <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[10]){%>
+                                <%for(var i=0;i< type10Data.length;i++){%>
+                                    <%if(list.properties[10]==type10Data[i].id){%>
+                                        <%=type10Data[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                类型
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< type10Data.length;i++){%>
+                            <li value="<%=type10Data[i].id%>" data-pnid="<%=type10Data[i].pnid%>"><%=type10Data[i].content%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">包装</div>
+                <div class="selectBox" id="yj-add-baozhuang-11">
+                    <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[11]){%>
+                                <%for(var i=0;i< baozhuang11Data.length;i++){%>
+                                    <%if(list.properties[11]==baozhuang11Data[i].id){%>
+                                        <%=baozhuang11Data[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                包装
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< baozhuang11Data.length;i++){%>
+                            <li value="<%=baozhuang11Data[i].id%>" data-pnid="<%=baozhuang11Data[i].pnid%>"><%=baozhuang11Data[i].content%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">开瓶寿命/天*</div>
+                <div class="selectBox">
+                    <%if(list.properties && list.properties[12]){%>
+                    <input type="text" placeholder="天数" value="<%=list.properties[12]%>" class="yj-input" id="yj-add-shouming" data-pnid="12">
+                    <%}else{%>
+                    <input type="text" placeholder="天数"  class="yj-input" id="yj-add-shouming" data-pnid="12">
+                    <%}%>
+                </div>
+                <span>*设定后会短信自动提醒顾客</span>
+            </div>
+
+            <%}%>
+
+            <%if(list.categoryName=='特殊商品'){%>
+            <div class="goods-select">
+                <div class="goods-select-title">名称</div>
+                <div class="selectBox" >
+                    <%if(list.name){%>
+                    <input type="text" value="<%=list.name%>" class="yj-input" placeholder="名称" id="yj-add-name">
+                    <%}else{%>
+                    <input type="text"  class="yj-input" placeholder="名称" id="yj-add-name">
+                    <%}%>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <div class="goods-select">
+                <div class="goods-select-title">产品编码</div>
+                <div class="selectBox" >
+                    <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].code){%>
+                    <input type="text" placeholder="产品编码"  value="<%=list.skuJson[0].code%>" class="yj-input" id="yj-add-code">
+                    <%}else{%>
+                    <input type="text" placeholder="产品编码"  class="yj-input" id="yj-add-code">
+                    <%}%>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">库存</div>
+                <div class="selectBox" >
+                    <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].num){%>
+                    <input type="text" placeholder="库存"  value="<%=list.skuJson[0].code%>" class="yj-input" id="yj-add-num">
+                    <%}else{%>
+                    <input type="text" placeholder="库存"  class="yj-input" id="yj-add-num">
+                    <%}%>
+                </div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">成本价</div>
+                <div class="selectBox" >
+                    <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].costPrice){%>
+                    <input type="text" placeholder="成本价"  value="<%=list.skuJson[0].code%>" class="yj-input" id="yj-add-costPrice">
+                    <%}else{%>
+                    <input type="text" placeholder="成本价"  class="yj-input" id="yj-add-costPrice">
+                    <%}%>
+                </div>
+            </div>
+            <%}%>
+
+
+
+            <div class="goods-select">
+                <div class="goods-select-title">供应商</div>
+                <div class="selectBox" id="yj-add-provider">
+                    <div class="select-box-header">
+                        <span class="text"><%if(list.providerName){%><%=list.providerName%><%}else{%>供应商<%}%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< providerData.length;i++){%>
+                            <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <%if(list.categoryName=='镜片'){%>
+            <!--<div class="goods-select goods-range">
+                <div class="goods-select-title">现货范围</div>
+                <div class="goods-range-body" onclick="openGoodsRange('现货')">设定现货范围</div>
+            </div>-->
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">定制范围</div>
+                <div class="goods-range-body" onclick="openGoodsRange('定制',<%=isUpdate%>)">设定定制范围</div>
+            </div>
+            <%}%>
+            <div style="clear: both"></div>
+        </div>
+        <form class="layui-form" action="">
+            <div class="goods-type">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <%if(list.type==0){%>
+                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked >
+                        <%}else{%>
+                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" >
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+            <%if(list.type==0){%>
+            <div class="yj-from" style="display: block;">
+            <%}else{%>
+            <div class="yj-from" style="display: none;">
+            <%}%>
+                <%if(list.categoryName!='特殊商品'){%>
+                <div class="goods-vip-btn">
+                    <div class="goods-vip-left">会员折扣</div>
+                    <%if(list.ugDiscount && list.ugDiscount.length>0){%>
+                    <div class="goods-vip-right active" onclick="changeVipStatus(this)">
+                    <%}else{%>
+                    <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                    <%}%>
+                        <div class="yj-radio"></div>
+                        <span>参与会员折扣</span>
+                        <em onclick="openSettingVip(this)">设置</em>
+                    </div>
+                </div>
+
+                <div class="goods-select-box">
+                    <%if(list.categoryName=='镜片' || list.categoryName=='隐形眼镜'){%>
+                    <div class="goods-select goods-range">
+                        <div class="goods-select-title">零售价</div>
+                        <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                    </div>
+                    <%}%>
+                    <%if(list.categoryName=='镜架' || list.categoryName=='太阳镜' || list.categoryName=='其它商品'|| list.categoryName=='护理产品'){%>
+                    <div class="goods-select">
+                        <div class="goods-select-title">产品编码</div>
+                        <div class="selectBox" >
+                            <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].code){%>
+                            <input type="text" placeholder="产品编码" value="<%=list.skuJson[0].code%>" class="yj-input" id="yj-add-code">
+                            <%}else{%>
+                            <input type="text" placeholder="产品编码" class="yj-input" id="yj-add-code">
+                            <%}%>
+                        </div>
+                    </div>
+                    <div class="goods-select">
+                        <div class="goods-select-title">零售价</div>
+                        <div class="selectBox">
+                            <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].retailPrice){%>
+                            <input type="text" placeholder="零售价" value="<%=list.skuJson[0].retailPrice%>" class="yj-input" id="yj-add-retailPrice">
+                            <%}else{%>
+                            <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice">
+                            <%}%>
+                        </div>
+                    </div>
+                    <div class="goods-select">
+                        <div class="goods-select-title">成本价</div>
+                        <div class="selectBox">
+                            <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].costPrice){%>
+                            <input type="text" placeholder="成本价" value="<%=list.skuJson[0].retailPrice%>" class="yj-input" id="yj-add-costPrice">
+                            <%}else{%>
+                            <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice">
+                            <%}%>
+                        </div>
+                    </div>
+                    <%}%>
+
+                    <div class="goods-select goods-range">
+                        <div class="goods-select-title">提成</div>
+                        <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <%}%>
+
+            </div>
+            <div class="goods-type">
+                <div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <%if(list.type==0){%>
+                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
+                        <%}else{%>
+                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" checked >
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+            <%if(list.type==0){%>
+            <div class="yj-from goods-select-box" style="display: none">
+            <%}else{%>
+            <div class="yj-from goods-select-box" style="display: block">
+            <%}%>
+                <%if(list.categoryName=='镜片' || list.categoryName=='隐形眼镜'){%>
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">积分价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice(1)">设定积分价</div>
+                </div>
+                <%}else {%>
+                    <%if(list.categoryName!='特殊商品'){%>
+                    <div class="goods-select">
+                        <div class="goods-select-title">产品编码</div>
+                        <div class="selectBox" >
+                            <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].code){%>
+                            <input type="text" placeholder="产品编码" value="<%=list.skuJson[0].code%>" class="yj-input" id="yj-add-code-1">
+                            <%}else{%>
+                            <input type="text" placeholder="产品编码" class="yj-input" id="yj-add-code-1">
+                            <%}%>
+                        </div>
+                    </div>
+                    <%}%>
+                    <div class="goods-select">
+                        <div class="goods-select-title">积分价</div>
+                        <div class="">
+                            <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].integralPrice){%>
+                            <input type="text" placeholder="积分价" value="<%=list.skuJson[0].integralPrice%>" class="yj-input" id="yj-add-integralPrice">
+                            <%}else{%>
+                            <input type="text" placeholder="积分价" class="yj-input" id="yj-add-integralPrice">
+                            <%}%>
+                        </div>
+                    </div>
+                <%}%>
+                <div class="goods-select">
+                    <div class="goods-select-title">兑换数量上限</div>
+                    <div class="">
+                        <%if(list.integralNum){%>
+                        <input type="text" placeholder="数量" value="<%=list.integralNum%>" id="yj-add-integralNum" class="yj-input">
+                        <%}else{%>
+                        <input type="text" placeholder="数量"  id="yj-add-integralNum" class="yj-input">
+                        <%}%>
+                    </div>
+                </div>
+                <div class="goods-select " style="width: 100%;height: auto;">
+                    <div class="goods-select-title">有效期</div>
+                    <div class="yj-demo-time" id="yj-add-time">
+                        <div class="yj-date">
+                            <%if(list.integralStartTimeNew){%>
+                            <span><%=list.integralStartTimeNew%>-<%=list.integralEndTimeNew%></span><i class="iconfont icon-ico_calendar"></i>
+                            <%}else{%>
+                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                            <%}%>
+                        </div>
+                    </div>
+                </div>
+                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item" pane="">
+                            <div class="layui-input-block yj-check-input">
+                                <input type="checkbox" name=""  lay-filter="kucun-jp" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </form>
     </script>
 
     <script>
@@ -953,8 +834,20 @@
 
         var ballData = '';//球数据
         var columnData = '';//柱数据
+        var brandData = '';//品牌数据
+        var providerData = '';//供应商数据
+        var jiaodianData;//焦点数据1
+        var zheshelvData;//折射率数据2
+        var gongnengData;//功能数据3
+        var typeData;//隐形眼镜类型数据5
+        var zhouqiData;//更换周期6数据
+        var baozhuangData;//更换周期包装7数据
+        var type10Data;//护理产品类型数据10
+        var baozhuang11Data;//护理产品包装11数据
 
+        var yjDate;//时间范围
         var params = {};//添加商品所需要的参数  key  类目id；value：所需参数
+        var updateParams;//当前被编辑的数据
 
         var columns;        //其它商品的表格
         var columnsTeshu;   //特殊商品的表格
@@ -1100,37 +993,23 @@
         //获取供应商
         quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
+                providerData = ret.data;
                 //商品列表的筛选
-                var html = template('selectTagTmp',{title:'供应商',list:ret.data});
-                var html1 = template('selectTagTmpAll',{title:'供应商',list:ret.data});
-                $('#select-form').html(html1);
+                var html = template('selectTagTmpAll',{title:'供应商',list:ret.data});
+                $('#select-form').html(html);
                 selectTag($("#select-form"),function (ret) {
                     pid = ret.value;
                     chooseGoodsType()
                 })
-                //新增镜片的供应商
-                $('#select-jp-provider').html(html);
-
-                //新增镜架的供应商
-                $('#select-jj-provider').html(html);
-
-                //新增隐形眼镜的供应商
-                $('#select-yxyj-provider').html(html);
-                //新增护理产品的供应商
-                $('#select-hlcp-provider').html(html);
-                //新增特殊商品的供应商
-                $('#select-tssp-provider').html(html);
-
-
             }
         })
         //获取品牌
         quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
-                var html = template('selectTagTmp',{title:'全部商品类型',list:ret.data});
-                var html1 = template('selectTagTmpAll',{title:'全部商品类型',list:ret.data});
+                brandData = ret.data;
+                var html = template('selectTagTmpAll',{title:'全部商品类型',list:ret.data});
                 //商品列表的筛选
-                $('#select-type').html(html1);
+                $('#select-type').html(html);
                 selectTag($("#select-type"),function (data) {
                     if(data.value){
                         bid = data.value;
@@ -1154,18 +1033,9 @@
                         $('#select-series').hide();
                     }
                 })
-                //新增镜片的品牌
-                $('#select-jp-brand').html(html);
-                //新增镜架的品牌
-                $('#select-jj-brand').html(html);
-                //新增隐形眼镜的品牌
-                $('#select-yxyj-brand').html(html);
-                //新增护理产品的品牌
-                $('#select-hlcp-brand').html(html);
-                //新增特殊商品的品牌
-                $('#select-tssp-brand').html(html);
             }
         })
+
         //获取属性-球
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:15},function (ret) {
             if(ret && ret.success){
@@ -1184,56 +1054,38 @@
         })
         //获取属性-焦点
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:1},function (ret) {
-            var html = template('selectTagTmp',{title:'焦点',list:ret.data});
-            $('#select-jp-jiaodian').html(html);
+            jiaodianData = ret.data;
         })
         //获取属性-折射率
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:2},function (ret) {
-            var html = template('selectTagTmp',{title:'折射率',list:ret.data});
-            $('#select-jp-zheshelv').html(html);
+            zheshelvData = ret.data;
         })
         //获取属性-功能
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:3},function (ret) {
-            var html = template('selectTagTmp',{title:'功能',list:ret.data});
-            $('#select-jp-gongneng').html(html);
+            gongnengData = ret.data;
         })
 
         //获取属性-隐形眼镜类型/5
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:5},function (ret) {
-            var html = template('selectTagTmp',{title:'类型',list:ret.data});
-            $('#select-yxyj-type').html(html);
+            typeData = ret.data
         })
         //获取属性-隐形眼镜更换周期/6
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:6},function (ret) {
-            var html = template('selectTagTmp',{title:'更换周期',list:ret.data});
-            $('#select-yxyj-zhouqi').html(html);
+            zhouqiData = ret.data;
         })
         //获取属性-隐形眼镜包装/7
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:7},function (ret) {
-            var html = template('selectTagTmp',{title:'包装',list:ret.data});
-            $('#select-yxyj-baozhuang').html(html);
+            baozhuangData = ret.data
         })
         //获取属性-护理产品:类型/10
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:10},function (ret) {
-            var html = template('selectTagTmp',{title:'质保时长',list:ret.data});
-            $('#select-hlcp-type').html(html);
+            type10Data = ret.data;
         })
         //获取属性-护理产品:包装11
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:11},function (ret) {
-            var html = template('selectTagTmp',{title:'质保时长',list:ret.data});
-            $('#select-hlcp-baozhuang').html(html);
+            baozhuang11Data = ret.data;
         })
 
-        var jpDate = new dateRange('#yj-time-jp',true);
-        jpDate.init()
-        var jjDate = new dateRange('#yj-time-jj',true);
-        jjDate.init()
-        var yxyjDate = new dateRange('#yj-time-yxyj',true);
-        yxyjDate.init()
-        var hlcpDate = new dateRange('#yj-time-hlcp',true);
-        hlcpDate.init()
-        var tsspDate = new dateRange('#yj-time-tssp',true);
-        tsspDate.init()
         //选择销售状态
         selectTag($("#select-status"),function (ret) {
             saleStatus = ret.value;
@@ -1266,497 +1118,99 @@
         }
         //添加商品
         function addGoods(isUpdate) {
-            var title = '新增';
             var btn = ['取消','新增'];
+            var title = '新增'
             if(isUpdate){
+                btn = ['取消','编辑'];
                 title = '编辑';
-                btn = ['取消','编辑']
             }
-            if($('#category'+cid).text()=='镜架' || $('#category'+cid).text()=='太阳镜' || $('#category'+cid).text()=='其它商品'){
-                layer.open({
-                    type: 1,shade: 0.01,title:'',
-                    skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
-                    // area: ['360px', '535px'],
-                    anim: 0,
-                    maxWidth:'360',
-                    closeBtn: 0, //不显示关闭按钮
-                    resize:false,
-                    shadeClose: true, //开启遮罩关闭
-                    content: $('.content-view-addtyqtgoods'),
-                    btn: btn,
-                    yes: function(index, layero){
-                        layer.close(index)
-                    },
-                    btn2: function(){
-                        //销售状态  0开启  1关闭
-                        if($('#yj-status-jj').hasClass('active')){
-                            params[cid].saleStatus = 0;
-                        }else{
-                            params[cid].saleStatus = 1;
-                        }
-                        if($('#category'+cid).text()=='镜架'){
-                            params[cid].properties[jjDayPnid] = $('#select-jj-day').val();
-                        }else if($('#category'+cid).text()=='太阳镜'){
-                            params[cid].properties[tyjDayPnid] = $('#select-jj-day').val();
-                        }else if($('#category'+cid).text()=='其它商品'){
-                            params[cid].properties[qtspDayPnid] = $('#select-jj-day').val();
-                        }
-                        params[cid].skuJson = [{}];
-                        if(params[cid].type==1){
-                            if(jjDate.getTime()[2]){
-                                params[cid].integralStartTime = jjDate.getTime()[2];
-                            }
-                            if(jjDate.getTime()[3]){
-                                params[cid].integralEndTime = jjDate.getTime()[3];
-                            }
-                            if($('#select-jj-maxnum').val()){
-                                params[cid].integralNum = $('#select-jj-maxnum').val();
-                            }
-                            params[cid].skuJson[0].code = $('#select-jj-code-1').val();
-                            params[cid].skuJson[0].integralPrice = $('#select-jj-jifen').val();
-                        }else{
-                            params[cid].skuJson[0].retailPrice = $('#select-jj-lingshou').val();
-                            params[cid].skuJson[0].costPrice = $('#select-jj-chengben').val();
-                            params[cid].skuJson[0].code = $('#select-jj-code-0').val();
-                        }
-                        addYjGoods()
-                    },
-                    success: function(layero, index){
-                        $('#jj-title').html(title+$('#category'+cid).text())
-                        openYjGoods(isUpdate);
-                        layui.use('form', function(){
-                            var form = layui.form;
-                            //选择积分还是常规
-                            form.on('radio()', function(data){
-                                if(params[cid].type == data.value){
-                                    return
-                                }
-                                $('.goods-radio-box-jj').slideUp();
-                                $('.goods-radio-box-jj').eq(data.value).slideDown();
-                                params[cid].type = data.value;
-                            });
-                            //库存
-                            form.on('checkbox(kucun-jj)', function(data){
-                                if(data.elem.checked){
-                                    //是否被选中，true或者false
-                                    $(data.othis).find('input').attr('readonly',false)
-                                }else{
-                                    $(data.othis).find('input').attr('readonly','readonly').val('')
-                                }
-                            });
-                        });
-                        //品牌/系列
-                        selectTag($("#select-jj-brand"),function (ret) {
-                            params[cid].bid = ret.value;
-                            $('#select-jj-series').html('');
-                            //获取品牌下的系列列表
-                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
-                                if(ret1 && ret1.success){
-                                    if(ret1.data.length>0){
-                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
-                                        $('#select-jj-series').html(html);
-                                        selectTag($("#select-jj-series"),function (series) {
-                                            params[cid].sid = series.value;
-                                        })
-                                    }
-                                }
-                            })
-                        })
-                        //供应商
-                        selectTag($("#select-jj-provider"),function (ret) {
-                            params[cid].pid = ret.value;
-                        })
+            params[cid] = {};
+            if(isUpdate){
+                params[cid] = updateParams;
+                params[cid].skuJson = [];
+                if(params[cid].skuList && params[cid].skuList.length>0){
+                    for(var i=0;i<params[cid].skuList.length;i++){
+                        var obj = {};
+                        obj.properties = params[cid].skuList[i].properties;
+                        obj.code = params[cid].skuList[i].code;
+                        obj.integralPrice = params[cid].skuList[i].integralPrice;
+                        obj.retailPrice = params[cid].skuList[i].retailPrice;
+                        obj.costPrice = params[cid].skuList[i].costPrice;
+                        obj.num = params[cid].skuList[i].num;
+                        obj.id = params[cid].skuList[i].id;
+                        params[cid].skuJson.push(obj)
                     }
-                });
-            }else if($('#category'+cid).text()=='镜片'){
-                layer.open({
-                    type: 1,shade: 0.01,title:title+'镜片',
-                    skin: 'layui-layer-add-goods', //样式类名
-                    // area: ['360px', '535px'],
-                    anim: 0,
-                    maxWidth:'360',
-                    closeBtn: 0, //不显示关闭按钮
-                    resize:false,
-                    shadeClose: true, //开启遮罩关闭
-                    content: $('.content-view-addgoods'),
-                    btn: btn,
-                    yes: function(index, layero){
-                        layer.close(index)
-                    },
-                    btn2: function(){
-                        //销售状态  0开启  1关闭
-                        if($('#yj-status-jp').hasClass('active')){
-                            params[cid].saleStatus = 0;
-                        }else{
-                            params[cid].saleStatus = 1;
-                        }
-                        if(params[cid].type==1){
-                            if(jpDate.getTime()[2]){
-                                params[cid].integralStartTime = jpDate.getTime()[2];
-                            }
-                            if(jpDate.getTime()[3]){
-                                params[cid].integralEndTime = jpDate.getTime()[3];
-                            }
-                            if($('#select-jp-maxnum').val()){
-                                params[cid].integralNum = $('#select-jp-maxnum').val();
-                            }
-                        }
-                        addYjGoods()
-                    },
-                    success: function(layero, index){
-                        openYjGoods(isUpdate);
-                        layui.use('form', function(){
-                            var form = layui.form;
-                            form.on('radio()', function(data){
-                                if(params[cid].type == data.value){
-                                    return
-                                }
-                                $('.goods-radio-box-jp').slideUp();
-                                $('.goods-radio-box-jp').eq(data.value).slideDown();
-                                params[cid].type = data.value;
-                            });
-                            //库存
-                            form.on('checkbox(kucun-jp)', function(data){
-                                if(data.elem.checked){
-                                    //是否被选中，true或者false
-                                    $(data.othis).find('input').attr('readonly',false)
-                                }else{
-                                    $(data.othis).find('input').attr('readonly','readonly').val('')
-                                }
-                            });
-                        });
-                        //供应商
-                        selectTag($("#select-jp-provider"),function (ret) {
-                            params[cid].pid = ret.value;
-                        })
-                        //新增镜片的品牌
-                        selectTag($("#select-jp-brand"),function (ret) {
-                            params[cid].bid = ret.value;
-                            $('#select-jp-series').html('');
-                            //获取品牌下的系列列表
-                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
-                                if(ret1 && ret1.success){
-                                    if(ret1.data.length>0){
-                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
-                                        $('#select-jp-series').html(html);
-                                        selectTag($("#select-jp-series"),function (series) {
-                                            params[cid].sid = series.value;
-                                        })
-                                    }
-                                }
-                            })
-                        })
-                        //焦点
-                        selectTag($("#select-jp-jiaodian"),function (data) {
-                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                        })
-                        selectTag($("#select-jp-zheshelv"),function (data) {
-                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                        })
-                        selectTag($("#select-jp-gongneng"),function (data) {
-                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                        })
-                    }
-                });
-            }else if($('#category'+cid).text()=='特殊商品'){
-                layer.open({
-                    type: 1,shade: 0.01,title:title+'特殊商品',
-                    skin: 'layui-layer-add-goods layui-layer-addtsgoods', //样式类名
-                    // area: ['360px', '535px'],
-                    anim: 0,
-                    maxWidth:'360',
-                    closeBtn: 0, //不显示关闭按钮
-                    resize:false,
-                    shadeClose: true, //开启遮罩关闭
-                    content: $('.content-view-addtsgoods'),
-                    btn: btn,
-                    yes: function(index, layero){
-                        layer.close(index)
-                    },
-                    btn2: function(){
-                        //销售状态  0开启  1关闭
-                        if($('#yj-status-tssp').hasClass('active')){
-                            params[cid].saleStatus = 0;
-                        }else{
-                            params[cid].saleStatus = 1;
-                        }
-                        params[cid].skuJson = [{}];
-                        params[cid].skuJson[0].num = $('#select-tssp-num').val();
-                        params[cid].skuJson[0].code = $('#select-tssp-code').val();
-                        params[cid].skuJson[0].costPrice = $('#select-tssp-costPrice').val();
-                        params[cid].icon = $('#cover').attr('real-src');
-                        params[cid].name = $('#select-tssp-name').val();
-                        if(params[cid].type==1){
-                            if(tsspDate.getTime()[2]){
-                                params[cid].integralStartTime = tsspDate.getTime()[2];
-                            }
-                            if(tsspDate.getTime()[3]){
-                                params[cid].integralEndTime = tsspDate.getTime()[3];
-                            }
-                            if($('#select-tssp-maxnum').val()){
-                                params[cid].integralNum = $('#select-tssp-maxnum').val();
-                            }
-                            params[cid].skuJson[0].integralPrice = $('#select-tssp-jifen').val();
-                        }
-
-                        addYjGoods()
-                    },
-                    success: function(layero, index){
-                        openYjGoods();
-                        //监听选择常规商品和积分商品
-                        layui.use('form', function(){
-                            var form = layui.form;
-                            form.on('radio()', function(data){
-                                if(params[cid].type == data.value){
-                                    return
-                                }
-                                $('.goods-radio-box-tssp').slideUp();
-                                $('.goods-radio-box-tssp').eq(data.value).slideDown();
-                                params[cid].type = data.value;
-                            });
-                            //库存
-                            form.on('checkbox(kucun-tssp)', function(data){
-                                if(data.elem.checked){
-                                    //是否被选中，true或者false
-                                    $(data.othis).find('input').attr('readonly',false)
-                                }else{
-                                    $(data.othis).find('input').attr('readonly','readonly').val('')
-                                }
-                            });
-                        });
-                        //供应商
-                        selectTag($("#select-tssp-provider"),function (ret) {
-                            params[cid].pid = ret.value;
-                        })
-                        //新增镜片的品牌
-                        selectTag($("#select-tssp-brand"),function (ret) {
-                            params[cid].bid = ret.value;
-                            $('#select-tssp-series').html('');
-                            //获取品牌下的系列列表
-                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
-                                if(ret1 && ret1.success){
-                                    if(ret1.data.length>0){
-                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
-                                        $('#select-tssp-series').html(html);
-                                        selectTag($("#select-tssp-series"),function (series) {
-                                            params[cid].sid = series.value;
-                                        })
-                                    }
-                                }
-                            })
-                        })
-                    }
-                });
-            }else if($('#category'+cid).text()=='护理产品'){
-                layer.open({
-                    type: 1,shade: 0.01,title:title+'护理产品',
-                    skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
-                    // area: ['360px', '535px'],
-                    anim: 0,
-                    maxWidth:'360',
-                    closeBtn: 0, //不显示关闭按钮
-                    resize:false,
-                    shadeClose: true, //开启遮罩关闭
-                    content: $('.content-view-addhlgoods'),
-                    btn: btn,
-                    yes: function(index, layero){
-                        layer.close(index)
-                    },
-                    btn2: function(){
-                        //销售状态  0开启  1关闭
-                        if($('#yj-status-hlcp').hasClass('active')){
-                            params[cid].saleStatus = 0;
-                        }else{
-                            params[cid].saleStatus = 1;
-                        }
-                        params[cid].properties[hlcpDayPnid] = $('#select-hlcp-day').val();
-                        params[cid].properties[hlcpShoumingPnid] = $('#select-hlcp-shouming').val();
-                        params[cid].skuJson = [{}];
-                        if(params[cid].type==1){
-                            if(hlcpDate.getTime()[2]){
-                                params[cid].integralStartTime = hlcpDate.getTime()[2];
-                            }
-                            if(hlcpDate.getTime()[3]){
-                                params[cid].integralEndTime = hlcpDate.getTime()[3];
-                            }
-                            if($('#select-hlcp-maxnum').val()){
-                                params[cid].integralNum = $('#select-hlcp-maxnum').val();
-                            }
-                            params[cid].skuJson[0].code = $('#select-hlcp-code-1').val();
-                            params[cid].skuJson[0].integralPrice = $('#select-hlcp-jifen').val();
-                        }else{
-                            params[cid].skuJson[0].code = $('#select-hlcp-code-0').val();
-                            params[cid].skuJson[0].retailPrice = $('#select-hlcp-lingshou').val();
-                            params[cid].skuJson[0].costPrice = $('#select-hlcp-chengben').val();
-                        }
-                        addYjGoods()
-                    },
-                    success: function(layero, index){
-                        openYjGoods()
-                        layui.use('form', function(){
-                            var form = layui.form;
-                            form.on('radio()', function(data){
-                                if(params[cid].type == data.value){
-                                    return
-                                }
-                                $('.goods-radio-box-hlcp').slideUp();
-                                $('.goods-radio-box-hlcp').eq(data.value).slideDown();
-                                params[cid].type = data.value;
-                            });
-                            //库存
-                            form.on('checkbox(kucun-hlcp)', function(data){
-                                if(data.elem.checked){
-                                    //是否被选中，true或者false
-                                    $(data.othis).find('input').attr('readonly',false)
-                                }else{
-                                    $(data.othis).find('input').attr('readonly','readonly').val('')
-                                }
-                            });
-                        });
-                        //供应商
-                        selectTag($("#select-hlcp-provider"),function (ret) {
-                            params[cid].pid = ret.value;
-                        })
-                        //新增镜片的品牌
-                        selectTag($("#select-hlcp-brand"),function (ret) {
-                            params[cid] .bid = ret.value;
-                            $('#select-jp-series').html('');
-                            //获取品牌下的系列列表
-                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
-                                if(ret1 && ret1.success){
-                                    if(ret1.data.length>0){
-                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
-                                        $('#select-hlcp-series').html(html);
-                                        selectTag($("#select-hlcp-series"),function (series) {
-                                            params[cid].sid = series.value;
-                                        })
-                                    }
-                                }
-                            })
-                        })
-                        //类型
-                        selectTag($("#select-hlcp-type"),function (data) {
-                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                        })
-                        //包装
-                        selectTag($("#select-hlcp-baozhuang"),function (data) {
-                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                        })
-
-                    }
-                });
-            }else if($('#category'+cid).text()=='隐形眼镜'){
-                layer.open({
-                    type: 1,shade: 0.01,title:title+'隐形眼镜',
-                    skin: 'layui-layer-add-goods layui-layer-addhlgoods', //样式类名
-                    // area: ['360px', '535px'],
-                    anim: 0,
-                    maxWidth:'360',
-                    closeBtn: 0, //不显示关闭按钮
-                    resize:false,
-                    shadeClose: true, //开启遮罩关闭
-                    content: $('.content-view-addyxgoods'),
-                    btn: btn,
-                    yes: function(index, layero){
-                        layer.close(index)
-                    },
-                    btn2: function(){
-                        //销售状态  0开启  1关闭
-                        if($('#yj-status-yxyj').hasClass('active')){
-                            params[cid].saleStatus = 0;
-                        }else{
-                            params[cid].saleStatus = 1;
-                        }
-                        params[cid].properties[yxyjDayPnid] = $('#select-yxyj-day').val();
-                        if(params[cid].type==1){
-                            if(yxyjDate.getTime()[2]){
-                                params[cid].integralStartTime = yxyjDate.getTime()[2];
-                            }
-                            if(yxyjDate.getTime()[3]){
-                                params[cid].integralEndTime = yxyjDate.getTime()[3];
-                            }
-                            if($('#select-yxyj-maxnum').val()){
-                                params[cid].integralNum = $('#select-yxyj-maxnum').val();
-                            }
-                        }
-                        addYjGoods()
-                    },
-                    success: function(layero, index){
-                        openYjGoods()
-
-                        layui.use('form', function(){
-                            var form = layui.form;
-                            form.on('radio()', function(data){
-                                if(params[cid].type == data.value){
-                                    return
-                                }
-                                $('.goods-radio-box-yxyj').slideUp();
-                                $('.goods-radio-box-yxyj').eq(data.value).slideDown();
-                                params[cid].type = data.value;
-                            });
-                            //库存
-                            form.on('checkbox(kucun-yxyj)', function(data){
-                                if(data.elem.checked){
-                                    //是否被选中，true或者false
-                                    $(data.othis).find('input').attr('readonly',false)
-                                }else{
-                                    $(data.othis).find('input').attr('readonly','readonly').val('')
-                                }
-                            });
-                        });
-                        //供应商
-                        selectTag($("#select-yxyj-provider"),function (ret) {
-                            params[cid].pid = ret.value;
-                        })
-                        //新增镜片的品牌
-                        selectTag($("#select-yxyj-brand"),function (ret) {
-                            params[cid] .bid = ret.value;
-                            $('#select-yxyj-series').html('');
-                            //获取品牌下的系列列表
-                            quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
-                                if(ret1 && ret1.success){
-                                    if(ret1.data.length>0){
-                                        var html = template('selectTagTmp',{title:'系列',list:ret1.data});
-                                        $('#select-yxyj-series').html(html);
-                                        selectTag($("#select-yxyj-series"),function (series) {
-                                            params[cid].sid = series.value;
-                                        })
-                                    }
-                                }
-                            })
-                        })
-                        //类型
-                        selectTag($("#select-yxyj-type"),function (data) {
-                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                        })
-                        //更换周期
-                        selectTag($("#select-yxyj-zhouqi"),function (data) {
-                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                        })
-                        //包装
-                        selectTag($("#select-yxyj-baozhuang"),function (data) {
-                            params[cid].properties[data.el.find('.optionUL li').attr('data-pnid')] = data.value;
-                        })
-                    }
-                });
+                }
+                params[cid].ugDiscount = updateParams.userGradeCategoryDiscountList;
+                if( params[cid].integralEndTime ){
+                    params[cid].integralEndTimeNew = quakooUtils.formatTimeToDateDianLY(params[cid].integralEndTime)
+                }
+                if(params[cid].integralStartTime){
+                    params[cid].integralStartTimeNew = quakooUtils.formatTimeToDateDianLY(params[cid].integralStartTime)
+                }
+                if(params[cid].icon){
+                    var obj = quakooImg.processImg(params[cid].icon,60,60);
+                    params[cid].newIcon = obj.url;
+                    params[cid].style = obj.style;
+                }
+            }else{
+                params[cid].subid = subid;
+                params[cid].cid = cid;
+                params[cid].properties = {};
+                params[cid].skuJson = [];
+                params[cid].productCustomRangeList = [];
+                params[cid].ugDiscount = [];
+                params[cid].type = params[cid].type? params[cid].type:0;
             }
+            params[cid].categoryName = $('#category'+cid).text();
+
+            var html = [];
+            html.push('<div class="layui-yj-header"><div class="layui-layer-title mine-title"><div>');
+            html.push(title+params[cid].categoryName)
+            html.push('</div> </div><div class="title-right" >销售状态');
+            html.push('<div class="yj-search ');
+            if(params[cid].saleStatus==0){
+                html.push('active')
+            }
+            html.push('" id="yj-add-status" onclick="changeYjStatus(this)"><i></i></div></div></div>')
+
+            console.log(params[cid])
+            layer.open({
+                type: 1,shade: 0.01,title:html.join(''),
+                skin: 'layui-layer-add-goods  layui-layer-addtsgoods', //样式类名
+                area: ['360px', '550px'],
+                move:'.mine-title',
+                anim: 0,
+                maxWidth:'360',
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-addgoods'),
+                btn: btn,
+                yes: function(index, layero){
+                    layer.close(index)
+                },
+                btn2: function(index){
+                    addYjGoods(isUpdate,index)
+                    return false;
+                },
+                success: function(layero, index){
+                    openYjGoods(isUpdate);
+                }
+            });
         }
         //编辑商品
         function updateGoods(id) {
-            quakooData.ajaxGetData(config.getUrl_product_loadSPU(),{id:id},function (data) {
-                console.log(data)
-                if(data.success){
-                    params[cid] = data.data;
+            quakooUtils.stopEventBubble()
+            quakooData.ajaxGetData(config.getUrl_product_loadSPU(),{id:id},function (ret) {
+                console.log(ret)
+                if(ret.success){
+                    updateParams = ret.data;
                     addGoods(true)
                 }
             })
         }
 
-        //改变销售状态
-        function changeYjStatus(self) {
-            quakooUtils.stopEventBubble()
-            $(self).toggleClass('active')
-        }
         //更新销售状态
         function updateSaleStatus(self,id) {
             quakooUtils.stopEventBubble()
@@ -1812,6 +1266,17 @@
                     },
                     success: function(layero, index){
                         quakooData.ajaxGetData(config.getUrl_usergrade_getAllList(),{subid:subid},function (ret) {
+                            if(params[cid].ugDiscount && params[cid].ugDiscount.length>0){
+                                for(var i=0;i<ret.rows.length;i++){
+                                    for(var j=0;j<params[cid].ugDiscount.length;j++){
+                                        if(ret.rows[i].id == params[cid].ugDiscount[j].ugid){
+                                            ret.rows[i].value = params[cid].ugDiscount[j].discount;
+                                        }
+                                    }
+                                }
+                            }
+                            console.log(ret.rows)
+
                             var html = template('vipTmp',{list:ret.rows});
                             $('#vipDom').html(html);
                             $('.vipInput').each(function (index,item) {
@@ -1830,7 +1295,7 @@
         }
         //设定现货范围
         var momentRangeData = {};//暂时存储定位范围信息
-        function openGoodsRange(title) {
+        function openGoodsRange(title,isUpdate) {
             layer.open({
                 type: 1,shade: 0.01,title:'设定'+title+'范围<span>点击或框选单元格来设定</span>',
                 skin: 'layui-layer-yj', //样式类名
@@ -1854,19 +1319,23 @@
                     momentRangeData = {};
                 },
                 success: function(layero, index){
-                    setRange(title)
+                    setRange(title,isUpdate)
                 }
             });
         }
 
-        //设定零售价
+        //设定零售价/积分价
         var momentPriceData = {};//暂时存储价格信息
         function openZeroPrice(type) {
+            var html = [];
+            html.push('<div class="layui-yj-header"> <div class="layui-layer-title mine-title"> <div>设定价格<span>规格: 片</span></div> </div>');
+            html.push('<div class="title-right" onclick="openRedTip()" > 设置预警库存 </div> </div>');
             type = type?type:1;
             layer.open({
-                type: 1,shade: 0.01,
+                type: 1,shade: 0.01,title:html.join(''),
                 skin: 'layui-layer-yj layui-layer-add-goods layui-layer-view-price', //样式类名
                 anim: 0,
+                move:'.mine-title',
                 area:['720px','560px'],
                 closeBtn: 0, //不显示关闭按钮
                 resize:false,
@@ -1886,7 +1355,6 @@
                     momentPriceData = {};
                 },
                 success: function(layero, index){
-                    $('.layui-layer-view-price .layui-layer-content').height(560-42+'px')
                     $('.layui-layer-view-price .layui-layer-btn').append('<div class="view-price-add"><input class="yj-input" placeholder="输入数量" type="number"><button class="btn btn-primary">键入</button></div>')
                     setPrice(type)
                 }
@@ -1939,7 +1407,7 @@
             });
         }
         //初始化范围表格
-        function setRange(title) {
+        function setRange(title,isUpdate) {
             if(params[cid] && params[cid].productCustomRangeList){
                 for(var i=0;i<params[cid].productCustomRangeList.length;i++){
                     momentRangeData[params[cid].productCustomRangeList[i].ballId+''+params[cid].productCustomRangeList[i].columnId] = params[cid].productCustomRangeList[i];
@@ -2002,16 +1470,18 @@
             var rangeData = [];//柱
             cols.push({field:'num', minWidth:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
             if(type==1){
-                if(params[cid] && params[cid].skuJson.length){
-                    for(var i=0;i<params[cid].skuJson.length;i++){
-                        momentPriceData[params[cid].skuJson[i].properties.ballId+''+params[cid].skuJson[i].properties.columnId] = params[cid].skuJson[i];
+                if(quakooUtils.isNullJson(momentPriceData)){
+                    if(params[cid] && params[cid].skuJson.length){
+                        for(var i=0;i<params[cid].skuJson.length;i++){
+                            momentPriceData[params[cid].skuJson[i].properties[15]+''+params[cid].skuJson[i].properties[16]] = params[cid].skuJson[i];
+                        }
                     }
                 }
                 for(var i=0;i<ballData.length;i++){
                     (function (i) {
                         cols.push({field:'', minWidth:60, title: ballData[i].content, edit:'text',unresize:true,templet:function (d) {
-                                if(momentPriceData[ballData[i].id+''+d.id]){
-                                    return momentPriceData[ballData[i].id+''+d.id].code
+                            if(momentPriceData[ballData[i].content+''+d.num] && momentPriceData[ballData[i].content+''+d.num].code){
+                                    return momentPriceData[ballData[i].content+''+d.num].code
                                 }else{
                                     return ''
                                 }
@@ -2027,26 +1497,26 @@
                             cols.push({field: '', minWidth: 60, title: ballData[i].content, edit: 'text', unresize: true,
                                 templet: function (d) {
                                     if(type==2) {
-                                        if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].retailPrice!=undefined) {
-                                            return momentPriceData[ballData[i].id + '' + d.id].retailPrice
+                                        if (momentPriceData[ballData[i].content + '' + d.num] && momentPriceData[ballData[i].content + '' + d.num].retailPrice!=undefined) {
+                                            return momentPriceData[ballData[i].content + '' + d.num].retailPrice
                                         } else {
                                             return ''
                                         }
                                     }else if(type==3){
-                                        if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].costPrice!=undefined) {
-                                            return momentPriceData[ballData[i].id + '' + d.id].costPrice
+                                        if (momentPriceData[ballData[i].content + '' + d.num] && momentPriceData[ballData[i].content + '' + d.num].costPrice!=undefined) {
+                                            return momentPriceData[ballData[i].content + '' + d.num].costPrice
                                         } else {
                                             return ''
                                         }
                                     }else if(type==4){
-                                        if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].num) {
-                                            return momentPriceData[ballData[i].id + '' + d.id].num
+                                        if (momentPriceData[ballData[i].content + '' + d.num] && momentPriceData[ballData[i].content + '' + d.num].num) {
+                                            return momentPriceData[ballData[i].content + '' + d.num].num
                                         } else {
                                             return ''
                                         }
                                     }else if(type==5){
-                                        if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].integralPrice) {
-                                            return momentPriceData[ballData[i].id + '' + d.id].integralPrice
+                                        if (momentPriceData[ballData[i].content + '' + d.num] && momentPriceData[ballData[i].content + '' + d.num].integralPrice) {
+                                            return momentPriceData[ballData[i].content + '' + d.num].integralPrice
                                         } else {
                                             return ''
                                         }
@@ -2077,67 +1547,86 @@
                 });
                 //监听单元格事件
                 table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                    console.log(obj)
                     if(type==1){
-                        var param = {};
-                        param.properties = {};
-                        param.properties[ballData[0].pnid] = ballData[obj.field-1].content;
-                        param.properties[columnData[0].pnid] = obj.data.num;
-                        param.properties.ballId = ballData[obj.field-1].id;
-                        param.properties.columnId = obj.data.id;
-                        if(!quakooUtils.isNum(obj.value)){
-                            layer.msg('产品编码必须为数字');
-                            this.value = '';
-                            return
+                        if(momentPriceData[ballData[obj.field-1].content+''+obj.data.num]){
+                            if(!quakooUtils.isNum(obj.value)){
+                                layer.msg('产品编码必须为数字');
+                                this.value = '';
+                                return
+                            }
+                            if(obj.value==''){
+                                var param = {};
+                                param.properties = {};
+                                param.properties[ballData[0].pnid] = ballData[obj.field-1].content;
+                                param.properties[columnData[0].pnid] = obj.data.num;
+                                param.id = momentPriceData[ballData[obj.field-1].content+''+obj.data.num].id;
+                                param.del = true;
+                                momentPriceData[ballData[obj.field-1].content+''+obj.data.num] = param;
+                            }else{
+                                momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code = obj.value;
+                            }
+                        }else{
+                            var param = {};
+                            param.properties = {};
+                            param.properties[ballData[0].pnid] = ballData[obj.field-1].content;
+                            param.properties[columnData[0].pnid] = obj.data.num;
+                            if(!quakooUtils.isNum(obj.value)){
+                                layer.msg('产品编码必须为数字');
+                                this.value = '';
+                                return
+                            }
+                            param.code = obj.value;
+                            momentPriceData[ballData[obj.field-1].content+''+obj.data.num] = param;
                         }
-                        param.code = obj.value;
-                        momentPriceData[ballData[obj.field-1].id+''+obj.data.id] = param;
+
                     }else if(type==2){
-                        if(momentPriceData[ballData[obj.field-1].id+''+obj.data.id] && momentPriceData[ballData[obj.field-1].id+''+obj.data.id].code){
+                        if(momentPriceData[ballData[obj.field-1].content+''+obj.data.num] && momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code){
                             if(!quakooUtils.isNum(obj.value)){
                                 layer.msg('零售价必须为数字');
                                 this.value = '';
                                 return
                             }
-                            momentPriceData[ballData[obj.field-1].id+''+obj.data.id].retailPrice = obj.value
+                            momentPriceData[ballData[obj.field-1].content+''+obj.data.num].retailPrice = obj.value
                         }else{
                             layer.msg('请先设置该球柱的产品编码')
                             this.value = ''
                             return
                         }
                     }else if(type==3){
-                        if(momentPriceData[ballData[obj.field-1].id+''+obj.data.id] && momentPriceData[ballData[obj.field-1].id+''+obj.data.id].code){
+                        if(momentPriceData[ballData[obj.field-1].content+''+obj.data.num] && momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code){
                             if(!quakooUtils.isNum(obj.value)){
                                 layer.msg('批发价必须为数字');
                                 this.value = '';
                                 return
                             }
-                            momentPriceData[ballData[obj.field-1].id+''+obj.data.id].costPrice = obj.value
+                            momentPriceData[ballData[obj.field-1].content+''+obj.data.num].costPrice = obj.value
                         }else{
                             layer.msg('请先设置该球柱的产品编码')
                             this.value = ''
                             return
                         }
                     }else if(type==4){
-                        if(momentPriceData[ballData[obj.field-1].id+''+obj.data.id] && momentPriceData[ballData[obj.field-1].id+''+obj.data.id].code){
+                        if(momentPriceData[ballData[obj.field-1].content+''+obj.data.num] && momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code){
                             if(!quakooUtils.isNum(obj.value)){
                                 layer.msg('备货量必须为数字');
                                 this.value = '';
                                 return
                             }
-                            momentPriceData[ballData[obj.field-1].id+''+obj.data.id].num = obj.value
+                            momentPriceData[ballData[obj.field-1].content+''+obj.data.num].num = obj.value
                         }else{
                             layer.msg('请先设置该球柱的产品编码')
                             this.value = ''
                             return
                         }
                     }else if(type==5){
-                        if(momentPriceData[ballData[obj.field-1].id+''+obj.data.id] && momentPriceData[ballData[obj.field-1].id+''+obj.data.id].code){
+                        if(momentPriceData[ballData[obj.field-1].content+''+obj.data.num] && momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code){
                             if(!quakooUtils.isNum(obj.value)){
                                 layer.msg('积分价必须为数字');
                                 this.value = '';
                                 return
                             }
-                            momentPriceData[ballData[obj.field-1].id+''+obj.data.id].integralPrice = obj.value
+                            momentPriceData[ballData[obj.field-1].content+''+obj.data.num].integralPrice = obj.value
                         }else{
                             layer.msg('请先设置该球柱的产品编码')
                             this.value = ''
@@ -2204,19 +1693,10 @@
                 var cols = [];//球
                 var rangeData = [];//柱
                 cols.push({field:'num', minWidth:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
-                if(params[cid] && params[cid].skuJson){
-                    for(var i=0;i<params[cid].skuJson.length;i++){
-                        momentPriceData[params[cid].skuJson[i].properties[0].ballId+''+params[cid].skuJson[i].properties[0].columnId] = params[cid].skuJson[i];
-                    }
-                }
                 for(var i=0;i<ballData.length;i++){
                     (function (i) {
                         cols.push({field:'', minWidth:60, title: ballData[i].content,unresize:true,templet:function (d) {
-                                if(momentPriceData[ballData[i].id+''+d.id]){
-                                    return momentPriceData[ballData[i].id+''+d.id].retailPrice
-                                }else{
-                                    return ''
-                                }
+                                return ''
                             }})
                     })(i)
                 }
@@ -2276,45 +1756,213 @@
             $('.yj-check-input input').click(function (e) {
                 quakooUtils.stopEventBubble(e)
             })
-           if(isUpdate){
+            var data = {
+                list:params[cid],isUpdate:isUpdate,
+                brandData:brandData,providerData:providerData,jiaodianData:jiaodianData,
+                gongnengData:gongnengData,zheshelvData:zheshelvData,
+                typeData:typeData,zhouqiData:zhouqiData,baozhuangData:baozhuangData,
+                type10Data:type10Data,baozhuang11Data:baozhuang11Data
+            }
+            console.log(data)
+            var html = template('addGoodsTmp',data);
+            document.getElementById('addGoodsDom').innerHTML = html;
+            layui.use('form', function(){
+                var form = layui.form;
+                form.render();
+                //选择积分还是常规
+                form.on('radio()', function(data){
+                    if(params[cid].type == data.value){
+                        return
+                    }
+                    $('.yj-from').slideUp();
+                    $('.yj-from').eq(data.value).slideDown();
+                    params[cid].type = data.value;
+                });
+                //库存
+                form.on('checkbox(kucun-jj)', function(data){
+                    if(data.elem.checked){
+                        //是否被选中，true或者false
+                        $(data.othis).find('input').attr('readonly',false)
+                    }else{
+                        $(data.othis).find('input').attr('readonly','readonly').val('')
+                    }
+                });
+            });
+            //品牌/系列
+            selectTag($("#yj-add-brand"),function (ret) {
+                params[cid].bid = ret.value;
+                $('#select-jj-series').html('');
+                params[cid].sid = -1;
+                //获取品牌下的系列列表
+                quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
+                    if(ret1 && ret1.success){
+                        if(ret1.data.length>0){
+                            var html = template('selectTagTmp',{title:'系列',list:ret1.data});
+                            $('#yj-add-series').html(html);
+                            selectTag($("#yj-add-series"),function (series) {
+                                params[cid].sid = series.value;
+                            })
+                        }
+                    }
+                })
+            })
+            //供应商
+            selectTag($("#yj-add-provider"),function (ret) {
+                params[cid].pid = ret.value;
+            })
+            if($('#category'+cid).text()=='镜片'){
+                //焦点
+                selectTag($("#yj-add-jiaodian"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
+                //折射率
+                selectTag($("#yj-add-zheshelv"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
+                //功能
+                selectTag($("#yj-add-gongneng"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
+            }else if($('#category'+cid).text()=='隐形眼镜'){
+                //类型5
+                selectTag($("#yj-add-type"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
+                //周期
+                selectTag($("#yj-add-zhouqi"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
+                //包装
+                selectTag($("#yj-add-baozhuang"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
+            }else if($('#category'+cid).text()=='护理产品'){
+                //类型10
+                selectTag($("#yj-add-type-10"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
 
-           }else{
-               if(quakooUtils.isBlack(params[cid])){
-                   params[cid] = {};
-               }
-               params[cid].subid = subid;
-               params[cid].cid = cid;
-               params[cid].properties = {};
-               params[cid].skuJson = [];
-               params[cid].productCustomRangeList = [];
-               params[cid].ugDiscount = [];
-               params[cid].type = params[cid].type? params[cid].type:0;
-           }
+                //包装11
+                selectTag($("#yj-add-baozhuang-11"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
+            }
+            //时间范围
+            yjDate = new dateRange('#yj-add-time',true);
+            yjDate.init()
         }
         // 新增眼镜
-        function addYjGoods() {
-            for(var i=0;i<params[cid].skuJson.length;i++){
-                var obj = {};
-                for(var j in params[cid].skuJson[i].properties){
-                    if(j!='ballId' && j!='columnId'){
-                        obj[j] = params[cid].skuJson[i].properties[j]
+        function addYjGoods(isUpdate,index) {
+            //销售状态  0开启  1关闭
+            if($('#yj-add-status').hasClass('active')){
+                params[cid].saleStatus = 0;
+            }else{
+                params[cid].saleStatus = 1;
+            }
+            if($('#category'+cid).text()=='镜片'){
+                params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
+            }else if($('#category'+cid).text()=='特殊商品'){
+                params[cid].skuJson = [{}];
+                params[cid].skuJson[0].num = $('#yj-add-num').val();
+                params[cid].skuJson[0].code = $('#yj-add-code').val();
+                params[cid].skuJson[0].costPrice = $('#yj-add-costPrice').val();
+                params[cid].icon = $('#cover').attr('real-src');
+                params[cid].name = $('#yj-add-name').val();
+                if(params[cid].type==1){
+                    params[cid].skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
+                }
+            }else{
+                params[cid].properties[$('#yj-add-day').attr('data-pnid')] = $('#yj-add-day').val();
+                if($('#category'+cid).text()=='护理产品'){
+                    params[cid].properties[$('#yj-add-shouming').attr('data-pnid')] = $('#yj-add-shouming').val();
+                }
+                if($('#category'+cid).text()!='隐形眼镜'){
+                    params[cid].skuJson = [{}];
+                    if(params[cid].type==1){
+                        params[cid].skuJson[0].code = $('#yj-add-code-1').val();
+                        params[cid].skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
+                    }else{
+                        params[cid].skuJson[0].retailPrice = $('#yj-add-retailPrice').val();
+                        params[cid].skuJson[0].costPrice = $('#yj-add-costPrice').val();
+                        params[cid].skuJson[0].code = $('#yj-add-code').val();
                     }
                 }
-                params[cid].skuJson[i].properties = obj;
+            }
+            if(params[cid].type==1){
+                //积分商品
+                //有效期
+                if(yjDate.getTime()[2]){
+                    params[cid].integralStartTime = yjDate.getTime()[2];
+                }
+                if(yjDate.getTime()[3]){
+                    params[cid].integralEndTime = yjDate.getTime()[3];
+                }
+                //兑换数量上限
+                if($('#yj-add-integralNum').val()){
+                    params[cid].integralNum = $('#yj-add-integralNum').val();
+                }
+            }
+            params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+            delete params[cid].categoryName;
+            if(isUpdate){
+                delete params[cid].skuList;
+                delete params[cid].userGradeCategoryDiscountList;
+                delete params[cid].providerName;
+                delete params[cid].categoryName;
+                delete params[cid].seriesName;
+                delete params[cid].brandName;
+                delete params[cid].canUseNum;
+                delete params[cid].ctime;
+                delete params[cid].utime;
+                delete params[cid].sort;
+                delete params[cid].integralEndTimeNew;
+                delete params[cid].integralStartTimeNew;
+
+                var skuJson = params[cid].skuJson;
+                console.log(skuJson)
+                params[cid].addSkuJson = [];
+                params[cid].updateSkuJson = [];
+                params[cid].delSkuIdJson = [];
+                for(var i=0;i<skuJson.length;i++){
+                    if(skuJson[i].id){
+                        if(skuJson[i].del){
+                            delete skuJson[i].del;
+                            params[cid].delSkuIdJson.push(skuJson[i])
+                        }else{
+                            params[cid].updateSkuJson.push(skuJson[i])
+                        }
+                    }else{
+                        params[cid].addSkuJson.push(skuJson[i])
+                    }
+                }
+                params[cid].addSkuJson = JSON.stringify(params[cid].addSkuJson);
+                params[cid].updateSkuJson = JSON.stringify(params[cid].updateSkuJson);
+                params[cid].delSkuIdJson = JSON.stringify(params[cid].delSkuIdJson);
+
+                console.log(params[cid])
+                quakooData.ajaxGetData(config.getUrl_product_change(),params[cid],function (ret) {
+                    if(ret.success){
+                        layer.msg('修改成功',{icon: 1})
+                        layer.close(index)
+                        chooseGoodsType();
+                    }else{
+                        layer.msg(ret.data,{icon: 2})
+                    }
+                })
+            }else{
+                params[cid].skuJson = JSON.stringify(params[cid].skuJson);
+                console.log(params[cid])
+                quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
+                    if(ret.success){
+                        layer.msg('添加成功',{icon: 1})
+                        layer.close(index)
+                        chooseGoodsType();
+                    }else{
+                        layer.msg(ret.data,{icon: 2})
+                    }
+                })
             }
 
-            params[cid].skuJson = JSON.stringify(params[cid].skuJson);
-            params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
-            params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
-            console.log(params[cid])
-            quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
-                if(ret.success){
-                    layer.msg('添加成功',{icon: 1})
-                    chooseGoodsType();
-                }else{
-                    layer.msg(ret.data,{icon: 2})
-                }
-            })
         }
         //特殊商品添加主图
         function uploadTsspIcon() {
@@ -2341,6 +1989,7 @@
                 })
             });
         }
+
     </script>
 </body>
 </html>
