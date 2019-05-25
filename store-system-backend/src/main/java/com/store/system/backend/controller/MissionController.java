@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
+ * ps:营销管理--任务模块  用于给团队或个人创建任务,任务目标可以是 销售额、门店总销售额、销售量，完成任务可获得奖励。
  * MissionController
  * package: com.store.system.backend.controller
  * creat_user: lihaojie
