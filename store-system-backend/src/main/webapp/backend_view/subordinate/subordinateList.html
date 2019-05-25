@@ -172,6 +172,16 @@
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
 
+<!-- 公司内部库 -->
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
+<!-- 全局公共js -->
+<script src="../resource/js/yanjing.js"></script>
 
 <script src="../resource/common/common.js?" +Math.random()></script>
 
@@ -276,7 +286,7 @@
                 var href =serverUrl + "/subordinate/exportSubordinate?token=" + getUserToken() + "&&name=" + encodeURIComponent(name) + "";
                 $('#exp').attr('href', href); // 动态参数添加href
                 return {
-                    token: getUserInfo().token,
+                    token: quakooUser.getUserInfo().token,
                     page: params.offset / params.limit + 1,
                     size: params.limit,
                     name: name,
@@ -288,7 +298,7 @@
     var state = {'1': '上线', '0': '下线'};
 
     function getUserToken() {
-        var user = getUserInfo();
+        var user = quakooUser.getUserInfo();
         return encodeURIComponent(user.token);
     }
 
