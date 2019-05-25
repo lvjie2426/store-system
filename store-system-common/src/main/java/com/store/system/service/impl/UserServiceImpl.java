@@ -109,13 +109,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Pager searchUser(Pager pager,long sid,int userType,String name,String phone,String userName,long rid,int status,long startTime,long endTime) throws Exception {
+    public Pager searchUser(Pager pager,long sid, long subid,int userType,String name,String phone,String userName,long rid,int status,long startTime,long endTime) throws Exception {
         final String selectCount = "select count(*) from `user` where 1=1  ";
         final String selectData = "select * from `user` where 1=1  ";
         final String limit = "  limit %d , %d ";
         String sql = selectData;
         String countSql = selectCount;
-        {
+        if(sid>-1){
             sql = sql + " and `sid` = " + sid;
             countSql = countSql + " and `sid` = " + sid;
         }
@@ -152,7 +152,10 @@ public class UserServiceImpl implements UserService {
             sql = sql + " and `ctime` < " + endTime;
             countSql = countSql + " and `ctime` < " + endTime;
         }
-
+        if(subid>-1){
+            sql = sql + " and `psid` = " + subid;
+            countSql = countSql + " and `psid` = " + subid;
+        }
         sql = sql + String.format(limit,pager.getSize()*(pager.getPage()-1),pager.getSize());
         List<User> users =null;
         int count=0;

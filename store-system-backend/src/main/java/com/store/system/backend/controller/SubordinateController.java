@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -172,4 +173,25 @@ public class SubordinateController extends BaseController {
         }
     }
 
+    @RequestMapping("/getAllSubordinate")
+    public ModelAndView getAllSubordinate(HttpServletRequest request,HttpServletResponse response)throws Exception{
+        try{
+            return this.viewNegotiating(request,response,subordinateService.getAllSubordinate());
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+
+    }
+
+    @RequestMapping("/getSubordinateStoreBySid")
+    public ModelAndView getSubordinateStoreBySid(HttpServletRequest request, HttpServletResponse response,
+                                            @RequestParam(value = "sid") long sid, Model model) throws Exception {
+        try {
+            List<ClientSubordinate> list= subordinateService.getTwoLevelAllList(sid);
+            return this.viewNegotiating(request,response,list);
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
+    }
 }

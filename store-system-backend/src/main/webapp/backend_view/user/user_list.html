@@ -77,6 +77,15 @@
                                     </select>
                                 </div>
 
+                                <label class="col-sm-1 control-label">用户类型选择</label>
+                                <div class="col-sm-2">
+                                    <select name="" id="searchUserType" class="form-control">
+                                        <option value="-1">全部</option>
+                                        <option value="0">顾客</option>
+                                        <option value="1">员工</option>
+                                    </select>
+                                </div>
+
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">开始时间</label>
@@ -86,6 +95,18 @@
                                 <label class="col-sm-1 control-label">结束时间</label>
                                 <div class="col-sm-2">
                                     <input type="text" id="endTime" class="form-control" placeholder="请选择结束时间" readonly>
+                                </div>
+                                <label class="col-sm-1 control-label">公司：</label>
+                                <div class="col-sm-2">
+                                    <select id="parentSubordinate"  class="form-control">
+
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 control-label">门店：</label>
+                                <div class="col-sm-2">
+                                    <select id="subordinate"  class="form-control">
+
+                                    </select>
                                 </div>
                                 <label class="col-sm-1 control-label"></label>
                                 <div class="col-sm-2">
@@ -131,10 +152,31 @@
 
     <!-- 全局公共js -->
     <script src="../resource/js/yanjing.js"></script>
+    <script src="../resource/js/content.js?v=1.0.0"></script>
+
+    <script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
 
     <script src="../resource/common/common.js?" +Math.random()></script>
+    <script src="../resource/js/plugins/chosen/chosen.jquery.js"></script>
     <script>
     var $table = $('#tb_table');
+    var sid =0;
+    initSelectSubject("#parentSubordinate",serverUrl+"/subordinate/getAllSubordinate?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
+    $("#parentSubordinate").on("select2:select",function(e){
+        initSelectSubject("#parentSubordinate",serverUrl+"/subordinate/getAllSubordinate?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
+        var pid =  $("#parentSubordinate").val();
+        initSelectSubject("#subordinate",serverUrl+"/subordinate/getSubordinateStoreBySid?sid="+pid+"&token="+encodeURIComponent(quakooUser.getUserInfo().token) + "&sid=" + sid+ "&pid=" + pid ,false,true);
+    })
+    function formatSubject(item) {
+        if (item.loading) return item;
+        var markup = '<div> <p class="text-primary">名称:' + item.name + '</p >';
+        //markup += '这里可以添加其他选项...';
+        markup += ' </div>';
+        return markup;
+    }
     //初始化
     var TableInit = function (columns) {
             var oTableInit = new Object();
@@ -173,15 +215,19 @@
                     queryParams: function (params) {
                         var startTime = $("#startTime").val();
                         var endTime = $("#endTime").val();
-
+                        var subid = $("#parentSubordinate").val();
+                        var sid = $("#subordinate").val();
                         return {
                             token:quakooUser.getUserInfo().token,
                             page:(params.offset / params.limit) + 1,
                             size: params.limit,
                             name:$("#searchName").val(),
                             phone:$("#searchPhone").val(),
-                            sid:0,//暂无下属机构
+                            // sid:0,//暂无下属机构
                             status:$("#searchStatus").val(),
+                            userType:$("#searchUserType").val(),
+                            subid:isBlank(subid)?-1:subid,
+                            sid:isBlank(sid)?-1:sid,
                             startTime: isBlank(startTime) ? 0 : new Date(startTime).getTime(),
                             endTime: isBlank(endTime) ? 0 : new Date(endTime).getTime(),
 
