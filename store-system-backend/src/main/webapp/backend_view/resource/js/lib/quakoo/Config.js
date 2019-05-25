@@ -27,8 +27,10 @@ var Config = (function(_super){
           this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.30:20005";
+        /**张猛*/
+        // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
-        //this.serverUrl = "http://192.168.1.17:20005";
+        // this.serverUrl = "http://192.168.1.17:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -58,7 +60,7 @@ var Config = (function(_super){
     _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
     /**获取门店下顾客的所有职业*/
     _proto.getUrl_user_getAllUserJob = function(){return this.serverUrl + '/user/getAllUserJob';};
-    /**添加顾客(添加员工)*/
+    /**添加顾客*/
     _proto.getUrl_user_addCustomer = function(){return this.serverUrl + '/user/addCustomer';};
     /**获取所属公司的所有顾客*/
     _proto.getUrl_user_getCustomerPager = function(){return this.serverUrl + '/user/getCustomerPager';};
@@ -101,7 +103,7 @@ var Config = (function(_super){
     /**员工信息修改*/
     _proto.getUrl_user_updateUser = function(){return this.serverUrl + '/user/updateUser';};
     /**添加员工*/
-    _proto.getUrl_user_addCustomer = function(){return this.serverUrl + '/user/addCustomer';};
+    _proto.getUrl_user_add = function(){return this.serverUrl + '/user/add';};
     /**停用员工*/
     _proto.getUrl_user_updateStatus = function(){return this.serverUrl + '/user/updateStatus';};
     //=======================员工管理 结束====================
@@ -144,6 +146,8 @@ var Config = (function(_super){
     _proto.getUrl_product_getSPUPager = function(){return this.serverUrl + '/product/getSPUPager';};
     /**增加商品*/
     _proto.getUrl_product_add = function(){return this.serverUrl + '/product/add';};
+    /**修改商品spu*/
+    _proto.getUrl_product_change = function(){return this.serverUrl + '/product/change';};
     /**删除商品spu*/
     _proto.getUrl_product_delSPU = function(){return this.serverUrl + '/product/delSPU';};
     /**根据spu的id加载商品信息*/
@@ -151,6 +155,8 @@ var Config = (function(_super){
     /**开启关闭销售状态*/
     _proto.getUrl_product_updateSaleStatus = function(){return this.serverUrl + '/product/updateSaleStatus';};
 
+    /**获取所有出库单*/
+    _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryOutBill/getCheckPager';};
     //=======================商品管理 结束====================
 
 

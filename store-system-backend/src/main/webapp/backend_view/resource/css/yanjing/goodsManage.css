@@ -179,13 +179,14 @@
     color: rgba(57, 57, 83, 1);
     font-size: 13px;
     font-family: PingFangSC-Semibold;
-    padding: 0 16px;
+    /*padding: 0 16px;*/
     border: none;
 }
 
 .layui-layer-add-goods>.layui-layer-title,
 .layui-layer-view-price>.layui-layer-title {
-    display: none;
+    /*display: none;*/
+    background: #fff;
 }
 
 .layui-yj-header .layui-layer-title {
@@ -256,7 +257,7 @@
 
 .goods-select .selectBox {
     width: 100%;
-    color: #828297;
+    color: rgb(57, 57, 83);
     font-size: 12px;
 }
 
