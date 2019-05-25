@@ -25,11 +25,9 @@ public class UserMissionPoolServiceImpl implements UserMissionPoolService{
     }
 
     @Override
-    public UserMissionPool add(UserMissionPool userMissionPool) throws Exception {
+    public UserMissionPool update(UserMissionPool userMissionPool) throws Exception {
         UserMissionPool oldUserMissionPool = userMissionPoolDao.load(userMissionPool);
-        if(oldUserMissionPool==null){
-            return userMissionPoolDao.insert(userMissionPool);
-        }else{
+        if(oldUserMissionPool!=null){
             if(oldUserMissionPool.getNumber()!=userMissionPool.getNumber()){
                 oldUserMissionPool.setNumber(userMissionPool.getNumber());
             }
