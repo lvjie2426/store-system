@@ -5,7 +5,10 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientMission;
 import com.store.system.dao.MissionDao;
+import com.store.system.dao.SubordinateMissionPoolDao;
+import com.store.system.dao.UserMissionPoolDao;
 import com.store.system.model.Mission;
+import com.store.system.model.Subordinate;
 import com.store.system.model.SubordinateMissionPool;
 import com.store.system.model.UserMissionPool;
 import com.store.system.service.MissionService;
@@ -13,6 +16,7 @@ import com.store.system.service.SubordinateMissionPoolService;
 import com.store.system.service.UserMissionPoolService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -33,9 +37,36 @@ public class MissionServiceImpl  implements MissionService {
     @Resource
     private SubordinateMissionPoolService subordinateMissionPoolService;
 
+    @Resource
+    private SubordinateMissionPoolDao subordinateMissionPoolDao;
+
+    @Resource
+    private UserMissionPoolDao userMissionPoolDao;
+
     @Override
+    @Transactional
     public Mission insert(Mission mission) throws Exception {
-        return missionDao.insert(mission);
+        mission = missionDao.insert(mission);
+        if(mission.getType()==Mission.type_tem){
+            //团队任务
+            List<Long> sids = mission.getExecutor();
+            for(Long id: sids){
+                SubordinateMissionPool subordinateMissionPool = new SubordinateMissionPool();
+                subordinateMissionPool.setMid(mission.getId());
+                subordinateMissionPool.setSid(id);
+                subordinateMissionPoolDao.insert(subordinateMissionPool);
+            }
+        }else if(mission.getType()==Mission.type_user){
+            //个人任务
+            List<Long> uids = mission.getExecutor();
+            for(Long id :uids){
+                UserMissionPool userMissionPool = new UserMissionPool();
+                userMissionPool.setMid(mission.getId());
+                userMissionPool.setUid(id);
+                userMissionPoolDao.insert(userMissionPool);
+            }
+        }
+        return mission;
     }
     @Override
     public boolean update(Mission mission) throws Exception {

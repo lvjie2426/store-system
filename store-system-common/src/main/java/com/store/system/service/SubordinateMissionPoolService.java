@@ -7,5 +7,5 @@ public interface SubordinateMissionPoolService {
 
     public SubordinateMissionPool load(long mid,long sid)throws Exception;
 
-    public SubordinateMissionPool add(SubordinateMissionPool subordinateMissionPool)throws Exception;
+    public SubordinateMissionPool update(SubordinateMissionPool subordinateMissionPool)throws Exception;
 }

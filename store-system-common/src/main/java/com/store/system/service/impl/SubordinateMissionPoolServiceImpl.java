@@ -25,11 +25,9 @@ public class SubordinateMissionPoolServiceImpl  implements SubordinateMissionPoo
     }
 
     @Override
-    public SubordinateMissionPool add(SubordinateMissionPool subordinateMissionPool) throws Exception {
+    public SubordinateMissionPool update(SubordinateMissionPool subordinateMissionPool) throws Exception {
         SubordinateMissionPool oldSubordinateMission = subordinateMissionPoolDao.load(subordinateMissionPool);
-        if(subordinateMissionPool==null){
-            return subordinateMissionPoolDao.insert(subordinateMissionPool);
-        }else{
+        if(oldSubordinateMission!=null){
             if (oldSubordinateMission.getNumber()!=subordinateMissionPool.getNumber()){
                 oldSubordinateMission.setNumber(subordinateMissionPool.getNumber());
             }
@@ -46,7 +44,7 @@ public class SubordinateMissionPoolServiceImpl  implements SubordinateMissionPoo
             if(flag){
                 return oldSubordinateMission;
             }
-            return null;
         }
+        return null;
     }
 }

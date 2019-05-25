@@ -103,12 +103,13 @@ public class UserController extends BaseController {
                                    @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
                                    @RequestParam(required = false, value = "name",defaultValue = "") String name,
                                    @RequestParam(required = false, value = "userName",defaultValue = "") String userName,
-                                   @RequestParam(required = false, value = "sid",defaultValue = "0") long sid,
+                                   @RequestParam(required = false, value = "sid",defaultValue = "-1") long sid,
+                                   @RequestParam(required = false, value = "subid",defaultValue = "-1") long subid,
                                    @RequestParam(required = false, value = "userType",defaultValue = "-1") int userType,
                                    @RequestParam(required = false, value = "rid",defaultValue = "0") long rid,
                                    @RequestParam(required = false, value = "status",defaultValue = "-1") int status,
                                    Model model) throws Exception {
-        pager= userService.searchUser(pager,sid,userType,name,phone,userName,rid,status,startTime,endTime);
+        pager= userService.searchUser(pager,sid,subid,userType,name,phone,userName,rid,status,startTime,endTime);
         return this.viewNegotiating(request,response,new PagerResult<>(pager));
     }
 
@@ -220,8 +221,15 @@ public class UserController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(psid)));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
-        }
-    }
+        }    }
+
+//    //会员认证
+//    @RequestMapping("/registVip")
+//    public ModelAndView registVip(HttpServletRequest request,HttpServletResponse response,
+//                                  @RequestParam(value = "phone") String phone,
+//                                  @RequestParam(value = "recommender") long recommender)throws Exception{
+//
+//    }
     /////////////////////员工相关////////////////////////
     @RequestMapping("/updateUser")
     public ModelAndView updateUser(HttpServletRequest request,HttpServletResponse response,
