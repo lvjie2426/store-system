@@ -108,9 +108,11 @@ public interface UserService {
 
     public Pager getBackCustomerPager(Pager pager, long pSubid, int userType) throws Exception; //获取公司下的顾客
 
-    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex,int userType, String job,long userGradeId) throws Exception; //获取分店下的顾客
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String phone1, String name, String name1, int sex,int userType, String job,long userGradeId) throws Exception; //获取分店下的顾客
 
     public Set<String> getAllUserJob(long subid)throws Exception;
+
+    public List<ClientUser> getAllUser(long sid,int userType)throws Exception;
 
     ///////////////////////////导出顾客信息//////////////////////////
     public List<ExportUser> getExportUserInfo(long sid, String phone, int sex, String job)throws Exception;

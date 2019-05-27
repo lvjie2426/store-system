@@ -4,6 +4,7 @@ package com.store.system.backend.controller;
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.store.system.bean.Result;
+import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
@@ -194,7 +195,9 @@ public class UserController extends BaseController {
     public ModelAndView getSubCustomerPager(Pager pager, @RequestParam(value = "subid") long subid,
                                             @RequestParam(value = "userType") int userType,
                                             @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
+                                            @RequestParam(required = false, value = "phone1",defaultValue = "") String phone1,
                                             @RequestParam(required = false, value = "name",defaultValue = "") String name,
+                                            @RequestParam(required = false, value = "name1",defaultValue = "") String name1,
                                             @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
                                             @RequestParam(required = false,value = "job",defaultValue = "") String job,
                                             @RequestParam(required = false,value = "userGradeId",defaultValue = "0") long userGradeId,
@@ -203,7 +206,7 @@ public class UserController extends BaseController {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("分店ID错误");
-            pager = userService.getBackSubCustomerPager(pager, subid,phone,name,sex,userType,job,userGradeId);
+            pager = userService.getBackSubCustomerPager(pager, subid,phone,phone1,name,name1,sex,userType,job,userGradeId);
             return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -223,13 +226,21 @@ public class UserController extends BaseController {
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
         }    }
 
-//    //会员认证
-//    @RequestMapping("/registVip")
-//    public ModelAndView registVip(HttpServletRequest request,HttpServletResponse response,
-//                                  @RequestParam(value = "phone") String phone,
-//                                  @RequestParam(value = "recommender") long recommender)throws Exception{
-//
-//    }
+    //获取门店下所有顾客 下拉列表
+    @RequestMapping("/getAllUser")
+    public ModelAndView getAllUser(HttpServletRequest request,HttpServletResponse response,
+                                  @RequestParam(value = "sid") long sid,
+                                  @RequestParam(value = "userType") int userType)throws Exception{
+        try {
+            Subordinate subordiante = subordinateService.load(sid);
+            long subid = subordiante.getPid();
+            if(subid==0)throw new StoreSystemException("门店ID错误!");
+            return this.viewNegotiating(request,response,new ResultClient(userService.getAllUser(sid,userType)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
+        }
+    }
+
     /////////////////////员工相关////////////////////////
     @RequestMapping("/updateUser")
     public ModelAndView updateUser(HttpServletRequest request,HttpServletResponse response,

@@ -20,6 +20,7 @@ import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -624,23 +625,7 @@ public class UserServiceImpl implements UserService {
         Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
         List<ClientUser> res = Lists.newArrayList();
         for(User user : users) {
-            ClientUser clientUser = new ClientUser(user);
-            if(clientUser.getPsid() > 0) {
-                Subordinate subordinate = subordinateMap.get(clientUser.getPsid());
-                if(subordinate != null) clientUser.setPSubName(subordinate.getName());
-            }
-            if(clientUser.getSid() > 0) {
-                Subordinate subordinate = subordinateMap.get(clientUser.getSid());
-                if(subordinate != null) clientUser.setSubName(subordinate.getName());
-            }
-            //会员等级
-            if(user!=null&&user.getUserGradeId()>0){
-                UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
-                if(userGrade!=null){
-                    clientUser.setMember(userGrade.getTitle());
-                }
-            }
-            //消费次数
+            ClientUser clientUser = transformClient(user);
             res.add(clientUser);
         }
         return res;
@@ -657,7 +642,18 @@ public class UserServiceImpl implements UserService {
             Subordinate subordinate = subordinateMap.get(clientUser.getPsid());
             if(subordinate != null) clientUser.setPSubName(subordinate.getName());
         }
-
+        if(clientUser.getSid() > 0) {
+            Subordinate subordinate = subordinateMap.get(clientUser.getSid());
+            if(subordinate != null) clientUser.setSubName(subordinate.getName());
+        }
+        //会员等级
+        if(user!=null&&user.getUserGradeId()>0){
+            UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
+            if(userGrade!=null){
+                clientUser.setMember(userGrade.getTitle());
+            }
+        }
+        //消费次数
         return clientUser;
     }
 
@@ -796,8 +792,10 @@ public class UserServiceImpl implements UserService {
         return pager;
     }
 
+    //name 是精确查询
+    //name1 是模糊查询
     @Override
-    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String name, int sex, int userType, String job, long userGradeId) throws Exception {
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String phone1, String name, String name1, int sex, int userType, String job, long userGradeId) throws Exception {
         String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String limit = " limit %d , %d ";
@@ -809,13 +807,42 @@ public class UserServiceImpl implements UserService {
             sql = sql + " and `job` =" + job;
             sqlCount = sqlCount + " and `job` =" + job;
         }
-        if (StringUtils.isNotBlank(name)) {
+
+        if(StringUtils.isNotBlank(name)&&StringUtils.isBlank(name1)){//精确查询
+            sql = sql + " AND `name` = " + name;
+            sqlCount = sqlCount + " and `name` =" + name;
+        }
+        if (StringUtils.isNotBlank(name1)&&StringUtils.isBlank(name)) {//模糊查询
             sql = sql + " and `name` like ?";
             sqlCount = sqlCount + " and `name` like ?";
         }
-        if (StringUtils.isNotBlank(phone)) {
+        if (StringUtils.isNotBlank(name)&&StringUtils.isNotBlank(name1)) {
+            if(name.equals(name1)){//相等精确查询
+                sql = sql + " AND `name` = " + name;
+                sqlCount = sqlCount + " and `name` =" + name;
+            }else if(name1.indexOf(name)>0){//如果 姓名.indexOf(姓/名) 按照姓/名模糊查询
+                if (StringUtils.isNotBlank(name1)) {
+                    sql = sql + " and `name` like ?";
+                    sqlCount = sqlCount + " and `name` like ?";
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(phone)&&StringUtils.isBlank(phone1)) {
+            sql = sql + " and `phone` = " + phone;
+            sqlCount = sqlCount + " and `phone` = "+ phone;
+        }
+        if (StringUtils.isNotBlank(phone1)&&StringUtils.isBlank(phone)) {
             sql = sql + " and `phone` like ?";
             sqlCount = sqlCount + " and `phone` like ?";
+        }
+        if(StringUtils.isNotBlank(phone)&&StringUtils.isNotBlank(phone1)){
+            if(phone.equals(phone1)){
+                sql = sql + " and `phone` = " + phone;
+                sqlCount = sqlCount + " and `phone` = "+ phone;
+            }else if(phone.indexOf(phone1)>0){
+                sql = sql + " and `phone` like ?";
+                sqlCount = sqlCount + " and `phone` like ?";
+            }
         }
         if (sex>-1){
             sql = sql + " AND sex =" + sex;
@@ -830,8 +857,8 @@ public class UserServiceImpl implements UserService {
         List<Object> objects=new ArrayList<>();
         List<User> users = null;
         int count = 0;
-        if(StringUtils.isNotBlank(name)){objects.add("%"+name+"%");}
-        if(StringUtils.isNotBlank(phone)){objects.add("%"+phone+"%");}
+        if(StringUtils.isNotBlank(name1)){objects.add("%"+name1+"%");}
+        if(StringUtils.isNotBlank(phone1)){objects.add("%"+phone1+"%");}
         if(objects.size()>0) {
             Object[] args = new Object[objects.size()];
             objects.toArray(args);
@@ -852,6 +879,13 @@ public class UserServiceImpl implements UserService {
         TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
         List<User> users = userDao.getAllLists(subid,User.userType_user,User.status_nomore);
         return fieldSetUtils.fieldList(users,"job");
+    }
+
+    @Override
+    public List<ClientUser> getAllUser(long sid, int userType) throws Exception {
+        String sql = " SELECT * FROM `user` WHERE status = "+ User.status_nomore + " AND `userType` = " + userType + " and sid = " + sid;
+        List<User> users = jdbcTemplate.query(sql,rowMapper);
+        return transformClient(users);
     }
 
     @Override
