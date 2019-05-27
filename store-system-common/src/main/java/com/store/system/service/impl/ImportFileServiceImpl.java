@@ -10,9 +10,10 @@ import com.quakoo.baseFramework.secure.MD5Utils;
 import com.store.system.client.ResultClient;
 import com.store.system.dao.UserDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.ImportUser;
-import com.store.system.model.User;
+import com.store.system.model.*;
 import com.store.system.service.ImportFileService;
+import com.store.system.service.SalaryRecordService;
+import com.store.system.service.SalaryService;
 import com.store.system.util.FileUtils;
 import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,38 +39,66 @@ public class ImportFileServiceImpl implements ImportFileService {
     @Resource
     private UserDao userDao;
 
+    @Resource
+    private SalaryService salaryService;
+
+    @Resource
+    private SalaryRecordService salaryRecordService;
     Logger logger = LoggerFactory.getLogger(ImportFileService.class);
 
-
+    //顾客信息导入
     @Override
     @Transactional
     public ResultClient importUserInFo(MultipartFile file, User user) throws Exception {
         ResultClient res = new ResultClient();
         long sid = user.getSid();//店铺ID
         long psid = user.getPsid();//公司ID
-            File usersFile = FileUtils.multipartToFile(file);
-            String filename = file.getOriginalFilename();
-            if(StringUtils.isBlank(filename)){
-                return new ResultClient("读取失败");
-            }
-            ImportParams importParams = new ImportParams();
-            importParams.setTitleRows(2);
-            List<ImportUser> list = ExcelImportUtil.importExcel(usersFile,ImportUser.class,importParams);
-            handleImportUser(list,sid,psid);
+        File usersFile = FileUtils.multipartToFile(file);
+        String filename = file.getOriginalFilename();
+        if(StringUtils.isBlank(filename)){
+            return new ResultClient("读取失败");
+        }
+        ImportParams importParams = new ImportParams();
+        importParams.setTitleRows(2);
+        List<ImportUser> list = ExcelImportUtil.importExcel(usersFile,ImportUser.class,importParams);
+        handleImportUser(list,sid,psid);
         res.setMsg("导入成功!");
         return res;
     }
+    //工资单导入
+    @Override
+    @Transactional
+    public ResultClient importUserSalary(MultipartFile file, User user) throws Exception {
+        ResultClient res = new ResultClient();
+        long sid = user.getSid();//店铺ID
+        long psid = user.getPsid();//公司ID
+        long oid = user.getId();//操作人ID
+        File salartyFile = FileUtils.multipartToFile(file);
+        String filename = file.getOriginalFilename();
+        if(StringUtils.isBlank(filename)){
+            return new ResultClient("读取失败");
+        }
+        ImportParams importParams = new ImportParams();
+        importParams.setTitleRows(2);
+        List<ImportSalary> list = ExcelImportUtil.importExcel(salartyFile,ImportSalary.class,importParams);
+        handleImportSalary(list,sid,psid,oid);
+        res.setMsg("导入成功!");
+        return res;
+    }
+
     //保存user
     private void handleImportUser(List<ImportUser> list, long sid, long psid)throws Exception{
         for(ImportUser importUser:list){
-            User user = getImportUser(importUser,sid,psid);
+            User user = getImportUser(importUser);
+            user.setSid(sid);
+            user.setPsid(psid);
             user = userDao.insert(user);
             logger.info("@@@@@@@@@@"+ JsonUtils.toJson(user));
         }
     }
 
     //importUser转换User
-    private User getImportUser(ImportUser importUser,long sid,long psid)throws Exception{
+    private User getImportUser(ImportUser importUser)throws Exception{
         User user = new User();
 
         /**顾客姓名**/
@@ -164,8 +193,6 @@ public class ImportFileServiceImpl implements ImportFileService {
             user.setDesc(importUser.getDesc().trim());
         }
 
-        user.setSid(sid);
-        user.setPsid(psid);
         user.setRand(new Random().nextInt(100000000));
         user.setUserType(User.userType_user);
         user.setPassword(MD5Utils.md5ReStr("1234".getBytes()));
@@ -203,5 +230,98 @@ public class ImportFileServiceImpl implements ImportFileService {
             }
         }
         return age;
+    }
+
+    //保存工资单
+    private void handleImportSalary(List<ImportSalary> list,long sid,long psid,long oid)throws Exception{
+        SalaryRecord salaryRecord = new SalaryRecord();
+        int allMoney = 0;//总金额
+        int allNumber = 0;//总人数
+        List<Long> sids = Lists.newArrayList();
+        for(ImportSalary importSalary : list){
+            Salary salary = getImportSalary(importSalary);
+            salary.setSid(sid);
+            salary.setPsid(psid);
+            salary.setOid(oid);
+            salary = salaryService.add(salary);//保存工资单
+            logger.info("@@@@@@@@@@"+ JsonUtils.toJson(salary));
+            allMoney += salary.getFinalPay();
+            allNumber++;
+            sids.add(salary.getId());
+        }
+        salaryRecord.setAllMoney(allMoney);
+        salaryRecord.setAllNumber(allNumber);
+        salaryRecord.setSid(sid);
+        salaryRecord.setPsid(psid);
+        salaryRecord.setYear(getYear());
+        salaryRecord.setMonth(getMonth());
+        salaryRecord.setSids(sids);
+        salaryRecordService.add(salaryRecord);//保存导入记录
+        logger.info("@@@@@@@@@@"+ JsonUtils.toJson(salaryRecord));
+
+    }
+
+    private Salary getImportSalary(ImportSalary importSalary)throws Exception{
+        Salary salary = new Salary();
+        /**编号**/
+        if(StringUtils.isNotBlank(importSalary.getId())){
+            salary.setUid(Integer.valueOf(importSalary.getId()));
+        }else{
+            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 员工编号没有填写!");
+        }
+
+        /**基本工资**/
+        if(StringUtils.isNotBlank(importSalary.getBasePay())) {
+            salary.setBasePay(Integer.valueOf(importSalary.getBasePay())*100);
+        }else{
+            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 基本工资没有填写!");
+        }
+
+        /**销售提成**/
+        if(StringUtils.isNotBlank(importSalary.getRoyalty())) {
+            salary.setRoyalty(Integer.valueOf(importSalary.getRoyalty())*100);
+        }else{
+            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 销售提成没有填写!");
+        }
+
+        /**奖金**/
+        if(StringUtils.isNotBlank(importSalary.getBonus())){
+            salary.setBonus(Integer.valueOf(importSalary.getBasePay())*100);
+        }else{
+            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 奖金没有填写!");
+        }
+
+        /**罚款**/
+        if(StringUtils.isNotBlank(importSalary.getFine())){
+            salary.setFine(Integer.valueOf(importSalary.getFine())*100);
+        }
+
+        /**实发工资**/
+        if(StringUtils.isNotBlank(importSalary.getFinalPay())){
+            salary.setFinalPay(Integer.valueOf(importSalary.getFinalPay())*100);
+        }else{
+            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 实发工资没有填写!");
+        }
+
+        /**备注**/
+        if(StringUtils.isNotBlank(importSalary.getDesc())){
+            salary.setDesc(importSalary.getDesc().trim());
+        }
+        salary.setYear(getYear());
+        salary.setMonth(getMonth());
+
+        return salary;
+    }
+    //获取当前时间年份
+    public int getYear(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        return calendar.get(Calendar.YEAR);
+    }
+    //获取当前时间月份
+    public int getMonth(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        return calendar.get(Calendar.MONTH)+1;
     }
 }

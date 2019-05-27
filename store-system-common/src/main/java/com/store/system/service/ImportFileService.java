@@ -15,4 +15,13 @@ public interface ImportFileService {
      * @return
      */
     public ResultClient importUserInFo(MultipartFile file,User user) throws Exception;
+    /**
+     * 导入工资单
+     * @param file
+     * @param user
+     * @author lihaojie
+     * @date 2019/5/27 15:59
+     * @return
+     */
+    public ResultClient importUserSalary(MultipartFile file,User user) throws Exception;
 }

@@ -441,8 +441,25 @@
                 <ref bean="dataSource" />
             </list>
         </property>
-    </bean><bean id="userMissionPoolDao" class="com.store.system.dao.impl.UserMissionPoolDaoImpl">
+    </bean>
+    <bean id="userMissionPoolDao" class="com.store.system.dao.impl.UserMissionPoolDaoImpl">
         <property name="tableName" value="user_mission_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="salaryDao" class="com.store.system.dao.impl.SalaryDaoImpl">
+        <property name="tableName" value="salary" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="salaryRecordDao" class="com.store.system.dao.impl.SalaryRecordDaoImpl">
+        <property name="tableName" value="salary_record" />
         <property name="dataSources">
             <list>
                 <ref bean="dataSource" />
