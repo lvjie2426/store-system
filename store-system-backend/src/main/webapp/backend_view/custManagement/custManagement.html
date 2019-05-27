@@ -667,7 +667,7 @@
                             if(res.success){
                                 layer.msg(result.succ, {icon: 1, shade: 0.01});
                                 $('.layui-layer-loading').hide();
-                                handleTable("","",serverUrl+"/user/getSubCustomerPager");
+                                handleTable("","",serverUrl+"/user/getSubCustomerPager?userType=1");
                             } else {
                                 layer.confirm(result.fail+msg, {
                                     btn: ['知道了'] //按钮
