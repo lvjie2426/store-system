@@ -35,9 +35,9 @@ public class SalaryRecordController extends BaseController {
     /////////////////////查询工资单列表////////////////////////
     @RequestMapping("/getAllList")
     public ModelAndView getAllList(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam(value = "sid") long sid, Pager pager)throws Exception{
+                                   @RequestParam(value = "psid") long psid, Pager pager)throws Exception{
         try{
-            pager = salaryRecordService.getAllByPager(pager,sid);
+            pager = salaryRecordService.getAllByPager(pager,psid);
             return this.viewNegotiating(request,response,pager);
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));

@@ -46,22 +46,22 @@ public class SalaryRecordServiceImpl implements SalaryRecordService{
     }
 
     @Override
-    public Pager getAllByPager(Pager pager, long sid) throws Exception {
+    public Pager getAllByPager(Pager pager, long psid) throws Exception {
         String sql = "SELECT  *  FROM `salary_record` where 1=1 ";
         String sqlCount = "SELECT  COUNT(*)  FROM `salary_record` where 1=1";
         String limit = "  limit %d , %d ";
         {
-            sql = sql + " and sid = " + sid;
-            sqlCount = sqlCount + " and sid = " + sid;
+            sql = sql + " and psid = " + psid;
+            sqlCount = sqlCount + " and psid = " + psid;
         }
         sql = sql + " order  by ctime desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
-        List<SalaryRecord> subordinates = null;
+        List<SalaryRecord> salaryRecords = null;
         int count =0;
-        subordinates=jdbcTemplate.query(sql,rowMapper);
+        salaryRecords=jdbcTemplate.query(sql,rowMapper);
         count=this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
 
-        pager.setData(subordinates);
+        pager.setData(salaryRecords);
         pager.setTotalCount(count);
         return pager;
     }

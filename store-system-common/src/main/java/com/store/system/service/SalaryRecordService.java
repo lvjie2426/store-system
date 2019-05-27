@@ -17,7 +17,7 @@ public interface SalaryRecordService {
 
     public SalaryRecord add(SalaryRecord salaryRecord)throws Exception;
 
-    public Pager getAllByPager(Pager pager,long sid)throws Exception;
+    public Pager getAllByPager(Pager pager,long psid)throws Exception;
 
     public boolean revoke(long id)throws Exception;
 }

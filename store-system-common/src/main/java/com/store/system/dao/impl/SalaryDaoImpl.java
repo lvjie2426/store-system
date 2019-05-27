@@ -27,10 +27,4 @@ public class SalaryDaoImpl extends CacheBaseDao<Salary> implements SalaryDao{
     public Map<String, List<String>> getCacheMap() {
         return super.cache_map();
     }
-
-    @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<Salary> getAll(long uid) throws Exception {
-        return null;
-    }
 }

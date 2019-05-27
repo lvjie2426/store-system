@@ -1,8 +1,11 @@
 package com.store.system.service.impl;
 
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.dao.SalaryDao;
 import com.store.system.model.Salary;
+import com.store.system.model.SalaryRecord;
 import com.store.system.service.SalaryService;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,6 +23,11 @@ import java.util.List;
 @Service
 public class SalaryServiceImpl implements SalaryService{
 
+    private RowMapperHelp<Salary> rowMapper = new RowMapperHelp<>(Salary.class);
+
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+
     @Resource
     private SalaryDao salaryDao;
     @Override
@@ -29,6 +37,12 @@ public class SalaryServiceImpl implements SalaryService{
 
     @Override
     public List<Salary> loadSalaryByUser(long uid) throws Exception {
-        return salaryDao.getAll(uid);
+        String sql = "SELECT  *  FROM `salary` where 1=1 and 'status' = " + Salary.status_nomore;
+        {
+            sql = sql + " and uid = " + uid;
+        }
+        sql = sql + " order  by ctime desc";
+        List<Salary> salaries = jdbcTemplate.query(sql,rowMapper);
+        return salaries;
     }
 }

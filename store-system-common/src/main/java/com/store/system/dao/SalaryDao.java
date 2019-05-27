@@ -15,6 +15,4 @@ import java.util.List;
  * @Version: 1.0
  */
 public interface SalaryDao extends HDao<Salary>{
-
-    public List<Salary> getAll(long uid)throws Exception;
 }
