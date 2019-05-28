@@ -8,10 +8,7 @@ import com.quakoo.webframework.BaseController;
 import com.store.system.bean.InventoryInBillItem;
 import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.InventoryInBill;
-import com.store.system.model.ProductPropertyName;
-import com.store.system.model.ProductPropertyValue;
-import com.store.system.model.User;
+import com.store.system.model.*;
 import com.store.system.service.*;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +43,9 @@ public class InventoryInBillController extends BaseController {
     @Resource
     private InventoryInBillService inventoryInBillService;
 
+    @Resource
+    private InventoryWarehouseService inventoryWarehouseService;
+
     /**
      * 获取一个商品的SPU，返回需要确定的所有SKU属性
      * method_name: select
@@ -67,34 +67,36 @@ public class InventoryInBillController extends BaseController {
             ClientSubordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("店铺为空");
-            ClientInventoryInBillSelect res = null;
+            ClientInventoryInBillSelect res = new ClientInventoryInBillSelect();
             ClientProductSPU productSPU = productService.selectSPU(type, pSubid, pid, cid, bid, sid);
-            if(null != productSPU) {
-                List<ProductPropertyName> propertyNames = productPropertyNameService.getSubAllList(pSubid, cid);
-                for(Iterator<ProductPropertyName> it = propertyNames.iterator(); it.hasNext();) {
-                    ProductPropertyName propertyName = it.next();
-                    if(propertyName.getType() != ProductPropertyName.type_sku) it.remove();
-                }
-                if(propertyNames.size() > 0) {
-                    res = new ClientInventoryInBillSelect();
-                    res.setProductSPU(productSPU);
-                    List<ClientProductProperty> properties = Lists.newArrayList();
-                    for(ProductPropertyName propertyName : propertyNames) {
-                        ClientProductProperty property = new ClientProductProperty(propertyName);
-                        if(propertyName.getInput() == ProductPropertyName.input_no) {
-                            List<ProductPropertyValue> propertyValues = productPropertyValueService.getSubAllList(pSubid, propertyName.getId());
-                            List<ClientProductPropertyValue> values = Lists.newArrayList();
-                            for(ProductPropertyValue propertyValue : propertyValues) {
-                                ClientProductPropertyValue value = new ClientProductPropertyValue(propertyValue);
-                                values.add(value);
-                            }
-                            property.setValues(values);
-                        }
-                        properties.add(property);
-                    }
-                    res.setSkuProperties(properties);
-                }
-            }
+            List<ClientProductSKU> skuList =  productService.getSaleSKUAllList(subid,productSPU.getId());
+            if(skuList.size()>0) res.setSkuList(skuList);
+//            if(null != productSPU) {
+//                List<ProductPropertyName> propertyNames = productPropertyNameService.getSubAllList(pSubid, cid);
+//                for(Iterator<ProductPropertyName> it = propertyNames.iterator(); it.hasNext();) {
+//                    ProductPropertyName propertyName = it.next();
+//                    if(propertyName.getType() != ProductPropertyName.type_sku) it.remove();
+//                }
+//                if(propertyNames.size() > 0) {
+//                    res = new ClientInventoryInBillSelect();
+//                    res.setProductSPU(productSPU);
+//                    List<ClientProductProperty> properties = Lists.newArrayList();
+//                    for(ProductPropertyName propertyName : propertyNames) {
+//                        ClientProductProperty property = new ClientProductProperty(propertyName);
+//                        if(propertyName.getInput() == ProductPropertyName.input_no) {
+//                            List<ProductPropertyValue> propertyValues = productPropertyValueService.getSubAllList(pSubid, propertyName.getId());
+//                            List<ClientProductPropertyValue> values = Lists.newArrayList();
+//                            for(ProductPropertyValue propertyValue : propertyValues) {
+//                                ClientProductPropertyValue value = new ClientProductPropertyValue(propertyValue);
+//                                values.add(value);
+//                            }
+//                            property.setValues(values);
+//                        }
+//                        properties.add(property);
+//                    }
+//                    res.setSkuProperties(properties);
+//                }
+//            }
             return this.viewNegotiating(request,response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -118,6 +120,9 @@ public class InventoryInBillController extends BaseController {
             if(StringUtils.isNotBlank(itemsJson)) {
                 billItems = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryInBillItem>>() {});
             }
+            List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(inventoryInBill.getSubid());
+            if(warehouses.size()>0)
+                inventoryInBill.setWid(warehouses.get(0).getId());
             inventoryInBill.setItems(billItems);
             inventoryInBill = inventoryInBillService.add(inventoryInBill);
             return this.viewNegotiating(request,response, new ResultClient(inventoryInBill));

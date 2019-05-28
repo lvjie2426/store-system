@@ -28,6 +28,7 @@ public class InventoryInBill implements Serializable {
     public static final int status_wait_check = 1; //等待审核
     public static final int status_end = 2; //完结状态
 
+    public static final int check_wait_check = 0; //等待审核
     public static final int check_pass = 1; //审核通过
     public static final int check_no_pass = 2; //审核未通过
 
