@@ -58,7 +58,7 @@ var Config = (function(_super){
     //=======================顾客管理 开始====================
     /**获取公司下门店列表*/
     _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
-    /**获取门店下顾客的所有职业*/
+    /**获取门店下顾客的所有职业（公司下员工所有职位）*/
     _proto.getUrl_user_getAllUserJob = function(){return this.serverUrl + '/user/getAllUserJob';};
     /**添加顾客*/
     _proto.getUrl_user_addCustomer = function(){return this.serverUrl + '/user/addCustomer';};

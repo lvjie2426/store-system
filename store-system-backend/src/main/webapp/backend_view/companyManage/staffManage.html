@@ -711,6 +711,9 @@
             font-family: PingFangSC-Medium;
         }
         /**员工状态样式结束*/
+        .fixed-table-body tbody{
+            background-color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -719,7 +722,7 @@
         <div class="headLeft">员工管理</div>
         <div class="headRight">
             <div class="child newShop" onclick="employee()">创建员工</div>
-            <input class="child " type="text" placeholder="搜索员工">
+            <input class="child " type="text" placeholder="搜索员工" id="searchStaff">
             <div class="selectBox child" id="selectBox">
                 <div class="select-box-header">
                     <span class="text">姓名</span> <i class="iconfont icon-ico_arrow_down"></i>
@@ -761,7 +764,7 @@
             </div>
             <div class="optionBox">
                 <ul class="optionUL">
-                    <li value="">全部性别</li>
+                    <li value = "3">全部</li>
                     <li value="1">男</li>
                     <li value="2">女</li>
                 </ul>
@@ -769,7 +772,7 @@
         </div>
     </div>
     <div class="tableCont wrap90">
-        <table  id="cmMain-table" data-toggle="table" class="cmMain-table table table-border" ></table>
+        <table  id="cmMain-table" data-toggle="table" class=" table table-border" ></table>
     </div>
 </div>
 <!--导入工资弹窗-->
@@ -798,7 +801,7 @@
     <div class="head">
         <span id="edit-name"></span>
         <span class="moveTitle" id="edit-shopName"></span>
-        <span onclick="removeStaff()">离职该员工</span>
+        <span id="removeStaff">离职该员工</span>
     </div>
     <div class="body">
         <ul class="myUl">
@@ -806,15 +809,10 @@
                 <div>职位</div>
                 <div class="selectBox" id="selectBox4">
                     <div class="select-box-header">
-                        <span class="text">验光师/店长</span> <i class="iconfont icon-ico_arrow_down"></i>
+                        <span class="text" id="edit-job"></span> <i class="iconfont icon-ico_arrow_down"></i>
                     </div>
                     <div class="optionBox">
-                        <ul class="optionUL">
-                            <li value="01">店员1</li>
-                            <li value="02">店员2</li>
-                            <li value="03">店员3</li>
-                            <li value="04">店员4</li>
-                            <li value="05">店员5</li>
+                        <ul class="optionUL" id="jobList">
                         </ul>
                     </div>
                 </div>
@@ -853,7 +851,7 @@
                             <option value="date">日期</option>
                         </select>
                     </div>
-                    <input name="test" id="tests" data-type="day"
+                    <input name="test" id="editTime" data-type="day"
                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期"
                            data-type="time"/>
                 </div>
@@ -895,19 +893,8 @@
                 </li>
                 <li class="item">
                     <div>职位</div>
-                    <div class="selectBox" id="job-position">
-                        <div class="select-box-header">
-                            <span class="text" id="emp-position">验光师/店长</span> <i class="iconfont icon-ico_arrow_down"></i>
-                        </div>
-                        <div class="optionBox">
-                            <ul class="optionUL">
-                                <li value="01">店员1</li>
-                                <li value="02">店员2</li>
-                                <li value="03">店员3</li>
-                                <li value="04">店员4</li>
-                                <li value="05">店员5</li>
-                            </ul>
-                        </div>
+                    <div>
+                        <input type="text" placeholder="请输入职位" id="addJob">
                     </div>
                 </li>
                 <li class="item">
@@ -940,11 +927,9 @@
                     <div>入职时间</div>
                     <div>
                         <div class="settings" style="display:none;">
-                            <select name="demo" id="demo">
-                                <option value="date">日期</option>
-                            </select>
+
                         </div>
-                        <input name="test" id="add" data-type="day" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期"
+                        <input name="test" id="add" data-type="day" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="入职时间"
                                data-type="time"/>
                     </div>
                 </li>
@@ -992,8 +977,12 @@
 <script>
     var psid;                                                //企业ID
     var subid;                                               //门店ID
+    var selStaName;                                          //下拉框员工姓名
+    var seaStaName;                                          //搜索框员工姓名
+    var staffSex;                                            //下拉框员工性别
+    var editJob;
     $(function () {
-        var preid = window.location.search.replace(/\?subid=/,"");
+        var preid = window.location.search.replace(/\?subid=/,""); //前一个页面穿参（门店ID）
         psid = quakooUser.getUserInfo().psid;                //企业ID(公司ID)
         subid = preid||quakooDb.getItem("sel_ShopId");       //门店ID
         initPage();                                          //初始化页面
@@ -1002,38 +991,100 @@
     function initPage(){
         getStaffList(subid);                                 //获取员工列表
         getStaffNameList(subid);                             //获取员工名字
-
-
-
+        selectTag($("#selectBox3"), function (ret) {         //获取员工列表（根据下拉框性别）
+            staffSex = ret.value;
+            getStaffList();
+        });
+        searchStaffName();                                   //获取员工列表（根据搜索框姓名）
     }
+
+    /**员工姓名搜索*/
+    function searchStaffName(){
+        document.getElementById('searchStaff').onkeypress = function(e){
+            var keycode = e.keyCode;
+            if(keycode=='13') {
+                document.getElementById('searchStaff').blur();
+                e.preventDefault();
+                keyWord =  document.getElementById('searchStaff').value;
+                if(quakooUtils.isBlack(keyWord)){
+                    seaStaName = "";
+                    getStaffList();
+                    layer.msg('请输入员工姓名进行搜索');
+                    return;
+                }
+                seaStaName = keyWord;
+                getStaffList();
+            }
+        };
+        $(document).on('input propertychange','#searchStaff',function (e) {
+            if (e.type === "input" || e.orignalEvent.propertyName === "value") {
+                if(this.value.length == 0){
+                    seaStaName = "";
+                    getStaffList();
+                    document.activeElement.focus();
+                }else{
+                    //document.activeElement.blur();
+                    seaStaName = this.value;
+                    getStaffList();
+                }
+            }
+        });
+    }
+
     /**接口——获取员工姓名*/
     function getStaffNameList(subid) {
         quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:1},function (ret) {
             console.log("员工名字：",ret);
             if(ret&&ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
-                    var html = "<li value=''>所有人</li>";
+                    var html = "<li value='520'>所有人</li>";
                     for(var i = 0;i<ret.data.length;i++){
                         html+= "<li value='"+ret.data[i].name+"'>"+ret.data[i].name+"</li>"
                     }
                     document.getElementById("staffNameUl").innerHTML = html;
+                    selectTag($("#selectBox"), function (ret) {/**/
+                        selStaName = ret.value;
+                        getStaffList();       //获取员工列表（根据下拉框姓名）
+                    })
                 }
             }
         })
     }
+    /**接口——获取员工的职位列表*/
+    function getJobList(psid) {
+        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{psid:psid,userType:1},function (ret) {
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    var html = "";
+                    for(var i=0;i<ret.data.length;i++){
+                        if(quakooUtils.isNotBlack(ret.data[i])){
+                            html += '<li value="'+ret.data[i]+'">'+ret.data[i]+'</li>';
+                        }
+                    }
+                    document.getElementById("jobList").innerHTML = html;
+                    selectTag($("#selectBox4"), function (ret) {
+                        editJob = ret.value;
+                    });
+                }
 
+            }
+        })
+    }
     /**接口——获取员工列表*/
-    function getStaffList(id,name,sex) {
+    function getStaffList() {
         var url = config.getUrl_user_getSubCustomerPager();
         var param={};
-        param.subid = id;                                    //门店ID
+        param.subid = subid;                                 //门店ID
         param.userType = 1;                                  //用户类型
         param.token = quakooUser.getUserInfo().token;
-        if(name){                                            //姓名
-            param.name = name;
+        if(selStaName && selStaName!=520){                   //下拉框姓名
+            param.name = selStaName;
         }
-        if(sex){
-            param.sex = sex;
+        if(seaStaName){                                      //搜索框姓名
+            param.name1 = seaStaName;
+        }
+        if(staffSex&&(staffSex==1||staffSex==2)){
+            param.sex = staffSex;
         }
         var columns = [
             {field: "name", title: "姓名", align: "left", valign: "middle"},
@@ -1055,9 +1106,9 @@
             {field: "idCard", title: "身份证号", align: "left", valign: "middle"},
             {field: "status", title: "状态", align: "left", valign: "middle",formatter: function (value, row, index) {
                 if(value == 0){
-                    return '<span class="outage">停用</span>'
-                }else if(value == 1){
                     return  '<span class="enabled">启用</span>'
+                }else if(value == 1){
+                    return '<span class="outage">停用</span>'
                 }
             }},
             {field: "", title: "操作", align: "left", valign: "middle",formatter: function (value, row, index) {
@@ -1093,6 +1144,9 @@
                 for(var i in param){
                     params[i] = param[i]
                 }
+                params.page = this.pageNumber;
+                params.size = this.pageSize ;
+
                 console.log('params:::',params);
                 return params;
             }
@@ -1101,9 +1155,9 @@
     }
 
     /**接口——添加员工*/
-    function addEmployees(index,job,sex){
+    function addEmployees(index,sex){
         var name = $("#emp-name").val();
-        var job = job||$("#emp-position").html();
+        var job = $("#addJob").val();
         var phone = $("#emp-phone").val();
         var sex = sex||1;
         var mail = $("#emp-mail").val();
@@ -1127,7 +1181,7 @@
                                         param.psid = psid;                 //公司ID
                                         param.sid = subid;                 //店铺ID
                                         param.idCard = idCard;             //身份证
-                                        param.jobDay = jobDay;             //入职时间
+                                        param.workingDate = jobDay;             //入职时间
                                         param.userType = 1;                //0表示顾客，1表示员工
                                          quakooData.ajaxGetData(config.getUrl_user_add(),param,function (ret){
                                             if(ret&&ret.success){
@@ -1172,6 +1226,45 @@
             layer.msg("请输入员工姓名",{icon:4});
             return
         }
+    }
+    
+    /**接口——编辑员工*/
+    function editStaff(index,id,name,editJob,editSex) {
+        var job = editJob;
+        var sex = editSex;
+        var phone = $("#edit-phone").val();
+        var mail = $("#edit-email").val();
+        var workingDate = $("#editTime").val().replace(/\./g,',');
+        workingDate = new Date(workingDate).getTime();
+        if(quakooUtils.isNotBlack(id)){
+            if(quakooUtils.isNotBlack(phone)){
+                if(quakooUtils.isMobileNum(phone)){
+                    if(quakooUtils.isNotBlack(mail)){
+                        if(quakooUtils.isEmail(mail)){
+                            quakooData.ajaxGetData(config.getUrl_user_updateUser(),{id:id,name:name,job:job,sex:sex,phone:phone,mail:mail,workingDate:workingDate},function (ret) {
+                                console.log("编辑：",ret);
+                                if(ret&&ret.success){
+                                    layer.msg("编辑员工信息成功",{icon:1});
+                                    getStaffList(subid);
+                                    setTimeout(function () {
+                                        layer.close(index);
+                                    },200);
+                                }
+                            })
+                        }else{
+                            layer.msg("请输入正确的邮箱！",{icon:4})
+                        }
+                    }else{
+                        layer.msg("请输入邮箱！",{icon:4})
+                    }
+                }else{
+                    layer.msg("请输入正确的手机号",{icon:4});
+                }
+            }else{
+                layer.msg("请输入手机号！",{icon:4})
+            }
+        }
+
     }
     var data2 =[
                 {name: '精益眼镜旗舰店1', perNum: 20, actualNum: 30, status: '上传成功'},
@@ -1232,14 +1325,6 @@
     })
     // selectTag($("#selectBox2"), function (ret) {/**/
     // })
-    selectTag($("#selectBox3"), function (ret) {/**/
-    })
-    selectTag($("#selectBox4"), function (ret) {/**/
-    })
-    selectTag($("#job-position"), function (ret) {/**/
-    })
-    selectTag($("#selectBox5"), function (ret) {/**/
-    })
     //导入工资bootstrapTable
     $(".cmMain-table2").bootstrapTable({
         data: data2,
@@ -1375,13 +1460,7 @@
     }
     /**弹窗——创建员工*/
     function employee(){
-        var job,sex;
-        selectTag($("#emp-position"),function (ret) {
-            job = ret.val;
-        });
-        selectTag($("#job-sex"), function (ret) { //选择性别
-            sex = ret.value;
-        });
+        var sex;
         layer.open({
             type: 1,
             title: '创建员工临时页面（设计图扫码移动端添加）',
@@ -1398,16 +1477,29 @@
             },
             btn2: function (index) {
                 /**调用添加员工接口*/
-                addEmployees(index,job,sex);
+                addEmployees(index,sex);
                 return false
             },
             success: function (layero, index) {
-                _StffEdit = index
+                _StffEdit = index;
+                selectTag($("#job-sex"), function (ret) { //选择性别
+                    sex = ret.value;
+                });
             }
         });
     }
-    //显示员工编辑弹窗
+    /**弹窗——编辑员工*/
     function showStffEdit(data) {
+        selectTag($("#selectBox5"), function (ret) {
+            editSex = ret.value;
+        });
+        var useId;
+        var name;
+        var status;
+        var editSex;
+        var editPhone;
+        var editMail;
+        var workTime;
         layer.open({
             type: 1,
             shade: 0.01,
@@ -1416,7 +1508,7 @@
             anim: 0,
             move: $('.content-view-editStff .moveTitle'),
             area: ['360px', 'auto'],
-            closeBtn: 0, //不显示关闭按钮
+            closeBtn: 0,      //不显示关闭按钮
             resize: false,
             shadeClose: true, //开启遮罩关闭
             content: $('.content-view-editStff.edit-employees'),
@@ -1425,24 +1517,46 @@
                 layer.close(index);
             },
             btn2: function (index) {
-                layer.close(index);
+                editStaff(index,useId,name,editJob,editSex);
                 return false;
             },
             success: function (layero, index) {
                 _StffEdit = index;
                 /**编辑数据回显*/
-                console.log("编辑员工数据回显：",data);
+                console.log("是的发放大法师打：；",data);
+                useId = data.id;
+                name = data.name;
+                editJob = data.job;
+                editPhone = data.phone;
+                editMail = data.mail;
+                workTime = data.workingDate;
                 $("#edit-name").html(data.name);
                 $("#edit-shopName").html(data.subName);
-                $("#edit-phone").html(data.phone);
-                $("#edit-email").html(data.mail);
-
-
+                $("#edit-job").html(data.job);
+                if(data.sex == 1){
+                    $("#selectBox5 .text")[0].innerHTML = "男";
+                    editSex = 1;
+                }else if(data.sex == 2){
+                    $("#selectBox5 .text")[0].innerHTML = "女";
+                    editSex =2;
+                }
+                $("#edit-phone").val(data.phone);
+                $("#edit-email").val(data.mail);
+                $("#editTime").val(quakooUtils.formatTimeToDateDianLY(data.workingDate));
+                getJobList(psid);
+                $("#removeStaff")[0].onclick = function f(){
+                    if(data.status==0){
+                        status = 1;
+                    }else if(data.status == 1){
+                        status = 0;
+                    }
+                    removeStaff(useId,status);
+                }
             }
         });
     }
-    //离职该员工点击弹窗
-    function removeStaff() {
+    /**离职该员工点击弹窗*/
+    function removeStaff(id,status) {
         layer.open({
             type: 1,
             shade: 0.01,
@@ -1460,15 +1574,29 @@
                 layer.close(index);
             },
             btn2: function (index) {
-                layer.close(_StffEdit);
-                layer.close(index);
+                disableStaff(_StffEdit,index,id,status);
             },
             success: function (index) {
 
             }
         });
     }
-    // 横向滚动方法
+    function disableStaff(_StffEdit,index,id,status) {
+        quakooData.ajaxGetData(config.getUrl_user_updateStatus(),{id:id,status:status},function (ret) {
+            console.log(ret);
+            if(ret&&ret.success){
+                if(ret.data=="true"){
+                    getStaffList(subid);
+                }
+            }
+        });
+
+
+
+        layer.close(_StffEdit);
+        layer.close(index);
+    }
+    /**横向滚动方法*/
     function scrollXfn() {
         var z_type = true;
         $('.salaryListTanBox .content').hover(function () {
@@ -1500,7 +1628,7 @@
             $('.salaryListTanBox .content')[0].scrollLeft += step;
         }
     }
-    //添加员工弹窗
+    /**添加员工弹窗*/
     function addStaff() {
         layer.open({
             type: 1,
@@ -1525,7 +1653,7 @@
             }
         });
     }
-    // 时间插件JS开始
+    /**时间插件JS开始*/
     $(function () {
         var curr = new Date().getFullYear();
         var opt = {};
