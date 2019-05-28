@@ -62,6 +62,8 @@ public class UserServiceImpl implements UserService {
 
     private RowMapperHelp<User> rowMapper = new RowMapperHelp<>(User.class);
 
+    private RowMapperHelp<UserGrade> ugMapper = new RowMapperHelp<>(UserGrade.class);
+
     @Autowired(required = true)
     @Qualifier("cachePool")
     protected JedisX cache;
@@ -671,21 +673,23 @@ public class UserServiceImpl implements UserService {
         //查找用户
         User olduser=userDao.load(user.getId());
         //姓名
-        if(user.getName()!=null && !"".equals(user.getName())){ olduser.setName(user.getName()); }
+        if(user.getName()!=null && StringUtils.isNotBlank(user.getName())){ olduser.setName(user.getName()); }
         //性别
         if(user.getSex() != 0){ olduser.setSex(user.getSex()); }
         //年龄
         if(user.getAge() != 0){ olduser.setAge(user.getAge()); }
+        //入职时间
+        if(user.getWorkingDate() !=0){ olduser.setWorkingDate(user.getWorkingDate());}
         //封面图
-        if(user.getCover()!=null && !"".equals(user.getCover())){ olduser.setCover(user.getCover()); }
+        if(user.getCover()!=null && StringUtils.isNotBlank(user.getCover())){ olduser.setCover(user.getCover()); }
         //生日
-        if(user.getBirthdate()!=0&&"".equals(user.getBirthdate())){ olduser.setBirthdate(user.getBirthdate()); }
+        if(user.getBirthdate() != 0){ olduser.setBirthdate(user.getBirthdate()); }
         //职位
-        if(user.getJob()!=null&&"".equals(user.getJob())){ olduser.setJob(user.getJob()); }
+        if(user.getJob()!=null&&StringUtils.isNotBlank(user.getJob())){ olduser.setJob(user.getJob()); }
         //邮件
-        if(user.getMail()!=null&&"".equals(user.getMail())){ olduser.setMail(user.getMail()); }
+        if(user.getMail()!=null&&StringUtils.isNotBlank(user.getMail())){ olduser.setMail(user.getMail()); }
         //手机号
-        if(user.getPhone()!=null&&"".equals(user.getPhone())){ olduser.setPlace(user.getPhone()); }
+        if(user.getPhone()!=null&&StringUtils.isNotBlank(user.getPhone())){ olduser.setPhone(user.getPhone()); }
         boolean res = userDao.update(olduser);
         if(res && !olduser.getPhone().equals(user.getPhone())) {
             LoginUserPool loginUserPool = new LoginUserPool();
@@ -817,16 +821,18 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(name1)&&StringUtils.isBlank(name)) {//模糊查询
             sql = sql + " and `name` like ?";
             sqlCount = sqlCount + " and `name` like ?";
+            objects.add("%"+name1+"%");
         }
         if (StringUtils.isNotBlank(name)&&StringUtils.isNotBlank(name1)) {
             if(name.equals(name1)){//相等精确查询
                 sql = sql + " AND `name` = '" + name + "'";
                 sqlCount = sqlCount + " and `name` = '" + name + "'";
-            }else if(name1.indexOf(name)>0){//如果 姓名.indexOf(姓/名) 按照姓/名模糊查询
-                if (StringUtils.isNotBlank(name1)) {
-                    sql = sql + " and `name` like ?";
-                    sqlCount = sqlCount + " and `name` like ?";
-                }
+            }else if(name.indexOf(name1)>=0){//如果 姓名.indexOf(姓/名) 按照姓/名模糊查询
+                sql = sql + " and `name` like ?";
+                sqlCount = sqlCount + " and `name` like ?";
+                objects.add("%"+name1+"%");
+            }else{//输入的两个值不能指向同一个用户
+                return pager;
             }
         }
         if (StringUtils.isNotBlank(phone)&&StringUtils.isBlank(phone1)) {
@@ -836,14 +842,18 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(phone1)&&StringUtils.isBlank(phone)) {
             sql = sql + " and `phone` like ?";
             sqlCount = sqlCount + " and `phone` like ?";
+            objects.add("%"+phone1+"%");
         }
         if(StringUtils.isNotBlank(phone)&&StringUtils.isNotBlank(phone1)){
             if(phone.equals(phone1)){
                 sql = sql + " and `phone` = '" + phone + "'";
                 sqlCount = sqlCount + " and `phone` = '"+ phone + "'";
-            }else if(phone.indexOf(phone1)>0){
+            }else if(phone.indexOf(phone1)>=0){
                 sql = sql + " and `phone` like ?";
                 sqlCount = sqlCount + " and `phone` like ?";
+                objects.add("%"+phone1+"%");
+            }else{//输入的两个值不能指向同一个用户
+                return pager;
             }
         }
         if (sex>-1){
@@ -858,8 +868,6 @@ public class UserServiceImpl implements UserService {
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<User> users = null;
         int count = 0;
-        if(StringUtils.isNotBlank(name1)){objects.add("%"+name1+"%");}
-        if(StringUtils.isNotBlank(phone1)){objects.add("%"+phone1+"%");}
         if(objects.size()>0) {
             Object[] args = new Object[objects.size()];
             objects.toArray(args);
@@ -876,9 +884,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<String> getAllUserJob(long subid) throws Exception {
+    public Set<String> getAllUserJob(long subid,int userType) throws Exception {
         TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
-        List<User> users = userDao.getAllLists(subid,User.userType_user,User.status_nomore);
+        List<User> users = userDao.getAllLists(subid,userType,User.status_nomore);
         return fieldSetUtils.fieldList(users,"job");
     }
 
@@ -887,6 +895,32 @@ public class UserServiceImpl implements UserService {
         String sql = " SELECT * FROM `user` WHERE status = "+ User.status_nomore + " AND `userType` = " + userType + " and sid = " + sid;
         List<User> users = jdbcTemplate.query(sql,rowMapper);
         return transformClient(users);
+    }
+
+    @Override
+    public ClientUser getUser(String phone) throws Exception {
+        //根据手机号查询user
+        List<User> users = userDao.getUsers(phone);
+        if (users!=null){
+            User user = users.get(0);
+            if(user.getCardNumber()==0){
+                //生成会员卡号
+                user.setCardNumber(new Random().nextInt(1000000));
+                //给一个最低等级的会员
+                String sql = " select * from user_grade where 1=1 and subid = " + user.getSid() + " order by conditionScore asc";
+                List<UserGrade> userGrades = jdbcTemplate.query(sql,ugMapper);
+                if(userGrades.size()>0){
+                    user.setUserGradeId(userGrades.get(0).getId());
+                }else{
+                    throw new StoreSystemException("请先在本公司下设置会员等级!");
+                }
+                userDao.update(user);
+                return transformClient(user);
+            }else{
+                return transformClient(user);
+            }
+        }
+        return null;
     }
 
     @Override

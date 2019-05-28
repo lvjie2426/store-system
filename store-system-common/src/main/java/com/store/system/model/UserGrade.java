@@ -67,4 +67,11 @@ public class UserGrade implements Serializable, Comparable<UserGrade> {
         return res;
     }
 
+    public Map<Long, Object> getIntroducer() {
+        return introducer;
+    }
+
+    public void setIntroducer(Map<Long, Object> introducer) {
+        this.introducer = introducer;
+    }
 }

@@ -75,7 +75,7 @@ public class SalaryController extends BaseController {
     /////////////////////导入模板下载////////////////////////
     @RequestMapping("/downloadTemplatesExcel")
     public ModelAndView downloadTemplatesExcel(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String fileName = "工资模板.xls";  //下载的文件名
+        String fileName = "工资单模板.xls";  //下载的文件名
         download.downloadFile(request, response, fileName);
         return this.viewNegotiating(request, response, new ResultClient(true));
     }

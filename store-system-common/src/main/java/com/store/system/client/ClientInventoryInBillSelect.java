@@ -12,4 +12,6 @@ public class ClientInventoryInBillSelect implements Serializable {
 
     private List<ClientProductProperty> skuProperties;
 
+    private List<ClientProductSKU> skuList;
+
 }

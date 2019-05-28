@@ -216,12 +216,13 @@ public class UserController extends BaseController {
     //获取所有顾客的职业
     @RequestMapping("/getAllUserJob")
     public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,
-                                      @RequestParam(value = "psid") long psid )throws Exception{
+                                      @RequestParam(value = "psid") long psid,
+                                      @RequestParam(value = "userType",defaultValue = "0") int userType)throws Exception{
         try{
             Subordinate subordinate = subordinateService.load(psid);
             long pSubid = subordinate.getPid();
             if(pSubid != 0) throw new StoreSystemException("公司ID错误");
-            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(psid)));
+            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(psid,userType)));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
         }    }
@@ -236,6 +237,18 @@ public class UserController extends BaseController {
             long subid = subordiante.getPid();
             if(subid==0)throw new StoreSystemException("门店ID错误!");
             return this.viewNegotiating(request,response,new ResultClient(userService.getAllUser(sid,userType)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
+        }
+    }
+
+    //会员信息认证
+    @RequestMapping("/becomeVip")
+    public ModelAndView becomeVip(HttpServletRequest request,HttpServletResponse response,String phone)throws Exception{
+        try {
+            ClientUser user = userService.getUser(phone);
+            if(user==null){throw new StoreSystemException("未查询到手机号!"); }
+            return this.viewNegotiating(request,response,new ResultClient(user));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
         }
@@ -275,7 +288,7 @@ public class UserController extends BaseController {
     /////////////////////导入模板下载////////////////////////
     @RequestMapping("/downloadTemplatesExcel")
     public ModelAndView downloadTemplatesExcel(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String fileName = "demo.xls";  //下载的文件名
+        String fileName = "顾客信息模板.xls";  //下载的文件名
         download.downloadFile(request, response, fileName);
         return this.viewNegotiating(request, response, new ResultClient(true));
     }

@@ -140,8 +140,9 @@ public class User implements Serializable {
 
     private long userGradeId;//用户会员等级
 
-    private long recommender;//介绍人
+    private long recommender;//推荐人
 
+    private int cardNumber;//会员卡
 
     @SortKey
     private long ctime;
