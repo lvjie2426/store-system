@@ -4,8 +4,10 @@ import com.quakoo.webframework.BaseController;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Salary;
+import com.store.system.model.SalaryRecord;
 import com.store.system.model.User;
 import com.store.system.service.ImportFileService;
+import com.store.system.service.SalaryRecordService;
 import com.store.system.service.SalaryService;
 import com.store.system.util.FileDownload;
 import com.store.system.util.UserUtils;
@@ -36,6 +38,8 @@ public class SalaryController extends BaseController {
     private FileDownload download;
 
     @Resource
+    private SalaryRecordService salaryRecordService;
+    @Resource
     private ImportFileService importFileService;
 
     @Resource
@@ -56,11 +60,15 @@ public class SalaryController extends BaseController {
     @RequestMapping("/importUserSalary")
     public ModelAndView importUserSalary(HttpServletRequest request, HttpServletResponse response,
                                        @RequestParam(required = false,value = "file") MultipartFile file)throws Exception{
+        SalaryRecord salaryRecord = null;
         try {
             User user = UserUtils.getUser(request);
-            ResultClient res = importFileService.importUserSalary(file,user);
-            return this.viewNegotiating(request,response,new ResultClient(true,res));
+            salaryRecord = importFileService.importUserSalary(file,user);
+            salaryRecordService.add(salaryRecord);
+            return this.viewNegotiating(request,response,new ResultClient(true,"导入成功!"));
         }catch (StoreSystemException e){
+            salaryRecord.setStatus(SalaryRecord.status_fail);
+            salaryRecordService.add(salaryRecord);
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }
     }

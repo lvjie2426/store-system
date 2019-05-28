@@ -799,6 +799,8 @@ public class UserServiceImpl implements UserService {
         String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
         String limit = " limit %d , %d ";
+        List<Object> objects=new ArrayList<>();
+
         if(userType>-1){
             sql = sql + " AND userType =" + userType;
             sqlCount = sqlCount + " AND userType =" + userType;
@@ -809,8 +811,8 @@ public class UserServiceImpl implements UserService {
         }
 
         if(StringUtils.isNotBlank(name)&&StringUtils.isBlank(name1)){//精确查询
-            sql = sql + " AND `name` = " + name;
-            sqlCount = sqlCount + " and `name` =" + name;
+            sql = sql + " AND `name` = '" + name + "'";
+            sqlCount = sqlCount + " AND `name` = '" + name + "'";
         }
         if (StringUtils.isNotBlank(name1)&&StringUtils.isBlank(name)) {//模糊查询
             sql = sql + " and `name` like ?";
@@ -818,8 +820,8 @@ public class UserServiceImpl implements UserService {
         }
         if (StringUtils.isNotBlank(name)&&StringUtils.isNotBlank(name1)) {
             if(name.equals(name1)){//相等精确查询
-                sql = sql + " AND `name` = " + name;
-                sqlCount = sqlCount + " and `name` =" + name;
+                sql = sql + " AND `name` = '" + name + "'";
+                sqlCount = sqlCount + " and `name` = '" + name + "'";
             }else if(name1.indexOf(name)>0){//如果 姓名.indexOf(姓/名) 按照姓/名模糊查询
                 if (StringUtils.isNotBlank(name1)) {
                     sql = sql + " and `name` like ?";
@@ -828,8 +830,8 @@ public class UserServiceImpl implements UserService {
             }
         }
         if (StringUtils.isNotBlank(phone)&&StringUtils.isBlank(phone1)) {
-            sql = sql + " and `phone` = " + phone;
-            sqlCount = sqlCount + " and `phone` = "+ phone;
+            sql = sql + " and `phone` = '" + phone + "'";
+            sqlCount = sqlCount + " and `phone` = '" + phone + "'";
         }
         if (StringUtils.isNotBlank(phone1)&&StringUtils.isBlank(phone)) {
             sql = sql + " and `phone` like ?";
@@ -837,8 +839,8 @@ public class UserServiceImpl implements UserService {
         }
         if(StringUtils.isNotBlank(phone)&&StringUtils.isNotBlank(phone1)){
             if(phone.equals(phone1)){
-                sql = sql + " and `phone` = " + phone;
-                sqlCount = sqlCount + " and `phone` = "+ phone;
+                sql = sql + " and `phone` = '" + phone + "'";
+                sqlCount = sqlCount + " and `phone` = '"+ phone + "'";
             }else if(phone.indexOf(phone1)>0){
                 sql = sql + " and `phone` like ?";
                 sqlCount = sqlCount + " and `phone` like ?";
@@ -854,7 +856,6 @@ public class UserServiceImpl implements UserService {
         }
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
-        List<Object> objects=new ArrayList<>();
         List<User> users = null;
         int count = 0;
         if(StringUtils.isNotBlank(name1)){objects.add("%"+name1+"%");}

@@ -68,7 +68,7 @@ public class ImportFileServiceImpl implements ImportFileService {
     //工资单导入
     @Override
     @Transactional
-    public ResultClient importUserSalary(MultipartFile file, User user) throws Exception {
+    public SalaryRecord importUserSalary(MultipartFile file, User user) throws Exception {
         ResultClient res = new ResultClient();
         long sid = user.getSid();//店铺ID
         long psid = user.getPsid();//公司ID
@@ -76,14 +76,14 @@ public class ImportFileServiceImpl implements ImportFileService {
         File salartyFile = FileUtils.multipartToFile(file);
         String filename = file.getOriginalFilename();
         if(StringUtils.isBlank(filename)){
-            return new ResultClient("读取失败");
+            throw  new StoreSystemException("读取失败");
         }
         ImportParams importParams = new ImportParams();
         importParams.setTitleRows(2);
         List<ImportSalary> list = ExcelImportUtil.importExcel(salartyFile,ImportSalary.class,importParams);
-        handleImportSalary(list,sid,psid,oid);
+        SalaryRecord salaryRecord = handleImportSalary(list,sid,psid,oid);
         res.setMsg("导入成功!");
-        return res;
+        return salaryRecord;
     }
 
     //保存user
@@ -233,11 +233,18 @@ public class ImportFileServiceImpl implements ImportFileService {
     }
 
     //保存工资单
-    private void handleImportSalary(List<ImportSalary> list,long sid,long psid,long oid)throws Exception{
+    private SalaryRecord handleImportSalary(List<ImportSalary> list,long sid,long psid,long oid)throws Exception{
         SalaryRecord salaryRecord = new SalaryRecord();
+        salaryRecord.setSid(sid);
+        salaryRecord.setPsid(psid);
+        salaryRecord.setYear(getYear());
+        salaryRecord.setMonth(getMonth());
+
         int allMoney = 0;//总金额
         int allNumber = 0;//总人数
+
         List<Long> sids = Lists.newArrayList();
+
         for(ImportSalary importSalary : list){
             Salary salary = getImportSalary(importSalary);
             salary.setSid(sid);
@@ -251,14 +258,10 @@ public class ImportFileServiceImpl implements ImportFileService {
         }
         salaryRecord.setAllMoney(allMoney);
         salaryRecord.setAllNumber(allNumber);
-        salaryRecord.setSid(sid);
-        salaryRecord.setPsid(psid);
-        salaryRecord.setYear(getYear());
-        salaryRecord.setMonth(getMonth());
         salaryRecord.setSids(sids);
-        salaryRecordService.add(salaryRecord);//保存导入记录
-        logger.info("@@@@@@@@@@"+ JsonUtils.toJson(salaryRecord));
-
+//        salaryRecordService.add(salaryRecord);//保存导入记录
+//        logger.info("@@@@@@@@@@"+ JsonUtils.toJson(salaryRecord));
+        return  salaryRecord;
     }
 
     private Salary getImportSalary(ImportSalary importSalary)throws Exception{
