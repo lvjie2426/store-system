@@ -817,16 +817,18 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(name1)&&StringUtils.isBlank(name)) {//模糊查询
             sql = sql + " and `name` like ?";
             sqlCount = sqlCount + " and `name` like ?";
+            objects.add("%"+name1+"%");
         }
         if (StringUtils.isNotBlank(name)&&StringUtils.isNotBlank(name1)) {
             if(name.equals(name1)){//相等精确查询
                 sql = sql + " AND `name` = '" + name + "'";
                 sqlCount = sqlCount + " and `name` = '" + name + "'";
-            }else if(name1.indexOf(name)>0){//如果 姓名.indexOf(姓/名) 按照姓/名模糊查询
-                if (StringUtils.isNotBlank(name1)) {
-                    sql = sql + " and `name` like ?";
-                    sqlCount = sqlCount + " and `name` like ?";
-                }
+            }else if(name.indexOf(name1)>=0){//如果 姓名.indexOf(姓/名) 按照姓/名模糊查询
+                sql = sql + " and `name` like ?";
+                sqlCount = sqlCount + " and `name` like ?";
+                objects.add("%"+name1+"%");
+            }else{//输入的两个值不能指向同一个用户
+                return pager;
             }
         }
         if (StringUtils.isNotBlank(phone)&&StringUtils.isBlank(phone1)) {
@@ -836,14 +838,18 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(phone1)&&StringUtils.isBlank(phone)) {
             sql = sql + " and `phone` like ?";
             sqlCount = sqlCount + " and `phone` like ?";
+            objects.add("%"+phone1+"%");
         }
         if(StringUtils.isNotBlank(phone)&&StringUtils.isNotBlank(phone1)){
             if(phone.equals(phone1)){
                 sql = sql + " and `phone` = '" + phone + "'";
                 sqlCount = sqlCount + " and `phone` = '"+ phone + "'";
-            }else if(phone.indexOf(phone1)>0){
+            }else if(phone.indexOf(phone1)>=0){
                 sql = sql + " and `phone` like ?";
                 sqlCount = sqlCount + " and `phone` like ?";
+                objects.add("%"+phone1+"%");
+            }else{//输入的两个值不能指向同一个用户
+                return pager;
             }
         }
         if (sex>-1){
@@ -858,8 +864,6 @@ public class UserServiceImpl implements UserService {
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<User> users = null;
         int count = 0;
-        if(StringUtils.isNotBlank(name1)){objects.add("%"+name1+"%");}
-        if(StringUtils.isNotBlank(phone1)){objects.add("%"+phone1+"%");}
         if(objects.size()>0) {
             Object[] args = new Object[objects.size()];
             objects.toArray(args);
