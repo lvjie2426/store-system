@@ -725,12 +725,7 @@
                     <span class="text">姓名</span> <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">1</li>
-                        <li value="02">2</li>
-                        <li value="03">3</li>
-                        <li value="04">4</li>
-                        <li value="05">5</li>
+                    <ul class="optionUL" id="staffNameUl">
                     </ul>
                 </div>
             </div>
@@ -744,12 +739,13 @@
         </div>
     </div>
     <div class="filter">
+<!--
         <div class="selectBox" id="selectBox2">
             <div class="select-box-header">
                 <span class="text">杭州西湖旗舰店</span> <i class="iconfont icon-ico_arrow_down"></i>
             </div>
             <div class="optionBox">
-                <ul class="optionUL">
+                <ul class="optionUL" id="storeUl">
                     <li value="01">杭州西湖旗舰店1</li>
                     <li value="02">杭州西湖旗舰店2</li>
                     <li value="03">杭州西湖旗舰店3</li>
@@ -758,14 +754,16 @@
                 </ul>
             </div>
         </div>
+-->
         <div class="selectBox" id="selectBox3">
             <div class="select-box-header">
                 <span class="text">全部性别</span> <i class="iconfont icon-ico_arrow_down"></i>
             </div>
             <div class="optionBox">
                 <ul class="optionUL">
-                    <li value="01">男</li>
-                    <li value="02">女</li>
+                    <li value="">全部性别</li>
+                    <li value="1">男</li>
+                    <li value="2">女</li>
                 </ul>
             </div>
         </div>
@@ -992,26 +990,46 @@
 <script src="../resource/js/mobiscroll.2.13.2.js"></script>
 
 <script>
-    var psid;                                            //企业ID
-    var subid;                                           //门店ID
+    var psid;                                                //企业ID
+    var subid;                                               //门店ID
     $(function () {
         var preid = window.location.search.replace(/\?subid=/,"");
-        psid = quakooUser.getUserInfo().psid;                     //企业ID(公司ID)
-        subid = preid||quakooDb.getItem("sel_ShopId");           //门店ID
-        initPage();                                   //初始化页面
+        psid = quakooUser.getUserInfo().psid;                //企业ID(公司ID)
+        subid = preid||quakooDb.getItem("sel_ShopId");       //门店ID
+        initPage();                                          //初始化页面
     });
-    /**接口——初始化页面*/
+    /**初始化页面*/
     function initPage(){
-        getStaffList(subid);
+        getStaffList(subid);                                 //获取员工列表
+        getStaffNameList(subid);                             //获取员工名字
+
+
+
     }
+    /**接口——获取员工姓名*/
+    function getStaffNameList(subid) {
+        quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:1},function (ret) {
+            console.log("员工名字：",ret);
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    var html = "<li value=''>所有人</li>";
+                    for(var i = 0;i<ret.data.length;i++){
+                        html+= "<li value='"+ret.data[i].name+"'>"+ret.data[i].name+"</li>"
+                    }
+                    document.getElementById("staffNameUl").innerHTML = html;
+                }
+            }
+        })
+    }
+
     /**接口——获取员工列表*/
     function getStaffList(id,name,sex) {
         var url = config.getUrl_user_getSubCustomerPager();
         var param={};
-        param.subid = id;       //门店ID
-        param.userType = 1;       //用户类型
+        param.subid = id;                                    //门店ID
+        param.userType = 1;                                  //用户类型
         param.token = quakooUser.getUserInfo().token;
-        if(name){                  //姓名
+        if(name){                                            //姓名
             param.name = name;
         }
         if(sex){
@@ -1212,8 +1230,8 @@
 
     selectTag($("#selectBox"), function (ret) {/**/
     })
-    selectTag($("#selectBox2"), function (ret) {/**/
-    })
+    // selectTag($("#selectBox2"), function (ret) {/**/
+    // })
     selectTag($("#selectBox3"), function (ret) {/**/
     })
     selectTag($("#selectBox4"), function (ret) {/**/

@@ -79,19 +79,4 @@ public class ProductSPU implements Serializable {
 
     private long utime;
 
-    public List<String> getCovers() {
-        return covers;
-    }
-
-    public void setCovers(List<String> covers) {
-        this.covers = covers;
-    }
-
-    public Map<Long, Object> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Map<Long, Object> properties) {
-        this.properties = properties;
-    }
 }

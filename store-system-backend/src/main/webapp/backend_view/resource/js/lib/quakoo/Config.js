@@ -106,6 +106,8 @@ var Config = (function(_super){
     _proto.getUrl_user_add = function(){return this.serverUrl + '/user/add';};
     /**停用员工*/
     _proto.getUrl_user_updateStatus = function(){return this.serverUrl + '/user/updateStatus';};
+    /**获取所有员工名字*/
+    _proto.getUrl_user_getAllUser = function(){return this.serverUrl + '/user/getAllUser';};
     //=======================员工管理 结束====================
 
     //=======================企业端（营销管理） 开始====================
