@@ -325,6 +325,21 @@
                     </div>
                 </div>
             </div>
+            <div class="goods-select">
+                <div class="goods-select-title">供应商</div>
+                <div class="selectBox" id="yj-add-provider">
+                    <div class="select-box-header">
+                        <span class="text"><%if(list.providerName){%><%=list.providerName%><%}else{%>供应商<%}%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i=0;i< providerData.length;i++){%>
+                            <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <%if(list.categoryName=='镜片'){%>
             <div class="goods-select">
                 <div class="goods-select-title">焦点</div>
@@ -519,6 +534,7 @@
             <%}%>
 
             <%if(list.categoryName=='护理产品'){%>
+            <div style="clear: both"></div>
             <div class="goods-select">
                 <div class="goods-select-title">类型</div>
                 <div class="selectBox" id="yj-add-type-10">
@@ -629,21 +645,7 @@
 
 
 
-            <div class="goods-select">
-                <div class="goods-select-title">供应商</div>
-                <div class="selectBox" id="yj-add-provider">
-                    <div class="select-box-header">
-                        <span class="text"><%if(list.providerName){%><%=list.providerName%><%}else{%>供应商<%}%></span> <i class="iconfont icon-ico_arrow_down" ></i>
-                    </div>
-                    <div class="optionBox">
-                        <ul class="optionUL">
-                            <%for(var i=0;i< providerData.length;i++){%>
-                            <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li>
-                            <%}%>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
             <%if(list.categoryName=='镜片'){%>
             <!--<div class="goods-select goods-range">
                 <div class="goods-select-title">现货范围</div>
@@ -825,12 +827,7 @@
         var sid = '';//系列ID
         var name = '';//搜索关键字
         var saleStatus = '';//筛选条件的销售状态0开启1关闭
-        var jjDayPnid = 4;//镜架质保时长的pnid
-        var yxyjDayPnid = 8;//隐形眼镜质保时长的pnid
-        var tyjDayPnid = 9;//太阳镜质保时长的pnid
-        var hlcpDayPnid = 13;//护理产品质保时长的pnid
-        var hlcpShoumingPnid = 12;//护理产品开瓶寿命的pnid
-        var qtspDayPnid = 14;//其它商品质保时长的pnid
+
 
         var ballData = '';//球数据
         var columnData = '';//柱数据
@@ -963,7 +960,7 @@
                 }
             },
             {field: "", title: "操作", valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary" style="margin-right: 8px;">编辑</button>' +
+                    return '<button class="btn btn-primary" style="margin-right: 8px;" onclick="updateGoods('+row.id+')">编辑</button>' +
                         '<button class="btn btn-danger" type="button" onclick="delGoods('+row.id+')">删除</button>';
                 }
             }
@@ -1163,7 +1160,8 @@
                 params[cid].type = params[cid].type? params[cid].type:0;
             }
             params[cid].categoryName = $('#category'+cid).text();
-
+            momentPriceData = {}
+            momentRangeData = {}
             var html = [];
             html.push('<div class="layui-yj-header"><div class="layui-layer-title mine-title"><div>');
             html.push(title+params[cid].categoryName)
@@ -1468,12 +1466,14 @@
             }
             var cols = [];//球
             var rangeData = [];//柱
+            var codeArr = [];//所有的产品编码
             cols.push({field:'num', minWidth:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
             if(type==1){
                 if(quakooUtils.isNullJson(momentPriceData)){
                     if(params[cid] && params[cid].skuJson.length){
                         for(var i=0;i<params[cid].skuJson.length;i++){
                             momentPriceData[params[cid].skuJson[i].properties[15]+''+params[cid].skuJson[i].properties[16]] = params[cid].skuJson[i];
+                            codeArr.push(params[cid].skuJson[i].code)
                         }
                     }
                 }
@@ -1547,14 +1547,14 @@
                 });
                 //监听单元格事件
                 table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                    console.log(obj)
                     if(type==1){
+                        if(!quakooUtils.isNum(obj.value)){
+                            layer.msg('产品编码必须为数字');
+                            this.value = '';
+                            return
+                        }
                         if(momentPriceData[ballData[obj.field-1].content+''+obj.data.num]){
-                            if(!quakooUtils.isNum(obj.value)){
-                                layer.msg('产品编码必须为数字');
-                                this.value = '';
-                                return
-                            }
+                            codeArr.remove(momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code);
                             if(obj.value==''){
                                 var param = {};
                                 param.properties = {};
@@ -1564,20 +1564,28 @@
                                 param.del = true;
                                 momentPriceData[ballData[obj.field-1].content+''+obj.data.num] = param;
                             }else{
+                                if(codeArr.indexOf(obj.value)>=0){
+                                    layer.msg('产品编码重复');
+                                    this.value = momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code;
+                                    codeArr.push(momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code);
+                                    return
+                                }
                                 momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code = obj.value;
+                                codeArr.push(obj.value)
                             }
                         }else{
+                            if(codeArr.indexOf(obj.value)>=0){
+                                layer.msg('产品编码重复');
+                                this.value = momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code;
+                                return
+                            }
                             var param = {};
                             param.properties = {};
                             param.properties[ballData[0].pnid] = ballData[obj.field-1].content;
                             param.properties[columnData[0].pnid] = obj.data.num;
-                            if(!quakooUtils.isNum(obj.value)){
-                                layer.msg('产品编码必须为数字');
-                                this.value = '';
-                                return
-                            }
                             param.code = obj.value;
                             momentPriceData[ballData[obj.field-1].content+''+obj.data.num] = param;
+                            codeArr.push(obj.value)
                         }
 
                     }else if(type==2){
@@ -1660,7 +1668,6 @@
 
                 },
                 success: function(layero, index){
-                    $('.layui-layer-view-price .layui-layer-content').height(560-42+'px')
                     setNumInfo(1)
                 }
             });
@@ -1902,7 +1909,9 @@
                     params[cid].integralNum = $('#yj-add-integralNum').val();
                 }
             }
-            params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+            if(quakooUtils.isArray(params[cid].ugDiscount)){
+                params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+            }
             delete params[cid].categoryName;
             if(isUpdate){
                 delete params[cid].skuList;
@@ -1926,8 +1935,7 @@
                 for(var i=0;i<skuJson.length;i++){
                     if(skuJson[i].id){
                         if(skuJson[i].del){
-                            delete skuJson[i].del;
-                            params[cid].delSkuIdJson.push(skuJson[i])
+                            params[cid].delSkuIdJson.push(skuJson[i].id)
                         }else{
                             params[cid].updateSkuJson.push(skuJson[i])
                         }

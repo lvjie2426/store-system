@@ -168,6 +168,12 @@ var Config = (function(_super){
 
     /**获取所有出库单*/
     _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryOutBill/getCheckPager';};
+    /**获取一个商品的SPU，返回需要确定的所有SKU属性*/
+    _proto.getUrl_inventoryOutBill_select = function(){return this.serverUrl + '/inventoryinbill/select';};
+    /**获取门店下的编辑状态的入库单列表*/
+    _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryinbill/getCheckPager';};
+    /**添加一个入库单*/
+    _proto.getUrl_inventoryOutBill_add = function(){return this.serverUrl + '/inventoryinbill/add';};
     //=======================商品管理 结束====================
 
 
