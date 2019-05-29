@@ -37,8 +37,12 @@ public interface UserService {
      * @return
      * @throws Exception
      */
-    public Pager searchUser(Pager pager, long sid, long subid, int userType, String name, String phone, String userName, long rid, int status, long startTime, long endTime) throws Exception;
+    public Pager searchUser(Pager pager, long sid, long subid, int userType, String name,
+                            String phone, String userName, long rid, int status, long startTime, long endTime) throws Exception;
 
+
+    public Pager searchBackendUser(Pager pager, long sid, long subid, int userType, String name,
+                            String phone, String userName, long rid, int status, long startTime, long endTime) throws Exception;
 
     /**
      * 注册

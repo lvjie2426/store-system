@@ -21,6 +21,9 @@
     <link href="../resource/css/animate.css" rel="stylesheet">
     <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="../resource/css/common.css" rel="stylesheet">
+    <style>
+        .fixed-table-toolbar{display: block}
+    </style>
 </head>
 
 
@@ -139,14 +142,14 @@
                                         <i class="fa fa-search"></i> 点击查询
                                     </button>
                                 </div>
+                                <div id="toolbar" >
+                                    <button class="btn  btn-info" id="btn_add">
+                                        <i class="fa fa-plus">添加</i>
+                                    </button>
+                                </div>
                             </div>
                         </form>
-                        <div id="toolbar" >
-                            <button class="btn btn-success  btn-outline" id="btn_add">
-                                <i class="fa fa-plus">添加</i>
-                            </button>
 
-                        </div>
                         <table id="tb_table"></table>
                     </div>
                 </div>
@@ -405,7 +408,7 @@
                     btn: ['提交', '关闭'],
                     yes: function(){
                         var param = {};
-                        var Url = '/user/update';
+                        var Url = serverUrl + '/user/update';
                         var result =  {succ:'更新成功！',fail:'更新失败！'};
                         var id = data.id;
                         var name =  $("#name").val();
