@@ -35,7 +35,7 @@ public class OrderController extends BaseController {
 
     /**
      * create by: zhangmeng
-     * description: 获取全部订单
+     * description: 获取全部订单/作废订单 makeStatus=5
      * @Param: request
      * @Param: response
      * @Param: pager
@@ -67,6 +67,50 @@ public class OrderController extends BaseController {
         }
 
     }
+    /**
+     * create by: zhangmeng
+     * description: 获取未完成订单 makeStatus不传。
+     *              根据订单状态查询，makeStatus =1=2=3
+     * create time: 2019/05/29 0029 13:54:17
+     *
+     * @Param: request
+     * @Param: response
+     * @Param: pager
+     * @Param: startTime
+     * @Param: subid
+     * @Param: endTime
+     * @Param: personnelid
+     * @Param: status
+     * @Param: uid
+     * @Param: name
+     * @Param: makeStatus
+     * @Param: model
+     * @return
+     */
+    @RequestMapping("/getIncomplete")
+    public ModelAndView getIncomplete(HttpServletRequest request, HttpServletResponse response,
+                                    Pager pager,
+                                    @RequestParam(required = false,value = "startTime",defaultValue = "0")long startTime,
+                                    @RequestParam(required = false,value = "subid",defaultValue = "0")long subid,
+                                    @RequestParam(required = false,value = "endTime",defaultValue = "0")long endTime,
+                                    @RequestParam(required = false, value = "personnelid",defaultValue = "0") long personnelid,
+                                    @RequestParam(required = false, value = "status",defaultValue = "0") int status,
+                                    @RequestParam(required = false, value = "uid",defaultValue = "0") long uid,
+                                    @RequestParam(required = false, value = "name",defaultValue = "") String name,
+                                      @RequestParam(required = false, value = "makeStatus",defaultValue = "0")  int makeStatus,
+                                    Model model) throws Exception {
+
+        try {
+            Subordinate subordinate = subordinateDao.load(subid);
+            if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
+            pager= orderService.getAllIncomplete(pager,startTime,endTime,personnelid,status,uid,name,subid,makeStatus);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
+
 
     /**
      * create by: zhangmeng
@@ -109,7 +153,7 @@ public class OrderController extends BaseController {
 
     /**
      * create by: zhangmeng
-     * description: 获取门店历史订单
+     * description: 获取门店历史消费记录
      * create time: 2019/05/28 0028 13:54:43
      * @return
      */
@@ -118,6 +162,8 @@ public class OrderController extends BaseController {
                                   long subid) throws Exception {
 
         try {
+            Subordinate subordinate = subordinateDao.load(subid);
+            if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
            List<ClientOrder> orderList = orderService.getAllBySubid(subid);
             return this.viewNegotiating(request, response, new ResultClient(orderList));
         } catch (StoreSystemException e) {

@@ -25,4 +25,6 @@ public interface OrderService {
     public Order countPrice(Order order)throws Exception;
 
     public  List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
+
+    public   Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid,int makeStatus)throws Exception;
 }

@@ -361,6 +361,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             sql = sql + " and `subid` = " + subid;
             sqlCount = sqlCount + " and `subid` = " + subid;
         }
+        if (makeStatus > 0) {
+            sql = sql + " and `makeStatus` = " + makeStatus;
+            sqlCount = sqlCount + " and `makeStatus` = " + makeStatus;
+        }
 
         if (personnelid > 0) {
             sql = sql + " and `personnelid` = " + personnelid;
@@ -431,6 +435,51 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         List<Order> list=   orderDao.getTemporaryOrder(subid,Order.makestatus_temporary);
 
         return  transformClientTem(list);
+    }
+
+    @Override
+    public Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid,int makeStatus) throws Exception {
+        String sql = "SELECT  *  FROM `order`   where  1=1  ";
+        String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1  ";
+        String limit = "  limit %d , %d ";
+        if(makeStatus>0){
+            sql = sql + " and `makeStatus` = " + makeStatus;
+            sqlCount = sqlCount + " and `makeStatus` = " + makeStatus;
+        }else{
+            sql = sql + " and `makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3  " ;
+            sqlCount = sqlCount + " and  `makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3 " ;
+        }
+        if (subid > 0) {
+            sql = sql + " and `subid` = " + subid;
+            sqlCount = sqlCount + " and `subid` = " + subid;
+        }
+        if (personnelid > 0) {
+            sql = sql + " and `personnelid` = " + personnelid;
+            sqlCount = sqlCount + " and `personnelid` = " + personnelid;
+        }
+        if (startTime > 0) {
+            sql = sql + " and `payTime` >" + startTime;
+            sqlCount = sqlCount + " and `payTime` >" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `payTime` <" + endTime;
+            sqlCount = sqlCount + " and `payTime` <" + endTime;
+        } if (uid > 0) {
+            sql = sql + " and `uid` =" + uid;
+            sqlCount = sqlCount + " and `uid` =" + uid;
+        }if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and  `uid` in (select id from `user`  where name like '%"+name+"%')";
+            sqlCount = sqlCount + " and  uid in (select id from `user`  where name like '%"+name+"%')";
+        }
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<Order> orderList = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+
+        pager.setData(transformClient(orderList));
+        pager.setTotalCount(count);
+        return pager;
     }
 
     private List<ClientOrder> transformClientTem(List<Order> list) {
