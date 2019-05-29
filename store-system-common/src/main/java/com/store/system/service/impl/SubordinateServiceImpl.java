@@ -228,7 +228,7 @@ public class SubordinateServiceImpl implements SubordinateService {
 
     @Override
     public List<ClientSubordinate> getTwoLevelAllList(long pid) throws Exception {
-	    List<Subordinate> subordinates = subordinateDao.getAllList(pid, Subordinate.status_online);
+	    List<Subordinate> subordinates = subordinateDao.getAllList(pid);
         return transformClient(subordinates);
     }
 

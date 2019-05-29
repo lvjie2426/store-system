@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
@@ -7,11 +8,9 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.bean.OrderExpireUnit;
 import com.store.system.client.ClientOrder;
+import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientSubordinate;
-import com.store.system.dao.MarketingCouponDao;
-import com.store.system.dao.OrderDao;
-import com.store.system.dao.PayPassportDao;
-import com.store.system.dao.UserDao;
+import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.OrderService;
@@ -48,7 +47,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Resource
     private OrderDao orderDao;
     @Resource
+    private ProductSKUDao productSKUDao;
+    @Resource
     private UserDao userDao;
+    @Resource
+    private SubordinateDao subordinateDao;
     @Resource
     private MarketingCouponDao marketingCouponDao;
 
@@ -358,6 +361,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             sql = sql + " and `subid` = " + subid;
             sqlCount = sqlCount + " and `subid` = " + subid;
         }
+        if (makeStatus > 0) {
+            sql = sql + " and `makeStatus` = " + makeStatus;
+            sqlCount = sqlCount + " and `makeStatus` = " + makeStatus;
+        }
 
         if (personnelid > 0) {
             sql = sql + " and `personnelid` = " + personnelid;
@@ -388,6 +395,135 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         return pager;
     }
 
+    @Override
+    public Order saveOrder(Order order) throws Exception {
+        return  orderDao.insert(order);
+    }
+
+    @Override
+    public List<ClientOrder> getAllBySubid(long subid) throws Exception {
+        List<Order> list= orderDao.getAllBySubid(subid,Order.status_pay,Order.makestatus_qu_yes);
+        return  transformClient(list);
+    }
+
+    @Override
+    public Order countPrice(Order order) throws Exception {
+        Order orderPrice=new Order();
+        double totalPrice=0.0;
+        //获取skuid 去拿到金额。
+        List<OrderSku> skuids = order.getSkuids();
+        for(OrderSku sku:skuids){
+            ProductSKU productSKU = productSKUDao.load(sku.getSkuid());
+            totalPrice+=sku.getNum()*productSKU.getRetailPrice();
+        }
+        orderPrice.setTotalPrice(totalPrice);
+        long couponid = order.getCouponid();
+        if(couponid>0){
+            MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
+            if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
+                orderPrice.setDicountPrice( totalPrice-marketingCoupon.getDescSubtract());
+            }
+            if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
+                orderPrice.setDicountPrice( totalPrice-totalPrice*marketingCoupon.getDescSubtract());
+            }
+        }
+        return orderPrice;
+    }
+
+    @Override
+    public List<ClientOrder> getTemporaryOrder(long subid) throws Exception {
+        List<Order> list=   orderDao.getTemporaryOrder(subid,Order.makestatus_temporary);
+
+        return  transformClientTem(list);
+    }
+
+    @Override
+    public Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid,int makeStatus) throws Exception {
+        String sql = "SELECT  *  FROM `order`   where  1=1  ";
+        String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1  ";
+        String limit = "  limit %d , %d ";
+        if(makeStatus>0){
+            sql = sql + " and `makeStatus` = " + makeStatus;
+            sqlCount = sqlCount + " and `makeStatus` = " + makeStatus;
+        }else{
+            sql = sql + " and `makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3  " ;
+            sqlCount = sqlCount + " and  `makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3 " ;
+        }
+        if (subid > 0) {
+            sql = sql + " and `subid` = " + subid;
+            sqlCount = sqlCount + " and `subid` = " + subid;
+        }
+        if (personnelid > 0) {
+            sql = sql + " and `personnelid` = " + personnelid;
+            sqlCount = sqlCount + " and `personnelid` = " + personnelid;
+        }
+        if (startTime > 0) {
+            sql = sql + " and `payTime` >" + startTime;
+            sqlCount = sqlCount + " and `payTime` >" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `payTime` <" + endTime;
+            sqlCount = sqlCount + " and `payTime` <" + endTime;
+        } if (uid > 0) {
+            sql = sql + " and `uid` =" + uid;
+            sqlCount = sqlCount + " and `uid` =" + uid;
+        }if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and  `uid` in (select id from `user`  where name like '%"+name+"%')";
+            sqlCount = sqlCount + " and  uid in (select id from `user`  where name like '%"+name+"%')";
+        }
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<Order> orderList = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+
+        pager.setData(transformClient(orderList));
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    private List<ClientOrder> transformClientTem(List<Order> list) {
+        List<ClientOrder> clientOrderList = new ArrayList<>();
+        for(Order order:list){
+            ClientOrder clientOrder=new ClientOrder(order);
+            if(order.getCouponid()>0){
+                //促销name
+                MarketingCoupon load = marketingCouponDao.load(order.getMachiningid());
+                if(load!=null){
+                    clientOrder.setCouponName(load.getTitle());
+                }
+            }
+            if(order.getPersonnelid()>0){
+                // 销售员name
+                User load = userDao.load(order.getPersonnelid());
+                if(load!=null){
+                    clientOrder.setPersonnelName(load.getName());
+                }
+            }
+            if(order.getMachiningid()>0){
+                // 加工师name
+                User load = userDao.load(order.getMachiningid());
+                if(load!=null){
+                    clientOrder.setMachiningName(load.getName());
+                }
+            }
+            List<OrderSku> skuids = order.getSkuids();
+            List<OrderSku> Clientskuids = Lists.newArrayList();
+            for(OrderSku sku:skuids){
+                // sku name
+                OrderSku orderSku=sku;
+                ProductSKU load = productSKUDao.load(sku.getSkuid());
+                if(load!=null){
+                    orderSku.setName(load.getName());
+                }
+                Clientskuids.add(orderSku);
+            }
+            clientOrder.setSkuids(Clientskuids);
+            clientOrderList.add(clientOrder);
+        }
+        return clientOrderList;
+    }
+
     private List<ClientOrder> transformClient(List<Order> orderList) throws Exception {
         List<ClientOrder> clientOrderList = new ArrayList<>();
         for (Order order : orderList) {
@@ -401,7 +537,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 clientOrder.setUName(user.getName());
                 clientOrder.setUPhone(user.getPhone());
             }
-
+            Subordinate subordinate = subordinateDao.load(order.getSubid());
+            clientOrder.setSubName(subordinate.getName());
             User passportUser = userDao.load(order.getPassportId());
             if (passportUser != null) {
                 clientOrder.setPersonnelName(passportUser.getName());

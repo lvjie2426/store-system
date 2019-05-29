@@ -1,8 +1,11 @@
 package com.store.system.client;
 
 import com.store.system.model.Order;
+import com.store.system.model.OrderSku;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
+
+import java.util.List;
 
 /**
  * @program: qianyi
@@ -13,6 +16,9 @@ import org.apache.commons.beanutils.BeanUtils;
 @Data
 public class ClientOrder extends Order {
 
+    private String subName;
+    private String machiningName;
+    private String couponName;
     private String uName;
     private String uPhone;
     private String personnelName;

@@ -19,10 +19,10 @@ import java.util.Map;
 @Data
 public class Order implements Serializable {
 
-    public static final int status_no_pay = 0; //全部订单
-    public static final int status_pay = 1; // 目前没用-20190523
-    public static final int status_expire = 2; //作废订单
-    public static final int status_no_ok = 3; //未完成：包含未取货，未加工，欠500（拿走货，没给钱）
+    public static final int status_no_pay = 0; //未缴费
+    public static final int status_pay = 1; //已缴费
+    public static final int status_expire = 2; //已过期
+    public static final int status_refund = 3; //已退款
 
     public static final int pay_type_ali = 1; //支付宝
     public static final int pay_type_wx = 2; //微信
@@ -36,17 +36,18 @@ public class Order implements Serializable {
     public static final int marketingtype_coupon = 1; //抵用券
 
     public static final int makestatus_no = 1; //未加工
-    public static final int makestatus_no_pay = 2; //欠款，未支付
+    public static final int makestatus_no_pay = 2; //欠款
     public static final int makestatus_qu_no = 3; //未取货
     public static final int makestatus_qu_yes = 4; //已完成
     public static final int makestatus_invalid = 5; //已作废
+    public static final int makestatus_temporary = 6; //临时订单
 
 
     @PrimaryKey
     private long id;
     private long uid;// 顾客id
     private long personnelid;// 员工id
-    private long optometryid;// 验光师id
+    private long machiningid;// 加工师id
     private long subid;// 门店id
 
     private long passportId;
@@ -68,10 +69,11 @@ public class Order implements Serializable {
     private String desc; //描述
 
     private double totalPrice;//总金额
+    private double dicountPrice;//折后金额
     private double price;//实际支付金额
     private long couponid;//营销券id
     private int marketingType;//促销类型
-    private int MakeStatus;//加工状态/取货状态
+    private int makeStatus;//加工状态/取货状态
 
     @HyperspaceColumn(isJson = true)
     //skuids; (long-skuid,object-num,price)
