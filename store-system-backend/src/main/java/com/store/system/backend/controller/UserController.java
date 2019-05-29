@@ -216,13 +216,13 @@ public class UserController extends BaseController {
     //获取所有顾客的职业
     @RequestMapping("/getAllUserJob")
     public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,
-                                      @RequestParam(value = "psid") long psid,
+                                      @RequestParam(value = "sid") long sid,
                                       @RequestParam(value = "userType",defaultValue = "0") int userType)throws Exception{
         try{
-            Subordinate subordinate = subordinateService.load(psid);
+            Subordinate subordinate = subordinateService.load(sid);
             long pSubid = subordinate.getPid();
-            if(pSubid != 0) throw new StoreSystemException("公司ID错误");
-            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(psid,userType)));
+            if(pSubid == 0) throw new StoreSystemException("门店ID错误");
+            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(sid,userType)));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
         }    }
