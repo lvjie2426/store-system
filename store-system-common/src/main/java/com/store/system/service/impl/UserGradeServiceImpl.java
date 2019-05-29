@@ -3,6 +3,7 @@ package com.store.system.service.impl;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientUser;
+import com.store.system.dao.UserDao;
 import com.store.system.dao.UserGradeDao;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.exception.StoreSystemException;
@@ -21,27 +22,31 @@ import java.util.List;
 @Service
 public class UserGradeServiceImpl implements UserGradeService {
 
+    private RowMapperHelp<UserGrade> ugMapper = new RowMapperHelp<>(UserGrade.class);
+
     @Resource
     private UserGradeDao userGradeDao;
     @Resource
     private JdbcTemplate jdbcTemplate;
     @Resource
+    private UserDao userDao;
+    @Resource
     private SubordinateDao subordinateDao;
 
     private void check(UserGrade userGrade) throws StoreSystemException {
-        if(userGrade.getDiscount() == 0) throw new StoreSystemException("折扣不能为0");
-        if(userGrade.getGainMoney() == 0) throw new StoreSystemException("积分获取金额不能为0");
-        if(userGrade.getGainScore() == 0) throw new StoreSystemException("积分获取数值不能为0");
-        if(userGrade.getSubstituteMoney() == 0) throw new StoreSystemException("积分抵现金额不能为0");
-        if(userGrade.getSubstituteScore() == 0) throw new StoreSystemException("积分抵现数值不能为0");
-        if(userGrade.getSubstituteRate() == 0) throw new StoreSystemException("积分抵现比率不能为0");
+        if (userGrade.getDiscount() == 0) throw new StoreSystemException("折扣不能为0");
+        if (userGrade.getGainMoney() == 0) throw new StoreSystemException("积分获取金额不能为0");
+        if (userGrade.getGainScore() == 0) throw new StoreSystemException("积分获取数值不能为0");
+        if (userGrade.getSubstituteMoney() == 0) throw new StoreSystemException("积分抵现金额不能为0");
+        if (userGrade.getSubstituteScore() == 0) throw new StoreSystemException("积分抵现数值不能为0");
+        if (userGrade.getSubstituteRate() == 0) throw new StoreSystemException("积分抵现比率不能为0");
 
         long subid = userGrade.getSubid();
 
         List<UserGrade> list = userGradeDao.getAllList(subid);
         long conditionScore = userGrade.getConditionScore();
-        for(UserGrade one : list) {
-            if(one.getConditionScore() == conditionScore) throw new StoreSystemException("等级条件重复");
+        for (UserGrade one : list) {
+            if (one.getConditionScore() == conditionScore) throw new StoreSystemException("等级条件重复");
         }
     }
 
@@ -72,14 +77,14 @@ public class UserGradeServiceImpl implements UserGradeService {
     }
 
     @Override
-    public Pager getByPager(Pager pager,long subid) throws Exception {
-        String sql = "SELECT * FROM `user_grade` where subid = " + subid ;
-        String sqlCount = "SELECT COUNT(id) FROM `user_grade` where subid = " + subid ;
+    public Pager getByPager(Pager pager, long subid) throws Exception {
+        String sql = "SELECT * FROM `user_grade` where subid = " + subid;
+        String sqlCount = "SELECT COUNT(id) FROM `user_grade` where subid = " + subid;
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         int count = 0;
-        List<UserGrade> userGrades = this.jdbcTemplate.query(sql,new RowMapperHelp<UserGrade>(UserGrade.class));
+        List<UserGrade> userGrades = this.jdbcTemplate.query(sql, new RowMapperHelp<UserGrade>(UserGrade.class));
         count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         pager.setData(userGrades);
         pager.setTotalCount(count);
@@ -91,9 +96,9 @@ public class UserGradeServiceImpl implements UserGradeService {
         List<UserGrade> list = userGradeDao.getAllList(subid);
         Collections.sort(list);
         UserGrade res = null;
-        for(int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             UserGrade one = list.get(i);
-            if(score >= one.getConditionScore()) {
+            if (score >= one.getConditionScore()) {
                 res = one;
                 break;
             }
@@ -101,4 +106,27 @@ public class UserGradeServiceImpl implements UserGradeService {
         return res;
     }
 
+    @Override
+    public User checkUserScore(User user) throws Exception {
+        int score = user.getScore();
+        UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
+        if(userGrade!=null){
+            //判断积分
+            if(score>=userGrade.getConditionScore()){//等级改变
+                String sql = " SELECT * FROM user_grade WHERE 1=1 ORDER BY user_grade.conditionScore ";
+                List<UserGrade> userGrades = jdbcTemplate.query(sql,ugMapper);
+                if(userGrades!=null){
+                    for(UserGrade grade : userGrades){
+                        if(score<=grade.getConditionScore()){
+                            user.setUserGradeId(grade.getId());
+                            userDao.update(user);
+                            return user;
+                        }
+                    }
+                }
+            }
+            return user;
+        }
+        return null;
+    }
 }

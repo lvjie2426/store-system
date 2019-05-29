@@ -1,9 +1,13 @@
 package com.store.system.service;
 
 import com.store.system.client.ResultClient;
+import com.store.system.model.Salary;
 import com.store.system.model.SalaryRecord;
 import com.store.system.model.User;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
 
 
 public interface ImportFileService {
@@ -24,5 +28,5 @@ public interface ImportFileService {
      * @date 2019/5/27 15:59
      * @return
      */
-    public SalaryRecord importUserSalary(MultipartFile file, User user) throws Exception;
+    public String importUserSalary(MultipartFile file, User user) throws Exception;
 }
