@@ -13,8 +13,8 @@ public class OrderSku {
 
     private long skuid;
     private int num;
+    private String name;
     private double price;//单价
-    private long couponid;
     private double subtotal;//小计 price*num*coupon折扣
 
 }

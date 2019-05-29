@@ -2,8 +2,11 @@ package com.store.system.service;
 
 
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.store.system.client.ClientOrder;
+import com.store.system.model.Order;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface OrderService {
 
@@ -14,4 +17,12 @@ public interface OrderService {
                                         String title, String desc, double price, String ip) throws Exception;
 
     public  Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus,long subid) throws Exception;
+
+    public Order saveOrder(Order order)throws Exception;
+
+    public  List<ClientOrder> getAllBySubid(long subid)throws Exception;
+
+    public Order countPrice(Order order)throws Exception;
+
+    public  List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
 }

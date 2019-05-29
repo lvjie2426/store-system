@@ -800,8 +800,8 @@ public class UserServiceImpl implements UserService {
     //name1 是模糊查询
     @Override
     public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String phone1, String name, String name1, int sex, int userType, String job, long userGradeId) throws Exception {
-        String sql = "SELECT * FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
-        String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid + " and `status` = " + User.status_nomore;
+        String sql = "SELECT * FROM `user` where sid = " + subid ;
+        String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid ;
         String limit = " limit %d , %d ";
         List<Object> objects=new ArrayList<>();
 
@@ -814,7 +814,7 @@ public class UserServiceImpl implements UserService {
             sqlCount = sqlCount + " and `job` =" + job;
         }
 
-        if(StringUtils.isNotBlank(name)&&StringUtils.isBlank(name1)){//精确查询
+        if(StringUtils.isNotBlank(name)&&StringUtils.isBlank(name1)){//精确查询t
             sql = sql + " AND `name` = '" + name + "'";
             sqlCount = sqlCount + " AND `name` = '" + name + "'";
         }
