@@ -1,4 +1,21 @@
-
+.layui-layer .layui-layer-title{
+    padding: 0;
+    background: #f4f4f8;
+    overflow: inherit;
+}
+.outbound-right-head .layui-layer-title{
+    padding-left: 16px;
+}
+.layui-layer .layui-layer-title span{
+    margin-left: 0;
+}
+.outbound-right-head-right>span {
+    line-height: 28px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;font-weight: normal;
+    margin-right: 6px;
+    float: right;
+}
 .outbound-right{
     position: relative;
 }
@@ -178,7 +195,6 @@ border-left: 1px solid #ECECF4;
 }
 .outbound-body-top-hidden{
     width: 100%;height: 40px;padding: 12px 0 0;
-    opacity: 0.6;
     color: rgba(130, 130, 151, 1);
     font-size: 12px;
     font-family: PingFangSC-Medium;
@@ -365,3 +381,12 @@ border-left: 1px solid #ECECF4;
 
 
 /*新增调货样式结束*/
+
+.in-table,.out-table1,.out-table2{
+    width: 100%;
+    padding: 0 16px;
+    margin: 0 auto;
+}
+.fixed-table-container{
+    border: none;
+}

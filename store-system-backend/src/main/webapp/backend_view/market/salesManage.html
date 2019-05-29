@@ -58,118 +58,6 @@
     <ul>
         <li class="tab-item first active">
             <ol class="clear" id="card-list1">
-                <li class="card-item">
-                    <div class="top">
-                        <div class="switch active fr">
-                            <span class="off">未开启</span>
-                            <span class="on">已启用</span>
-                            <span class="switch-btn"><i></i></span>
-                        </div>
-                        <div class="text fl">满100减10抵用券</div>
-                    </div>
-                    <div class="middle-cont">
-                        <div class="item">
-                            <div class="text-top">获取条件</div>
-                            <div class="text-bot">消费满500元</div>
-                        </div>
-                        <div class="item">
-                            <div class="text-top">抵用券描述</div>
-                            <div class="text-bot">消费满100元减10元</div>
-                        </div>
-                        <div class="item">
-                            <div class="text-top">有效期</div>
-                            <div class="text-bot">2018.5.30-2019.5.30</div>
-                        </div>
-                    </div>
-                    <div class="bot-cont">
-                        <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
-                        <span class="button button-thin-red">删除</span>
-                    </div>
-                </li>
-                <li class="card-item">
-                    <div class="top">
-                        <div class="switch active fr">
-                            <span class="off">未开启</span>
-                            <span class="on">已启用</span>
-                            <span class="switch-btn"><i></i></span>
-                        </div>
-                        <div class="text fl">满100减10抵用券</div>
-                    </div>
-                    <div class="middle-cont">
-                        <div class="item">
-                            <div class="text-top">获取条件</div>
-                            <div class="text-bot">消费满500元</div>
-                        </div>
-                        <div class="item">
-                            <div class="text-top">抵用券描述</div>
-                            <div class="text-bot">消费满100元减10元</div>
-                        </div>
-                        <div class="item">
-                            <div class="text-top">有效期</div>
-                            <div class="text-bot">2018.5.30-2019.5.30</div>
-                        </div>
-                    </div>
-                    <div class="bot-cont">
-                        <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
-                        <span class="button button-thin-red">删除</span>
-                    </div>
-                </li>
-                <li class="card-item">
-                    <div class="top">
-                        <div class="switch fr">
-                            <span class="off">未开启</span>
-                            <span class="on">已启用</span>
-                            <span class="switch-btn"><i></i></span>
-                        </div>
-                        <div class="text fl">满100减10抵用券</div>
-                    </div>
-                    <div class="middle-cont">
-                        <div class="item">
-                            <div class="text-top">获取条件</div>
-                            <div class="text-bot">消费满500元</div>
-                        </div>
-                        <div class="item">
-                            <div class="text-top">抵用券描述</div>
-                            <div class="text-bot">消费满100元减10元</div>
-                        </div>
-                        <div class="item">
-                            <div class="text-top">有效期</div>
-                            <div class="text-bot">2018.5.30-2019.5.30</div>
-                        </div>
-                    </div>
-                    <div class="bot-cont">
-                        <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
-                        <span class="button button-thin-red">删除</span>
-                    </div>
-                </li>
-                <li class="card-item">
-                    <div class="top">
-                        <div class="switch fr">
-                            <span class="off">未开启</span>
-                            <span class="on">已启用</span>
-                            <span class="switch-btn"><i></i></span>
-                        </div>
-                        <div class="text fl">满100减10抵用券</div>
-                    </div>
-                    <div class="middle-cont">
-                        <div class="item">
-                            <div class="text-top">获取条件</div>
-                            <div class="text-bot">消费满500元</div>
-                        </div>
-                        <div class="item">
-                            <div class="text-top">抵用券描述</div>
-                            <div class="text-bot">消费满100元减10元</div>
-                        </div>
-                        <div class="item">
-                            <div class="text-top">有效期</div>
-                            <div class="text-bot">2018.5.30-2019.5.30</div>
-                        </div>
-                    </div>
-                    <div class="bot-cont">
-                        <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
-                        <span class="button button-thin-red">删除</span>
-                    </div>
-                </li>
             </ol>
             <table id="yj-page-table" data-toggle="table"  class="table table-border"></table>
         </li>
@@ -704,6 +592,7 @@
                 arr.push(_this.data[i])
             }
         }
+        console.log("抵用券数据：",arr);
         var html = template("voucherList",{list:arr});
         $("#card-list1").html(html);
     }
@@ -905,8 +794,12 @@
 
     /**启用/关闭抵用卷*/
     function updateOpen(id,open){
-        quakooData.ajaxGetData(config.getUrl_marketingcoupon_updateOpen(),{open:open,id:id},function(data){
-            Table.Init();
+        quakooData.ajaxGetData(config.getUrl_marketingcoupon_updateOpen(),{open:open,id:id},function(ret){
+            if(ret&&ret.success){
+                layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+                Table.Init();
+                $('.layui-layer-loading').hide();
+            }
         })
     }
     /**
@@ -1252,6 +1145,7 @@ $()
                 addVoucher(descFullType,descSubtractType,conditionType,conditionFull);//提交抵用券
             },
             success: function(layero, index){
+                /**编辑执行*/
 
             }
         });

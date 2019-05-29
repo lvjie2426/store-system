@@ -30,6 +30,8 @@ public class Salary implements Serializable{
 
     private long uid;//用户ID
 
+    private String uname;//员工姓名
+
     private long sid;//店铺ID
 
     private long psid;//公司ID

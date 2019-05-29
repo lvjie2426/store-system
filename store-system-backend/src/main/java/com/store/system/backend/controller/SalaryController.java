@@ -1,5 +1,6 @@
 package com.store.system.backend.controller;
 
+import com.google.common.collect.Lists;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
@@ -9,8 +10,10 @@ import com.store.system.model.User;
 import com.store.system.service.ImportFileService;
 import com.store.system.service.SalaryRecordService;
 import com.store.system.service.SalaryService;
+import com.store.system.util.DateUtils;
 import com.store.system.util.FileDownload;
 import com.store.system.util.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +25,7 @@ import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: store-system
@@ -60,16 +64,13 @@ public class SalaryController extends BaseController {
     @RequestMapping("/importUserSalary")
     public ModelAndView importUserSalary(HttpServletRequest request, HttpServletResponse response,
                                        @RequestParam(required = false,value = "file") MultipartFile file)throws Exception{
-        SalaryRecord salaryRecord = null;
-        try {
-            User user = UserUtils.getUser(request);
-            salaryRecord = importFileService.importUserSalary(file,user);
-            salaryRecordService.add(salaryRecord);
+        User user = UserUtils.getUser(request);
+        String errLogs = importFileService.importUserSalary(file,user);
+        //判断有没有错误日志
+        if(StringUtils.isBlank(errLogs)){
             return this.viewNegotiating(request,response,new ResultClient(true,"导入成功!"));
-        }catch (StoreSystemException e){
-            salaryRecord.setStatus(SalaryRecord.status_fail);
-            salaryRecordService.add(salaryRecord);
-            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }else{
+            return this.viewNegotiating(request,response,new ResultClient(false,errLogs));
         }
     }
     /////////////////////导入模板下载////////////////////////
