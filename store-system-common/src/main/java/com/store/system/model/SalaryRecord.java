@@ -29,7 +29,7 @@ public class SalaryRecord implements Serializable {
     public static final int status_delete=1;//删除
 
     public static final int type_success=0;//成功
-    public static final int status_fail=1;//失败
+    public static final int type_fail=1;//失败
 
     @PrimaryKey
     private long id;

@@ -77,7 +77,7 @@ public class SalaryRecordServiceImpl implements SalaryRecordService{
                    salary.setStatus(Salary.status_delete);
                }
             }
-            salaryRecord.setType(SalaryRecord.status_fail);
+            salaryRecord.setType(SalaryRecord.type_fail);
             return salaryRecordDao.update(salaryRecord);
         }
         return false;

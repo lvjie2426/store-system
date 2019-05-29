@@ -5,6 +5,7 @@ import ch.qos.logback.core.util.TimeUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.secure.MD5Utils;
 import com.store.system.client.ResultClient;
@@ -14,6 +15,7 @@ import com.store.system.model.*;
 import com.store.system.service.ImportFileService;
 import com.store.system.service.SalaryRecordService;
 import com.store.system.service.SalaryService;
+import com.store.system.util.DateUtils;
 import com.store.system.util.FileUtils;
 import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,10 +30,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -68,8 +67,7 @@ public class ImportFileServiceImpl implements ImportFileService {
     //工资单导入
     @Override
     @Transactional
-    public SalaryRecord importUserSalary(MultipartFile file, User user) throws Exception {
-        ResultClient res = new ResultClient();
+    public String importUserSalary(MultipartFile file, User user) throws Exception {
         long sid = user.getSid();//店铺ID
         long psid = user.getPsid();//公司ID
         long oid = user.getId();//操作人ID
@@ -81,9 +79,9 @@ public class ImportFileServiceImpl implements ImportFileService {
         ImportParams importParams = new ImportParams();
         importParams.setTitleRows(2);
         List<ImportSalary> list = ExcelImportUtil.importExcel(salartyFile,ImportSalary.class,importParams);
-        SalaryRecord salaryRecord = handleImportSalary(list,sid,psid,oid);
-        res.setMsg("导入成功!");
-        return salaryRecord;
+        String errLog = handleImportSalary(list,sid,psid,oid);
+
+        return errLog;
     }
 
     //保存user
@@ -233,65 +231,86 @@ public class ImportFileServiceImpl implements ImportFileService {
     }
 
     //保存工资单
-    private SalaryRecord handleImportSalary(List<ImportSalary> list,long sid,long psid,long oid)throws Exception{
+    private String handleImportSalary(List<ImportSalary> list,long sid,long psid,long oid)throws Exception{
         SalaryRecord salaryRecord = new SalaryRecord();
-        salaryRecord.setSid(sid);
-        salaryRecord.setPsid(psid);
-        salaryRecord.setYear(getYear());
-        salaryRecord.setMonth(getMonth());
-
-        int allMoney = 0;//总金额
-        int allNumber = 0;//总人数
-
+        Map<String,Object> map = null;
+        String errLogs = "";
+        List<Salary> salaries = Lists.newArrayList();
         List<Long> sids = Lists.newArrayList();
-
+        int allAmount = 0;
+        int allNumber = 0;
         for(ImportSalary importSalary : list){
-            Salary salary = getImportSalary(importSalary);
+            map = getImportSalary(importSalary);
+            Salary salary = (Salary) map.get("Salary");
+            errLogs = (String) map.get("ErrLogs");
+            if(StringUtils.isNotBlank(errLogs)){
+                //保存一条错误记录
+                salaryRecord.setSid(sid);
+                salaryRecord.setPsid(psid);
+                salaryRecord.setYear(getYear());
+                salaryRecord.setMonth(getMonth());salaryRecord.setStatus(SalaryRecord.type_fail);
+                salaryRecordService.add(salaryRecord);
+                return  errLogs;
+            }
             salary.setSid(sid);
             salary.setPsid(psid);
             salary.setOid(oid);
+
+            salaries.add(salary);
+        }
+        for(Salary salary:salaries){
             salary = salaryService.add(salary);//保存工资单
             logger.info("@@@@@@@@@@"+ JsonUtils.toJson(salary));
-            allMoney += salary.getFinalPay();
+            allAmount+=salary.getFinalPay();
             allNumber++;
             sids.add(salary.getId());
         }
-        salaryRecord.setAllMoney(allMoney);
-        salaryRecord.setAllNumber(allNumber);
+        //保存正确记录
         salaryRecord.setSids(sids);
-//        salaryRecordService.add(salaryRecord);//保存导入记录
-//        logger.info("@@@@@@@@@@"+ JsonUtils.toJson(salaryRecord));
-        return  salaryRecord;
+        salaryRecord.setSid(sid);
+        salaryRecord.setPsid(psid);
+        salaryRecord.setAllMoney(allAmount);
+        salaryRecord.setAllNumber(allNumber);
+        salaryRecord.setYear(getYear());
+        salaryRecord.setMonth(getMonth());
+        salaryRecordService.add(salaryRecord);
+        return  null;
     }
 
-    private Salary getImportSalary(ImportSalary importSalary)throws Exception{
+    private Map<String,Object> getImportSalary(ImportSalary importSalary)throws Exception{
+        Map<String,Object> map = Maps.newHashMap();
+        String errLogs = "";//错误日志
         Salary salary = new Salary();
         /**编号**/
         if(StringUtils.isNotBlank(importSalary.getId())){
             salary.setUid(Integer.valueOf(importSalary.getId()));
         }else{
-            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 员工编号没有填写!");
+            errLogs="导入信息出错,第"+importSalary.getNumber()+"行 员工编号没有填写!";
         }
 
+        /**员工姓名**/
+        if(StringUtils.isNotBlank(importSalary.getName())){
+            salary.setUname(importSalary.getName());
+        }else{
+            errLogs="导入信息出错,第"+importSalary.getNumber()+"行 员工姓名没有填写!";
+        }
         /**基本工资**/
         if(StringUtils.isNotBlank(importSalary.getBasePay())) {
             salary.setBasePay(Integer.valueOf(importSalary.getBasePay())*100);
         }else{
-            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 基本工资没有填写!");
+            errLogs="导入信息出错,第"+importSalary.getNumber()+"行 基本工资没有填写!";
         }
 
         /**销售提成**/
         if(StringUtils.isNotBlank(importSalary.getRoyalty())) {
             salary.setRoyalty(Integer.valueOf(importSalary.getRoyalty())*100);
         }else{
-            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 销售提成没有填写!");
+            errLogs="导入信息出错,第"+importSalary.getNumber()+"行 销售提成没有填写!";
         }
 
         /**奖金**/
         if(StringUtils.isNotBlank(importSalary.getBonus())){
             salary.setBonus(Integer.valueOf(importSalary.getBasePay())*100);
-        }else{
-            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 奖金没有填写!");
         }
 
         /**罚款**/
@@ -303,7 +322,7 @@ public class ImportFileServiceImpl implements ImportFileService {
         if(StringUtils.isNotBlank(importSalary.getFinalPay())){
             salary.setFinalPay(Integer.valueOf(importSalary.getFinalPay())*100);
         }else{
-            throw new StoreSystemException("导入信息出错,第"+importSalary.getNumber()+"行 实发工资没有填写!");
+            errLogs="导入信息出错,第"+importSalary.getNumber()+"行 实发工资没有填写!";
         }
 
         /**备注**/
@@ -313,7 +332,9 @@ public class ImportFileServiceImpl implements ImportFileService {
         salary.setYear(getYear());
         salary.setMonth(getMonth());
 
-        return salary;
+        map.put("Salary",salary);
+        map.put("ErrLogs",errLogs);
+        return map;
     }
     //获取当前时间年份
     public int getYear(){
