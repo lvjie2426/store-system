@@ -73,8 +73,9 @@
         }
 
         .staffManageCont .contHeader .headRight .newShop,
-        .staffManageCont .contHeader .headRight .payroll {
-            width: 68px;
+        .staffManageCont .contHeader .headRight .payroll,.download-btn {
+            width:auto;
+            padding:0 8px;
             height: 28px;
             line-height: 28px;
             background: #4186DC;
@@ -82,6 +83,9 @@
             border-radius: 2px;
             text-align: center;
             cursor: pointer;
+        }
+        .download-btn{
+            background:#5bb75b;
         }
 
         .staffManageCont .contHeader .headRight input {
@@ -105,7 +109,6 @@
         }
 
         .staffManageCont .contHeader .headRight .payroll {
-            width: 117px;
             background: #57B8DB;
         }
 
@@ -732,13 +735,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="child payroll" onclick="updataSalary()">导入10月份工资单</div>
-            <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" id="btn_import" onclick="Improt()">
-                <i class="fa fa-arrow-circle-o-up">导入</i>
-            </button>
-            <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" onclick="deriveExcel()">
-                <i class="fa fa-arrow-circle-down">下载模板</i>
-            </button>
+            <div class="child payroll" onclick="updataSalary()">导入<span id="nowMonth">xx</span>月份工资单</div>
+            <div class="child  download-btn" onclick="deriveExcel()">下载模板</div>
         </div>
     </div>
     <div class="filter">
@@ -780,10 +778,10 @@
     <div class="content">
         <div class="head">
             <span class="title layui-layer-title">导入10月份工资单</span>
-            <span class="updataBtn">上传工资单Excel</span>
+            <span class="updataBtn" onclick="Improt()">上传工资单Excel</span>
         </div>
         <div class="body">
-            <table border="0" cellpadding="0" cellspacing="0" id="yj-table2" data-toggle="table"
+            <table border="0" cellpadding="0" cellspacing="0" id="putPayroll" data-toggle="table"
                    class="cmMain-table2 table table-border"></table>
         </div>
     </div>
@@ -859,27 +857,6 @@
         </ul>
     </div>
 </div>
-<!--导入模板-->
-<div class="wrapper wrapper-content animated  fadeInDown improt-view" style="display: none">
-    <form method="get" class="form-horizontal">
-        <div class="form-group">
-            <label class="col-sm-2 control-label">选择模版</label>
-            <div class="col-sm-10 ">
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <a href="#" style="display: inline-block;height: 30px;background: #eee;width: 100%;position: relative;">
-                            <button type="button" class="btn btn-primary" style="float: right; height: 30px;width: 80px;line-height:16px;outline: none;">选择文件</button>
-                            <input id="file" type="file" style="height: 30px;width: 80px; position: absolute;right:0;outline: none; cursor: pointer;opacity: 0;"
-                                   accept=".csv,*.zip,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-                        </a>
-                    </span>
-                </div>
-                <span class="help-block m-b-none validate">请上传模板文件</span>
-                <input id="fileName" type="text" placeholder="请选择文件" style="position: absolute;top: 0;height: 30px; width: 73%; outline: none;" readonly/>
-            </div>
-        </div>
-    </form>
-</div>
 <!--添加员工弹窗-->
 <div class="content-view content-view-editStff add-employees" style="display:none">
     <div class="body">
@@ -944,7 +921,6 @@
         </form>
     </div>
 </div>
-<table align=""></table>
 
 <!--离职员工操作弹窗-->
 <div class="content-view content-view-removeStaff" style="display:none">
@@ -955,6 +931,28 @@
     <p>扫描二维码并在手机上新增员工</p>
     <div class="qrCode"></div>
 </div>
+<!--导入模板-->
+<div class="wrapper wrapper-content improt-view" style="display: none">
+    <form method="get" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">选择模版</label>
+            <div class="col-sm-10 ">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <a href="#" style="display: inline-block;height: 30px;background: #eee;width: 100%;position: relative;">
+                            <button type="button" class="btn btn-primary" style="float: right; height: 30px;width: 80px;line-height:16px;outline: none;">选择文件</button>
+                            <input id="file" type="file" style="height: 30px;width: 80px; position: absolute;right:0;outline: none; cursor: pointer;opacity: 0;"
+                                   accept=".csv,*.zip,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                        </a>
+                    </span>
+                </div>
+                <span class="help-block m-b-none validate">请上传模板文件</span>
+                <input id="fileName" type="text" placeholder="请选择文件" style="position: absolute;top: 0;height: 30px; width: 73%; outline: none;" readonly/>
+            </div>
+        </div>
+    </form>
+</div>
+
 <!--全局js-->
 <script src="../resource/js/jquery.min.js"></script>
 <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
@@ -982,7 +980,7 @@
     var staffSex;                                            //下拉框员工性别
     var editJob;
     $(function () {
-        var preid = window.location.search.replace(/\?subid=/,""); //前一个页面穿参（门店ID）
+        var preid = window.location.search.replace(/\?subid=/,""); //前一个页面传参（门店ID）
         psid = quakooUser.getUserInfo().psid;                //企业ID(公司ID)
         subid = preid||quakooDb.getItem("sel_ShopId");       //门店ID
         initPage();                                          //初始化页面
@@ -1050,6 +1048,7 @@
             }
         })
     }
+
     /**接口——获取员工的职位列表*/
     function getJobList(psid) {
         quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{psid:psid,userType:1},function (ret) {
@@ -1070,6 +1069,7 @@
             }
         })
     }
+
     /**接口——获取员工列表*/
     function getStaffList() {
         var url = config.getUrl_user_getSubCustomerPager();
@@ -1106,9 +1106,9 @@
             {field: "idCard", title: "身份证号", align: "left", valign: "middle"},
             {field: "status", title: "状态", align: "left", valign: "middle",formatter: function (value, row, index) {
                 if(value == 0){
-                    return  '<span class="enabled">启用</span>'
+                    return  '<div class="switch active" attr-id="'+row.id+'" attr-status="1"><span class="switch-btn"><i></i></span> <span class="enabled">启用</span></div>'
                 }else if(value == 1){
-                    return '<span class="outage">停用</span>'
+                    return  '<div class="switch" attr-id="'+row.id+'" attr-status="0"><span class="switch-btn"><i></i></span> <span class="outage">停用</span></div>';
                 }
             }},
             {field: "", title: "操作", align: "left", valign: "middle",formatter: function (value, row, index) {
@@ -1120,6 +1120,7 @@
         ];
         ajaxTableData('#cmMain-table',url, param,columns);
     }
+
     /**table模板*/
     function ajaxTableData(domId,url,param,columns){
         $(domId).bootstrapTable('destroy');
@@ -1149,6 +1150,34 @@
 
                 console.log('params:::',params);
                 return params;
+            },
+            success:function () {
+
+            },
+            onLoadSuccess:function (data) {
+                /**
+                 * 开关切换
+                 * */
+                $(".switch-btn").click(function(){
+                    var $dom = $(this).parent(".switch");
+                    var id = $dom.attr("attr-id");
+                    var status = $dom.attr("attr-status");
+                    quakooData.ajaxGetData(config.getUrl_user_updateStatus(),{id:id,status:status},function (ret) {
+                        if(ret&&ret.success){
+                            $dom.toggleClass('active');
+                            if(status==1){
+                                $dom.attr("attr-status",0);
+                                $dom.find(".enabled").removeClass("enabled").addClass("outage").html("停用");
+                                layer.msg("员工已停用",{icon:1})
+                            }else if(status == 0){
+                                $dom.attr("attr-status",1);
+                                $dom.find(".outage").removeClass("outage").addClass("enabled").html("启用");
+                                layer.msg("员工已启用",{icon:1})
+                            }
+
+                        }
+                    });
+                });
             }
 
         });
@@ -1164,68 +1193,60 @@
         var idCard = $("#emp-idcard").val();
         var jobDay = $("#add").val().replace(/\./g,',');
         jobDay = new Date(jobDay).getTime();
-        if(quakooUtils.isNotBlack(name)){
-            if(quakooUtils.isNotBlack(phone)){
-                if(quakooUtils.isMobileNum(phone)){
-                    if(quakooUtils.isNotBlack(mail)){
-                        if(quakooUtils.isEmail(mail)){
-                            if(quakooUtils.isNotBlack(idCard)){
-                                if(quakooUtils.isIDcard(idCard)){
-                                    if(quakooUtils.isNotBlack(jobDay)){
-                                        var param={};
-                                        param.name = name;                  //员工姓名
-                                        param.job = job;                    //职位
-                                        param.phone = phone;               //电话
-                                        param.sex = sex;                   //性别
-                                        param.mail = mail;                 //邮箱
-                                        param.psid = psid;                 //公司ID
-                                        param.sid = subid;                 //店铺ID
-                                        param.idCard = idCard;             //身份证
-                                        param.workingDate = jobDay;             //入职时间
-                                        param.userType = 1;                //0表示顾客，1表示员工
-                                         quakooData.ajaxGetData(config.getUrl_user_add(),param,function (ret){
-                                            if(ret&&ret.success){
-                                                layer.msg("成功创建员工"+name,{icon:1});
-                                                getStaffList(subid);
-                                                setTimeout(function () {
-                                                    layer.close(index);
-                                                },200);
-                                            }else{
-                                                layer.alert(ret.data,{icon:2})
-                                            }
-                                        })
-                                    }else{
-                                        layer.msg("请选择员工入职时间",{icon:4});
-                                        return
-                                    }
-                                }else{
-                                    layer.msg("请输入正确的身份证号",{icon:4});
-                                    return
-                                }
-                            }else{
-                                layer.msg("请输入身份证号",{icon:4});
-                                return
-                            }
-                        }else{
-                            layer.msg("请输入正确邮箱",{icon:4});
-                            return
-                        }
-                    }else{
-                        layer.msg("请输入邮箱",{icon:4});
-                        return
-                    }
-                }else{
-                    layer.msg("请输入正确手机号",{icon:4});
-                    return
-                }
-            }else{
-                layer.msg("请输入手机号",{icon:4});
-                return
-            }
-        }else{
+        if(quakooUtils.isBlack(name)){
             layer.msg("请输入员工姓名",{icon:4});
             return
         }
+        if(quakooUtils.isBlack(phone)){
+            layer.msg("请输入手机号",{icon:4});
+            return
+        }
+        if(quakooUtils.isMobileNum(phone)){
+            layer.msg("请输入正确手机号",{icon:4});
+            return
+        }
+        if(quakooUtils.isBlack(mail)){
+            layer.msg("请输入邮箱",{icon:4});
+            return
+        }
+        if(quakooUtils.isEmail(mail)){
+            layer.msg("请输入正确邮箱",{icon:4});
+            return
+        }
+        if(quakooUtils.isBlack(idCard)){
+            layer.msg("请输入身份证号",{icon:4});
+            return
+        }
+        if(quakooUtils.isIDcard(idCard)){
+            layer.msg("请输入正确的身份证号",{icon:4});
+            return
+        }
+        if(quakooUtils.isBlack(jobDay)){
+            layer.msg("请选择员工入职时间",{icon:4});
+            return
+        }
+        var param={};
+        param.name = name;                  //员工姓名
+        param.job = job;                    //职位
+        param.phone = phone;               //电话
+        param.sex = sex;                   //性别
+        param.mail = mail;                 //邮箱
+        param.psid = psid;                 //公司ID
+        param.sid = subid;                 //店铺ID
+        param.idCard = idCard;             //身份证
+        param.workingDate = jobDay;             //入职时间
+        param.userType = 1;                //0表示顾客，1表示员工
+        quakooData.ajaxGetData(config.getUrl_user_add(),param,function (ret){
+            if(ret&&ret.success){
+                layer.msg("成功创建员工"+name,{icon:1});
+                getStaffList(subid);
+                setTimeout(function () {
+                    layer.close(index);
+                },200);
+            }else{
+                layer.alert(ret.data,{icon:2})
+            }
+        });
     }
     
     /**接口——编辑员工*/
@@ -1266,46 +1287,66 @@
         }
 
     }
-    var data2 =[
-                {name: '精益眼镜旗舰店1', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店2', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店3', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店4', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店5', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店6', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店7', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店8', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店9', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店10', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店11', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店12', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店13', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店14', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店15', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店16', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店17', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店18', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'},
-                {name: '精益眼镜旗舰店19', perNum: 20, actualNum: 30, status: '上传成功'}
-            ];
+
+    /**接口——查询某公司工资单导入记录*/
+    function getPayrollList(){
+        alert(0);
+        var columns = [
+            {field: "name", title: "门店名称", align: "left", valign: "middle"},
+            {field: "allMoney", title: "应发工资", align: "left", valign: "middle"},
+            {field: "allNumber", title: "实发工资人数", align: "left", valign: "middle"},
+            {
+                field: "status", title: "状态", align: "left", valign: "middle",
+                formatter: function (value, row, index) {//循环自定义内容
+                    //正在上传
+                    var icon = '<i class="icon iconfont icon-ico_check"></i>'
+                    var txt = '<span class="sunccess">上传成功</span>'
+                    //上传中
+                    // var icon = '<i class="icon iconfont icon-ico_exchange"></i>'
+                    // var txt = '<span class="sunccess">上传中</span>'
+                    //等待中
+                    // var txt = '<span class="waiting">等待中</span>'
+                    // var icon = ''
+                    return icon + txt
+                }
+            }
+        ]
+        $("#putPayroll").bootstrapTable('destroy');
+        $("#putPayroll").bootstrapTable({
+            url:config.getUrl_salaryrecord_getAllList(),
+            method: 'post',
+            classes: "table",
+            pagination: true,                     //是否显示分页
+            sidePagination: "server",             //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                        //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: columns,
+            queryParams:function (params) {
+                params.psid = psid;
+                params.page = this.pageNumber;
+                params.size = this.pageSize ;
+                return params;
+            },
+            success:function () {
+                alert(2)
+            },
+            onLoadSuccess:function (data) {
+
+            }
+        });
+
+    }
+
+
+
     //是否为管理员
     var admin = true;
     var adminHandle = '';
@@ -1323,49 +1364,9 @@
 
     selectTag($("#selectBox"), function (ret) {/**/
     })
-    // selectTag($("#selectBox2"), function (ret) {/**/
-    // })
-    //导入工资bootstrapTable
-    $(".cmMain-table2").bootstrapTable({
-        data: data2,
-        classes: "table",
-        pagination: true,        //是否显示分页
-        pageNumber: 1,                       //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: [
-            {field: "name", title: "门店名称", align: "left", valign: "middle"},
-            {field: "perNum", title: "应发工资", align: "left", valign: "middle"},
-            {field: "actualNum", title: "实发工资人数", align: "left", valign: "middle"},
-            {
-                field: "status", title: "状态", align: "left", valign: "middle",
-                formatter: function (value, row, index) {//循环自定义内容
-                    //正在上传
-                    var icon = '<i class="icon iconfont icon-ico_check"></i>'
-                    var txt = '<span class="sunccess">上传成功</span>'
-                    //上传中
-                    // var icon = '<i class="icon iconfont icon-ico_exchange"></i>'
-                    // var txt = '<span class="sunccess">上传中</span>'
-                    //等待中
-                    // var txt = '<span class="waiting">等待中</span>'
-                    // var icon = ''
-                    return icon + txt
-                }
-            }
-        ],
-        onPageChange: function (number, size) {
-            form.render();
-        }
-    });
     //上传工资单弹窗
     function updataSalary() {
+        getPayrollList();
         layer.open({
             type: 1,
             shade: 0.01,
@@ -1749,6 +1750,8 @@
     function deriveExcel() {
         document.location.href = serverUrl + '/salary/downloadTemplatesExcel?token='+encodeURIComponent(quakooUser.getUserInfo().token);
     }
+
+
 </script>
 </body>
 </html>

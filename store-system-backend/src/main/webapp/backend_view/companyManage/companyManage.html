@@ -263,6 +263,8 @@
         .companyManageCont .shopItems .contUl li.item .top {
             background: #f3f3f7;
             border-bottom: 1px solid #dfdfe9;
+            box-sizing: border-box;
+            padding-right: 16px;
         }
 
         .companyManageCont .shopItems .contUl li.item .top .shopName {
@@ -272,71 +274,6 @@
             font-weight: bold;
             padding-left: 16px;
             width: 70%;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle {
-            position: absolute;
-            height: 100%;
-            width: 23%;
-            right: 0;
-            top: 0;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form,
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-item {
-            height: 100%;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-item {
-            margin-bottom: 0;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-label {
-            position: absolute;
-            display: block;
-            padding: 9px 0px;
-            width: 40px;
-            font-weight: 400;
-            line-height: 20px;
-            text-align: left;
-            right: 50px;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-input-block {
-            position: absolute;
-            margin-left: 0;
-            right: 16px;
-            min-height: 40px;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-switch {
-            position: relative;
-            height: 18px;
-            line-height: 16px;
-            width: 28px;
-            min-width: 24px;
-            padding: 0 0;
-            margin-top: 11px;
-            border: 1px solid #d2d2d2;
-            border-radius: 20px;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-onswitch {
-            border-color: #4186DC;
-            background-color: #4186DC;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-switch i {
-            top: 2px;
-            width: 12px;
-            height: 12px;
-            left: 2px;
-        }
-
-        .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-onswitch i {
-            left: 100%;
-            margin-left: -15px;
-            background-color: #fff;
         }
 
         .companyManageCont .shopItems .contUl li.item .middle {
@@ -831,6 +768,26 @@
             border: 5px solid #4186DC;
             color: rgba(255, 255, 255, 0);
         }
+        .shopOn{
+            height: 40px;
+            line-height: 40px;
+            color: rgba(65, 134, 220, 1);
+            font-size: 12px;
+            font-weight: bolder;
+            text-align: center;
+            vertical-align: middle;
+            font-family: PingFangSC-Semibold;
+        }
+        .shopOff{
+            height: 40px;
+            line-height: 40px;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+            font-family: PingFangSC-Medium;
+        }
     </style>
 </head>
 <body>
@@ -1162,16 +1119,19 @@
     <%for(var i=0;i< list.length;i++){%>
     <li class="item">
         <div class="top">
-            <p class="shopName txtOverflow"><%=list[i].name%></p>
-            <div class="handle">
-                <form class="layui-form">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" id-data="<%=list[i].id%>">未开启</label>
-                                <div class="layui-input-block" >
-                                    <input id="shopIsOpen" type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest">
-                                </div>
-                        </div>
-                </form>
+            <p class="shopName txtOverflow fl"><%=list[i].name%></p>
+            <div class="fr" id="shopListSwitch">
+                <%if(list[i].status == 0){%>
+                <div class="switch active" attr-id="<%=list[i].id%>" attr-status = "1">
+                    <span class="shopOn">已启用</span>
+                    <span class="switch-btn"><i></i></span>
+                </div>
+                <%}else if(list[i].status == 1){%>
+                <div class="switch" attr-id="<%=list[i].id%>" attr-status = "0">
+                    <span class="shopOff">未开启</span>
+                    <span class="switch-btn"><i></i></span>
+                </div>
+                <%}%>
             </div>
         </div>
         <div class="middle">
@@ -1245,6 +1205,26 @@
                     var data = {list:ret.data};
                     var html = template("shopList",data);
                     document.getElementById("shopUl").innerHTML = html;
+                    $(".switch-btn").click(function(){
+                        var $dom = $(this).parent(".switch");
+                        var id = $dom.attr("attr-id");
+                        var status = $dom.attr("attr-status");
+                        quakooData.ajaxGetData(config.getUrl_subordinate_updateOpen(),{id:id,status:status},function (ret) {
+                            if(ret&&ret.success){
+                                $dom.toggleClass('active');
+                                if(status==1){
+                                    $dom.attr("attr-status",0);
+                                    $dom.find(".shopOn").removeClass("shopOn").addClass("shopOff").html("未开启");
+                                    layer.msg("门店已关闭",{icon:1})
+                                }else if(status == 0){
+                                    $dom.attr("attr-status",1);
+                                    $dom.find(".shopOff").removeClass("shopOff").addClass("shopOn").html("已启用");
+                                    layer.msg("门店已启用",{icon:1})
+                                }
+
+                            }
+                        });
+                    })
                 }
             }
         })

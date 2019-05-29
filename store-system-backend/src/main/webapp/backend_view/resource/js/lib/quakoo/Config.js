@@ -110,6 +110,15 @@ var Config = (function(_super){
     _proto.getUrl_user_getAllUser = function(){return this.serverUrl + '/user/getAllUser';};
     //=======================员工管理 结束====================
 
+    //=======================工资模块 开始====================
+    /**查询某公司工资单导入记录*/
+    _proto.getUrl_salaryrecord_getAllList = function(){return this.serverUrl + '/salaryrecord/getAllList';};
+    /**撤销导入*/
+    _proto.getUrl_salaryrecord_revoke = function(){return this.serverUrl + '/salaryrecord/revoke';};
+    /**查询某公司工资单导入记录*/
+    _proto.getUrl_salary_loadSalaryByUser = function(){return this.serverUrl + '/salary/loadSalaryByUser';};
+    //=======================工资模块 结束====================
+
     //=======================企业端（营销管理） 开始====================
     /**新增短信群发*/
     _proto.getUrl_marketingtimingsms_add = function(){return this.serverUrl + '/marketingtimingsms/add';};

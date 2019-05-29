@@ -806,3 +806,35 @@ input::-webkit-inner-spin-button{
     font-family: PingFangSC-Semibold;
 }
 /************************** 拖动样式结束 **************************/
+/************************** 开关样式开始 **************************/
+.switch .switch-btn{
+    width: 24px;
+    height: 16px;
+    opacity: 0.4;
+    border-radius: 100px;
+    background-color: rgba(130, 130, 151, 1);
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    transition: .5s;
+    cursor:pointer;
+}
+.switch.active .switch-btn{
+    opacity: 1;
+    background-color: rgba(65, 134, 220, 1);
+}
+.switch.active .switch-btn i{
+    top: 2px;right: 2px;
+    left: auto;
+}
+.switch .switch-btn i{
+    transition: .5s;
+    width: 12px;
+    height: 12px;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 2px;left: 2px;
+}
+/************************** 开关样式结束 **************************/
