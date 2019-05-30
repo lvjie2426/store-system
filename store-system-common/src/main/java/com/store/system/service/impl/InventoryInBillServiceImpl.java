@@ -37,6 +37,8 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     private TransformFieldSetUtils skuFieldSetUtils = new TransformFieldSetUtils(ProductSKU.class);
 
+    private TransformFieldSetUtils spuFieldSetUtils = new TransformFieldSetUtils(ProductSPU.class);
+
     private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
 
     private TransformMapUtils userMapUtils = new TransformMapUtils(User.class);
@@ -373,13 +375,13 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
             List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuids));
             Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
 
-            Set<Long> cids = skuFieldSetUtils.fieldList(spuList, "cid");
+            Set<Long> cids = spuFieldSetUtils.fieldList(spuList, "cid");
             List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
             Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
-            Set<Long> bids = skuFieldSetUtils.fieldList(spuList, "bid");
+            Set<Long> bids = spuFieldSetUtils.fieldList(spuList, "bid");
             List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
             Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
-            Set<Long> sids = skuFieldSetUtils.fieldList(spuList, "sid");
+            Set<Long> sids = spuFieldSetUtils.fieldList(spuList, "sid");
             List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
             Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
             List<ClientInventoryInBillItem> clientItems = Lists.newArrayList();
