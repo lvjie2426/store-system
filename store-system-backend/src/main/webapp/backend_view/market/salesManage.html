@@ -123,7 +123,7 @@
 </div>
 <div class="content-view1">
     <div class="lay-header">
-        <span class="lay-title">新增抵用券</span>
+        <span class="lay-title" id="voucher-title">新增抵用券</span>
         <div class="switch active fr" id="voucherSwitch">
             <span class="off">未开启</span>
             <span class="on">已启用</span>
@@ -513,7 +513,7 @@
             </div>
         </div>
         <div class="bot-cont">
-            <span class="button button-thin-blue" onclick="newVouchers1()">编辑</span>
+            <span class="button button-thin-blue" onclick="newVouchers1('<%=list[i].id%>')">编辑</span>
             <span class="button button-thin-red" onclick="delVoucher('<%=list[i].id%>')">删除</span>
         </div>
     </li>
@@ -532,6 +532,7 @@
 <script>
     var psid;                                             //企业ID
     var subid;                                            //门店ID
+    var arr = [];
     /**初始化页面*/
     $(function () {
         initPage();
@@ -584,7 +585,7 @@
     };
     var Table = new TableInit(manage);
     function manage(_this) {
-        var arr = [];
+
         for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
             if(_this.data[i]){
                 _this.data[i].startTime = quakooUtils.formatTimeToDateDianLY(_this.data[i].startTime);
@@ -1099,7 +1100,7 @@ $()
     /**
      * 弹窗新增抵用券
      * */
-    function newVouchers1(){
+    function newVouchers1(data){
         var descFullType,descSubtractType,conditionType,conditionFull;
         selectTag($("#selectBox1"),function (ret) {        //抵用券满类型
             descFullType = ret.value;
@@ -1145,7 +1146,52 @@ $()
                 addVoucher(descFullType,descSubtractType,conditionType,conditionFull);//提交抵用券
             },
             success: function(layero, index){
-                /**编辑执行*/
+                /**编辑*/
+
+                if(quakooUtils.isNotBlack(data)){
+                    for(var i=0;i<arr.length;i++){
+                        if(arr[i].id == data){
+                            var obj = arr[i];
+                        }
+                    }
+                    console.log("obj:",obj);
+                    $("#voucher-title").html("编辑抵用券");
+                    if(obj.open == 1){
+                        //开启
+
+                    }else if(obj.open == 2){
+                        //不开启
+
+                    }
+                    $("#voucherTitle").val(obj.title);
+                    $("#describefull").val(obj.descFull);//消费满
+                    $("#describeSubtract").val(obj.descSubtract);//消费减
+                    if(obj.descFullType == 1){
+                        //描述-消费满 类型金额
+                        $("#selectBox1 .text").html("元")
+                    }else if(obj.descFullType == 2){
+                        //描述-消费满 类型个数
+                        $("#selectBox1 .text").html("个")
+                    }
+                    if(obj.descSubtractType == 1){
+                        //描述-消费减 金额
+                        $("#selectBox2 .text").html("元")
+                    }else if(obj.descSubtractType == 2){
+                        //描述-消费减 百分比
+                        $("#selectBox2 .text").html("%")
+                    }
+                    if(obj.conditionType==1){
+                        //全场通用
+
+                    }else if(obj.conditionType==2){
+                        //消费金额
+
+                    }else if(obj.conditionType==3){
+                        //消费个数
+
+                    }
+                    $("#voucherSort").val(obj.sort);
+                }
 
             }
         });
