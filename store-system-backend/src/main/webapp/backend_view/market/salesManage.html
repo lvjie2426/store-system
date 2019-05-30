@@ -35,7 +35,7 @@
     <ul class="tab-ul clear">
         <li class="active">抵用券营销</li>
         <li>短信营销</li>
-        <li>短信群发</li>
+        <li data-id="send">短信群发</li>
         <li>任务奖励</li>
     </ul>
     <ol>
@@ -122,140 +122,103 @@
 
 </div>
 <div class="content-view1">
-    <div class="lay-header">
-        <span class="lay-title" id="voucher-title">新增抵用券</span>
-        <div class="switch active fr" id="voucherSwitch">
-            <span class="off">未开启</span>
-            <span class="on">已启用</span>
-            <span class="switch-btn"><i></i></span>
+    <form action="">
+        <div class="lay-header">
+            <span class="lay-title" id="voucher-title">新增抵用券</span>
+            <div class="switch active fr" id="voucherSwitch">
+                <span class="off">未开启</span>
+                <span class="on">已启用</span>
+                <span class="switch-btn"><i></i></span>
+            </div>
         </div>
-    </div>
-    <div class="lay-content">
-        <ol>
-            <li class="lay-row title clear">
-                <div class="left">抵用券标题</div>
-                <input class="right" type="text" placeholder="抵用券标题" id="voucherTitle">
-            </li>
-            <li class="lay-row describe clear">
-                <div class="left">抵用券描述</div>
-                <div class="right">
-                    <strong>消费满</strong>
-                    <em></em>
-                    <input type="number" placeholder="数值" id="describefull">
-                    <em></em>
-                    <div class="selectBox" id="selectBox1">
-                        <div class="select-box-header">
-                            <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
-                        </div>
-                        <div class="optionBox">
-                            <ul class="optionUL">
-                                <li value="1">元</li>
-                                <li value="2">个</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <em></em>
-                    <strong>减</strong>
-                    <em></em>
-                    <input type="number" placeholder="数值" id="describeSubtract">
-                    <em></em>
-                    <div class="selectBox" id="selectBox2">
-                        <div class="select-box-header">
-                            <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
-                        </div>
-                        <div class="optionBox">
-                            <ul class="optionUL">
-                                <li value="1">元</li>
-                                <li value="2">%</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="lay-row clear">
-                <div class="left">获取条件</div>
-                <div class="right radio-button">
-                    <div class="box">
-                        <input type="radio" name="condition" id="condition1" checked="checked">
-                        <label for="condition1">
-                            <div class="selectBox" id="selectBox3">
-                                <div class="select-box-header">
-                                    <span class="text">全场通用</span><i class="iconfont icon-ico_arrow_down"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="1">全场通用</li>
-                                        <li value="2">消费金额</li>
-                                        <li value="3">消费个数</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="box" id="voucherCondition" style="display: none;">
-                        <span>消费满</span>
-                        <input type="number" placeholder="数值" id="conditionFull"/>
-                        <div class="selectBox" id="selectBox4">
+        <div class="lay-content">
+            <ol>
+                <li class="lay-row title clear">
+                    <div class="left">抵用券标题</div>
+                    <input class="right" type="text" placeholder="抵用券标题" id="voucherTitle">
+                </li>
+                <li class="lay-row describe clear">
+                    <div class="left">抵用券描述</div>
+                    <div class="right">
+                        <strong>消费满</strong>
+                        <input type="number" placeholder="数值" id="describefull">
+                        <div class="selectBox" id="selectBox1">
                             <div class="select-box-header">
-                                <span class="text">元</span>
+                                <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="1">元</li>
+                                    <li value="2">个</li>
+                                </ul>
                             </div>
                         </div>
-                        <!--<input type="radio" name="condition" id="condition2">
-                        <label for="condition2">
+                        <strong>减</strong>
+                        <input type="number" placeholder="数值" id="describeSubtract">
+                        <div class="selectBox" id="selectBox2">
+                            <div class="select-box-header">
+                                <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="1">元</li>
+                                    <li value="2">%</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="lay-row clear">
+                    <div class="left">获取条件</div>
+                    <div class="right radio-button">
+                        <div class="box">
+                            <input type="radio" name="condition" id="condition1" checked="checked">
+                            <label for="condition1">
+                                <div class="selectBox" id="selectBox3">
+                                    <div class="select-box-header">
+                                        <span class="text">全场通用</span><i class="iconfont icon-ico_arrow_down"></i>
+                                    </div>
+                                    <div class="optionBox">
+                                        <ul class="optionUL">
+                                            <li value="1">全场通用</li>
+                                            <li value="2">消费金额</li>
+                                            <li value="3">消费个数</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="box" id="voucherCondition" style="display: none;">
                             <span>消费满</span>
                             <input type="number" placeholder="数值" id="conditionFull"/>
-                            <div class="selectBox" id="selectBox4">
-                                <div class="select-box-header">
-                                    <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="1">元</li>
-                                        <li value="2">个</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </label>-->
-                    </div>
-                </div>
-            </li>
-            <li class="lay-row time clear">
-                <div class="left">有效期</div>
-                <div class="right">
-                    <div class="yj-demo-time">
-                        <div class="yj-date">
-                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                            <span class="condition-type">元</span>
                         </div>
                     </div>
-                </div>
-            </li>
-            <li class="lay-row clear">
-                <div class="left">排序</div>
-                <input class="right" placeholder="排序序号" id="voucherSort">
-            </li>
-        </ol>
-    </div>
+                </li>
+                <li class="lay-row time clear">
+                    <div class="left">有效期</div>
+                    <div class="right">
+                        <div class="yj-demo-time">
+                            <div class="yj-date">
+                                <span id="voucherTime">开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="lay-row clear">
+                    <div class="left">排序</div>
+                    <input type="number" class="right" placeholder="数字序号" id="voucherSort">
+                </li>
+            </ol>
+        </div>
+        <input type="reset" id="voucherReset" value="" placeholder="">
+    </form>
 </div>
 <div class="content-view2">
     <div class="top-name layui-layer-title ">
         编辑隐形眼镜药水消费提醒
     </div>
-    <div id="moveBox" >
-        <div id="moveBar" ondragover="allowDrop(event)" ondrop="drop(event)" >
-            <div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)" >顾客姓名</div>
-            <div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)" >消费时间</div>
-            <div class="movebar" id="moveBar3" draggable="true" ondragstart="drag(event)"  >门店名称</div>
-            <div class="movebar" id="moveBar4" draggable="true" ondragstart="drag(event)"  >消费金额</div>
-            <div class="movebar" id="moveBar5" draggable="true" ondragstart="drag(event)"  >诸葛村夫</div>
-        </div>
-        <div class="fill">
-            <div class="fill-tip">编辑输入框中的内容或拖动字段</div>
-            <div class="fill-box">
-                <div class="fill-div" id="fill-div" onclick="changeArea()" ondragover="allowDrop(event)" ondrop="drop(event)" >尊敬的你好，你在消费了元，欢迎你下次再来。</div>
-                <textarea name="" onclick="textareaClick()" onblur="textareaBlur()" class="fill-text" id="fill-text" >尊敬的你好，你在消费了元，欢迎你下次再来。</textarea>
-            </div>
-        </div>
-    </div>
+
 </div>
 <div class="content-view3">
     <div class="top-name">
@@ -310,15 +273,22 @@
     </div>
     <div class="sms">
         <div class="title">短信内容</div>
-        <div class="mid-content">
-            <div class="label-button" id="newMsgTags">
-                <input type="button" value="顾客姓名">
-                <input type="button" value="门店名称">
-                <input type="button" value="消费金额">
+        <div id="moveBox">
+            <div id="moveBar" ondragover="allowDrop(event)" ondrop="drop(event)" >
+                <div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">顾客姓名</div>
+                <div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">门店名称</div>
+<!--
+                <div class="movebar" id="moveBar3" draggable="true" ondragstart="drag(event)">门店名称</div>
+                <div class="movebar" id="moveBar4" draggable="true" ondragstart="drag(event)">消费金额</div>
+                <div class="movebar" id="moveBar5" draggable="true" ondragstart="drag(event)">诸葛村夫</div>
+-->
             </div>
-            <div class="content-area">
-                <input type="text" placeholder="编辑输入框中的内容或拖动字段">
-                <p id="newMsg">尊敬的xxx，你好，你在xxx消费了xxx元，欢迎你下次再来。</p>
+            <div class="fill">
+                <div class="fill-tip">编辑输入框中的内容或拖动字段</div>
+                <div class="fill-box">
+                    <div class="fill-div" id="fill-div" onclick="changeArea()" ondragover="allowDrop(event)" ondrop="drop(event)">尊敬的你好，你在消费了元，欢迎你下次再来。</div>
+                    <textarea name="" onclick="textareaClick()" onblur="textareaBlur()" class="fill-text" id="fill-text" >尊敬的你好，你在消费了元，欢迎你下次再来。</textarea>
+                </div>
             </div>
         </div>
     </div>
@@ -327,7 +297,7 @@
         <div class="send-time">
             <div class="settings" style="display:none;">
                 <select name="demo" id="demo">
-                    <option value="date">日期</option>
+                    <option value="date"></option>
                 </select>
             </div>
             <input name="test" id="send-time" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="发送时间" data-type="time"/>
@@ -461,6 +431,8 @@
 
 <!-- 全局公共js -->
 <script src="../resource/js/yanjing.js"></script>
+<!--单个时间插件-->
+<script src = "../resource/js/mobiscroll.2.13.2.js"></script>
 <!--//日期范围插件开始-->
 <script src="../resource/js/yanjing/daterange.js"></script>
 <!--//日期范围插件结束-->
@@ -533,6 +505,7 @@
     var psid;                                             //企业ID
     var subid;                                            //门店ID
     var arr = [];
+    var diaMsgJob;                                        //短信群发职位
     /**初始化页面*/
     $(function () {
         initPage();
@@ -585,7 +558,7 @@
     };
     var Table = new TableInit(manage);
     function manage(_this) {
-
+        arr = [];
         for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
             if(_this.data[i]){
                 _this.data[i].startTime = quakooUtils.formatTimeToDateDianLY(_this.data[i].startTime);
@@ -711,14 +684,14 @@
         $("#yj-page-note-table").html(html);
     }
 */
-    /**获取数据抵用券新增抵用券*/
-    function addVoucher(descFullType,descSubtractType,conditionType,conditionFull) {
+    /**接口——新增抵用券（编辑抵用券）*/
+    function addVoucher(descFullType,descSubtractType,conditionType,startTime,endTime) {
         var title = $("#voucherTitle").val();              //抵用券名字
         var descFull = $("#describefull").val();           //抵用券满
         descFullType = descFullType||1;                    //抵用券满类型
         var descSubtract = $("#describeSubtract").val();   //描述-消费减
         descSubtractType = descSubtractType||1;            //抵用券减类型
-        conditionType = conditionType;                     //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+        conditionType = conditionType||1;                     //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
         if(conditionType ==2||conditionType==3){           //获取条件消费满
             var conditionFull = $("#conditionFull").val();
         }
@@ -729,119 +702,158 @@
         }else{
             var open =2;
         }
-        var startTime= date1.getTime()[2];                    //开始时间
-        var endTime= date1.getTime()[3];                      //结束时间
-
-
+        var startTime = date1.getTime()[2]||startTime;                  //开始时间
+        var endTime = date1.getTime()[3]||endTime;                      //结束时间
         //判断是否为空
-        if(quakooUtils.isNotBlack(startTime)){
-            if(quakooUtils.isNotBlack(title)){
-                if(quakooUtils.isNotBlack(descFull) && descFull >= 0){
-                    if(quakooUtils.isNotBlack(descSubtract) && descSubtract >= 0){
-                        if(sort < 0){
-                            layer.msg("请输入正确的排序");
-                            return
-                        }else{
-                            var param={};
-                            param.subid = psid;                          //公司id
-                            param.title = title;                         //标题
-                            param.startTime = startTime;                 //起始时间
-                            param.endTime = endTime;                     //结束时间
-                            if(conditionFull){
-                                if(conditionFull > 0){
-                                    param.conditionFull = conditionFull;         //获取条件-消费满
-                                }else{
-                                    layer.msg("请输入正确的获取条件的满减数值！");
-                                }
-                            }
-                            param.conditionType = conditionType;         //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
-                            param.descSubtract = descSubtract;           //描述-消费减
-                            param.descSubtractType = descSubtractType;   //描述-消费减 类型(1-金额 2-百分比)
-                            param.descFull = descFull;                   //描述-消费满
-                            param.descFullType = descFullType;           //描述-消费满 类型(1-金额 2-个数)
-                            param.sort = sort;                           //排序
-                            param.open = open;                           //抵用券开启||关闭
-                            param.startTime = startTime;                 //起始时间
-                            param.endTime = endTime;                     //起始时间
-                        }
-                    }else{
-                        layer.msg("请输入正确的抵用券减金额！");
-                        return
-                    }
-                }else{
-                    layer.msg("请输入正确的抵用券满金额！");
-                    return
-                }
-            }else{
-                layer.msg("抵用券名字不能为空！");
-                return;
-            }
-        }else{
-            layer.msg("请选择有效期");
+        if(quakooUtils.isBlack(startTime)||quakooUtils.isBlack(endTime)){
+            layer.msg("请选择有效期",{icon:1});
             return
         }
-        quakooData.ajaxGetData(config.getUrl_marketingcoupon_add(),param,function (data) {
-        })
+        if(quakooUtils.isBlack(title)){
+            layer.msg("抵用券名字不能为空",{icon:1});
+            return
+        }
+        if(quakooUtils.isBlack(descFull) && descFull <= 0){
+            layer.msg("请输入正确的抵用券满金额",{icon:1});
+            return
+        }
+        if(quakooUtils.isBlack(descSubtract) && descSubtract<=0){
+            layer.msg("请输入正确的抵用券减金额",{icon:1});
+            return
+        }
+        if(quakooUtils.isBlack(sort)){
+            sort=1;
+        }
+        if(sort < 0){
+            layer.msg("请输入正确的排序");
+            return
+        }else{
+            var param={};
+            param.subid = psid;                          //公司id
+            param.title = title;                         //标题
+            param.startTime = startTime;                 //起始时间
+            param.endTime = endTime;                     //结束时间
+            if(conditionFull){
+                if(conditionFull > 0){
+                    param.conditionFull = conditionFull;         //获取条件-消费满
+                }else{
+                    layer.msg("请输入正确的获取条件的满减数值！");
+                }
+            }
+            param.conditionType = conditionType;         //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+            param.descSubtract = descSubtract;           //描述-消费减
+            param.descSubtractType = descSubtractType;   //描述-消费减 类型(1-金额 2-百分比)
+            param.descFull = descFull;                   //描述-消费满
+            param.descFullType = descFullType;           //描述-消费满 类型(1-金额 2-个数)
+            param.sort = sort;                           //排序
+            param.open = open;                           //抵用券开启||关闭
+            param.startTime = startTime;                 //起始时间
+            param.endTime = endTime;                     //起始时间
+        }
+        if(startTime&&endTime){
+            alert("走编辑接口");
+        }else{
+            quakooData.ajaxGetData(config.getUrl_marketingcoupon_add(),param,function (ret) {
+                if(ret&&ret.success){
+                    layer.msg("成功添加抵用券",{icon:1});
+                    Table.Init();
+                }else{
+                    layer.msg(ret.data,{icon:2});
+                }
+            })
+        }
     }
 
-    /**
-     * 删除抵用券
-     * */
+    /**接口——删除抵用券*/
     function delVoucher(id){
-        quakooData.ajaxGetData(config.getUrl_marketingcoupon_del(),{id:id},function(data){
+        quakooData.ajaxGetData(config.getUrl_marketingcoupon_del(),{id:id},function(ret){
+            if(ret && ret.success){
+                layer.msg("成功删除抵用券",{icon:1});
+            }else{
+                layer.msg(ret.data,{icon:2});
+            }
             Table.Init();
         })
     }
 
-    /**启用/关闭抵用卷*/
+    /**接口——启用/关闭抵用卷*/
     function updateOpen(id,open){
         quakooData.ajaxGetData(config.getUrl_marketingcoupon_updateOpen(),{open:open,id:id},function(ret){
             if(ret&&ret.success){
-                layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+                if(open == 1){
+                    layer.msg("抵用券已启用",{icon:1});
+                }else if(open == 2){
+                    layer.msg("抵用券已关闭",{icon:1})
+                }
                 Table.Init();
-                $('.layui-layer-loading').hide();
+            }else{
+                layer.msg(ret.data,{icon:2});
             }
         })
     }
-    /**
-     * 编辑抵用券
-     * */
-    function f(){
-    }
-    /**
-     * 获取数据新增短信群发
-     * */
-    function addmessage(job,startAge,endAge,sendTime,content,tags){
-        range = //属性
-        sex = $("#sex").children("input[checked]").value;    //性别
-
+    /**接口——新增短信群发*/
+    function addmessage(startAge,endAge,sendTime){
         var param ={};
-        param.subid = subid;                                                                //门店id
-        param.job = job;                                                                    //职业
+        var content;
+        var sendTime = $("#send-time").val();
+        sendTime = sendTime.replace(/-/g,',').replace(/:/g,',').replace(/\s/,',').split(',');
+        sendTime = new Date(sendTime[0],sendTime[1]-1,sendTime[2],sendTime[3],sendTime[4]).getTime();
+        param.subid = subid;                                                               //门店id
+        if(diaMsgJob){
+            param.job = diaMsgJob;                                                               //职业
+        }
         param.startAge = startAge;                                                         //起始年龄
         param.endAge = endAge;                                                             //结束年龄
         param.sendTime = sendTime;                                                         //发送时间
+        var html = $('#fill-div').html();
+        var tags = [];
+        console.log("王：",barArr);
+        for(var i=0;i<barArr.length;i++){
+            html = html.replace(barArr[i].html,"@var(user_name)");
+            if(barArr[i].text=="顾客姓名"){
+                tags.push("@var(user_name)");                                              //顾客姓名
+            }else if(barArr[i].text == "门店名称"){
+                tags.push("@var(sub_name)");                                               //门店名称
+            }
+        }
+        html = html.replace(/<span>/g,'').replace(/<\/span>/g,'');
+        content = html;
         param.content = content;                                                           //内容
-        param.tags = tags;                                                                 //标签
-        param.range =  $("#pro").children("input[checked]").value;                    //全部0，会员1，非会员2
-        param.sex = $("#sex").children("input[checked]").value;                        //全部0，男1，女2
-        quakooData.ajaxGetData(config.getUrl_marketingtimingsms_add(),param,function(data){
-            console.log(data);
+        param.tagsJson = JSON.stringify(tags);                                             //标签
+        param.range =  $("#pro").children("input[checked]").value;                         //全部0，会员1，非会员2
+        param.sex = $("#sex").children("input[checked]").value;                            //全部0，男1，女2
+        quakooData.ajaxGetData(config.getUrl_marketingtimingsms_add(),param,function(ret){
+            if(ret&&ret.success){
+                layer.msg("成功新增短信群发",{icon:1});
+            }else{
+                layer.msg(ret.data,{icon:2});
+            }
         })
     }
 
-
-    /**获取公司下顾客的所有职业(职业下拉框)*/
-    function getAllUserJob(psid){
-        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{psid:psid},function (ret) {
+    /**获取门店下顾客的所有职业(职业下拉框)*/
+    function getAllUserJob(){
+        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{sid:subid,userType:0},function (ret) {
             if(ret&&ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
                     var data = {list:ret.data};
                     var html = template("jobList", data);
                     document.getElementById("jobUl").innerHTML = html;
+                    selectTag($("#selectBox5"),function (ret) {                       //职业获取
+                        diaMsgJob=ret.value;
+                    });
                 }
             }
         });
+    }
+    /***/
+    function getSendList() {
+        quakooData.ajaxGetData(config.getUrl_marketingtimingsms_getCheckPager(),{subid:subid},function (ret) {
+            console.log(ret);
+            if(ret&&ret.success){
+                console.log(ret);
+            }
+        })
     }
     /**
      * 圆环
@@ -1098,10 +1110,16 @@ $()
     });
 
     /**
-     * 弹窗新增抵用券
+     * 弹窗新增抵用券(编辑)
      * */
     function newVouchers1(data){
-        var descFullType,descSubtractType,conditionType,conditionFull;
+        var descFullType=1;                                   //描述-消费满 类型(1-金额 2-个数)
+        var descSubtractType=1;                               //描述-消费减 类型(1-金额 2-百分比)
+        var conditionType=1;                                  //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+        if(data){//编辑日期传值
+            var startTime;
+            var endTime;
+        }
         selectTag($("#selectBox1"),function (ret) {        //抵用券满类型
             descFullType = ret.value;
         });
@@ -1109,47 +1127,56 @@ $()
             descSubtractType = ret.value;
         });
         if($("#condition1").attr("checked")){              //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
-            conditionType=1;
             selectTag($("#selectBox3"),function (ret) {
                 if(ret.value == 1){
                     $("#voucherCondition").hide();
                 }else if(ret.value == 2){
                     $("#voucherCondition").show();
-                    $("#voucherCondition .text").html("元");
+                    $("#voucherCondition .condition-type").html("元");
                 }else if(ret.value == 3){
                     $("#voucherCondition").show();
-                    $("#voucherCondition .text").html("个");
+                    $("#voucherCondition .condition-type").html("个");
                 }
                 conditionType = ret.value;
             });
         }
-        if($("#condition2").attr("checked")){              ////获取条件-消费满
-            conditionFull = $("#conditionFull").val();
+        if(quakooUtils.isBlack(data)){
+            //新增按钮
+            var btn = ['取消', '新增']
+        }else{
+            //编辑按钮
+            var btn = ['取消', '编辑']
         }
         var index = layer.open({
             type: 1,
             shade: 0.01,
             shadeClose: true,
             skin: 'dialog-voucher', //样式类名
-            area: ['360px', '390px'],
+            area: '360px',
             anim: 0,
             closeBtn:0,
             resize:false,
             title:null,
             move:".lay-title",
             content: $('.content-view1'),
-            btn: ['取消', '新增'],
+            btn: btn,
             yes: function(index){
                 layer.close(index)
             },
             btn2: function(){
-                addVoucher(descFullType,descSubtractType,conditionType,conditionFull);//提交抵用券
+                if(quakooUtils.isBlack(data)){
+                    //新增
+                    addVoucher(descFullType,descSubtractType,conditionType);//提交抵用券
+                }else{
+                    //编辑
+                    addVoucher(descFullType,descSubtractType,conditionType,startTime,endTime);
+                }
             },
             success: function(layero, index){
+                document.getElementById("voucherReset").click(); //重置表单
                 /**编辑*/
-
                 if(quakooUtils.isNotBlack(data)){
-                    for(var i=0;i<arr.length;i++){
+                    for(var i=0;i<arr.length;i++){  //获取对应的数据
                         if(arr[i].id == data){
                             var obj = arr[i];
                         }
@@ -1158,14 +1185,17 @@ $()
                     $("#voucher-title").html("编辑抵用券");
                     if(obj.open == 1){
                         //开启
-
+                        $("#voucherSwitch").addClass("active");
                     }else if(obj.open == 2){
                         //不开启
-
+                        $("#voucherSwitch").removeClass("active");
                     }
                     $("#voucherTitle").val(obj.title);
                     $("#describefull").val(obj.descFull);//消费满
                     $("#describeSubtract").val(obj.descSubtract);//消费减
+                    descFullType = obj.descFullType;
+                    descSubtractType = obj.descSubtractType;
+                    conditionType = obj.conditionType;
                     if(obj.descFullType == 1){
                         //描述-消费满 类型金额
                         $("#selectBox1 .text").html("元")
@@ -1182,15 +1212,34 @@ $()
                     }
                     if(obj.conditionType==1){
                         //全场通用
-
+                        $("#voucherCondition").hide();
+                        $("#selectBox3 .text").html("全场通用");
                     }else if(obj.conditionType==2){
                         //消费金额
-
+                        $("#voucherCondition").show();
+                        $("#selectBox3 .text").html("消费金额");
+                        $("#conditionFull").val(obj.conditionFull);
+                        $("#voucherCondition .condition-type").html("元");
                     }else if(obj.conditionType==3){
                         //消费个数
+                        $("#voucherCondition").show();
+                        $("#selectBox3 .text").html("消费个数");
+                        $("#conditionFull").val(obj.conditionFull);
+                        $("#voucherCondition .condition-type").html("个");
 
                     }
+                    startTime = obj.startTime;
+                    endTime = obj.endTime;
+                    var staTimeTxt = quakooUtils.formatTimeToDateDianLY(obj.startTime);
+                    var endTimeTxt = quakooUtils.formatTimeToDateDianLY(obj.endTime);
+                    $("#voucherTime").addClass("sel-time").html(staTimeTxt+"-"+endTimeTxt);
                     $("#voucherSort").val(obj.sort);
+                }else{
+                    $("#voucher-title").html("新增抵用券");
+                    if($("#voucherTime").hasClass("sel-time")){
+                        $("#voucherTime").removeClass("sel-time");
+                    }
+                    $("#voucherTime").html("开始时间-结束时间");
                 }
 
             }
@@ -1242,7 +1291,7 @@ $()
      * 弹窗新增短信群发
      * */
     function newVouchers3(){
-        var range,sex,msgContent,sendTime,startAge,endAge,job,tags=[];
+        var startAge,endAge,sendTime,content;
         var index = layer.open({
             type: 1,
             shade: 0.01,
@@ -1260,15 +1309,19 @@ $()
                 layer.close(index);
             },
             btn2: function(){
-                addmessage();
+                addmessage(startAge,endAge,sendTime,content);
             },
             success: function(layero, index){
                 getAllUserJob(psid);
                 layui.use('slider', function(){   //年龄范围
+                    var starAgeNum = 30;
+                    var endAgeNum = 70;
+                    startAge = starAgeNum;
+                    endAge = endAgeNum;
                     var slider = layui.slider;
                     slider.render({
                         elem: '#slide1',
-                        value: [30, 70],//滑块默认值
+                        value: [starAgeNum, endAgeNum],//滑块默认值
                         range: true,
                         theme: 'rgba(130,130,151,0.4)', //主题色
                         change: function(value){
@@ -1277,13 +1330,36 @@ $()
                         }
                     });
                 });
-                selectTag($("#selectBox5"),function (ret) {                       //职业获取
-                    job=ret.value;
+                // 时间插件JS开始
+                var opt = {};
+                opt.date = {preset: 'date'};
+                opt.datetime = {preset: 'datetime'};
+                opt.time = {preset: 'time'};
+
+                opt.default = {
+                    theme: 'mbsc-android-holo', //皮肤样式
+                    display: 'bubble', //显示方式
+                    mode: 'scroller', //日期选择模式
+                    dateFormat: 'yyyy-mm-dd',
+                    lang: 'zh',
+                    showNow: true,
+                    nowText: "今天",
+                    typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+                };
+                $('.settings').bind('change', function () {
+                    var demo = 'datetime';
+                    if (!demo.match(/select/i)) {
+                        $('.demo-test-' + demo).val('');
+                    }
+                    $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+                    $('.demo').hide();
+                    $('.demo-' + demo).show();
                 });
-                msgContent = $("#newMsg").html();
-                $("#newMsgtags input").each(function(){
-                    tags.push($(this).val())
-                })
+                $('#demo').trigger('change');
+
+                // 时间插件JS结束
+
+
             }
         });
 
@@ -1423,6 +1499,9 @@ $()
         $(this).addClass('active').siblings().removeClass('active');
         $(".tab-item").hide().eq($(this).index()).show();
         $(".right-info").hide().eq($(this).index()).show();
+        if($(this).attr("data-id")=="send"){
+            getSendList();
+        }
     });
     /**
      * 创建任务弹窗tab切换
@@ -1449,11 +1528,11 @@ $()
      * */
 
 
-    selectTag($("#selectBox1"));
-    selectTag($("#selectBox2"));
-    selectTag($("#selectBox3"));
-    selectTag($("#selectBox4"));
-    selectTag($("#selectBox5"));
+    // selectTag($("#selectBox1"));
+    // selectTag($("#selectBox2"));
+    // selectTag($("#selectBox3"));
+    // selectTag($("#selectBox4"));
+
 
     //日期范围插件开始
     var date1 = new dateRange(".yj-demo-time",true);

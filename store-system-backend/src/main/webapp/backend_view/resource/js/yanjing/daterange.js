@@ -162,6 +162,7 @@ dateRange.prototype.bindEnvent = function(){
         _this.checkEnd = _this.showYearEnd + '.' + _this.showMonthEnd + '.' + _this.showDaysEnd;
         var str = _this.checkStart + '-' + _this.checkEnd;
         _this.dom.find('.yj-date span').html(str);
+        _this.dom.find('.yj-date span').addClass("sel-time");
         _this.dom.find('.yj-date-box').fadeOut('fast');
     })
     //今日
