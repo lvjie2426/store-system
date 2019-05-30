@@ -183,7 +183,7 @@
             //初始化Table
             oTableInit.Init = function () {
                 $table.bootstrapTable({
-                    url: serverUrl+'/user/searchUser',         //请求后台的URL（*）
+                    url: serverUrl+'/user/searchBackendUser',         //请求后台的URL（*）
                     method: 'get',                      //请求方式（*）
                     toolbar: '#toolbar',                //工具按钮用哪个容器
 //                    striped: true,                      //是否显示行间隔色
@@ -240,14 +240,14 @@
 
         var columns = [
                 {field: "id", title: "用户ID", align: "center" },
-                {field: "icon",title: "用户头像",align: "center",formatter: function(value, row, index) {
-                        if (value) {
-                            var imageThumb = ImageThumb(value, 80, 80, false);
-                            return imageThumb;
-                        } else {
-                            return '-';
-                        }
-                }},
+//                {field: "icon",title: "用户头像",align: "center",formatter: function(value, row, index) {
+//                        if (value) {
+//                            var imageThumb = ImageThumb(value, 80, 80, false);
+//                            return imageThumb;
+//                        } else {
+//                            return '-';
+//                        }
+//                }},
                 {field: "name",title: "姓名",align: "center",formatter: function(value, row, index) {
                         return value;
                     }
@@ -255,16 +255,7 @@
                 {field: "phone",  title: "手机号",align: "center",formatter: function(value, row, index) {
                         return value;
                 }},
-                {field: "plat",title: "手机型号",align: "center",formatter: function(value, row, index) {
-                        return value;
-                }},
-                {field: "platVersion",title: "系统版本",align: "center",formatter: function(value, row, index) {
-                        return value;
-                }},
                 {field: "ctime",title: "创建时间",align: "center",formatter: function(value, row, index) {
-                        return formatDateTime(value);
-                }},
-                {field: "utime",title: "最后登录时间",align: "center",formatter: function(value, row, index) {
                         return formatDateTime(value);
                 }},
                 {field: "status",title: "状态",align: "center",formatter: function(value, row, index) {
