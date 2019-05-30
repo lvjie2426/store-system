@@ -884,9 +884,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<String> getAllUserJob(long subid,int userType) throws Exception {
+    public Set<String> getAllUserJob(long sid,int userType) throws Exception {
         TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
-        List<User> users = userDao.getAllLists(subid,userType,User.status_nomore);
+        List<User> users = userDao.getAllLists(sid,userType,User.status_nomore);
         return fieldSetUtils.fieldList(users,"job");
     }
 
