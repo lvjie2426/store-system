@@ -93,4 +93,16 @@ public class MarketingCouponController extends BaseController {
         }
     }
 
+    //编辑抵用券
+    @RequestMapping("/updateMarketing")
+    public ModelAndView updateMarketing(HttpServletRequest request,HttpServletResponse response,
+                                        MarketingCoupon marketingCoupon)throws Exception{
+        try {
+            boolean res =  marketingCouponService.updateMarketing(marketingCoupon);
+            return this.viewNegotiating(request,response,new ResultClient(true,res));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
+
 }
