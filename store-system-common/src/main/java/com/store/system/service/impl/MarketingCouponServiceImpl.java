@@ -134,6 +134,42 @@ public class MarketingCouponServiceImpl implements MarketingCouponService {
     }
 
     @Override
+    public boolean updateMarketing(MarketingCoupon marketingCoupon) throws Exception {
+        MarketingCoupon dbMarketingCoupon = marketingCouponDao.load(marketingCoupon);
+        if(StringUtils.isNotBlank(marketingCoupon.getTitle())){
+            dbMarketingCoupon.setTitle(marketingCoupon.getTitle());
+        }
+        if(marketingCoupon.getDescFullType()>0&&marketingCoupon.getDescFullType()!=dbMarketingCoupon.getDescFullType()){
+            dbMarketingCoupon.setDescFullType(marketingCoupon.getDescFullType());
+        }
+        if(marketingCoupon.getDescFull()>0&&marketingCoupon.getDescFull()!=dbMarketingCoupon.getDescFull()){
+            dbMarketingCoupon.setDescFull(marketingCoupon.getDescFull());
+        }
+        if(marketingCoupon.getDescSubtractType()>0&&marketingCoupon.getDescSubtractType()!=dbMarketingCoupon.getDescSubtractType()){
+            dbMarketingCoupon.setDescSubtractType(marketingCoupon.getDescSubtractType());
+        }
+        if(marketingCoupon.getDescSubtract()>0&&marketingCoupon.getDescSubtract()!=dbMarketingCoupon.getDescSubtract()){
+            dbMarketingCoupon.setDescSubtract(marketingCoupon.getDescSubtract());
+        }
+        if(marketingCoupon.getConditionType()>0&&marketingCoupon.getConditionType()!=dbMarketingCoupon.getConditionType()){
+            dbMarketingCoupon.setConditionType(marketingCoupon.getConditionType());
+        }
+        if(marketingCoupon.getConditionFull()>0&&marketingCoupon.getConditionFull()!=dbMarketingCoupon.getConditionFull()){
+            dbMarketingCoupon.setConditionFull(marketingCoupon.getConditionFull());
+        }
+        if(marketingCoupon.getStartTime()>0&&marketingCoupon.getStartTime()!=dbMarketingCoupon.getStartTime()){
+            dbMarketingCoupon.setStartTime(marketingCoupon.getStartTime());
+        }
+        if(marketingCoupon.getEndTime()>0&&marketingCoupon.getEndTime()!=dbMarketingCoupon.getEndTime()){
+            dbMarketingCoupon.setEndTime(marketingCoupon.getEndTime());
+        }
+        if(marketingCoupon.getOpen()>0&&marketingCoupon.getOpen()!=dbMarketingCoupon.getOpen()){
+            dbMarketingCoupon.setOpen(marketingCoupon.getOpen());
+        }
+        return marketingCouponDao.update(dbMarketingCoupon);
+    }
+
+    @Override
     public int calculateMoney(long mcid, int num, int money) throws Exception {
         int res = money;
         MarketingCoupon marketingCoupon = marketingCouponDao.load(mcid);

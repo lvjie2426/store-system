@@ -21,7 +21,7 @@ public interface MarketingCouponService {
 
     public List<MarketingCoupon> getCanUseList(long subid, int money, int num, long time) throws Exception; //促销方式选择
 
-
+    public boolean updateMarketing(MarketingCoupon marketingCoupon)throws Exception;
 
     public int calculateMoney(long mcid, int num, int money) throws Exception; //计算优惠券优惠的金额
 

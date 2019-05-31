@@ -1,8 +1,9 @@
 package com.store.system.service.impl;
 
+import com.store.system.dao.MissionDao;
 import com.store.system.dao.UserMissionPoolDao;
+import com.store.system.model.Mission;
 import com.store.system.model.UserMissionPool;
-import com.store.system.service.SubordinateMissionPoolService;
 import com.store.system.service.UserMissionPoolService;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,9 @@ import java.util.List;
 
 @Service
 public class UserMissionPoolServiceImpl implements UserMissionPoolService{
+
+    @Resource
+    private MissionDao missionDao;
 
     @Resource
     private UserMissionPoolDao userMissionPoolDao;
@@ -25,7 +29,7 @@ public class UserMissionPoolServiceImpl implements UserMissionPoolService{
     }
 
     @Override
-    public UserMissionPool update(UserMissionPool userMissionPool) throws Exception {
+    public UserMissionPool update(UserMissionPool userMissionPool,Mission mission) throws Exception {
         UserMissionPool oldUserMissionPool = userMissionPoolDao.load(userMissionPool);
         if(oldUserMissionPool!=null){
             if(oldUserMissionPool.getNumber()!=userMissionPool.getNumber()){
@@ -41,6 +45,13 @@ public class UserMissionPoolServiceImpl implements UserMissionPoolService{
             oids.add(userMissionPool.getOids().get(0));
             userMissionPool.setOids(oids);
             boolean flag = userMissionPoolDao.update(oldUserMissionPool);
+            //判断任务是否完成
+            if(mission.getMissionStatus()==Mission.missionStatus_nofinish){
+                if(userMissionPool.getProgress()>=100){
+                    mission.setMissionStatus(Mission.missionStatus_finish);
+                    missionDao.update(mission);
+                }
+            }
             if(flag){
                 return oldUserMissionPool;
             }

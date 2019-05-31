@@ -28,5 +28,5 @@ public interface ImportFileService {
      * @date 2019/5/27 15:59
      * @return
      */
-    public String importUserSalary(MultipartFile file, User user) throws Exception;
+    public SalaryRecord importUserSalary(MultipartFile file, User user) throws Exception;
 }

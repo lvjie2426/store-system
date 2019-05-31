@@ -45,9 +45,11 @@ public class SubordinateMissionPoolServiceImpl  implements SubordinateMissionPoo
             oldSubordinateMission.setOids(oids);
             boolean flag = subordinateMissionPoolDao.update(oldSubordinateMission);
             //判断任务是否完成
-            if(subordinateMissionPool.getProgress()>=100){
-                mission.setStatus(Mission.status_end);
-                missionDao.update(mission);
+            if(mission.getMissionStatus()==Mission.missionStatus_nofinish){
+                if(subordinateMissionPool.getProgress()>=100){
+                    mission.setMissionStatus(Mission.missionStatus_finish);
+                    missionDao.update(mission);
+                }
             }
             if(flag){
                 return oldSubordinateMission;

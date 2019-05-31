@@ -24,8 +24,11 @@ import java.util.List;
 @Data
 public class Mission implements Serializable{
 
-    public static final int status_start = 0;//进行中
-    public static final int status_end = 1;//结束
+    public static final int status_yes = 0;//正常
+    public static final int status_no = 1;//删除
+
+    public static final int missionStatus_nofinish = 1;//进行中
+    public static final int missionStatus_finish = 2;//完成
 
     public static final int type_tem=1;//任务类型--团队
     public static final int type_user=2;//任务类型--个人
@@ -44,7 +47,7 @@ public class Mission implements Serializable{
 
     private long sid;//公司ID
 
-    private int status;
+    private int status;//任务状态0正常  1删除
 
     private int amount;//奖励金额(分)
 
@@ -55,6 +58,8 @@ public class Mission implements Serializable{
     private long endTime;
 
     private int type;//团队 or 个人
+
+    private int missionStatus;//任务状态
 
     private int target;//完成金额 或者数量 或者总金额
 

@@ -26,7 +26,7 @@ public class UserMissionPool implements Serializable {
     @CombinationKey
     private long uid;//员工ID
 
-    @HyperspaceColumn(isDbColumn = true)
+    @HyperspaceColumn(isJson = true)
     private List<Long> oids=new ArrayList<>();//订单ID
 
     private int number;//实际完成个数

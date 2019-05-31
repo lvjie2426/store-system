@@ -17,6 +17,12 @@ public class ImportSalary implements Serializable {
     @Excel(name = "员工姓名")
     private String name;
 
+    @Excel(name = "店铺编号")
+    private String sid;
+
+    @Excel(name = "店铺名称")
+    private String sname;
+
     @Excel(name = "基本工资")
     private String basePay;
 

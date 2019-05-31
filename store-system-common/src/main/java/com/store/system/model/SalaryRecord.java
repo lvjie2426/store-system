@@ -42,6 +42,8 @@ public class SalaryRecord implements Serializable {
 
     private int allNumber;//总人数
 
+    private long oid;//操作人员
+
     @HyperspaceColumn(isJson = true)
     private List<Long> sids = new ArrayList<>();//工资单ID
 
@@ -52,6 +54,8 @@ public class SalaryRecord implements Serializable {
     private int status;
 
     private int type;
+
+    private String errLogs;//错误日志
 
     @SortKey
     private long ctime;
