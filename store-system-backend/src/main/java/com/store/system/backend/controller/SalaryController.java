@@ -64,13 +64,12 @@ public class SalaryController extends BaseController {
     @RequestMapping("/importUserSalary")
     public ModelAndView importUserSalary(HttpServletRequest request, HttpServletResponse response,
                                        @RequestParam(required = false,value = "file") MultipartFile file)throws Exception{
-        User user = UserUtils.getUser(request);
-        String errLogs = importFileService.importUserSalary(file,user);
-        //判断有没有错误日志
-        if(StringUtils.isBlank(errLogs)){
-            return this.viewNegotiating(request,response,new ResultClient(true,"导入成功!"));
-        }else{
-            return this.viewNegotiating(request,response,new ResultClient(false,errLogs));
+        try {
+            User user = UserUtils.getUser(request);
+            SalaryRecord salaryRecord = importFileService.importUserSalary(file,user);
+            return this.viewNegotiating(request,response,new ResultClient(true,salaryRecord));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
         }
     }
     /////////////////////导入模板下载////////////////////////

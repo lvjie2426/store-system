@@ -9,6 +9,7 @@ import com.store.system.model.User;
 import com.quakoo.baseFramework.model.pagination.Pager;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -118,4 +119,6 @@ public interface UserService {
 
     ///////////////////////////导出顾客信息//////////////////////////
     public List<ExportUser> getExportUserInfo(long sid, String phone, int sex, String job)throws Exception;
+
+    public Map<String,Object> taskReward(String date, long sid)throws Exception;
 }

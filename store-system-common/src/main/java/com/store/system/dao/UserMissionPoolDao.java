@@ -8,4 +8,6 @@ import java.util.List;
 public interface UserMissionPoolDao extends HDao<UserMissionPool>{
 
     public List<UserMissionPool> getList(long mid, long uid)throws Exception;
+
+    public List<UserMissionPool> getAllList(long uid,int type)throws Exception;
 }

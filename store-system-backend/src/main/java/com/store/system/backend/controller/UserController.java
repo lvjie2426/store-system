@@ -225,7 +225,8 @@ public class UserController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(sid,userType)));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
-        }    }
+        }
+    }
 
     //获取门店下所有顾客 下拉列表
     @RequestMapping("/getAllUser")
@@ -311,5 +312,22 @@ public class UserController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
         }
     }
+
+    /////////////////////日常任务和奖励////////////////////////
+    @RequestMapping("/taskReward")
+    public ModelAndView taskReward(HttpServletRequest request,HttpServletResponse response,
+                                   @RequestParam(value = "date") String date,//date格式201905
+                                   @RequestParam(value = "sid") long sid)throws Exception{
+        try{
+            Subordinate subordinate = subordinateService.load(sid);
+            long pSubid = subordinate.getPid();
+            if(pSubid == 0) throw new StoreSystemException("门店ID错误");
+            Map<String,Object> res =  userService.taskReward(date,sid);
+            return this.viewNegotiating(request,response,new ResultClient(res));
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
+        }
+    }
+
 }
 

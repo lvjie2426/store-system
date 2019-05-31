@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientUser;
@@ -57,6 +58,12 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     protected JdbcTemplate jdbcTemplate;
+
+    @Resource
+    private OrderDao orderDao;
+
+    @Resource
+    private UserMissionPoolDao userMissionPoolDao;
 
     private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
 
@@ -982,5 +989,55 @@ public class UserServiceImpl implements UserService {
             exportUsers.add(exportUser);
         }
         return exportUsers;
+    }
+
+    @Override
+    public Map<String,Object> taskReward(String date, long sid) throws Exception {
+        Map<String,Object> map = Maps.newHashMap();
+        //查询门店内的员工
+        List<User> users = userDao.getAllList(sid,User.userType_backendUser,User.status_nomore);
+        List<ClientUser> clientUsers = Lists.newArrayList();
+        int personal = 0;//个人销售额(分)
+        int tem = 0;//总店销售额(分)
+        //查询员工完成的所有订单的金额 已完成订单的销售量 保存下来
+        for(User user:users){
+            List<UserMissionPool> userMissionPools = userMissionPoolDao.getAllList(user.getId(),Mission.type_user);
+            for(UserMissionPool userMissionPool:userMissionPools){
+                List<Long> oids = userMissionPool.getOids();
+                //查询订单 根据uid
+                List<Order> orders = orderDao.getAllList(oids);
+                for(Order order:orders){
+                    //判断订单是否当前月份
+                    if(inExistence(date,order.getPayTime())){
+                        personal += order.getPrice()*100;
+                    }
+                    //判断是否有完成任务
+                    if(userMissionPool.getUid()==user.getId()&&userMissionPool.getProgress()>=100){
+                        personal+=userMissionPool.getPrice();
+                    }
+                }
+            }
+            tem += personal;
+            ClientUser clientUser = transformClient(user);
+            clientUser.setSale(personal);
+            clientUsers.add(clientUser);
+            personal = 0;
+        }
+        map.put("tem",tem);
+        map.put("clientUsers",clientUsers);
+        return map;
+    }
+
+    //传入201905 判断时间戳是否是当前月
+    private boolean inExistence(String date,long time)throws Exception{
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        String mon = String.valueOf(calendar.get(Calendar.MONTH)+1);
+        if(String.valueOf(mon).length()==1){
+            mon+=0+mon;
+        }
+        String res = year+mon;
+        return res.equals(date);
     }
 }

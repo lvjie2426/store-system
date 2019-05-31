@@ -17,6 +17,8 @@ public class ClientUser extends User {
 
     private int payCount;//消费次数
 
+    private int sale;//销售额(分)
+
     public ClientUser(User user) {
         try {
             BeanUtils.copyProperties(this, user);
