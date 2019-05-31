@@ -94,6 +94,7 @@ input:disabled{
 
 /*按钮开始*/
 .btn{
+    border:none;
     height: 28px;
     line-height: 28px;
     -webkit-box-sizing: content-box;
@@ -1715,7 +1716,7 @@ input[type="number"]::-webkit-input-placeholder{
     font-size: 12px;
     font-family: PingFangSC-Semibold;
 }
-#voucherReset{/*重置抵用券按钮（隐藏的）*/
+.resetFormBtn{/*重置按钮（隐藏的）*/
     width:0;
     height:0;
     border:none;

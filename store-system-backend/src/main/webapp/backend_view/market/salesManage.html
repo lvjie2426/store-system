@@ -34,7 +34,7 @@
 <div class="header clear">
     <ul class="tab-ul clear">
         <li class="active">抵用券营销</li>
-        <li>短信营销</li>
+        <!--<li>短信营销</li>-->
         <li data-id="send">短信群发</li>
         <li>任务奖励</li>
     </ul>
@@ -42,11 +42,11 @@
         <li class="right-info active">
             <button onclick="newVouchers1()">新增抵用券</button>
         </li>
+        <!--<li class="right-info">-->
+            <!--&lt;!&ndash;<span>剩余 1200 条信息可用</span>&ndash;&gt;-->
+        <!--</li>-->
         <li class="right-info">
-            <span>剩余 1200 条信息可用</span>
-        </li>
-        <li class="right-info">
-            <span>剩余 1200 条信息可用</span>
+            <!--<span>剩余 1200 条信息可用</span>-->
             <button onclick="newVouchers3()">新增短信群发</button>
         </li>
         <li class="right-info">
@@ -61,7 +61,7 @@
             </ol>
             <table id="yj-page-table" data-toggle="table"  class="table table-border"></table>
         </li>
-        <li class="tab-item section ">
+        <!--<li class="tab-item section ">
             <ol class="clear" id="yj-page-note-table">
                 <li class="card-item">
                     <div class="inner">
@@ -111,7 +111,7 @@
                     </div>
                 </li>
             </ol>
-        </li>
+        </li>-->
         <li class="tab-item">
             <table id="dxqf-table" data-toggle="table"  class="table table-border"></table>
         </li>
@@ -211,7 +211,7 @@
                 </li>
             </ol>
         </div>
-        <input type="reset" id="voucherReset" value="" placeholder="">
+        <input type="reset" id="voucherReset" value="" placeholder="" class="resetFormBtn">
     </form>
 </div>
 <div class="content-view2">
@@ -221,90 +221,97 @@
 
 </div>
 <div class="content-view3">
-    <div class="top-name">
-        新增短信群发
-    </div>
-    <div class="customer">
-        <div class="title">面向顾客</div>
-        <div class="contents">
-            <ol>
-                <li class="item clear">
-                    <div class="left">属性</div>
-                    <div class="right radio-button" id="pro">
-                        <input type="radio" name="property" id="pro1" value="0" checked="checked">
-                        <label for="pro1">全部</label>
-                        <input type="radio" name="property" id="pro2" value="1">
-                        <label for="pro2">会员</label>
-                        <input type="radio" name="property" id="pro3" value="2">
-                        <label for="pro3">非会员</label>
-                    </div>
-                </li>
-                <li class="item clear">
-                    <div class="left">性别</div>
-                    <div class="right radio-button" id="sex">
-                        <input type="radio" name="sex" id="sex1" value="0" checked="checked">
-                        <label for="sex1">全部</label>
-                        <input type="radio" name="sex" value="1" id="sex2">
-                        <label for="sex2">男</label>
-                        <input type="radio" name="sex" value="2" id="sex3">
-                        <label for="sex3">女</label>
-                    </div>
-                </li>
-                <li class="item clear">
-                    <div class="left">职业</div>
-                    <div class="right">
-                        <div class="selectBox" id="selectBox5">
-                            <div class="select-box-header">
-                                <span class="text">全部职业</span><i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL" id="jobUl">
-                                </ul>
+    <form action="">
+        <div class="top-name">
+            新增短信群发
+        </div>
+        <div class="customer">
+            <div class="title">面向顾客</div>
+            <div class="contents">
+                <ol>
+                    <li class="item clear">
+                        <div class="left">属性</div>
+                        <div class="right radio-button" id="pro">
+                            <input type="radio" name="property" id="pro1" value="0" checked>
+                            <label for="pro1">全部</label>
+                            <input type="radio" name="property" id="pro2" value="1">
+                            <label for="pro2">会员</label>
+                            <input type="radio" name="property" id="pro3" value="2">
+                            <label for="pro3">非会员</label>
+                        </div>
+                    </li>
+                    <li class="item clear">
+                        <div class="left">性别</div>
+                        <div class="right radio-button" id="sex">
+                            <input type="radio" name="sex" id="sex1" value="0" checked>
+                            <label for="sex1">全部</label>
+                            <input type="radio" name="sex" value="1" id="sex2">
+                            <label for="sex2">男</label>
+                            <input type="radio" name="sex" value="2" id="sex3">
+                            <label for="sex3">女</label>
+                        </div>
+                    </li>
+                    <li class="item clear">
+                        <div class="left">职业</div>
+                        <div class="right">
+                            <div class="selectBox" id="selectBox5">
+                                <div class="select-box-header">
+                                    <span class="text">全部职业</span><i class="iconfont icon-ico_arrow_down"></i>
+                                </div>
+                                <div class="optionBox">
+                                    <ul class="optionUL" id="jobUl">
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-                <li class="item clear">
-                    <div class="left">年龄</div>
-                    <div id="slide1" class=" right"></div>
-                </li>
-            </ol>
-        </div>
-    </div>
-    <div class="sms">
-        <div class="title">短信内容</div>
-        <div id="moveBox">
-            <div id="moveBar" ondragover="allowDrop(event)" ondrop="drop(event)" >
-                <div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">顾客姓名</div>
-                <div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">门店名称</div>
-<!--
-                <div class="movebar" id="moveBar3" draggable="true" ondragstart="drag(event)">门店名称</div>
-                <div class="movebar" id="moveBar4" draggable="true" ondragstart="drag(event)">消费金额</div>
-                <div class="movebar" id="moveBar5" draggable="true" ondragstart="drag(event)">诸葛村夫</div>
--->
+                    </li>
+                    <li class="item clear">
+                        <div class="left">年龄</div>
+                        <div id="slide1" class=" right"></div>
+                    </li>
+                </ol>
             </div>
-            <div class="fill">
-                <div class="fill-tip">编辑输入框中的内容或拖动字段</div>
-                <div class="fill-box">
-                    <div class="fill-div" id="fill-div" onclick="changeArea()" ondragover="allowDrop(event)" ondrop="drop(event)">尊敬的你好，你在消费了元，欢迎你下次再来。</div>
-                    <textarea name="" onclick="textareaClick()" onblur="textareaBlur()" class="fill-text" id="fill-text" >尊敬的你好，你在消费了元，欢迎你下次再来。</textarea>
+        </div>
+        <div class="sms">
+            <div class="title">短信内容</div>
+            <div id="moveBox">
+                <div id="moveBar" ondragover="allowDrop(event)" ondrop="drop(event)" >
+                    <div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">顾客姓名</div>
+                    <div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">门店名称</div>
+                    <!--
+                                    <div class="movebar" id="moveBar3" draggable="true" ondragstart="drag(event)">门店名称</div>
+                                    <div class="movebar" id="moveBar4" draggable="true" ondragstart="drag(event)">消费金额</div>
+                                    <div class="movebar" id="moveBar5" draggable="true" ondragstart="drag(event)">诸葛村夫</div>
+                    -->
+                </div>
+                <div class="fill">
+                    <div class="fill-tip">编辑输入框中的内容或拖动字段</div>
+                    <div class="fill-box">
+                        <div class="fill-div" id="fill-div" onclick="changeArea()" ondragover="allowDrop(event)" ondrop="drop(event)">尊敬的你好，你在消费了元，欢迎你下次再来。</div>
+                        <textarea name="" onclick="textareaClick()" onblur="textareaBlur()" class="fill-text" id="fill-text" >尊敬的你好，你在消费了元，欢迎你下次再来。</textarea>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="time">
-        <div class="title">发送时间</div>
-        <div class="send-time">
-            <div class="settings" style="display:none;">
-                <select name="demo" id="demo">
-                    <option value="date"></option>
-                </select>
+        <div class="time">
+            <div class="title">发送时间</div>
+            <div class="send-time">
+                <div class="settings" style="display:none;">
+                    <select name="demo" id="demo">
+                        <option value="date"></option>
+                    </select>
+                </div>
+                <input name="test" id="send-time" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="发送时间" data-type="time"/>
+                <i class="iconfont icon-ico_calendar"></i>
             </div>
-            <input name="test" id="send-time" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="发送时间" data-type="time"/>
-            <i class="iconfont icon-ico_calendar"></i>
         </div>
-    </div>
+        <input type="reset" id="sendMsgResetBtn" placeholder="" value="" class="resetFormBtn">
+    </form>
 </div>
+
+
+
+<!--创建任务-->
 <div class="create-task">
     <div class="create-task-header">
         <ul class="create-task-header-tab clear">
@@ -326,9 +333,9 @@
                 </div>
             </div>
             <div class="task-second">
-                <input type="radio" name="sales" id="money" checked="checked">
+                <input type="radio" name="sales" id="money" checked="checked" data-id="1">
                 <label for="money">销售额奖励</label>
-                <input type="radio" name="sales" id="number">
+                <input type="radio" name="sales" id="number" data-id="2">
                 <label for="number">销售量奖励</label>
             </div>
             <div class="task-third">
@@ -493,10 +500,10 @@
     <%}%>
 </script>
 
-<!--职业下拉框-->
+<!--短信群发——职业下拉框-->
 <script type="text/html" id="jobList">
     <%for(var i =0;i< list.length;i++){%>
-    <li value="'<%=list[i]%>'"><%=list[i]%></li>
+        <li value="<%=list[i]%>"><%=list[i]%></li>
     <%}%>
 </script>
 
@@ -504,7 +511,7 @@
 <script>
     var psid;                                             //企业ID
     var subid;                                            //门店ID
-    var arr = [];
+    var arr = [];                                         //抵用券数据
     var diaMsgJob;                                        //短信群发职位
     /**初始化页面*/
     $(function () {
@@ -516,7 +523,7 @@
         subid = quakooDb.getItem("sel_ShopId");          //门店ID
         Table.Init();
     }
-
+    /************************************<抵用券营销开始>******************************************/
     /*卡片分页-抵用券营销*/
     var $table = $("#yj-page-table");
     var TableInit = function (callback) {
@@ -561,6 +568,8 @@
         arr = [];
         for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
             if(_this.data[i]){
+                _this.data[i].oStartTime = _this.data[i].startTime;  //供编辑使用
+                _this.data[i].oEndTime = _this.data[i].endTime;      //供编辑使用
                 _this.data[i].startTime = quakooUtils.formatTimeToDateDianLY(_this.data[i].startTime);
                 _this.data[i].endTime = quakooUtils.formatTimeToDateDianLY(_this.data[i].endTime);
                 arr.push(_this.data[i])
@@ -570,128 +579,16 @@
         var html = template("voucherList",{list:arr});
         $("#card-list1").html(html);
     }
-    /*卡片分页-短信营销*/
-/*
-    var $tableNote = $("#yj-page-note-table");
-    var data2 = [{id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}];
-    var TableInit = function (callback) {
-        var oTableInit = new Object();
-        //初始化Table
-        oTableInit.Init = function () {
-            $tableNote.bootstrapTable('destroy');
-            $tableNote.bootstrapTable({
-                data: data2,
-                classes: "table",
-                pagination: true,        //是否显示分页
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 6,
-                pageList: [6, 12, 18],
-                sortable: false,
-                sortOrder: "asc",
-                showColumns: true,
-                strictSearch: true,
-                locale: "zh-CN",
-                paginationHAlign: "center",
-                clickToSelect: true,
-                paginationLoop: false,
-                columns: [],
-                onPreBody: function (data) {
-                    if (callback) {
-                        callback(data, this)
-                    }
-                }
-            });
-        };
-        return oTableInit;
-    };
-    var Table = new TableInit(note);
-    Table.Init();
-    function note(data, _this) {
-        var html = '';
-        for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
-            if (i % 2 == 0) {
-                html += '<li class="card-item">' +
-                        '<div class="inner">' +
-                        '<div class="top">' +
-                        '<div class="text">' +
-                        '<div class="main">消费信息提醒</div>' +
-                        '<div class="vice">消费后发送信息至顾客的手机或微信中</div>' +
-                        '</div>' +
-                        '<div class="switch">' +
-                        '<span class="off">未开启</span>' +
-                        '<span class="on">已启用</span>' +
-                        '<span class="switch-btn"><i></i></span>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="cont">' +
-                        '<div class="off"  onclick="newVouchers2()">' +
-                        '<i class="iconfont icon-ico_setting_filled"></i>' +
-                        '<span>设置</span>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</li>';
-            } else if (i % 2 == 1) {
-                html += '<li class="card-item">' +
-                        '<div class="inner">' +
-                        '<div class="top">' +
-                        '<div class="text">' +
-                        '<div class="main">消费信息提醒</div>' +
-                        '<div class="vice">消费后发送信息至顾客的手机或微信中</div>' +
-                        '</div>' +
-                        '<div class="switch active">' +
-                        '<span class="off">未开启</span>' +
-                        '<span class="on">已启用</span>' +
-                        '<span class="switch-btn"><i></i></span>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="cont">' +
-                        '<div class="on">' +
-                        '<div class="message-top">' +
-                        '<span class="fl">短信内容</span>' +
-                        '<input class="fr button-thin" type="button" onclick="newVouchers2()" value="编辑">' +
-                        '</div>' +
-                        '<div class="message-cont">' +
-                        '尊敬的xxx你好，你在xxxx你好，你在xxxxx消费了xx尊敬的xxx你好，你在xxxxx消费了xxx元，欢迎你下次再来。' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</li>';
-            }
-            html += '<li class="card-item">' +
-                    '<div class="inner">' +
-                    '<div class="top">' +
-                    '<div class="text">' +
-                    '<div class="main">消费信息提醒</div>' +
-                    '<div class="vice">消费后发送信息至顾客的手机或微信中</div>' +
-                    '</div>' +
-                    '<div class="switch">' +
-                    '<span class="off">未开启</span>' +
-                    '<span class="on">已启用</span>' +
-                    '<span class="switch-btn"><i></i></span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="cont">' +
-                    '<div class="off"  onclick="newVouchers2()">' +
-                    '<i class="iconfont icon-ico_setting_filled"></i>' +
-                    '<span>设置</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</li>';
-        }
-        $("#yj-page-note-table").html(html);
-    }
-*/
     /**接口——新增抵用券（编辑抵用券）*/
-    function addVoucher(descFullType,descSubtractType,conditionType,startTime,endTime) {
+    function addVoucher(descFullType,descSubtractType,conditionType,startTime,endTime,voucherId) {
+        alert(voucherId)
+        var url;
         var title = $("#voucherTitle").val();              //抵用券名字
         var descFull = $("#describefull").val();           //抵用券满
         descFullType = descFullType||1;                    //抵用券满类型
         var descSubtract = $("#describeSubtract").val();   //描述-消费减
         descSubtractType = descSubtractType||1;            //抵用券减类型
-        conditionType = conditionType||1;                     //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+        conditionType = conditionType||1;                  //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
         if(conditionType ==2||conditionType==3){           //获取条件消费满
             var conditionFull = $("#conditionFull").val();
         }
@@ -702,8 +599,8 @@
         }else{
             var open =2;
         }
-        var startTime = date1.getTime()[2]||startTime;                  //开始时间
-        var endTime = date1.getTime()[3]||endTime;                      //结束时间
+        var startTime = date1.getTime()[2]||startTime;      //开始时间
+        var endTime = date1.getTime()[3]||endTime;          //结束时间
         //判断是否为空
         if(quakooUtils.isBlack(startTime)||quakooUtils.isBlack(endTime)){
             layer.msg("请选择有效期",{icon:1});
@@ -735,7 +632,7 @@
             param.endTime = endTime;                     //结束时间
             if(conditionFull){
                 if(conditionFull > 0){
-                    param.conditionFull = conditionFull;         //获取条件-消费满
+                    param.conditionFull = conditionFull; //获取条件-消费满
                 }else{
                     layer.msg("请输入正确的获取条件的满减数值！");
                 }
@@ -750,10 +647,21 @@
             param.startTime = startTime;                 //起始时间
             param.endTime = endTime;                     //起始时间
         }
-        if(startTime&&endTime){
-            alert("走编辑接口");
+        if(quakooUtils.isNotBlack(voucherId)){
+            alert(voucherId)
+            param.id = voucherId;
+            url = config.getUrl_marketingcoupon_updateMarketing();
+            quakooData.ajaxGetData(url,param,function (ret) {
+                if(ret&&ret.success){
+                    layer.msg("已重新编辑抵用券",{icon:1});
+                    Table.Init();
+                }else{
+                    layer.msg(ret.data,{icon:2});
+                }
+            })
         }else{
-            quakooData.ajaxGetData(config.getUrl_marketingcoupon_add(),param,function (ret) {
+            url = config.getUrl_marketingcoupon_add();
+            quakooData.ajaxGetData(url,param,function (ret) {
                 if(ret&&ret.success){
                     layer.msg("成功添加抵用券",{icon:1});
                     Table.Init();
@@ -791,28 +699,184 @@
             }
         })
     }
+
+    /**
+     * 弹窗新增抵用券(编辑)
+     * */
+    function newVouchers1(data){
+        var descFullType=1;                                   //描述-消费满 类型(1-金额 2-个数)
+        var descSubtractType=1;                               //描述-消费减 类型(1-金额 2-百分比)
+        var conditionType=1;                                  //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+        if(data){//编辑日期传值
+            var startTime;
+            var endTime;
+        }
+        selectTag($("#selectBox1"),function (ret) {        //抵用券满类型
+            descFullType = ret.value;
+        });
+        selectTag($("#selectBox2"),function (ret) {        //抵用券减类型
+            descSubtractType = ret.value;
+        });
+        if($("#condition1").attr("checked")){              //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+            selectTag($("#selectBox3"),function (ret) {
+                if(ret.value == 1){
+                    $("#voucherCondition").hide();
+                }else if(ret.value == 2){
+                    $("#voucherCondition").show();
+                    $("#voucherCondition .condition-type").html("元");
+                }else if(ret.value == 3){
+                    $("#voucherCondition").show();
+                    $("#voucherCondition .condition-type").html("个");
+                }
+                conditionType = ret.value;
+            });
+        }
+        if(quakooUtils.isBlack(data)){
+            //新增按钮
+            var btn = ['取消', '新增']
+        }else{
+            //编辑按钮
+            var btn = ['取消', '编辑']
+        }
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'dialog-voucher', //样式类名
+            area: '360px',
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:null,
+            move:".lay-title",
+            content: $('.content-view1'),
+            btn: btn,
+            yes: function(index){
+                layer.close(index)
+            },
+            btn2: function(){
+                if(quakooUtils.isBlack(data)){
+                    //新增
+                    addVoucher(descFullType,descSubtractType,conditionType);//提交抵用券
+                }else{
+                    //编辑
+                    console.log(data);
+                    addVoucher(descFullType,descSubtractType,conditionType,startTime,endTime,data);
+                }
+            },
+            success: function(layero, index){
+                document.getElementById("voucherReset").click(); //重置表单
+                /**编辑*/
+                if(quakooUtils.isNotBlack(data)){
+                    for(var i=0;i<arr.length;i++){  //获取对应的数据
+                        if(arr[i].id == data){
+                            var obj = arr[i];
+                        }
+                    }
+                    console.log("obj:",obj);
+                    $("#voucher-title").html("编辑抵用券");
+                    if(obj.open == 1){
+                        //开启
+                        $("#voucherSwitch").addClass("active");
+                    }else if(obj.open == 2){
+                        //不开启
+                        $("#voucherSwitch").removeClass("active");
+                    }
+                    $("#voucherTitle").val(obj.title);
+                    $("#describefull").val(obj.descFull);//消费满
+                    $("#describeSubtract").val(obj.descSubtract);//消费减
+                    descFullType = obj.descFullType;
+                    descSubtractType = obj.descSubtractType;
+                    conditionType = obj.conditionType;
+                    if(obj.descFullType == 1){
+                        //描述-消费满 类型金额
+                        $("#selectBox1 .text").html("元")
+                    }else if(obj.descFullType == 2){
+                        //描述-消费满 类型个数
+                        $("#selectBox1 .text").html("个")
+                    }
+                    if(obj.descSubtractType == 1){
+                        //描述-消费减 金额
+                        $("#selectBox2 .text").html("元")
+                    }else if(obj.descSubtractType == 2){
+                        //描述-消费减 百分比
+                        $("#selectBox2 .text").html("%")
+                    }
+                    if(obj.conditionType==1){
+                        //全场通用
+                        $("#voucherCondition").hide();
+                        $("#selectBox3 .text").html("全场通用");
+                    }else if(obj.conditionType==2){
+                        //消费金额
+                        $("#voucherCondition").show();
+                        $("#selectBox3 .text").html("消费金额");
+                        $("#conditionFull").val(obj.conditionFull);
+                        $("#voucherCondition .condition-type").html("元");
+                    }else if(obj.conditionType==3){
+                        //消费个数
+                        $("#voucherCondition").show();
+                        $("#selectBox3 .text").html("消费个数");
+                        $("#conditionFull").val(obj.conditionFull);
+                        $("#voucherCondition .condition-type").html("个");
+
+                    }
+                    startTime = obj.oStartTime;
+                    endTime = obj.oEndTime;
+                    var staTimeTxt = quakooUtils.formatTimeToDateDianLY(obj.startTime);
+                    var endTimeTxt = quakooUtils.formatTimeToDateDianLY(obj.endTime);
+                    $("#voucherTime").addClass("sel-time").html(staTimeTxt+"-"+endTimeTxt);
+                    $("#voucherSort").val(obj.sort);
+                }else{
+                    $("#voucher-title").html("新增抵用券");
+                    if($("#voucherTime").hasClass("sel-time")){
+                        $("#voucherTime").removeClass("sel-time");
+                    }
+                    $("#voucherTime").html("开始时间-结束时间");
+                }
+
+            }
+        });
+        /*laydate.render({
+            elem: '#startTime',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#endTime',
+            type: 'datetime'
+        });*/
+
+    }
+    /************************************</抵用券营销结束>******************************************/
+
+
+
+    /************************************<短信群发开始>******************************************/
     /**接口——新增短信群发*/
-    function addmessage(startAge,endAge,sendTime){
+    function addmessage(startAge,endAge,id){
         var param ={};
         var content;
         var sendTime = $("#send-time").val();
-        sendTime = sendTime.replace(/-/g,',').replace(/:/g,',').replace(/\s/,',').split(',');
-        sendTime = new Date(sendTime[0],sendTime[1]-1,sendTime[2],sendTime[3],sendTime[4]).getTime();
+        if(id){
+            sendTime = $("#send-time").attr("edit-time");
+        }else{
+            sendTime = sendTime.replace(/-/g,',').replace(/:/g,',').replace(/\s/,',').split(',');
+            sendTime = new Date(sendTime[0],sendTime[1]-1,sendTime[2],sendTime[3],sendTime[4]).getTime();
+        }
         param.subid = subid;                                                               //门店id
         if(diaMsgJob){
-            param.job = diaMsgJob;                                                               //职业
+            param.job = diaMsgJob;                                                         //职业
         }
         param.startAge = startAge;                                                         //起始年龄
         param.endAge = endAge;                                                             //结束年龄
         param.sendTime = sendTime;                                                         //发送时间
         var html = $('#fill-div').html();
         var tags = [];
-        console.log("王：",barArr);
         for(var i=0;i<barArr.length;i++){
-            html = html.replace(barArr[i].html,"@var(user_name)");
             if(barArr[i].text=="顾客姓名"){
+                html = html.replace(barArr[i].html,"@var(user_name)");
                 tags.push("@var(user_name)");                                              //顾客姓名
             }else if(barArr[i].text == "门店名称"){
+                html = html.replace(barArr[i].html,"@var(sub_name)");
                 tags.push("@var(sub_name)");                                               //门店名称
             }
         }
@@ -820,17 +884,27 @@
         content = html;
         param.content = content;                                                           //内容
         param.tagsJson = JSON.stringify(tags);                                             //标签
-        param.range =  $("#pro").children("input[checked]").value;                         //全部0，会员1，非会员2
-        param.sex = $("#sex").children("input[checked]").value;                            //全部0，男1，女2
-        quakooData.ajaxGetData(config.getUrl_marketingtimingsms_add(),param,function(ret){
+        param.range = $('#pro input:radio[name="property"]:checked').val();                       //全部0，会员1，非会员2
+        param.sex = $('#sex input:radio[name="sex"]:checked').val();                            //全部0，男1，女2
+        if(id){//编辑
+            param.id = id;
+            url = config.getUrl_marketingtimingsms_update();
+        }else{
+            url = config.getUrl_marketingtimingsms_add()
+        }
+        console.log("param data",param);
+        quakooData.ajaxGetData(url,param,function(ret){
             if(ret&&ret.success){
-                layer.msg("成功新增短信群发",{icon:1});
+                if(id){
+                    layer.msg("成功编辑短信群发",{icon:1});
+                }else{
+                    layer.msg("成功新增短信群发",{icon:1});
+                }
             }else{
                 layer.msg(ret.data,{icon:2});
             }
         })
     }
-
     /**获取门店下顾客的所有职业(职业下拉框)*/
     function getAllUserJob(){
         quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{sid:subid,userType:0},function (ret) {
@@ -842,12 +916,94 @@
                     selectTag($("#selectBox5"),function (ret) {                       //职业获取
                         diaMsgJob=ret.value;
                     });
+                }else{
+                    layer.msg("暂无职业分类",{icon:1});
                 }
             }
         });
     }
-    /***/
+    /**接口——获取短信群发列表*/
     function getSendList() {
+        $("#dxqf-table").bootstrapTable('destroy');
+        $("#dxqf-table").bootstrapTable({
+            url:config.getUrl_marketingtimingsms_getCheckPager(),
+            method: 'get',
+            classes: "table",
+            pagination: true,                     //是否显示分页
+            sidePagination: "server",             //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                        //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {field: "ctime", title: "创建时间", align:"left",valign:"middle",formatter:function (value, row, index) {
+                    return quakooUtils.formatTimeToDateDianLY(value);
+                }},
+                {field: "sendTime", title: "发送时间", align:"left",valign:"middle",formatter:function (value, row, index) {
+                    return quakooUtils.formatTimeToDateDianLY(value);
+                }},
+                {field: "", title: "面向顾客", align:"left",valign:"middle",formatter:function (value, row, index) {
+                    var range,sex,age,job;
+                    if(row.range == 0){
+                        range = "全部";
+                    }else if(row.range== 1) {
+                        range = "会员";
+                    }else if(row.range ==2){
+                        range = "非会员";
+                    }
+                    if(row.sex == 1){
+                        sex = "男";
+                    }else if(row.sex ==2){
+                        sex = "女";
+                    }
+                    if(row.startAge&&row.endAge&&row.startAge>0){
+                        age = row.startAge+"-"+row.endAge+"岁";
+                    }
+                    if(quakooUtils.isNotBlack(row.job)){
+                        job = row.job;
+                    }
+                    var html = (range?range:"")+(sex?","+sex:"")+(age?","+age:"")+(job?","+job:"");
+                    return html;
+                }},
+                {field: "content", title: "短信内容", align:"left",valign:"middle",formatter:function (value,row,index) {
+                    var html = "";
+                    html += value.replace(/@var\(user_name\)/g,"<span class='show-tags'>顾客姓名</span>").replace(/@var\(sub_name\)/g,"<span class='show-tags'>门店名称</span>");
+                    return html;
+                }},
+                {field: "", title: "送达条数", align:"left",valign:"middle",formatter:function (value ,row, index) {
+                    return "暂无字段";
+                }},
+                {field: "status", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                    var editEvent = "newVouchers3("+JSON.stringify(row).replace(/\"/g,'\'').replace(/\'\'/g,'\'')+")";
+                    var html;
+                    if(value == 0){           /**正常*/
+                        html = '<button class="btn btn-primary" onclick="'+editEvent+'">编辑</button>';
+                        console.log(html);
+                    }else if(value == 1){     /**删除*/
+                        html = '-';
+                    }
+                    return html;
+                }
+                }
+            ],
+            queryParams:function (params) {
+                params.subid = subid;
+                params.page = this.pageNumber;
+                params.size = this.pageSize ;
+                params.token = quakooUser.getUserInfo().token;
+                return params;
+            },
+            success:function () {
+            },
+            onLoadSuccess:function (data) {
+            }
+        });
         quakooData.ajaxGetData(config.getUrl_marketingtimingsms_getCheckPager(),{subid:subid},function (ret) {
             console.log(ret);
             if(ret&&ret.success){
@@ -856,69 +1012,165 @@
         })
     }
     /**
-     * 圆环
+     * 弹窗新增（编辑）短信群发
      * */
-    /**
-     * 滑块
-     * */
-
-    /**
-     * 短信群发
-     * */
-    var data3 = [{ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"},
-        {ctime:"2018.02.08",stime:"2018.02.08",customer:"全部，女，30-100岁",note:"尊敬的元，欢迎你下次再",numbers:"1.8万条"}
-    ];
-    $("#dxqf-table").bootstrapTable({
-        data:data3,                 //被加载的数据。
-        classes:"table",
-        pagination:true,            //是否显示分页
-        pageNumber:1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign:"center",
-        clickToSelect:true,
-        columns:[
-            {field: "ctime", title: "创建时间", align:"left",valign:"middle"},
-            {field: "stime", title: "发送时间", align:"left",valign:"middle"},
-            {field: "customer", title: "面向顾客", align:"left",valign:"middle"},
-            {field: "note", title: "短信内容", align:"left",valign:"middle"},
-            {field: "numbers", title: "送达条数", align:"left",valign:"middle"},
-            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">编辑</button>';
+    function newVouchers3(data){
+        console.log(data);
+        var startAge,endAge,btns;
+        var starAgeNum = 30;
+        var endAgeNum = 70;
+        if(quakooUtils.isNotBlack(data)){
+            starAgeNum = data.startAge;
+            endAgeNum = data.endAge;
+        }
+        console.log(starAgeNum);
+        console.log(typeof starAgeNum);
+        if(quakooUtils.isBlack(data)){
+            btns =  ['取消', '新增']
+        }else{
+            btns =  ['取消', '编辑']
+        }
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['360px', 'auto'],
+            anim: 0,
+            closeBtn:0,
+            resize:false,
+            title:null,
+            move:".top-name",
+            content: $('.content-view3'),
+            btn:btns,
+            yes: function(index){
+                layer.close(index);
+            },
+            btn2: function(){
+                if(quakooUtils.isBlack(data)){ //新增
+                    addmessage(startAge,endAge);
+                }else{ //编辑
+                    addmessage(startAge,endAge,data.id);
                 }
-            }
-        ]
+            },
+            success: function(layero, index){
+                getAllUserJob(psid);
+                //重置表单
+                $("#sendMsgResetBtn")[0].click();
+                $("#selectBox5 .text").html = '全部职业';
+                diaMsgJob = "";
+                $("#moveBar1").css('display','block');
+                $("#moveBar2").css('display','block');
+                $("#send-time").attr("placeholder","发送时间");
+                $("#send-time").val('');
 
-    });
+                if(quakooUtils.isNotBlack(data)){//编辑
+                    $(".content-view3 .top-name").html("编辑短信群发");//标题
+                    //属性
+                    if(data.range === 1){
+                        $("#pro2")[0].click();
+                    }else if(data.range ===2){
+                        $("#pro3")[0].click();
+                    }else{
+                        $("#pro1")[0].click();
+                    }
+                    //性别
+                    if(data.sex === 1){
+                        $("#sex2")[0].click();
+                    }else if(data.sex === 2){
+                        $("#sex3")[0].click();
+                    }else if(data.sex ===0){
+                        $("#sex1")[0].click();
+                    }
+                    //职业
+                    if(quakooUtils.isNotBlack(data.job)){
+                        $("#selectBox5 .text").html(data.job);
+                        diaMsgJob = data.job;
+                    }
+                    //短信内容
+                    /*if(quakooUtils.isNotBlack(data.tags)){
+                        if(data.tags.indexOf("@var(sub_name)")>-1){
+                            $("#moveBar2").css('display','none');
+                        }
+                        if(data.tags.indexOf("@var(user_name)")>-1){
+                            $("#moveBar1").css('display','none');
+                        }
+                        var html = data.content.replace(/@var\(user_name\)/g,'<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)" style="display: block;">门店名称</div>').replace(/@var\(user_name\)/g,'<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)" style="display: block;">顾客名称</div>');
+                        $("#fill-div").html(html);
+                        content = data.content;
+                    }*/
+                    //时间
+                    var timeText = quakooUtils.formatTimeToDateDianLY(data.sendTime);
+                    $("#send-time").attr("placeholder",timeText);
+                    $("#send-time").attr("edit-time",data.sendTime);
+                }
+                layui.use('slider', function(){   //年龄范围
+                    startAge = starAgeNum;
+                    endAge = endAgeNum;
+                    var slider = layui.slider;
+                    slider.render({
+                        elem: '#slide1',
+                        value: [starAgeNum, endAgeNum],   //滑块默认值
+                        range: true,
+                        theme: 'rgba(130,130,151,0.4)',   //主题色
+                        change: function(value){
+                            startAge = value[0];
+                            endAge = value[1];
+                        }
+                    });
+                });
+                // 时间插件JS开始
+                var opt = {};
+                opt.date = {preset: 'date'};
+                opt.datetime = {preset: 'datetime'};
+                opt.time = {preset: 'time'};
+
+                opt.default = {
+                    theme: 'mbsc-android-holo', //皮肤样式
+                    display: 'bubble', //显示方式
+                    mode: 'scroller', //日期选择模式
+                    dateFormat: 'yyyy-mm-dd',
+                    lang: 'zh',
+                    showNow: true,
+                    nowText: "今天",
+                    typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+                };
+                $('.settings').bind('change', function () {
+                    var demo = 'datetime';
+                    if (!demo.match(/select/i)) {
+                        $('.demo-test-' + demo).val('');
+                    }
+                    $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+                    $('.demo').hide();
+                    $('.demo-' + demo).show();
+                });
+                $('#demo').trigger('change');
+
+                // 时间插件JS结束
+
+
+            }
+        });
+
+    }
+    /************************************</短信群发结束>******************************************/
+
+
+
+    /************************************<短信营销开始>******************************************/
+    /************************************</短信营销结束>******************************************/
+
+
+
+    /************************************<任务奖励开始>******************************************/
+    //销售额奖励销售量奖励单选
+    $("input:radio[name='sales']").click(function () {
+        var salesSelect = $('input:radio[name="sales"]:checked').val();
+        if(salesSelect ==){
+
+        }
+    })
+
 
     /**
      * 任务奖励
@@ -997,7 +1249,7 @@
                 centerX = document.width / 2, //document中心点x轴坐标
                 centerY = document.height / 2, //Canvas中心点y轴坐标
                 rad = Math.PI * 2 / 100; //将360度分成100份，那么每一份就是rad度
-                //speed = 10;加载的快慢就靠它了
+            //speed = 10;加载的快慢就靠它了
             //绘制圆环背景
             function whiteCircle() {
                 context.save();
@@ -1024,9 +1276,6 @@
             blueCircle(value);
         }
     };
-$()
-
-
     /**
      * 选择任务门店
      * */
@@ -1108,263 +1357,6 @@ $()
         ]
 
     });
-
-    /**
-     * 弹窗新增抵用券(编辑)
-     * */
-    function newVouchers1(data){
-        var descFullType=1;                                   //描述-消费满 类型(1-金额 2-个数)
-        var descSubtractType=1;                               //描述-消费减 类型(1-金额 2-百分比)
-        var conditionType=1;                                  //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
-        if(data){//编辑日期传值
-            var startTime;
-            var endTime;
-        }
-        selectTag($("#selectBox1"),function (ret) {        //抵用券满类型
-            descFullType = ret.value;
-        });
-        selectTag($("#selectBox2"),function (ret) {        //抵用券减类型
-            descSubtractType = ret.value;
-        });
-        if($("#condition1").attr("checked")){              //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
-            selectTag($("#selectBox3"),function (ret) {
-                if(ret.value == 1){
-                    $("#voucherCondition").hide();
-                }else if(ret.value == 2){
-                    $("#voucherCondition").show();
-                    $("#voucherCondition .condition-type").html("元");
-                }else if(ret.value == 3){
-                    $("#voucherCondition").show();
-                    $("#voucherCondition .condition-type").html("个");
-                }
-                conditionType = ret.value;
-            });
-        }
-        if(quakooUtils.isBlack(data)){
-            //新增按钮
-            var btn = ['取消', '新增']
-        }else{
-            //编辑按钮
-            var btn = ['取消', '编辑']
-        }
-        var index = layer.open({
-            type: 1,
-            shade: 0.01,
-            shadeClose: true,
-            skin: 'dialog-voucher', //样式类名
-            area: '360px',
-            anim: 0,
-            closeBtn:0,
-            resize:false,
-            title:null,
-            move:".lay-title",
-            content: $('.content-view1'),
-            btn: btn,
-            yes: function(index){
-                layer.close(index)
-            },
-            btn2: function(){
-                if(quakooUtils.isBlack(data)){
-                    //新增
-                    addVoucher(descFullType,descSubtractType,conditionType);//提交抵用券
-                }else{
-                    //编辑
-                    addVoucher(descFullType,descSubtractType,conditionType,startTime,endTime);
-                }
-            },
-            success: function(layero, index){
-                document.getElementById("voucherReset").click(); //重置表单
-                /**编辑*/
-                if(quakooUtils.isNotBlack(data)){
-                    for(var i=0;i<arr.length;i++){  //获取对应的数据
-                        if(arr[i].id == data){
-                            var obj = arr[i];
-                        }
-                    }
-                    console.log("obj:",obj);
-                    $("#voucher-title").html("编辑抵用券");
-                    if(obj.open == 1){
-                        //开启
-                        $("#voucherSwitch").addClass("active");
-                    }else if(obj.open == 2){
-                        //不开启
-                        $("#voucherSwitch").removeClass("active");
-                    }
-                    $("#voucherTitle").val(obj.title);
-                    $("#describefull").val(obj.descFull);//消费满
-                    $("#describeSubtract").val(obj.descSubtract);//消费减
-                    descFullType = obj.descFullType;
-                    descSubtractType = obj.descSubtractType;
-                    conditionType = obj.conditionType;
-                    if(obj.descFullType == 1){
-                        //描述-消费满 类型金额
-                        $("#selectBox1 .text").html("元")
-                    }else if(obj.descFullType == 2){
-                        //描述-消费满 类型个数
-                        $("#selectBox1 .text").html("个")
-                    }
-                    if(obj.descSubtractType == 1){
-                        //描述-消费减 金额
-                        $("#selectBox2 .text").html("元")
-                    }else if(obj.descSubtractType == 2){
-                        //描述-消费减 百分比
-                        $("#selectBox2 .text").html("%")
-                    }
-                    if(obj.conditionType==1){
-                        //全场通用
-                        $("#voucherCondition").hide();
-                        $("#selectBox3 .text").html("全场通用");
-                    }else if(obj.conditionType==2){
-                        //消费金额
-                        $("#voucherCondition").show();
-                        $("#selectBox3 .text").html("消费金额");
-                        $("#conditionFull").val(obj.conditionFull);
-                        $("#voucherCondition .condition-type").html("元");
-                    }else if(obj.conditionType==3){
-                        //消费个数
-                        $("#voucherCondition").show();
-                        $("#selectBox3 .text").html("消费个数");
-                        $("#conditionFull").val(obj.conditionFull);
-                        $("#voucherCondition .condition-type").html("个");
-
-                    }
-                    startTime = obj.startTime;
-                    endTime = obj.endTime;
-                    var staTimeTxt = quakooUtils.formatTimeToDateDianLY(obj.startTime);
-                    var endTimeTxt = quakooUtils.formatTimeToDateDianLY(obj.endTime);
-                    $("#voucherTime").addClass("sel-time").html(staTimeTxt+"-"+endTimeTxt);
-                    $("#voucherSort").val(obj.sort);
-                }else{
-                    $("#voucher-title").html("新增抵用券");
-                    if($("#voucherTime").hasClass("sel-time")){
-                        $("#voucherTime").removeClass("sel-time");
-                    }
-                    $("#voucherTime").html("开始时间-结束时间");
-                }
-
-            }
-        });
-        /*laydate.render({
-            elem: '#startTime',
-            type: 'datetime'
-        });
-        laydate.render({
-            elem: '#endTime',
-            type: 'datetime'
-        });*/
-
-    }
-
-    /**
-     * 弹窗编辑短信营销
-     * */
-    function newVouchers2(){
-        var index = layer.open({
-            type: 1,
-            shade: 0.01,
-            shadeClose: true,
-            skin: 'layui-layer-demo layui-layer-dx', //样式类名
-            area: ['360px', '290px'],
-            anim: 0,
-            closeBtn:0,
-            title:"",
-            content: $('.content-view2'),
-            resize:false,
-            btn: ['取消', '保存修改'],
-            yes: function(index, layero){
-                layer.close(index)
-            },
-            btn2: function(){
-
-                return false;
-            },
-            success: function(layero, index){
-                $('.layui-layer-dx .layui-layer-content').css('height',290-44+'px')
-                $('.layui-layer-dx .layui-layer-btn').css({'background-color':'rgba(244, 244, 248, 1)','box-shadow':'0px -1px 0px 0px rgba(236, 236, 244, 1)'})
-            }
-        });
-
-    }
-
-
-    /**
-     * 弹窗新增短信群发
-     * */
-    function newVouchers3(){
-        var startAge,endAge,sendTime,content;
-        var index = layer.open({
-            type: 1,
-            shade: 0.01,
-            shadeClose: true,
-            skin: 'layui-layer-demo', //样式类名
-            area: ['360px', 'auto'],
-            anim: 0,
-            closeBtn:0,
-            resize:false,
-            title:null,
-            move:".top-name",
-            content: $('.content-view3'),
-            btn: ['取消', '新增'],
-            yes: function(index){
-                layer.close(index);
-            },
-            btn2: function(){
-                addmessage(startAge,endAge,sendTime,content);
-            },
-            success: function(layero, index){
-                getAllUserJob(psid);
-                layui.use('slider', function(){   //年龄范围
-                    var starAgeNum = 30;
-                    var endAgeNum = 70;
-                    startAge = starAgeNum;
-                    endAge = endAgeNum;
-                    var slider = layui.slider;
-                    slider.render({
-                        elem: '#slide1',
-                        value: [starAgeNum, endAgeNum],//滑块默认值
-                        range: true,
-                        theme: 'rgba(130,130,151,0.4)', //主题色
-                        change: function(value){
-                            startAge = value[0];
-                            endAge = value[1];
-                        }
-                    });
-                });
-                // 时间插件JS开始
-                var opt = {};
-                opt.date = {preset: 'date'};
-                opt.datetime = {preset: 'datetime'};
-                opt.time = {preset: 'time'};
-
-                opt.default = {
-                    theme: 'mbsc-android-holo', //皮肤样式
-                    display: 'bubble', //显示方式
-                    mode: 'scroller', //日期选择模式
-                    dateFormat: 'yyyy-mm-dd',
-                    lang: 'zh',
-                    showNow: true,
-                    nowText: "今天",
-                    typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
-                };
-                $('.settings').bind('change', function () {
-                    var demo = 'datetime';
-                    if (!demo.match(/select/i)) {
-                        $('.demo-test-' + demo).val('');
-                    }
-                    $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
-                    $('.demo').hide();
-                    $('.demo-' + demo).show();
-                });
-                $('#demo').trigger('change');
-
-                // 时间插件JS结束
-
-
-            }
-        });
-
-    }
-
     /**
      * 弹窗创建任务
      * */
@@ -1491,18 +1483,6 @@ $()
             }
         });
     }
-
-    /**
-     * tab切换
-     * */
-    $(".tab-ul li").click(function(){
-        $(this).addClass('active').siblings().removeClass('active');
-        $(".tab-item").hide().eq($(this).index()).show();
-        $(".right-info").hide().eq($(this).index()).show();
-        if($(this).attr("data-id")=="send"){
-            getSendList();
-        }
-    });
     /**
      * 创建任务弹窗tab切换
      * */
@@ -1517,6 +1497,171 @@ $()
         $(this).addClass("active").siblings().removeClass("active");
         $(".product-list-item").removeClass("active").eq($(this).index()).addClass("active");
     });
+
+    /************************************</任务奖励结束>******************************************/
+
+    /*卡片分页-短信营销*/
+/*
+    var $tableNote = $("#yj-page-note-table");
+    var data2 = [{id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}];
+    var TableInit = function (callback) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $tableNote.bootstrapTable('destroy');
+            $tableNote.bootstrapTable({
+                data: data2,
+                classes: "table",
+                pagination: true,        //是否显示分页
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 6,
+                pageList: [6, 12, 18],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                paginationLoop: false,
+                columns: [],
+                onPreBody: function (data) {
+                    if (callback) {
+                        callback(data, this)
+                    }
+                }
+            });
+        };
+        return oTableInit;
+    };
+    var Table = new TableInit(note);
+    Table.Init();
+    function note(data, _this) {
+        var html = '';
+        for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
+            if (i % 2 == 0) {
+                html += '<li class="card-item">' +
+                        '<div class="inner">' +
+                        '<div class="top">' +
+                        '<div class="text">' +
+                        '<div class="main">消费信息提醒</div>' +
+                        '<div class="vice">消费后发送信息至顾客的手机或微信中</div>' +
+                        '</div>' +
+                        '<div class="switch">' +
+                        '<span class="off">未开启</span>' +
+                        '<span class="on">已启用</span>' +
+                        '<span class="switch-btn"><i></i></span>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="cont">' +
+                        '<div class="off"  onclick="newVouchers2()">' +
+                        '<i class="iconfont icon-ico_setting_filled"></i>' +
+                        '<span>设置</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</li>';
+            } else if (i % 2 == 1) {
+                html += '<li class="card-item">' +
+                        '<div class="inner">' +
+                        '<div class="top">' +
+                        '<div class="text">' +
+                        '<div class="main">消费信息提醒</div>' +
+                        '<div class="vice">消费后发送信息至顾客的手机或微信中</div>' +
+                        '</div>' +
+                        '<div class="switch active">' +
+                        '<span class="off">未开启</span>' +
+                        '<span class="on">已启用</span>' +
+                        '<span class="switch-btn"><i></i></span>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="cont">' +
+                        '<div class="on">' +
+                        '<div class="message-top">' +
+                        '<span class="fl">短信内容</span>' +
+                        '<input class="fr button-thin" type="button" onclick="newVouchers2()" value="编辑">' +
+                        '</div>' +
+                        '<div class="message-cont">' +
+                        '尊敬的xxx你好，你在xxxx你好，你在xxxxx消费了xx尊敬的xxx你好，你在xxxxx消费了xxx元，欢迎你下次再来。' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</li>';
+            }
+            html += '<li class="card-item">' +
+                    '<div class="inner">' +
+                    '<div class="top">' +
+                    '<div class="text">' +
+                    '<div class="main">消费信息提醒</div>' +
+                    '<div class="vice">消费后发送信息至顾客的手机或微信中</div>' +
+                    '</div>' +
+                    '<div class="switch">' +
+                    '<span class="off">未开启</span>' +
+                    '<span class="on">已启用</span>' +
+                    '<span class="switch-btn"><i></i></span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="cont">' +
+                    '<div class="off"  onclick="newVouchers2()">' +
+                    '<i class="iconfont icon-ico_setting_filled"></i>' +
+                    '<span>设置</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</li>';
+        }
+        $("#yj-page-note-table").html(html);
+    }
+*/
+
+
+
+
+    /**
+     * 弹窗编辑短信营销
+     * */
+    function newVouchers2(){
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo layui-layer-dx', //样式类名
+            area: ['360px', '290px'],
+            anim: 0,
+            closeBtn:0,
+            title:"",
+            content: $('.content-view2'),
+            resize:false,
+            btn: ['取消', '保存修改'],
+            yes: function(index, layero){
+                layer.close(index)
+            },
+            btn2: function(){
+
+                return false;
+            },
+            success: function(layero, index){
+                $('.layui-layer-dx .layui-layer-content').css('height',290-44+'px')
+                $('.layui-layer-dx .layui-layer-btn').css({'background-color':'rgba(244, 244, 248, 1)','box-shadow':'0px -1px 0px 0px rgba(236, 236, 244, 1)'})
+            }
+        });
+
+    }
+
+
+
+    /**
+     * tab切换
+     * */
+    $(".tab-ul li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        $(".tab-item").hide().eq($(this).index()).show();
+        $(".right-info").hide().eq($(this).index()).show();
+        if($(this).attr("data-id")=="send"){
+            getSendList();
+        }
+    });
     /**
      * 开关切换
      * */
@@ -1528,21 +1673,11 @@ $()
      * */
 
 
-    // selectTag($("#selectBox1"));
-    // selectTag($("#selectBox2"));
-    // selectTag($("#selectBox3"));
-    // selectTag($("#selectBox4"));
-
-
     //日期范围插件开始
     var date1 = new dateRange(".yj-demo-time",true);
     date1.init();
     //日期范围插件结束
 
-    /**获取单选值*/
-    function getValue(_self){
-        var value = $(_self).children('input[checked]').value;
-    }
 
 </script>
 </body>

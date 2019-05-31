@@ -24,13 +24,13 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-          // this.serverUrl = "http://39.107.247.82:20005";
+          this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.30:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
-        this.serverUrl = "http://192.168.1.2:20005";
+        // this.serverUrl = "http://192.168.1.2:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -128,14 +128,24 @@ var Config = (function(_super){
     _proto.getUrl_marketingtimingsms_update = function(){return this.serverUrl + '/marketingtimingsms/update';};
     /**新增抵用卷*/
     _proto.getUrl_marketingcoupon_add = function(){return this.serverUrl + '/marketingcoupon/add';};
+    /**编辑抵用卷*/
+    _proto.getUrl_marketingcoupon_updateMarketing = function(){return this.serverUrl + '/marketingcoupon/updateMarketing';};
     /**启用/关闭抵用卷*/
     _proto.getUrl_marketingcoupon_updateOpen = function(){return this.serverUrl + '/marketingcoupon/updateOpen';};
     /**删除抵用卷*/
     _proto.getUrl_marketingcoupon_del = function(){return this.serverUrl + '/marketingcoupon/del';};
     /**获取抵用卷列表*/
     _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
-    /**更新抵用卷排序*/
-    _proto.getUrl_marketingcoupon_updateSort = function(){return this.serverUrl + '/marketingcoupon/updateSort';};
+    /**创建任务*/
+    _proto.getUrl_mission_add = function(){return this.serverUrl + '/mission/add';};
+    /**查询任务列表*/
+    _proto.getUrl_mission_getAllList = function(){return this.serverUrl + '/mission/getAllList';};
+    /**删除任务*/
+    _proto.getUrl_mission_del = function(){return this.serverUrl + '/mission/del';};
+    /**获取抵用卷列表*/
+    _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
+    /**获取抵用卷列表*/
+    _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
     /**设置短信营销（待定）*/
     //_proto.getUrl_subordinate_getSu = function(){return this.serverUrl + '/marketingtimingsms/add';};
     /**编辑短信营销(待定)*/
