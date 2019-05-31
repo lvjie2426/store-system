@@ -188,6 +188,84 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public Pager searchBackendUser(Pager pager,long sid, long subid,int userType,String name,String phone,String userName,long rid,int status,long startTime,long endTime) throws Exception {
+        final String selectCount = "select count(*) from `user` where 1=1  ";
+        final String selectData = "select * from `user` where 1=1  ";
+        final String limit = "  limit %d , %d ";
+        String sql = selectData;
+        String countSql = selectCount;
+        if(sid>-1){
+            sql = sql + " and `sid` = " + sid;
+            countSql = countSql + " and `sid` = " + sid;
+        }
+        if(sid==-1){
+            sql = sql + " and `sid` != 0";
+            countSql = countSql + " and `sid` != 0";
+        }
+        if(status>-1){
+            sql = sql + " and `status` = " + status;
+            countSql = countSql + " and `status` = " + status;
+        }
+        if(userType>-1){
+            sql = sql + " and `userType` = " + userType;
+            countSql = countSql + " and `userType` = " + userType;
+        }
+        if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and `name` like ?";
+            countSql = countSql + " and `name` like ?";
+        }
+        if (StringUtils.isNotBlank(phone)) {
+            sql = sql + " and `phone` like ?";
+            countSql = countSql + " and `phone` like ?";
+        }
+        if (StringUtils.isNotBlank(userName)) {
+            sql = sql + " and `userName` like ?";
+            countSql = countSql + " and `userName` like ?";
+        }
+        if(rid>0){
+            sql = sql + " and (`ridsJson` like '[" + rid+"]'  or `ridsJson` like '%," + rid+",%'  or `ridsJson` like '[" + rid+",%'   or `ridsJson` like '%," + rid+"]')";
+            countSql = countSql + " and (`ridsJson` like '[" + rid+"]'  or `ridsJson` like '%," + rid+",%'  or `ridsJson` like '[" + rid+",%'   or `ridsJson` like '%," + rid+"]')";
+        }
+
+        if(startTime>0){
+            sql = sql + " and `ctime` > " + startTime;
+            countSql = countSql + " and `ctime` > " + startTime;
+        }
+        if(endTime>0){
+            sql = sql + " and `ctime` < " + endTime;
+            countSql = countSql + " and `ctime` < " + endTime;
+        }
+        if(subid>-1){
+            sql = sql + " and `psid` = " + subid;
+            countSql = countSql + " and `psid` = " + subid;
+        }
+        if(subid==-1){
+            sql = sql + " and `psid` != 0";
+            countSql = countSql + " and `psid` != 0";
+        }
+        sql = sql + String.format(limit,pager.getSize()*(pager.getPage()-1),pager.getSize());
+        List<User> users =null;
+        int count=0;
+        List<Object> objects=new ArrayList<>();
+        if(StringUtils.isNotBlank(name)){objects.add("%"+name+"%");}
+        if(StringUtils.isNotBlank(phone)){objects.add("%"+phone+"%");}
+        if(StringUtils.isNotBlank(userName)){objects.add("%"+userName+"%");}
+        if(objects.size()>0) {
+            Object[] args = new Object[objects.size()];
+            objects.toArray(args);
+            users = jdbcTemplate.query(sql, new RowMapperHelp(User.class),args);
+            count = this.jdbcTemplate.queryForObject(countSql,args, Integer.class);
+        }else{
+            users = jdbcTemplate.query(sql, new RowMapperHelp(User.class));
+            count = this.jdbcTemplate.queryForObject(countSql,Integer.class);
+        }
+        pager.setData(transformClient(users));
+        pager.setTotalCount(count);
+        return pager;
+
+    }
+
 
     @Override
     public ClientUserOnLogin register(User user) throws Exception {

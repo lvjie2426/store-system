@@ -33,6 +33,15 @@ function selectTag(ele, callback) {
     document.body.onclick = function(){
         return opDN(false);
     }
+    if($('.layui-layer').length){
+        if($('.layui-layer').attr('addClickHandleFlag')!=1){
+            $('.layui-layer').attr('addClickHandleFlag',1)
+            $('.layui-layer').click(function () {
+                return opDN(false);
+            })
+        }
+    }
+
 
     ele.find('.optionUL>li').on('click', function (event) {
         content = $(this).contents().filter(function (index, content) {

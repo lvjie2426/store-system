@@ -24,6 +24,7 @@
     <!--本页面样式开始-->
     <link rel="stylesheet" href="../resource/css/yanjing/goodsManage.css">
     <link rel="stylesheet" href="../resource/css/yanjing/chuku.css">
+    <link rel="stylesheet" href="../resource/css/yanjing/statistics.css">
     <!--本页面样式结束-->
     <style>
         body {
@@ -41,12 +42,12 @@
             商品出库
         </div>
         <div class="yj-header-right">
-            <button class="btn btn-primary" onclick="addGoods()">新增商品</button>
+            <button class="btn btn-primary" onclick="addGoods()">新增出库</button>
         </div>
     </div>
     <div class="goods-header">
-        <div class="selectBox" id="select-form">
-            <div class="yj-header-time">
+        <div class="selectBox">
+            <div class="yj-header-time" id="select-date">
                 <div class="yj-date">
                     <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
                 </div>
@@ -294,11 +295,11 @@
     </div>
 
     <!--出库-->
-    <div class="content-view content-view-outbound">
+    <div class="content-view content-view-enter content-view-outbound" id="addDom">
         <div class="outbound-left">
-            <div class="top">
+            <!--<div class="top">
                 <span class="title">添加商品</span>
-            </div>
+            </div>-->
             <ul class="tab-ul">
                 <li class="active">镜片</li>
                 <li>镜架</li>
@@ -634,16 +635,13 @@
                     </div>
                 </li>
             </ul>
-            <div class="outbound-foot">
-                <button class="btn btn-yj">关闭窗口</button>
-            </div>
         </div>
         <div class="outbound-right">
-            <div class="outbound-right-head">
+            <!--<div class="outbound-right-head">
                 <div class="layui-layer-title">出库单</div>
                 <div class="outbound-right-head-right">
-                    <span>发起人</span>
-                    <div class="selectBox" id="selectBox">
+                    <span>出库人</span>
+                    <div class="selectBox" id="out-people">
                         <div class="select-box-header">
                             <span class="text">李小东</span> <i class="iconfont icon-ico_arrow_down" id=""></i>
                         </div>
@@ -658,16 +656,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <ul class="right-content">
                 <li class="right-content-item">
                     <div class="right-item-title">镜片</div>
                     <table class="" id="rightTable1" lay-filter="outboundEvent"></table>
                 </li>
             </ul>
-            <div class="outbound-foot">
-                <button class="btn btn-yj-default32 active" onclick="ckd()">确认出库</button>
-            </div>
         </div>
 
     </div>
@@ -821,30 +816,218 @@
             </ul>
         </div>
     </script>
+    <!--下拉选择模板-->
+    <script type="text/html" id="selectTagTmp">
+        <div class="select-box-header">
+            <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+        </div>
+        <div class="optionBox">
+            <ul class="optionUL">
+                <%for(var i=0;i< list.length;i++){%>
+                <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
+                <%}%>
+            </ul>
+        </div>
+    </script>
+    <script type="text/html" id="dataTmp">
+        <%for(var i=0;i< list.length;i++){%>
+        <li class="item">
+            <div class="head">
+                <span class="mainCont-head-left red"><em></em>常规出库</span>
+                <span>发起人:<em>总仓</em></span>
+            </div>
+            <div class="body">
+                <div class="top">
+                    <ul>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X10</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X20</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                            <span>X200</span>
+                        </li>
+                        <li>
+                            <span class="txtOverflow">商品A</span>
+                            <span>-20</span>
+                        </li>
+                        <li style="color:#828297">
+                            ...
+                        </li>
+                    </ul>
+                </div>
+                <div class="bottom">
+                    <div>共15种商品</div>
+                    <div>数量总计:100</div>
+                </div>
+            </div>
+            <div class="foot">
+                <span class="txt">2018.01.21<em>18:49:57</em></span>
+                <button class="btn btn-danger">等待确认</button>
+            </div>
+        </li>
+        <%}%>
+    </script>
+    <script type="text/html" id="addTmp">
+        <div class="leftBox">
+            <div class="body">
+                <ul class="tab-ul" id="yj-category">
+                    <%for(var i=0;i< categoryData.length;i++){%>
+                    <%if(categoryData[i].name!='特殊商品'){%>
+                    <li id="category<%=categoryData[i].id%>" onclick="chooseGoodsType('<%=categoryData[i].id%>')"><%=categoryData[i].name%></li>
+                    <%}%>
+                    <%}%>
+                </ul>
+                <ul class="tab-content-list">
+                    <li class="tab-content-item active">
+                        <div class="outbound-left-body">
+                            <div class="outbound-body-option">
+                                <div class="selectBox" id="out-brand">
+                                    <div class="select-box-header">
+                                        <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+                                    </div>
+                                    <div class="optionBox" style="display: none;">
+                                        <ul class="optionUL">
+                                            <%for(var i=0;i< brandData.length;i++){%>
+                                            <li value="<%=brandData[i].id%>"><%=brandData[i].name%></li>
+                                            <%}%>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="selectBox" id="out-series">
+                                    <div class="select-box-header">
+                                        <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
+                                    </div>
+                                    <div class="optionBox" style="display: none;">
+                                        <ul class="optionUL">
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="selectBox jj-box" id="out-caizhi">
+                                    <div class="select-box-header">
+                                        <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
+                                    </div>
+                                    <div class="optionBox">
+                                        <ul class="optionUL">
+                                            <li value="01">材质A</li>
+                                            <li value="05">材质E</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="outbound-body-tag">
+                                <div class="tag-list">A品牌A系列</div>
+                                <div class="tag-list">B品牌$系列</div>
+                                <div class="tag-list">F品牌0系列</div>
+                            </div>
+                            <div class="outbound-body-content outbound-body-top-hidden">
+                                <span class="jp-box text-default">请先选择门店、品牌和系列</span>
+                                <input class="jp-no-box" type="number" placeholder="搜索关键字">
+                                <div class="btn btn-info fr">添加至调货单</div>
+                            </div>
+                            <div class="outbound-body-top-show clearfix">
+                                <div class="text-end clearfix">
+                                    <span>A品牌A系列</span>
+                                    <ul class="tab-lr clearfix">
+                                        <li class="tab-lr-item active">右</li>
+                                        <li class="tab-lr-item">左</li>
+                                    </ul>
+                                </div>
+                                <div class="btn btn-info">添加至调货单</div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <div class="out-table1">
+                    <table class="layui-hide yj-layui-table" id="outboundTable" lay-filter="outboundEvent"></table>
+                </div>
+                <div class="out-table2">
+                    <table class="table table-self" id="out-table" lay-filter="in-table"></table>
+                </div>
+
+            </div>
+        </div>
+        <!--右边-->
+        <div class="rightBox">
+            <div class="body" id="outListDom">
+
+            </div>
+        </div>
+    </script>
     <script>
-        var subid = quakooUser.getUserInfo().psid;//企业id
+        var subid = quakooUser.getUserInfo().sid;//企业id
+        var selectBid;//筛选条件的品牌id
+        var categoryData = [];//一级类目数据
+        var brandData = [];//品牌数据
+        var providerData = [];//供应商数据
+        var ballData = [];//球数据
+        var columnData = [];//柱数据
+        var peopleData = [];//员工数据
+        var cid;            //一级类目id
+        var allOutList = {};//全部数据
+        var peopleId;//入库人id
 
-        var date1 = new dateRange(".yj-header-time");
-        date1.init()
+        var bid;//添加入库时的品牌id
+        var sid = -1;
 
+        var selectDate = new dateRange("#select-date");
+        selectDate.init()
+        //获取一级类目
+        quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
+            if(ret && ret.success){
+                categoryData = ret.data;
+            }
+        })
+        //获取品牌数据
         quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
+                brandData = ret.data;
                 var html = template('selectTagTmpAll',{title:'全部商品类型',list:ret.data});
                 //商品列表的筛选
                 $('#select-type').html(html);
                 selectTag($("#select-type"),function (data) {
                     if(data.value){
-                        bid = data.value;
+                        selectBid = data.value;
                     }
                 })
             }
         })
+        //获取属性-球
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:15},function (ret) {
+            if(ret && ret.success){
+                ballData = ret.data.sort(function (a,b) {
+                    return b.content-a.content;
+                });
+            }
+        })
+        //获取供应商
+        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
+            if(ret && ret.success){
+                providerData = ret.data;
+            }
+        })
+        //获取属性-柱
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:16},function (ret) {
+            if(ret && ret.success){
+                columnData = ret.data.sort(function (a,b) {
+                    return b.content-a.content;
+                });
+            }
+        })
+        //获取门店所有顾客-不分页
+        quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:1},function (ret) {
+            if(ret && ret.success){
+                peopleData = ret.data;
+            }
+        })
 
-
-        var data = [{ id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" },
-        { id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" },
-        { id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" }, { id: 1, name: "李四", phone: "123456" }
-        ];
         $("#yj-table").bootstrapTable('destroy');
         $("#yj-table").bootstrapTable({
             url: config.getUrl_inventoryOutBill_getCheckPager(),
@@ -877,46 +1060,7 @@
                         arr.push(this.data[i])
                     }
                 }
-                html += '<li class="item">'+
-                    '<div class="head">'+
-                    '<span class="mainCont-head-left blue"><em></em>常规出库</span>'+
-                    '<span>发起人:<em>总仓${i}</em></span>'+
-                    '</div>'+
-                    '<div class="body">'+
-                    '<div class="top">'+
-                    '<ul>'+
-                    '<li>'+
-                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
-                    '<span>X10</span>'+
-                    '</li>'+
-                    '<li>'+
-                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
-                    '<span>X20</span>'+
-                    '</li>'+
-                    '<li>'+
-                    '<span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>'+
-                    '<span>X200</span>'+
-                    '</li>'+
-                    '<li>'+
-                    '<span class="txtOverflow">商品A</span>'+
-                    '<span>-20</span>'+
-                    '</li>'+
-                    '<li>'+
-                    '<span class="txtOverflow">商品B</span>'+
-                    '<span>+9</span>'+
-                    '</li>'+
-                    '</ul>'+
-                    '</div>'+
-                    '<div class="bottom">'+
-                    '<div>共5种商品</div>'+
-                    '<div>数量总计:100</div>'+
-                    '</div>'+
-                    '</div>'+
-                    '<div class="foot">'+
-                    '<span class="txt">2018.01.21<em>18:49:57</em></span>'+
-                    '<button class="btn btn-order">查看</button>'+
-                    '</div>'+
-                    '</li>';
+                var html = template('dataTmp',{list:arr})
                 $("#showUl").html(html);
             }
         });
@@ -926,123 +1070,150 @@
 
 
         var brand, series;
-
         /**
          * 打开新增弹窗
          * */
         function addGoods() {
+            var html = [];
+            html.push('<div class="leftBox leftBoxTitle"> <div class="head"> <span class="title" style="width: 100%;">添加商品</span></div></div>');
+            html.push('<div class="rightBox leftBoxTitle"> <div class="head"> <span class="title">入库单</span> <div class="selectBox" id="out-people">');
+            html.push('<div class="select-box-header"><span class="text">入库人</span> <i class="iconfont icon-ico_arrow_down"></i></div><div class="optionBox"><ul class="optionUL">')
+            for(var i=0;i<peopleData.length;i++){
+                html.push('<li value="'+peopleData[i].id+'">'+peopleData[i].name+'</li>');
+            }
+            html.push('</ul></div></div><span class="person">入库人:</span></div></div>')
             layer.open({
-                type: 1, shade: 0.01, title: null,
-                skin: 'layui-layer-outbound', //样式类名
+                type: 1, shade: 0.01, title: html.join(''),
+                skin: 'layui-layer-outbound  content-view-enter-tan', //样式类名
                 area: ['960px', '560px'],
                 anim: 0,
+                move:'.title',
                 closeBtn: 0, //不显示关闭按钮
                 resize: false,
                 shadeClose: true, //开启遮罩关闭
                 content: $('.content-view-outbound'),
+                btn: ['关闭窗口','创建出库'],
                 success: function (layero, index) {
-                    $('.layui-layer-outbound .layui-layer-content').height(560 + 'px');
-                    var boundData = [{
-                        num: "库存", num0l: "库存", num0r: "出库", num1l: "库存", num1r: "出库", num2l: "库存", num2r: "出库", num3l: "库存", num3r: "出库", num4l: "库存", num4r: "出库", num5l: "库存", num5r: "出库", num6l: "库存", num6r: "出库", num7l: "库存", num7r: "出库", num8l: "库存", num8r: "出库", num9l: "库存", num9r: "出库", num10l: "库存", num10r: "出库", num11l: "库存", num11r: "出库", num12l: "库存", num12r: "出库", num13l: "库存", num13r: "出库", num14l: "库存", num14r: "出库", num15l: "库存", num15r: "出库", num16l: "库存", num16r: "出库", num17l: "库存", num17r: "出库"
-                    }, {
-                        num: '-0.25', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-0.50', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-0.75', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-1.00', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-1.25', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-1.50', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-1.75', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-2.00', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-2.25', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-2.50', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-2.75', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-3.00', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-3.25', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-3.50', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-3.75', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-4.00', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-0.25', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-0.25', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }, {
-                        num: '-0.25', num0l: "12", num0r: "0", num1l: "0", num1r: "1", num2l: "4", num2r: "2", num3l: "36", num3r: "2", num4l: "0", num4r: "0", num5l: "12", num5r: "0", num6l: "1", num6r: "0", num7l: "1", num7r: "10", num8l: "1", num8r: "4", num9l: "0", num9r: "4", num10l: "52", num10r: "21", num11l: "0", num11r: "0", num12l: "4", num12r: "41", num13l: "5", num13r: "4", num14l: "4", num14r: "0", num15l: "45", num15r: "1", num16l: "25", num16r: "5", num17l: "12", num17r: "12"
-                    }];
-                    layui.use('table', function () {
-                        var table = layui.table;
-                        table.render({
-                            elem: '#outboundTable'
-                            , data: boundData
-                            , width: 488
-                            , height: 260
-                            , unresize: true
-                            , cols: [[
-                                { field: 'num', width: 60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left' }
-                                , { field: 'num0l', width: 60, title: '+0.00', edit: 'text', unresize: true }
-                                , { field: 'num0r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num1l', width: 60, title: '-0.25', edit: 'text', unresize: true }
-                                , { field: 'num1r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num2l', width: 60, title: '-0.50', edit: 'text', unresize: true }
-                                , { field: 'num2r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num3l', width: 60, title: '-0.75', edit: 'text', unresize: true }
-                                , { field: 'num3r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num4l', width: 60, title: '-1.00', edit: 'text', unresize: true }
-                                , { field: 'num4r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num5l', width: 60, title: '-1.25', edit: 'text', unresize: true }
-                                , { field: 'num5r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num6l', width: 60, title: '-1.50', edit: 'text', unresize: true }
-                                , { field: 'num6r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num7l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num7r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num8l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num8r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num9l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num9r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num10l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num10r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num11l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num11r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num12l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num12r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num13l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num13r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num14l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num14r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num15l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num15r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num16l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num16r', width: 60, title: '', edit: 'text', unresize: true }
-                                , { field: 'num17l', width: 60, title: '-1.75', edit: 'text', unresize: true }
-                                , { field: 'num17r', width: 60, title: '', edit: 'text', unresize: true }
-                            ]]
-                        });
-                        //监听单元格事件
-                        table.on('edit(outboundEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                            console.log(obj.value); //得到修改后的值
-                            console.log(obj.field); //当前编辑的字段名
-                            console.log(obj.data); //所在行的所有相关数据
-                        });
-                    });
-                    $('.outbound-foot button').click(function () {
-                        layer.close(index)
-                    })
+                    var html = [];
+                    html.push('<div class="leftBox"><div class="foot"><a class="layui-layer-btn0">关闭窗口</a></div></div>')
+                    html.push('<div class="rightBox"><div class="foot"><a class="layui-layer-btn1">创建出库</a></div></div>')
+                    $('.content-view-enter-tan .layui-layer-btn').html(html.join(''))
+
+                    addRepertorySuccess(index)
                 }
             });
+        }
+        function addRepertorySuccess(index) {
+            var html = template('addTmp',{brandData:brandData,categoryData:categoryData,ballData:ballData,columnData:columnData,providerData:providerData})
+            $('#addDom').html(html);
+            $('.content-view-enter-tan .layui-layer-btn .layui-layer-btn0').click(function () {
+                addOutList(0,index);
+            });
+            $('.content-view-enter-tan .layui-layer-btn .layui-layer-btn1').click(function () {
+                addOutList(1,index)
+            });
+            $('#yj-category li').eq(0).click()
+            selectTag($("#out-brand"), function (ret) {
+                if(ret.value){
+                    bid = ret.value;
+                    brandName = ret.text;
+                    sid = -1;
+                    $('#out-series').html('');
+                    //获取品牌下的系列列表
+                    quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
+                        if(ret1 && ret1.success){
+                            var html2 = template('selectTagTmp',{title:'系列',list:ret1.data});
+                            $('#out-series').html(html2).show();
+                            selectTag($("#out-series"),function (series) {
+                                sid = series.value;
+                                seriesName = series.text;
+                            })
+                        }
+                    })
+                }
+            })
+            //入库人
+            selectTag($("#out-people"), function (ret) {
+                peopleId = ret.value;
+            })
+        }
+        //选择一级类目
+        function chooseGoodsType(value){
+            $('.out-box>div').hide()
+            $('.out-box>input').hide()
+            cid = value;
+            $('#category'+value).addClass('active').siblings().removeClass('active');
+            console.log($('#category'+value).text())
+            if($('#category'+value).text()=='镜片'){
+                $('.out-table1').show();
+                $('.out-table2').hide();
+                $('.jj-box').hide();
+                $('.jp-box').show();
+                $('.jp-no-box').hide();
+                var cols = [[], []];//球
+                var rangeData = [];//柱
+                cols[0].push({field:'num',rowspan:2,unresize:true, minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+                for(var i=0;i<ballData.length;i++){
+                    cols[0].push({align: 'center', title:ballData[i].content, colspan: 2,unresize:true})
+                    cols[1].push({field: '', title: '库存', width: 60,edit:'text',unresize:true})
+                    cols[1].push({field: '', title: '出库', width: 60,edit:'text',unresize:true})
+                }
+                for(var i=0;i<columnData.length;i++){
+                    rangeData.push({num:columnData[i].content,id:columnData[i].id})
+                }
+                layui.use('table', function () {
+                    var table = layui.table;
+                    table.render({
+                        elem: '#outboundTable'
+                        , data: rangeData
+                        , width: 488
+                        , height: 260
+                        , unresize: true
+                        , cols: cols
+                    });
+                    //监听单元格事件
+                    table.on('edit(outboundEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                        console.log(obj.value); //得到修改后的值
+                        console.log(obj.field); //当前编辑的字段名
+                        console.log(obj.data); //所在行的所有相关数据
+                    });
+                });
+                $('.outbound-foot button').click(function () {
+                    layer.close(index)
+                })
+            }else{
+                $('.out-table1').hide();
+                $('.out-table2').show();
+                $('.jp-box').hide();
+                $('.jp-no-box').show();
+                if($('#category'+value).text()=='镜架' || $('#category'+value).text()=='太阳镜' || $('#category'+value).text()=='护理产品'){
+                    $('.jj-box').show();
+                }else{
+                    $('.jj-box').hide();
+                }
+                $("#out-table").bootstrapTable('destroy')
+                $("#out-table").bootstrapTable({
+                    data: [{ a: '型号A', b: '色号A', c: '12', d: '6' }, { a: '型号A', b: '色号A', c: '12' }],                 //被加载的数据。
+                    classes: "table",
+                    sortable: false,
+                    sortOrder: "asc",
+                    showColumns: true,
+                    strictSearch: true,
+                    locale: "zh-CN",
+                    paginationHAlign: "center",
+                    clickToSelect: true,
+                    columns: [
+                        { field: 'a', title: '型号', align: 'left', value: 'middle'  ,width:'25%' },
+                        { field: 'b', title: '色号', align: 'left', value: 'middle'  ,width:'25%' },
+                        { field: 'c', title: '库存量', align: 'left', value: 'middle',width:'25%' },
+                        {field: 'd', title: '出库量', align: 'left', value: 'middle' ,width:'25%' , formatter: function (value) {
+                                return !value ? '<input type="text" placeholder="数量">' : value;
+                            }
+                        },
+                    ]
+                });
+
+            }
         }
 
         // 出库单
@@ -1078,8 +1249,8 @@
         /**
          * 系列下拉框
          * */
-        selectTag($("#selectBox"), function (ret) {
-        });
+       /* selectTag($("#selectBox"), function (ret) {
+        });*/
 
         /**
          * 镜架下拉框
@@ -1136,7 +1307,8 @@
         }
 
         /*右侧单内容*/
-        var dataRight = [{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }];
+        // var dataRight = [{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }];
+        var dataRight = [{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }];
         var columns = [
             { field: "name", title: "名称", align: "left", valign: "middle" },
             { field: "qNum", title: "球镜度数", align: "left", valign: "middle" },
@@ -1161,26 +1333,6 @@
             columns: columns
         });
 
-        $("#outboundTableJJ").bootstrapTable({
-            data: [{ a: '型号A', b: '色号A', c: '12', d: '6' }, { a: '型号A', b: '色号A', c: '12' }],                 //被加载的数据。
-            classes: "table",
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                { field: 'a', title: '型号', align: 'left', value: 'middle'  ,width:'25%' },
-                { field: 'b', title: '色号', align: 'left', value: 'middle'  ,width:'25%' },
-                { field: 'c', title: '库存量', align: 'left', value: 'middle',width:'25%' },
-                {field: 'd', title: '出库量', align: 'left', value: 'middle' ,width:'25%' , formatter: function (value) {
-                        return !value ? '<input type="text" placeholder="数量">' : value;
-                    }
-                },
-            ]
-        });
 
 
     </script>

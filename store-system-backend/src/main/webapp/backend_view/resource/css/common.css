@@ -736,7 +736,7 @@ input::-webkit-inner-spin-button{
     position: relative;
     height: 202px;
     border-radius: 2px;
-    background-color: rgba(244, 244, 248, 1);
+    background-color: rgba(255, 255, 255, 1);
 }
 #moveBar{
     padding:8px 0;

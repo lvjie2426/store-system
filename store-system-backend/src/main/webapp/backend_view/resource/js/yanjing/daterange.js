@@ -106,6 +106,12 @@ dateRange.prototype.bindEnvent = function(){
             }
         }
     }
+    if(this.dom.parents('.layui-layer').length){
+        this.dom.parents('.layui-layer')[0].onclick = function(){
+            $('.yj-date-box').fadeOut('fast');
+        }
+    }
+
     this.dom.find('.yj-date')[0].onclick = function (e) {
         quakooUtils.stopEventBubble(e)
         if(_this.dom.find('.yj-date-box').css('display')=='none'){
@@ -124,9 +130,9 @@ dateRange.prototype.bindEnvent = function(){
             _this.dom.find('.yj-date-box').fadeOut('fast');
         }
     }
-    document.body.onclick = function(){
-        _this.dom.find('.yj-date-box').fadeOut('fast');
-    }
+    $('body').click(function () {
+        $('.yj-date-box').fadeOut('fast');
+    })
     this.dom.find('.yj-date-box').on('click',function (e) {
         quakooUtils.stopEventBubble(e)
     })
@@ -156,6 +162,7 @@ dateRange.prototype.bindEnvent = function(){
         _this.checkEnd = _this.showYearEnd + '.' + _this.showMonthEnd + '.' + _this.showDaysEnd;
         var str = _this.checkStart + '-' + _this.checkEnd;
         _this.dom.find('.yj-date span').html(str);
+        _this.dom.find('.yj-date span').addClass("sel-time");
         _this.dom.find('.yj-date-box').fadeOut('fast');
     })
     //今日

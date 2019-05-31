@@ -600,27 +600,45 @@ span._btn,div._btn{
   border-bottom: 1px solid #ececf3;
 }
 .content-view-enter > div{
-  height: 560px;
-  position: absolute;
+  height: 474px;
+  /*position: absolute;*/
+  overflow-y: auto;
 }
-.content-view-enter > div.leftBox{
+div.leftBox{
   width: 520px;
   background: #fefefe;
-  left: 0;
+  float: left;
 }
-.content-view-enter > div.rightBox{
+div.leftBoxTitle{
+  height: 42px;
+  float: left;
+}
+div.leftBoxTitle.leftBox .head .title{
+  width: 80%;
+  color: #393953;
+}
+.layui-layer .layui-layer-title span{
+  color: #393953;
+  font-size: 12px;
+}
+div.rightBox{
   width: 440px;
   background: #f3f3f7;
   border-left: 1px solid #ececf3;
-  right: 0;
+  float: right;
 }
-.content-view-enter > div .head{
+div .head{
+  height: 42px;
+  border-bottom: 1px solid #ececf3;
+  padding: 0 8px 0 16px;
+}
+.leftBox > div .head,.rightBox > div .head{
   height: 44px;
   border-bottom: 1px solid #ececf3;
   padding: 0 8px 0 16px;
 }
-.content-view-enter > div .head .title,
-.content-view-enter > div .head .subTitle{
+.head .title,
+.head .subTitle{
   display: block;
   line-height: 43px;
   color: #393953;
@@ -628,12 +646,12 @@ span._btn,div._btn{
   font-weight: 600;
   float: left;
 }
-.content-view-enter > div .head .subTitle{
+.head .subTitle{
   color: #828297;
   font-weight: normal;
   margin-left: 4px;
 }
-.content-view-enter > div .head .title.layui-layer-title{
+.head .title.layui-layer-title{
   display: block;
   line-height: 43px;
   height: 43px;
@@ -646,16 +664,17 @@ span._btn,div._btn{
   background: #fefefe;
   padding: 0;
 }
-.content-view-enter > div .body{
+.content-view-enter-tan  .body{
   position: relative;
   height: 472px;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
-.content-view-enter > div .foot{
+.content-view-enter-tan .foot{
   height: 44px;
-  border-top: 1px solid #ececf3;
+  padding: 6px;
+  /*border-top: 1px solid #ececf3;*/
 }
-.content-view-enter > div .foot a{
+.content-view-enter-tan  .foot a{
   display: block;
   height: 32px;
   line-height: 32px;
@@ -665,11 +684,14 @@ span._btn,div._btn{
   margin-left: 6px;
   padding: 0 10px;
 }
-.content-view-enter > div .foot a.layui-layer-btn1{
+.content-view-enter-tan  .layui-layer-btn{
+  padding: 0!important;
+}
+.content-view-enter-tan  a.layui-layer-btn1{
   float: right;
   margin-right: 6px;
 }
-.content-view-enter > div .foot a.layui-layer-btn1.cannotCreat{
+.content-view-enter-tan   a.layui-layer-btn1.cannotCreat{
   background: #f3f3f7;
   border: 1px solid #e7e7ef;
   color: #aeaebd;
@@ -687,13 +709,12 @@ span._btn,div._btn{
   line-height: 40px;
   height: 40px;
 }
-.content-view-enter .leftBox .tab-ul li.active {
+ .leftBox .tab-ul li.active {
   font-weight: 600;
 }
-.content-view-enter .leftBox .head .check_box{
+ .leftBox .head .check_box{
   float: right;
   width: 80px;
-  margin-top: 8px;
 }
 .content-view-enter .leftBox .cont{
   width: 488px;
@@ -744,19 +765,19 @@ span._btn,div._btn{
   margin-right: 6px;
   color: #393953;
 }
-.content-view-enter .leftBox .inputBox input::-webkit-input-placeholder{
+.content-view-enter-tan .leftBox .inputBox input::-webkit-input-placeholder{
   color:#828297;
 }
-.content-view-enter .leftBox .inputBox input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+.content-view-enter-tan .leftBox .inputBox input::-moz-placeholder{   /* Mozilla Firefox 19+ */
   color:#828297;
 }
-.content-view-enter .leftBox .inputBox input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+.content-view-enter-tan .leftBox .inputBox input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
   color:#828297;
 }
-.content-view-enter .leftBox .inputBox input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+.content-view-enter-tan .leftBox .inputBox input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
   color:#828297;
 }
-.content-view-enter .leftBox .inputBox .expiryDate{
+.content-view-enter-tan .leftBox .inputBox .expiryDate{
   position: relative;
   float: left;
   width: 170px;
@@ -766,15 +787,15 @@ span._btn,div._btn{
   border: 1px solid #ECECF4;
   margin-right: 6px;
 }
-.content-view-enter .leftBox .inputBox .expiryDate .expiryDate-demo-time,
-.content-view-enter .leftBox .inputBox .expiryDate .yj-date{
+.content-view-enter-tan .leftBox .inputBox .expiryDate .expiryDate-demo-time,
+.content-view-enter-tan .leftBox .inputBox .expiryDate .yj-date{
   width: 100%;
   height: 100%;
   background: #F4F4F8;
   border: none;
   line-height: 26px;
 }
-.content-view-enter .leftBox .addBtn{
+.content-view-enter-tan .leftBox .addBtn{
   width: 92px;
   height: 28px;
   line-height: 26px;
@@ -783,88 +804,72 @@ span._btn,div._btn{
   color: #828297;
   float: right;
 }
-.content-view-enter .leftBox .addBtn.canAdd{
+.content-view-enter-tan .leftBox .addBtn.canAdd{
   background: #57B8DB;
   border: none;
   color: #fff;
   line-height: 28px;
 }
 /*右边*/
-.content-view-enter .rightBox .body{
+.content-view-enter-tan .rightBox .body{
   overflow: scroll;
 }
-.content-view-enter .rightBox .person{
+.content-view-enter-tan .rightBox .person{
   display: block;
   float: right;
   line-height: 43px;
   color: #828297;
   font-size: 12px;
+  font-weight: normal;
 }
-.content-view-enter .rightBox .selectBox{
+.content-view-enter-tan .rightBox .selectBox{
   float: right;
   margin: 8px 0 6px 6px;
   color: #393953;
   font-weight: 600;
   font-size: 12px;
 }
-.content-view-enter .rightBox .foot .formBox{
+.content-view-enter-tan .rightBox .formBox{
   line-height: 18px;
   float: right;
-  margin-top: 12px;
+  margin-right: 12px;
 }
-.content-view-enter .rightBox .foot form,
-.content-view-enter .rightBox .foot form .layui-form-item,
-.content-view-enter .rightBox .foot form .layui-form-item .layui-input-block,
-.content-view-enter .rightBox .foot form .layui-form-item .layui-input-block .layui-unselect.layui-form-checkbox
+.content-view-enter-tan .rightBox  form,
+.content-view-enter-tan .rightBox  form .layui-form-item,
+.content-view-enter-tan .rightBox  form .layui-form-item .layui-input-block,
+.content-view-enter-tan .rightBox  form .layui-form-item .layui-input-block .layui-unselect.layui-form-checkbox
 {
   width: 100%;
   line-height: 18px;
   margin: 0;
   min-height: 0;
 }
-.content-view-enter .rightBox .foot form .layui-form-item .layui-input-block .layui-unselect.layui-form-checkbox span{
+.content-view-enter-tan .rightBox  form .layui-form-item .layui-input-block .layui-unselect.layui-form-checkbox span{
   display: block;
   padding:0;
   text-align: left;
   color: #393953;
   font-size: 12px;
 }
-.content-view-enter .rightBox .foot form .layui-form-item .layui-input-block .layui-unselect.layui-form-checkbox i{
-  margin:1px 0 0 8px;
+.content-view-enter-tan .rightBox .foot form .layui-form-item .layui-input-block .layui-unselect.layui-form-checkbox i{
+  margin:9px 0 0 8px;
   width: 14px;
   height: 15px;
 }
-.content-view-enter .rightBox .foot form .layui-form-item .layui-input-block .layui-form-checked[lay-skin=primary] i{
+.content-view-enter-tan .rightBox .foot form .layui-form-item .layui-input-block .layui-form-checked[lay-skin=primary] i{
   border: none;
   background-color: #4186DC;
   color: #fff;
 }
-.content-view-enter .rightBox .foot form .layui-form-item .layui-input-block .layui-form-checkbox[lay-skin=primary]:hover i{
+.content-view-enter-tan .rightBox .foot form .layui-form-item .layui-input-block .layui-form-checkbox[lay-skin=primary]:hover i{
   border: none;
 }
-.content-view-enter-tan .itemDiv .tbody li span:nth-child(1),
-.content-view-enter-tan .itemDiv .thead span:nth-child(1){
-  min-width: 111px;
+.content-view-enter-tan .itemDiv .tbody li span,
+.content-view-enter-tan .itemDiv .thead span{
+  min-width: 80px;
 }
-.content-view-enter-tan .itemDiv .tbody li span:nth-child(2),
-.content-view-enter-tan .itemDiv .thead span:nth-child(2){
-  min-width: 72px;
-}
-.content-view-enter-tan .itemDiv .tbody li span:nth-child(3),
-.content-view-enter-tan .itemDiv .thead span:nth-child(3){
-  min-width: 72px;
-}
-.content-view-enter-tan .itemDiv .tbody li span:nth-child(4),
-.content-view-enter-tan .itemDiv .thead span:nth-child(4){
-  min-width: 72px;
-}
-.content-view-enter-tan .itemDiv .tbody li span:nth-child(5),
-.content-view-enter-tan .itemDiv .thead span:nth-child(5){
-  min-width: 72px;
-}
-.content-view-enter-tan .itemDiv .tbody li span:nth-child(6),
-.content-view-enter-tan .itemDiv .thead span:nth-child(6){
-  min-width: 72px;
+.content-view-enter-tan .itemDiv .thead span{
+  background: #f4f4f8;
 }
 .content-view-enter-tan .itemDiv .tbody li span.remove{
   color: #DD5B4B;
@@ -904,29 +909,9 @@ span._btn,div._btn{
   overflow-y: scroll;
   padding-bottom: 16px;
 }
-.content-view-checkRepertory-tan .itemDiv .tbody li span:nth-child(1),
-.content-view-checkRepertory-tan .itemDiv .thead span:nth-child(1){
+.content-view-checkRepertory-tan .itemDiv .tbody li span,
+.content-view-checkRepertory-tan .itemDiv .thead span{
   min-width: 105px;
-}
-.content-view-checkRepertory-tan .itemDiv .tbody li span:nth-child(2),
-.content-view-checkRepertory-tan .itemDiv .thead span:nth-child(2){
-  min-width: 78px;
-}
-.content-view-checkRepertory-tan .itemDiv .tbody li span:nth-child(3),
-.content-view-checkRepertory-tan .itemDiv .thead span:nth-child(3){
-  min-width: 78px;
-}
-.content-view-checkRepertory-tan .itemDiv .tbody li span:nth-child(4),
-.content-view-checkRepertory-tan .itemDiv .thead span:nth-child(4){
-  min-width: 78px;
-}
-.content-view-checkRepertory-tan .itemDiv .tbody li span:nth-child(5),
-.content-view-checkRepertory-tan .itemDiv .thead span:nth-child(5){
-  min-width: 78px;
-}
-.content-view-checkRepertory-tan .itemDiv .tbody li span:nth-child(6),
-.content-view-checkRepertory-tan .itemDiv .thead span:nth-child(6){
-  min-width: 78px;
 }
 .content-view-checkRepertory-tan .foot{
   height: 44px;
@@ -945,24 +930,27 @@ span._btn,div._btn{
   float: left;
 }
 /*弹窗公共样式*/
-.content-view-tan p,
-.content-view-tan a.layui-layer-btn0,
-.content-view-tan a.layui-layer-btn1{
+.content-view-enter-tan p,
+.content-view-enter-tan a.layui-layer-btn0,
+.content-view-enter-tan a.layui-layer-btn1{
   margin: 0;
 }
-.content-view-tan a.layui-layer-btn0{
+.content-view-enter-tan a.layui-layer-btn0{
   background: #f3f3f7;
   color: #828297;
   border: 1px solid #ebebf3;
   font-size: 12px;
   float: left;
+  height: 32px;
+  line-height: 32px;
 }
-.content-view-tan a.layui-layer-btn1{
+.content-view-enter-tan a.layui-layer-btn1{
   background: #4286da;
   border: none;
   color: #fff;
   font-size: 12px;
-  margin-left: 10px;
+  margin-left: 10px;height: 32px;
+  line-height: 32px;float: right;
 }
 /*-------自定义checkbox蓝色原点-------*/
 .check_box{
@@ -1092,11 +1080,23 @@ span._btn,div._btn{
   margin-left: -4px;
 }
 
+.out-box>div,.out-box>input{
+  display: none;
+}
+.out-box>input{
+  margin-bottom: 0;
+}
+#out-series{
+  min-width: 160px;
+}
 
-
-
-
-
+/*********入库**********/
+.outbound-left .top{
+  padding-right: 0;
+}
+.layui-form-checkbox[lay-skin=primary] span{
+  line-height: 32px;
+}
 
 
 

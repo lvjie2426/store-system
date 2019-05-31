@@ -114,6 +114,24 @@ public class UserController extends BaseController {
         return this.viewNegotiating(request,response,new PagerResult<>(pager));
     }
 
+    @RequestMapping("/searchBackendUser")
+    public ModelAndView searchBackendUser(HttpServletRequest request, HttpServletResponse response,
+                                   Pager pager,
+                                   @RequestParam(required = false,value = "startTime",defaultValue = "-1") long startTime,
+                                   @RequestParam(required = false,value = "endTime",defaultValue = "-1") long endTime,
+                                   @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
+                                   @RequestParam(required = false, value = "name",defaultValue = "") String name,
+                                   @RequestParam(required = false, value = "userName",defaultValue = "") String userName,
+                                   @RequestParam(required = false, value = "sid",defaultValue = "-1") long sid,
+                                   @RequestParam(required = false, value = "subid",defaultValue = "-1") long subid,
+                                   @RequestParam(required = false, value = "userType",defaultValue = "-1") int userType,
+                                   @RequestParam(required = false, value = "rid",defaultValue = "0") long rid,
+                                   @RequestParam(required = false, value = "status",defaultValue = "-1") int status,
+                                   Model model) throws Exception {
+        pager= userService.searchUser(pager,sid,subid,userType,name,phone,userName,rid,status,startTime,endTime);
+        return this.viewNegotiating(request,response,new PagerResult<>(pager));
+    }
+
     @RequestMapping("/add")
     public ModelAndView add(User user, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
@@ -127,7 +145,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("/update")
     public ModelAndView update(User user,
-                               @RequestParam(value = "updateRids", required = false, defaultValue = "") List<Long> updateRids,
+                               @RequestParam(value = "updateRids[]", required = false, defaultValue = "") List<Long> updateRids,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         boolean res = userService.update(user,updateRids);
         return this.viewNegotiating(request, response, new ResultClient(res));

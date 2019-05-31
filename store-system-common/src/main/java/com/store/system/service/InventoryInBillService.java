@@ -20,8 +20,8 @@ public interface InventoryInBillService {
 
 
 
-    public Pager getCreatePager(Pager pager, long createUid) throws Exception;
+    public Pager getCreatePager(Pager pager, long createUid, long startTime, long endTime, int type) throws Exception;
 
-    public Pager getCheckPager(Pager pager, long subid) throws Exception;
+    public Pager getCheckPager(Pager pager, long subid, long startTime, long endTime, int typ) throws Exception;
 
 }

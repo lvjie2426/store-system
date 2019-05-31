@@ -37,6 +37,8 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     private TransformFieldSetUtils skuFieldSetUtils = new TransformFieldSetUtils(ProductSKU.class);
 
+    private TransformFieldSetUtils spuFieldSetUtils = new TransformFieldSetUtils(ProductSPU.class);
+
     private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
 
     private TransformMapUtils userMapUtils = new TransformMapUtils(User.class);
@@ -285,10 +287,22 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     }
 
     @Override
-    public Pager getCreatePager(Pager pager, long createUid) throws Exception {
+    public Pager getCreatePager(Pager pager, long createUid, long startTime, long endTime, int type) throws Exception {
         String sql = "SELECT * FROM `inventory_in_bill` where createUid = " + createUid;
         String sqlCount = "SELECT COUNT(id) FROM `inventory_in_bill` where createUid = " + createUid;
         String limit = " limit %d , %d ";
+        if(startTime>0){
+            sql = sql + " and `ctime` > " + startTime;
+            sqlCount = sqlCount + " and `ctime` > " + startTime;
+        }
+        if(endTime>0){
+            sql = sql + " and `ctime` < " + endTime;
+            sqlCount = sqlCount + " and `ctime` < " + endTime;
+        }
+        if(type>-1){
+            sql = sql + " and `type` = " + type;
+            sqlCount = sqlCount + " and `type` = " + type;
+        }
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<InventoryInBill> inBills = this.jdbcTemplate.query(sql, rowMapper);
@@ -300,10 +314,22 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     }
 
     @Override
-    public Pager getCheckPager(Pager pager, long subid) throws Exception {
+    public Pager getCheckPager(Pager pager, long subid, long startTime, long endTime, int type) throws Exception {
         String sql = "SELECT * FROM `inventory_in_bill` where subid = " + subid + " and `status` > " + InventoryInBill.status_edit;
         String sqlCount = "SELECT COUNT(id) FROM `inventory_in_bill` where subid = " + subid + " and `status` > " + InventoryInBill.status_edit;
         String limit = " limit %d , %d ";
+        if(startTime>0){
+            sql = sql + " and `ctime` > " + startTime;
+            sqlCount = sqlCount + " and `ctime` > " + startTime;
+        }
+        if(endTime>0){
+            sql = sql + " and `ctime` < " + endTime;
+            sqlCount = sqlCount + " and `ctime` < " + endTime;
+        }
+        if(type>-1){
+            sql = sql + " and `type` = " + type;
+            sqlCount = sqlCount + " and `type` = " + type;
+        }
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<InventoryInBill> inBills = this.jdbcTemplate.query(sql, rowMapper);
@@ -349,13 +375,13 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
             List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuids));
             Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
 
-            Set<Long> cids = skuFieldSetUtils.fieldList(spuList, "cid");
+            Set<Long> cids = spuFieldSetUtils.fieldList(spuList, "cid");
             List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
             Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
-            Set<Long> bids = skuFieldSetUtils.fieldList(spuList, "bid");
+            Set<Long> bids = spuFieldSetUtils.fieldList(spuList, "bid");
             List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
             Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
-            Set<Long> sids = skuFieldSetUtils.fieldList(spuList, "sid");
+            Set<Long> sids = spuFieldSetUtils.fieldList(spuList, "sid");
             List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
             Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
             List<ClientInventoryInBillItem> clientItems = Lists.newArrayList();

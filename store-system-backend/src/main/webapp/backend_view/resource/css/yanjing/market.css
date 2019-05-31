@@ -131,7 +131,7 @@ input:disabled{
 .selectBox{
     width: auto;
     height: 28px;
-    line-height: 26px;
+    vertical-align: middle;
     padding-left:8px;
     padding-right:6px;
     position: relative;
@@ -156,6 +156,9 @@ input:disabled{
     width: 100%;
     height: 28px;
     margin-bottom: 8px;
+}
+.radio-button .box input{
+    height:28px;
 }
 .radio-button .box>input{
     display: none;
@@ -619,14 +622,13 @@ input:disabled{
 }
 .content-view1{
     width:100%;
-    height:100%;
     position: relative;
 }
 .content-view1  .lay-header{
     position:absolute;
     top:0;
     left:0;
-    z-index: 19920323;
+    z-index: 19;
     width:100%;
     height: 44px;
     line-height:44px;
@@ -652,7 +654,6 @@ input:disabled{
 }
 .content-view1 .lay-content{
     width:100%;
-    height:340px;
     padding:60px 16px 0;
     overflow: auto;
     -webkit-box-sizing: border-box;
@@ -713,23 +714,27 @@ input:disabled{
     font-family: PingFangSC-Medium;
 }
 .lay-content input.right::-webkit-input-placeholder {
+    height:28px;
+    line-height: 28px;
     opacity: 0.6;
     color: rgba(130, 130, 151, 1);
     font-family: PingFangSC-Medium;
 }
 .lay-content .describe .right{
-    line-height: 28px;
-    font-size:0;
+    line-height: 32px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+.lay-content .describe .right input{
+    height:28px;
+    vertical-align: middle;
 }
 .lay-content .describe .right strong{
+    vertical-align: middle;
     color: rgba(57, 57, 83, 1);
     font-size: 12px;
     text-align: left;
     font-family: PingFangSC-Semibold;
-}
-.lay-content .describe .right em{
-    display: inline-block;
-    width:6px;
 }
 input[type="number"]{
     width:60px;
@@ -965,12 +970,13 @@ input[type="number"]::-webkit-input-placeholder{
     line-height:36px;
     padding-left: 16px;
     background-color: rgba(255, 255, 255, 1);
-    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1), 0px -1px 0px 0px rgba(244, 244, 248, 1);
     color: rgba(57, 57, 83, 1);
     font-size: 12px;
     font-weight: bolder;
     text-align: left;
     font-family: PingFangSC-Semibold;
+    border:1px solid rgba(244, 244, 248,1);
+
 }
 .content-view3 .mid-content{
     width:100%;
@@ -1708,4 +1714,18 @@ input[type="number"]::-webkit-input-placeholder{
     color: rgba(255, 255, 255, 1);
     font-size: 12px;
     font-family: PingFangSC-Semibold;
+}
+#voucherReset{/*重置抵用券按钮（隐藏的）*/
+    width:0;
+    height:0;
+    border:none;
+    display: block;
+}
+/*选择时间后的样式*/
+.sel-time{
+    font-weight: bolder;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
 }

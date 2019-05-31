@@ -1064,7 +1064,18 @@
     float: right;
     margin: 8px 8px 0 0;
 }
+.outbound-right-head-right #out-people{
+    float: right;
+}
+.outbound-right-head-right>span{
+    line-height: 28px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    margin-right: 6px;
+}
 
 #numInfoTable input{
     border: none;
 }
+
+

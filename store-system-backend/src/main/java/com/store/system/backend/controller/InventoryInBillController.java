@@ -168,17 +168,23 @@ public class InventoryInBillController extends BaseController {
     }
 
     @RequestMapping("/getCreatePager")
-    public ModelAndView getCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView getCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model,
+                                       @RequestParam(required = false,value = "startTime",defaultValue = "0") long startTime,
+                                       @RequestParam(required = false,value = "endTime",defaultValue = "0") long endTime,
+                                       @RequestParam(required = false,value = "type",defaultValue = "-1") int type) throws Exception {
         User user = UserUtils.getUser(request);
         long createUid = user.getId();
-        pager = inventoryInBillService.getCreatePager(pager, createUid);
+        pager = inventoryInBillService.getCreatePager(pager, createUid, startTime, endTime, type);
         return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 
     @RequestMapping("/getCheckPager")
     public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
+                                      @RequestParam(required = false,value = "startTime",defaultValue = "0") long startTime,
+                                      @RequestParam(required = false,value = "endTime",defaultValue = "0") long endTime,
+                                      @RequestParam(required = false,value = "type",defaultValue = "-1") int type,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryInBillService.getCheckPager(pager, subid);
+        pager = inventoryInBillService.getCheckPager(pager, subid, startTime, endTime, type);
         return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 

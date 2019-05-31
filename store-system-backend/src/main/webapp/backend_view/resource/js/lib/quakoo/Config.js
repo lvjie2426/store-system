@@ -24,13 +24,13 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-          this.serverUrl = "http://39.107.247.82:20005";
+          // this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.30:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
-        // this.serverUrl = "http://192.168.1.17:20005";
+        this.serverUrl = "http://192.168.1.2:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -168,6 +168,12 @@ var Config = (function(_super){
 
     /**获取所有出库单*/
     _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryOutBill/getCheckPager';};
+    /**获取一个商品的SPU，返回需要确定的所有SKU属性*/
+    _proto.getUrl_inventoryOutBill_select = function(){return this.serverUrl + '/inventoryinbill/select';};
+    /**获取门店下的编辑状态的入库单列表*/
+    _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryinbill/getCheckPager';};
+    /**添加一个入库单*/
+    _proto.getUrl_inventoryOutBill_add = function(){return this.serverUrl + '/inventoryinbill/add';};
     //=======================商品管理 结束====================
 
 
