@@ -27,7 +27,7 @@ public class UserMissionPoolDaoImpl extends CacheBaseDao<UserMissionPool> implem
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<UserMissionPool> getAllList(long uid, int type) throws Exception {
+    public List<UserMissionPool> getAllList(long uid) throws Exception {
         return null;
     }
 }

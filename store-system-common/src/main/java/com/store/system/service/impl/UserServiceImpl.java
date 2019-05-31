@@ -1079,20 +1079,23 @@ public class UserServiceImpl implements UserService {
         int tem = 0;//总店销售额(分)
         //查询员工完成的所有订单的金额 已完成订单的销售量 保存下来
         for(User user:users){
-            List<UserMissionPool> userMissionPools = userMissionPoolDao.getAllList(user.getId(),Mission.type_user);
+            List<UserMissionPool> userMissionPools = userMissionPoolDao.getAllList(user.getId());
             for(UserMissionPool userMissionPool:userMissionPools){
                 List<Long> oids = userMissionPool.getOids();
-                //查询订单 根据uid
-                List<Order> orders = orderDao.getAllList(oids);
+                List<Order> orders = Lists.newArrayList();
+                for(Long id:oids){
+                    Order order = orderDao.load(id);
+                    if(order!=null){ orders.add(order); }
+                }
                 for(Order order:orders){
                     //判断订单是否当前月份
                     if(inExistence(date,order.getPayTime())){
                         personal += order.getPrice()*100;
                     }
-                    //判断是否有完成任务
-                    if(userMissionPool.getUid()==user.getId()&&userMissionPool.getProgress()>=100){
-                        personal+=userMissionPool.getPrice();
-                    }
+                }
+                //判断是否有完成任务
+                if(userMissionPool.getUid()==user.getId()&&userMissionPool.getProgress()>=100){
+                    personal+=userMissionPool.getPrice()*100;
                 }
             }
             tem += personal;
@@ -1107,13 +1110,13 @@ public class UserServiceImpl implements UserService {
     }
 
     //传入201905 判断时间戳是否是当前月
-    private boolean inExistence(String date,long time)throws Exception{
+    public static boolean inExistence(String date,long time)throws Exception{
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         String mon = String.valueOf(calendar.get(Calendar.MONTH)+1);
         if(String.valueOf(mon).length()==1){
-            mon+=0+mon;
+            mon=0+mon;
         }
         String res = year+mon;
         return res.equals(date);
