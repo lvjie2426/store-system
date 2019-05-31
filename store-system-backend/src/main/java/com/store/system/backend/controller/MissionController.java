@@ -7,12 +7,10 @@ import com.store.system.client.ClientMission;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.Mission;
-import com.store.system.model.SubordinateMissionPool;
-import com.store.system.model.User;
-import com.store.system.model.UserMissionPool;
+import com.store.system.model.*;
 import com.store.system.service.MissionService;
 import com.store.system.service.SubordinateMissionPoolService;
+import com.store.system.service.SubordinateService;
 import com.store.system.service.UserMissionPoolService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +37,9 @@ public class MissionController extends BaseController {
 
     @Resource
     private MissionService missionService;
+
+    @Resource
+    private SubordinateService subordinateService;
 
     @RequestMapping("/add")
     public ModelAndView add(Mission mission, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -73,7 +74,10 @@ public class MissionController extends BaseController {
     @RequestMapping("/getAllList")
     public ModelAndView getAllList(@RequestParam(value = "sid") long sid, HttpServletRequest request, HttpServletResponse response, Model model, Pager pager) throws Exception {
         try {
-            pager = missionService.getByPager(pager,sid);
+            Subordinate subordinate = subordinateService.load(sid);
+            long psid = subordinate.getPid();
+            if(psid==0){ throw new StoreSystemException("门店ID错误");}
+            pager = missionService.getByPager(pager,psid);
             return this.viewNegotiating(request,response, new ResultClient(true, pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
