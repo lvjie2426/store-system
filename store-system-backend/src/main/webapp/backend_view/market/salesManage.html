@@ -339,19 +339,29 @@
                 <label for="number">销售量奖励</label>
             </div>
             <div class="task-third">
-                <input type="radio" name="salesNum" id="allShop">
-                <label for="allShop">
-                    <span>全店总销售额达到</span>
-                    <input type="number" placeholder="金额">
-                    <span>元</span>
-                </label>
-                <input type="radio" name="salesNum" id="selectProduct" checked="checked">
-                <label for="selectProduct">
-                    <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i></button>
-                    <span>销售额达到</span>
-                    <input type="number" placeholder="金额">
-                    <span>元</span>
-                </label>
+                <div id="saleroom-box" style="display: block;">
+                    <input type="radio" name="salesNum" id="allShop">
+                    <label for="allShop">
+                        <span>全店总销售额达到</span>
+                        <input type="number" placeholder="金额">
+                        <span>元</span>
+                    </label>
+                    <input type="radio" name="salesNum" id="selectProduct" checked="checked">
+                    <label for="selectProduct">
+                        <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i></button>
+                        <span>销售额达到</span>
+                        <input type="number" placeholder="金额">
+                        <span>元</span>
+                    </label>
+                </div>
+                <div id="saleVolume-box" style="display: none">
+                    <input type="radio" name="salesNum" id="selectProduct1" checked="checked">
+                    <label for="selectProduct1">
+                        <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i></button>
+                        <span>销售量达到</span>
+                        <input type="number" placeholder="数量">
+                    </label>
+                </div>
                 <div class="award">
                     <div class="award-text">奖励</div>
                     <input type="number" placeholder="输入金额">
@@ -1165,9 +1175,13 @@
     /************************************<任务奖励开始>******************************************/
     //销售额奖励销售量奖励单选
     $("input:radio[name='sales']").click(function () {
-        var salesSelect = $('input:radio[name="sales"]:checked').val();
-        if(salesSelect ==){
-
+        var salesSelect = $('input:radio[name="sales"]:checked').attr('data-id');
+        if(salesSelect == 1){
+            $("#saleroom-box")[0].style.display = "block";
+            $("#saleVolume-box")[0].style.display = "none";
+        }else if(salesSelect == 2){
+            $("#saleroom-box")[0].style.display = "none";
+            $("#saleVolume-box")[0].style.display = "block";
         }
     })
 
