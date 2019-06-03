@@ -55,6 +55,24 @@ var Config = (function(_super){
     /**登陆验证码*/
     _proto.getUrl_web_user_loginCodeUrl = function(){return this.serverUrl + '/login/verifyCode'};
 
+
+    //=======================销售开单 开始====================
+    /**获取临时订单*/
+    _proto.getUrl_order_getTemporaryOrder = function(){return this.serverUrl + '/order/getTemporaryOrder';};
+    /**保存验光信息*/
+    _proto.getUrl_optometryinfo_add = function(){return this.serverUrl + '/optometryinfo/add';};
+    /**获取门店历史消费记录*/
+    _proto.getUrl_order_getOrderBySubid = function(){return this.serverUrl + '/order/getOrderBySubid';};
+    /**计算订单金额*/
+    _proto.getUrl_order_countPrice = function(){return this.serverUrl + '/order/countPrice';};
+    /**保存订单*/
+    _proto.getUrl_order_saveOrder = function(){return this.serverUrl + '/order/saveOrder';};
+    /**更多验光记录*/
+    _proto.getUrl_optometryinfo_getList = function(){return this.serverUrl + '/optometryinfo/getList';};
+    /**根据手机号查询用户信息*/
+    _proto.getUrl_user_getUserByPhone = function(){return this.serverUrl + '/user/getUserByPhone';};
+    //=======================销售开单 结束====================
+
     //=======================顾客管理 开始====================
     /**获取公司下门店列表*/
     _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
@@ -175,7 +193,6 @@ var Config = (function(_super){
     _proto.getUrl_product_loadSPU = function(){return this.serverUrl + '/product/loadSPU';};
     /**开启关闭销售状态*/
     _proto.getUrl_product_updateSaleStatus = function(){return this.serverUrl + '/product/updateSaleStatus';};
-
     /**获取所有出库单*/
     _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryOutBill/getCheckPager';};
     /**获取一个商品的SPU，返回需要确定的所有SKU属性*/

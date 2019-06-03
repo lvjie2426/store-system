@@ -2455,3 +2455,12 @@ input[type=checkbox]:checked:after {
     margin-left: 0;
     min-height: 0;
 }
+
+
+/*顾客信息行对齐*/
+.searchTypeBox{
+    vertical-align: middle;
+}
+#searchPhoneUser{
+    vertical-align: middle;
+}
