@@ -66,12 +66,7 @@
                         <span class="text">临时订单</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
                     </div>
                     <div class="optionBox">
-                        <ul class="optionUL">
-                            <li value="01">1<i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
-                            <li value="02">2<i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
-                            <li value="03">3<i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
-                            <li value="04">4<i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
-                            <li value="05">5<i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
+                        <ul class="optionUL" id="proOrderList">
                         </ul>
                     </div>
                 </div>
@@ -87,30 +82,25 @@
             <div class="titleBox clearfix">
                 <h4>顾客信息</h4>
                 <div class="telephoneNumBox">
+                    <!--<button class="btnPreservation">保存</button>-->
                     <div class="searchTypeBox">
                         <div class="selectBox" id="searchTypeBox">
                             <div class="select-box-header">
-                                <span class="text">临时订单</span> <i class="iconfont icon-ico_arrow_down"></i>
+                                <span class="text">手机号</span> <i class="iconfont icon-ico_arrow_down"></i>
                             </div>
                             <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">1</li>
-                                    <li value="02">2</li>
-                                    <li value="03">3</li>
-                                    <li value="04">4</li>
-                                    <li value="05">5</li>
+                                <ul class="optionUL" id="shopPhoneList">
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <input type="text" placeholder="搜索手机号">
+                    <input id="searchPhoneUser" type="text" placeholder="搜索手机号">
                 </div>
             </div>
             <div class="contentBox">
                 <h4>基本信息</h4>
                 <div class="fromInfo">
                     <form class="layui-form" action="">
-
                         <div class="layui-form-item nameInput">
                             <div class="layui-input-block">
                                 <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="姓名"
@@ -129,7 +119,7 @@
                             <span>女</span>
                         </div>
                         <div class="dateBox" style="position: relative;height: 50px;">
-                            <div class="settings" style="display:none;">
+                            <div class="setting" style="display:none;">
                                 <select name="demo" id="demo">
                                     <option value="date">日期</option>
                                 </select>
@@ -140,22 +130,17 @@
                         </div>
                         <div class="layui-form-item ageNum">
                             <div class="layui-input-block">
-                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                <input id="autoAge" type="text" name="title" lay-verify="title" autocomplete="off"
                                     placeholder="年龄（自动）" class="layui-input">
                             </div>
                         </div>
                         <div class="occupationTypeBox">
                             <div class="selectBox" id="occupationTypeBox">
                                 <div class="select-box-header">
-                                    <span class="text">手机号</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                                    <span class="text">职业</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
                                 </div>
                                 <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">1</li>
-                                        <li value="02">2</li>
-                                        <li value="03">3</li>
-                                        <li value="04">4</li>
-                                        <li value="05">5</li>
+                                    <ul class="optionUL" id="shopOccupationList">
                                     </ul>
                                 </div>
                             </div>
@@ -319,7 +304,7 @@
                             </select>
                         </div>
                         <input name="test" id="tests2"
-                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期"
+                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="验光时间"
                             data-type='time' />
                     </div>
                     <h4 class="mt15">验光师</h4>
@@ -1594,12 +1579,114 @@
     <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
     <script src="../resource/js/lib/quakoo/Config.js"></script>
     <script src="../resource/js/lib/quakoo/project.js"></script>
+    <script src="../resource/common/common.js?" +Math.random()></script>
+    <script src="../resource/js/template-native.js"></script>
     <!-- 全局公共js -->
     <script src="../resource/js/yanjing.js"></script>
     <!-- 时间插件js -->
     <script src="../resource/js/mobiscroll.2.13.2.js"></script>
     <!-- 当前页面逻辑 -->
+    <!--临时订单列表-->
+    <script type="text/html" id="proOrderData">
+        <%for(var i=0; i < list.length;i++){%>
+        <li value="<%=list[i].uname%>"><%=list[i].uname%><i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
+        <%}%>
+    </script>
+    <!--手机号列表-->
+    <script type="text/html" id="shopPhoneData">
+        <%for(var i=0; i < list.length;i++){%>
+        <li value="<%=list[i].phone%>"><%=list[i].phone%></li>
+        <%}%>
+    </script>
+    <!--顾客职业列表-->
+    <script type="text/html" id="shopOccupationData">
+        <%for(var i=0; i < list.length;i++){%>
+        <li value="<%=list[i].job%>"><%=list[i].job%></li>
+        <%}%>
+    </script>
+
     <script>
+        var subid;                                            //门店id
+        var cusPhone;                                         //用户手机号
+        var proOrderId;                                       //临时订单ID
+        $(function () {
+            subid = quakooDb.getItem("sel_ShopId");           //门店ID
+            initPage();
+        });
+        function initPage(){
+            $("#tests").on("change",function () {
+               var brithYear = $(this).val().split(0,4);
+               $("#autoAge").val(brithYear);
+            });
+            //切换性别
+            $('.benderBox>span').on('click', function () {
+                $(this).removeClass('active').siblings().addClass('active');
+            });
+            getTemporaryOrder();                              //获取门店下临时订单
+            getUserByPhone();                                 //根据手机号查询用户信息
+            getShopPhone();                                   //获取门店对应的手机号
+
+        }
+
+        /**接口——获取门店下的临时订单*/
+        function getTemporaryOrder(){
+            quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(),{subid:subid},function (ret) {
+                if(ret&&ret.data){
+                    var data = {list:ret.data};
+                    var html = template("proOrderData",data);
+                    document.getElementById("proOrderList").innerHTML = html;
+                }else{
+                    document.querySelector("#selectBox .text").innerHTML = "无临时订单";
+                }
+            })
+        }
+
+        /**接口——获取门店下的顾客的职业*/
+        function getShopPhone(){
+            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:1},function (ret) {
+                console.log("ssdfa:",ret);
+                var data = {list:ret.rows};
+                var html = template("shopPhoneData",data);
+                document.getElementById("shopPhoneList").innerHTML = html;
+            })
+        }
+
+        /**接口——获取门店下的顾客手机号*/
+        function getShopPhone(){
+            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:1},function (ret) {
+                if(ret&&ret.success){
+                    var data = {list:ret.rows};
+                    var html = template("shopPhoneData",data);
+                    document.getElementById("shopPhoneList").innerHTML = html;
+                    selectTag($("#searchTypeBox"),function (ret) {
+                        cusPhone =ret.value;
+                        getUserByPhone();
+                    });
+                }
+            })
+        }
+        /**接口——根据手机号查询用户信息*/
+        function getUserByPhone(){
+            quakooData.ajaxGetData(config.getUrl_user_getUserByPhone(),{phone:cusPhone},function (ret) {
+                console.log("手机号获取顾客：",ret);
+                if(ret&&ret.success){
+                }
+            })
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // 订单信息表单删除
         $('.orderInfo').find('.rightFormBox').find('u').on('click',function(){
             $(this).parents('tr').remove();
@@ -2413,10 +2500,6 @@
             $('.popMainContent .content').eq($(this).index()).show().siblings().hide();
         })
 
-        //切换性别
-        $('.benderBox>span').on('click', function () {
-            $(this).addClass('active').siblings().removeClass('active');
-        })
 
 
         //表单滚动条
@@ -2488,8 +2571,6 @@
                 showNow: true,
                 nowText: "今天",
                 typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
-
-
             };
             $('.settings2').bind('change', function () {
                 var demo = 'datetime';

@@ -24,13 +24,13 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-          // this.serverUrl = "http://39.107.247.82:20005";
+          this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.30:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
-        this.serverUrl = "http://192.168.1.2:20005";
+        // this.serverUrl = "http://192.168.1.2:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -54,6 +54,24 @@ var Config = (function(_super){
     _proto.getUrl_web_user_loginUrl = function(){return this.serverUrl + '/login/in';};
     /**登陆验证码*/
     _proto.getUrl_web_user_loginCodeUrl = function(){return this.serverUrl + '/login/verifyCode'};
+
+
+    //=======================销售开单 开始====================
+    /**获取临时订单*/
+    _proto.getUrl_order_getTemporaryOrder = function(){return this.serverUrl + '/order/getTemporaryOrder';};
+    /**保存验光信息*/
+    _proto.getUrl_optometryinfo_add = function(){return this.serverUrl + '/optometryinfo/add';};
+    /**获取门店历史消费记录*/
+    _proto.getUrl_order_getOrderBySubid = function(){return this.serverUrl + '/order/getOrderBySubid';};
+    /**计算订单金额*/
+    _proto.getUrl_order_countPrice = function(){return this.serverUrl + '/order/countPrice';};
+    /**保存订单*/
+    _proto.getUrl_order_saveOrder = function(){return this.serverUrl + '/order/saveOrder';};
+    /**更多验光记录*/
+    _proto.getUrl_optometryinfo_getList = function(){return this.serverUrl + '/optometryinfo/getList';};
+    /**根据手机号查询用户信息*/
+    _proto.getUrl_user_getUserByPhone = function(){return this.serverUrl + '/user/getUserByPhone';};
+    //=======================销售开单 结束====================
 
     //=======================顾客管理 开始====================
     /**获取公司下门店列表*/
@@ -128,14 +146,24 @@ var Config = (function(_super){
     _proto.getUrl_marketingtimingsms_update = function(){return this.serverUrl + '/marketingtimingsms/update';};
     /**新增抵用卷*/
     _proto.getUrl_marketingcoupon_add = function(){return this.serverUrl + '/marketingcoupon/add';};
+    /**编辑抵用卷*/
+    _proto.getUrl_marketingcoupon_updateMarketing = function(){return this.serverUrl + '/marketingcoupon/updateMarketing';};
     /**启用/关闭抵用卷*/
     _proto.getUrl_marketingcoupon_updateOpen = function(){return this.serverUrl + '/marketingcoupon/updateOpen';};
     /**删除抵用卷*/
     _proto.getUrl_marketingcoupon_del = function(){return this.serverUrl + '/marketingcoupon/del';};
     /**获取抵用卷列表*/
     _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
-    /**更新抵用卷排序*/
-    _proto.getUrl_marketingcoupon_updateSort = function(){return this.serverUrl + '/marketingcoupon/updateSort';};
+    /**创建任务*/
+    _proto.getUrl_mission_add = function(){return this.serverUrl + '/mission/add';};
+    /**查询任务列表*/
+    _proto.getUrl_mission_getAllList = function(){return this.serverUrl + '/mission/getAllList';};
+    /**删除任务*/
+    _proto.getUrl_mission_del = function(){return this.serverUrl + '/mission/del';};
+    /**获取抵用卷列表*/
+    _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
+    /**获取抵用卷列表*/
+    _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
     /**设置短信营销（待定）*/
     //_proto.getUrl_subordinate_getSu = function(){return this.serverUrl + '/marketingtimingsms/add';};
     /**编辑短信营销(待定)*/
@@ -165,7 +193,6 @@ var Config = (function(_super){
     _proto.getUrl_product_loadSPU = function(){return this.serverUrl + '/product/loadSPU';};
     /**开启关闭销售状态*/
     _proto.getUrl_product_updateSaleStatus = function(){return this.serverUrl + '/product/updateSaleStatus';};
-
     /**获取所有出库单*/
     _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryOutBill/getCheckPager';};
     /**获取一个商品的SPU，返回需要确定的所有SKU属性*/

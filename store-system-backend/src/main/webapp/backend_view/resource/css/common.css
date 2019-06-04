@@ -744,6 +744,16 @@ input::-webkit-inner-spin-button{
     transition:0.4s;
     min-height: 38px;
 }
+.show-tags{
+    padding:0 2px;
+    text-align: center;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 11px;
+    font-family: PingFangSC-Semibold;
+}
 .movebar{
     padding: 0 6px;
     float: left;margin-right: 4px;
