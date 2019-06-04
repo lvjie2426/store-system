@@ -261,18 +261,6 @@ public class UserController extends BaseController {
         }
     }
 
-    //会员信息认证
-    @RequestMapping("/becomeVip")
-    public ModelAndView becomeVip(HttpServletRequest request,HttpServletResponse response,String phone)throws Exception{
-        try {
-            ClientUser user = userService.getUser(phone);
-            if(user==null){throw new StoreSystemException("未查询到手机号!"); }
-            return this.viewNegotiating(request,response,new ResultClient(user));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
-        }
-    }
-
     /////////////////////员工相关////////////////////////
     @RequestMapping("/updateUser")
     public ModelAndView updateUser(HttpServletRequest request,HttpServletResponse response,
@@ -344,6 +332,27 @@ public class UserController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(res));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
+        }
+    }
+
+    //销售开单 -- 手机号精确查询
+    @RequestMapping("/getUserByPhone")
+    public ModelAndView getUserByPhone(HttpServletRequest request,HttpServletResponse response,
+                                       @RequestParam("phone") String phone)throws Exception{
+        try {
+            ClientUser user = userService.getUser(phone);
+            return this.viewNegotiating(request,response,new ResultClient(true,user));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
+    //销售开单 -- 会员信息认证
+    @RequestMapping("/becomeVip")
+    public ModelAndView becomeVip(HttpServletRequest request,HttpServletResponse response,User user)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(userService.checkUserGradeInfo(user)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
         }
     }
 

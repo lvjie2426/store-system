@@ -19,6 +19,10 @@ public class ClientUser extends User {
 
     private int sale;//销售额(分)
 
+    private String tphone;//推荐人电话
+
+    private String tname;//推荐人姓名
+
     public ClientUser(User user) {
         try {
             BeanUtils.copyProperties(this, user);
