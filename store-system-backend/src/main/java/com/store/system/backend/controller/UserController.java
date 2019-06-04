@@ -231,7 +231,7 @@ public class UserController extends BaseController {
         }
     }
 
-    //获取所有顾客的职业
+    //获取所有 顾客/员工 的职业
     @RequestMapping("/getAllUserJob")
     public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,
                                       @RequestParam(value = "sid") long sid,
@@ -246,7 +246,7 @@ public class UserController extends BaseController {
         }
     }
 
-    //获取门店下所有顾客 下拉列表
+    //获取门店下所有 顾客/员工 下拉列表
     @RequestMapping("/getAllUser")
     public ModelAndView getAllUser(HttpServletRequest request,HttpServletResponse response,
                                   @RequestParam(value = "sid") long sid,
@@ -340,8 +340,8 @@ public class UserController extends BaseController {
     public ModelAndView getUserByPhone(HttpServletRequest request,HttpServletResponse response,
                                        @RequestParam("phone") String phone)throws Exception{
         try {
-            ClientUser user = userService.getUser(phone);
-            return this.viewNegotiating(request,response,new ResultClient(true,user));
+             ClientUser clientUser = userService.getUser(phone);
+            return this.viewNegotiating(request,response,new ResultClient(true,clientUser));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
         }
