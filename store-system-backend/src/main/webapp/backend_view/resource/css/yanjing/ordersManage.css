@@ -234,6 +234,7 @@
     border: 1px solid rgba(236, 236, 244, 1);
     font-family: PingFangSC-Semibold;
     margin-right:8px;
+    vertical-align: middle;
 }
 .header ol li .search-box{
     width: 120px;
