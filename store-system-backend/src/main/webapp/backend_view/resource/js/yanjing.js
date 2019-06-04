@@ -31,7 +31,7 @@ function selectTag(ele, callback) {
     }
 
     document.body.onclick = function(){
-        return opDN(false);
+        $('.optionBox').hide(500);
     }
     if($('.layui-layer').length){
         if($('.layui-layer').attr('addClickHandleFlag')!=1){
