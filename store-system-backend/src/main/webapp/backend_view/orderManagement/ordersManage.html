@@ -31,9 +31,9 @@
 <body class="body-bg">
 <div class="header clear">
     <ul class="tab-ul clear">
-        <li class="active">全部订单</li>
-        <li>未完成订单</li>
-        <li>作废订单</li>
+        <li class="active" onclick="ajaxTemplate(config.getUrl_order_getAllOrder(),0)">全部订单</li>
+        <li onclick="ajaxTemplate(config.getUrl_order_getIncomplete(),0)">未完成订单</li>
+        <li onclick="ajaxTemplate(config.getUrl_order_getAllOrder(),5)">作废订单</li>
     </ul>
 
     <ol class="clear">
@@ -57,7 +57,7 @@
 <div id="second-bar">
     <ul class="filter-list clear">
         <li class="filter-item">
-             <div class="yj-demo-time">
+            <div class="yj-demo-time">
                 <div class="yj-date">
                     <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
                 </div>
@@ -97,7 +97,7 @@
     </ul>
 </div>
 <div class="content">
-    <table id="dxqf-table" data-toggle="table"  class="table table-border"></table>
+    <table id="dxqf-table" data-toggle="table" class="table table-border"></table>
 </div>
 <div class="content-view"></div>
 
@@ -122,23 +122,26 @@
 <script src="../resource/js/yanjing/daterange.js"></script>
 <script>
     var ordersAll;//全部订单
+    var orderUnfulfilled;//未完成订单
+    var orderVoid;//作废订单
     var subid;//门店id
+    var timeStart;//开始时间
+    var timeEnd;//结束时间
+    var makeStatus;//订单状态
+    var personnelId;//销售员id
+    var customerId;//顾客id
+    var customerName;//顾客姓名
+    var data;//数据
     //初始化页面
-    $(function(){
+    $(function () {
         initPage();
     })
+
     //初始化函数
-    function initPage(){
-
+    function initPage() {
+        subid = quakooDb.getItem("sel_ShopId");//门店ID
+        ajaxTemplate(config.getUrl_order_getAllOrder());
     }
-
-
-
-
-
-
-
-
 
 
     // 时间插件JS开始
@@ -172,71 +175,316 @@
         return curr;
     });
     // 时间插件JS结束
+
     //日期范围插件开始
     var date1 = new dateRange(".yj-demo-time");
     date1.init();
     //日期范围插件结束
+    $('.btn-primary').on('click', function () {
+        if (isType() == 0) ajaxTemplate(config.getUrl_order_getAllOrder());
+        if (isType() == 2) ajaxTemplate(config.getUrl_order_getAllOrder(), 5);
+        if (isType() == 1) ajaxTemplate(config.getUrl_order_getIncomplete())
+    })
 
-    //获取全部订单||作废订单
+    //判断当前是全部||未完成换是作废 订单
+    function isType() {
+        return $('.tab-ul').find('.active').index();
+    }
 
     var data3 = [
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-yellow">未取货</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-blue">欠￥500</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>'},
-        {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-grays">已完成</div>'}
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-red">未加工</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-yellow">未取货</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-blue">欠￥500</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-black">已作废</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-red">未加工</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-yellow">未取货</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-blue">欠￥500</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-blue">欠￥500</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-black">已作废</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-red">未加工</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-yellow">未取货</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-blue">欠￥500</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-blue">欠￥500</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-black">已作废</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-red">未加工</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-yellow">未取货</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-blue">欠￥500</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-black">已作废</div>'
+        },
+        {
+            onum: "123456a45c",
+            otime: "2018.06.17 12:31",
+            customerName: "邓裕",
+            phoneNum: "13781728173",
+            oriPrice: "￥400",
+            closingPrice: "￥380",
+            discount: "9.5",
+            salesMan: '李燕',
+            oStatus: '<div class="btn-status btn-grays">已完成</div>'
+        }
     ];
-    $("#dxqf-table").bootstrapTable({
-        data:data3,                 //被加载的数据。
-        classes:"table",
-        pagination:true,            //是否显示分页
-        pageNumber:1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign:"center",
-        clickToSelect:true,
-        columns:[
-            {checkbox:true,valign:"middle"},
-            {field: "onum", title: "订单号", align:"left",valign:"middle"},
-            {field: "otime", title: "时间", align:"left",valign:"middle"},
-            {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
-            {field: "phoneNum", title: "手机号", align:"left",valign:"middle"},
-            {field: "oriPrice", title: "原价", align:"left",valign:"middle"},
-            {field: "closingPrice", title: "成交金额", align:"left",valign:"middle"},
-            {field: "discount", title: "折扣", align:"left",valign:"middle"},
-            {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
-            {field: "oStatus", title: "订单状态", align:"center",valign:"middle"},
-            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">查看</button>';
+
+    function ajaxTemplate(url, type) {
+        $("#dxqf-table").bootstrapTable('destroy');
+        $("#dxqf-table").bootstrapTable({
+            url: url,
+            method: 'get',
+            classes: "table",
+            pagination: true,            //是否显示分页
+            pageNumber: 1,               //初始化加载第一页，默认第一页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {checkbox: true, valign: "middle"},
+                {field: "orderNo", title: "订单号", align: "left", valign: "middle"},
+                {
+                    field: "ctime",
+                    title: "时间",
+                    align: "left",
+                    valign: "middle",
+                    formatter: function (val, obj, index) {
+                        return quakooUtils.formatTimeToDay(val);
+                    }
+                },
+                {field: "uname", title: "顾客姓名", align: "left", valign: "middle"},
+                {field: "uphone", title: "手机号", align: "left", valign: "middle"},
+                {field: "totalPrice", title: "原价", align: "left", valign: "middle"},
+                {field: "price", title: "成交金额", align: "left", valign: "middle"},
+                {field: "descSubtract", title: "折扣", align: "left", valign: "middle"},
+                {field: "personnelName", title: "销售员", align: "left", valign: "middle"},
+                {
+                    field: "makeStatus",
+                    title: "订单状态",
+                    align: "center",
+                    valign: "middle",
+                    formatter: function (value, rowm, index) {
+                        var html = '';
+                        console.log(rowm);
+                        if (value) {
+                            if (value == 1) html = '<div class="btn-status btn-red">未加工</div>';
+                            if (value == 2) html = '<div class="btn-status btn-blue">欠￥</div>';
+                            if (value == 3) html = '<div class="btn-status btn-yellow">未取货</div>';
+                            if (value == 4) html = '<div class="btn-status btn-grays">已完成</div>';
+                            if (value == 5) html = '<div class="btn-status btn-black">已作废</div>';
+                        }
+                        return html;
+                    }
+                },
+                {
+                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary">查看</button>';
+                    }
                 }
+            ],
+            queryParams: function (param) {
+                timeStart = date1.getTime()[2] || '';      //开始时间
+                timeEnd = date1.getTime()[3] || '';          //结束时间
+                if (timeStart != '') param.startTime = timeStart;
+                if (timeEnd != '') param.endTime = timeEnd;
+                if (type) param.makeStatus = type;
+                // param.page = this.pageNumber;
+                // param.size = this.pageSize;
+                param.subid = subid;
+                param.page = param.offset / param.limit + 1;
+                param.size = param.limit;
+                param.token = quakooUser.getUserInfo().token;
+
+                return param
             }
+        });
+    }
 
-        ]
-
-    });
     /**
      * tab切换
      * */
-    $(".tab-ul li").click(function(){
+    $(".tab-ul li").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
         //$(".tab-item").hide().eq($(this).index()).show();
         //$(".right-info").hide().eq($(this).index()).show();
@@ -244,19 +492,19 @@
     /**
      * 全部销售人员下拉框
      * */
-    selectTag($("#selectAllSalesStaff"),function (ret) {
+    selectTag($("#selectAllSalesStaff"), function (ret) {
         console.log(ret)
     });
     /**
      * 顾客姓名下拉框
      * */
-    selectTag($("#selectCustomer"),function (ret) {
+    selectTag($("#selectCustomer"), function (ret) {
         console.log(ret)
     });
     /**
      * 全部状态下拉框
      * */
-    selectTag($("#selectAllState"),function (ret) {
+    selectTag($("#selectAllState"), function (ret) {
         console.log(ret)
     });
 

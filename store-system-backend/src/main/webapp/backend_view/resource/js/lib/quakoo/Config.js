@@ -205,6 +205,15 @@ var Config = (function(_super){
 
 
 
+    //=======================订单管理 开始====================
+    //获取全部||作废订单
+    _proto.getUrl_order_getAllOrder = function(){return this.serverUrl + '/order/getAllOrder';};
+    //获取未完成订单
+    _proto.getUrl_order_getIncomplete = function(){return this.serverUrl + '/order/getIncomplete';};
+    //=======================订单管理 结束====================
+
+
+
     Quakoo.class(Config,'Config',_super);
 
 
