@@ -30,4 +30,10 @@ public class OrderDaoImpl extends CacheBaseDao<Order> implements OrderDao {
     public List<Order> getTemporaryOrder(long subid, int makeStatus) {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<Order> getUserFinishOrders(long uid, int makeStatus) throws Exception {
+        return null;
+    }
 }

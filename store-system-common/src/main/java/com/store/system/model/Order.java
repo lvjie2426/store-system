@@ -94,6 +94,8 @@ public class Order implements Serializable {
 
     private String detail; //返回详情
 
+    private int arrears;//欠款金额
+
     @SortKey
     private long ctime;
 

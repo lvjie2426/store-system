@@ -741,6 +741,10 @@ public class UserServiceImpl implements UserService {
             }
         }
         //消费次数
+        List<Order> orders = orderDao.getUserFinishOrders(user.getId(),Order.makestatus_qu_yes);
+        if(orders.size()>0){
+            clientUser.setPayCount(orders.size());
+        }
         //推荐人
         if(user.getRecommender()>0){
             long uid = user.getRecommender();
@@ -983,7 +987,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<String> getAllUserJob(long sid,int userType) throws Exception {
         TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
-        List<User> users = userDao.getAllLists(sid,userType,User.status_nomore);
+        List<User> users = userDao.getAllList(sid,userType,User.status_nomore);
         return fieldSetUtils.fieldList(users,"job");
     }
 
@@ -996,7 +1000,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ClientUser getUser(String phone) throws Exception {
-        return transformClient(userDao.load(phone));
+        List<User> user = userDao.getAllLists(User.userType_user,User.status_nomore,phone);
+        if(user.size()>0){
+            return transformClient(user.get(0));
+        }
+        return null ;
     }
 
     @Override
@@ -1122,8 +1130,8 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
-    //传入201905 判断时间戳是否是当前月
-    public static boolean inExistence(String date,long time)throws Exception{
+    //传入年月 判断是否当前月
+    private boolean inExistence(String date,long time)throws Exception{
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         String year = String.valueOf(calendar.get(Calendar.YEAR));
