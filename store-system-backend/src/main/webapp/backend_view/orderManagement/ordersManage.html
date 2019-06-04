@@ -104,18 +104,43 @@
 <!--全局JS引用-->
 <script src="../resource/js/jquery.min.js"></script>
 <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-<script src="../resource/js/lib/quakoo/project.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
 <script src="../resource/js/plugins/layer/layer.js"></script>
-<script src="../resource/js/yanjing.js"></script>
 <script src="../resource/js/mobiscroll.2.13.2.js"></script>
 <!--//日期范围插件开始-->
 <script src="../resource/js/yanjing/daterange.js"></script>
 <!--//日期范围插件结束-->
-
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script src="../resource/js/template-native.js"></script>
+<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/yanjing/daterange.js"></script>
 <script>
+    var ordersAll;//全部订单
+    var subid;//门店id
+    //初始化页面
+    $(function(){
+        initPage();
+    })
+    //初始化函数
+    function initPage(){
+
+    }
+
+
+
+
+
+
+
+
+
+
     // 时间插件JS开始
     $(function () {
         var curr = new Date().getFullYear();
@@ -152,6 +177,7 @@
     date1.init();
     //日期范围插件结束
 
+    //获取全部订单||作废订单
 
     var data3 = [
         {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",oriPrice:"￥400",closingPrice:"￥380",discount:"9.5",salesMan:'李燕',oStatus:'<div class="btn-status btn-red">未加工</div>'},
