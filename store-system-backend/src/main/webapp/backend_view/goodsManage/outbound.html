@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="goods-header">
-        <div class="selectBox">
+        <div class="selectBox" >
             <div class="yj-header-time" id="select-date">
                 <div class="yj-date">
                     <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
@@ -54,12 +54,21 @@
             </div>
         </div>
         <div class="selectBox" id="select-type">
-
+            <div class="select-box-header">
+                <span class="text">全部类型</span> <i class="iconfont icon-ico_arrow_down" ></i>
+            </div>
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <li value="-1">全部类型</li>
+                    <li value="0">普通仓库</li>
+                    <li value="1">赠品仓库</li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="goods-body">
         <ul class="contUl" id="showUl">
-            <li class="item">
+            <!--<li class="item">
                 <div class="head">
                     <span class="mainCont-head-left red"><em></em>常规出库</span>
                     <span>发起人:<em>总仓</em></span>
@@ -289,381 +298,13 @@
                     <span class="txt">2018.01.21<em>18:49:57</em></span>
                     <button class="btn btn-order">查看</button>
                 </div>
-            </li>
+            </li>-->
         </ul>
         <table id="yj-table" data-toggle="table" class="table table-border"></table>
     </div>
 
     <!--出库-->
     <div class="content-view content-view-enter content-view-outbound" id="addDom">
-        <div class="outbound-left">
-            <!--<div class="top">
-                <span class="title">添加商品</span>
-            </div>-->
-            <ul class="tab-ul">
-                <li class="active">镜片</li>
-                <li>镜架</li>
-                <li>隐形眼镜</li>
-                <li>太阳镜</li>
-                <li>护理产品</li>
-                <li>其它商品</li>
-            </ul>
-            <ul class="tab-content-list">
-                <li class="tab-content-item active">
-                    <div class="outbound-left-body">
-                        <div class="outbound-body-option">
-                            <div class="selectBox" id="pp-select">
-                                <div class="select-box-header">
-                                    <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">品牌A</li>
-                                        <li value="02">品牌B</li>
-                                        <li value="03">品牌32</li>
-                                        <li value="04">品牌4</li>
-                                        <li value="05">品牌5</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="xl-select">
-                                <div class="select-box-header">
-                                    <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">系列A</li>
-                                        <li value="02">系列B</li>
-                                        <li value="03">系列C</li>
-                                        <li value="04">系列D</li>
-                                        <li value="05">系列E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outbound-body-tag">
-                            <div class="tag-list">A品牌A系列</div>
-                            <div class="tag-list">B品牌$系列</div>
-                            <div class="tag-list">F品牌0系列</div>
-                        </div>
-                        <div class="outbound-body-top-hidden">
-                            <span class="text-default">请先选择门店、品牌和系列</span>
-                            <div class="button">添加至调货单</div>
-                        </div>
-                        <div class="outbound-body-top-show clearfix">
-                            <div class="text-end clearfix">
-                                <span>A品牌A系列</span>
-                                <ul class="tab-lr clearfix">
-                                    <li class="tab-lr-item active">右</li>
-                                    <li class="tab-lr-item">左</li>
-                                </ul>
-                            </div>
-                            <div class="button">添加至调货单</div>
-                        </div>
-                        <table class="layui-hide yj-layui-table" id="outboundTable" lay-filter="outboundEvent"></table>
-                    </div>
-                </li>
-                <li class="tab-content-item booF">
-                    <div class="outbound-left-body">
-                        <div class="outbound-body-option">
-                            <div class="selectBox" id="pp-select2">
-                                <div class="select-box-header">
-                                    <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">品牌A</li>
-                                        <li value="02">品牌B</li>
-                                        <li value="03">品牌32</li>
-                                        <li value="04">品牌4</li>
-                                        <li value="05">品牌5</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="xl-select2">
-                                <div class="select-box-header">
-                                    <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">系列A</li>
-                                        <li value="02">系列B</li>
-                                        <li value="03">系列C</li>
-                                        <li value="04">系列D</li>
-                                        <li value="05">系列E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="cz-select2">
-                                <div class="select-box-header">
-                                    <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">材质A</li>
-                                        <li value="02">材质B</li>
-                                        <li value="03">材质C</li>
-                                        <li value="04">材质D</li>
-                                        <li value="05">材质E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outbound-body-tag">
-                            <div class="tag-list">A品牌A系列</div>
-                            <div class="tag-list">B品牌$系列</div>
-                            <div class="tag-list">F品牌0系列</div>
-                        </div>
-                        <div class="outbound-body-content">
-                            <input type="number" placeholder="数量">
-                            <div class="outbound-body-add btn btn-yj fr">
-                                添加至调货单
-                            </div>
-                        </div>
-                        <table class="" id="outboundTableJJ" lay-filter="outboundEventJJ">
-                        </table>
-                    </div>
-                </li>
-                <li class="tab-content-item booF">
-                    <div class="outbound-left-body">
-                        <div class="outbound-body-option">
-                            <div class="selectBox" id="pp-select">
-                                <div class="select-box-header">
-                                    <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">品牌A</li>
-                                        <li value="02">品牌B</li>
-                                        <li value="03">品牌32</li>
-                                        <li value="04">品牌4</li>
-                                        <li value="05">品牌5</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="xl-select">
-                                <div class="select-box-header">
-                                    <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">系列A</li>
-                                        <li value="02">系列B</li>
-                                        <li value="03">系列C</li>
-                                        <li value="04">系列D</li>
-                                        <li value="05">系列E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outbound-body-tag">
-                            <div class="tag-list">A品牌A系列</div>
-                            <div class="tag-list">B品牌$系列</div>
-                            <div class="tag-list">F品牌0系列</div>
-                        </div>
-                        <div class="outbound-body-content">
-                            <input type="number" placeholder="数量">
-                            <div class="outbound-body-add btn btn-yj fr">
-                                添加至调货单
-                            </div>
-                        </div>
-                        <table class="layui-hide yj-layui-table" id="outboundTable" lay-filter="outboundEvent"></table>
-                    </div>
-                </li>
-                <li class="tab-content-item booF">
-                    <div class="outbound-left-body">
-                        <div class="outbound-body-option">
-                            <div class="selectBox" id="pp-select2">
-                                <div class="select-box-header">
-                                    <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">品牌A</li>
-                                        <li value="02">品牌B</li>
-                                        <li value="03">品牌32</li>
-                                        <li value="04">品牌4</li>
-                                        <li value="05">品牌5</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="xl-select2">
-                                <div class="select-box-header">
-                                    <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">系列A</li>
-                                        <li value="02">系列B</li>
-                                        <li value="03">系列C</li>
-                                        <li value="04">系列D</li>
-                                        <li value="05">系列E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="cz-select2">
-                                <div class="select-box-header">
-                                    <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">材质A</li>
-                                        <li value="02">材质B</li>
-                                        <li value="03">材质C</li>
-                                        <li value="04">材质D</li>
-                                        <li value="05">材质E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outbound-body-tag">
-                            <div class="tag-list">A品牌A系列</div>
-                            <div class="tag-list">B品牌$系列</div>
-                            <div class="tag-list">F品牌0系列</div>
-                        </div>
-                        <div class="outbound-body-content">
-                            <input type="number" placeholder="数量">
-                            <div class="outbound-body-add btn btn-yj fr">
-                                添加至调货单
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="tab-content-item booF">
-                    <div class="outbound-left-body">
-                        <div class="outbound-body-option">
-                            <div class="selectBox" id="pp-select2">
-                                <div class="select-box-header">
-                                    <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">品牌A</li>
-                                        <li value="02">品牌B</li>
-                                        <li value="03">品牌32</li>
-                                        <li value="04">品牌4</li>
-                                        <li value="05">品牌5</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="xl-select2">
-                                <div class="select-box-header">
-                                    <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">系列A</li>
-                                        <li value="02">系列B</li>
-                                        <li value="03">系列C</li>
-                                        <li value="04">系列D</li>
-                                        <li value="05">系列E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="cz-select2">
-                                <div class="select-box-header">
-                                    <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">材质A</li>
-                                        <li value="02">材质B</li>
-                                        <li value="03">材质C</li>
-                                        <li value="04">材质D</li>
-                                        <li value="05">材质E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outbound-body-tag">
-                            <div class="tag-list">A品牌A系列</div>
-                            <div class="tag-list">B品牌$系列</div>
-                            <div class="tag-list">F品牌0系列</div>
-                        </div>
-                        <div class="outbound-body-content">
-                            <input type="number" placeholder="数量">
-                            <div class="outbound-body-add btn btn-yj fr">
-                                添加至调货单
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="tab-content-item booF">
-                    <div class="outbound-left-body">
-                        <div class="outbound-body-option">
-                            <div class="selectBox" id="pp-select">
-                                <div class="select-box-header">
-                                    <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">品牌A</li>
-                                        <li value="02">品牌B</li>
-                                        <li value="03">品牌32</li>
-                                        <li value="04">品牌4</li>
-                                        <li value="05">品牌5</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="selectBox" id="xl-select">
-                                <div class="select-box-header">
-                                    <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                                </div>
-                                <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">系列A</li>
-                                        <li value="02">系列B</li>
-                                        <li value="03">系列C</li>
-                                        <li value="04">系列D</li>
-                                        <li value="05">系列E</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outbound-body-tag">
-                            <div class="tag-list">A品牌A系列</div>
-                            <div class="tag-list">B品牌$系列</div>
-                            <div class="tag-list">F品牌0系列</div>
-                        </div>
-                        <div class="outbound-body-content">
-                            <input type="number" placeholder="数量">
-                            <div class="outbound-body-add btn btn-yj fr">
-                                添加至调货单
-                            </div>
-                        </div>
-                        <table class="layui-hide yj-layui-table" id="outboundTable" lay-filter="outboundEvent"></table>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="outbound-right">
-            <!--<div class="outbound-right-head">
-                <div class="layui-layer-title">出库单</div>
-                <div class="outbound-right-head-right">
-                    <span>出库人</span>
-                    <div class="selectBox" id="out-people">
-                        <div class="select-box-header">
-                            <span class="text">李小东</span> <i class="iconfont icon-ico_arrow_down" id=""></i>
-                        </div>
-                        <div class="optionBox">
-                            <ul class="optionUL">
-                                <li value="01">1</li>
-                                <li value="02">2</li>
-                                <li value="03">3</li>
-                                <li value="04">4</li>
-                                <li value="05">5</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
-            <ul class="right-content">
-                <li class="right-content-item">
-                    <div class="right-item-title">镜片</div>
-                    <table class="" id="rightTable1" lay-filter="outboundEvent"></table>
-                </li>
-            </ul>
-        </div>
 
     </div>
     <!-- 出库单 -->
@@ -833,41 +474,48 @@
         <%for(var i=0;i< list.length;i++){%>
         <li class="item">
             <div class="head">
-                <span class="mainCont-head-left red"><em></em>常规出库</span>
-                <span>发起人:<em>总仓</em></span>
+                <span class="mainCont-head-left blue"><em></em>常规出库</span>
+                <span>发起人:<em><%=list[i].outUserName%></em></span>
             </div>
             <div class="body">
                 <div class="top">
                     <ul>
+                        <%if(list[i].clientItems.length>5){%>
+                        <%for(var j=0;j< list[i].clientItems.length;j++){%>
+                        <%if(j< 4 ){%>
                         <li>
-                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
-                            <span>X10</span>
+                            <span class="txtOverflow"><%=list[i].clientItems[j].seriesName%><%=list[i].clientItems[j].code%></span>
+                            <span>X<%=list[i].clientItems[j].num%></span>
                         </li>
-                        <li>
-                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
-                            <span>X20</span>
-                        </li>
-                        <li>
-                            <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
-                            <span>X200</span>
-                        </li>
-                        <li>
-                            <span class="txtOverflow">商品A</span>
-                            <span>-20</span>
-                        </li>
+                        <%}%>
+                        <%}%>
                         <li style="color:#828297">
                             ...
                         </li>
+                        <%}else{%>
+                        <%for(var j=0;j< list[i].clientItems.length;j++){%>
+                        <li>
+                            <span class="txtOverflow"><%=list[i].clientItems[j].seriesName%><%=list[i].clientItems[j].code%></span>
+                            <span>X<%=list[i].clientItems[j].num%></span>
+                        </li>
+                        <%}%>
+                        <%}%>
                     </ul>
                 </div>
                 <div class="bottom">
-                    <div>共15种商品</div>
-                    <div>数量总计:100</div>
+                    <div>共<%=list[i].clientItems.length%>种商品</div>
+                    <div>数量总计:<%=list[i].clientItemsNum%></div>
                 </div>
             </div>
             <div class="foot">
-                <span class="txt">2018.01.21<em>18:49:57</em></span>
+                <span class="txt"><%=list[i].time%></span>
+                <%if(list[i].status==0){%>
+                <button class="btn btn-primary">编辑</button>
+                <%}else if(list[i].status==1){%>
                 <button class="btn btn-danger">等待确认</button>
+                <%}else if(list[i].status==2){%>
+                <button class="btn btn-order">查看</button>
+                <%}%>
             </div>
         </li>
         <%}%>
@@ -908,6 +556,29 @@
                                         </ul>
                                     </div>
                                 </div>
+                                <div class="selectBox" id="out-provider">
+                                    <div class="select-box-header">
+                                        <span class="text">供应商</span> <i class="iconfont icon-ico_arrow_down"></i>
+                                    </div>
+                                    <div class="optionBox" style="display: none;">
+                                        <ul class="optionUL">
+                                            <%for(var i=0;i< providerData.length;i++){%>
+                                            <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li>
+                                            <%}%>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="selectBox" id="out-type">
+                                    <div class="select-box-header">
+                                        <span class="text">常规商品</span> <i class="iconfont icon-ico_arrow_down"></i>
+                                    </div>
+                                    <div class="optionBox" style="display: none;">
+                                        <ul class="optionUL">
+                                            <li value="0">常规商品</li>
+                                            <li value="1">积分商品</li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div class="selectBox jj-box" id="out-caizhi">
                                     <div class="select-box-header">
                                         <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
@@ -919,6 +590,9 @@
                                         </ul>
                                     </div>
                                 </div>
+                                <div class="btn btn-info" style="float: right" onclick="getSpu()">查询</div>
+
+
                             </div>
                             <div class="outbound-body-tag">
                                 <div class="tag-list">A品牌A系列</div>
@@ -928,7 +602,7 @@
                             <div class="outbound-body-content outbound-body-top-hidden">
                                 <span class="jp-box text-default">请先选择门店、品牌和系列</span>
                                 <input class="jp-no-box" type="number" placeholder="搜索关键字">
-                                <div class="btn btn-info fr">添加至调货单</div>
+                                <div class="btn btn-info fr" onclick="addToList()">添加至出库单</div>
                             </div>
                             <div class="outbound-body-top-show clearfix">
                                 <div class="text-end clearfix">
@@ -938,7 +612,7 @@
                                         <li class="tab-lr-item">左</li>
                                     </ul>
                                 </div>
-                                <div class="btn btn-info">添加至调货单</div>
+                                <div class="btn btn-info">添加至出库单</div>
                             </div>
                         </div>
                     </li>
@@ -961,6 +635,78 @@
             </div>
         </div>
     </script>
+
+    <script type="text/html" id="outListTmp">
+        <%for(var i in list){%>
+        <%if(list[i].data.length>0){%>
+        <!--<div class="itemDiv">-->
+        <div class="itemDiv _scroll">
+            <p class="name"><%=list[i].name%></p>
+            <div class="box">
+                <div class="thead">
+                    <span>产品编码</span>
+                    <span>品牌</span>
+                    <span>系列</span>
+                    <span>供应商</span>
+                    <span>商品类型</span>
+                    <%if(list[i].name=='镜片'){%>
+                    <span>球</span>
+                    <span>柱</span>
+                    <%}else if(list[i].name=='镜架' || list[i].name=='太阳镜'){%>
+                    <span>型号</span>
+                    <span>色号</span>
+                    <%}else if(list[i].name=='隐形眼镜'){%>
+                    <span>球镜度数</span>
+                    <span>生产批号</span>
+                    <span>保质期</span>
+                    <%}else if(list[i].name=='护理产品'){%>
+                    <span>生产批号</span>
+                    <span>保质期</span>
+                    <%}else if(list[i].name=='其它商品'){%>
+                    <span>型号</span>
+                    <%}%>
+                    <span>数量</span>
+                    <span class="removeLi">操作</span>
+                </div>
+                <ul class="tbody">
+                    <%for(var j=0;j< list[i].data.length;j++){%>
+                    <li>
+                        <span><%=list[i].data[j].code%></span>
+                        <span><%=list[i].data[j].brandName%></span>
+                        <span><%=list[i].data[j].seriesName%></span>
+                        <span><%=list[i].data[j].providerName%></span>
+                        <%if(type==0){%>
+                        <span>常规商品</span>
+                        <%}else{%>
+                        <span>积分商品</span>
+                        <%}%>
+                        <%if(list[i].name=='镜片'){%>
+                        <span><%=list[i].data[j].properties[15]%></span>
+                        <span><%=list[i].data[j].properties[16]%></span>
+                        <%}else if(list[i].name=='镜架' || list[i].name=='太阳镜'){%>
+                        <span><%=list[i].data[j].xinghao%></span>
+                        <span><%=list[i].data[j].sehao%></span>
+                        <%}else if(list[i].name=='隐形眼镜'){%>
+                        <span><%=list[i].data[j].ballName%></span>
+                        <span><%=list[i].data[j].shengchanpihao%></span>
+                        <span class="line16"><%=list[i].data[j].outDate[0]%><br/><%=list[i].data[j].outDate[1]%></span>
+                        <%}else if(list[i].name=='护理产品'){%>
+                        <span><%=list[i].data[j].shengchanpihao%></span>
+                        <span class="line16"><%=list[i].data[j].outDate[0]%><br/><%=list[i].data[j].outDate[1]%></span>
+                        <%}else if(list[i].name=='其它商品'){%>
+                        <span><%=list[i].data[j].xinghao%></span>
+                        <%}%>
+                        <span><%=list[i].data[j].newNum%></span>
+                        <span class="remove" onclick="removeOutLi('<%=i%>','<%=j%>')">移除</span>
+                    </li>
+                    <%}%>
+                </ul>
+            </div>
+        </div>
+        <%}%>
+        <%}%>
+    </script>
+
     <script>
         var subid = quakooUser.getUserInfo().sid;//企业id
         var selectBid;//筛选条件的品牌id
@@ -974,11 +720,34 @@
         var allOutList = {};//全部数据
         var peopleId;//入库人id
 
+        var selectType = -1;//筛选条件的类型
+        var startTime;//筛选时间开始时间
+        var endTime;//筛选时间结束时间
+
+        var pid;//添加入库时的供应商id
         var bid;//添加入库时的品牌id
         var sid = -1;
+        var type = 0;// 0常规商品，1积分商品
 
+        var nowGoodData;//查询出来的sku数据
+        var brandName = '';
+        var seriesName = '';
+        var providerName = '';
+        // 筛选条件的类型
+        selectTag($("#select-type"),function (data) {
+            if(data.value){
+                selectType = data.value;
+                getInData();
+            }
+        })
         var selectDate = new dateRange("#select-date");
         selectDate.init()
+        $('#select-date button').click(function () {
+            startTime = selectDate.getTime()[2];
+            endTime = selectDate.getTime()[3];
+            getInData()
+        })
+
         //获取一级类目
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
@@ -1028,60 +797,74 @@
             }
         })
 
-        $("#yj-table").bootstrapTable('destroy');
-        $("#yj-table").bootstrapTable({
-            url: config.getUrl_inventoryOutBill_getCheckPager(),
-            classes: "table",
-            pagination: true,        //是否显示分页
-            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 6,
-            pageList: [6, 12, 18],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            // paginationLoop:false,        //分页是否可以循环
-            columns: [],
-            queryParams:function (param) {
-                param.subid = subid;
-                param.token = quakooUser.getUserInfo().token;
-                return param
-            },
-            onPreBody: function (data) {
-                console.log(data)
-                var html = '';
-                var arr = [];
-                for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
-                    if(this.data[i]){
-                        arr.push(this.data[i])
+        getInData()
+        function getInData(){
+            $("#yj-table").bootstrapTable('destroy');
+            $("#yj-table").bootstrapTable({
+                url: config.getUrl_inventoryOutBill_getCheckPager(),
+                classes: "table",
+                pagination: true,        //是否显示分页
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 6,
+                pageList: [6, 12, 18],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                // paginationLoop:false,        //分页是否可以循环
+                columns: [],
+                queryParams:function (param) {
+                    param.subid = subid;
+                    param.token = quakooUser.getUserInfo().token;
+                    param.type=selectType;
+                    if(startTime){
+                        param.startTime=startTime;
                     }
+                    if(endTime){
+                        param.endTime=endTime;
+                    }
+                    return param
+                },
+                onPreBody: function (data) {
+                    console.log(data)
+                    var arr = [];
+                    for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
+                        if(this.data[i]){
+                            this.data[i].time = quakooUtils.formatTimeToDateDian(this.data[i].ctime);
+                            this.data[i].clientItemsNum = 0;
+                            for(var j=0;j<this.data[i].clientItems.length;j++){
+                                this.data[i].clientItemsNum +=this.data[i].clientItems[j].num;
+                            }
+                            arr.push(this.data[i])
+                        }
+                    }
+                    var html = template('dataTmp',{list:arr})
+                    $("#showUl").html(html);
                 }
-                var html = template('dataTmp',{list:arr})
-                $("#showUl").html(html);
-            }
-        });
+            });
+        }
 
 
 
 
 
-        var brand, series;
+
         /**
          * 打开新增弹窗
          * */
         function addGoods() {
             var html = [];
             html.push('<div class="leftBox leftBoxTitle"> <div class="head"> <span class="title" style="width: 100%;">添加商品</span></div></div>');
-            html.push('<div class="rightBox leftBoxTitle"> <div class="head"> <span class="title">入库单</span> <div class="selectBox" id="out-people">');
-            html.push('<div class="select-box-header"><span class="text">入库人</span> <i class="iconfont icon-ico_arrow_down"></i></div><div class="optionBox"><ul class="optionUL">')
+            html.push('<div class="rightBox leftBoxTitle"> <div class="head"> <span class="title">出库单</span> <div class="selectBox" id="out-people">');
+            html.push('<div class="select-box-header"><span class="text">出库人</span> <i class="iconfont icon-ico_arrow_down"></i></div><div class="optionBox"><ul class="optionUL">')
             for(var i=0;i<peopleData.length;i++){
                 html.push('<li value="'+peopleData[i].id+'">'+peopleData[i].name+'</li>');
             }
-            html.push('</ul></div></div><span class="person">入库人:</span></div></div>')
+            html.push('</ul></div></div><span class="person">出库人:</span></div></div>')
             layer.open({
                 type: 1, shade: 0.01, title: html.join(''),
                 skin: 'layui-layer-outbound  content-view-enter-tan', //样式类名
@@ -1136,48 +919,34 @@
             selectTag($("#out-people"), function (ret) {
                 peopleId = ret.value;
             })
+            //供应商
+            selectTag($("#out-provider"), function (ret) {
+                pid = ret.value;
+                providerName = ret.text;
+            })
+            //商品类型
+            selectTag($("#out-type"), function (ret) {
+                type = ret.value;
+            })
+        }
+        //添加出库单
+        function addOutList() {
+
         }
         //选择一级类目
         function chooseGoodsType(value){
-            $('.out-box>div').hide()
-            $('.out-box>input').hide()
             cid = value;
+            if(!allOutList[cid]){
+                allOutList[cid] = {cid:cid,name:$('#category'+value).text(),data:[]}
+            }
             $('#category'+value).addClass('active').siblings().removeClass('active');
-            console.log($('#category'+value).text())
             if($('#category'+value).text()=='镜片'){
                 $('.out-table1').show();
                 $('.out-table2').hide();
                 $('.jj-box').hide();
                 $('.jp-box').show();
                 $('.jp-no-box').hide();
-                var cols = [[], []];//球
-                var rangeData = [];//柱
-                cols[0].push({field:'num',rowspan:2,unresize:true, minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
-                for(var i=0;i<ballData.length;i++){
-                    cols[0].push({align: 'center', title:ballData[i].content, colspan: 2,unresize:true})
-                    cols[1].push({field: '', title: '库存', width: 60,edit:'text',unresize:true})
-                    cols[1].push({field: '', title: '出库', width: 60,edit:'text',unresize:true})
-                }
-                for(var i=0;i<columnData.length;i++){
-                    rangeData.push({num:columnData[i].content,id:columnData[i].id})
-                }
-                layui.use('table', function () {
-                    var table = layui.table;
-                    table.render({
-                        elem: '#outboundTable'
-                        , data: rangeData
-                        , width: 488
-                        , height: 260
-                        , unresize: true
-                        , cols: cols
-                    });
-                    //监听单元格事件
-                    table.on('edit(outboundEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                        console.log(obj.value); //得到修改后的值
-                        console.log(obj.field); //当前编辑的字段名
-                        console.log(obj.data); //所在行的所有相关数据
-                    });
-                });
+
                 $('.outbound-foot button').click(function () {
                     layer.close(index)
                 })
@@ -1216,7 +985,7 @@
             }
         }
 
-        // 出库单
+        // 查看出库单
         function ckd() {
             layer.open({
                 type: 1, shade: 0.01, title: null,
@@ -1230,111 +999,117 @@
             })
         }
 
-        /**
-         * 品牌下拉框
-         * */
-        selectTag($("#pp-select"), function (ret) {
-            brand = ret.value;
-            threeIsEmpty();
-        });
-
-        /**
-         * 系列下拉框
-         * */
-        selectTag($("#xl-select"), function (ret) {
-            series = ret.value;
-            threeIsEmpty();
-        });
-
-        /**
-         * 系列下拉框
-         * */
-       /* selectTag($("#selectBox"), function (ret) {
-        });*/
-
-        /**
-         * 镜架下拉框
-         * */
-        selectTag($("#pp-select2"), function (ret) {
-            console.log(ret);
-        });
-        selectTag($("#xl-select2"), function (ret) {
-            console.log(ret);
-        });
-        selectTag($("#cz-select2"), function (ret) {
-            console.log(ret);
-        });
-       /* selectTag($("#xh-select2"), function (ret) {
-            console.log(ret);
-        });*/
-   /*     selectTag($("#sh-select2"), function (ret) {
-            console.log(ret);
-        });*/
-
-        /**
-         * 新增弹窗tab切换
-         * */
-        $(".outbound-left>.tab-ul li").click(function () {
-            $(this).addClass('active').siblings().removeClass('active');
-            $(".tab-content-list .tab-content-item").hide().eq($(this).index()).show();
-            //$(".right-info").hide().eq($(this).index()).show();
-        });
-
-        /**
-         * 新增弹窗镜片左右tab切换
-         * */
-        $(".tab-lr>li").click(function () {
-            $(this).addClass('active').siblings().removeClass('active');
-            //$(".tab-item").hide().eq($(this).index()).show();
-            //$(".right-info").hide().eq($(this).index()).show();
-        });
-
-        /**
-         * 检测品牌系列是否为空，显示对应内容
-         * */
-        function threeIsEmpty() {
-            console.log(quakooUtils);
-
-            if (quakooUtils.isNotBlack(brand) && quakooUtils.isNotBlack(series)) {
-                $(".outbound-body-top-hidden").css("display", "none");
-                $(".outbound-body-top-show").css("display", "block");
-                $(".outbound-left-body table").css("display", "block")
-            } else {
-                $(".outbound-body-top-hidden").css("display", "block");
-                $(".outbound-body-top-show").css("display", "none");
-                $(".outbound-left-body table").css("display", "none");
+        var skuObj;//镜片所需要的sku集合   键 是球+柱
+        // 获取一个商品的SPU，返回需要确定的所有SKU属性
+        function getSpu() {
+            if(!bid){
+                layer.msg('请选择品牌')
+                return
             }
+            if(!pid){
+                layer.msg('请选择供应商')
+                return
+            }
+            quakooData.ajaxGetData(config.getUrl_inventoryOutBill_select(),{subid:subid,type:type,cid:cid,pid:pid,bid:bid,sid:sid},function (ret) {
+                if(ret && ret.success){
+                    console.log(ret)
+                    nowGoodData = ret.data.skuList;
+                    skuObj = {};
+                    for(var j=0;j<nowGoodData.length;j++){
+                        skuObj[nowGoodData[j].properties[15]+''+nowGoodData[j].properties[16]] = nowGoodData[j];
+                    }
+                    if(ret.data){
+                        if($('#category'+cid).text()=='镜片'){
+                            var cols = [[], []];//球
+                            var rangeData = [];//柱
+                            cols[0].push({field:'num',rowspan:2,unresize:true, minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+                            for(var i=0;i<ballData.length;i++){
+                                (function (i) {
+                                    cols[0].push({align: 'center', title:ballData[i].content, colspan: 2,unresize:true})
+                                    cols[1].push({field: '', title: '库存', width: 60,unresize:true ,templet: function (value,row,index) {
+                                            if(skuObj[ballData[i].content + '' + value.num]){
+                                                return skuObj[ballData[i].content + '' + value.num].num
+                                            }else{
+                                                return '-'
+                                            }
+                                        }})
+                                    cols[1].push({field: '', title: '出库', width: 60,edit:'text',unresize:true})
+                                })(i)
+                            }
+                            for(var i=0;i<columnData.length;i++){
+                                rangeData.push({num:columnData[i].content,id:columnData[i].id})
+                            }
+                            layui.use('table', function () {
+                                var table = layui.table;
+                                table.render({
+                                    elem: '#outboundTable'
+                                    , data: rangeData
+                                    , width: 488
+                                    , height: 260
+                                    , unresize: true
+                                    , cols: cols
+                                });
+                                //监听单元格事件
+                                table.on('edit(outboundEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                    if(parseInt($(this).parents('td').prev().find('.layui-table-cell').html())>0){
+                                        var ball = ballData[Math.floor($(this).parents('td').attr('data-key').split('-')[$(this).parents('td').attr('data-key').split('-').length-1]/2)].content;
+                                        var colum = obj.data.num;
+                                        if(skuObj[ball + '' + colum].num>= obj.value){
+                                            skuObj[ball + '' + colum].newNum = obj.value;
+                                        }else{
+                                            skuObj[ball + '' + colum].newNum = skuObj[ball + '' + colum].num;
+                                            this.value = skuObj[ball + '' + colum].num;
+                                        }
+                                        console.log(skuObj)
+                                    }else{
+                                        this.value = '';
+                                        layer.msg('该规格暂无库存');
+                                    }
+                                });
+                            });
+                        }else if($('#category'+cid).text()=='镜架' || $('#category'+cid).text()=='太阳镜' ){
+                            $('.jj-box').show();
+                        }else if($('#category'+cid).text()=='隐形眼镜'){
+                            $('.yxyj-box').show();
+                        }else if($('#category'+cid).text()=='护理产品'){
+                            $('.hlcp-box').show();
+                        }else if($('#category'+cid).text()=='其它商品'){
+                            $('.qtsp-box').show();
+                        }
+                    }
+                }else{
+                    layer.msg(ret.data)
+                }
+            })
         }
-
-        /*右侧单内容*/
-        // var dataRight = [{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }];
-        var dataRight = [{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" },{ name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }, { name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8" }];
-        var columns = [
-            { field: "name", title: "名称", align: "left", valign: "middle" },
-            { field: "qNum", title: "球镜度数", align: "left", valign: "middle" },
-            { field: "sNum", title: "散光度数", align: "left", valign: "middle" },
-            { field: "num", title: "数量", align: "left", valign: "middle" },
-            {
-                field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                    return '<span class="button">移除</span>';
+        //添加到本地出库单
+        function addToList() {
+            if(quakooUtils.isBlack(nowGoodData)){
+                layer.msg('请查询商品')
+                return
+            }
+            var arr = [];
+            for(var i=0;i<nowGoodData.length;i++){
+                if(skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]] && skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum){
+                    nowGoodData[i].newNum = skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum;
+                    nowGoodData[i].brandName = brandName;
+                    nowGoodData[i].seriesName = seriesName;
+                    nowGoodData[i].providerName = providerName;
+                    arr.push(nowGoodData[i])
                 }
             }
-        ];
-        $("#rightTable1").bootstrapTable({
-            data: dataRight,                 //被加载的数据。
-            classes: "table",
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: columns
-        });
 
 
-
+            allOutList[cid].data = arr;
+            var html = template('outListTmp',{list:allOutList})
+            $("#outListDom").html(html)
+        }
+        //移除出库单中的商品
+        function removeOutLi(i,j) {
+            allOutList[i].data.splice(j,1);
+            var html = template('outListTmp',{list:allOutList})
+            $("#outListDom").html(html)
+        }
     </script>
 </body>
 

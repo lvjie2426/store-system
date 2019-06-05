@@ -60,14 +60,7 @@
   border: none;
 }
 /*主要内容*/
-.inventory_cont .mainCont{
-  min-height: 300px;
-  background: #ebebf3;
-  padding: 12px 0 28px 0;
-}
-.inventory_cont .mainCont .contUl{
-  height: 300px;
-}
+
 .inventory_cont .mainCont .contUl .item{
   width: 32%;
   height: 280px;
