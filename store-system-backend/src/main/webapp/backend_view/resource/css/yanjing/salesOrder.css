@@ -125,8 +125,7 @@ i {
 
 .headerBox .rightBox .orderProvisional {
     display: inline-block;
-    min-width: 90px;
-    width: 20%;
+    min-width: 120px;
     margin-right: 8px;
 }
 
@@ -175,7 +174,7 @@ i {
 
 .main .mainCustomerInfo .telephoneNumBox .searchTypeBox {
     display: inline-block;
-    width: 100px;
+    width: 130px;
     height: 28px;
 }
 
@@ -691,6 +690,7 @@ i {
 .main .orderInfo .leftBox .costAdditional .costAdditionalSelect {
     width: 38%;
     margin: 0;
+    vertical-align: bottom;
 }
 
 .main .orderInfo .leftBox .costAdditional .costAdditionalSelect i {
@@ -1649,6 +1649,14 @@ b {
     margin-right: 10px;
     color: #AFAFBE;
 }
+.winFooterBox button:hover {
+    background-color: #4186dc;
+    color: #fff;
+    border: 1px solid #4186dc;
+    outline: none;
+    border-radius: 2px;
+    vertical-align: middle;
+}
 
 /* 付款弹窗 */
 .yourclass {
@@ -2463,4 +2471,35 @@ input[type=checkbox]:checked:after {
 }
 #searchPhoneUser{
     vertical-align: middle;
+}
+
+/*临时订单样式*/
+.optionBox .optionUL li {
+    line-height: 28px;
+    height:28px;
+    padding-left: 8px;
+    box-sizing: border-box;
+    list-style: none;
+    color: #393953;
+    font-size: 12px;
+    margin: 0;width: 100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    padding-right: 12px;
+    position:relative;
+}
+
+.selectBox .optionBox li>i {
+    font-size: 16px;color: #828297;
+    display: block;
+    position: absolute;
+    right:-7px;
+    top:0px;
+}
+/*.selectBox i{*/
+    /*margin-left:0;*/
+/*}*/
+.select-box-header span {
+    max-width: 60%;
 }

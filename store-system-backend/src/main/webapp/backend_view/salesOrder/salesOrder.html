@@ -153,7 +153,11 @@
                                 </div>
                                 <div class="optionBox">
                                     <ul class="optionUL" id="referer">
-                                        <!--<li value="01">1</li>-->
+                                        <li value="01">黄桑</li>
+                                        <li value="02">龙翔</li>
+                                        <li value="03">李桑红</li>
+                                        <li value="04">胡珊进</li>
+                                        <li value="05">诸葛武侯</li>
                                     </ul>
                                 </div>
                             </div>
@@ -257,11 +261,8 @@
                     </div>
                     <div class="optionBox">
                         <ul class="optionUL">
-                            <li value="01">1</li>
-                            <li value="02">2</li>
-                            <li value="03">3</li>
-                            <li value="04">4</li>
-                            <li value="05">5</li>
+                            <li value="01">2018.10.27 隐形</li>
+                            <li value="02">2018.06.17 远用</li>
                         </ul>
                     </div>
                 </div>
@@ -279,15 +280,15 @@
                     <div class="dateNameInfo">
                         <div class="selectBox" id="optometristName">
                             <div class="select-box-header">
-                                <span class="text">李默然</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                                <span class="text">黄桑</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
                             </div>
                             <div class="optionBox">
                                 <ul class="optionUL">
-                                    <li value="01">1</li>
-                                    <li value="02">2</li>
-                                    <li value="03">3</li>
-                                    <li value="04">4</li>
-                                    <li value="05">5</li>
+                                    <li value="01">黄桑</li>
+                                    <li value="02">龙翔</li>
+                                    <li value="03">李桑红</li>
+                                    <li value="04">胡珊进</li>
+                                    <li value="05">诸葛武侯</li>
                                 </ul>
                             </div>
                         </div>
@@ -495,7 +496,7 @@
                                 </div>
                                 <div class="optionBox">
                                     <ul class="optionUL" style="overflow: hidden;">
-                                        <li value="01">建议B</li>
+                                        <li value="01"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1634,6 +1635,25 @@
             getShopPhone();                                   //获取门店顾客对应的手机号
             getShopJob();                                     //获取门店顾客职业
             getShopStaff();                                   //获取门店下员工列表（推荐人==员工）
+            selDown();//下拉框
+        }
+        function selDown() {
+            /**验光师*/
+            selectTag($("#optometristName"),function (ret) {
+
+            })
+            /**销售员*/
+            selectTag($("#optometrySelect"),function (ret) {
+                console.log(ret);
+            })
+            /**加工师*/
+            selectTag($("#recommenderBox"),function (ret) {
+                console.log(ret);
+            })
+            /**附加费用*/
+            selectTag($("#promotion"),function (ret) {
+                
+            })
         }
         /**接口——获取门店下的临时订单*/
         function getTemporaryOrder(){
