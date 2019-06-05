@@ -5,145 +5,1674 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>眼睛-商品管理-盘点</title>
-    <!--Bootstrap样式引入开始-->
-    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
-    <!--Bootstrap样式引入结束-->
-    <!--字体样式文件引用开始-->
+    <title>盘点</title>
+    <link href="../resource/layui/css/layui.css" rel="stylesheet">
+    <link href="../resource/css/reset.css" rel="stylesheet">
+    <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
     <link rel="stylesheet" href="../resource/fonts/iconfont.css">
-    <!--字体样式文件引用结束-->
-    <!--标签样式重置开始-->
-    <link rel="stylesheet" href="../resource/css/reset.css">
-    <!--标签样式重置结束-->
-    <!--本页面样式开始-->
-    <link rel="stylesheet" href="../resource/css/yanjing/timeWorkbench.css">
-    <!--本页面样式结束-->
-    <style>
-        header>div select{
-            outline: none;
-            height: 28px;
-            line-height: 28px;
-            /*appearance: none;*/
-            /*-webkit-appearance: none;*/
-            /*-moz-appearance: none;*/
-            padding-left: 8px;
-            width: 80px;
-            border-radius: 2px;
-            color:#828297 ;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-        }
-        header>div div{
-            float: right;
-            margin-top: 12px;
-            margin-right: 12px;
-            padding: 0 10px;
-            font-size: 12px;
-            border-radius: 2px;
-            line-height: 28px;
-            border: 1px solid rgba(65, 134, 220, 0.1);
-            color:#FFFFFF;
-            background-color: rgba(65, 134, 220, 1);
-        }
-        .orderCon{
-            width:100%;
-            height:32px;
-            line-height: 32px;
-            background-color: rgba(244, 244, 248, 1);
-        }
-        .orderCon .timeBox{
-            padding-left: 10px;
-            float:left;
-            line-height: 32px;
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-            border-right: 2px solid #ECECF4;
-        }
-        .orderCon .timeBox em{
-            width: 16px;
-            height: 16px;
-            border-radius: 0px;
-            border: 2px solid rgba(130, 130, 151, 1);
-            margin-left: 39px;
-            margin-top: 8px;
-            margin-right: 8px;
-            float: right;
-        }
-        .orderCon select{
-            float: left;
-            outline: none;
-            height: 32px;
-            line-height: 32px;
-            /*appearance: none;*/
-            /*-webkit-appearance: none;*/
-            /*-moz-appearance: none;*/
-            padding-left: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 2px;
-            color:#828297 ;
-            border:none;
-            border-right: 2px solid #ECECF4;
-        }
-    </style>
+    <link rel="stylesheet" href="../resource/css/yanjing/goodsManage.css">
+    <link rel="stylesheet" href="../resource/css/yanjing/inventory.css">
 </head>
 <body>
-<!--头部 &#45;&#45; 开始-->
-<header>
-    <ul>
-        <li><em></em> 商品盘点</li>
-    </ul>
-    <div>
-        <div>新增盘点</div>
+<div class="inventory_cont">
+    <div class="header">
+      <span>
+        <i class="icon iconfont icon-ico_inventory_filled"></i>
+      </span>
+        <span>商品盘点</span>
+        <span onclick="newInventory()">新增盘点</span>
     </div>
-</header>
-<!--内容头部&#45;&#45;开始-->
-<div class="orderCon">
-    <div class="timeBox">
-        开始日期 - 结束日期  <em></em>
+    <div class="filter">
+        <div class="cont">
+            <div class="yj-demo-time" id="select-date">
+                <div class="yj-date">
+                    <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                </div>
+            </div>
+        </div>
     </div>
-    <select name="" id="">
-        <option value="">全部类型</option>
-    </select>
-</div>
-<!--今日概览 &#45;&#45; 开始-->
-<div class="list" id="Today">
-</div>
-<!--今日概览 &#45;&#45; 结束-->
-<!--资金管理 &#45;&#45; 开始-->
-<div class="monManagement" id="monMan">
-</div>
-<!--资金管理 &#45;&#45; 结束-->
-</body>
-<!-- 全局js -->
-<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
-<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+    <div class="mainCont clearfix goods-body">
+        <ul class="wrap90 contUl clearfix" id="showUl">
+            <!--<li class="item">
+              <div class="head">
+                <span>等待盘点的任务</span>
+                <span>发起人:<em>总仓</em></span>
+              </div>
+              <div class="body">
+                <div class="top">
+                  <ul>
+                    <li>
+                      <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                      <span>X10</span>
+                    </li>
+                    <li>
+                      <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                      <span>X20</span>
+                    </li>
+                    <li>
+                      <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
+                      <span>X200</span>
+                    </li>
+                    <li>
+                      <span class="txtOverflow">商品A</span>
+                      <span>-20</span>
+                    </li>
+                    <li>
+                      <span class="txtOverflow">商品B</span>
+                      <span>+9</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="bottom">
+                  <div>共15种商品</div>
+                  <div>数量总计:100</div>
+                </div>
+              </div>
+              <div class="foot">
+                <span class="txt">2018.01.21<em>18:49:57</em></span>
+                <span class="btn red" onclick="startInvent()">开始盘点</span>
+              </div>
+            </li>-->
+        </ul>
+        <table id="yj-table" data-toggle="table" class="table table-border"></table>
 
+    </div>
+</div>
+<!--新增盘点弹窗-->
+<div class="content-view content-view-commonInventory content-view-addInventory clearfix">
+    <!--左边-->
+    <div class="leftBox">
+        <div class="head">
+            <span class="title layui-layer-title">添加商品</span>
+            <div class="selectShop">
+                <div id="box001">门店(多选)<i class="icon iconfont icon-ico_arrow_down"></i></div>
+                <div id="selectBox001">
+                    <ul>
+                        <li>
+                            <form class="layui-form">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" value="中国" name="like1[write]" lay-skin="primary"
+                                               lay-filter="shop" title="中国">
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li>
+                            <form class="layui-form">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" value="美国" name="shop" lay-skin="primary"
+                                               lay-filter="shop" title="美国">
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li>
+                            <form class="layui-form">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" value="法国" name="shop" lay-skin="primary"
+                                               lay-filter="shop" title="法国">
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li>
+                            <form class="layui-form">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" value="英国" name="shop" lay-skin="primary"
+                                               lay-filter="shop" title="英国">
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li>
+                            <form class="layui-form">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" value="泰国" name="shop" lay-skin="primary"
+                                               lay-filter="shop" title="泰国">
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li>
+                            <form class="layui-form">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" value="埃塞俄比亚" name="shop" lay-skin="primary"
+                                               lay-filter="shop" title="埃塞俄比亚">
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <ul class="contUl">
 
-<script src="../resource/js/plugins/layer/layer.js"></script>
+            </ul>
+        </div>
+        <div class="foot">
+            <a class="layui-layer-btn0">关闭窗口</a>
+        </div>
+    </div>
+    <!--右边-->
+    <div class="rightBox">
+        <div class="head">
+            <span class="title">盘点单</span>
+            <div class="selectBox" id="perSelect">
+                <div class="select-box-header">
+                    <span class="text">马化腾</span> <i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">发</li>
+                        <li value="02">发起</li>
+                        <li value="03">发起人</li>
+                        <li value="04">发起人一</li>
+                        <li value="05">发起人二</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="person">发起人:</span>
+        </div>
+        <div class="body">
+            <ul class="contUl">
+                <!--js添加-->
+                <li class="yanjing item" style="">
+                    <div class="title">眼镜</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span><span>当前库存</span><span>操作</span>
+                        </div>
+                        <ul>
+                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
+                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
+                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="foot">
+            <a class="layui-layer-btn1 cannotCreat">创建盘点</a>
+        </div>
+    </div>
+</div>
+<!--确认盘点弹窗-->
+<div class="content-view content-view-addSuccess">
+    <p>是否立即进行盘点?</p>
+</div>
+<!--开始盘点-->
+<div class="content-view content-view-commonInventory content-view-startInvent clearfix">
+    <!--左边-->
+    <div class="leftBox">
+        <div class="head">
+            <span class="title layui-layer-title">盘点单</span>
+            <div class="selectBox" id="perSelect01">
+                <div class="select-box-header">
+                    <span class="text">马化腾</span> <i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">发</li>
+                        <li value="02">发起</li>
+                        <li value="03">发起人</li>
+                        <li value="04">发起人一</li>
+                        <li value="05">发起人二</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="person">盘点人:</span>
+        </div>
+        <div class="body">
+            <ul class="contUl">
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em>盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="blue">盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em>盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="blue">盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em>盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="blue">盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em>盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="blue">盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em>盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="blue">盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em>盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="blue">盘点</em></span>
+                            </li>
+                            <li>
+                                <span class="iconClick"><i class="icon iconfont icon-ico_check"></i>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="foot">
+            <a class="layui-layer-btn0">关闭窗口</a>
+            <span class="btn01">完成盘点</span>
+            <span class="btn02">打印盘点单</span>
+            <span class="btn03">删除盘点</span>
+        </div>
+    </div>
+    <!--右边-->
+    <div class="rightBox">
+        <div class="head">
+            <span class="title">镜片</span>
+            <span class="subTitle">品牌A系列Z</span>
+            <input type="number" placeholder="输入条码">
+        </div>
+        <div class="body">
+            <div class="tableCont tablejp">
+                <table data-toggle="table"></table>
+            </div>
+            <div class="tableCont tablejj">
+                <table data-toggle="table"></table>
+            </div>
+            <div class="tableCont tableyx">
+                <table data-toggle="table"></table>
+            </div>
+            <div class="tableCont tablehl">
+                <table data-toggle="table"></table>
+            </div>
+            <div class="tableCont tableqt">
+                <table data-toggle="table"></table>
+            </div>
+        </div>
+        <div class="foot">
+            <a class="layui-layer-btn1 cannotCreat">保存</a>
+        </div>
+    </div>
+</div>
+<!--查看不可盘点弹窗-->
+<div class="content-view content-view-commonInventory content-view-checkInvent clearfix">
+    <!--左边-->
+    <div class="leftBox">
+        <div class="head">
+            <span class="title layui-layer-title">盘点单</span>
+            <span class="person">盘点人:某某某</span>
+        </div>
+        <div class="body">
+            <ul class="contUl">
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="title">镜片</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span>
+                            <span>当前</span>
+                            <span>实际</span>
+                            <span>差异</span>
+                            <span>操作</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>12</span>
+                                <span>4423</span>
+                                <span>3466</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                            <li>
+                                <span>品牌A系列A</span>
+                                <span>22</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span><em class="white">盘点</em></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="foot">
+            <a class="layui-layer-btn0">关闭窗口</a>
+        </div>
+    </div>
+    <!--右边-->
+    <div class="rightBox">
+        <div class="head">
+            <span class="title">镜片</span>
+            <span class="subTitle">品牌A系列Z</span>
+        </div>
+        <div class="body">
 
-<!-- Bootstrap table -->
+        </div>
+        <div class="foot">
+
+        </div>
+    </div>
+</div>
+<!--全局js-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
 
-<script src="../resource/common/common.js"></script>
-<script src="../resource/common/area/City_data.js"></script>
-<script src="../resource/common/area/areadata.js"></script>
+
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script src="../resource/js/yanjing.js"></script>
+<!--//日期范围插件开始-->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
+<script type="text/html" id="dataTmp">
+    <%for(var i=0;i< list.length;i++){%>
+    <li class="item">
+        <div class="head">
+            <span class="mainCont-head-left blue"><em></em>常规出库</span>
+            <span>发起人:<em><%=list[i].outUserName%></em></span>
+        </div>
+        <div class="body">
+            <div class="top">
+                <ul>
+                    <%if(list[i].clientItems.length>5){%>
+                    <%for(var j=0;j< list[i].clientItems.length;j++){%>
+                    <%if(j< 4 ){%>
+                    <li>
+                        <span class="txtOverflow"><%=list[i].clientItems[j].seriesName%><%=list[i].clientItems[j].code%></span>
+                        <span>X<%=list[i].clientItems[j].num%></span>
+                    </li>
+                    <%}%>
+                    <%}%>
+                    <li style="color:#828297">
+                        ...
+                    </li>
+                    <%}else{%>
+                    <%for(var j=0;j< list[i].clientItems.length;j++){%>
+                    <li>
+                        <span class="txtOverflow"><%=list[i].clientItems[j].seriesName%><%=list[i].clientItems[j].code%></span>
+                        <span>X<%=list[i].clientItems[j].num%></span>
+                    </li>
+                    <%}%>
+                    <%}%>
+                </ul>
+            </div>
+            <div class="bottom">
+                <div>共<%=list[i].clientItems.length%>种商品</div>
+                <div>数量总计:<%=list[i].clientItemsNum%></div>
+            </div>
+        </div>
+        <div class="foot">
+            <span class="txt"><%=list[i].time%></span>
+            <%if(list[i].status==0){%>
+            <button class="btn btn-primary">编辑</button>
+            <%}else if(list[i].status==1){%>
+            <button class="btn btn-danger">等待确认</button>
+            <%}else if(list[i].status==2){%>
+            <button class="btn btn-order">查看</button>
+            <%}%>
+        </div>
+    </li>
+    <%}%>
+</script>
+<!--//日期范围插件结束-->
 <script>
-    //今日概览与资金管理来回切换
-    function switchPage(self,type){
-        if(type == 1){
-            $(self).next().removeClass('xuan');
-            $(self).addClass('xuan');
-            $('#Today').css('display','block');
-            $('#monMan').css('display','none');
-        }else{
-            $(self).prev().removeClass('xuan');
-            $(self).addClass('xuan');
-            $('#monMan').css('display','block');
-            $('#Today').css('display','none');
+    var subid = quakooUser.getUserInfo().sid;//企业id
+    var startTime;//筛选时间开始时间
+    var endTime;//筛选时间结束时间
+
+
+    //日期范围初始化
+    var selectDate = new dateRange("#select-date");
+    selectDate.init()
+    $('#select-date button').click(function () {
+        startTime = selectDate.getTime()[2];
+        endTime = selectDate.getTime()[3];
+        getData()
+    })
+    //获取盘点数据
+    getData()
+
+    var dataJpTable = [
+        {
+            "name": "+0.00",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-0.25",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-0.50",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-0.75",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-1.00",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-1.25",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-1.50",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-1.75",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-2.00",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-2.25",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-2.50",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-2.75",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-3.00",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+        {
+            "name": "-3.25",
+            "col01": "10",
+            "col02": "4",
+            "col03": "10",
+            "col04": "4",
+            "col05": "10",
+            "col06": "4",
+            "col07": "4",
+            "col08": "4",
+            "col09": "10",
+            "col10": "4",
+            "col11": "4",
+            "col12": "4"
+        },
+    ]
+    var dataJjTable = [
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", 'shiji': '0000', "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+    ]
+    var dataYxTable = [
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", 'shiji': '0000', "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+    ]
+    var dataHlTable = [
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", 'shiji': '0000', "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "sehao": "色号B", "dangqian": "20", "chayi": "4"},
+    ]
+    var dataQtTable = [
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", 'shiji': '0000', "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+        {"xinghao": "型号A", "guangdu": "色号B", "dangqian": "20", "chayi": "4"},
+    ]
+    tableInit();
+    //添加商品-左边部分数据
+    data01 = [
+        {title: '眼镜', id: 'yanjing'},
+        {title: '镜片', id: 'jingpian'},
+        {title: '镜架', id: 'jingjia'},
+        {title: '隐形眼镜', id: 'yinxing'},
+        {title: '太阳镜', id: 'taiyang'},
+        {title: '护理产品', id: 'huli'},
+        {title: '其他产品', id: 'qita'},
+        {title: '水杯', id: 'shuibei'}
+    ]
+    //复选下拉框执行
+    mulSelect();
+    //页面中的select
+    selectTag($("#perSelect"), function (ret) {/*console.log(ret)*/
+    })
+    selectTag($("#perSelect01"), function (ret) {/*console.log(ret)*/
+    })
+    getData()
+    //盘点列表
+    function getData(){
+        $("#yj-table").bootstrapTable('destroy');
+        $("#yj-table").bootstrapTable({
+            url: config.getUrl_inventoryCheckBill_getCheckPager(),
+            classes: "table",
+            pagination: true,        //是否显示分页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 6,
+            pageList: [6, 12, 18],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            // paginationLoop:false,        //分页是否可以循环
+            columns: [],
+            queryParams:function (param) {
+                param.subid = subid;
+                param.token = quakooUser.getUserInfo().token;
+                if(startTime){
+                    param.startTime=startTime;
+                }
+                if(endTime){
+                    param.endTime=endTime;
+                }
+                return param
+            },
+            onPreBody: function (data) {
+                console.log(data)
+                var arr = [];
+                for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
+                    if(this.data[i]){
+                        this.data[i].time = quakooUtils.formatTimeToDateDian(this.data[i].ctime);
+                        this.data[i].clientItemsNum = 0;
+                        for(var j=0;j<this.data[i].clientItems.length;j++){
+                            this.data[i].clientItemsNum +=this.data[i].clientItems[j].num;
+                        }
+                        arr.push(this.data[i])
+                    }
+                }
+                var html = template('dataTmp',{list:arr})
+                $("#showUl").html(html);
+            }
+        });
+    }
+
+
+    //table表格初始化
+    function tableInit() {
+        $(".tablejp table").bootstrapTable('destroy')
+        $(".tablejp table").bootstrapTable({
+            data: dataJpTable,
+            classes: "table",
+            // pagination: true,        //是否显示分页
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                [
+                    {
+                        title: "<div><span>柱</span><span class='xiexian'></span><span>球</span></div>",
+                        valign: "middle",
+                        align: "left",
+                        colspan: 1,
+                        rowspan: 1
+                    },
+                    {title: "+0.00", valign: "middle", align: "left", colspan: 2, rowspan: 1},
+                    {title: "-0.25", valign: "middle", align: "left", colspan: 2, rowspan: 1},
+                    {title: "-0.50", valign: "middle", align: "left", colspan: 2, rowspan: 1},
+                    {title: "-0.75", valign: "middle", align: "left", colspan: 2, rowspan: 1},
+                    {title: "-1.00", valign: "middle", align: "left", colspan: 2, rowspan: 1},
+                    {title: "-1.25", valign: "middle", align: "left", colspan: 2, rowspan: 1},
+                ],
+                [
+                    {field: 'name', title: '库存', valign: "middle", align: "left"},
+                    {field: 'col01', title: '原有', valign: "middle", align: "left"},
+                    {field: 'col02', title: '现有', valign: "middle", align: "left"},
+                    {field: 'col03', title: '原有', valign: "middle", align: "left"},
+                    {field: 'col04', title: '现有', valign: "middle", align: "left"},
+                    {field: 'col05', title: '原有', valign: "middle", align: "left"},
+                    {field: 'col06', title: '现有', valign: "middle", align: "left"},
+                    {field: 'col07', title: '原有', valign: "middle", align: "left"},
+                    {field: 'col08', title: '现有', valign: "middle", align: "left"},
+                    {field: 'col09', title: '原有', valign: "middle", align: "left"},
+                    {field: 'col10', title: '现有', valign: "middle", align: "left"},
+                    {field: 'col11', title: '原有', valign: "middle", align: "left"},
+                    {field: 'col12', title: '现有', valign: "middle", align: "left"},
+                ]
+            ],
+            onPageChange: function (number, size) {
+
+            }
+        });
+        $(".tablejj table").bootstrapTable({
+            data: dataJjTable,
+            classes: "table",
+            pagination: true,        //是否显示分页
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            smartDisplay: false,
+            columns: [
+                {field: "xinghao", title: "型号", align: "left", valign: "middle"},
+                {field: "sehao", title: "色号", align: "left", valign: "middle"},
+                {field: "dangqian", title: "当前", align: "left", valign: "middle"},
+                {
+                    field: "shiji", title: "实际", align: "left", valign: "middle",
+                    formatter: function (value, row, index) {//循环自定义内容
+                        var input = '<input type="number" placeholder="0">'
+                        return !value ? input : '<input value=' + value + ' type="number" placeholder="0">'
+                    }
+                },
+                {
+                    field: "chayi", title: "差异", align: "left", valign: "middle",
+                },
+            ],
+            onPageChange: function (number, size) {
+
+            }
+        });
+        $(".tableyx table").bootstrapTable({
+            data: dataYxTable,
+            classes: "table",
+            pagination: true,        //是否显示分页
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            smartDisplay: false,
+            columns: [
+                {field: "xinghao", title: "型号", align: "left", valign: "middle"},
+                {field: "sehao", title: "色号", align: "left", valign: "middle"},
+                {
+                    field: "baozhiqi", title: "保质期", align: "left", valign: "middle",
+                    formatter: function (value, row, index) {//循环自定义内容
+                        return '2018.03.30' + '<br/>' + '2019.03.30'
+                    }
+                },
+                {field: "dangqian", title: "当前", align: "left", valign: "middle"},
+                {
+                    field: "shiji", title: "实际", align: "left", valign: "middle",
+                    formatter: function (value, row, index) {//循环自定义内容
+                        var input = '<input type="number" placeholder="0">'
+                        return !value ? input : '<input value=' + value + ' type="number" placeholder="0">'
+                    }
+                },
+                {
+                    field: "chayi", title: "差异", align: "left", valign: "middle",
+                },
+            ],
+            onPageChange: function (number, size) {
+
+            }
+        });
+        $(".tablehl table").bootstrapTable({
+            data: dataHlTable,
+            classes: "table",
+            pagination: true,        //是否显示分页
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            smartDisplay: false,
+            columns: [
+                {field: "xinghao", title: "型号", align: "left", valign: "middle"},
+                {field: "sehao", title: "色号", align: "left", valign: "middle"},
+                {
+                    field: "baozhiqi", title: "保质期", align: "left", valign: "middle",
+                    formatter: function (value, row, index) {//循环自定义内容
+                        return '2018.03.30' + '<br/>' + '2019.03.30'
+                    }
+                },
+                {field: "dangqian", title: "当前", align: "left", valign: "middle"},
+                {
+                    field: "shiji", title: "实际", align: "left", valign: "middle",
+                    formatter: function (value, row, index) {//循环自定义内容
+                        var input = '<input type="number" placeholder="0">'
+                        return !value ? input : '<input value=' + value + ' type="number" placeholder="0">'
+                    }
+                },
+                {
+                    field: "chayi", title: "差异", align: "left", valign: "middle",
+                },
+            ],
+            onPageChange: function (number, size) {
+
+            }
+        });
+        $(".tableqt table").bootstrapTable({
+            data: dataQtTable,
+            classes: "table",
+            pagination: true,        //是否显示分页
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            smartDisplay: false,
+            columns: [
+                {field: "xinghao", title: "型号", align: "left", valign: "middle"},
+                {field: "guangdu", title: "光度", align: "left", valign: "middle"},
+                {field: "dangqian", title: "当前", align: "left", valign: "middle",},
+                {
+                    field: "shiji", title: "实际", align: "left", valign: "middle",
+                    formatter: function (value, row, index) {//循环自定义内容
+                        var input = '<input type="number" placeholder="0">'
+                        return !value ? input : '<input value=' + value + ' type="number" placeholder="0">'
+                    }
+                },
+                {
+                    field: "chayi", title: "差异", align: "left", valign: "middle",
+                },
+            ],
+            onPageChange: function (number, size) {
+
+            }
+        });
+    }
+
+    //新增盘点弹窗
+    function newInventory() {
+        // addRightList();
+        addLeftList();
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: null,
+            skin: 'content-view-tan content-view-commonInventory-tan content-view-addInventory', //样式类名
+            anim: 0,
+            area: ['735px', '560px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-addInventory'), //容器对象
+            btn: null,
+            yes: function (index) {
+
+            },
+            btn2: function (index) {
+
+            },
+            success: function (layero, index) {
+                //弹框弹出加载列表
+                $('.content-view-commonInventory-tan .layui-layer-content').height(560);
+                // //底部按钮点击关闭弹窗
+                $('.content-view-addInventory .layui-layer-btn0').click(function () {
+                    layer.close(index);
+                });
+                $('.content-view-addInventory .layui-layer-btn1').click(function () {
+                    layer.close(index);
+                });
+            }
+        });
+    }
+
+    //盘点创建成功弹窗
+    function addSuccess() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '创建成功',
+            skin: 'content-view-tan', //样式类名
+            anim: 0,
+            area: ['240px', '130px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-addSuccess'), //容器对象
+            btn: ['下次再说', '立即盘点'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                layer.close(index);
+            },
+            success: function (layero, index) {
+
+            }
+        });
+    }
+
+    //添加商品-左边部分列表
+    function addLeftList() {
+        $('.content-view-addInventory .leftBox .contUl').html('')
+        for (var i = 0; i < data01.length; i++) {
+            var li01 =
+                '<li class="item">' +
+                '<div class="title">' + data01[i].title + '</div>' +
+                '<div class="cont">' +
+                '<div class="selectBox" id=' + data01[i].id + '01' + '>' +
+                '<div class="select-box-header">' +
+                '<span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>' +
+                '</div>' +
+                '<div class="optionBox">' +
+                '<ul class="optionUL">' +
+                '<li class="txtOverflow" value="01">品牌A</li>' +
+                '<li class="txtOverflow" value="02">品牌B</li>' +
+                '<li class="txtOverflow" value="03">品牌C</li>' +
+                '<li class="txtOverflow" value="04">品牌D</li>' +
+                '<li class="txtOverflow" value="05">品牌E</li>' +
+                '</ul>' +
+                '</div>' +
+                '</div>' +
+                '<div class="selectBox" id=' + data01[i].id + '02' + '>' +
+                '<div class="select-box-header">' +
+                '<span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>' +
+                '</div>' +
+                '<div class="optionBox">' +
+                '<ul class="optionUL">' +
+                '<li class="txtOverflow" value="01">系列A</li>' +
+                '<li class="txtOverflow" value="02">系列B</li>' +
+                '<li class="txtOverflow" value="03">系列C</li>' +
+                '<li class="txtOverflow" value="04">系列D</li>' +
+                '<li class="txtOverflow" value="05">系列E</li>' +
+                '</ul>' +
+                '</div>' +
+                '</div>' +
+                '<div class="btnGray">添加至盘点单</div>' +
+                '</div>' +
+                '</li>'
+            $('.content-view-addInventory .leftBox .contUl').append(li01);
+            //初始化下拉框
+            selectTag($('#' + data01[i].id + '01'), function (ret) {
+                var txt = ret.el.next().find('.text').text()
+                if (txt != '系列') {
+                    ret.el.siblings('.btnGray').addClass('canClick')
+                }
+                $('.canClick').click(function () {
+                    // addtoInvent($(this));
+                    $('.removeLi').click(function () {
+                        $(this).parent().remove()
+                    })
+                })
+            })
+            selectTag($('#' + data01[i].id + '02'), function (ret) {
+                var txt = ret.el.prev().find('.text').text()
+                if (txt != '品牌') {
+                    ret.el.siblings('.btnGray').addClass('canClick')
+                }
+                $('.canClick').click(function () {
+                    // addtoInvent($(this));
+                    $('.removeLi').click(function () {
+                        $(this).parent().remove()
+                    })
+                })
+            })
+        }
+    }
+
+    //添加商品-右边列表
+    function addRightList() {
+        for (var i = 0; i < data01.length; i++) {
+            var li01 = '<li class="' + data01[i].id + ' ' + 'item' + '" style="display: none">' +
+                '<div class="title">' + data01[i].title + '</div>' +
+                '<div class="box">' +
+                '<div class="top">' +
+                '<span>品牌·系列</span>' +
+                '<span>当前库存</span>' +
+                '<span>操作</span>' +
+                '</div>' +
+                '<ul>' +
+                // '<li>' +
+                //   '<span>品牌A系列A</span>' +
+                //   '<span>12</span>' +
+                //   '<span>移除</span>' +
+                // '</li>' +
+                // '<li>' +
+                //   '<span>品牌A系列A</span>' +
+                //   '<span>22</span>' +
+                //   '<span>移除</span>' +
+                // '</li>' +
+                '</ul>' +
+                '</div>' +
+                '</li>'
+            $('.content-view-commonInventory .rightBox .contUl').append(li01);
+        }
+    }
+
+    //下拉框复选
+    function mulSelect() {
+        var arr = [];//定义一个数组用来接收多选框的值
+        layui.use(['form'], function () {
+            form = layui.form
+            form.on('checkbox(shop)', function (data) {
+                if ($(this).prop("checked")) {
+                    arr.push($(this).val());
+                } else {
+                    var index = getIndex(arr, $(this).val())
+                    arr.splice(index, 1);
+                }
+            });
+        })
+
+        function getIndex(arr, value) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == value) {
+                    return i
+                }
+            }
+        }
+
+        //点击按钮是弹出数组
+        $('#box001').click(function (e) {
+            quakooUtils.stopEventBubble(e)
+            if ($(this).find('.icon').hasClass('icon-ico_arrow_down')) {
+                $(this).find('.icon').removeClass('icon-ico_arrow_down').addClass('icon-ico_arrow_up')
+            } else {
+                $(this).find('.icon').removeClass('icon-ico_arrow_up').addClass('icon-ico_arrow_down')
+            }
+            if ($('#selectBox001').is(':hidden')) {　　//如果node是隐藏的则显示node元素，否则隐藏
+                $('#selectBox001').show(600);
+            } else {
+                $('#selectBox001').hide(600);
+            }
+        })
+        $('#selectBox001').click(function (e) {
+            quakooUtils.stopEventBubble(e)
+        })
+        $(document).click(function () {
+            $("#selectBox001").hide();
+            $(this).find('.icon').removeClass('icon-ico_arrow_up').addClass('icon-ico_arrow_down')
+            //console.log(arr);下拉框复选选中数据
+        });
+    }
+
+    //开始盘点弹窗
+    function startInvent() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: null,
+            skin: 'content-view-tan content-view-commonInventory-tan content-view-startInvent', //样式类名
+            anim: 0,
+            area: ['960px', '560px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-startInvent'), //容器对象
+            btn: [],
+            yes: function (index) {
+
+            },
+            btn2: function (index) {
+
+            },
+            success: function (layero, index) {
+                $('.iconClick').click(function () {
+                    $(this).toggleClass('checked');
+                })
+                $('.content-view-commonInventory-tan .layui-layer-content').height(560);
+
+                $('.tablejp').show()
+                // $('.tablejj').show()
+                // $('.tableyx').show()
+                // $('.tablehl').show()
+                // $('.tableqt').show()
+                //底部按钮点击关闭弹窗
+                $('.content-view-startInvent .layui-layer-btn0').click(function () {
+                    layer.close(index);
+                });
+                $('.content-view-startInvent .layui-layer-btn1').click(function () {
+                    layer.close(index);
+                });
+            }
+        });
+    }
+
+    //查看不可盘点弹窗
+    function checkInvent() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: null,
+            skin: 'content-view-tan content-view-commonInventory-tan content-view-checkInvent', //样式类名
+            anim: 0,
+            area: ['960px', '560px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-checkInvent'), //容器对象
+            btn: [],
+            yes: function (index) {
+
+            },
+            btn2: function (index) {
+
+            },
+            success: function (layero, index) {
+                $('.content-view-commonInventory-tan .layui-layer-content').height(560);
+                //底部按钮点击关闭弹窗
+                $('.content-view-checkInvent .layui-layer-btn0').click(function () {
+                    layer.close(index);
+                });
+            }
+        });
+    }
+
+    //添加至盘点单(待封装)
+    function addtoInvent(el) {
+        console.log(el);
+        var title = el.parent().siblings('.title').text()
+        var arr = []
+        var selectTxt = el.siblings('.selectBox')
+        for (var i = 0; i < selectTxt.length; i++) {
+            var txt = selectTxt.eq(i).find('.text').text()
+            arr.push(txt);
+        }
+        var topTxt = arr[0] + '·' + arr[1];
+        var li = '<li>' +
+            '<span>' + topTxt + '</span>' +
+            '<span>12</span>' +
+            '<span class="removeLi">移除</span>' +
+            '</li>'
+        if (title == '镜片') {
+            $('.jingpian').show()
+            $('.jingpian ul').append(li);
+        } else if (title == '眼镜') {
+            $('.yanjing').show()
+            $('.yanjing ul').append(li);
+        } else if (title == '镜架') {
+            $('.jingjia').show()
+            $('.jingjia ul').append(li);
+        } else if (title == '隐形眼镜') {
+            $('.yinxing').show()
+            $('.yinxing ul').append(li);
+        } else if (title == '护理产品') {
+            $('.huli').show()
+            $('.huli ul').append(li);
+        } else if (title == '水杯') {
+            $('.shuibei').show()
+            $('.shuibei ul').append(li);
+        } else if (title == '其他产品') {
+            $('.qita').show()
+            $('.qita ul').append(li);
         }
     }
 </script>
+</body>
 </html>

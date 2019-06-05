@@ -363,7 +363,7 @@
 .bootstrap-table .table:not(.table-condensed)>tfoot>tr>td,
 .bootstrap-table .table:not(.table-condensed)>tfoot>tr>th,
 .bootstrap-table .table:not(.table-condensed)>thead>tr>td{
-    padding:0 12px;
+    /*padding:0 12px;*/
 }
 .content-cargo .cargo-content .cargo-content-item .cargo-table{
     width: 100%;

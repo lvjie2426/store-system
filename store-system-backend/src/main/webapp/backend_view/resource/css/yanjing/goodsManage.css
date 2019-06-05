@@ -1,3 +1,6 @@
+body {
+    background: #ECECF3;
+}
 .yj-header {
     width: 100%;
     background: #fff;
@@ -720,6 +723,9 @@
     margin-right: 4px;
 }
 
+.mainCont-head-left.blue {
+    color: rgba(65, 134, 220, 1);
+}
 .mainCont-head-left.blue em {
     border: 2px solid rgba(65, 134, 220, 1);
 }
@@ -740,8 +746,28 @@
     border: 2px solid #DD5B4B;
 }
 
+.mainCont-head-left.green em {
+    border: 2px solid #57B8DB;
+}
+.mainCont-head-left.green {
+    color: #57B8DB;
+}
+
+
 .goods-body .contUl .item>div.head span:nth-child(2) {
     float: right;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.goods-body .contUl .item>div.head span:nth-child(2) em {
+    /*width: 100%;*/
+    /*float: right;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .goods-body .contUl .item>div.body {

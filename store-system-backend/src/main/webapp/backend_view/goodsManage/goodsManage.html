@@ -1547,6 +1547,8 @@
                 });
                 //监听单元格事件
                 table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                    console.log(obj)
+                    console.log(this)
                     if(type==1){
                         if(!quakooUtils.isNum(obj.value)){
                             layer.msg('产品编码必须为数字');
@@ -1576,7 +1578,11 @@
                         }else{
                             if(codeArr.indexOf(obj.value)>=0){
                                 layer.msg('产品编码重复');
-                                this.value = momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code;
+                                if(momentPriceData[ballData[obj.field-1].content+''+obj.data.num]){
+                                    this.value = momentPriceData[ballData[obj.field-1].content+''+obj.data.num].code;
+                                }else{
+                                    this.value = '';
+                                }
                                 return
                             }
                             var param = {};

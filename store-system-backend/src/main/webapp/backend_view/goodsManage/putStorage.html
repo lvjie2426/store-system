@@ -519,41 +519,52 @@
     <%for(var i=0;i< list.length;i++){%>
     <li class="item">
         <div class="head">
-            <span class="mainCont-head-left red"><em></em>常规出库</span>
-            <span>发起人:<em>总仓</em></span>
+            <%if(list[i].type==0){%>
+            <span class="mainCont-head-left blue"><em></em>常规出库</span>
+            <%}else if(list[i].type==1){%>
+            <span class="mainCont-head-left green"><em></em>赠单入库</span>
+            <%}%>
+            <span>发起人:<em><%=list[i].inUserName%></em></span>
         </div>
         <div class="body">
             <div class="top">
                 <ul>
-                    <li>
-                        <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
-                        <span>X10</span>
-                    </li>
-                    <li>
-                        <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
-                        <span>X20</span>
-                    </li>
-                    <li>
-                        <span class="txtOverflow">HYDRON海昌透明黑色单片年抛</span>
-                        <span>X200</span>
-                    </li>
-                    <li>
-                        <span class="txtOverflow">商品A</span>
-                        <span>-20</span>
-                    </li>
-                    <li style="color:#828297">
-                        ...
-                    </li>
+                    <%if(list[i].clientItems.length>5){%>
+                        <%for(var j=0;j< list[i].clientItems.length;j++){%>
+                            <%if(j< 4 ){%>
+                            <li>
+                                <span class="txtOverflow"><%=list[i].clientItems[j].seriesName%><%=list[i].clientItems[j].code%></span>
+                                <span>X<%=list[i].clientItems[j].num%></span>
+                            </li>
+                            <%}%>
+                        <%}%>
+                        <li style="color:#828297">
+                            ...
+                        </li>
+                    <%}else{%>
+                        <%for(var j=0;j< list[i].clientItems.length;j++){%>
+                            <li>
+                                <span class="txtOverflow"><%=list[i].clientItems[j].seriesName%><%=list[i].clientItems[j].code%></span>
+                                <span>X<%=list[i].clientItems[j].num%></span>
+                            </li>
+                        <%}%>
+                    <%}%>
                 </ul>
             </div>
             <div class="bottom">
-                <div>共15种商品</div>
-                <div>数量总计:100</div>
+                <div>共<%=list[i].clientItems.length%>种商品</div>
+                <div>数量总计:<%=list[i].clientItemsNum%></div>
             </div>
         </div>
         <div class="foot">
-            <span class="txt">2018.01.21<em>18:49:57</em></span>
+            <span class="txt"><%=list[i].time%></span>
+            <%if(list[i].status==0){%>
+            <button class="btn btn-primary">编辑</button>
+            <%}else if(list[i].status==1){%>
             <button class="btn btn-danger">等待确认</button>
+            <%}else if(list[i].status==2){%>
+            <button class="btn btn-order">查看</button>
+            <%}%>
         </div>
     </li>
     <%}%>
@@ -694,19 +705,19 @@
     </div>
 </script>
 <!--下拉选择模板带全部-->
-    <script type="text/html" id="selectTagTmpAll">
-        <div class="select-box-header">
-            <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down" ></i>
-        </div>
-        <div class="optionBox">
-            <ul class="optionUL">
-                <li value="-1">全部</li>
-                <%for(var i=0;i< list.length;i++){%>
-                <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
-                <%}%>
-            </ul>
-        </div>
-    </script>
+<script type="text/html" id="selectTagTmpAll">
+    <div class="select-box-header">
+        <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+    </div>
+    <div class="optionBox">
+        <ul class="optionUL">
+            <li value="-1">全部</li>
+            <%for(var i=0;i< list.length;i++){%>
+            <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
+            <%}%>
+        </ul>
+    </div>
+</script>
 <!--下拉选择模板-->
 <script type="text/html" id="selectTagTmp">
     <div class="select-box-header">
@@ -793,7 +804,11 @@
 </script>
 <script>
     var subid = quakooUser.getUserInfo().sid;//企业id
+
     var selectType = -1;//筛选条件的类型
+    var startTime;//筛选时间开始时间
+    var endTime;//筛选时间结束时间
+
     var categoryData = [];//一级类目数据
     var brandData = [];//品牌数据
     var providerData = [];//供应商数据
@@ -812,6 +827,11 @@
     var type = 0;
     var selectDate = new dateRange("#select-date");
     selectDate.init()
+    $('#select-date button').click(function () {
+        startTime = selectDate.getTime()[2];
+        endTime = selectDate.getTime()[3];
+        getInData()
+    })
     //获取一级类目
     quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
         if(ret && ret.success){
@@ -822,14 +842,6 @@
     quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
         if(ret && ret.success){
             brandData = ret.data;
-            /*var html = template('selectTagTmpAll',{title:'全部商品类型',list:ret.data});
-            //商品列表的筛选
-            $('#select-type').html(html);
-            selectTag($("#select-type"),function (data) {
-                if(data.value){
-                    selectBid = data.value;
-                }
-            })*/
         }
     })
     //获取属性-球
@@ -871,7 +883,7 @@
     function getInData() {
         $("#yj-table").bootstrapTable('destroy');
         $("#yj-table").bootstrapTable({
-            url: config.getUrl_inventoryOutBill_getCheckPager(),
+            url: config.getUrl_inventoryInBill_getCheckPager(),
             classes: "table",
             pagination: true,        //是否显示分页
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
@@ -891,11 +903,11 @@
                 param.subid = subid;
                 param.token = quakooUser.getUserInfo().token;
                 param.type=selectType;
-                if(selectDate.getTime()[2]){
-                    param.startTime=selectDate.getTime()[2];
+                if(startTime){
+                    param.startTime=startTime;
                 }
-                if(selectDate.getTime()[3]){
-                    param.endTime=selectDate.getTime()[3];
+                if(endTime){
+                    param.endTime=endTime;
                 }
                 return param
             },
@@ -904,6 +916,11 @@
                 var arr = [];
                 for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
                     if(this.data[i]){
+                        this.data[i].time = quakooUtils.formatTimeToDateDian(this.data[i].ctime);
+                        this.data[i].clientItemsNum = 0;
+                        for(var j=0;j<this.data[i].clientItems.length;j++){
+                            this.data[i].clientItemsNum +=this.data[i].clientItems[j].num;
+                        }
                         arr.push(this.data[i])
                     }
                 }
@@ -913,7 +930,6 @@
         });
 
     }
-quakooImg.openAlbumAndUpload()
 
 
     //新增入库弹窗
@@ -1036,10 +1052,10 @@ quakooImg.openAlbumAndUpload()
         var html = template('addTmp',{brandData:brandData,categoryData:categoryData,ballData:ballData,columnData:columnData,providerData:providerData})
         $('#addDom').html(html);
         $('.content-view-enter-tan .layui-layer-btn .layui-layer-btn0').click(function () {
-            addOutList(0,index);
+            addInList(0,index);
         });
         $('.content-view-enter-tan .layui-layer-btn .layui-layer-btn1').click(function () {
-            addOutList(1,index)
+            addInList(1,index)
         });
         $('#yj-category li').eq(0).click()
         selectTag($("#out-brand"), function (ret) {
@@ -1157,24 +1173,26 @@ quakooImg.openAlbumAndUpload()
             layer.msg('请查询商品')
             return
         }
+        var arr = [];
         $('.in-yj-input').each(function (index,item) {
             if(quakooUtils.isNotBlack(item.value)){
                 nowGoodData[item.getAttribute('data-index')].newNum = item.value;
+                arr.push(nowGoodData[item.getAttribute('data-index')])
             }
         })
-        for(var i=0;i<nowGoodData.length;i++){
-            nowGoodData[i].brandName = brandName;
-            nowGoodData[i].seriesName = seriesName;
-            nowGoodData[i].providerName = providerName;
-            nowGoodData[i].xinghao = $('#out-xinghao').val();
-            nowGoodData[i].sehao = $('#out-sehao').val();
-            nowGoodData[i].num = $('#out-num').val();
-            nowGoodData[i].shengchanpihao = $('#out-shengchanpihao').val();
-            nowGoodData[i].outDate = outDate.getTime();
+        for(var i=0;i<arr.length;i++){
+            arr[i].brandName = brandName;
+            arr[i].seriesName = seriesName;
+            arr[i].providerName = providerName;
+            arr[i].xinghao = $('#out-xinghao').val();
+            arr[i].sehao = $('#out-sehao').val();
+            arr[i].num = $('#out-num').val();
+            arr[i].shengchanpihao = $('#out-shengchanpihao').val();
+            arr[i].outDate = outDate.getTime();
         }
 
 
-        allOutList[cid].data = nowGoodData;
+        allOutList[cid].data = arr;
         var html = template('outListTmp',{list:allOutList})
         $("#outListDom").html(html)
     }
@@ -1185,7 +1203,7 @@ quakooImg.openAlbumAndUpload()
         $("#outListDom").html(html)
     }
     //确认入库
-    function addOutList(status,index) {
+    function addInList(status,index) {
         if(!peopleId){
             layer.msg('选择入库人');
             return
@@ -1222,7 +1240,7 @@ quakooImg.openAlbumAndUpload()
         params.itemsJson = JSON.stringify(params.itemsJson)
         quakooData.ajaxGetData(config.getUrl_inventoryOutBill_add(),params,function (ret) {
             if(ret && ret.success){
-                layer.msg('修改成功',{icon: 1})
+                layer.msg('添加成功',{icon: 1})
                 layer.close(index)
                 getInData()
             }else{

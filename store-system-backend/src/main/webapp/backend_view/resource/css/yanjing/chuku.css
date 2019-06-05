@@ -390,3 +390,7 @@ border-left: 1px solid #ECECF4;
 .fixed-table-container{
     border: none;
 }
+
+.outbound-body-option .selectBox{
+    margin-bottom: 8px;
+}

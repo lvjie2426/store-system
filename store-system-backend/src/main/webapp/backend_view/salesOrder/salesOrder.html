@@ -315,8 +315,8 @@
                             <li>渐进多焦点</li>
                         </ul>
                         <div class="btnBox">
-                            <button class="btnEmpty">清空</button>
-                            <button class="btnPreservation">保存</button>
+                            <button class="btnEmpty" type="button" onclick="clearYgInfo()">清空</button>
+                            <button class="btnPreservation" type="button" onclick="saveYgInfo()">保存</button>
                         </div>
                     </div>
 
@@ -325,51 +325,7 @@
 
 
                         <div class="tableContent" id="tableContent">
-                            <table border="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;"
-                                class="thisTime">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>裸眼视力</th>
-                                        <th>球镜(S)</th>
-                                        <th>柱镜(C)</th>
-                                        <th>轴位(A)</th>
-                                        <th>矫正视力</th>
-                                        <th>远瞳距</th>
-                                        <th>近瞳距</th>
-                                        <th>ADD</th>
-                                        <th>瞳高</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>R</th>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
 
-                                    </tr>
-                                    <tr>
-                                        <th>L</th>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-                                        <td><input type="text" placeholder="请输入"></td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
                             <table border="" class="hide someTime" cellpadding="1" cellspacing="0"
                                 style="width:100%;padding:5px;">
                                 <thead>
@@ -1605,6 +1561,52 @@
             <li value="<%=list[i].id%>"><%=list[i].name%></li>
         <%}%>
     </script>
+    <script type="text/html" id="ygTmp">
+        <table border="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;"
+               class="thisTime">
+            <thead>
+            <tr>
+                <th></th>
+                <th>裸眼视力</th>
+                <th>球镜(S)</th>
+                <th>柱镜(C)</th>
+                <th>轴位(A)</th>
+                <th>矫正视力</th>
+                <th>远瞳距</th>
+                <th>近瞳距</th>
+                <th>ADD</th>
+                <th>瞳高</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>R</th>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+            </tr>
+            <tr>
+                <th>L</th>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+                <td><input type="text" placeholder="请输入"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </script>
 
     <script>
         var psid;                                             //企业id
@@ -1613,6 +1615,9 @@
         var cusJob;                                           //用户职业
         var proOrderId;                                       //临时订单ID
         var referrer;                                         //推荐人
+
+        var ygInfo = {now:{},'2018.10.27':{},'2018.06.17':{}};
+
         $(function () {
             psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
             subid = quakooDb.getItem("sel_ShopId");           //门店ID
@@ -1810,23 +1815,23 @@
             var cusJob = cusJob;
             var recommender = referrer;
             if(quakooUtils.isBlack(name)){
-                layer.msg("请输入姓名",{icon:1});
+                layer.msg("请输入姓名");
                 return;
             }
             if(quakooUtils.isBlack(phone)){
-                layer.msg("请输入手机号",{icon:1});
+                layer.msg("请输入手机号");
                 return;
             }
             if(!quakooUtils.isMobileNum(phone)){
-                layer.msg("请输入正确的手机号",{icon:1});
+                layer.msg("请输入正确的手机号");
                 return;
             }
             if(quakooUtils.isBlack(birthdate)){
-                layer.msg("请选择出生日期",{icon:1});
+                layer.msg("请选择出生日期");
                 return;
             }
             if(quakooUtils.isBlack(recommender)){
-                layer.msg("请选择推荐人",{icon:1});
+                layer.msg("请选择推荐人");
                 return;
             }
 
@@ -2718,6 +2723,23 @@
                 });
             }); */
         })
+
+
+        function f() {
+
+        }
+        /**
+         * 清空验光信息
+         */
+        function clearYgInfo() {
+            layer.msg('验光信息已清空',{icon:1})
+        }
+        /**
+         * 保存验光信息
+         */
+        function saveYgInfo() {
+            layer.msg('验光信息已保存',{icon:1})
+        }
     </script>
 </body>
 
