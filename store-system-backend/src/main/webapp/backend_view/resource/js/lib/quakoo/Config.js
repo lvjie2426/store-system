@@ -71,6 +71,12 @@ var Config = (function(_super){
     _proto.getUrl_optometryinfo_getList = function(){return this.serverUrl + '/optometryinfo/getList';};
     /**根据手机号查询用户信息*/
     _proto.getUrl_user_getUserByPhone = function(){return this.serverUrl + '/user/getUserByPhone';};
+    /**会员信息认证 或 注册会员*/
+    _proto.getUrl_user_becomeVip = function(){return this.serverUrl + '/user/becomeVip';};
+    /**检查手机号验证码*/
+    _proto.getUrl_user_checkCode = function(){return this.serverUrl + '/user/checkCode';};
+    /**发送验证码*/
+    _proto.getUrl_user_createAuthCodeOnReg = function(){return this.serverUrl + '/user/createAuthCodeOnReg';};
     //=======================销售开单 结束====================
     //=======================实时工作台 开始====================
     //获取日常任务和奖励
