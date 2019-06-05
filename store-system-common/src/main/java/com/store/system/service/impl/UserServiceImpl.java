@@ -741,6 +741,20 @@ public class UserServiceImpl implements UserService {
             }
         }
         //消费次数
+        List<Order> orders = orderDao.getUserFinishOrders(user.getId(),Order.makestatus_qu_yes);
+        if(orders.size()>0){
+            clientUser.setPayCount(orders.size());
+        }
+        //推荐人
+        if(user.getRecommender()>0){
+            long uid = user.getRecommender();
+            User recommender = userDao.load(uid);
+            if(recommender!=null){
+                clientUser.setTname(recommender.getName());
+                clientUser.setTphone(recommender.getPhone());
+            }
+        }
+
         return clientUser;
     }
 
@@ -758,7 +772,7 @@ public class UserServiceImpl implements UserService {
         //查找用户
         User olduser=userDao.load(user.getId());
         //姓名
-        if(user.getName()!=null && StringUtils.isNotBlank(user.getName())){ olduser.setName(user.getName()); }
+        if(StringUtils.isNotBlank(user.getName())){ olduser.setName(user.getName()); }
         //性别
         if(user.getSex() != 0){ olduser.setSex(user.getSex()); }
         //年龄
@@ -766,15 +780,17 @@ public class UserServiceImpl implements UserService {
         //入职时间
         if(user.getWorkingDate() !=0){ olduser.setWorkingDate(user.getWorkingDate());}
         //封面图
-        if(user.getCover()!=null && StringUtils.isNotBlank(user.getCover())){ olduser.setCover(user.getCover()); }
+        if(StringUtils.isNotBlank(user.getCover())){ olduser.setCover(user.getCover()); }
         //生日
         if(user.getBirthdate() != 0){ olduser.setBirthdate(user.getBirthdate()); }
         //职位
-        if(user.getJob()!=null&&StringUtils.isNotBlank(user.getJob())){ olduser.setJob(user.getJob()); }
+        if(StringUtils.isNotBlank(user.getJob())){ olduser.setJob(user.getJob()); }
         //邮件
-        if(user.getMail()!=null&&StringUtils.isNotBlank(user.getMail())){ olduser.setMail(user.getMail()); }
+        if(StringUtils.isNotBlank(user.getMail())){ olduser.setMail(user.getMail()); }
         //手机号
-        if(user.getPhone()!=null&&StringUtils.isNotBlank(user.getPhone())){ olduser.setPhone(user.getPhone()); }
+        if(StringUtils.isNotBlank(user.getPhone())){ olduser.setPhone(user.getPhone()); }
+        //储值金额(分)
+        if(user.getMoney() !=0 ){olduser.setMoney(user.getMoney()*100);}
         boolean res = userDao.update(olduser);
         if(res && !olduser.getPhone().equals(user.getPhone())) {
             LoginUserPool loginUserPool = new LoginUserPool();
@@ -784,9 +800,9 @@ public class UserServiceImpl implements UserService {
             loginUserPoolDao.delete(loginUserPool);
             loginUserPool.setUid(olduser.getId());
             loginUserPoolDao.insert(loginUserPool);
+            return res;
         }
-        boolean result = userDao.update(olduser);
-        return result;
+        return false;
     }
 
     private void check(User user) throws StoreSystemException {
@@ -971,7 +987,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<String> getAllUserJob(long sid,int userType) throws Exception {
         TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
-        List<User> users = userDao.getAllLists(sid,userType,User.status_nomore);
+        List<User> users = userDao.getAllList(sid,userType,User.status_nomore);
         return fieldSetUtils.fieldList(users,"job");
     }
 
@@ -984,28 +1000,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ClientUser getUser(String phone) throws Exception {
-        //根据手机号查询user
-        List<User> users = userDao.getUsers(phone);
-        if (users!=null){
-            User user = users.get(0);
-            if(user.getCardNumber()==0){
-                //生成会员卡号
-                user.setCardNumber(new Random().nextInt(1000000));
-                //给一个最低等级的会员
-                String sql = " select * from user_grade where 1=1 and subid = " + user.getSid() + " order by conditionScore asc";
-                List<UserGrade> userGrades = jdbcTemplate.query(sql,ugMapper);
-                if(userGrades.size()>0){
-                    user.setUserGradeId(userGrades.get(0).getId());
-                }else{
-                    throw new StoreSystemException("请先在本公司下设置会员等级!");
-                }
-                userDao.update(user);
-                return transformClient(user);
-            }else{
-                return transformClient(user);
-            }
+        List<User> user = userDao.getAllLists(User.userType_user,User.status_nomore,phone);
+        if(user.size()>0){
+            return transformClient(user.get(0));
         }
-        return null;
+        return null ;
+    }
+
+    @Override
+    public ClientUser checkUserGradeInfo(User user) throws Exception {
+        //根据手机号查询user
+        User usr = userDao.load(user.getPhone());
+        if (usr==null){
+            //查询不到保存一个新用户
+
+            //生成会员卡号
+            user.setCardNumber(new Random().nextInt(1000000));
+
+            //设置一个最低等级的会员
+            String sql = " select * from user_grade where 1=1 and subid = " + user.getSid() + " order by conditionScore asc";
+            List<UserGrade> userGrades = jdbcTemplate.query(sql,ugMapper);
+            if(userGrades.size()>0){
+                user.setUserGradeId(userGrades.get(0).getId());
+            }else{ throw new StoreSystemException("请先在本公司下设置会员等级!"); }
+            user = userDao.insert(user);
+            return transformClient(user);
+        }
+        return transformClient(usr);
     }
 
     @Override
@@ -1109,8 +1130,8 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
-    //传入201905 判断时间戳是否是当前月
-    public static boolean inExistence(String date,long time)throws Exception{
+    //传入年月 判断是否当前月
+    private boolean inExistence(String date,long time)throws Exception{
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         String year = String.valueOf(calendar.get(Calendar.YEAR));

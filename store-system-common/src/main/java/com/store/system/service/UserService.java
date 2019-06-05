@@ -121,6 +121,9 @@ public interface UserService {
 
     public ClientUser getUser(String phone)throws Exception;
 
+    //会员信息认证
+    public ClientUser checkUserGradeInfo(User user)throws Exception;
+
     ///////////////////////////导出顾客信息//////////////////////////
     public List<ExportUser> getExportUserInfo(long sid, String phone, int sex, String job)throws Exception;
 

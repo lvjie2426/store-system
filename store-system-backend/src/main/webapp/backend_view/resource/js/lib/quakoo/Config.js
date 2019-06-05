@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
-        // this.serverUrl = "http://192.168.1.2:20005";
+        // this.serverUrl = "http://192.168.1.24:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -74,6 +74,10 @@ var Config = (function(_super){
     /**根据手机号查询用户信息*/
     _proto.getUrl_user_becomeVip = function(){return this.serverUrl + '/user/becomeVip';};
     //=======================销售开单 结束====================
+    //=======================实时工作台 开始====================
+    //获取日常任务和奖励
+    _proto.getUrl_user_taskReward = function(){return this.serverUrl + '/user/taskReward';};
+    //=======================实时工作台 结束====================
 
     //=======================顾客管理 开始====================
     /**获取公司下门店列表*/
@@ -204,6 +208,15 @@ var Config = (function(_super){
     /**添加一个入库单*/
     _proto.getUrl_inventoryOutBill_add = function(){return this.serverUrl + '/inventoryinbill/add';};
     //=======================商品管理 结束====================
+
+
+
+    //=======================订单管理 开始====================
+    //获取全部||作废订单
+    _proto.getUrl_order_getAllOrder = function(){return this.serverUrl + '/order/getAllOrder';};
+    //获取未完成订单
+    _proto.getUrl_order_getIncomplete = function(){return this.serverUrl + '/order/getIncomplete';};
+    //=======================订单管理 结束====================
 
 
 

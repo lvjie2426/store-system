@@ -231,7 +231,7 @@ public class UserController extends BaseController {
         }
     }
 
-    //获取所有顾客的职业
+    //获取所有 顾客/员工 的职业
     @RequestMapping("/getAllUserJob")
     public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,
                                       @RequestParam(value = "sid") long sid,
@@ -246,7 +246,7 @@ public class UserController extends BaseController {
         }
     }
 
-    //获取门店下所有顾客 下拉列表
+    //获取门店下所有 顾客/员工 下拉列表
     @RequestMapping("/getAllUser")
     public ModelAndView getAllUser(HttpServletRequest request,HttpServletResponse response,
                                   @RequestParam(value = "sid") long sid,
@@ -256,18 +256,6 @@ public class UserController extends BaseController {
             long subid = subordiante.getPid();
             if(subid==0)throw new StoreSystemException("门店ID错误!");
             return this.viewNegotiating(request,response,new ResultClient(userService.getAllUser(sid,userType)));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
-        }
-    }
-
-    //会员信息认证
-    @RequestMapping("/becomeVip")
-    public ModelAndView becomeVip(HttpServletRequest request,HttpServletResponse response,String phone)throws Exception{
-        try {
-            ClientUser user = userService.getUser(phone);
-            if(user==null){throw new StoreSystemException("未查询到手机号!"); }
-            return this.viewNegotiating(request,response,new ResultClient(user));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
         }
@@ -344,6 +332,27 @@ public class UserController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(res));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
+        }
+    }
+
+    //销售开单 -- 手机号精确查询
+    @RequestMapping("/getUserByPhone")
+    public ModelAndView getUserByPhone(HttpServletRequest request,HttpServletResponse response,
+                                       @RequestParam("phone") String phone)throws Exception{
+        try {
+             ClientUser clientUser = userService.getUser(phone);
+            return this.viewNegotiating(request,response,new ResultClient(true,clientUser));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
+    //销售开单 -- 会员信息认证
+    @RequestMapping("/becomeVip")
+    public ModelAndView becomeVip(HttpServletRequest request,HttpServletResponse response,User user)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(userService.checkUserGradeInfo(user)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
         }
     }
 

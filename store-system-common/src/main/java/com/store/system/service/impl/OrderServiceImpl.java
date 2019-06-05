@@ -507,6 +507,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                     clientOrder.setMachiningName(load.getName());
                 }
             }
+            if(order.getUid()>0){
+                // 顾客name
+                User load = userDao.load(order.getUid());
+                if(load!=null){
+                    clientOrder.setGname(load.getName());
+                }
+            }
             List<OrderSku> skuids = order.getSkuids();
             List<OrderSku> Clientskuids = Lists.newArrayList();
             for(OrderSku sku:skuids){
