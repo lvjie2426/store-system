@@ -18,11 +18,13 @@ import com.store.system.service.PermissionService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
 import com.store.system.util.FileDownload;
+import com.store.system.util.SmsUtils;
 import com.store.system.util.UserUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -354,6 +356,28 @@ public class UserController extends BaseController {
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
         }
+    }
+
+    //发送验证码
+    @RequestMapping("/createAuthCodeOnReg")
+    public ModelAndView createAuthCodeOnReg(@RequestParam(required = true, value = "phone") String phone,
+                                            HttpServletRequest request, HttpServletResponse response, final Model model) throws Exception {
+        return this.viewNegotiating(request, response, userService.createAuthCode(String.valueOf(phone), SmsUtils.templateLoginCode));
+    }
+
+    //销售开单 -- 检验手机号验证码
+    @RequestMapping("/checkCode")
+    public ModelAndView checkCode(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  User loginUser, String code,
+                                  Model model) throws Exception {
+        String res = userService.getAuthCode(loginUser.getPhone());
+        if (StringUtils.isNotBlank(code)) {
+            if (!code.equals(res)) {
+                return this.viewNegotiating(request, response, new ResultClient(false,null,"验证码不正确!"));
+            }
+        }
+        return this.viewNegotiating(request, response, new ResultClient(true));
     }
 
 }

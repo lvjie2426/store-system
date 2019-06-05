@@ -14,6 +14,8 @@ import com.store.system.model.UserMissionPool;
 import com.store.system.service.MissionService;
 import com.store.system.service.SubordinateMissionPoolService;
 import com.store.system.service.UserMissionPoolService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,12 +72,85 @@ public class MissionServiceImpl  implements MissionService {
     }
     @Override
     public boolean update(Mission mission) throws Exception {
-        return missionDao.update(mission);
+        Mission dbMission = missionDao.load(mission);
+        //修改执行任务对象
+        if(!isLists(mission.getExecutor(),dbMission.getExecutor())&&mission.getExecutor().size()>0){
+            dbMission.setExecutor(mission.getExecutor());
+        }
+        if(StringUtils.isNotBlank(mission.getName())&&mission.getName()!=dbMission.getName()){
+            dbMission.setName(mission.getName());
+        }
+        if(mission.getAmount()>0&&mission.getAmount()!=dbMission.getAmount()){
+            dbMission.setAmount(mission.getAmount());
+        }
+        //修改任务类型
+        if(mission.getAmountType()>0&&mission.getAmountType()!=dbMission.getAmountType()){
+            dbMission.setAmountType(mission.getAmountType());
+        }
+        if(mission.getStartTime()>0&&mission.getStartTime()!=dbMission.getStartTime()){
+            dbMission.setStartTime(mission.getStartTime());
+        }
+        if(mission.getEndTime()>0&&mission.getEndTime()!=dbMission.getEndTime()){
+            dbMission.setEndTime(mission.getEndTime());
+        }
+        if(mission.getType()>0&&mission.getType()!=dbMission.getType()){
+            dbMission.setType(mission.getType());
+        }
+        if(mission.getTarget()>0&&mission.getTarget()!=dbMission.getTarget()){
+            dbMission.setTarget(mission.getTarget());
+        }
+        if(!isLists(mission.getSkuIds(),dbMission.getSkuIds())&&mission.getSkuIds().size()>0){
+            dbMission.setSkuIds(mission.getSkuIds());
+        }
+        boolean flag = missionDao.update(mission);
+        if(flag){
+            List<Long> executor = dbMission.getExecutor();
+            //新添加的执行任务对象  添加中间表
+            if(dbMission.getType()==Mission.type_tem){
+                for(Long id:executor){
+                   SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(dbMission.getId(),id);
+                    if(subordinateMissionPool!=null){
+                        executor.remove(id);
+                    }
+                }
+               if(executor.size()>0){
+                   //循环结束没有添加中间表的进行增加操作
+                   for(Long id:executor){
+                       SubordinateMissionPool missionPool = new SubordinateMissionPool();
+                       missionPool.setSid(id);
+                       missionPool.setMid(dbMission.getId());
+                       subordinateMissionPoolDao.insert(missionPool);
+                   }
+               }
+            }else if(dbMission.getType()==Mission.type_user){
+                for(Long id:executor){
+                    UserMissionPool userMissionPool = userMissionPoolService.load(dbMission.getId(),id);
+                    if(userMissionPool!=null){
+                        executor.remove(id);
+                    }
+                }
+                if(executor.size()>0){
+                    //循环结束没有添加中间表的进行增加操作
+                    for(Long id:executor){
+                        UserMissionPool missionPool = new UserMissionPool();
+                        missionPool.setUid(id);
+                        missionPool.setMid(dbMission.getId());
+                        userMissionPoolDao.insert(missionPool);
+                    }
+                }
+            }
+        }
+        return flag;
     }
 
     @Override
     public boolean del(long id) throws Exception {
-        return missionDao.delete(id);
+        Mission mission = missionDao.load(id);
+        if(mission!=null){
+            mission.setStatus(Mission.status_no);//删除状态
+            return missionDao.update(mission);
+        }
+        return false;
     }
     @Override
     public Pager getByPager(Pager pager,long sid) throws Exception {
@@ -167,5 +242,29 @@ public class MissionServiceImpl  implements MissionService {
         float a = now;//当前完成目标
         float b = target;//总目标
         return (int) (a/b*100);
+    }
+
+    //两个List是否相等
+    private <T> boolean  isLists(List<T> l1,List<T> l2)throws Exception{
+        if(l1==l2){
+            return true;
+        }
+        if(l1==null||l2==null){
+            return false;
+        }
+        if(l1.size()!=l2.size()){
+            return false;
+        }
+        for(T t:l1){
+            if(!l1.contains(t)){
+                return false;
+            }
+        }
+        for(T t:l2){
+            if(!l1.contains(t)){
+                return false;
+            }
+        }
+        return true;
     }
 }
