@@ -217,6 +217,7 @@
             overflow: hidden;
             margin: 16px;
         }
+
         .companyManageCont .companyMsg .cont div.comName {
             padding-right: 20px;
             border-right: 1px solid #ECECF4;
@@ -768,7 +769,8 @@
             border: 5px solid #4186DC;
             color: rgba(255, 255, 255, 0);
         }
-        .shopOn{
+
+        .shopOn {
             height: 40px;
             line-height: 40px;
             color: rgba(65, 134, 220, 1);
@@ -778,7 +780,8 @@
             vertical-align: middle;
             font-family: PingFangSC-Semibold;
         }
-        .shopOff{
+
+        .shopOff {
             height: 40px;
             line-height: 40px;
             color: rgba(130, 130, 151, 1);
@@ -806,11 +809,11 @@
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
-                        <li value="01">1</li>
-                        <li value="02">2</li>
-                        <li value="03">3</li>
-                        <li value="04">4</li>
-                        <li value="05">5</li>
+                        <li value="01">暴龙1</li>
+                        <li value="02">暴龙2</li>
+                        <li value="03">暴龙3</li>
+                        <li value="04">暴龙4</li>
+                        <li value="05">暴龙5</li>
                     </ul>
                 </div>
             </div>
@@ -1122,12 +1125,12 @@
             <p class="shopName txtOverflow fl"><%=list[i].name%></p>
             <div class="fr" id="shopListSwitch">
                 <%if(list[i].status == 0){%>
-                <div class="switch active" attr-id="<%=list[i].id%>" attr-status = "1">
+                <div class="switch active" attr-id="<%=list[i].id%>" attr-status="1">
                     <span class="shopOn">已启用</span>
                     <span class="switch-btn"><i></i></span>
                 </div>
                 <%}else if(list[i].status == 1){%>
-                <div class="switch" attr-id="<%=list[i].id%>" attr-status = "0">
+                <div class="switch" attr-id="<%=list[i].id%>" attr-status="0">
                     <span class="shopOff">未开启</span>
                     <span class="switch-btn"><i></i></span>
                 </div>
@@ -1135,34 +1138,36 @@
             </div>
         </div>
         <div class="middle">
-                <p class="Id">
-                        <span class="txt1">门店简码</span>
-                        <span class="txt2 txtOverflow"><%=list[i].storeCode%></span>
-                    </p>
-                <p class="addr">
-                        <span class="txt1">门店地址</span>
-                        <span class="txt2 txtOverflow"><%=list[i].address%></span>
-                    </p>
-                <p class="tel">
-                        <span class="txt1">联系方式</span>
-                        <span class="txt2 txtOverflow"><%=list[i].phone%></span>
-                    </p>
-                <p class="payMode">
-                        <span class="txt1">收款方式</span>
-                        <%if(list[i].payType==1){%>
-                            <span class="txt2 txtOverflow">个人微信</span>
-                        <%}else if(list[i].payType==2){%>
-                            <span class="txt2 txtOverflow">公共微信</span>
-                        <%}else if(list[i].payType==3){%>
-                            <span class="txt2 txtOverflow">公共支付宝</span>
-                        <%}else if(list[i].payType==4){%>
-                            <span class="txt2 txtOverflow">个人支付宝</span>
-                        <%}%>
-                    </p>
-            </div>
+            <p class="Id">
+                <span class="txt1">门店简码</span>
+                <span class="txt2 txtOverflow"><%=list[i].storeCode%></span>
+            </p>
+            <p class="addr">
+                <span class="txt1">门店地址</span>
+                <span class="txt2 txtOverflow"><%=list[i].address%></span>
+            </p>
+            <p class="tel">
+                <span class="txt1">联系方式</span>
+                <span class="txt2 txtOverflow"><%=list[i].phone%></span>
+            </p>
+            <p class="payMode">
+                <span class="txt1">收款方式</span>
+                <%if(list[i].payType==1){%>
+                <span class="txt2 txtOverflow">个人微信</span>
+                <%}else if(list[i].payType==2){%>
+                <span class="txt2 txtOverflow">公共微信</span>
+                <%}else if(list[i].payType==3){%>
+                <span class="txt2 txtOverflow">公共支付宝</span>
+                <%}else if(list[i].payType==4){%>
+                <span class="txt2 txtOverflow">个人支付宝</span>
+                <%}%>
+            </p>
+        </div>
         <div class="bottom">
-                <a href="./staffManage.html?subid=<%=list[i].id%>" ><button class="check">查看员工</button></a>
-                <button class="edit">编辑</button>
+            <a href="./staffManage.html?subid=<%=list[i].id%>">
+                <button class="check">查看员工</button>
+            </a>
+            <button class="edit">编辑</button>
         </div>
     </li>
     <%}%>
@@ -1172,54 +1177,60 @@
     $(function () {
         initPage();
     });
+
     function initPage() {
         sid = quakooUser.getUserInfo().psid;          //企业ID
         getShopList();                                //获取当前企业下门店列表
         searchShop();                                 //根据名称搜索门店
         getComInfo();                                 //获取当前公司信息
     }
+
     /**接口——获取当前公司信息*/
-    function getComInfo(){
-        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinate(),{sid:sid},function(ret){
+    function getComInfo() {
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinate(), {sid: sid}, function (ret) {
             console.log(data);
-            if(ret&&ret.success){
-                if(quakooUtils.isNotBlack(ret.data)){
-                    for(var i = 0;i < ret.data.length; i++){
-                        var obj = quakooImg.processImg(ret.data.icon,60,60);
+            if (ret && ret.success) {
+                if (quakooUtils.isNotBlack(ret.data)) {
+                    for (var i = 0; i < ret.data.length; i++) {
+                        var obj = quakooImg.processImg(ret.data.icon, 60, 60);
                         ret.data[i].iconUrl = obj.url;
                         ret.data[i].style = obj.style;
                     }
-                    var data = {list:ret.data[0]};
-                    var html = template("comInfoList",data);
+                    var data = {list: ret.data[0]};
+                    var html = template("comInfoList", data);
                     document.getElementById("comInfo").innerHTML = html;
                 }
             }
         })
     }
+
     /**接口——获取当前企业下门店列表*/
-    function getShopList(){
-        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid},function(ret){
-            console.log("门店列表信息：",ret);
-            if(ret&&ret.success){
-                if(quakooUtils.isNotBlack(ret.data)){
-                    var data = {list:ret.data};
-                    var html = template("shopList",data);
+    function getShopList() {
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(), {sid: sid}, function (ret) {
+            console.log("门店列表信息：", ret);
+            if (ret && ret.success) {
+                if (quakooUtils.isNotBlack(ret.data)) {
+                    var data = {list: ret.data};
+                    var html = template("shopList", data);
                     document.getElementById("shopUl").innerHTML = html;
-                    $(".switch-btn").click(function(){
+                    $(".switch-btn").click(function () {
                         var $dom = $(this).parent(".switch");
                         var id = $dom.attr("attr-id");
                         var status = $dom.attr("attr-status");
-                        quakooData.ajaxGetData(config.getUrl_subordinate_updateOpen(),{id:id,status:status},function (ret) {
-                            if(ret&&ret.success){
+                        quakooData.ajaxGetData(config.getUrl_subordinate_updateOpen(), {
+                            id: id,
+                            status: status
+                        }, function (ret) {
+                            if (ret && ret.success) {
                                 $dom.toggleClass('active');
-                                if(status==1){
-                                    $dom.attr("attr-status",0);
+                                if (status == 1) {
+                                    $dom.attr("attr-status", 0);
                                     $dom.find(".shopOn").removeClass("shopOn").addClass("shopOff").html("未开启");
-                                    layer.msg("门店已关闭",{icon:1})
-                                }else if(status == 0){
-                                    $dom.attr("attr-status",1);
+                                    layer.msg("门店已关闭", {icon: 1})
+                                } else if (status == 0) {
+                                    $dom.attr("attr-status", 1);
                                     $dom.find(".shopOff").removeClass("shopOff").addClass("shopOn").html("已启用");
-                                    layer.msg("门店已启用",{icon:1})
+                                    layer.msg("门店已启用", {icon: 1})
                                 }
 
                             }
@@ -1229,34 +1240,40 @@
             }
         })
     }
+
     /**接口——根据名称搜索门店*/
-    function searchShop(){
+    function searchShop() {
         var name;
-        document.getElementById('searchShop').onkeypress = function(e){
+        document.getElementById('searchShop').onkeypress = function (e) {
             var keycode = e.keyCode;
-            if(keycode=='13') {
+            if (keycode == '13') {
                 document.getElementById('searchShop').blur();
                 e.preventDefault();
-                keyWord =  document.getElementById('searchShop').value;
-                if(quakooUtils.isBlack(keyWord)){
+                keyWord = document.getElementById('searchShop').value;
+                if (quakooUtils.isBlack(keyWord)) {
                     layer.msg("请输入门店名称");
-                    return ;
+                    return;
                 }
-                name =keyWord;
-                quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStoreByName(),{sid:sid,name:name},function(data){
+                name = keyWord;
+                quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStoreByName(), {
+                    sid: sid,
+                    name: name
+                }, function (data) {
                     console.log(data);
                 })
             }
         };
     }
+
     /**接口——开启关闭门店*/
-    function updataOpen(id,status){
-        quakooData.ajaxGetData(config.getUrl_subordinate_updateOpen(),{id:id,status:status},function(data){
+    function updataOpen(id, status) {
+        quakooData.ajaxGetData(config.getUrl_subordinate_updateOpen(), {id: id, status: status}, function (data) {
             console.log(data);
         })
     }
+
     /**接口——企业下创建门店*/
-    function f(){
+    function f() {
         var param;
         param.id = id;                                //公司ID
         param.name = name;                            //门店名字
@@ -1275,10 +1292,11 @@
         param.processId = processId;
         param.threePolicy = threePolicy;
 
-        quakooData.ajaxGetData(config.getUrl_subordinate_addSubordinateStore(),{},function(ret){
+        quakooData.ajaxGetData(config.getUrl_subordinate_addSubordinateStore(), {}, function (ret) {
             console.log(ret);
         })
     }
+
     //初始化layui模块，并监听事件
     layui.use(['form', 'layedit', 'laydate'], function () {
         form = layui.form;
@@ -1286,11 +1304,11 @@
         form.on('switch(switchTest)', function (data) {
             var isOpenTxt = this.parentNode.previousElementSibling;
             var id = $(isOpenTxt).attr('id-data');
-            if(this.checked == true){
-                updataOpen(id,0);
+            if (this.checked == true) {
+                updataOpen(id, 0);
                 isOpenTxt.innerHTML = '已开启';
-            }else{
-                updataOpen(id,1);
+            } else {
+                updataOpen(id, 1);
                 isOpenTxt.innerHTML = '未开启';
             }
         });
@@ -1312,6 +1330,7 @@
     })
     selectTag($("#jiagong"), function (ret) {/*console.log(ret)*/
     })
+
     //创建门店弹窗
     function creatShop() {
         layer.open({
@@ -1338,39 +1357,7 @@
             }
         });
     }
-    //门店详细弹窗
-    function shopDes() {
-        mapInit()
-        layer.open({
-            type: 1,
-            shade: 0.01,
-            title: '创建门店',
-            skin: 'content-view-shopDes-tan content-view-submit', //样式类名
-            anim: 0,
-            area: ['370px', '550px'],
-            closeBtn: 0, //不显示关闭按钮
-            resize: false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-shopDes'), //容器对象
-            btn: ['取消', '保存'],
-            yes: function (index) {
-                layer.close(index);
-            },
-            btn2: function (index) {
-                layer.close(index);
-            },
-            success: function (layero, index) {
-                form.on('radio(jiagong)', function (data) {
-                    if (data.value == 'own') {
-                        $('#jiagong').removeClass('active')
-                    } else {
-                        $('#jiagong').addClass('active')
-                    }
-                });
-                upploadPic()
-            }
-        });
-    }
+
     //支付方式切换
     function payType(el, type) {
         //公众微信
@@ -1404,6 +1391,7 @@
             }
         }
     }
+
     //公众个人切换
     function payTypeSwitch() {
         form.on('radio(grWX)', function (data) {
@@ -1429,12 +1417,13 @@
             }
         });
     }
+
     //设置支付方式弹窗
     function setPay() {
         layer.open({
             type: 1,
             shade: 0.01,
-            title: null,
+            title: false,
             skin: 'content-view-setPay-tan content-view-submit', //样式类名
             anim: 0,
             area: ['370px', 'auto'],
@@ -1442,19 +1431,55 @@
             resize: false,
             shadeClose: true, //开启遮罩关闭
             content: $('.content-view-setPay'), //容器对象
-            btn: ['取消', '确定'],
+            btn: ['确定', '取消'],
             yes: function (index) {
-                layer.close(index);
+                // layer.close(index);
+                shopDes();
             },
             btn2: function (index) {
                 layer.close(index);
-                shopDes();
             },
             success: function (layero, index) {
                 $('.content-view-setPay-tan .layui-layer-content').height(415);
             }
         });
     }
+
+    //门店详细弹窗
+    function shopDes() {
+        return 'ok';
+        mapInit()
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '创建门店',
+            skin: 'content-view-shopDes-tan content-view-submit', //样式类名
+            anim: 0,
+            area: ['370px', '550px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-shopDes'), //容器对象
+            btn: ['取消', '保存'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                layer.close(index);
+            },
+            success: function (layero, index) {
+                form.on('radio(jiagong)', function (data) {
+                    if (data.value == 'own') {
+                        $('#jiagong').removeClass('active')
+                    } else {
+                        $('#jiagong').addClass('active')
+                    }
+                });
+                upploadPic()
+            }
+        });
+    }
+
     $(function () {
         var curr = new Date().getFullYear();
         var opt = {};
@@ -1485,11 +1510,12 @@
         $('#demo02').trigger('change');
         return curr;
     });
+
     //上传文件函数
     function upploadPic() {
         layui.use('upload', function () {
             var $ = layui.jquery
-                    , upload = layui.upload;
+                , upload = layui.upload;
             //多图片上传
             upload.render({
                 elem: '#test2',

@@ -340,3 +340,38 @@
     background-color: rgba(244, 244, 248, 1);
     border: 1px solid rgba(130, 130, 151, 0.2);
 }
+
+/* 全局固定底部 */
+.winFooterBox {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    overflow: hidden;
+    padding: 8px 12px;
+}
+.winFooterBox span{
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+    padding: 8px 0;
+    float: left;
+}
+
+.winFooterBox .btnSubmission{
+    color: #fff;
+    background: #4186DC;
+}
+
+.winFooterBox button {
+    outline: none;
+    border-right: 3px;
+    padding: 8px 16px;
+    background: #F4F4F8;
+    border: 1px solid #ECECF4;
+    float: right;
+    margin-right: 10px;
+    color: #AFAFBE;
+}
+

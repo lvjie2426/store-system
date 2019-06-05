@@ -496,6 +496,9 @@ input{
     font-size: 12px;
     text-align: right;
     font-family: PingFangSC-Medium;
+    float: right;
+    height: auto;
+    line-height: normal;
 }
 .go-page .page-frame{
     display: inline-block;

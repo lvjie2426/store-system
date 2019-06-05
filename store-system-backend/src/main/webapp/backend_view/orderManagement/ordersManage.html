@@ -67,9 +67,16 @@
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
-                        <li value="1">1</li>
-                        <li value="2">2</li>
-                        <li value="3">3</li>
+                        <li value="1">刘一</li>
+                        <li value="1">陈二</li>
+                        <li value="1">张三</li>
+                        <li value="2">李四</li>
+                        <li value="3">王五</li>
+                        <li value="3">赵六</li>
+                        <li value="3">孙七</li>
+                        <li value="3">周八</li>
+                        <li value="3">吴九</li>
+                        <li value="3">郑十</li>
                     </ul>
                 </div>
             </div>
@@ -82,6 +89,7 @@
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
+                        <li value="0">全部状态</li>
                         <li value="1">未加工</li>
                         <li value="2">欠款</li>
                         <li value="3">未取货</li>
@@ -97,7 +105,12 @@
     <table id="dxqf-table" data-toggle="table" class="table table-border"></table>
 </div>
 <div class="content-view"></div>
-
+<!-- 固定底部 -->
+<div class="winFooterBox">
+    <span>选中2项</span>
+    <button class="btnSubmission">完成取货并结算</button>
+    <button class="btnPreservation">取消选中</button>
+</div>
 <!--全局JS引用-->
 <script src="../resource/js/jquery.min.js"></script>
 <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
@@ -246,7 +259,7 @@
                         var html = '';
                         if (value) {
                             if (value == 1) html = '<div class="btn-status btn-red">未加工</div>';
-                            if (value == 2) html = '<div class="btn-status btn-blue">欠￥</div>';
+                            if (value == 2) html = '<div class="btn-status btn-blue">欠￥ 0</div>';
                             if (value == 3) html = '<div class="btn-status btn-yellow">未取货</div>';
                             if (value == 4) html = '<div class="btn-status btn-grays">已完成</div>';
                             if (value == 5) html = '<div class="btn-status btn-black">已作废</div>';
@@ -294,8 +307,15 @@
     });
 
     //根据name查询数据
+    $('#searchInput').bind('keydown', function (event) {
+        if (event.keyCode == "13") {
+            this.blur();
+            searchName(this);
+        }
+    })
+
     function searchName(t) {
-        if ($(t).val() == "" || $.trim($(t).val()).length == 0) return;
+        // if ($(t).val() == "" || $.trim($(t).val()).length == 0) return;
         customerName = $(t).val();
         ajaxIsRen();
     }
