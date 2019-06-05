@@ -41,11 +41,11 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
   margin-left: 8px;
 }
 .content-view-submit .layui-layer-btn a.canSave.layui-layer-btn1,
-.content-view-submit .layui-layer-btn a.layui-layer-btn0{
+.content-view-submit .layui-layer-btn a.layui-layer-btn1{
   background: #f3f3f7;
   color: #828297;
 }
-.content-view-submit .layui-layer-btn a.layui-layer-btn1{
+.content-view-submit .layui-layer-btn a.layui-layer-btn0{
   background: #f3f3f7;
   color: #b0b0bf;
 }

@@ -89,11 +89,11 @@
             <ul>
                 <li>
                     <div>
-                        <span>9000</span>
+                        <span class="n">9000</span>
                         <div>
                             <i class="iconfont ico_increase_filled icon-ico_increase_filled"
                                style="color:#54B677;"></i>
-                            <em>10%</em>
+                            <em class="n">10</em>%
                         </div>
                     </div>
                     <div>
@@ -103,11 +103,11 @@
                 </li>
                 <li>
                     <div>
-                        <span>32</span>
+                        <span class="n">32</span>
                         <div>
                             <i class="iconfont ico_decrease_filled icon-ico_decrease_filled"
                                style="color:#DD5B4B;"></i>
-                            <em style="color:#DD5B4B;">6%</em>
+                            <em style="color:#DD5B4B;" class="n">6</em>%
                         </div>
                     </div>
                     <div>
@@ -117,7 +117,7 @@
                 </li>
                 <li>
                     <div>
-                        <span>282</span>
+                        <span class="n">282</span>
                     </div>
                     <div>
                         客单价|元
@@ -126,7 +126,7 @@
                 </li>
                 <li>
                     <div>
-                        <span>1019</span>
+                        <span class="n">1019</span>
                     </div>
                     <div>
                         毛利润|元
@@ -140,19 +140,19 @@
             <ul>
                 <li>
                     <span>销售额</span>
-                    <em>9027 元</em>
+                    <em class="n">9027 </em>元
                 </li>
                 <li>
                     <span>销售单数</span>
-                    <em>40 单</em>
+                    <em class="n">40 </em>单
                 </li>
                 <li>
                     <span>客单价</span>
-                    <em>200 元</em>
+                    <em class="n">200 </em>元
                 </li>
                 <li>
                     <span>毛利润</span>
-                    <em>1019 元</em>
+                    <em class="n">1019 </em>元
                 </li>
             </ul>
         </div>
@@ -207,13 +207,13 @@
             </div>
             <ul class="cashContent bomr">
                 <li>
-                    <h2>9500</h2><span class="fcHui">未结算金额&nbsp;|&nbsp;元</span>
+                    <h2>2780</h2><span class="fcHui">未结算金额&nbsp;|&nbsp;元</span>
                 </li>
                 <li>
-                    <h2 class="womenC">9500</h2><span class="fcHui">现金部分&nbsp;|&nbsp;元</span>
+                    <h2 class="womenC">5600</h2><span class="fcHui">现金部分&nbsp;|&nbsp;元</span>
                 </li>
                 <li>
-                    <h2 class="womenC">9500</h2><span class="fcHui">现金单数&nbsp;|&nbsp;笔</span>
+                    <h2 class="womenC">6510</h2><span class="fcHui">现金单数&nbsp;|&nbsp;笔</span>
                 </li>
             </ul>
             <div class="cashFooter">
@@ -229,11 +229,11 @@
             </div>
             <div class="totalBox fl">
                 <div style="margin-bottom: 16px;">
-                    <h2>9000</h2>
+                    <h2>15600</h2>
                     <span class="fcHui">收入&nbsp;|&nbsp;元</span>
                 </div>
                 <div class=" ">
-                    <h2>220</h2>
+                    <h2>2200</h2>
                     <span class="fcHui">支出&nbsp;|&nbsp;元</span>
                 </div>
             </div>
@@ -602,75 +602,114 @@
 </script>
 <!-- 当前页面逻辑 -->
 <script>
-    // 时间范围插件开始
-    var dt = new dateRange(".yj-demo-time");
-    dt.init()
     // 数据挂载
-    var taskReward = [
+    var todaysDetails = [
             {
-                name: '月销售额任务',
-                date: '2018.01.20 2018.05.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 100
+                orderNum: '89465100030',
+                date: '2015.08.17 12:52',
+                name: '刘一',
+                number: '18828172818',
+                money: '￥198',
+                mode: '微信',
+                type: '订单状态',
+                saleName: '二哈',
+                btn: '操作'
+            },
+            {
+                orderNum: '564962148654',
+                date: '2015.12.11 05:02',
+                name: '陈二',
+                number: '186452315',
+                money: '￥2548',
+                mode: '微信',
+                type: '订单状态',
+                saleName: '老马',
+                btn: '操作'
+            },
+            {
+                orderNum: '321631322541',
+                date: '2018.08.17 09:42',
+                name: '张三',
+                number: '15642312',
+                money: '￥9641',
+                mode: '支付宝',
+                type: '订单状态',
+                saleName: '老马',
+                btn: '操作'
+            },
+            {
+                orderNum: '7468511524',
+                date: '2010.06.17 05:54',
+                name: '李四',
+                number: '135645231',
+                money: '￥4865',
+                mode: '支付宝',
+                type: '订单状态',
+                saleName: '老马',
+                btn: '操作'
+            },
+            {
+                orderNum: '654165125163',
+                date: '2018.06.17 12:52',
+                name: '王五',
+                number: '1664565156',
+                money: '￥15418',
+                mode: '微信',
+                type: '订单状态',
+                saleName: '二哈',
+                btn: '操作'
             }, {
-                name: '月销售额任务',
-                date: '2018.01.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 80
+                orderNum: '6879865132',
+                date: '2018.06.17 12:52',
+                name: '赵六',
+                number: '1446136556',
+                money: '￥4622',
+                mode: '支付宝',
+                type: '订单状态',
+                saleName: '二哈',
+                btn: '操作'
             }, {
-                name: '月销售额任务',
-                date: '2018.01.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 80
+                orderNum: '745415634',
+                date: '2018.06.17 12:52',
+                name: '孙七',
+                number: '15686455631',
+                money: '￥4200',
+                mode: '支付宝',
+                type: '订单状态',
+                saleName: '二哈',
+                btn: '操作'
             }, {
-                name: '月销售额任务',
-                date: '2018.01.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 80
+                orderNum: '5646523148',
+                date: '2018.06.17 12:52',
+                name: '周八',
+                number: '1613245465',
+                money: '￥14552',
+                mode: '支付宝',
+                type: '订单状态',
+                saleName: '二哈',
+                btn: '操作'
             }, {
-                name: '月销售额任务',
-                date: '2018.01.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 80
+                orderNum: '2356321523561',
+                date: '2019.06.17 04:52',
+                name: '吴九',
+                number: '165646584',
+                money: '￥9413',
+                mode: '微信',
+                type: '订单状态',
+                saleName: '老马',
+                btn: '操作'
             }, {
-                name: '月销售额任务',
-                date: '2018.01.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 80
-            }, {
-                name: '月销售额任务',
-                date: '2018.01.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 80
-            }, {
-                name: '月销售额任务',
-                date: '2018.01.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 40
-            }, {
-                name: '月销售额任务',
-                date: '2018.01.20',
-                prize: '2000元',
-                amount: '50000元',
-                oknum: '40000元',
-                degree: 80
-            }, {name: '月销售额任务', date: '2018.01.20', prize: '2000元', amount: '50000元', oknum: '40000元', degree: 80}],
+                orderNum: '878641556432',
+                date: '2001.05.27 09:52',
+                name: '郑十',
+                number: '133541651',
+                money: '￥198',
+                mode: '微信',
+                type: '订单状态',
+                saleName: '老马',
+                btn: '操作'
+            }
+        ],
         salesIncentives = [
             {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
                 name: '商品A',
@@ -723,310 +762,29 @@
                 oknum: '2',
                 reward: '20元'
             }],
-        todaysDetails = [{
-            orderNum: '2018061700030',
-            date: '',
-            name: '',
-            number: '',
-            money: '',
-            mode: '',
-            type: '',
-            saleName: '',
-            btn: ''
-        },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '2018061700030',
-                date: '2018.06.17 12:52',
-                name: '林俊',
-                number: '18828172818',
-                money: '￥198',
-                mode: '支付方式',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-        ],
-        cmyRoyaltyForm = [{name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'}, {
-                name: '商品名称A',
-                company: '单位',
-                teamRoy: '20元',
-                personalRoy: '10元'
-            }, {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'}, {
-                name: '商品名称A',
-                company: '单位',
-                teamRoy: '20元',
-                personalRoy: '10元'
-            }, {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'}, {
-                name: '商品名称A',
-                company: '单位',
-                teamRoy: '20元',
-                personalRoy: '10元'
-            }, {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'}, {
-                name: '商品名称A',
-                company: '单位',
-                teamRoy: '20元',
-                personalRoy: '10元'
-            }, {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'}, {
-                name: '商品名称A',
-                company: '单位',
-                teamRoy: '20元',
-                personalRoy: '10元'
-            }, {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'}, {
-                name: '商品名称A',
-                company: '单位',
-                teamRoy: '20元',
-                personalRoy: '10元'
-            }, {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'}, {
-                name: '商品名称A',
-                company: '单位',
-                teamRoy: '20元',
-                personalRoy: '10元'
-            }, {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'}, {
-                name: '商品名称A',
-                company: '单位',
-                teamRoy: '20元',
-                personalRoy: '10元'
-            }
+        cmyRoyaltyForm = [
+            {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '贷记卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '小娃A', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '迅雷看看', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '系列卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '偶像卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '续集', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '修身显瘦卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '显卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '内存卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '公交卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '银行卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '美食卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '健身卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '社保卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '美发卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
+            {name: '商场折扣卡', company: '单位', teamRoy: '20元', personalRoy: '10元'}
         ];
+
+    // 时间范围插件开始
+    var dt = new dateRange(".yj-demo-time");
+    dt.init()
     var time;//根据时间获取数据
     var subid;//门店ID
     //初始化页面
@@ -1049,9 +807,6 @@
 
     // 数据表单初始化函数
     function fromBox() {
-        quakooData.ajaxGetData(config.getUrl_mission_getAllList(), {sid: subid}, function (ret) {
-            console.log(ret);
-        })
         var columns = [
             {field: "name", title: "商品名称", align: "left", valign: "middle", width: '50%'},
             {field: "company", title: "单位", align: "left", valign: "middle"},
@@ -1088,9 +843,7 @@
             clickToSelect: true,
             columns: [
                 {
-                    field: "name", title: "任务名称", align: "left", valign: "middle", formatter: function (v, o) {
-                        console.log(o);
-                    }
+                    field: "name", title: "任务名称", align: "left", valign: "middle"
                 },
                 {
                     field: "startTime", title: "截止时间", align: "left", valign: "middle", formatter: function (val, obj) {
@@ -1119,7 +872,6 @@
                 param.page = param.offset / param.limit + 1;
                 param.size = param.limit;
                 param.token = quakooUser.getUserInfo().token;
-                console.log(param);
                 return param
             }
         });
@@ -1146,6 +898,7 @@
             ]
         });
         //今日出入账明细
+        $("#todaysDetails").bootstrapTable('destroy');
         $("#todaysDetails").bootstrapTable({
             data: todaysDetails,
             classes: "table",
@@ -1198,11 +951,12 @@
             locale: "zh-CN",
             paginationHAlign: "center",
             clickToSelect: true,
-            columns: 1 == 1 ? columns : columns2
+            columns: columns2
         });
         /*卡片分页-抵用券营销*/
         var $table = $("#yj-page-table");
-        var data1 = [{id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}];
+        var data1 = [
+            {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}];
         var TableInit = function (callback) {
             var oTableInit = new Object();
             //初始化Table
@@ -1213,8 +967,8 @@
                     classes: "table",
                     pagination: true,        //是否显示分页
                     pageNumber: 1,                       //初始化加载第一页，默认第一页
-                    pageSize: 6,
-                    pageList: [6, 12, 18],
+                    pageSize: 10,
+                    pageList: [10, 15, 20],
                     sortable: false,
                     sortOrder: "asc",
                     showColumns: true,
@@ -1537,6 +1291,20 @@
         selectTag($("#closeCashSele"))
     }
 
+    var dataObj = {
+        1: [9000, 10, 32, 6, 282, 1019, 9027, 40, 200, 1019],
+        2: [6156, 18, 35, 73, 683, 671, 4546, 76, 400, 2456],
+        3: [2354, 50, 11, 59, 233, 321, 5813, 82, 400, 356],
+        4: [4354, 90, 89, 43, 198, 945, 9652, 354, 54, 245]
+    }
+    //-----------------障眼法开始---------------
+    $(".salesDataTop>ul>li").on('click', function () {
+        var index = $(this).index() + 1;
+        var nDom = $('.n');
+        dataObj[index].forEach(function (item, index) {
+            nDom.eq(index).text(item);
+        })
+    })
 </script>
 
 </html>

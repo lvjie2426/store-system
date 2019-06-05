@@ -143,7 +143,7 @@ var Config = (function(_super){
     _proto.getUrl_salaryrecord_getAllList = function(){return this.serverUrl + '/salaryrecord/getAllList';};
     /**撤销导入*/
     _proto.getUrl_salaryrecord_revoke = function(){return this.serverUrl + '/salaryrecord/revoke';};
-    /**查询某公司工资单导入记录*/
+    /**查询某员工 工资单列表*/
     _proto.getUrl_salary_loadSalaryByUser = function(){return this.serverUrl + '/salary/loadSalaryByUser';};
     //=======================工资模块 结束====================
 

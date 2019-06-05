@@ -5,6 +5,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientMission;
 import com.store.system.client.ClientUser;
+import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
@@ -45,7 +46,7 @@ public class MissionController extends BaseController {
     public ModelAndView add(Mission mission, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Mission missionEntity = missionService.insert(mission);
-            return this.viewNegotiating(request,response, new ResultClient(true, new ResultClient(missionEntity)));
+            return this.viewNegotiating(request,response, new ResultClient(true, missionEntity));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
@@ -55,7 +56,7 @@ public class MissionController extends BaseController {
     public ModelAndView update(Mission mission, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             boolean res = missionService.update(mission);
-            return this.viewNegotiating(request,response, new ResultClient(true, new ResultClient(res)));
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
@@ -65,7 +66,7 @@ public class MissionController extends BaseController {
     public ModelAndView update(@RequestParam(value = "id") long id, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             boolean res = missionService.del(id);
-            return this.viewNegotiating(request,response, new ResultClient(true, new ResultClient(res)));
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
@@ -78,7 +79,7 @@ public class MissionController extends BaseController {
             long psid = subordinate.getPid();
             if(psid==0){ throw new StoreSystemException("门店ID错误");}
             pager = missionService.getByPager(pager,psid);
-            return this.viewNegotiating(request,response, new ResultClient(true, pager));
+            return this.viewNegotiating(request,response, new PagerResult<>( pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
