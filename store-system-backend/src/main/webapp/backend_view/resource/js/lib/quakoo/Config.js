@@ -71,6 +71,8 @@ var Config = (function(_super){
     _proto.getUrl_optometryinfo_getList = function(){return this.serverUrl + '/optometryinfo/getList';};
     /**根据手机号查询用户信息*/
     _proto.getUrl_user_getUserByPhone = function(){return this.serverUrl + '/user/getUserByPhone';};
+    /**根据手机号查询用户信息*/
+    _proto.getUrl_user_becomeVip = function(){return this.serverUrl + '/user/becomeVip';};
     //=======================销售开单 结束====================
 
     //=======================顾客管理 开始====================

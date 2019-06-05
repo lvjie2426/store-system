@@ -103,18 +103,18 @@
                     <form class="layui-form" action="">
                         <div class="layui-form-item nameInput">
                             <div class="layui-input-block">
-                                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="姓名"
+                                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="姓名" id="cusInfoName"
                                     class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item phoneNum">
                             <div class="layui-input-block">
-                                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="手机号码"
+                                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="手机号码" id="cusInfoPhone"
                                     class="layui-input">
                             </div>
                         </div>
 
-                        <div class="benderBox">
+                        <div class="benderBox" id="cusInfoSex">
                             <span class="active">男</span>
                             <span>女</span>
                         </div>
@@ -149,15 +149,11 @@
                             <span class="tuiJianRen">推荐人</span>
                             <div class="selectBox" id="recommenderBox">
                                 <div class="select-box-header">
-                                    <span class="text">临时订单</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                                    <span class="text">推荐人</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
                                 </div>
                                 <div class="optionBox">
-                                    <ul class="optionUL">
-                                        <li value="01">1</li>
-                                        <li value="02">2</li>
-                                        <li value="03">3</li>
-                                        <li value="04">4</li>
-                                        <li value="05">5</li>
+                                    <ul class="optionUL" id="referer">
+                                        <!--<li value="01">1</li>-->
                                     </ul>
                                 </div>
                             </div>
@@ -166,13 +162,12 @@
                 </div>
             </div>
             <div class="footerBox registerNo">
-                <div class="memberInfo  noRegister">
+                <div class="memberInfo  noRegister" style="display: block;">
                     <h4>会员信息</h4>
                     <button class="btn btn-order registerMember noRegisterZC" onclick="addAlert()">注册成为会员</button>
-
                     <div style="color: #828297;margin-top: 16px;">暂无</div>
                 </div>
-                <div class="memberInfo  noRegisterWx">
+                <div class="memberInfo  noRegisterWx" style="display: none">
                     <h4>会员信息</h4>
                     <button class="btn btn-order registerMember noRegisterYZ">点击验证</button>
 
@@ -209,7 +204,7 @@
 
                     </div>
                 </div>
-                <div class="memberInfo  yesRegister">
+                <div class="memberInfo  yesRegister" style="display: none">
                     <h4>会员信息</h4>
                     <span class="registerMember" style="color: #828297;background: #F4F4F8">
                         已验证
@@ -1601,31 +1596,42 @@
     <!--顾客职业列表-->
     <script type="text/html" id="shopOccupationData">
         <%for(var i=0; i < list.length;i++){%>
-        <li value="<%=list[i].job%>"><%=list[i].job%></li>
+        <li value="<%=list[i]%>"><%=list[i]%></li>
+        <%}%>
+    </script>
+    <!--推荐人-->
+    <script type="text/html" id="recommenderBoxUl">
+        <%for(var i=0;i< list.length;i++){%>
+            <li value="<%=list[i].name%>"><%=list[i].name%></li>
         <%}%>
     </script>
 
     <script>
         var subid;                                            //门店id
         var cusPhone;                                         //用户手机号
+        var cusJob;                                           //用户职业
         var proOrderId;                                       //临时订单ID
+        var referrer;                                         //推荐人
         $(function () {
             subid = quakooDb.getItem("sel_ShopId");           //门店ID
-            initPage();
+            console.log("门店ID",subid);
+            initPage();                                       //页面初始化
         });
         function initPage(){
+            //年龄计算
             $("#tests").on("change",function () {
-               var brithYear = $(this).val().split(0,4);
-               $("#autoAge").val(brithYear);
+               var brithYear = $(this).val().slice(0,4);
+               var nowYear = new Date().getFullYear();
+               $("#autoAge").val(nowYear-brithYear+"岁");
             });
             //切换性别
             $('.benderBox>span').on('click', function () {
                 $(this).removeClass('active').siblings().addClass('active');
             });
             getTemporaryOrder();                              //获取门店下临时订单
-            getUserByPhone();                                 //根据手机号查询用户信息
-            getShopPhone();                                   //获取门店对应的手机号
-
+            getShopPhone();                                   //获取门店顾客对应的手机号
+            getShopJob();                                     //获取门店顾客职业
+            getShopStaff();                                   //获取门店下员工列表（推荐人==员工）
         }
 
         /**接口——获取门店下的临时订单*/
@@ -1642,27 +1648,30 @@
         }
 
         /**接口——获取门店下的顾客的职业*/
-        function getShopPhone(){
-            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:1},function (ret) {
-                console.log("ssdfa:",ret);
-                var data = {list:ret.rows};
-                var html = template("shopPhoneData",data);
-                document.getElementById("shopPhoneList").innerHTML = html;
+        function getShopJob(){
+            quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{sid:subid,userType:0},function (ret) {
+                console.log("fa:",ret);
+                var data = {list:ret.data};
+                var html = template("shopOccupationData",data);
+                document.getElementById("shopOccupationList").innerHTML = html;
+                //职业
+                selectTag($("#occupationTypeBox"),function (ret) {
+                    cusJob = ret.value;
+                });
             })
         }
 
         /**接口——获取门店下的顾客手机号*/
         function getShopPhone(){
-            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:1},function (ret) {
-                if(ret&&ret.success){
-                    var data = {list:ret.rows};
-                    var html = template("shopPhoneData",data);
-                    document.getElementById("shopPhoneList").innerHTML = html;
-                    selectTag($("#searchTypeBox"),function (ret) {
-                        cusPhone =ret.value;
-                        getUserByPhone();
-                    });
-                }
+            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:0},function (ret) {
+                console.log("ssdfa:",ret);
+                var data = {list:ret.rows};
+                var html = template("shopPhoneData",data);
+                document.getElementById("shopPhoneList").innerHTML = html;
+                selectTag($("#searchTypeBox"),function (ret) {
+                    cusPhone =ret.value;
+                    getUserByPhone();
+                });
             })
         }
         /**接口——根据手机号查询用户信息*/
@@ -1670,7 +1679,26 @@
             quakooData.ajaxGetData(config.getUrl_user_getUserByPhone(),{phone:cusPhone},function (ret) {
                 console.log("手机号获取顾客：",ret);
                 if(ret&&ret.success){
+                    if(quakooUtils.isNotBlack(ret.data)){
+                        //渲染顾客信息
+
+
+                    }else{
+                        layer.msg("未查到该顾客!",{icon:1})
+                    }
                 }
+            })
+        }
+        /**接口——获取门店下顾客的员工(获取推荐人)*/
+        function getShopStaff(){
+            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:1},function (ret) {
+                console.log("获取推荐人：",ret);
+                var data = {list:ret.rows};
+                var html = template("recommenderBoxUl",data);
+                document.getElementById("recommenderBox").innerHTML = html;
+                selectTag($("#recommenderBox"),function (ret) {
+                    referrer = ret.value;
+                })
             })
         }
 
@@ -1723,7 +1751,7 @@
         //弹窗开始
         // 顾客信息弹窗
         function addAlert(a) {
-            layer.closeAll()
+            layer.closeAll();
             var index = layer.open({
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
@@ -1739,7 +1767,7 @@
                 yes: function () {
                 },
                 btn2: function () {
-                    //    取消
+                    //取消
                     console.log(a);
                 },
                 success: function (layero, index) {
@@ -2538,14 +2566,6 @@
             $('#tableContent>table').eq($(this).index()).removeClass('hide').siblings().addClass('hide');
         })
 
-
-        // 下拉选择JS开始
-        var attr = [$("#selectBox"), $("#searchTypeBox"), $("#occupationTypeBox"), $("#optometrySelect"), $("#optometristName"), $('#eye'), $("#glasses"), $("#result"), $("#proposal"), $("#salePeople"), $("#machiningPeople"), $('#costAdditional'), $('#promotion'), $("#recommenderBox"), $(".brand"), $(".series"), $(".cycleSelect"), $(".branchCommoditySelect")];
-        $.each(attr, function (index, item) {
-            selectTag($(item))
-        });
-
-
         //验光Tag
         $(".tab-ul li").click(function () {
             $(this).addClass('active').siblings().removeClass('active')
@@ -2586,7 +2606,7 @@
         });
 
         //会员号信息状态
-        var a = 3;
+        /*var a = 1;
 
         function b(ele, ele2) {
             ele.siblings().remove();
@@ -2596,7 +2616,7 @@
         if (a == 1) b($('.noRegister'));
         if (a == 2) b($('.noRegisterWx'), $('.recommenderBox'));
         if (a == 3) b($('.yesRegister'), $('.recommenderBox'));
-
+*/
         // 模糊搜索下拉框
         layui.use('form', function () {
             var form = layui.form;
