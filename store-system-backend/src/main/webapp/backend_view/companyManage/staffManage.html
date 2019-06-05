@@ -1019,6 +1019,7 @@
         var preid = window.location.search.replace(/\?subid=/, ""); //前一个页面传参（门店ID）
         psid = quakooUser.getUserInfo().psid;                //企业ID(公司ID)
         subid = preid || quakooDb.getItem("sel_ShopId");       //门店ID
+        console.log(preid);
         initPage();                                          //初始化页面
     });
 
@@ -1087,8 +1088,8 @@
     }
 
     /**接口——获取员工的职位列表*/
-    function getJobList(psid) {
-        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {psid: psid, userType: 1}, function (ret) {
+    function getJobList() {
+        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {sid: subid, userType: 1}, function (ret) {
             if (ret && ret.success) {
                 if (quakooUtils.isNotBlack(ret.data)) {
                     var html = "";
