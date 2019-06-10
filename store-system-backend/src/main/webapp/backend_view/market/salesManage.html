@@ -1437,13 +1437,26 @@
                         return html;
                     }
                 }, {
-                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary" style="margin-right: 8px;">编辑</button><button class="btn btn-danger" style="margin-right: 8px;">删除</button>';
+                    field: "id",
+                    title: "操作",
+                    align: "center",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary" style="margin-right: 8px;">编辑</button><button class="btn btn-danger" style="margin-right: 8px;" data-id="' + value + '">删除</button>';
                     }
                 }
             ],
             onPostBody: function () {
                 canvasFn();
+                //删除任务
+                $('.btn-danger').on('click', function () {
+                    var id = parseFloat($(this).attr('data-id'));
+                    quakooData.ajaxGetData(config.getUrl_mission_del(), {id: id}, function (ret) {
+                        if (ret && ret.success) {
+                            layer.msg('删除成功', {icon: 1, shade: 0.01});
+                        }
+                    })
+                })
             },
             queryParams: function (param) {
                 param.sid = subid;
@@ -1714,8 +1727,8 @@
 
     /**
      * 弹窗删除任务
-     * */
-    function deleteTask() {
+     *
+     function deleteTask() {
         var index = layer.open({
             type: 1,
             shade: 0.01,
@@ -1737,7 +1750,7 @@
             }
         });
     }
-
+     */
     /**
      * 创建任务弹窗tab切换
      * */

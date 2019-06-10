@@ -74,10 +74,13 @@ public class Order implements Serializable {
     private long couponid;//营销券id
     private int marketingType;//促销类型
     private int makeStatus;//加工状态/取货状态
+    private long OptometryInfoid;//验光单id
 
     @HyperspaceColumn(isJson = true)
     //skuids; (long-skuid,object-num,price)
     private List<OrderSku> skuids=new ArrayList<>();
+    @HyperspaceColumn(isJson = true)
+    private List<Surcharge> surcharges=new ArrayList<>(); //附加费用
 
 
     private int expireUnitId;

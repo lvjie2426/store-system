@@ -24,9 +24,10 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-          this.serverUrl = "http://39.107.247.82:20005";
+          // this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
+        this.serverUrl = "http://192.168.1.30:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
@@ -232,6 +233,8 @@ var Config = (function(_super){
     _proto.getUrl_order_getAllOrder = function(){return this.serverUrl + '/order/getAllOrder';};
     //获取未完成订单
     _proto.getUrl_order_getIncomplete = function(){return this.serverUrl + '/order/getIncomplete';};
+    //根据职位获取用户列表
+    _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
     //=======================订单管理 结束====================
 
 

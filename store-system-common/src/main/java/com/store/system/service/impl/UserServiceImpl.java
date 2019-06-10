@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Resource
     private SubordinateService subordinateService;
+
     @Resource
     private LoginUserPoolDao loginUserPoolDao;
 
@@ -1010,23 +1011,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public ClientUser checkUserGradeInfo(User user) throws Exception {
         //根据手机号查询user
-        User usr = userDao.load(user.getPhone());
-        if (usr==null){
-            //查询不到保存一个新用户
-
+        List<User> users = userDao.getAllLists(User.userType_user,User.status_nomore,user.getPhone());
+        if(users.size()<=0){
             //生成会员卡号
             user.setCardNumber(new Random().nextInt(1000000));
-
+            user.setUserType(User.userType_user);
             //设置一个最低等级的会员
             String sql = " select * from user_grade where 1=1 and subid = " + user.getSid() + " order by conditionScore asc";
             List<UserGrade> userGrades = jdbcTemplate.query(sql,ugMapper);
             if(userGrades.size()>0){
                 user.setUserGradeId(userGrades.get(0).getId());
             }else{ throw new StoreSystemException("请先在本公司下设置会员等级!"); }
+            check(user);
+            long subid = user.getSid();
+            Subordinate subordinate = subordinateDao.load(subid);
+            long pSubid = subordinate.getPid();
+            if(subordinate.getPid() == 0) pSubid = subid;
+            user.setPsid(pSubid);
+            user.setRand(new Random().nextInt(100000000));
+            user.setPassword(MD5Utils.md5ReStr("123456".getBytes()));
             user = userDao.insert(user);
             return transformClient(user);
         }
-        return transformClient(usr);
+        return transformClient(users.get(0));
+    }
+
+    @Override
+    public List<ClientUser> getUserByJob(String job, long sid,int userType) throws Exception {
+        return transformClient(userDao.getAllListByJob(userType,User.status_nomore,job,sid));
     }
 
     @Override
