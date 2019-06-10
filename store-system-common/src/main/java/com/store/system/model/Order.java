@@ -79,6 +79,8 @@ public class Order implements Serializable {
     @HyperspaceColumn(isJson = true)
     //skuids; (long-skuid,object-num,price)
     private List<OrderSku> skuids=new ArrayList<>();
+    @HyperspaceColumn(isJson = true)
+    private List<Surcharge> surcharges=new ArrayList<>(); //附加费用
 
 
     private int expireUnitId;
