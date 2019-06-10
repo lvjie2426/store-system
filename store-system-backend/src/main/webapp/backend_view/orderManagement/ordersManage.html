@@ -66,7 +66,7 @@
                     <span class="text">全部销售员</span><i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
-                    <ul class="optionUL">
+                    <ul class="optionUL" id="salespersonBox">
                         <li value="1">刘一</li>
                         <li value="1">陈二</li>
                         <li value="1">张三</li>
@@ -107,7 +107,7 @@
 <div class="content-view"></div>
 <!-- 固定底部 -->
 <div class="winFooterBox">
-    <span>选中2项</span>
+    <span id="numLen"> 选中0项</span>
     <button class="btnSubmission">完成取货并结算</button>
     <button class="btnPreservation">取消选中</button>
 </div>
@@ -132,10 +132,19 @@
 <script src="../resource/js/yanjing/daterange.js"></script>
 <!--顾客下拉框-->
 <script type="text/html" id="nameList">
+    <li value="0">全部</li>
     <%for (var i = 0; i < list.length; i++){%>
     <li value="<%=list[i].id%>"><%=list[i].name%></li>
     <%}%>
 </script>
+<!--销售员下拉框-->
+<script type="text/html" id="salespersonList">
+    <li value="0">全部</li>
+    <%for (var i = 0; i < list.length; i++){%>
+    <li value="<%=list[i].id%>"><%=list[i].name%></li>
+    <%}%>
+</script>
+
 <script>
     var ordersType = 0;//订单状态
     var subid;//门店id
@@ -155,6 +164,7 @@
         subid = quakooDb.getItem("sel_ShopId");//门店ID
         ajaxTemplate(config.getUrl_order_getAllOrder());
         ajaxNameList();
+        ajaxSalespersonList();
     }
 
     //获取下拉框顾客姓名
@@ -164,7 +174,21 @@
                 $('#selectCustomer').find('.optionUL').html(template('nameList', {list: ret.data}));
                 //根据下拉框顾客id获取数据
                 selectTag($("#selectCustomer"), function (ret) {
-                    customerId = ret.value;
+                    customerId = parseFloat(ret.value);
+                    ajaxIsRen();
+                });
+            }
+        })
+    }
+
+    //获取全部销售员
+    function ajaxSalespersonList() {
+        quakooData.ajaxGetData(config.getUrl_user_getUsersByJob(), {job: '销售员', userType: 1}, function (ret) {
+            if (ret && ret.success) {
+                document.getElementById('salespersonBox').innerHTML = template('salespersonList', {list: ret.data})
+                //根据下拉框销售员id获取数据
+                selectTag($("#selectAllSalesStaff"), function (ret) {
+                    personnelId = parseFloat(ret.value);
                     ajaxIsRen();
                 });
             }
@@ -209,9 +233,6 @@
     date1.init();
     //日期范围插件结束
     //根据时间查找数据
-    $('.btn-primary').on('click', function () {
-        ajaxIsRen();
-    })
 
 
     function ajaxTemplate(url) {
@@ -281,11 +302,29 @@
                 if (makeStatusType) param.makeStatus = makeStatusType;
                 if (customerName && customerName != '') param.name = customerName;
                 if (customerId && customerId != '') param.uid = customerId;
+                if (personnelId && personnelId != '') param.personnelId = personnelId;
                 param.subid = subid;
                 param.page = param.offset / param.limit + 1;
                 param.size = param.limit;
                 param.token = quakooUser.getUserInfo().token;
                 return param
+            },
+            onPostBody: function (data) {
+            },
+            onCheckAll: function (data) {
+                var len = data.length;
+                $("#numLen").html('选中' + len + '项');
+            },
+            onUncheckAll: function () {
+                $("#numLen").text('选中' + 0 + '项')
+            },
+            onCheck: function () {
+                var len = $('#dxqf-table').find('tr.selected').length;
+                $("#numLen").text('选中' + len + '项')
+            },
+            onUncheck: function () {
+                var len = $('#dxqf-table').find('tr.selected').length;
+                $("#numLen").text('选中' + len + '项')
             }
         });
     }
@@ -327,12 +366,6 @@
         if (ordersType == 2) ajaxTemplate(config.getUrl_order_getAllOrder());
     }
 
-    /**
-     * 全部销售人员下拉框
-     * */
-    selectTag($("#selectAllSalesStaff"), function (ret) {
-        console.log(ret)
-    });
 
     /**
      * 全部状态下拉框

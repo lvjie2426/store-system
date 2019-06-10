@@ -295,7 +295,7 @@
   color: #393953;
 }
 .content-view-commonInventory .leftBox .body .contUl .item .cont div{
-  float: left;
+  /*float: left;*/
 }
 .content-view-commonInventory .leftBox .body .contUl .item .cont div.btnGray{
   float: right;
@@ -309,6 +309,7 @@
   color: #393953;
   font-weight: 600;
   margin-right: 8px;
+  min-width: 34%;
 }
 .content-view-commonInventory .leftBox .body .contUl .item .cont .selectBox .text,
 .content-view-commonInventory .leftBox .body .contUl .item .cont .selectBox i{
@@ -799,5 +800,5 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
   color: #fff;
 }
 #selectBox001 ul li form .layui-form-item .layui-input-block .layui-form-checkbox[lay-skin=primary]:hover i{
-  border: none;
+  border: 1px solid #d2d2d2;
 }

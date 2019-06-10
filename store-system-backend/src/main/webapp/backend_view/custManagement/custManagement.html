@@ -29,678 +29,954 @@
 </head>
 
 <body>
-    <!--头部 &#45;&#45; 开始-->
-    <header>
-        <ul>
-            <li><i class="ruku"
-                    style="background: url(../resource/img/ruku.jpg)no-repeat;background-size: 100% 100%;"></i>顾客管理</li>
-        </ul>
-        <div>
-            <button class="btnLevelSetting" onclick="levelSetting()">会员等级设置</button>
-            <button>导出Excel</button>
-            <button>导入顾客</button>
-            <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" onclick="deriveExcel()">
-                <i class="fa fa-arrow-circle-down">下载模板</i>
-            </button>
-            <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" onclick="exportExcel()">
-                <i class="fa fa-arrow-circle-down">导出Excle</i>
-            </button>
-            <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" id="btn_import" onclick="Improt()">
-                <i class="fa fa-arrow-circle-o-up">导入</i>
-            </button>
-<!--
-            <div class="selectBox" id="searchTypeBox">
-                <div class="select-box-header">
-                    <span class="text">手机号</span> <i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">1</li>
-                        <li value="02">2</li>
-                        <li value="03">3</li>
-                        <li value="04">4</li>
-                        <li value="05">5</li>
-                    </ul>
-                </div>
-            </div>
--->
-            <input type="text" placeholder="搜索手机号" id="searchPhoneNum">
-        </div>
-    </header>
-    <!-- 二级头部 -->
-    <div class="headerTwo clearfix">
-        <div class="selectBox hdTwo" id="grade">
-            <div class="select-box-header">
-                <span class="text">全部会员等级</span> <i class="iconfont icon-ico_arrow_down"></i>
-            </div>
-            <div class="optionBox">
-                <ul class="optionUL" id="memberNameUl">
-                    <li value="01">1</li>
-                    <li value="02">2</li>
-                    <li value="03">3</li>
-                    <li value="04">4</li>
-                    <li value="05">5</li>
-                </ul>
-            </div>
-        </div>
-        <div class="selectBox hdTwo" id="gender">
-            <div class="select-box-header">
-                <span class="text">全部性别</span> <i class="iconfont icon-ico_arrow_down"></i>
-            </div>
-            <div class="optionBox">
-                <ul class="optionUL" id="sexUl">
-                    <li value="0">全部</li>
-                    <li value="1">男</li>
-                    <li value="2">女</li>
-                </ul>
-            </div>
-        </div>
-        <div class="selectBox hdTwo" id="occupation">
-            <div class="select-box-header">
-                <span class="text">全部职业</span> <i class="iconfont icon-ico_arrow_down"></i>
-            </div>
-            <div class="optionBox">
-                <ul class="optionUL" id="jobUl">
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- 主体内容 -->
-    <div class="main">
-        <!-- 主体内容头部 -->
-        <div class="mainHeader">
-            <div class="titleBox clearfix">
-                <ul class="tab-ul fl">
-                    <li class="active">全部订单</li>
-                    <li>未完成订单</li>
-                    <li>作废订单</li>
-                </ul>
-                <div class="yj-demo-time fr">
-                    <div class="yj-date">
-                        <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="dataStatistics clearfix">
-                <div class="menWomenProportion">
-                    <div class="totalNum">
-                        <h1>2192</h1>
-                        <span class="fcHui">顾客数&nbsp;|&nbsp;人</span>
-                    </div>
-                    <div class="vertical"></div>
-                    <div class="menWomenBox">
-                        <div class="men mb16">
-                            <i class="iconfont  ico_male icon-ico_male menC"></i>
-                            <span class="menC">&nbsp;男</span>
-                            <span class="ml8 fs14">48%</span>
+<!--头部 &#45;&#45; 开始-->
+<header>
+    <ul>
+        <li><i class="ruku"
+               style="background: url(../resource/img/ruku.jpg)no-repeat;background-size: 100% 100%;"></i>顾客管理
+        </li>
+    </ul>
+    <div>
+        <button class="btnLevelSetting" onclick="levelSetting()">会员等级设置</button>
+        <button>导出Excel</button>
+        <button>导入顾客</button>
+        <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" onclick="deriveExcel()">
+            <i class="fa fa-arrow-circle-down">下载模板</i>
+        </button>
+        <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" onclick="exportExcel()">
+            <i class="fa fa-arrow-circle-down">导出Excle</i>
+        </button>
+        <button class="btn btn-success btn-sm btn-outline" style="margin-left: 10px" id="btn_import" onclick="Improt()">
+            <i class="fa fa-arrow-circle-o-up">导入</i>
+        </button>
+        <!--
+                    <div class="selectBox" id="searchTypeBox">
+                        <div class="select-box-header">
+                            <span class="text">手机号</span> <i class="iconfont icon-ico_arrow_down"></i>
                         </div>
-                        <div class="women">
-                            <i class="iconfont  ico_female icon-ico_female womenC"></i>
-                            <span class="womenC">&nbsp;女</span>
-                            <span class="ml8 fs14">58%</span>
+                        <div class="optionBox">
+                            <ul class="optionUL">
+                                <li value="01">1</li>
+                                <li value="02">2</li>
+                                <li value="03">3</li>
+                                <li value="04">4</li>
+                                <li value="05">5</li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-                <ul class="dataDetailed clearfix">
-                    <li>
-                        <h1>41%</h1>
-                        <span class="fcHui">老客户占比</span>
-                    </li>
-                    <li>
-                        <h1>572</h1>
-                        <span class="fcHui">微信认证&nbsp;|&nbsp;人</span>
-                    </li>
-                    <li>
-                        <h1>899</h1>
-                        <span class="fcHui">手机号认证&nbsp;|&nbsp;人</span>
-                    </li>
-                    <li>
-                        <h1>210</h1>
-                        <span class="fcHui">储值顾客&nbsp;|&nbsp;人</span>
-                    </li>
-                </ul>
-            </div>
+        -->
+        <input type="text" placeholder="搜索手机号" id="searchPhoneNum">
+    </div>
+</header>
+<!-- 二级头部 -->
+<div class="headerTwo clearfix">
+    <div class="selectBox hdTwo" id="grade">
+        <div class="select-box-header">
+            <span class="text">全部会员等级</span> <i class="iconfont icon-ico_arrow_down"></i>
         </div>
-
-        <div class="formBox">
-            <table id="yj-table" data-toggle="table" class="table table-border"></table>
+        <div class="optionBox">
+            <ul class="optionUL" id="memberNameUl">
+                <li value="01">1</li>
+                <li value="02">2</li>
+                <li value="03">3</li>
+                <li value="04">4</li>
+                <li value="05">5</li>
+            </ul>
         </div>
     </div>
-
-    <!-- 全局弹窗盒子 -->
-    <div class="popup">
-        <!-- 会员等级 -->
-        <div class="memberLevelPop">
-            <table id="memberLevelPop" data-toggle="table" class="table table-border"></table>
+    <div class="selectBox hdTwo" id="gender">
+        <div class="select-box-header">
+            <span class="text">全部性别</span> <i class="iconfont icon-ico_arrow_down"></i>
         </div>
-        <!-- 会员等级设置 -->
-        <div class="addLevelPop">
-            <ul class="settingBox">
-                <li>
-                    <div class="topic">等级称号</div>
-                    <div class="inputContent">
-                        <input type="text" placeholder="称号" style="width: 100%;" id="grade-title">
+        <div class="optionBox">
+            <ul class="optionUL" id="sexUl">
+                <li value="0">全部</li>
+                <li value="1">男</li>
+                <li value="2">女</li>
+            </ul>
+        </div>
+    </div>
+    <div class="selectBox hdTwo" id="occupation">
+        <div class="select-box-header">
+            <span class="text">全部职业</span> <i class="iconfont icon-ico_arrow_down"></i>
+        </div>
+        <div class="optionBox">
+            <ul class="optionUL" id="jobUl">
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 主体内容 -->
+<div class="main">
+    <!-- 主体内容头部 -->
+    <div class="mainHeader">
+        <div class="titleBox clearfix">
+            <ul class="tab-ul fl">
+                <li class="active">全部订单</li>
+                <li>未完成订单</li>
+                <li>作废订单</li>
+            </ul>
+            <div class="yj-demo-time fr">
+                <div class="yj-date">
+                    <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                </div>
+            </div>
+        </div>
+        <div class="dataStatistics clearfix">
+            <div class="menWomenProportion">
+                <div class="totalNum">
+                    <h1>2192</h1>
+                    <span class="fcHui">顾客数&nbsp;|&nbsp;人</span>
+                </div>
+                <div class="vertical"></div>
+                <div class="menWomenBox">
+                    <div class="men mb16">
+                        <i class="iconfont  ico_male icon-ico_male menC"></i>
+                        <span class="menC">&nbsp;男</span>
+                        <span class="ml8 fs14">48%</span>
                     </div>
+                    <div class="women">
+                        <i class="iconfont  ico_female icon-ico_female womenC"></i>
+                        <span class="womenC">&nbsp;女</span>
+                        <span class="ml8 fs14">58%</span>
+                    </div>
+                </div>
+            </div>
+            <ul class="dataDetailed clearfix">
+                <li>
+                    <h1>41%</h1>
+                    <span class="fcHui">老客户占比</span>
                 </li>
                 <li>
-                    <div class="topic">等级条件</div>
-                    <div class="inputContent">
-                        满&nbsp;<input type="number" placeholder="数值" id="grade-condition">&nbsp;积分获取此称号
-                    </div>
+                    <h1>572</h1>
+                    <span class="fcHui">微信认证&nbsp;|&nbsp;人</span>
                 </li>
                 <li>
-                    <div class="topic">积分抵现</div>
-                    <div class="inputContent">
-                        <input type="number" placeholder="数值" id="fornow-num">&nbsp;积分=&nbsp;<input type="number"
-                            placeholder="金额" id="fornow-money">&nbsp;元
-                    </div>
+                    <h1>899</h1>
+                    <span class="fcHui">手机号认证&nbsp;|&nbsp;人</span>
                 </li>
                 <li>
-                    <div class="topic">&nbsp;</div>
-                    <div class="inputContent">
-                        最高可抵现百分之&nbsp;<input type="number" placeholder="数值" id="fornow-max">
-                    </div>
-                </li>
-                <li>
-                    <div class="topic">积分获取</div>
-                    <div class="inputContent">
-                        <input type="number" placeholder="金额" id="get-money">&nbsp;元=&nbsp;<input type="number" id="get-num">&nbsp;积分
-                    </div>
-                </li>
-                <li class="m0">
-                    <div class="topic">会员默认折扣</div>
-                    <div class="inputContent">
-                        <input type="number" placeholder="数值" style="width: 100%;" id="discount">
-                    </div>
+                    <h1>210</h1>
+                    <span class="fcHui">储值顾客&nbsp;|&nbsp;人</span>
                 </li>
             </ul>
-            <div class="pd10 mb16">
-                <input type="checkbox" id="jsrChecked">
-                <label for="jsrChecked" id="jsrCheckedLab">介绍人<i class="iconfont"></i></label>
-            </div>
-            <form action="" class="jsrForm hide">
-                <div class="jsrSet clearfix">
-                    <input type="radio" name="condition" id="condition1" checked="checked">
-                    <label for="condition1">
-                        <div class="textInput fl">
-                            被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer1">&nbsp;比例的积分
-                        </div>
-                    </label>
-                </div>
-                <div class="jsrSet clearfix">
-                    <input type="radio" name="condition" id="condition2">
-                    <label for="condition2">
-                        <div class="textInput fl">
-                            被介绍人每次消费，介绍人可以获得&nbsp;<input type="number" placeholder="金额" id="introducer2">&nbsp;元的现储值
-                        </div>
-                    </label>
-
-                </div>
-            </form>
         </div>
     </div>
-    <!--导入模板-->
-    <div class="wrapper wrapper-content animated  fadeInDown improt-view" style="display: none">
-        <form method="get" class="form-horizontal">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">选择模版</label>
-                <div class="col-sm-10 ">
-                    <div class="input-group">
-                    <span class="input-group-btn">
-                        <a href="#" style="display: inline-block;height: 30px;background: #eee;width: 100%;position: relative;">
-                            <button type="button" class="btn btn-primary" style="float: right; height: 30px;width: 80px;line-height:16px;outline: none;">选择文件</button>
-                            <input id="file" type="file" style="height: 30px;width: 80px; position: absolute;right:0;outline: none; cursor: pointer;opacity: 0;"
-                                   accept=".csv,*.zip,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-                        </a>
-                    </span>
-                    </div>
-                    <span class="help-block m-b-none validate">请上传模板文件</span>
-                    <input id="fileName" type="text" placeholder="请选择文件" style="position: absolute;top: 0;height: 30px; width: 73%; outline: none;" readonly/>
+
+    <div class="formBox">
+        <table id="yj-table" data-toggle="table" class="table table-border"></table>
+    </div>
+</div>
+
+<!-- 全局弹窗盒子 -->
+<div class="popup">
+    <!-- 会员等级 -->
+    <div class="memberLevelPop">
+        <table id="memberLevelPop" data-toggle="table" class="table table-border"></table>
+    </div>
+    <!-- 会员等级设置 -->
+    <div class="addLevelPop">
+        <ul class="settingBox">
+            <li>
+                <div class="topic">等级称号</div>
+                <div class="inputContent">
+                    <input type="text" placeholder="称号" style="width: 100%;" id="grade-title">
                 </div>
+            </li>
+            <li>
+                <div class="topic">等级条件</div>
+                <div class="inputContent">
+                    满&nbsp;<input type="number" placeholder="数值" id="grade-condition">&nbsp;积分获取此称号
+                </div>
+            </li>
+            <li>
+                <div class="topic">积分抵现</div>
+                <div class="inputContent">
+                    <input type="number" placeholder="数值" id="fornow-num">&nbsp;积分=&nbsp;<input type="number"
+                                                                                                placeholder="金额"
+                                                                                                id="fornow-money">&nbsp;元
+                </div>
+            </li>
+            <li>
+                <div class="topic">&nbsp;</div>
+                <div class="inputContent">
+                    最高可抵现百分之&nbsp;<input type="number" placeholder="数值" id="fornow-max">
+                </div>
+            </li>
+            <li>
+                <div class="topic">积分获取</div>
+                <div class="inputContent">
+                    <input type="number" placeholder="金额" id="get-money">&nbsp;元=&nbsp;<input type="number"
+                                                                                              id="get-num">&nbsp;积分
+                </div>
+            </li>
+            <li class="m0">
+                <div class="topic">会员默认折扣</div>
+                <div class="inputContent">
+                    <input type="number" placeholder="数值" style="width: 100%;" id="discount">
+                </div>
+            </li>
+        </ul>
+        <div class="pd10 mb16">
+            <input type="checkbox" id="jsrChecked">
+            <label for="jsrChecked" id="jsrCheckedLab">介绍人<i class="iconfont"></i></label>
+        </div>
+        <form action="" class="jsrForm hide">
+            <div class="jsrSet clearfix">
+                <input type="radio" name="condition" id="condition1" checked="checked">
+                <label for="condition1">
+                    <div class="textInput fl">
+                        被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer1">&nbsp;比例的积分
+                    </div>
+                </label>
+            </div>
+            <div class="jsrSet clearfix">
+                <input type="radio" name="condition" id="condition2">
+                <label for="condition2">
+                    <div class="textInput fl">
+                        被介绍人每次消费，介绍人可以获得&nbsp;<input type="number" placeholder="金额" id="introducer2">&nbsp;元的现储值
+                    </div>
+                </label>
+
             </div>
         </form>
     </div>
+</div>
+<!--导入模板-->
+<div class="wrapper wrapper-content animated  fadeInDown improt-view" style="display: none">
+    <form method="get" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">选择模版</label>
+            <div class="col-sm-10 ">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <a href="#"
+                           style="display: inline-block;height: 30px;background: #eee;width: 100%;position: relative;">
+                            <button type="button" class="btn btn-primary"
+                                    style="float: right; height: 30px;width: 80px;line-height:16px;outline: none;">选择文件</button>
+                            <input id="file" type="file"
+                                   style="height: 30px;width: 80px; position: absolute;right:0;outline: none; cursor: pointer;opacity: 0;"
+                                   accept=".csv,*.zip,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                        </a>
+                    </span>
+                </div>
+                <span class="help-block m-b-none validate">请上传模板文件</span>
+                <input id="fileName" type="text" placeholder="请选择文件"
+                       style="position: absolute;top: 0;height: 30px; width: 73%; outline: none;" readonly/>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+<!--弹窗-->
+<!--编辑员工弹窗-->
+<div class="content-view content-view-editStff edit-employees" style="display:none">
+    <div class="head">
+        <span id="edit-name"></span>
+        <span class="moveTitle" id="edit-shopName"></span>
+        <span id="removeStaff">离职该员工</span>
     </div>
+    <div class="body">
+        <ul class="myUl">
+            <li class="item">
+                <div>职位</div>
+                <div class="selectBox" id="selectBox4">
+                    <div class="select-box-header">
+                        <span class="text" id="edit-job"></span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL" id="jobBox">
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div>性别</div>
+                <div class="selectBox" id="selectBox5">
+                    <div class="select-box-header">
+                        <span class="text">男</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="1">男</li>
+                            <li value="2">女</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div>手机号</div>
+                <div>
+                    <input type="number" placeholder="请输入手机号" id="edit-phone">
+                </div>
+            </li>
+            <li class="item">
+                <div>电子邮箱</div>
+                <div>
+                    <input type="email" placeholder="请输入邮箱" id="edit-email">
+                </div>
+            </li>
+            <li class="item">
+                <div>入职时间</div>
+                <div>
+                    <div class="settings" style="display:none;">
+                        <select name="demo" id="demo">
+                            <option value="date">日期</option>
+                        </select>
+                    </div>
+                    <input name="test" id="editTime" data-type="day"
+                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期"
+                           data-type="time"/>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--全局js-->
+<!-- jq库 -->
+<script src="../resource/js/jquery.min.js"></script>
+<!-- bootstrap UI需要依赖的js -->
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<!-- layui需要依赖的js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+<!-- 公司内部库 -->
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/template-native.js"></script>
+<script src="../resource/common/common.js"></script>
 
-    <!--全局js-->
-    <!-- jq库 -->
-    <script src="../resource/js/jquery.min.js"></script>
-    <!-- bootstrap UI需要依赖的js -->
-    <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
-    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
-    <!-- layui需要依赖的js -->
-    <script src="../resource/js/plugins/layer/layer.js"></script>
-    <script src="../resource/layui/layui.js"></script>
-    <!-- 公司内部库 -->
-    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-    <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
-    <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
-    <script src="../resource/js/lib/quakoo/Config.js"></script>
-    <script src="../resource/js/lib/quakoo/project.js"></script>
-    <script src="../resource/js/template-native.js"></script>
-    <script src="../resource/common/common.js"></script>
+<!-- 全局公共js -->
+<script src="../resource/js/yanjing.js"></script>
+<!--//日期范围插件开始-->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<!-- 当前页面逻辑 -->
+<!--会员等级下拉框-->
+<script type="text/html" id="memberNameList">
+    <%for(var i = 0;i< list.length;i++){%>
+    <li value="'<%=list[i].id%>'"><%=list[i].title%></li>
+    <%}%>
+</script>
+<!--职业下拉框-->
+<script type="text/html" id="jobList">
+    <%for(var i =0;i< list.length;i++){%>
+    <li value="'<%=list[i]%>'"><%=list[i]%></li>
+    <%}%>
+</script>
 
-    <!-- 全局公共js -->
-    <script src="../resource/js/yanjing.js"></script>
-    <!--//日期范围插件开始-->
-    <script src="../resource/js/yanjing/daterange.js"></script>
-    <!-- 当前页面逻辑 -->
-    <!--会员等级下拉框-->
-    <script type="text/html" id="memberNameList">
-        <%for(var i = 0;i< list.length;i++){%>
-            <li value="'<%=list[i].id%>'"><%=list[i].title%></li>
-        <%}%>
-    </script>
-    <!--职业下拉框-->
-    <script type="text/html" id="jobList">
-        <%for(var i =0;i< list.length;i++){%>
-            <li value="'<%=list[i]%>'"><%=list[i]%></li>
-        <%}%>
-    </script>
+<script>
+    var psid;                                            //企业ID
+    var subid;                                           //门店ID
+    var member, cusJob, cusSex, cusPhone;                   //会员等级，工作，性别，电话
+    /**初始化页面*/
+    $(function () {
+        initPage();
+    });
 
-    <script>
-        var psid;                                            //企业ID
-        var subid;                                           //门店ID
-        var member,cusJob,cusSex,cusPhone;                   //会员等级，工作，性别，电话
-        /**初始化页面*/
-        $(function () {
-            initPage();
+    /**初始化函数*/
+    function initPage() {
+        // 时间范围开始
+        var date1 = new dateRange(".yj-demo-time");
+        date1.init();                                     //时间初始化
+        psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
+        subid = quakooDb.getItem("sel_ShopId");           //门店ID
+        if (typeof subid == "string") {
+            subid = parseInt(subid.replace(/\'/g, '').replace(/\"/g, ''))
+        }
+        //selectTag($("#searchTypeBox"));                   // 头部手机号下拉框
+        selectTag($("#gender"), function (ret) {            // 全部性别
+            cusSex = ret.value;
+            getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());//门店下顾客
         });
-        /**初始化函数*/
-        function initPage(){
-            // 时间范围开始
-            var date1 = new dateRange(".yj-demo-time");
-            date1.init();                                     //时间初始化
-            psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
-            subid = quakooDb.getItem("sel_ShopId");           //门店ID
-            if(typeof subid == "string"){subid=parseInt(subid.replace(/\'/g,'').replace(/\"/g,''))}
-            //selectTag($("#searchTypeBox"));                   // 头部手机号下拉框
-            selectTag($("#gender"),function (ret){            // 全部性别
-                cusSex = ret.value;
-                getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
-            });
-            selGetAllList();                                  //查询会员列表（渲染下拉框）                                          //
-            getAllUserJob(subid);                              //获取公司下所有职业
-            getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());//门店下顾客
-            searchPhoneNum();                                  //手机号搜索
+        selGetAllList();                                  //查询会员列表（渲染下拉框）                                          //
+        getAllUserJob(subid);                              //获取公司下所有职业
+        getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());//门店下顾客
+        searchPhoneNum();                                  //手机号搜索
 
+    }
+
+    /**手机号搜索*/
+    function searchPhoneNum() {
+        document.getElementById('searchPhoneNum').onkeypress = function (e) {
+            var keycode = e.keyCode;
+            if (keycode == '13') {
+                document.getElementById('searchPhoneNum').blur();
+                e.preventDefault();
+                keyWord = document.getElementById('searchPhoneNum').value;
+                if (quakooUtils.isBlack(keyWord)) {
+                    layer.msg('请输入手机号');
+                    return;
+                }
+                cusPhone = keyWord;
+                getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());
+            }
         }
-        /**手机号搜索*/
-        function searchPhoneNum(){
-            document.getElementById('searchPhoneNum').onkeypress = function(e){
-                var keycode = e.keyCode;
-                if(keycode=='13') {
-                    document.getElementById('searchPhoneNum').blur();
-                    e.preventDefault();
-                    keyWord =  document.getElementById('searchPhoneNum').value;
-                    if(quakooUtils.isBlack(keyWord)){
-                        layer.msg('请输入手机号');
-                        return ;
-                    }
-                    cusPhone =keyWord;
-                    getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());
+        $(document).on('input propertychange', '#seek', function (e) {
+            if (e.type === "input" || e.orignalEvent.propertyName === "value") {
+                if (this.value.length == 0) {
+                    api.closeFrameGroup({name: "search"});
+                    flag = true;
+                    document.activeElement.focus();
+                    document.getElementById('searchBtn').style.display = 'block';
+                } else {
+                    // document.activeElement.blur();
                 }
             }
-            $(document).on('input propertychange','#seek',function (e) {
-                if (e.type === "input" || e.orignalEvent.propertyName === "value") {
-                    if(this.value.length == 0){
-                        api.closeFrameGroup({name:"search"});
-                        flag = true;
-                        document.activeElement.focus();
-                        document.getElementById('searchBtn').style.display = 'block';
-                    }else{
-                        // document.activeElement.blur();
-                    }
-                }
-            });
-
-        }
-        /**获取门店下顾客的所有职业(职业下拉框)*/
-        function getAllUserJob(subid){
-            quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{sid:subid},function (ret) {
-                console.log('公司下顾客所有职业：',ret);
-                if(ret&&ret.success){
-                    if(quakooUtils.isNotBlack(ret.data)){
-                        var data = {list:ret.data};
-                        var html = template("jobList", data);
-                        document.getElementById("jobUl").innerHTML = html;
-                        // 全部职业
-                        selectTag($("#occupation"),function (ret) {
-                            cusJob = ret.value;
-                            getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());
-                        });
-                    }
-                }
-            });
-        }
-        /**查询会员列表（渲染下拉框）*/
-        function selGetAllList(){
-            quakooData.ajaxGetData(config.getUrl_usergrade_getAllList(),{subid:psid},function (ret) {
-                console.log('公司会员等级列表：',ret);
-                var data = {list:ret.rows};
-                var html = template("memberNameList", data);
-                document.getElementById("memberNameUl").innerHTML = html;
-                selectTag($("#grade"),function (ret) { //全部会员等级
-                    member =ret.value;
-                    getCustomerPager(subid,config.getUrl_user_getSubCustomerPager());
-                });
-            });
-        }
-
-        /**获取顾客方法（包括公司和门店，只是URL不同）*/
-        function getCustomerPager(subid,url,job,sex,phone){
-            $("#yj-table").bootstrapTable('destroy');
-            $("#yj-table").bootstrapTable({
-                url:url,
-                method: 'get',
-                classes: "table",
-                pagination: true,        //是否显示分页
-                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 5,
-                pageList: [5, 10, 15, 20],
-                sortable: false,
-                sortOrder: "asc",
-                showColumns: true,
-                strictSearch: true,
-                locale: "zh-CN",
-                paginationHAlign: "center",
-                clickToSelect: true,
-                columns: [
-                    { field: "name", title: "姓名", align: "left", valign: "middle" },
-                    { field: "phone", title: "手机号", align: "left", valign: "middle" },
-                    { field: "sex", title: "性别", align: "left", valign: "middle" },
-                    { field: "money", title: "会员等级", align: "left", valign: "middle" },
-                    { field: "money", title: "积分", align: "left", valign: "middle" },
-                    { field: "money", title: "储存金额", align: "left", valign: "middle" },
-                    { field: "subName", title: "微信认证", align: "left", valign: "middle", formatter: function (value, row, index) { return value ? '<span class="certified">已认证</span>' : '<span class="uncertified">未认证</span>' } },
-                    { field: "payCount", title: "消费次数", align: "left", valign: "middle" },
-                    {
-                        field: "btn", title: "操作", align: "left", valign: "middle", width: '180', formatter: function () {
-                            return '<button class="btn btnEedit">编辑</button><button class="btn btnRecord ml8">历史订单</button>'
-                        }
-                    }
-                ],
-                queryParams:function (param) {
-                    if(cusJob){param.job = cusJob}
-                    if(cusSex){param.sex = cusSex}
-                    if(cusPhone){param.phone = cusPhone}
-                    param.subid = subid;
-                    param.userType = 0;
-                    param.token = quakooUser.getUserInfo().token;
-                    param.page = param.offset / param.limit + 1;
-                    param.size = param.limit;
-                    return param
-                }
-
-            });
-        }
-
-        /**获取公司下的所有会员级别列表*/
-        function getAllList(psid,url){
-            $("#memberLevelPop").bootstrapTable('destroy');
-            $("#memberLevelPop").bootstrapTable({
-                url:url,
-                method: 'get',
-                classes: "table",
-                pagination: true,        //是否显示分页
-                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 4,
-                pageList: [5, 10, 15, 20],
-                sortable: false,
-                sortOrder: "asc",
-                showColumns: true,
-                strictSearch: true,
-                locale: "zh-CN",
-                paginationHAlign: "center",
-                clickToSelect: true,
-                columns: [
-                    { field: "title", title: "等级称号", align: "left", valign: "middle" },
-                    { field: "conditionScore", title: "等级条件", align: "left", valign: "middle" },
-                    { field: "substituteScore", title: "积分抵现", align: "left", valign: "middle" },
-                    { field: "gainScore", title: "积分获取", align: "left", valign: "middle" },
-                    {
-                        field: "btn", title: "操作", align: "left", valign: "middle", width: '180',
-                        formatter: function (value,row,index) {
-                            var rows = "addDialog("+JSON.stringify(row).replace(/\"/g,'\'')+")";
-                            var html;
-                            html = '<button class="btn btnEedit" onclick="'+rows+'">编辑</button><button class="btn btnRemove ml8" onclick="del(' + row.id + ')" >删除</button>';
-                            return html;
-                        }
-                    }
-                ],
-                queryParams:function (param) {
-                    param.subid = psid;
-                    param.token = quakooUser.getUserInfo().token;
-                    return param
-                }
-
-            });
-        }
-
-        /**新增等级弹窗&&(编辑等级弹窗)*/
-        function addDialog(data){
-            var title;
-            var btnArr;
-            /**回显信息*/
-            if(data){//编辑
-                $("#grade-title").val(data.title);
-                $("#grade-condition").val(data.conditionScore);
-                $("#fornow-num").val(data.substituteScore);
-                $("#fornow-money").val(data.substituteMoney);
-                $("#fornow-max").val(data.substituteRate);
-                $("#get-money").val(data.gainMoney);
-                $("#get-num").val(data.gainScore);
-                $("#discount").val(data.discount);
-                if(data.introducer){
-                    $('#jsrChecked').attr("checked","checked");
-                    $('.jsrForm')[0].className = "jsrForm";
-                    if(data.introducer[1]){
-                        $("#condition1").attr("checked","false");
-                        $('#introducer1').val(data.introducer[1]);
-                    }else if(data.introducer[2]){
-                        $("#condition2").attr("checked","checked");
-                        $('#introducer2').val(data.introducer[2]);
-                    }
-                }
-                title = '<div class="titleBox"><span class="sMove">新增等级</span></div>';
-                btnArr = ['新增', '取消'];
-            }else{//添加
-                $("#grade-title").val("");
-                $("#grade-condition").val("");
-                $("#fornow-num").val("");
-                $("#fornow-money").val("");
-                $("#fornow-max").val("");
-                $("#get-money").val("");
-                $("#get-num").val("");
-                $("#discount").val("");
-                $('#jsrChecked').attr("checked",false);
-                $('.jsrForm')[0].className = "jsrForm hide";
-                title = '<div class="titleBox"><span class="sMove">编辑等级</span></div>';
-                btnArr = ['编辑', '取消'];
-            }
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-demo', //样式类名
-                area: '360px',
-                anim: 0,
-                closeBtn: 0,
-                title: title,
-                shade: 0.3,
-                shadeClose: true, //开启遮罩关闭
-                scrollbar: false,
-                content: $('.addLevelPop'),
-                btn: btnArr,
-                resize:false,
-                move: '.sMove',
-                yes: function () {
-                    data?addAndEdit(config.getUrl_usergrade_update()):addAndEdit(config.getUrl_usergrade_add());
-                },
-                btn2: function () {
-                },
-                success: function (layero, index) {
-
-                },
-            });
-        }
-
-        /**新增和编辑会员等级接口*/
-        function addAndEdit(url){
-            var title = $("#grade-title").val();
-            var conditionScore = $("#grade-condition").val();
-            var substituteScore = $("#fornow-num").val();
-            var substituteMoney = $("#fornow-money").val();
-            var substituteRate = $("#fornow-max").val();
-            var gainMoney = $("#get-money").val();
-            var gainScore = $("#get-num").val();
-            var discount = $("#discount").val();
-            if($("#introducer1")){
-                var introducer1 = $("#introducer1").val();
-            }
-            if($("#introducer2")){
-                var introducer2 = $("#introducer2").val();
-            }
-            if(quakooUtils.isNotBlack(title)&&quakooUtils.isNotBlack(conditionScore)&&quakooUtils.isNotBlack(substituteScore)&&quakooUtils.isNotBlack(substituteMoney)&&quakooUtils.isNotBlack(substituteRate)&&quakooUtils.isNotBlack(gainMoney)&&quakooUtils.isNotBlack(gainScore)&&quakooUtils.isNotBlack(discount)){
-                var param={};
-                param.subid = psid;//公司ID
-                param.title = title;//名称
-                param.conditionScore = conditionScore;//达到等级条件
-                param.substituteScore = substituteScore;//积分抵现-积分
-                param.substituteMoney = substituteMoney*100;//积分抵现-金额
-                param.substituteRate = substituteRate;//最高抵现比例 %
-                param.gainMoney = gainMoney*100;//积分获取-金额
-                param.gainScore = gainScore;//积分获取-积分
-                param.discount=discount;//会员折扣比例 %
-                if(introducer1){
-                    param.introducer={"1":introducer1};
-                }
-                if(introducer2){
-                    param.introducer={"2":introducer2*100};
-                }
-                console.log("新增会员等级的参数：",param);
-                quakooData.ajaxGetData(url,param,function (ret) {
-                    console.log("新增会员等级返回数据：",ret);
-                    layer.close(layer.index);
-                    getAllList(psid,config.getUrl_usergrade_getAllList());
-                });
-            }else{
-                alert("请填写完表格");
-                return
-            }
-
-        }
-
-
-        /**删除会员等级*/
-        function del(id){
-            quakooData.ajaxGetData(config.getUrl_usergrade_del(),{id:id},function (ret) {
-                console.log("删除会员等级：",ret);
-                getAllList(psid,config.getUrl_usergrade_getAllList());
-            })
-        }
-
-        /**会员等级设置*/
-        function levelSetting() {
-            getAllList(psid,config.getUrl_usergrade_getAllList());//查询企业下的会员列表
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-demo', //样式类名
-                area: ['720px','344px'],
-                anim: 0,
-                closeBtn: 0,
-                title: '<div class="titleBox"><span class="sMove">会员等级设置</span><button class="addLevel fr" onclick="addDialog()">新增等级</button></div>',
-                shade: 0.3,
-                shadeClose: true, //开启遮罩关闭
-                scrollbar: false,
-                content: $('.memberLevelPop'),
-                btn:'关闭窗口',
-                resize:false,
-                move: '.sMove',
-                yes: function () {
-                    add()
-                },
-                btn2: function () {
-                },
-            });
-        }
-
-        $('#jsrChecked').change(function () {
-            $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';
         });
-        //模板导入
-        $('#file').change(function(){
-            $('#fileName').val($('#file').val());
-        });
-        //导入顾客信息模板
-        function Improt() {
-            var index = layer.open({
-                type: 1,
-                shade: 0,
-                id: 'areaAdd1', //设定一个id，防止重复弹出
-                title: '导入模板',
-                area: ['500px', '400px'],
-                content: $('.improt-view'),
-                btn: ['确定', '取消'],
 
-                yes: function (index) {
-                    layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
-                    var fileObj = document.getElementById("file").files[0]; // js 获取文件对象
-                    if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-                        return;
-                    }
-                    var result = {succ: '导入成功！', fail: '导入失败！'};
-                    var formFile = new FormData();
-                    formFile.append("file", fileObj); //加入文件对象
-                    var token = quakooUser.getUserInfo().token;
-                    alert(token)
-                    $.ajax({
-                        url: serverUrl+"/user/importUserInfo?token="+encodeURIComponent(token),
-                        type: "Post",
-                        dataType: "json",
-                        cache: false,//上传文件无需缓存
-                        processData: false,//用于对data参数进行序列化处理 这里必须false
-                        contentType: false, //必须
-                        data: formFile,
-                        success: function (res) {
-                            var msg = (res.msg == undefined ? '' : res.msg);
-                            if(res.success){
-                                layer.msg(result.succ, {icon: 1, shade: 0.01});
-                                $('.layui-layer-loading').hide();
-                                handleTable("","",serverUrl+"/user/getSubCustomerPager?userType=1");
-                            } else {
-                                layer.confirm(result.fail+msg, {
-                                    btn: ['知道了'] //按钮
-                                });
-                                $('.layui-layer-loading').hide();
-                            }
-                        },
-                        error: function (err) {
-                            $('.layui-layer-loading').hide();
-                        },
+    }
 
+    /**获取门店下顾客的所有职业(职业下拉框)*/
+    function getAllUserJob(subid) {
+        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {sid: subid}, function (ret) {
+            console.log('公司下顾客所有职业：', ret);
+            if (ret && ret.success) {
+                if (quakooUtils.isNotBlack(ret.data)) {
+                    var data = {list: ret.data};
+                    var html = template("jobList", data);
+                    document.getElementById("jobUl").innerHTML = html;
+                    // 全部职业
+                    selectTag($("#occupation"), function (ret) {
+                        cusJob = ret.value;
+                        getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());
                     });
-
-                },
-
-                shadeClose: false, //开启遮罩关闭
-                success: function (layero, index) {
-
                 }
+            }
+        });
+    }
+
+    /**查询会员列表（渲染下拉框）*/
+    function selGetAllList() {
+        quakooData.ajaxGetData(config.getUrl_usergrade_getAllList(), {subid: psid}, function (ret) {
+            console.log('公司会员等级列表：', ret);
+            var data = {list: ret.rows};
+            var html = template("memberNameList", data);
+            document.getElementById("memberNameUl").innerHTML = html;
+            selectTag($("#grade"), function (ret) { //全部会员等级
+                member = ret.value;
+                getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());
             });
+        });
+    }
+
+    /**获取顾客方法（包括公司和门店，只是URL不同）*/
+    function getCustomerPager(subid, url, job, sex, phone) {
+        $("#yj-table").bootstrapTable('destroy');
+        $("#yj-table").bootstrapTable({
+            url: url,
+            method: 'get',
+            classes: "table",
+            pagination: true,        //是否显示分页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 5,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {field: "name", title: "姓名", align: "left", valign: "middle"},
+                {field: "phone", title: "手机号", align: "left", valign: "middle"},
+                {field: "sex", title: "性别", align: "left", valign: "middle"},
+                {field: "money", title: "会员等级", align: "left", valign: "middle"},
+                {field: "money", title: "积分", align: "left", valign: "middle"},
+                {field: "money", title: "储存金额", align: "left", valign: "middle"},
+                {
+                    field: "subName",
+                    title: "微信认证",
+                    align: "left",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        return value ? '<span class="certified">已认证</span>' : '<span class="uncertified">未认证</span>'
+                    }
+                },
+                {field: "payCount", title: "消费次数", align: "left", valign: "middle"},
+                {
+                    field: "",
+                    title: "操作",
+                    align: "left",
+                    valign: "middle",
+                    width: '180',
+                    formatter: function (value, row, index) {
+                        return "<button class='btn btnEedit' onclick='showStffEdit(" + JSON.stringify(row) + ")'>编辑</button><button class='btn btnRecord ml8'>历史订单</button"
+                    }
+                }
+            ],
+            queryParams: function (param) {
+                if (cusJob) {
+                    param.job = cusJob
+                }
+                if (cusSex) {
+                    param.sex = cusSex
+                }
+                if (cusPhone) {
+                    param.phone = cusPhone
+                }
+                param.subid = subid;
+                param.userType = 0;
+                param.token = quakooUser.getUserInfo().token;
+                param.page = param.offset / param.limit + 1;
+                param.size = param.limit;
+                return param
+            }
+
+        });
+    }
+
+    /**获取公司下的所有会员级别列表*/
+    function getAllList(psid, url) {
+        $("#memberLevelPop").bootstrapTable('destroy');
+        $("#memberLevelPop").bootstrapTable({
+            url: url,
+            method: 'get',
+            classes: "table",
+            pagination: true,        //是否显示分页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 4,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {field: "title", title: "等级称号", align: "left", valign: "middle"},
+                {field: "conditionScore", title: "等级条件", align: "left", valign: "middle"},
+                {field: "substituteScore", title: "积分抵现", align: "left", valign: "middle"},
+                {field: "gainScore", title: "积分获取", align: "left", valign: "middle"},
+                {
+                    field: "btn", title: "操作", align: "left", valign: "middle", width: '180',
+                    formatter: function (value, row, index) {
+                        var rows = "addDialog(" + JSON.stringify(row).replace(/\"/g, '\'') + ")";
+                        var html;
+                        html = '<button class="btn btnEedit" onclick="' + rows + '">编辑</button><button class="btn btnRemove ml8" onclick="del(' + row.id + ')" >删除</button>';
+                        return html;
+                    }
+                }
+            ],
+            queryParams: function (param) {
+                param.subid = psid;
+                param.token = quakooUser.getUserInfo().token;
+                return param
+            }
+
+        });
+    }
+
+    /**新增等级弹窗&&(编辑等级弹窗)*/
+    function addDialog(data) {
+        var title;
+        var btnArr;
+        /**回显信息*/
+        if (data) {//编辑
+            $("#grade-title").val(data.title);
+            $("#grade-condition").val(data.conditionScore);
+            $("#fornow-num").val(data.substituteScore);
+            $("#fornow-money").val(data.substituteMoney);
+            $("#fornow-max").val(data.substituteRate);
+            $("#get-money").val(data.gainMoney);
+            $("#get-num").val(data.gainScore);
+            $("#discount").val(data.discount);
+            if (data.introducer) {
+                $('#jsrChecked').attr("checked", "checked");
+                $('.jsrForm')[0].className = "jsrForm";
+                if (data.introducer[1]) {
+                    $("#condition1").attr("checked", "false");
+                    $('#introducer1').val(data.introducer[1]);
+                } else if (data.introducer[2]) {
+                    $("#condition2").attr("checked", "checked");
+                    $('#introducer2').val(data.introducer[2]);
+                }
+            }
+            title = '<div class="titleBox"><span class="sMove">新增等级</span></div>';
+            btnArr = ['新增', '取消'];
+        } else {//添加
+            $("#grade-title").val("");
+            $("#grade-condition").val("");
+            $("#fornow-num").val("");
+            $("#fornow-money").val("");
+            $("#fornow-max").val("");
+            $("#get-money").val("");
+            $("#get-num").val("");
+            $("#discount").val("");
+            $('#jsrChecked').attr("checked", false);
+            $('.jsrForm')[0].className = "jsrForm hide";
+            title = '<div class="titleBox"><span class="sMove">编辑等级</span></div>';
+            btnArr = ['编辑', '取消'];
         }
-        //下载模板
-        function deriveExcel() {
-            document.location.href = serverUrl + '/user/downloadTemplatesExcel?token='+encodeURIComponent(quakooUser.getUserInfo().token);
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: '360px',
+            anim: 0,
+            closeBtn: 0,
+            title: title,
+            shade: 0.3,
+            shadeClose: true, //开启遮罩关闭
+            scrollbar: false,
+            content: $('.addLevelPop'),
+            btn: btnArr,
+            resize: false,
+            move: '.sMove',
+            yes: function () {
+                data ? addAndEdit(config.getUrl_usergrade_update()) : addAndEdit(config.getUrl_usergrade_add());
+            },
+            btn2: function () {
+            },
+            success: function (layero, index) {
+
+            },
+        });
+    }
+
+    /**新增和编辑会员等级接口*/
+    function addAndEdit(url) {
+        var title = $("#grade-title").val();
+        var conditionScore = $("#grade-condition").val();
+        var substituteScore = $("#fornow-num").val();
+        var substituteMoney = $("#fornow-money").val();
+        var substituteRate = $("#fornow-max").val();
+        var gainMoney = $("#get-money").val();
+        var gainScore = $("#get-num").val();
+        var discount = $("#discount").val();
+        if ($("#introducer1")) {
+            var introducer1 = $("#introducer1").val();
         }
-        //导出模板
-        function exportExcel() {
-            var sid = quakooUser.getUserInfo().sid;
-            document.location.href = serverUrl + '/user/exportUserInfo?token='+encodeURIComponent(quakooUser.getUserInfo().token)+"&sid=" + sid;
+        if ($("#introducer2")) {
+            var introducer2 = $("#introducer2").val();
         }
-    </script>
+        if (quakooUtils.isNotBlack(title) && quakooUtils.isNotBlack(conditionScore) && quakooUtils.isNotBlack(substituteScore) && quakooUtils.isNotBlack(substituteMoney) && quakooUtils.isNotBlack(substituteRate) && quakooUtils.isNotBlack(gainMoney) && quakooUtils.isNotBlack(gainScore) && quakooUtils.isNotBlack(discount)) {
+            var param = {};
+            param.subid = psid;//公司ID
+            param.title = title;//名称
+            param.conditionScore = conditionScore;//达到等级条件
+            param.substituteScore = substituteScore;//积分抵现-积分
+            param.substituteMoney = substituteMoney * 100;//积分抵现-金额
+            param.substituteRate = substituteRate;//最高抵现比例 %
+            param.gainMoney = gainMoney * 100;//积分获取-金额
+            param.gainScore = gainScore;//积分获取-积分
+            param.discount = discount;//会员折扣比例 %
+            if (introducer1) {
+                param.introducer = {"1": introducer1};
+            }
+            if (introducer2) {
+                param.introducer = {"2": introducer2 * 100};
+            }
+            console.log("新增会员等级的参数：", param);
+            quakooData.ajaxGetData(url, param, function (ret) {
+                console.log("新增会员等级返回数据：", ret);
+                layer.close(layer.index);
+                getAllList(psid, config.getUrl_usergrade_getAllList());
+            });
+        } else {
+            alert("请填写完表格");
+            return
+        }
+
+    }
+
+
+    /**删除会员等级*/
+    function del(id) {
+        quakooData.ajaxGetData(config.getUrl_usergrade_del(), {id: id}, function (ret) {
+            console.log("删除会员等级：", ret);
+            getAllList(psid, config.getUrl_usergrade_getAllList());
+        })
+    }
+
+    /**会员等级设置*/
+    function levelSetting() {
+        getAllList(psid, config.getUrl_usergrade_getAllList());//查询企业下的会员列表
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['720px', '344px'],
+            anim: 0,
+            closeBtn: 0,
+            title: '<div class="titleBox"><span class="sMove">会员等级设置</span><button class="addLevel fr" onclick="addDialog()">新增等级</button></div>',
+            shade: 0.3,
+            shadeClose: true, //开启遮罩关闭
+            scrollbar: false,
+            content: $('.memberLevelPop'),
+            btn: '关闭窗口',
+            resize: false,
+            move: '.sMove',
+            yes: function () {
+                add()
+            },
+            btn2: function () {
+            },
+        });
+    }
+
+    $('#jsrChecked').change(function () {
+        $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';
+    });
+    //模板导入
+    $('#file').change(function () {
+        $('#fileName').val($('#file').val());
+    });
+
+    //导入顾客信息模板
+    function Improt() {
+        var index = layer.open({
+            type: 1,
+            shade: 0,
+            id: 'areaAdd1', //设定一个id，防止重复弹出
+            title: '导入模板',
+            area: ['500px', '400px'],
+            content: $('.improt-view'),
+            btn: ['确定', '取消'],
+
+            yes: function (index) {
+                layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+                var fileObj = document.getElementById("file").files[0]; // js 获取文件对象
+                if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+                    return;
+                }
+                var result = {succ: '导入成功！', fail: '导入失败！'};
+                var formFile = new FormData();
+                formFile.append("file", fileObj); //加入文件对象
+                var token = quakooUser.getUserInfo().token;
+                alert(token)
+                $.ajax({
+                    url: serverUrl + "/user/importUserInfo?token=" + encodeURIComponent(token),
+                    type: "Post",
+                    dataType: "json",
+                    cache: false,//上传文件无需缓存
+                    processData: false,//用于对data参数进行序列化处理 这里必须false
+                    contentType: false, //必须
+                    data: formFile,
+                    success: function (res) {
+                        var msg = (res.msg == undefined ? '' : res.msg);
+                        if (res.success) {
+                            layer.msg(result.succ, {icon: 1, shade: 0.01});
+                            $('.layui-layer-loading').hide();
+                            handleTable("", "", serverUrl + "/user/getSubCustomerPager?userType=1");
+                        } else {
+                            layer.confirm(result.fail + msg, {
+                                btn: ['知道了'] //按钮
+                            });
+                            $('.layui-layer-loading').hide();
+                        }
+                    },
+                    error: function (err) {
+                        $('.layui-layer-loading').hide();
+                    },
+
+                });
+
+            },
+
+            shadeClose: false, //开启遮罩关闭
+            success: function (layero, index) {
+
+            }
+        });
+    }
+
+    //下载模板
+    function deriveExcel() {
+        document.location.href = serverUrl + '/user/downloadTemplatesExcel?token=' + encodeURIComponent(quakooUser.getUserInfo().token);
+    }
+
+    //导出模板
+    function exportExcel() {
+        var sid = quakooUser.getUserInfo().sid;
+        document.location.href = serverUrl + '/user/exportUserInfo?token=' + encodeURIComponent(quakooUser.getUserInfo().token) + "&sid=" + sid;
+    }
+
+    /**弹窗——编辑员工*/
+    function showStffEdit(data) {
+        selectTag($("#selectBox5"), function (ret) {
+            editSex = ret.value;
+        });
+        var useId;
+        var name;
+        var status;
+        var editSex;
+        var editPhone;
+        var editMail;
+        var workTime;
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: null,
+            skin: 'layui-layer-editStff-tan content-view-submit', //样式类名
+            anim: 0,
+            move: $('.content-view-editStff .moveTitle'),
+            area: ['360px', 'auto'],
+            closeBtn: 0,      //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-editStff.edit-employees'),
+            btn: ['取消', '保存'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                editStaff(index, useId, name, editJob, editSex);
+                return false;
+            },
+            success: function (layero, index) {
+                _StffEdit = index;
+                /**编辑数据回显*/
+                useId = data.id;
+                name = data.name;
+                editJob = data.job;
+                editPhone = data.phone;
+                editMail = data.mail;
+                workTime = data.workingDate;
+                $("#edit-name").html(data.name);
+                $("#edit-shopName").html(data.subName);
+                $("#edit-job").html(data.job);
+                if (data.sex == 1) {
+                    $("#selectBox5 .text")[0].innerHTML = "男";
+                    editSex = 1;
+                } else if (data.sex == 2) {
+                    $("#selectBox5 .text")[0].innerHTML = "女";
+                    editSex = 2;
+                }
+                $("#edit-phone").val(data.phone);
+                $("#edit-email").val(data.mail);
+                $("#editTime").val(quakooUtils.formatTimeToDateDianLY(data.workingDate));
+                getJobList(psid);
+                $("#removeStaff")[0].onclick = function f() {
+                    if (data.status == 0) {
+                        status = 1;
+                    } else if (data.status == 1) {
+                        status = 0;
+                    }
+                    removeStaff(useId, status);
+                }
+            }
+        });
+    }
+
+    /**接口——获取员工的职位列表*/
+    function getJobList() {
+        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {sid: subid, userType: 1}, function (ret) {
+            if (ret && ret.success) {
+                if (quakooUtils.isNotBlack(ret.data)) {
+                    var html = "";
+                    for (var i = 0; i < ret.data.length; i++) {
+                        if (quakooUtils.isNotBlack(ret.data[i])) {
+                            html += '<li value="' + ret.data[i] + '">' + ret.data[i] + '</li>';
+                        }
+                    }
+                    document.getElementById("jobBox").innerHTML = html;
+                    selectTag($("#selectBox4"), function (ret) {
+                        editJob = ret.value;
+                    });
+                }
+
+            }
+        })
+    }
+
+    /**接口——编辑员工*/
+    function editStaff(index, id, name, editJob, editSex) {
+        var job = editJob;
+        var sex = editSex;
+        var phone = $("#edit-phone").val();
+        var mail = $("#edit-email").val();
+        var workingDate = $("#editTime").val().replace(/\./g, ',');
+        workingDate = new Date(workingDate).getTime();
+        if (quakooUtils.isNotBlack(id)) {
+            if (quakooUtils.isNotBlack(phone)) {
+                if (quakooUtils.isMobileNum(phone)) {
+                    if (quakooUtils.isNotBlack(mail)) {
+                        if (quakooUtils.isEmail(mail)) {
+                            quakooData.ajaxGetData(config.getUrl_user_updateUser(), {
+                                id: id,
+                                name: name,
+                                job: job,
+                                sex: sex,
+                                phone: phone,
+                                mail: mail,
+                                workingDate: workingDate
+                            }, function (ret) {
+                                console.log("编辑：", ret);
+                                if (ret && ret.success) {
+                                    layer.msg("编辑员工信息成功", {icon: 1});
+                                    setTimeout(function () {
+                                        layer.close(index);
+                                    }, 200);
+                                }
+                            })
+                        } else {
+                            layer.msg("请输入正确的邮箱！", {icon: 4})
+                        }
+                    } else {
+                        layer.msg("请输入邮箱！", {icon: 4})
+                    }
+                } else {
+                    layer.msg("请输入正确的手机号", {icon: 4});
+                }
+            } else {
+                layer.msg("请输入手机号！", {icon: 4})
+            }
+        }
+
+    }
+
+    /**离职该员工点击弹窗*/
+    function removeStaff(id, status) {
+        alert(1)
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '确定离职该员工？',
+            skin: 'layui-layer-removeStaff-tan', //样式类名
+            anim: 0,
+            area: ['240px', '130px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: false, //开启遮罩关闭
+            content: $('.content-view-removeStaff'),
+            btn: ['取消', '确定'],
+            yes: function (index) {
+                // layer.close(_StffEdit);
+                layer.close(index);
+            },
+            btn2: function (index) {
+                disableStaff(_StffEdit, index, id, status);
+            },
+            success: function (index) {
+
+            }
+        });
+    }
+
+    function disableStaff(_StffEdit, index, id, status) {
+        quakooData.ajaxGetData(config.getUrl_user_updateStatus(), {id: id, status: status}, function (ret) {
+            console.log(ret);
+            if (ret && ret.success) {
+                if (ret.data == "true") {
+                    getStaffList(subid);
+                }
+            }
+        });
+
+
+        layer.close(_StffEdit);
+        layer.close(index);
+    }
+</script>
 
 </body>
 
