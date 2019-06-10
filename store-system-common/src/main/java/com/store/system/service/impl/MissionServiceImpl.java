@@ -154,8 +154,8 @@ public class MissionServiceImpl  implements MissionService {
     }
     @Override
     public Pager getByPager(Pager pager,long sid) throws Exception {
-        String sql = "SELECT * FROM `mission` where sid = " + sid ;
-        String sqlCount = "SELECT COUNT(id) FROM `mission` where sid = " + sid ;
+        String sql = "SELECT * FROM `mission` where sid = " + sid  + " AND 'status' = " + Mission.status_yes;
+        String sqlCount = "SELECT COUNT(id) FROM `mission` where sid = " + sid + " AND 'status' = " + Mission.status_yes;
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());

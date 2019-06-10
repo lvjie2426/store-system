@@ -446,8 +446,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             sql = sql + " and `makeStatus` = " + makeStatus;
             sqlCount = sqlCount + " and `makeStatus` = " + makeStatus;
         }else{
-            sql = sql + " and `makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3  " ;
-            sqlCount = sqlCount + " and  `makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3 " ;
+            sql = sql + " and (`makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3 ) " ;
+            sqlCount = sqlCount + " and  (`makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3) " ;
         }
         if (subid > 0) {
             sql = sql + " and `subid` = " + subid;
