@@ -380,5 +380,19 @@ public class UserController extends BaseController {
         return this.viewNegotiating(request, response, new ResultClient(true));
     }
 
+    //根据职业获取员工列表
+    @RequestMapping("/getUsersByJob")
+    public ModelAndView getUsersByJob(HttpServletRequest request,HttpServletResponse response,
+                                      @RequestParam(name = "job") String job,
+                                      @RequestParam(name = "userType") int userType)throws Exception{
+        try {
+            User user = UserUtils.getUser(request);
+            long sid = user.getSid();
+            return this.viewNegotiating(request,response,new ResultClient(true,userService.getUserByJob(job,sid,userType)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
+
 }
 
