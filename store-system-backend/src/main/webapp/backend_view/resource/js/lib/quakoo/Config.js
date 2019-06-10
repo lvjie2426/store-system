@@ -26,7 +26,7 @@ var Config = (function(_super){
         /**测试服务器地址*/
           this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
-        // this.serverUrl = "http://192.168.1.30:20005";
+        // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
@@ -77,6 +77,8 @@ var Config = (function(_super){
     _proto.getUrl_user_checkCode = function(){return this.serverUrl + '/user/checkCode';};
     /**发送验证码*/
     _proto.getUrl_user_createAuthCodeOnReg = function(){return this.serverUrl + '/user/createAuthCodeOnReg';};
+    /**根据职位获取用户列表*/
+    _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
     //=======================销售开单 结束====================
     //=======================实时工作台 开始====================
     //获取日常任务和奖励
