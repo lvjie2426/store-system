@@ -546,7 +546,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             }
             Subordinate subordinate = subordinateDao.load(order.getSubid());
             clientOrder.setSubName(subordinate.getName());
-            User passportUser = userDao.load(order.getPassportId());
+            User passportUser = userDao.load(order.getPersonnelid());
             if (passportUser != null) {
                 clientOrder.setPersonnelName(passportUser.getName());
             }

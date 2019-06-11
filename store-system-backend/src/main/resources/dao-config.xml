@@ -466,5 +466,13 @@
             </list>
         </property>
     </bean>
+    <bean id="dictionaryDao" class="com.store.system.dao.impl.DictionaryDaoImpl">
+        <property name="tableName" value="dictionary" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
 
 </beans>

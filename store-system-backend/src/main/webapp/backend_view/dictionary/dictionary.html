@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <style>
+        .fixed-table-toolbar{display: block}
+    </style>
+</head>
+
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInDown content-view " style="display: none;">
+    <form class="form-horizontal" id="areaForm">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">名称：</label>
+            <div class="col-sm-7">
+                <input type="text" id="name" placeholder="请填写名称" class="form-control">
+                <span class="help-block m-b-none validate">请填写名称</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">值：</label>
+            <div class="col-sm-7">
+                <input type="text" id="value" placeholder="请填写值" class="form-control">
+                <span class="help-block m-b-none validate">请填写值</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">描述：</label>
+            <div class="col-sm-7">
+                <input type="text" id="desc" placeholder="请填写描述" class="form-control">
+                <span class="help-block m-b-none validate">请填写描述</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">排序：</label>
+            <div class="col-sm-7">
+                <input type="number" id="sort" placeholder="请填写排序" class="form-control" min="1">
+                <span class="help-block m-b-none validate">请填写排序</span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>机构列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <form class="form-horizontal" role="form">
+                        <div id="toolbar" >
+                            <button class="btn  btn-info" id="btn_add">
+                                <i class="fa fa-plus">添加</i>
+                            </button>
+                        </div>
+                    </form>
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?"+Math.random()></script>
+<script src="../resource/js/template-native.js"></script>
+<script>
+    var $table =  $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl+'/dictionary/getAllList',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,50,100],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+                onClickRow: function (row) {
+                },
+                queryParams: function (params) {
+                    return {
+                        token:quakooUser.getUserInfo().token
+                    };
+                },
+            });
+        };
+        return oTableInit;
+    };
+    var columns = [
+        {field: "id", title: "id"},
+        {field: "name", title: "名称"},
+        {field: "value", title: "值", formatter: function (value, row, index) {
+                return value;
+            }},
+        {field: "desc", title: "描述", formatter: function (value, row, index) {
+                return value;
+            }},
+        {field: "sort", title: "排序", formatter: function (value, row, index) {
+                return value;
+            }},
+        {field: "status", title: "状态", formatter: function (value, row, index) {
+            var content = '';
+            if(value == 0) content = '上线';
+            else content = '下线';
+            return content;
+        }},
+        {field: "other", title: "操作", align: "center", formatter: function (value, row, index) {
+                var html = '';
+                var data = JSON.stringify(row);
+                if(row.status == 0) {
+                    html += '<a class="btn btn-sm btn-info  btn-outline" href="javascript:void(0);" ' +
+                        'onclick=\'updateStatus('+row.id+ ',' + 1 + ')\'>下线</a>';
+                } else {
+                    html += '<a class="btn btn-sm btn-info  btn-outline" href="javascript:void(0);" ' +
+                        'onclick=\'updateStatus('+row.id+ ',' + 0 + ')\'>上线</a>';
+                }
+                html +='&nbsp&nbsp';
+                html += '<a class="btn btn-sm btn-info  btn-outline" href="javascript:void(0);" onclick=\'edit('+data+')\'>编辑</a>';
+                html +='&nbsp&nbsp';
+                html += '<a class="btn btn-sm btn-danger  btn-outline" href="javascript:void(0);" onclick="del(' + row.id + ')" >删除</a>';
+                return html;
+            }}
+    ]
+
+    function add(){
+        $("#areaForm")[0].reset();
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加',
+            area: ['600px','500px'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var name= $.trim($('#name').val());
+                if(isBlank(name)){
+                    showValidate('#name');
+                    return false ;
+                }
+                var value= $.trim($('#value').val());
+                if(isBlank(value)){
+                    showValidate('#value');
+                    return false ;
+                }
+                var sort= $.trim($('#sort').val());
+                if(isBlank(sort)){
+                    showValidate('#sort');
+                    return false ;
+                }
+                var desc = $.trim($('#desc').val());
+
+                var params = {};
+                var url = "/dictionary/add";
+                var result = {succ:'添加成功！',fail:'添加失败！'};
+
+                layer.close(index);
+                params.name = name;
+                params.value = value;
+                params.sort = sort;
+                params.desc = desc;
+
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        $table.bootstrapTable('refresh');
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                $('#name').attr('readonly', false);
+            }
+        });
+    }
+
+    function edit(row){
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area2', //设定一个id，防止重复弹出
+            title: '更新',
+            area: ['600px','500px'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var name= $.trim($('#name').val());
+                if(isBlank(name)){
+                    showValidate('#name');
+                    return false ;
+                }
+                var value= $.trim($('#value').val());
+                if(isBlank(value)){
+                    showValidate('#value');
+                    return false ;
+                }
+                var sort= $.trim($('#sort').val());
+                if(isBlank(sort)){
+                    showValidate('#sort');
+                    return false ;
+                }
+                var desc = $.trim($('#desc').val());
+
+                var params = {};
+                var url = "/dictionary/update";
+                var result = {succ:'更新成功！',fail:'更新失败！'};
+
+                layer.close(index);
+                params.id = row.id;
+                params.name = name;
+                params.value = value;
+                params.sort = sort;
+                params.desc = desc;
+
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        $table.bootstrapTable('refresh');
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                $('#name').attr('readonly', true);
+                if(isNotBlank(row)){
+                    $('#name').val(row.name);
+                    $('#sort').val(row.sort);
+                    $('#desc').val(row.desc);
+                    $('#value').val(row.value);
+                }
+            }
+        });
+    }
+
+    function updateStatus(id, status){
+        var url = serverUrl+"/dictionary/updateStatus";
+        layer.msg('确认更改状态吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+                var params = {};
+                params.id = id;
+                params.status = status;
+                myAjax(url, params, handle);
+                function handle(data,param){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg('更改成功', {icon: 1,shade: 0.01});
+                        $table.bootstrapTable('refresh');
+                    }else{
+                        layer.msg('更改失败'+msg, {icon: 2,shade: 0.01});
+                    }
+                }
+            },btn2: function(index, layero){
+            }
+        });
+    }
+
+    //删除权限
+    function del(id){
+        var url = serverUrl+"/dictionary/del";
+        layer.msg('确认删除吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+                myAjax(url,{id:id},handle);
+                function handle(data,param){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg('删除成功', {icon: 1,shade: 0.01});
+                        $table.bootstrapTable('refresh');
+                    }else{
+                        layer.msg('删除失败'+msg, {icon: 2,shade: 0.01});
+                    }
+                }
+            },btn2: function(index, layero){
+            }
+        });
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click(add);
+        };
+        return oInit;
+    };
+
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+</script>
+</body>
+</html>

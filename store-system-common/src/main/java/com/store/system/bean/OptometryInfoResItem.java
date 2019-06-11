@@ -19,8 +19,20 @@ public class OptometryInfoResItem implements Serializable {
 
     private String pd; //瞳距
 
+    private String ph;//瞳高
+
     private String v; //棱镜
 
     private String sc; //基底
+
+    private String  q;//曲率
+
+    private String d;//直径
+
+    private String fpd;//远瞳距
+
+    private String npd;//进瞳距
+
+    private String add;//ADD
 
 }

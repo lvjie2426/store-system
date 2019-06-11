@@ -59,9 +59,9 @@ public class OptometryInfo implements Serializable {
 
     private int wearProp; //佩戴属性
 
-    private long res; //结果
+    private String res; //结果
 
-    private long support; //建议
+    private String support; //建议
 
     private long ctime;
 

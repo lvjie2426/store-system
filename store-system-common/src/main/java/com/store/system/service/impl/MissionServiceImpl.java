@@ -154,13 +154,13 @@ public class MissionServiceImpl  implements MissionService {
     }
     @Override
     public Pager getByPager(Pager pager,long sid) throws Exception {
-        String sql = "SELECT * FROM `mission` where sid = " + sid  + " AND 'status' = " + Mission.status_yes;
-        String sqlCount = "SELECT COUNT(id) FROM `mission` where sid = " + sid + " AND 'status' = " + Mission.status_yes;
+        String sql = "SELECT * FROM `mission` where sid = " + sid  + " AND status = " + Mission.status_yes;
+        String sqlCount = "SELECT COUNT(id) FROM `mission` where sid = " + sid + " AND status = " + Mission.status_yes;
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         int count = 0;
-        List<Mission> missions = this.jdbcTemplate.query(sql,new RowMapperHelp<Mission>(Mission.class));
+        List<Mission> missions = jdbcTemplate.query(sql,new RowMapperHelp<Mission>(Mission.class));
         count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         pager.setData(transformClient(missions));
         pager.setTotalCount(count);
@@ -169,7 +169,7 @@ public class MissionServiceImpl  implements MissionService {
     //检查当前订单满足那些任务的完成条件并返回任务
     @Override
     public List<Mission> checkMission(long skuId,long sid,long subid,long uid) throws Exception {
-        String sql = "SELECT * FROM `mission` where sid = " + sid ;
+        String sql = "SELECT * FROM `mission` where sid = " + sid  + " AND status = " + Mission.status_yes;
         sql = sql + " order  by `ctime` desc";
         List<Mission> missions = this.jdbcTemplate.query(sql,new RowMapperHelp<Mission>(Mission.class));
         List<Mission> res = Lists.newArrayList();
