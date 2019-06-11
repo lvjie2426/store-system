@@ -24,10 +24,9 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-          this.serverUrl = "http://39.107.247.82:20005";
+        this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
-        this.serverUrl = "http://192.168.1.30:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
@@ -62,6 +61,8 @@ var Config = (function(_super){
     _proto.getUrl_order_getTemporaryOrder = function(){return this.serverUrl + '/order/getTemporaryOrder';};
     /**保存验光信息*/
     _proto.getUrl_optometryinfo_add = function(){return this.serverUrl + '/optometryinfo/add';};
+    /**获取某个用户的验光记录*/
+    _proto.getUrl_optometryinfo_getList = function(){return this.serverUrl + '/optometryinfo/getList';};
     /**获取门店历史消费记录*/
     _proto.getUrl_order_getOrderBySubid = function(){return this.serverUrl + '/order/getOrderBySubid';};
     /**计算订单金额*/
@@ -80,6 +81,8 @@ var Config = (function(_super){
     _proto.getUrl_user_createAuthCodeOnReg = function(){return this.serverUrl + '/user/createAuthCodeOnReg';};
     /**根据职位获取用户列表*/
     _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
+    /**获取 验光结果建议*/
+    _proto.getUrl_optometryinfo_getResult = function(){return this.serverUrl + '/optometryinfo/getResult';};
     //=======================销售开单 结束====================
     //=======================实时工作台 开始====================
     //获取日常任务和奖励
