@@ -416,7 +416,7 @@
 </div>
 <div class="task-product">
     <div class="task-header">选择任务产品</div>
-    <ul class="product-tab clear">
+    <ul class="product-tab clear" id="product-tab">
         <li class="product-item active">镜片</li>
         <li class="product-item">镜架</li>
         <li class="product-item">隐形眼镜</li>
@@ -526,10 +526,19 @@
     <%}%>
 </script>
 
+<!--任务产品类型-->
+<script type="text/html" id="categoryTmp">
+    <%for(var i=0;i< list.length;i++){%>
+    <%if(list[i].pid==0){%>
+    <li class="product-item" id="category<%=list[i].id%>" onclick="chooseGoodsType('<%=list[i].id%>')"><%=list[i].name%></li>
+    <%}%>
+    <%}%>
+</script>
 
 <script>
     var psid;                                             //企业ID
     var subid;                                            //门店ID
+    var cid = '';                                         //类目id
     var arr = [];                                         //抵用券数据
     var diaMsgJob;                                        //短信群发职位
     /**初始化页面*/
@@ -541,6 +550,16 @@
     function initPage() {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
         subid = quakooDb.getItem("sel_ShopId");          //门店ID
+        //获取一级类目
+        quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
+            if(ret && ret.success){
+                if(ret.data.length>0){
+                    var html = template('categoryTmp',{list:ret.data});
+                    $('#product-tab').html(html);
+                    chooseGoodsType(ret.data[0].id)
+                }
+            }
+        })
         Table.Init();
         fromBox();
     }
@@ -598,7 +617,7 @@
                 arr.push(_this.data[i])
             }
         }
-        console.log("抵用券数据：", arr);
+        // console.log("抵用券数据：", arr);
         var html = template("voucherList", {list: arr});
         $("#card-list1").html(html);
     }
@@ -1224,6 +1243,76 @@
         }
     })
 
+    /**
+     * 选择任务产品
+     * */
+    var $table = $('#jp-table');//商品列表表格
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable('destroy')
+            $table.bootstrapTable({
+                url: config.getUrl_product_getSPUPager(),
+                classes: "table",
+                pagination: true,        //是否显示分页
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,
+                pageList: [5, 10, 15, 20],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                paginationLoop: false,
+                columns: columns,
+                queryParams: function (param) {
+                    if (cid) {
+                        param.cid = cid;
+                    }
+                    param.subid = quakooUser.getUserInfo().psid;
+                    param.token = quakooUser.getUserInfo().token;
+                    return param
+                }
+            });
+        };
+        return oTableInit;
+    };
+    columns = [
+        {checkbox: true, valign: "middle"},
+        {field: "brandName", title: "品牌", valign: "middle"},
+        {field: "seriesName", title: "系列", valign: "middle"},
+        {field: "canUseNum", title: "可用数量", valign: "middle"},
+        {
+            field: "", title: "提成", valign: "middle", formatter: function (value, row, index) {
+                return '<span class="goods-ticheng">团</span>';
+            }
+        },
+        {
+            field: "", title: "库存总值", valign: "middle", formatter: function (value, row, index) {
+                return '￥10000';
+            }
+        },
+        {
+            field: "", title: "操作", valign: "middle", formatter: function (value, row, index) {
+                return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+            }
+        }
+    ];
+
+    //选择一级类目
+    function chooseGoodsType(value) {
+        if (value) {
+            cid = value;
+        }
+        var Table = new TableInit(columns);
+        Table.Init();
+        $('#category' + cid).addClass('active').siblings().removeClass('active');
+    }
+
     // 数据表单初始化函数
     function fromBox() {
         /**
@@ -1442,7 +1531,7 @@
                     align: "center",
                     valign: "middle",
                     formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary" style="margin-right: 8px;">编辑</button><button class="btn btn-danger" style="margin-right: 8px;" data-id="' + value + '">删除</button>';
+                        return '<button class="btn btn-primary" style="margin-right: 8px;" onclick="newVouchers2()">编辑</button><button class="btn btn-danger" style="margin-right: 8px;" data-id="' + value + '">删除</button>';
                     }
                 }
             ],
@@ -1534,68 +1623,12 @@
             ]
 
         });
-        /**
-         * 选择任务产品
-         * */
-        var data6 = [
-            {brand: "品牌A", series: "系列A", model: "型号A", color: "色号A"}, {
-                brand: "品牌A",
-                series: "系列A",
-                model: "型号A",
-                color: "色号A"
-            }, {brand: "品牌A", series: "系列A", model: "型号A", color: "色号A"}, {
-                brand: "品牌A",
-                series: "系列A",
-                model: "型号A",
-                color: "色号A"
-            }, {brand: "品牌A", series: "系列A", model: "型号A", color: "色号A"}, {
-                brand: "品牌A",
-                series: "系列A",
-                model: "型号A",
-                color: "色号A"
-            }, {brand: "品牌A", series: "系列A", model: "型号A", color: "色号A"}, {
-                brand: "品牌A",
-                series: "系列A",
-                model: "型号A",
-                color: "色号A"
-            }, {brand: "品牌A", series: "系列A", model: "型号A", color: "色号A"}, {
-                brand: "品牌A",
-                series: "系列A",
-                model: "型号A",
-                color: "色号A"
-            }];
-        $("#jp-table").bootstrapTable({
-            data: data6,
-            classes: "table",
-            pagination: true,
-            pageNumber: 1,
-            pageSize: 10,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                {checkbox: true, align: "center", valign: "middle"},
-                {field: "brand", title: "品牌", align: "left", valign: "middle"},
-                {field: "series", title: "系列", align: "left", valign: "middle"},
-                {field: "model", title: "型号", align: "left", valign: "middle"},
-                {field: "color", title: "色号", align: "left", valign: "middle"},
-                {
-                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
-                    }
-                }
-            ]
 
-        });
         /**
          * 选择任务对象
          * */
         var data7 = [{}];
+        $("#shop-table").bootstrapTable('destroy');
         $("#shop-table").bootstrapTable({
             data: data5,
             classes: "table",
@@ -1761,10 +1794,11 @@
     /**
      * 选择任务产品tab切换
      * */
-    $(".product-tab .product-item").click(function () {
-        $(this).addClass("active").siblings().removeClass("active");
-        $(".product-list-item").removeClass("active").eq($(this).index()).addClass("active");
-    });
+    // $(".product-tab .product-item").click(function () {
+    //     $(this).addClass("active").siblings().removeClass("active");
+    //     $(".product-list-item").removeClass("active").eq($(this).index()).addClass("active");
+    // });
+
 
     /************************************</任务奖励结束>******************************************/
 

@@ -2,7 +2,7 @@
 ###页面
 1. 销售开单——salesOrder
 2. 实时工作台——timeWorkbench
-3. 订单管理——orderManagement
+3. ——orderManagement
 4. 门店员工管理——comManagement
 5. 顾客管理——custManagement
 6. 营销管理——market
