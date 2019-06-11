@@ -638,3 +638,44 @@ label{
 }
 
 /*编辑员工弹窗结束*/
+/*离职员工操作弹窗*/
+.layui-layer-removeStaff-tan .layui-layer-title {
+    color: #DD5B4B;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.layui-layer-removeStaff-tan .layui-layer-content p {
+    color: #393953;
+    font-size: 12px;
+    margin: 0;
+    padding: 12px 16px;
+    font-weight: 600;
+}
+
+.layui-layer-removeStaff-tan .layui-layer-btn a {
+    width: 44px;
+    height: 32px;
+    font-size: 12px;
+    line-height: 32px;
+    margin: 0 0 0 8px;
+    padding: 0;
+    border: 1px solid #dedede;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-align: center;
+}
+
+.layui-layer-removeStaff-tan .layui-layer-btn a.layui-layer-btn0 {
+    color: #828297;
+    background: #f3f3f7;
+}
+
+.layui-layer-removeStaff-tan .layui-layer-btn a.layui-layer-btn1 {
+    color: #fff;
+    background: #dc5a4b;
+}
+
+/*离职员工操作弹窗结束*/

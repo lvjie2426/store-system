@@ -334,6 +334,10 @@
         </ul>
     </div>
 </div>
+<!--离职员工操作弹窗-->
+<div class="content-view content-view-removeStaff" style="display:none">
+    <p>这将禁用该员工的账号及一切操作</p>
+</div>
 <!--全局js-->
 <!-- jq库 -->
 <script src="../resource/js/jquery.min.js"></script>
@@ -936,7 +940,6 @@
 
     /**离职该员工点击弹窗*/
     function removeStaff(id, status) {
-        alert(1)
         layer.open({
             type: 1,
             shade: 0.01,
@@ -967,7 +970,7 @@
             console.log(ret);
             if (ret && ret.success) {
                 if (ret.data == "true") {
-                    getStaffList(subid);
+                    layer.msg('删除成功', {icon: 1, shade: 0.01});
                 }
             }
         });
