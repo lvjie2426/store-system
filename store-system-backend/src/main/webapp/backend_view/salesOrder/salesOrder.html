@@ -1590,10 +1590,10 @@
         var LocYgInfo={};                                    //验光信息对象{optUid:验光师ID}
 
         var ygInfo = {now:{},'2018.10.27':{},'2018.06.17':{}};
-        LocYgInfo.yuanTable=[裸眼视力,球镜(S),柱镜(C),轴位(A),矫正视力,瞳距(PD),裸眼视力,棱镜(V),基底(SC)];
-        LocYgInfo.yinTable=[裸眼视力,球镜(S),柱镜(C),轴位(A),矫正视力,曲率,直径];
-        LocYgInfo.jinTable=[裸眼视力,球镜(S),柱镜(C),轴位(A),矫正视力,瞳距(PD),瞳高,棱镜(V),基底(SC)];
-        LocYgInfo.jianTable=[裸眼视力,球镜(S),柱镜(C),轴位(A),矫正视力,远瞳距,近瞳距,ADD,瞳高];
+        LocYgInfo.yuanTable=["裸眼视力","球镜(S)","柱镜(C)","轴位(A)","矫正视力","瞳距(PD)","裸眼视力","棱镜(V)","基底(SC)"];
+        LocYgInfo.yinTable=["裸眼视力","球镜(S)","柱镜(C)","轴位(A)","矫正视力","曲率","直径"];
+        LocYgInfo.jinTable=["裸眼视力","球镜(S)","柱镜(C)","轴位(A)","矫正视力","瞳距(PD)","瞳高","棱镜(V)","基底(SC)"];
+        LocYgInfo.jianTable=["裸眼视力","球镜(S)","柱镜(C)","轴位(A)","矫正视力","远瞳距","近瞳距","ADD","瞳高"];
         $(function () {
             psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
             subid = quakooDb.getItem("sel_ShopId");           //门店ID
@@ -2705,7 +2705,6 @@
         //     }
         //     $('#tableContent')[0].scrollLeft += step;
         // }
-
         //时间切换表单
         $("#tagDateBox>li").on('click', function () {
             $(this).addClass('active').siblings().removeClass('active');
