@@ -46,15 +46,16 @@ public class InventoryOutBillController extends BaseController {
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
                                @RequestParam(value = "sid") long sid,
-                               @RequestParam(required = false,value = "wid") long wid,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ClientInventoryDetail> details = Lists.newArrayList();
             ClientProductSPU productSPU = productService.selectSPU(type, subid, pid, cid, bid, sid);
             if(null != productSPU) {
                 List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
-                if(warehouses.size()>0) wid = warehouses.get(0).getId();
-                details = inventoryDetailService.getAllList(wid, productSPU.getId());
+                if(warehouses.size()>0){
+                    long wid = warehouses.get(0).getId();
+                    details = inventoryDetailService.getAllList(wid, productSPU.getId());
+                }
             }
             return this.viewNegotiating(request,response, new ResultClient(true, details));
         } catch (StoreSystemException e) {
