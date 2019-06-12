@@ -310,8 +310,8 @@ dateRange.prototype.getTime = function() {
     var endArr = this.checkEnd.split(".");
     add0(endArr[1]);
     add0(endArr[2]);
-    var startTime = startArr[0]+"-"+startArr[1]+"-"+startArr[2];
-    var endTime = endArr[0]+"-"+endArr[1]+"-"+endArr[2];
+    var startTime = startArr[0]+"."+startArr[1]+"."+startArr[2];
+    var endTime = endArr[0]+"."+endArr[1]+"."+endArr[2];
     var startTimeStamp = new Date(startTime).getTime();
     var endTimeStamp = new Date(endTime).getTime();
     return [startTime,endTime,startTimeStamp,endTimeStamp];

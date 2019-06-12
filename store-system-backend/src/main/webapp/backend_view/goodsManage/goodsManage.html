@@ -506,9 +506,9 @@
                         <%}%>
                     <%}else if(list.categoryName=='隐形眼镜'){%>
                         <%if(list.properties && list.properties[5]){%>
-                        <input type="text" placeholder="天数" value="<%=list.properties[5]%>" class="yj-input" id="yj-add-day" data-pnid="5">
+                        <input type="text" placeholder="天数" value="<%=list.properties[5]%>" class="yj-input" id="yj-add-day" data-pnid="8">
                         <%}else{%>
-                        <input type="text" placeholder="天数"  class="yj-input" id="yj-add-day" data-pnid="5">
+                        <input type="text" placeholder="天数"  class="yj-input" id="yj-add-day" data-pnid="8">
                         <%}%>
                     <%}else if(list.categoryName=='太阳镜'){%>
                         <%if(list.properties && list.properties[9]){%>
@@ -1804,7 +1804,7 @@
             //品牌/系列
             selectTag($("#yj-add-brand"),function (ret) {
                 params[cid].bid = ret.value;
-                $('#select-jj-series').html('');
+                $('#yj-add-series').html('');
                 params[cid].sid = -1;
                 //获取品牌下的系列列表
                 quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
@@ -1866,107 +1866,112 @@
         }
         // 新增眼镜
         function addYjGoods(isUpdate,index) {
+            var nowParam = {};
+            for(var i in params[cid]){
+                nowParam[i] = params[cid][i]
+            }
             //销售状态  0开启  1关闭
             if($('#yj-add-status').hasClass('active')){
-                params[cid].saleStatus = 0;
+                nowParam.saleStatus = 0;
             }else{
-                params[cid].saleStatus = 1;
+                nowParam.saleStatus = 1;
             }
             if($('#category'+cid).text()=='镜片'){
-                params[cid].productCustomRangeList = JSON.stringify(params[cid].productCustomRangeList);
+                nowParam.productCustomRangeList = JSON.stringify(nowParam.productCustomRangeList);
             }else if($('#category'+cid).text()=='特殊商品'){
-                params[cid].skuJson = [{}];
-                params[cid].skuJson[0].num = $('#yj-add-num').val();
-                params[cid].skuJson[0].code = $('#yj-add-code').val();
-                params[cid].skuJson[0].costPrice = $('#yj-add-costPrice').val();
-                params[cid].icon = $('#cover').attr('real-src');
-                params[cid].name = $('#yj-add-name').val();
-                if(params[cid].type==1){
-                    params[cid].skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
+                nowParam.skuJson = [{}];
+                nowParam.skuJson[0].num = $('#yj-add-num').val();
+                nowParam.skuJson[0].code = $('#yj-add-code').val();
+                nowParam.skuJson[0].costPrice = $('#yj-add-costPrice').val();
+                nowParam.icon = $('#cover').attr('real-src');
+                nowParam.name = $('#yj-add-name').val();
+                if(nowParam.type==1){
+                    nowParam.skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
                 }
             }else{
-                params[cid].properties[$('#yj-add-day').attr('data-pnid')] = $('#yj-add-day').val();
+                nowParam.properties[$('#yj-add-day').attr('data-pnid')] = $('#yj-add-day').val();
                 if($('#category'+cid).text()=='护理产品'){
-                    params[cid].properties[$('#yj-add-shouming').attr('data-pnid')] = $('#yj-add-shouming').val();
+                    nowParam.properties[$('#yj-add-shouming').attr('data-pnid')] = $('#yj-add-shouming').val();
                 }
                 if($('#category'+cid).text()!='隐形眼镜'){
-                    params[cid].skuJson = [{}];
-                    if(params[cid].type==1){
-                        params[cid].skuJson[0].code = $('#yj-add-code-1').val();
-                        params[cid].skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
+                    nowParam.skuJson = [{}];
+                    if(nowParam.type==1){
+                        nowParam.skuJson[0].code = $('#yj-add-code-1').val();
+                        nowParam.skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
                     }else{
-                        params[cid].skuJson[0].retailPrice = $('#yj-add-retailPrice').val();
-                        params[cid].skuJson[0].costPrice = $('#yj-add-costPrice').val();
-                        params[cid].skuJson[0].code = $('#yj-add-code').val();
+                        nowParam.skuJson[0].retailPrice = $('#yj-add-retailPrice').val();
+                        nowParam.skuJson[0].costPrice = $('#yj-add-costPrice').val();
+                        nowParam.skuJson[0].code = $('#yj-add-code').val();
                     }
                 }
             }
-            if(params[cid].type==1){
+            if(nowParam.type==1){
                 //积分商品
                 //有效期
                 if(yjDate.getTime()[2]){
-                    params[cid].integralStartTime = yjDate.getTime()[2];
+                    nowParam.integralStartTime = yjDate.getTime()[2];
                 }
                 if(yjDate.getTime()[3]){
-                    params[cid].integralEndTime = yjDate.getTime()[3];
+                    nowParam.integralEndTime = yjDate.getTime()[3];
                 }
                 //兑换数量上限
                 if($('#yj-add-integralNum').val()){
-                    params[cid].integralNum = $('#yj-add-integralNum').val();
+                    nowParam.integralNum = $('#yj-add-integralNum').val();
                 }
             }
-            if(quakooUtils.isArray(params[cid].ugDiscount)){
-                params[cid].ugDiscount = JSON.stringify(params[cid].ugDiscount);
+            if(quakooUtils.isArray(nowParam.ugDiscount)){
+                nowParam.ugDiscount = JSON.stringify(nowParam.ugDiscount);
             }
-            delete params[cid].categoryName;
+            delete nowParam.categoryName;
             if(isUpdate){
-                delete params[cid].skuList;
-                delete params[cid].userGradeCategoryDiscountList;
-                delete params[cid].providerName;
-                delete params[cid].categoryName;
-                delete params[cid].seriesName;
-                delete params[cid].brandName;
-                delete params[cid].canUseNum;
-                delete params[cid].ctime;
-                delete params[cid].utime;
-                delete params[cid].sort;
-                delete params[cid].integralEndTimeNew;
-                delete params[cid].integralStartTimeNew;
+                delete nowParam.skuList;
+                delete nowParam.userGradeCategoryDiscountList;
+                delete nowParam.providerName;
+                delete nowParam.categoryName;
+                delete nowParam.seriesName;
+                delete nowParam.brandName;
+                delete nowParam.canUseNum;
+                delete nowParam.ctime;
+                delete nowParam.utime;
+                delete nowParam.sort;
+                delete nowParam.integralEndTimeNew;
+                delete nowParam.integralStartTimeNew;
 
-                var skuJson = params[cid].skuJson;
+                var skuJson = nowParam.skuJson;
                 console.log(skuJson)
-                params[cid].addSkuJson = [];
-                params[cid].updateSkuJson = [];
-                params[cid].delSkuIdJson = [];
+                nowParam.addSkuJson = [];
+                nowParam.updateSkuJson = [];
+                nowParam.delSkuIdJson = [];
                 for(var i=0;i<skuJson.length;i++){
                     if(skuJson[i].id){
                         if(skuJson[i].del){
-                            params[cid].delSkuIdJson.push(skuJson[i].id)
+                            nowParam.delSkuIdJson.push(skuJson[i].id)
                         }else{
-                            params[cid].updateSkuJson.push(skuJson[i])
+                            nowParam.updateSkuJson.push(skuJson[i])
                         }
                     }else{
-                        params[cid].addSkuJson.push(skuJson[i])
+                        nowParam.addSkuJson.push(skuJson[i])
                     }
                 }
-                params[cid].addSkuJson = JSON.stringify(params[cid].addSkuJson);
-                params[cid].updateSkuJson = JSON.stringify(params[cid].updateSkuJson);
-                params[cid].delSkuIdJson = JSON.stringify(params[cid].delSkuIdJson);
+                nowParam.addSkuJson = JSON.stringify(nowParam.addSkuJson);
+                nowParam.updateSkuJson = JSON.stringify(nowParam.updateSkuJson);
+                nowParam.delSkuIdJson = JSON.stringify(nowParam.delSkuIdJson);
 
-                console.log(params[cid])
-                quakooData.ajaxGetData(config.getUrl_product_change(),params[cid],function (ret) {
+                console.log(nowParam)
+                quakooData.ajaxGetData(config.getUrl_product_change(),nowParam,function (ret) {
                     if(ret.success){
                         layer.msg('修改成功',{icon: 1})
                         layer.close(index)
                         chooseGoodsType();
                     }else{
-                        layer.msg(ret.data,{icon: 2})
+                        layer.msg(ret.data,{icon: 2});
+
                     }
                 })
             }else{
-                params[cid].skuJson = JSON.stringify(params[cid].skuJson);
-                console.log(params[cid])
-                quakooData.ajaxGetData(config.getUrl_product_add(),params[cid],function (ret) {
+                nowParam.skuJson = JSON.stringify(nowParam.skuJson);
+                console.log(nowParam)
+                quakooData.ajaxGetData(config.getUrl_product_add(),nowParam,function (ret) {
                     if(ret.success){
                         layer.msg('添加成功',{icon: 1})
                         layer.close(index)
