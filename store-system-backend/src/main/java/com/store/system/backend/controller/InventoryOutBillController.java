@@ -9,6 +9,7 @@ import com.store.system.model.InventoryOutBill;
 import com.store.system.model.User;
 import com.store.system.service.InventoryDetailService;
 import com.store.system.service.InventoryOutBillService;
+import com.store.system.service.InventoryWarehouseService;
 import com.store.system.service.ProductService;
 import com.store.system.util.UserUtils;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ public class InventoryOutBillController extends BaseController {
     @Resource
     private InventoryOutBillService inventoryOutBillService;
 
+    @Resource
+    private InventoryWarehouseService inventoryWarehouseService;
+
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "type") int type,
                                @RequestParam(value = "subid") long subid,
@@ -48,6 +52,8 @@ public class InventoryOutBillController extends BaseController {
             List<ClientInventoryDetail> details = Lists.newArrayList();
             ClientProductSPU productSPU = productService.selectSPU(type, subid, pid, cid, bid, sid);
             if(null != productSPU) {
+                List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
+                if(warehouses.size()>0) wid = warehouses.get(0).getId();
                 details = inventoryDetailService.getAllList(wid, productSPU.getId());
             }
             return this.viewNegotiating(request,response, new ResultClient(true, details));

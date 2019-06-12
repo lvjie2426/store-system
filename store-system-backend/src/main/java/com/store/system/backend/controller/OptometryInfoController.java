@@ -50,7 +50,7 @@ public class OptometryInfoController extends BaseController {
                 optometryInfo.setJinYongRes(jinYongRes);
             }if(StringUtils.isNotBlank(jianJinDuoJiaoDianResJson)){
                 OptometryInfoRes jianJinDuoJiaoDianRes = JsonUtils.fromJson(jianJinDuoJiaoDianResJson, OptometryInfoRes.class);
-                optometryInfo.setYuanYongRes(jianJinDuoJiaoDianRes);
+                optometryInfo.setJianJinDuoJiaoDianRes(jianJinDuoJiaoDianRes);
             }
             optometryInfo = optometryInfoService.add(optometryInfo);
             return this.viewNegotiating(request,response, new ResultClient(optometryInfo));
