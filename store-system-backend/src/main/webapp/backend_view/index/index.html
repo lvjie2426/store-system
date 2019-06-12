@@ -239,7 +239,7 @@
 <script>
     console.log("登录用户信息：",quakooUser.getUserInfo())
     var sid = quakooUser.getUserInfo().psid;//企业ID
-
+    quakooDb.setItem("sel_ShopId",quakooUser.getUserInfo().sid); //门店ID
     getSubordinateStore();//获取公司下门店
     /**获取公司下门店列表*/
     function getSubordinateStore(){
@@ -251,8 +251,7 @@
                     var html = template("shopList", data);
                     document.getElementById("shopUl").innerHTML = html;
                     /**默认加载第一个店*/
-                    quakooDb.setItem("sel_ShopId",ret.data[0].id); //sava 门店ID
-                    document.getElementById("shopDefaultText").innerHTML = ret.data[0].name;
+                    document.getElementById("shopDefaultText").innerHTML = "所有门店";
                     /**下拉框*/
                     selectTag($('#selectBox'), function (ret) {
                         console.log(ret);

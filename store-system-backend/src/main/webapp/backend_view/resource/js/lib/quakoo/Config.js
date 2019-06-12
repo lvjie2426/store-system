@@ -83,6 +83,8 @@ var Config = (function(_super){
     _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
     /**获取 验光结果建议*/
     _proto.getUrl_optometryinfo_getResult = function(){return this.serverUrl + '/optometryinfo/getResult';};
+    /**促销方式*/
+    _proto.getUrl_marketingcoupon_getCanUseList = function(){return this.serverUrl + '/marketingcoupon/getCanUseList';};
     //=======================销售开单 结束====================
     //=======================实时工作台 开始====================
     //获取日常任务和奖励
