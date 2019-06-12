@@ -46,7 +46,7 @@ public class InventoryOutBillController extends BaseController {
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
                                @RequestParam(value = "sid") long sid,
-                               @RequestParam(value = "wid") long wid,
+                               @RequestParam(required = false,value = "wid") long wid,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ClientInventoryDetail> details = Lists.newArrayList();
