@@ -308,114 +308,10 @@
 
     </div>
     <!-- 出库单 -->
-    <div class="outbound-left outbound-right outbound-single">
-        <div class="outbound-right-head">
-            <div class="orhTitle">出库单</div>
-            <div class="outbound-right-head-right">
-                <span>出库人</span>
-                <div class="selectBox" id="selectBox2">
-                    <div class="select-box-header">
-                        <span class="text">李小东</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                    </div>
-                    <div class="optionBox">
-                        <ul class="optionUL">
-                            <li value="01">1</li>
-                            <li value="02">2</li>
-                            <li value="03">3</li>
-                            <li value="04">4</li>
-                            <li value="05">5</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <div class="content-view content-view-checkRepertory">
+        <div class="body" id="listDom">
         </div>
-        <div class="outbound-right-content">
-            <div class="item">
-                <h5>镜片</h5>
-                <table width="100%">
-                    <thead>
-                        <tr>
-                            <th width="15%">名称</th>
-                            <th>生产批号</th>
-                            <th>保质期</th>
-                            <th>数量</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>名称A</td>
-                            <td>946208</td>
-                            <td>
-                                2018.03.30 <br>
-                                2019.03.30
-                            </td>
-                            <td>8</td>
-                            <td>
-                                <u class="rem">移除</u>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>名称B</td>
-                            <td>54845</td>
-                            <td>
-                                2018.03.30 <br>
-                                2019.03.30
-                            </td>
-                            <td>85</td>
-                            <td>
-                                <u class="rem">移除</u>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="item">
-                <h5>镜片</h5>
-                <table width="200%">
-                    <thead>
-                        <tr>
-                            <th width="15%">名称</th>
-                            <th>球镜度数</th>
-                            <th>散光度数</th>
-                            <th>生产批号</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>名称B</td>
-                            <td>54845</td>
-                            <td>
-                                2018.03.30 <br>
-                                2019.03.30
-                            </td>
-                            <td>85</td>
-                            <td class="brL">
-                                <u class="rem">移除</u>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>名称B</td>
-                            <td>54845</td>
-                            <td>
-                                2018.03.30 <br>
-                                2019.03.30
-                            </td>
-                            <td>85</td>
-                            <td class="brL">
-                                <u class="rem">移除</u>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="btnBox">
-            <button class="btn btn-yj">关闭窗口</button>
-            <button class="btn btn-primary fr">确认出库</button>
-            <button class="btn btn-rem fr">删除出库</button>
-        </div>
+
     </div>
 
 
@@ -510,11 +406,11 @@
             <div class="foot">
                 <span class="txt"><%=list[i].time%></span>
                 <%if(list[i].status==0){%>
-                <button class="btn btn-primary">编辑</button>
+                <button class="btn btn-primary" type="button" onclick="addGoods('<%=list[i].id%>')">编辑</button>
                 <%}else if(list[i].status==1){%>
-                <button class="btn btn-danger">等待确认</button>
+                <button class="btn btn-danger" type="button" onclick="updateListStatus('<%=list[i].id%>')">等待确认</button>
                 <%}else if(list[i].status==2){%>
-                <button class="btn btn-order">查看</button>
+                <button class="btn btn-order" type="button" onclick="lookRepertory('<%=list[i].id%>')">查看</button>
                 <%}%>
             </div>
         </li>
@@ -647,26 +543,11 @@
                     <span>产品编码</span>
                     <span>品牌</span>
                     <span>系列</span>
-                    <span>供应商</span>
                     <span>商品类型</span>
-                    <%if(list[i].name=='镜片'){%>
-                    <span>球</span>
-                    <span>柱</span>
-                    <%}else if(list[i].name=='镜架' || list[i].name=='太阳镜'){%>
-                    <span>型号</span>
-                    <span>色号</span>
-                    <%}else if(list[i].name=='隐形眼镜'){%>
-                    <span>球镜度数</span>
-                    <span>生产批号</span>
-                    <span>保质期</span>
-                    <%}else if(list[i].name=='护理产品'){%>
-                    <span>生产批号</span>
-                    <span>保质期</span>
-                    <%}else if(list[i].name=='其它商品'){%>
-                    <span>型号</span>
-                    <%}%>
                     <span>数量</span>
+                    <%if(showTool){%>
                     <span class="removeLi">操作</span>
+                    <%}%>
                 </div>
                 <ul class="tbody">
                     <%for(var j=0;j< list[i].data.length;j++){%>
@@ -674,30 +555,15 @@
                         <span><%=list[i].data[j].code%></span>
                         <span><%=list[i].data[j].brandName%></span>
                         <span><%=list[i].data[j].seriesName%></span>
-                        <span><%=list[i].data[j].providerName%></span>
-                        <%if(type==0){%>
+                        <%if(list[i].data[j].type==0){%>
                         <span>常规商品</span>
                         <%}else{%>
                         <span>积分商品</span>
                         <%}%>
-                        <%if(list[i].name=='镜片'){%>
-                        <span><%=list[i].data[j].properties[15]%></span>
-                        <span><%=list[i].data[j].properties[16]%></span>
-                        <%}else if(list[i].name=='镜架' || list[i].name=='太阳镜'){%>
-                        <span><%=list[i].data[j].xinghao%></span>
-                        <span><%=list[i].data[j].sehao%></span>
-                        <%}else if(list[i].name=='隐形眼镜'){%>
-                        <span><%=list[i].data[j].ballName%></span>
-                        <span><%=list[i].data[j].shengchanpihao%></span>
-                        <span class="line16"><%=list[i].data[j].outDate[0]%><br/><%=list[i].data[j].outDate[1]%></span>
-                        <%}else if(list[i].name=='护理产品'){%>
-                        <span><%=list[i].data[j].shengchanpihao%></span>
-                        <span class="line16"><%=list[i].data[j].outDate[0]%><br/><%=list[i].data[j].outDate[1]%></span>
-                        <%}else if(list[i].name=='其它商品'){%>
-                        <span><%=list[i].data[j].xinghao%></span>
-                        <%}%>
-                        <span><%=list[i].data[j].newNum%></span>
+                        <span><%=list[i].data[j].num%></span>
+                        <%if(showTool){%>
                         <span class="remove" onclick="removeOutLi('<%=i%>','<%=j%>')">移除</span>
+                        <%}%>
                     </li>
                     <%}%>
                 </ul>
@@ -709,6 +575,9 @@
 
     <script>
         var subid = quakooUser.getUserInfo().sid;//企业id
+        var allData = {};//页面请求回来的所有数据
+
+
         var selectBid;//筛选条件的品牌id
         var categoryData = [];//一级类目数据
         var brandData = [];//品牌数据
@@ -801,7 +670,7 @@
         function getInData(){
             $("#yj-table").bootstrapTable('destroy');
             $("#yj-table").bootstrapTable({
-                url: config.getUrl_inventoryOutBill_getCheckPager(),
+                url: config.getUrl_inventoryOutBill_getCreatePager(),
                 classes: "table",
                 pagination: true,        //是否显示分页
                 sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
@@ -840,6 +709,7 @@
                                 this.data[i].clientItemsNum +=this.data[i].clientItems[j].num;
                             }
                             arr.push(this.data[i])
+                            allData[this.data[i].id] = this.data[i]
                         }
                     }
                     var html = template('dataTmp',{list:arr})
@@ -848,19 +718,27 @@
             });
         }
 
-
-
-
-
-
         /**
          * 打开新增弹窗
          * */
-        function addGoods() {
+        function addGoods(id) {
+            allOutList = {};
+            var inUserName = '出库人';
+            if(id){
+                inUserName = allData[id].outUserName;
+                peopleId = allData[id].outUid;
+                for(var i=0;i<allData[id].clientItems.length;i++){
+                    if(allOutList[allData[id].clientItems[i].cid]){
+                        allOutList[allData[id].clientItems[i].cid].data.push(allData[id].clientItems[i]);
+                    }else{
+                        allOutList[allData[id].clientItems[i].cid] = {cid:allData[id].clientItems[i].cid,name:allData[id].clientItems[i].categoryName,data:[allData[id].clientItems[i]]}
+                    }
+                }
+            }
             var html = [];
-            html.push('<div class="leftBox leftBoxTitle"> <div class="head"> <span class="title" style="width: 100%;">添加商品</span></div></div>');
+            html.push('<div class="leftBox leftBoxTitle"> <div class="head"> <span class="title" style="width: 100%;">添加出库单</span></div></div>');
             html.push('<div class="rightBox leftBoxTitle"> <div class="head"> <span class="title">出库单</span> <div class="selectBox" id="out-people">');
-            html.push('<div class="select-box-header"><span class="text">出库人</span> <i class="iconfont icon-ico_arrow_down"></i></div><div class="optionBox"><ul class="optionUL">')
+            html.push('<div class="select-box-header"><span class="text">'+inUserName+'</span> <i class="iconfont icon-ico_arrow_down"></i></div><div class="optionBox"><ul class="optionUL">')
             for(var i=0;i<peopleData.length;i++){
                 html.push('<li value="'+peopleData[i].id+'">'+peopleData[i].name+'</li>');
             }
@@ -882,18 +760,24 @@
                     html.push('<div class="rightBox"><div class="foot"><a class="layui-layer-btn1">创建出库</a></div></div>')
                     $('.content-view-enter-tan .layui-layer-btn').html(html.join(''))
 
-                    addRepertorySuccess(index)
+                    addRepertorySuccess(index,id)
                 }
             });
         }
-        function addRepertorySuccess(index) {
+        function addRepertorySuccess(index,id) {
             var html = template('addTmp',{brandData:brandData,categoryData:categoryData,ballData:ballData,columnData:columnData,providerData:providerData})
             $('#addDom').html(html);
+
+            //编辑的话，赋初值
+            if(id){
+                $("#outListDom").html(template('outListTmp',{list:allOutList,showTool:true}))
+            }
+
             $('.content-view-enter-tan .layui-layer-btn .layui-layer-btn0').click(function () {
-                addOutList(0,index);
+                addOutList(0,index,id);
             });
             $('.content-view-enter-tan .layui-layer-btn .layui-layer-btn1').click(function () {
-                addOutList(1,index)
+                addOutList(1,index,id)
             });
             $('#yj-category li').eq(0).click()
             selectTag($("#out-brand"), function (ret) {
@@ -930,7 +814,57 @@
             })
         }
         //添加出库单
-        function addOutList() {
+        function addOutList(status,index,id) {
+            if(!peopleId){
+                layer.msg('选择入库人');
+                return
+            }
+            var params = {};
+            if(id){
+                params.id = id;
+                params.wid = allData[id].wid;
+            }
+            params.subid = subid;
+            params.status = status;
+            params.outUid = peopleId;
+            params.createUid = quakooUser.getUserInfo().id;
+            params.itemsJson = [];
+            for(var i in allOutList){
+                if(allOutList[i].data){
+                    for(var j=0;j<allOutList[i].data.length;j++){
+                        var obj = {};
+                        if(id){
+                            obj.did = allOutList[i].data[j].did;
+                        }else{
+                            obj.did = allOutList[i].data[j].id;
+                        }
+                        obj.num = allOutList[i].data[j].num;
+                        params.itemsJson.push(obj)
+                    }
+                }
+            }
+            params.itemsJson = JSON.stringify(params.itemsJson)
+            if(id){
+                quakooData.ajaxGetData(config.getUrl_inventoryOutBill_update(),params,function (ret) {
+                    if(ret && ret.success){
+                        layer.msg('修改成功',{icon: 1})
+                        layer.close(index)
+                        getInData()
+                    }else{
+                        layer.msg(ret.data,{icon: 2})
+                    }
+                })
+            }else{
+                quakooData.ajaxGetData(config.getUrl_inventoryOutBill_add(),params,function (ret) {
+                    if(ret && ret.success){
+                        layer.msg('添加成功',{icon: 1})
+                        layer.close(index)
+                        getInData()
+                    }else{
+                        layer.msg(ret.data,{icon: 2})
+                    }
+                })
+            }
 
         }
         //选择一级类目
@@ -947,9 +881,6 @@
                 $('.jp-box').show();
                 $('.jp-no-box').hide();
 
-                $('.outbound-foot button').click(function () {
-                    layer.close(index)
-                })
             }else{
                 $('.out-table1').hide();
                 $('.out-table2').show();
@@ -960,43 +891,61 @@
                 }else{
                     $('.jj-box').hide();
                 }
-                $("#out-table").bootstrapTable('destroy')
-                $("#out-table").bootstrapTable({
-                    data: [{ a: '型号A', b: '色号A', c: '12', d: '6' }, { a: '型号A', b: '色号A', c: '12' }],                 //被加载的数据。
-                    classes: "table",
-                    sortable: false,
-                    sortOrder: "asc",
-                    showColumns: true,
-                    strictSearch: true,
-                    locale: "zh-CN",
-                    paginationHAlign: "center",
-                    clickToSelect: true,
-                    columns: [
-                        { field: 'a', title: '型号', align: 'left', value: 'middle'  ,width:'25%' },
-                        { field: 'b', title: '色号', align: 'left', value: 'middle'  ,width:'25%' },
-                        { field: 'c', title: '库存量', align: 'left', value: 'middle',width:'25%' },
-                        {field: 'd', title: '出库量', align: 'left', value: 'middle' ,width:'25%' , formatter: function (value) {
-                                return !value ? '<input type="text" placeholder="数量">' : value;
-                            }
-                        },
-                    ]
-                });
-
+                $("#out-table").bootstrapTable('destroy');
             }
         }
 
         // 查看出库单
-        function ckd() {
+        function lookRepertory(id) {
+            allOutList = {};
+            var outUserName = '';
+            if(id){
+                outUserName = allData[id].outUserName;
+                for(var i=0;i<allData[id].clientItems.length;i++){
+                    if(allOutList[allData[id].clientItems[i].cid]){
+                        allOutList[allData[id].clientItems[i].cid].data.push(allData[id].clientItems[i]);
+                    }else{
+                        allOutList[allData[id].clientItems[i].cid] = {cid:allData[id].clientItems[i].cid,name:allData[id].clientItems[i].categoryName,data:[allData[id].clientItems[i]]}
+                    }
+                }
+            }
             layer.open({
-                type: 1, shade: 0.01, title: null,
-                skin: 'layui-layer-outbound', //样式类名
-                area: ['440px', '560px'],
+                type: 1,
+                shade: 0.01,
+                title: '<div style="padding: 0 16px;"><span class="mine-move">出库单</span><span>出库人:'+outUserName+'</span></div>',
+                skin: 'content-view-tan content-view-checkRepertory-tan', //样式类名
                 anim: 0,
+                move:'.mine-move',
+                area: ['380px', '560px'],
                 closeBtn: 0, //不显示关闭按钮
                 resize: false,
                 shadeClose: true, //开启遮罩关闭
-                content: $('.outbound-single'),
-            })
+                content: $('.content-view-checkRepertory'), //容器对象
+                btn: [''],
+                success: function (layero, index) {
+                    var html = '<div class="foot"><span class="_btn layui-layer-btn0">关闭窗口</span><span class="btn btn-primary fr">打印出库单</span><span class="btn btn-rem fr">删除出库</span></div>';
+                    $('.content-view-checkRepertory-tan .layui-layer-btn').html(html)
+                    $('.content-view-checkRepertory-tan .layui-layer-btn0').click(function () {
+                        layer.close(index)
+                    })
+                    $('.content-view-checkRepertory-tan .layui-layer-btn .btn-primary').click(function () {
+                        //打印出库单
+                    });
+                    $('.content-view-checkRepertory-tan .layui-layer-btn .btn-rem').click(function () {
+                        //删除出库
+                        quakooData.ajaxGetData(config.getUrl_inventoryOutBill_del(),{id:id},function (ret) {
+                            if(ret && ret.success){
+                                layer.msg('删除成功',{icon:1})
+                                getInData()
+                                layer.close(index)
+                            }
+                        })
+                    });
+
+                    $('#listDom').html(template('outListTmp',{list:allOutList,showTool:false}))
+
+                }
+            });
         }
 
         var skuObj;//镜片所需要的sku集合   键 是球+柱
@@ -1013,10 +962,14 @@
             quakooData.ajaxGetData(config.getUrl_inventoryOutBill_select(),{subid:subid,type:type,cid:cid,pid:pid,bid:bid,sid:sid},function (ret) {
                 if(ret && ret.success){
                     console.log(ret)
-                    nowGoodData = ret.data.skuList;
+                    nowGoodData = ret.data;
                     skuObj = {};
                     for(var j=0;j<nowGoodData.length;j++){
-                        skuObj[nowGoodData[j].properties[15]+''+nowGoodData[j].properties[16]] = nowGoodData[j];
+                        nowGoodData[j].properties = nowGoodData[j].p_properties;
+                        nowGoodData[j].code = nowGoodData[j].p_code;
+                        if(nowGoodData[j].properties){
+                            skuObj[nowGoodData[j].properties[15]+''+nowGoodData[j].properties[16]] = nowGoodData[j];
+                        }
                     }
                     if(ret.data){
                         if($('#category'+cid).text()=='镜片'){
@@ -1067,15 +1020,37 @@
                                     }
                                 });
                             });
-                        }else if($('#category'+cid).text()=='镜架' || $('#category'+cid).text()=='太阳镜' ){
-                            $('.jj-box').show();
-                        }else if($('#category'+cid).text()=='隐形眼镜'){
-                            $('.yxyj-box').show();
-                        }else if($('#category'+cid).text()=='护理产品'){
-                            $('.hlcp-box').show();
-                        }else if($('#category'+cid).text()=='其它商品'){
-                            $('.qtsp-box').show();
+                        }else {
+                            var column = [
+                                { field: 'code', title: '产品编码'},
+                                { field: 'properties', title: '球' , formatter: function (value) {
+                                        return value[15];
+                                    }  },
+                                { field: 'properties', title: '柱', formatter: function (value) {
+                                        return value[16];
+                                    }},
+                                {field: 'num', title: '库存量' },
+                                {field: '', title: '出库量'  , formatter: function (value,row,index) {
+                                        return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
+                                    }
+                                }
+                            ]
+                            $("#out-table").bootstrapTable('destroy');
+                            $("#out-table").bootstrapTable({
+                                data: nowGoodData,                 //被加载的数据。
+                                classes: "table",
+                                sortable: false,
+                                sortOrder: "asc",
+                                showColumns: true,
+                                strictSearch: true,
+                                locale: "zh-CN",
+                                paginationHAlign: "center",
+                                clickToSelect: true,
+                                columns: column
+                            });
                         }
+                    }else{
+                        layer.msg('暂无商品')
                     }
                 }else{
                     layer.msg(ret.data)
@@ -1088,27 +1063,57 @@
                 layer.msg('请查询商品')
                 return
             }
+            $('.in-yj-input').each(function (index,item) {
+                if(quakooUtils.isNotBlack(item.value)){
+                    nowGoodData[item.getAttribute('data-index')].newNum = item.value;
+                }
+            })
             var arr = [];
-            for(var i=0;i<nowGoodData.length;i++){
-                if(skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]] && skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum){
-                    nowGoodData[i].newNum = skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum;
-                    nowGoodData[i].brandName = brandName;
-                    nowGoodData[i].seriesName = seriesName;
-                    nowGoodData[i].providerName = providerName;
-                    arr.push(nowGoodData[i])
+            if($('#category'+cid).text()=='镜片'){
+                for(var i=0;i<nowGoodData.length;i++){
+                    if(nowGoodData[i].properties){
+                        if(skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]] && skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum){
+                            nowGoodData[i].num = skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum;
+                            nowGoodData[i].brandName = brandName;
+                            nowGoodData[i].seriesName = seriesName;
+                            nowGoodData[i].providerName = providerName;
+                            arr.push(nowGoodData[i])
+                        }
+                    }
+                }
+            }else{
+                for(var i=0;i<nowGoodData.length;i++){
+                    if(nowGoodData[i].newNum){
+                        nowGoodData[i].brandName = brandName;
+                        nowGoodData[i].seriesName = seriesName;
+                        nowGoodData[i].providerName = providerName;
+                        nowGoodData[i].num = nowGoodData[i].newNum;
+                        arr.push(nowGoodData[i])
+                    }
                 }
             }
-
-
+            if(arr.length<=0){
+                layer.msg('请输入入库数量')
+                return;
+            }
             allOutList[cid].data = arr;
-            var html = template('outListTmp',{list:allOutList})
+            var html = template('outListTmp',{list:allOutList,showTool:true})
             $("#outListDom").html(html)
         }
         //移除出库单中的商品
         function removeOutLi(i,j) {
             allOutList[i].data.splice(j,1);
-            var html = template('outListTmp',{list:allOutList})
+            var html = template('outListTmp',{list:allOutList,showTool:true})
             $("#outListDom").html(html)
+        }
+        //确认出库单
+        function updateListStatus(id) {
+            quakooData.ajaxGetData(config.getUrl_inventoryOutBill_pass(),{id:id},function (ret) {
+                if(ret && ret.success){
+                    layer.msg('确认成功',{icon:1})
+                    getInData()
+                }
+            })
         }
     </script>
 </body>

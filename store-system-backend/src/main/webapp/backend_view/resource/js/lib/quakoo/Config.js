@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
-        // this.serverUrl = "http://192.168.1.24:20005";
+        this.serverUrl = "http://192.168.1.18:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -209,15 +209,37 @@ var Config = (function(_super){
     _proto.getUrl_product_loadSPU = function(){return this.serverUrl + '/product/loadSPU';};
     /**开启关闭销售状态*/
     _proto.getUrl_product_updateSaleStatus = function(){return this.serverUrl + '/product/updateSaleStatus';};
+
     /**获取所有出库单*/
     _proto.getUrl_inventoryOutBill_getCheckPager = function(){return this.serverUrl + '/inventoryOutBill/getCheckPager';};
-    /**获取一个商品的SPU，返回需要确定的所有SKU属性*/
-    _proto.getUrl_inventoryOutBill_select = function(){return this.serverUrl + '/inventoryinbill/select';};
+    /**获取当前登陆用户创建的出库单*/
+    _proto.getUrl_inventoryOutBill_getCreatePager = function(){return this.serverUrl + '/inventoryOutBill/getCreatePager';};
+    /**获取一个商品的SPU，返回需要确定的所有SKU属性   出库*/
+    _proto.getUrl_inventoryOutBill_select = function(){return this.serverUrl + '/inventoryOutBill/select';};
+    /**添加一个出库单*/
+    _proto.getUrl_inventoryOutBill_add = function(){return this.serverUrl + '/inventoryOutBill/add';};
+    /**编辑出库单*/
+    _proto.getUrl_inventoryOutBill_update = function(){return this.serverUrl + '/inventoryOutBill/update';};
+    /**审核通过出库单*/
+    _proto.getUrl_inventoryOutBill_pass = function(){return this.serverUrl + '/inventoryOutBill/pass';};
+    /**删除出库单*/
+    _proto.getUrl_inventoryOutBill_del = function(){return this.serverUrl + '/inventoryOutBill/del';};
+
+    /**获取一个商品的SPU，返回需要确定的所有SKU属性   入库*/
+    _proto.getUrl_inventoryInBill_select = function(){return this.serverUrl + '/inventoryinbill/select';};
     /**获取门店下的编辑状态的入库单列表*/
     _proto.getUrl_inventoryInBill_getCheckPager = function(){return this.serverUrl + '/inventoryinbill/getCheckPager';};
+    /**获取当前登陆用户创建的入库单*/
+    _proto.getUrl_inventoryInBill_getCreatePager = function(){return this.serverUrl + '/inventoryinbill/getCreatePager';};
     /**添加一个入库单*/
-    _proto.getUrl_inventoryOutBill_add = function(){return this.serverUrl + '/inventoryinbill/add';};
+    _proto.getUrl_inventoryInBill_add = function(){return this.serverUrl + '/inventoryinbill/add';};
+    /**修改入库单*/
+    _proto.getUrl_inventoryInBill_update = function(){return this.serverUrl + '/inventoryinbill/update';};
+    /**审核通过入库单*/
+    _proto.getUrl_inventoryInBill_pass = function(){return this.serverUrl + '/inventoryinbill/pass';};
+
     //=======================商品管理 结束====================
+
 
     //=======================盘点 开始====================
     /**获取门店盘点列表**/

@@ -254,6 +254,7 @@ var QuakooData = (function () {
      * @private
      */
     _proto._ajaxSubmitData = function(url, data, callback, dataType, sync,addUserToken){
+        var loading = layer.load();
         dataType = dataType?dataType:'json';
         sync = sync==undefined?true:sync;
         var user = quakooUser.getUserInfo();
@@ -267,6 +268,7 @@ var QuakooData = (function () {
             data: data,
             dataType: dataType,
             success: function (data) {
+                layer.close(loading)
                 if (data || data == 0) {
                     if (quakooUtils.isFunction(callback)) {
                         callback(data);
@@ -278,6 +280,7 @@ var QuakooData = (function () {
                 }
             },
             error: function () {
+                layer.close(loading)
                 layer.msg('当前网络不给力', {
                     icon: 2
                 });

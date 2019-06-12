@@ -913,21 +913,28 @@ div .head{
 .content-view-checkRepertory-tan .itemDiv .thead span{
   min-width: 105px;
 }
+.content-view-checkRepertory-tan .itemDiv .thead span{
+  background: #F4F4F8;
+}
 .content-view-checkRepertory-tan .foot{
-  height: 44px;
-  padding: 0 6px 0 0;
+}
+.content-view-checkRepertory-tan .btn-primary,.content-view-checkRepertory-tan .btn-rem{
+  height: 32px;line-height: 32px;
 }
 .content-view-checkRepertory-tan .foot > span{
   float: right;
   line-height: 32px;
   padding: 0 10px;
   color: #fff;
-  margin: 6px 0 0 6px;
+  margin: 0 0 0 6px;
 }
 .content-view-checkRepertory-tan .foot > span:nth-child(1){
-  border:1px solid #ECECF4 ;
+  /*border:1px solid #ECECF4 ;*/
   color: #828297;
   float: left;
+  border-radius: 2px;
+  background-color: rgba(244, 244, 248, 1);
+  margin-left: 0;
 }
 /*弹窗公共样式*/
 .content-view-enter-tan p,
