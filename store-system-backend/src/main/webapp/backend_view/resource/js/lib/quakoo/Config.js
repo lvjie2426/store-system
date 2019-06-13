@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
-        this.serverUrl = "http://192.168.1.18:20005";
+        // this.serverUrl = "http://192.168.1.18:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -85,6 +85,10 @@ var Config = (function(_super){
     _proto.getUrl_optometryinfo_getResult = function(){return this.serverUrl + '/optometryinfo/getResult';};
     /**促销方式*/
     _proto.getUrl_marketingcoupon_getCanUseList = function(){return this.serverUrl + '/marketingcoupon/getCanUseList';};
+    /**添加商品的SPU列表*/
+    _proto.getUrl_product_getSaleSPUBackPager = function(){return this.serverUrl + '/product/getSaleSPUBackPager';};
+    /**添加商品的SKU列表*/
+    _proto.getUrl_product_getSaleSKUAllList = function(){return this.serverUrl + '/product/getSaleSKUAllList';};
     //=======================销售开单 结束====================
     //=======================实时工作台 开始====================
     //获取日常任务和奖励

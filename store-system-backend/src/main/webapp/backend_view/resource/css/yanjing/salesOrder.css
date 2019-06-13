@@ -816,6 +816,7 @@ i {
     min-height: 216px;
     height: 216px;
     overflow: auto;
+    position: relative;
 }
 
 .main .orderInfo .rightBox .rightFormBox table tbody::-webkit-scrollbar-track {
@@ -896,8 +897,12 @@ i {
 .main .orderInfo .rightBox .rightFormBox .nullInfo {
     width: 100%;
     text-align: center;
-    position: absolute;
-    top: 50%;
+    vertical-align: middle;
+    border:none;
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
 }
 
 .main .orderInfo .rightBox .rightFooterBox {
@@ -1503,6 +1508,16 @@ b {
     border-bottom: 1px solid #ECECF4;
 }
 
+.addRoutineCommodityPro {
+    display: none;
+    width:100%;
+    border-top: 1px solid #ECECF4;
+    border-bottom: 1px solid #ECECF4;
+}
+.addRoutineCommodityPro .content{
+    width:96%;
+    margin:5px auto;
+}
 /* 推荐列表 */
 
 .addRoutineCommodityPop .recommendList {
