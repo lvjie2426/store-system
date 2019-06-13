@@ -6,6 +6,7 @@ import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
+import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ClientProductSKU;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.smartcardio.Card;
 import java.io.File;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -54,6 +56,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private SubordinateDao subordinateDao;
     @Resource
     private MarketingCouponDao marketingCouponDao;
+    @Resource
+    private OptometryInfoDao optometryInfoDao;
+
+
+
 
     @Autowired(required = false)
     private OrderPayService orderPayService;
@@ -396,6 +403,54 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
+    public Pager getBackPager(Pager pager, long subid, String name, String phone, String orderNo) throws Exception {
+        String sql = "SELECT o.* FROM `order` as o LEFT JOIN `user` as u ON o.uid=u.id WHERE 1=1 ";
+        String sqlCount = "SELECT COUNT(*) FROM `order` as o LEFT JOIN `user` as u ON o.uid=u.id WHERE 1=1 ";
+        String limit = "  limit %d , %d ";
+
+        {
+            sql = sql + " and o.`status` = " + Order.status_pay;
+            sqlCount = sqlCount + " and o.`status` = " + Order.status_pay;
+        }
+        if(subid>0){
+            sql = sql + " and o.`subid` = " + subid;
+            sqlCount = sqlCount + " and o.`subid` = " + subid;
+        }
+        if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and u.`name` like ?";
+            sqlCount = sqlCount + " and u.`name` like ?";
+        }
+        if (StringUtils.isNotBlank(phone)) {
+            sql = sql + " and u.`phone` like ?";
+            sqlCount = sqlCount + " and u.`phone` like ?";
+        }
+        if (StringUtils.isNotBlank(orderNo)) {
+            sql = sql + " and o.`orderNo` like ?";
+            sqlCount = sqlCount + " and o.`orderNo` like ?";
+        }
+
+        sql = sql + String.format(limit, pager.getSize() * (pager.getPage() - 1), pager.getSize());
+        List<Order> orders =null;
+        int count=0;
+        List<Object> objects=new ArrayList<>();
+        if(StringUtils.isNotBlank(name)){objects.add("%"+name+"%");}
+        if(StringUtils.isNotBlank(phone)){objects.add("%"+phone+"%");}
+        if(StringUtils.isNotBlank(orderNo)){objects.add("%"+orderNo+"%");}
+        if(objects.size()>0) {
+            Object[] args = new Object[objects.size()];
+            objects.toArray(args);
+            orders = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<Order>(Order.class),args);
+            count = this.jdbcTemplate.queryForObject(sqlCount,Integer.class);
+        }else{
+            orders = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<Order>(Order.class));
+            count = this.jdbcTemplate.queryForObject(sqlCount,Integer.class);
+        }
+        pager.setData(transformClient(orders));
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
     public Order saveOrder(Order order) throws Exception {
         return  orderDao.insert(order);
     }
@@ -442,16 +497,17 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         String sql = "SELECT  *  FROM `order`   where  1=1  ";
         String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1  ";
         String limit = "  limit %d , %d ";
+
+        if (subid > 0) {
+            sql = sql + " and `subid` = " + subid;
+            sqlCount = sqlCount + " and `subid` = " + subid;
+        }
         if(makeStatus>0){
             sql = sql + " and `makeStatus` = " + makeStatus;
             sqlCount = sqlCount + " and `makeStatus` = " + makeStatus;
         }else{
             sql = sql + " and (`makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3 ) " ;
             sqlCount = sqlCount + " and  (`makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3) " ;
-        }
-        if (subid > 0) {
-            sql = sql + " and `subid` = " + subid;
-            sqlCount = sqlCount + " and `subid` = " + subid;
         }
         if (personnelid > 0) {
             sql = sql + " and `personnelid` = " + personnelid;
@@ -481,6 +537,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         pager.setTotalCount(count);
         return pager;
     }
+    @Override
+    public ClientOrder loadOrder(long id) throws Exception {
+        return transformClient(orderDao.load(id));
+    }
+
 
     private List<ClientOrder> transformClientTem(List<Order> list) {
         List<ClientOrder> clientOrderList = new ArrayList<>();
@@ -511,7 +572,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 // 顾客name
                 User load = userDao.load(order.getUid());
                 if(load!=null){
-                    clientOrder.setGname(load.getName());
+                    clientOrder.setUName(load.getName());
+                    clientOrder.setUPhone(load.getPhone());
                 }
             }
             List<OrderSku> skuids = order.getSkuids();
@@ -567,6 +629,29 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
         return clientOrderList;
     }
+
+    private ClientOrder transformClient(Order order) throws Exception{
+        ClientOrder clientOrder = new ClientOrder(order);
+        OptometryInfo optometryInfo = optometryInfoDao.load(order.getOiId());
+        Subordinate subordinate = subordinateDao.load(order.getSubid());
+        if(subordinate != null) clientOrder.setSubName(subordinate.getName());
+        User user = userDao.load(order.getUid());
+        if(user != null) {
+            clientOrder.setUName(user.getName());
+            clientOrder.setUPhone(user.getPhone());
+        }
+        User machiningUser = userDao.load(order.getMachiningid());
+        if(machiningUser!=null) clientOrder.setMachiningName(machiningUser.getName());
+        if (optometryInfo != null) {
+            User oiUser = userDao.load(optometryInfo.getOptUid());
+            if (oiUser != null) clientOrder.setOiName(oiUser.getName());
+        }
+        List<OptometryInfo> optometryInfos = optometryInfoDao.getList(order.getUid(),10);
+        clientOrder.setOptometryInfos(optometryInfos);
+
+        return clientOrder;
+    }
+
 
     private void waitWxBarcodeOrderRes(File file, PayPassport payPassport, String outTradeNo, Order order) throws Exception {
         boolean reverse = true;

@@ -68,9 +68,10 @@ public class Order implements Serializable {
 
     private String desc; //描述
 
-    private double totalPrice;//总金额
-    private double dicountPrice;//折后金额
-    private double price;//实际支付金额
+    private double totalPrice;//总金额(分)
+    private double discount;//折扣
+    private double dicountPrice;//折后金额(分)
+    private double price;//实际支付金额(分)
     private long couponid;//营销券id
     private int marketingType;//促销类型
     private int makeStatus;//加工状态/取货状态
@@ -96,7 +97,7 @@ public class Order implements Serializable {
 
     private String detail; //返回详情
 
-    private int arrears;//欠款金额
+    private int arrears;//欠款金额(分)
 
     @SortKey
     private long ctime;

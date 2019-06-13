@@ -18,6 +18,8 @@ public interface OrderService {
 
     public  Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus,long subid) throws Exception;
 
+    public  Pager getBackPager(Pager pager, long subid, String name, String phone, String orderNo) throws Exception;
+
     public Order saveOrder(Order order)throws Exception;
 
     public  List<ClientOrder> getAllBySubid(long subid)throws Exception;
@@ -27,4 +29,7 @@ public interface OrderService {
     public  List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
 
     public   Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid,int makeStatus)throws Exception;
+
+    public ClientOrder loadOrder(long id) throws Exception;
+
 }

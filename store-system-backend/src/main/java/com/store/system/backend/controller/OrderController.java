@@ -190,6 +190,37 @@ public class OrderController extends BaseController {
 
     }
 
+    /***
+    * 查询订单
+    * @Param: [request, response, name, phone, orderNo, pager]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/6/10
+    */
+    @RequestMapping("/searchOrders")
+    public ModelAndView searchOrders(HttpServletRequest request, HttpServletResponse response,
+                                     long subid, String name, String phone, String orderNo,Pager pager) throws Exception {
+
+        try {
+            pager = orderService.getBackPager(pager,subid,name,phone,orderNo);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
+
+    @RequestMapping("/loadOrder")
+    public ModelAndView loadOrder(HttpServletRequest request, HttpServletResponse response,
+                                  long id) throws Exception {
+        try {
+            ClientOrder order = orderService.loadOrder(id);
+            return this.viewNegotiating(request, response, new ResultClient(order));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
 
 
 
