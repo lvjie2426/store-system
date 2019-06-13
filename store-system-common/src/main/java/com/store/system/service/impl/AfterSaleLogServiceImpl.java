@@ -18,6 +18,7 @@ import com.store.system.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -51,31 +52,34 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
     private TransformMapUtils orderMapUtils = new TransformMapUtils(Order.class);
 
     @Override
+    @Transactional
     public AfterSaleLog add(AfterSale afterSale) throws Exception {
         Order order = orderDao.load(afterSale.getOid());
         AfterSaleLog afterSaleLog = new AfterSaleLog();
+        afterSaleLog.setOid(order.getId());
         afterSaleLog.setOrderNo(order.getOrderNo());
         afterSaleLog.setUid(order.getUid());
         afterSaleLog.setSalesUid(order.getPersonnelid());
+        afterSaleLog.setSubId(afterSale.getSubId());
 
+        //增加一条售后Detail
+        AfterSaleDetail afterSaleDetail = new AfterSaleDetail();
 
-        AfterSaleLog dbInfo = afterSaleLogDao.getList(order.getSubid(),order.getId(),1).get(0);
-        if(dbInfo==null) {
-            afterSaleLog = afterSaleLogDao.insert(afterSaleLog);
-            AfterSaleDetail afterSaleDetail = new AfterSaleDetail();
-            afterSaleDetail.setOid(order.getId());
+        List<AfterSaleLog> logs = afterSaleLogDao.getList(order.getSubid(),order.getId());
+        if(logs.size()==0){
+            //第一次进行售后时 增加Log
+            afterSaleLog =  afterSaleLogDao.insert(afterSaleLog);
             afterSaleDetail.setAsId(afterSaleLog.getId());
-            afterSaleDetail.setSku(afterSale.getSku());
-
         }else{
-            AfterSaleDetail afterSaleDetail = new AfterSaleDetail();
-            afterSaleDetail.setOid(order.getId());
-            afterSaleDetail.setAsId(afterSaleLog.getId());
-            afterSaleDetail.setSku(afterSale.getSku());
-            afterSaleDetail.setReason(afterSale.getReason());
-            afterSaleDetail.setOptId(afterSale.getOptId());
-            afterSaleDetailDao.insert(afterSaleDetail);
+            afterSaleDetail.setAsId(logs.get(0).getId());
         }
+
+        afterSaleDetail.setOid(order.getId());
+        afterSaleDetail.setSku(afterSale.getSku());
+        afterSaleDetail.setReason(afterSale.getReason());
+        afterSaleDetail.setOptId(afterSale.getOptId());
+        afterSaleDetailDao.insert(afterSaleDetail);
+
         return afterSaleLog;
     }
 
@@ -83,7 +87,7 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
     @Override
     public Pager getBackPager(Pager pager, long subId, String userName, String phone) throws Exception {
         String sql = "SELECT a.* FROM `afterSale_log` as a  LEFT JOIN `user` as u ON a.uid=u.id WHERE 1=1 ";
-        String sqlCount = "SELECT COUNT(*) FROM `afterSale_log` as a  LEFT JOIN `user` as u ON o.uid=u.id WHERE 1=1 ";
+        String sqlCount = "SELECT COUNT(*) FROM `afterSale_log` as a  LEFT JOIN `user` as u ON a.uid=u.id WHERE 1=1 ";
         String limit = " limit %d , %d ";
 
         if(subId>0){
@@ -151,6 +155,7 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
                 client.setTimes(details.size());
             }
             client.setStatus(orderMap.get(afterSaleLog.getOid()).getStatus());
+            clientAfterSaleLogs.add(client);
         }
         return clientAfterSaleLogs;
     }

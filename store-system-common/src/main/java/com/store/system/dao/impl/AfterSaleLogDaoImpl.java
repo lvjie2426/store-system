@@ -29,9 +29,8 @@ public class AfterSaleLogDaoImpl extends CacheBaseDao<AfterSaleLog> implements A
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
-    public List<AfterSaleLog> getList(long subId, long oid,
-                                      @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<AfterSaleLog> getList(long subId, long oid) throws DataAccessException {
         return null;
     }
 

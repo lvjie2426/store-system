@@ -16,5 +16,5 @@ import java.util.List;
  **/
 public interface AfterSaleLogDao extends HDao<AfterSaleLog>{
 
-    public List<AfterSaleLog> getList(long subId, long oid, int size) throws DataAccessException;
+    public List<AfterSaleLog> getList(long subId, long oid) throws DataAccessException;
 }

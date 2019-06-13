@@ -74,7 +74,9 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
             client.setDiscount(order.getDiscount());
             OptometryInfo optometryInfo = optometryInfoDao.load(order.getOiId());
             if(optometryInfo != null && optometryInfo.getOptUid()>0) {
-                client.setOiName(userMap.get(optometryInfo.getOptUid()).getName());
+                if(userMap.get(optometryInfo.getOptUid())!=null){
+                    client.setOiName(userMap.get(optometryInfo.getOptUid()).getName());
+                }
             }
             List<OptometryInfo> optometryInfos = optometryInfoDao.getList(order.getUid(),10);
             client.setOptometryInfos(optometryInfos);
@@ -83,6 +85,7 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
             client.setSku(order.getSkuids());
             client.setReason(detail.getReason());
             client.setOptName(userMap.get(detail.getOptId()).getName());
+            clientAfterSaleDetails.add(client);
         }
         return clientAfterSaleDetails;
     }
