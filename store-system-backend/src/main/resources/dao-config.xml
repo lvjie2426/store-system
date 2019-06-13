@@ -475,4 +475,21 @@
         </property>
     </bean>
 
+    <bean id="afterSaleDetailDao" class="com.store.system.dao.impl.AfterSaleDetailDaoImpl">
+        <property name="tableName" value="afterSale_detail" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="afterSaleLogDao" class="com.store.system.dao.impl.AfterSaleLogDaoImpl">
+        <property name="tableName" value="afterSale_log" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

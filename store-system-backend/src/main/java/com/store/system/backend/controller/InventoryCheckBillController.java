@@ -1,17 +1,20 @@
 package com.store.system.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.InventoryCheckBillItem;
+import com.store.system.bean.InventoryOutBillItem;
 import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryCheckBill;
 import com.store.system.model.InventoryDetail;
 import com.store.system.model.User;
-import com.store.system.service.InventoryCheckBillService;
-import com.store.system.service.InventoryDetailService;
-import com.store.system.service.ProductService;
-import com.store.system.service.SubordinateService;
+import com.store.system.service.*;
 import com.store.system.util.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +42,9 @@ public class InventoryCheckBillController extends BaseController {
     @Resource
     private SubordinateService subordinateService;
 
+    @Resource
+    private InventoryWarehouseService inventoryWarehouseService;
+
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "type") int type,
                                @RequestParam(value = "subid") long subid,
@@ -46,7 +52,6 @@ public class InventoryCheckBillController extends BaseController {
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
                                @RequestParam(value = "sid") long sid,
-                               @RequestParam(value = "wid") long wid,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             ClientSubordinate subordinate = subordinateService.load(subid);
@@ -58,7 +63,12 @@ public class InventoryCheckBillController extends BaseController {
                 res = new ClientInventoryCheckBillSelect();
                 res.setProductSPU(productSPU);
                 int currentNum = 0;
-                List<InventoryDetail> details = inventoryDetailService.getAllOriginList(wid, productSPU.getId());
+                List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
+                long wid=0;
+                if(warehouses.size()>0){
+                    wid = warehouses.get(0).getId();
+                }
+                List<ClientInventoryDetail> details = inventoryDetailService.getAllList(wid, productSPU.getId());
                 for(InventoryDetail detail : details) {
                     currentNum += detail.getNum();
                 }
@@ -74,8 +84,17 @@ public class InventoryCheckBillController extends BaseController {
     @RequestMapping("/add")
     public ModelAndView add(InventoryCheckBill inventoryCheckBill,
                             @RequestParam(value = "subids", required = false, defaultValue = "") List<Long> subids,
+                            @RequestParam(value = "itemsJson") String itemsJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            List<InventoryCheckBillItem> billItems = Lists.newArrayList();
+            if(StringUtils.isNotBlank(itemsJson)) {
+                billItems = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryCheckBillItem>>() {});
+            }
+            List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(inventoryCheckBill.getSubid());
+            if(warehouses.size()>0)
+                inventoryCheckBill.setWid(warehouses.get(0).getId());
+            inventoryCheckBill.setItems(billItems);
              inventoryCheckBillService.add(inventoryCheckBill,subids);
             return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
@@ -84,8 +103,14 @@ public class InventoryCheckBillController extends BaseController {
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(InventoryCheckBill inventoryCheckBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView update(InventoryCheckBill inventoryCheckBill, HttpServletRequest request, HttpServletResponse response, Model model,
+                               @RequestParam(value = "itemsJson") String itemsJson) throws Exception {
         try {
+            List<InventoryCheckBillItem> billItems = Lists.newArrayList();
+            if(StringUtils.isNotBlank(itemsJson)) {
+                billItems = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryCheckBillItem>>() {});
+            }
+            inventoryCheckBill.setItems(billItems);
             boolean res = inventoryCheckBillService.update(inventoryCheckBill);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {

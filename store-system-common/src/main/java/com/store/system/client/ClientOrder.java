@@ -29,6 +29,7 @@ public class ClientOrder extends Order {
     private double dicountPriceYuan;// 折后金额 元
     private double totalPriceYuan;// 总金额 元
     private int descSubtractType;// 类型(1-金额 2-百分比)
+    private int asCount;//售后次数
 
     private List<OptometryInfo> optometryInfos;//顾客的验光信息记录
 

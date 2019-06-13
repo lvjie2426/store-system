@@ -219,7 +219,6 @@ public class OrderController extends BaseController {
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
-
     }
 
 

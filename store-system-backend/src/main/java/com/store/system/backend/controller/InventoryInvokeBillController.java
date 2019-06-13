@@ -1,17 +1,17 @@
 package com.store.system.backend.controller;
 
+import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
-import com.store.system.client.PagerResult;
-import com.store.system.client.ResultClient;
+import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryInvokeBill;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
-import com.store.system.service.InventoryInvokeBillService;
-import com.store.system.service.SubordinateService;
+import com.store.system.service.*;
 import com.store.system.util.UserUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @ProjectName: store-system
@@ -38,6 +39,39 @@ public class InventoryInvokeBillController extends BaseController{
 
     @Resource
     private InventoryInvokeBillService inventoryInvokeBillService;
+
+    @Resource
+    private ProductService productService;
+
+    @Resource
+    private InventoryWarehouseService inventoryWarehouseService;
+
+    @Resource
+    private InventoryDetailService inventoryDetailService;
+
+    @RequestMapping("/select")
+    public ModelAndView select(@RequestParam(value = "type") int type,
+                               @RequestParam(value = "subid") long subid,
+                               @RequestParam(value = "pid") long pid,
+                               @RequestParam(value = "cid") long cid,
+                               @RequestParam(value = "bid") long bid,
+                               @RequestParam(value = "sid") long sid,
+                               HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            List<ClientInventoryDetail> details = Lists.newArrayList();
+            ClientProductSPU productSPU = productService.selectSPU(type, subid, pid, cid, bid, sid);
+            if(null != productSPU) {
+                List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
+                if(warehouses.size()>0){
+                    long wid = warehouses.get(0).getId();
+                    details = inventoryDetailService.getAllList(wid, productSPU.getId());
+                }
+            }
+            return this.viewNegotiating(request,response, new ResultClient(true, details));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
 
 
     //新增调货单

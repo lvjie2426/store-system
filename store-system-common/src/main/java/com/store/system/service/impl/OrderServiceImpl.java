@@ -58,6 +58,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private MarketingCouponDao marketingCouponDao;
     @Resource
     private OptometryInfoDao optometryInfoDao;
+    @Resource
+    private AfterSaleDetailDao afterSaleDetailDao;
 
 
 
@@ -650,7 +652,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         }
         List<OptometryInfo> optometryInfos = optometryInfoDao.getList(order.getUid(),10);
         clientOrder.setOptometryInfos(optometryInfos);
-
+        int count = afterSaleDetailDao.getCount(order.getId());
+        clientOrder.setAsCount(count);
         return clientOrder;
     }
 
