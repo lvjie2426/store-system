@@ -56,7 +56,9 @@ public class AfterSaleController extends BaseController {
     * @Date: 2019/6/13
     */
     @RequestMapping("/getLogPager")
-    public ModelAndView getCheckPager(@RequestParam(value = "subId") long subId, String userName, String phone,
+    public ModelAndView getCheckPager(@RequestParam(value = "subId") long subId,
+                                      @RequestParam(required = false,value = "userName",defaultValue = "") String userName,
+                                      @RequestParam(required = false,value = "phone",defaultValue = "") String phone,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             pager = afterSaleLogService.getBackPager(pager, subId, userName, phone);
@@ -77,14 +79,14 @@ public class AfterSaleController extends BaseController {
     public ModelAndView add(AfterSale afterSale, HttpServletRequest request, HttpServletResponse response,
                             Model model, @RequestParam(value = "skuJson") String skuJson) throws Exception {
         try {
-            User user = UserUtils.getUser(request);
-            long optId = user.getId();
+            //User user = UserUtils.getUser(request);
+            //long optId = user.getId();
             List<OrderSku> skus = Lists.newArrayList();
             if(StringUtils.isNotBlank(skuJson)) {
                 skus = JsonUtils.fromJson(skuJson, new TypeReference<List<OrderSku>>() {});
             }
             afterSale.setSku(skus);
-            afterSale.setOid(optId);
+            //afterSale.setOid(optId);
             AfterSaleLog afterSaleLog = afterSaleLogService.add(afterSale);
             return this.viewNegotiating(request,response, new ResultClient(afterSaleLog));
         } catch (StoreSystemException e) {
