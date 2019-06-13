@@ -1,5 +1,6 @@
 package com.store.system.client;
 
+import com.store.system.model.OptometryInfo;
 import com.store.system.model.Order;
 import com.store.system.model.OrderSku;
 import lombok.Data;
@@ -16,16 +17,21 @@ import java.util.List;
 @Data
 public class ClientOrder extends Order {
 
-    private String subName;
-    private String machiningName;
-    private String couponName;
-    private String uName;
+    private String subName; //门店名称
+    private String machiningName; //加工师
+    private String oiName; //验光师
+    private String couponName; //优惠券名称
+    private String uName; //顾客
     private String uPhone;
-    private String personnelName;
+    private String personnelName; //员工姓名
     private double descSubtract;// 折扣（打折）、金额
+    private double priceYuan;// 实际支付金额 元
+    private double dicountPriceYuan;// 折后金额 元
+    private double totalPriceYuan;// 总金额 元
     private int descSubtractType;// 类型(1-金额 2-百分比)
+    private int asCount;//售后次数
 
-    private String gname;//顾客名称
+    private List<OptometryInfo> optometryInfos;//顾客的验光信息记录
 
     public ClientOrder(){};
     public ClientOrder(Order order){

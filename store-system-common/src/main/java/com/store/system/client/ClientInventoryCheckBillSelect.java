@@ -14,6 +14,6 @@ public class ClientInventoryCheckBillSelect implements Serializable {
 
     private int currentNum; //当前数量
 
-    private List<InventoryDetail> details;
+    private List<ClientInventoryDetail> details;
 
 }

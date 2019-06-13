@@ -11,12 +11,14 @@ import java.util.List;
 public interface OrderService {
 
     public boolean handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo,
-                                         String title, String desc, double price) throws Exception;
+                                         String title, String desc, int price) throws Exception;
 
     public boolean handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type, String typeInfo,
-                                        String title, String desc, double price, String ip) throws Exception;
+                                        String title, String desc, int price, String ip) throws Exception;
 
     public  Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus,long subid) throws Exception;
+
+    public  Pager getBackPager(Pager pager, long subid, String name, String phone, String orderNo) throws Exception;
 
     public Order saveOrder(Order order)throws Exception;
 
@@ -27,4 +29,7 @@ public interface OrderService {
     public  List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
 
     public   Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid,int makeStatus)throws Exception;
+
+    public ClientOrder loadOrder(long id) throws Exception;
+
 }

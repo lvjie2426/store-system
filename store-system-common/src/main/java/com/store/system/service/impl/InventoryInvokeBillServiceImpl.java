@@ -14,10 +14,12 @@ import com.store.system.bean.InventoryInvokeBillItem;
 import com.store.system.bean.InventoryOutBillItem;
 import com.store.system.client.ClientInventoryInvokeBill;
 import com.store.system.client.ClientInventoryInvokeBillItem;
+import com.store.system.client.ClientInventoryWarehouse;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.InventoryInvokeBillService;
+import com.store.system.service.InventoryWarehouseService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,6 +81,8 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
 
     @Resource
     private InventoryWarehouseDao inventoryWarehouseDao;
+    @Resource
+    private InventoryWarehouseService inventoryWarehouseService;
 
     @Resource
     private SubordinateDao subordinateDao;
@@ -134,6 +138,16 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
 
     @Override
     public InventoryInvokeBill add(InventoryInvokeBill inventoryInvokeBill) throws Exception {
+
+        //查询仓库id。
+        List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(inventoryInvokeBill.getInSubid());
+        if(warehouses.size()>0){
+            inventoryInvokeBill.setInWid(warehouses.get(0).getId());
+        }
+        warehouses = inventoryWarehouseService.getAllList(inventoryInvokeBill.getOutSubid());
+        if(warehouses.size()>0){
+            inventoryInvokeBill.setOutWid(warehouses.get(0).getId());
+        }
         check(inventoryInvokeBill);
         return inventoryInvokeBillDao.insert(inventoryInvokeBill);
     }

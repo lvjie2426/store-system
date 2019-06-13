@@ -1,8 +1,11 @@
 package com.store.system.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.InventoryOutBillItem;
 import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryOutBill;
@@ -12,6 +15,7 @@ import com.store.system.service.InventoryOutBillService;
 import com.store.system.service.InventoryWarehouseService;
 import com.store.system.service.ProductService;
 import com.store.system.util.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,8 +68,17 @@ public class InventoryOutBillController extends BaseController {
     }
 
     @RequestMapping("/add")
-    public ModelAndView add(InventoryOutBill inventoryOutBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView add(InventoryOutBill inventoryOutBill, HttpServletRequest request, HttpServletResponse response,
+                            Model model, @RequestParam(value = "itemsJson") String itemsJson) throws Exception {
         try {
+            List<InventoryOutBillItem> billItems = Lists.newArrayList();
+            if(StringUtils.isNotBlank(itemsJson)) {
+                billItems = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryOutBillItem>>() {});
+            }
+            List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(inventoryOutBill.getSubid());
+            if(warehouses.size()>0)
+                inventoryOutBill.setWid(warehouses.get(0).getId());
+            inventoryOutBill.setItems(billItems);
             inventoryOutBill = inventoryOutBillService.add(inventoryOutBill);
             return this.viewNegotiating(request,response, new ResultClient(inventoryOutBill));
         } catch (StoreSystemException e) {
@@ -74,8 +87,14 @@ public class InventoryOutBillController extends BaseController {
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(InventoryOutBill inventoryOutBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView update(InventoryOutBill inventoryOutBill, HttpServletRequest request, HttpServletResponse response,
+                               Model model, @RequestParam(value = "itemsJson") String itemsJson) throws Exception {
         try {
+            List<InventoryOutBillItem> billItems = Lists.newArrayList();
+            if(StringUtils.isNotBlank(itemsJson)) {
+                billItems = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryOutBillItem>>() {});
+            }
+            inventoryOutBill.setItems(billItems);
             boolean res = inventoryOutBillService.update(inventoryOutBill);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {

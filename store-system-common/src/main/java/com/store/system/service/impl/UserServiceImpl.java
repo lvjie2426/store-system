@@ -245,6 +245,7 @@ public class UserServiceImpl implements UserService {
             sql = sql + " and `psid` != 0";
             countSql = countSql + " and `psid` != 0";
         }
+        System.err.println(sql);
         sql = sql + String.format(limit,pager.getSize()*(pager.getPage()-1),pager.getSize());
         List<User> users =null;
         int count=0;
