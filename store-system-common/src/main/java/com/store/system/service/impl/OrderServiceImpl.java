@@ -83,7 +83,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     private Order createAliOrder(long passportId, int payMode, int type, String typeInfo, String title, String desc,
-                                 double price, OrderExpireUnit expireUnit, int expireNum) throws Exception {
+                                 int price, OrderExpireUnit expireUnit, int expireNum) throws Exception {
         if(price == 0) throw new StoreSystemException("price is zero!");
         if(payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0)) throw new StoreSystemException("expire is error!");
         PayPassport payPassport = payPassportDao.load(passportId);
@@ -110,7 +110,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public boolean handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo, String title, String desc, double price) throws Exception {
+    public boolean handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo, String title, String desc, int price) throws Exception {
         Order order = createAliOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0);
         Map<String, String> sParaTemp = this.aliOrderPayParam(order.getId(), Order.pay_mode_barcode, authCode);
         List<String> keys = new ArrayList<String>(sParaTemp.keySet());
@@ -210,7 +210,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     private Order createWxOrder(long passportId, int payMode, int type, String typeInfo, String title, String desc,
-                                double price, OrderExpireUnit expireUnit, int expireNum) throws Exception {
+                                int price, OrderExpireUnit expireUnit, int expireNum) throws Exception {
         if(price == 0) throw new StoreSystemException("price is zero!");
         if(payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0))throw new StoreSystemException("expire is error!");
         PayPassport payPassport = payPassportDao.load(passportId);
@@ -306,7 +306,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public boolean handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type, String typeInfo, String title, String desc, double price, String ip) throws Exception {
+    public boolean handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type, String typeInfo, String title, String desc, int price, String ip) throws Exception {
         Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0);
         if(StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
         PayPassport payPassport = payPassportDao.load(passportId);
@@ -464,6 +464,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Override
     public Order countPrice(Order order) throws Exception {
         Order orderPrice=new Order();
+        ClientOrder clientOrder=new ClientOrder(orderPrice);
+
         double totalPrice=0.0;
         //获取skuid 去拿到金额。
         List<OrderSku> skuids = order.getSkuids();
@@ -471,15 +473,15 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             ProductSKU productSKU = productSKUDao.load(sku.getSkuid());
             totalPrice+=sku.getNum()*productSKU.getRetailPrice();
         }
-        orderPrice.setTotalPrice(totalPrice);
+        clientOrder.setTotalPriceYuan(totalPrice);
         long couponid = order.getCouponid();
         if(couponid>0){
             MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
-                orderPrice.setDicountPrice( totalPrice-marketingCoupon.getDescSubtract());
+                clientOrder.setDicountPriceYuan( totalPrice-marketingCoupon.getDescSubtract());
             }
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
-                orderPrice.setDicountPrice( totalPrice-totalPrice*marketingCoupon.getDescSubtract());
+                clientOrder.setDicountPriceYuan( totalPrice-totalPrice*marketingCoupon.getDescSubtract());
             }
         }
         return orderPrice;
@@ -597,10 +599,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         List<ClientOrder> clientOrderList = new ArrayList<>();
         for (Order order : orderList) {
            double totalPrice= order.getTotalPrice()*0.01;
-            order.setTotalPrice(totalPrice);
             double price= order.getPrice()*0.01;
-            order.setPrice(price);
             ClientOrder clientOrder = new ClientOrder(order);
+            clientOrder.setPriceYuan(price);
+            clientOrder.setTotalPriceYuan(totalPrice);
             User user = userDao.load(order.getUid());
             if (user != null) {
                 clientOrder.setUName(user.getName());
