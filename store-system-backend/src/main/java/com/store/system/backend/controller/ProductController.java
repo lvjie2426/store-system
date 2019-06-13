@@ -4,16 +4,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.ProductSKU;
-import com.store.system.model.ProductSPU;
-import com.store.system.model.Subordinate;
-import com.store.system.model.UserGradeCategoryDiscount;
+import com.store.system.model.*;
+import com.store.system.service.CommissionService;
 import com.store.system.service.ProductService;
 import com.store.system.service.SubordinateService;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +34,8 @@ public class ProductController extends BaseController {
 
     @Resource
     private ProductService productService;
-
+    @Resource
+    private CommissionService commissionService;
     @Resource
     private SubordinateService subordinateService;
 
@@ -72,6 +72,7 @@ public class ProductController extends BaseController {
     public ModelAndView add(ProductSPU productSPU,
                             @RequestParam(required = true,value = "skuJson") String skuJson,
                             @RequestParam(required = false,value = "ugDiscount") String ugDiscount,
+                            @RequestParam(required = false,value = "commissionJson") String commissionJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ProductSKU> productSKUList = null;
@@ -88,6 +89,17 @@ public class ProductController extends BaseController {
 
             } catch (Exception e) {
                 throw new StoreSystemException("会员折扣格式错误");
+            }
+            List<Commission> commissions = null;
+            try {
+                if(StringUtils.isNotBlank(commissionJson)) {
+                    commissions = JsonUtils.fromJson(commissionJson, new TypeReference<List<Commission>>() {});
+                    for (Commission commission : commissions) {
+                        commissionService.add(commission);
+                    }
+                }
+            } catch (Exception e) {
+                throw new StoreSystemException("commission提成格式错误");
             }
             productService.add(productSPU, productSKUList,ugDiscountList);
             return this.viewNegotiating(request,response, new ResultClient(true));
@@ -110,6 +122,7 @@ public class ProductController extends BaseController {
                                @RequestParam(value = "updateSkuJson") String updateSkuJson,
                                @RequestParam(value = "delSkuIdJson") String delSkuIdJson,
                                @RequestParam(required = false,value = "ugDiscount") String ugDiscount,
+                               @RequestParam(required = false,value = "commissionJson") String commissionJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ProductSKU> addProductSKUList = null;
@@ -138,6 +151,17 @@ public class ProductController extends BaseController {
 
             } catch (Exception e) {
                 throw new StoreSystemException("会员折扣格式错误");
+            }
+            List<Commission> commissions = null;
+            try {
+                if(StringUtils.isNotBlank(commissionJson)) {
+                    commissions = JsonUtils.fromJson(commissionJson, new TypeReference<List<Commission>>() {});
+                    for (Commission commission : commissions) {
+                        commissionService.update(commission);
+                    }
+                }
+            } catch (Exception e) {
+                throw new StoreSystemException("修改的commission提成格式错误");
             }
             productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds,ugDiscountList);
             return this.viewNegotiating(request,response, new ResultClient(true));
