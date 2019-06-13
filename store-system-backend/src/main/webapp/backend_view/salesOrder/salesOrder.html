@@ -445,13 +445,13 @@
                     <h4 class="mt15">订单备注</h4>
                     <textarea name="备注" id="optometryRemarks2" cols="30" rows="10" style="resize:none">神秘顾客</textarea>
                 </div>
-                <div class="rightBox">
+                <div class="rightBox" id="orderForm">
+<!--
                     <div class="rightHeadBox clearfix">
                         <input type="text" placeholder="输入条码" class="barCode">
                         <button class="btnCustomized">定制商品</button>
                     </div>
                     <div class="rightFormBox">
-
                         <table width="100%" border="1" id="orderForm">
                             <thead>
                                 <tr>
@@ -543,7 +543,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!--  -->
                     </div>
                     <div class="rightFooterBox clearfix">
                         <div class="amountMoney">
@@ -551,10 +550,11 @@
                             <div>折后金额 <span>￥47.5</span></div>
                         </div>
                         <div class="actualMoney">
-                            <div>实际金额<span> <b>￥</b> <input type="text"></span></div>
+                            <div>实收金额<span> <b>￥</b> <input type="text"></span></div>
                             <div>折扣<i>6.8</i></div>
                         </div>
                     </div>
+-->
                 </div>
             </div>
         </div>
@@ -1546,7 +1546,14 @@
     </script>
     <!--订单信息表格-->
     <script type="text/html" id="orderFormList">
-        <thead>
+        <div class="rightHeadBox clearfix">
+            <input type="text" placeholder="输入条码" class="barCode">
+            <button class="btnCustomized">定制商品</button>
+        </div>
+        <div class="rightFormBox">
+            <table width="100%" border="1" id="orderForm">
+
+            <thead>
             <tr>
                 <th>商品名称</th>
                 <th>数量</th>
@@ -1597,6 +1604,19 @@
                 <%}%>
             <%}%>
         </tbody>
+            </table>
+        </div>
+        <div class="rightFooterBox clearfix">
+            <div class="amountMoney">
+                <div>原价共计 <span>￥<%=subtotal.originalTotal%></span></div>
+                <div>折后金额 <span>￥<%=subtotal.discountedPrice%></span></div>
+            </div>
+            <div class="actualMoney">
+                <div>实收金额<span> <b>￥</b> <input type="text" value="<%=subtotal.practicalPrice%>"></span></div>
+                <div>折扣<i>6.8</i></div>
+            </div>
+        </div>
+
     </script>
     <script>
         var psid;                                             //企业id
@@ -2221,13 +2241,21 @@
 /***************************************************订单信息开始*****************************************************/
         /**附加费用*/
         function extraCharges(){
+            var hasProduct = false;
+            for(var i in orderFormData){
+                orderFormData[i].type==1;
+                hasProduct = true;
+                break;
+            }
+            if(!hasProduct){
+                layer.msg("请先选择商品",{icon:7})
+                return;
+            }
             var markup = "extra";
             var extraId = "1";
-            for(var i in orderFormData){
-                if(i==markup+extraId){
-                    layer.msg("此项已添加,移除后可重新添加",{icon:7});
-                    return;
-                }
+            if(quakooUtils.isNotBlack(orderFormData[markup+extraId])){
+                layer.msg("此项已添加,移除后可重新添加",{icon:7});
+                return;
             }
             var money = $("#extraCharges").val();
             if(quakooUtils.isBlack(money)){
@@ -2261,11 +2289,19 @@
                         }
                         $("#ListPromotions").html(html);
                         selectTag($("#promotion"),function (ret) {
+                            var hasProduct = false;
                             for(var i in orderFormData){
-                                if(i==(markup+ret.value)){
-                                    layer.msg('已选择此促销方式',{icon:7});
-                                    return;
-                                }
+                                orderFormData[i].type==1;
+                                hasProduct = true;
+                                break;
+                            }
+                            if(!hasProduct){
+                                layer.msg("请先选择商品",{icon:7})
+                                return;
+                            }
+                            if(quakooUtils.isNotBlack(orderFormData[markup+ret.value])){
+                                layer.msg('已选择此促销方式',{icon:7});
+                                return;
                             }
                             orderFormData[markup+ret.value] = {};
                             orderFormData[markup+ret.value].type = 4;
@@ -2661,10 +2697,36 @@
         }
         /**渲染订单表格数据*/
         function renderOrderForm(){
+            var totalPrice ={};
+            totalPrice.originalTotal = 0;
+            totalPrice.addPrice = 0;
+            totalPrice.subtractPrice = 0;
+            for(var i in orderFormData){
+                if(orderFormData[i].type == 3){
+                    totalPrice.addPrice+= orderFormData[i].money*1;
+                }
+                if(orderFormData[i].type == 4){
+                    totalPrice.subtractPrice+= orderFormData[i].money*1;
+                }
+            }
+            for(var i in orderFormData){
+                if(orderFormData[i].type==1){
+                    orderFormData[i].subtotal = orderFormData[i].number*orderFormData[i].price*orderFormData[i].discount/10;
+                    totalPrice.originalTotal += orderFormData[i].subtotal*1;
+                    totalPrice.discountedPrice = totalPrice.originalTotal*0.68.toFixed(2);
+                    if(totalPrice.addPrice){
+                        totalPrice.practicalPrice = totalPrice.discountedPrice*1+totalPrice.addPrice*1;
+                    }
+                    if(totalPrice.subtractPrice){
+                        totalPrice.practicalPrice = totalPrice.discountedPrice-totalPrice.subtractPrice;
+                    }
+                }
+            }
             console.log("orderFormData",orderFormData);
-            var data = {list: orderFormData};
+            var data = {list: orderFormData,subtotal:totalPrice};
             var html = template("orderFormList", data);
             $("#orderForm").html(html);
+
 
         }
         /**删除订单表格数据*/
