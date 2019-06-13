@@ -49,6 +49,13 @@ public class InventoryInvokeBillController extends BaseController{
     @Resource
     private InventoryDetailService inventoryDetailService;
 
+    /***
+    * 获取其他门店得一个商品的SPU，返回需要确定的所有SKU属性
+    * @Param: [type, subid, pid, cid, bid, sid, request, response, model]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/6/13
+    */
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "type") int type,
                                @RequestParam(value = "subid") long subid,
