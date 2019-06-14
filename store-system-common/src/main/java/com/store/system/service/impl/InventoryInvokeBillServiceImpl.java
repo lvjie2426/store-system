@@ -157,6 +157,16 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
         InventoryInvokeBill dbInvokeBill = inventoryInvokeBillDao.load(inventoryInvokeBill.getId());
         int status = dbInvokeBill.getStatus();
         if(status != InventoryInvokeBill.status_edit) throw new StoreSystemException("状态错误,不能修改");
+
+        List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(inventoryInvokeBill.getInSubid());
+        if(warehouses.size()>0){
+            inventoryInvokeBill.setInWid(warehouses.get(0).getId());
+        }
+        warehouses = inventoryWarehouseService.getAllList(inventoryInvokeBill.getOutSubid());
+        if(warehouses.size()>0){
+            inventoryInvokeBill.setOutWid(warehouses.get(0).getId());
+        }
+
         check(inventoryInvokeBill);
         boolean res = inventoryInvokeBillDao.update(inventoryInvokeBill);
         return res;

@@ -34,4 +34,10 @@ public class UserGradeCategoryDiscountDaoImpl extends CacheBaseDao<UserGradeCate
     public List<UserGradeCategoryDiscount> getAllBySPUId(long spuid) throws Exception {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
+    public UserGradeCategoryDiscount getDiscount(long spuid, long ugid) throws Exception {
+        return null;
+    }
 }

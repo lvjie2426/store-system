@@ -1,9 +1,11 @@
-package com.store.system.model;
+package com.store.system.client;
 
+import com.store.system.model.Order;
+import com.store.system.model.OrderSku;
 import lombok.Data;
+import org.apache.commons.beanutils.BeanUtils;
 
 import java.io.Serializable;
-
 
 /**
  * @program: store-system
@@ -12,7 +14,7 @@ import java.io.Serializable;
  * @create: 2019-05-23 13:50
  **/
 @Data
-public class OrderSku implements Serializable {
+public class ClientOrderSku implements Serializable{
 
     public static final int type_past = 1; //过期
     public static final int type_repair = 2; //保修
@@ -29,12 +31,22 @@ public class OrderSku implements Serializable {
 
     private String name;
 
-    private int price;//单价
+    private double price;//单价
 
-    private int subtotal;//小计 price*num*coupon折扣
+    private double subtotal;//小计 price*num*coupon折扣
 
     private int qualityType;//质保类型
 
     private int optStatus;//操作状态
+
+    public ClientOrderSku(){};
+    public ClientOrderSku(OrderSku orderSku){
+        try {
+            BeanUtils.copyProperties(this, orderSku);
+        } catch (Exception e) {
+            throw new IllegalStateException("ClientOrderSku construction error!");
+        }
+
+    };
 
 }

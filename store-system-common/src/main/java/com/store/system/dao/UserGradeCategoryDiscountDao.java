@@ -14,5 +14,8 @@ import java.util.List;
  **/
 
 public interface UserGradeCategoryDiscountDao extends HDao<UserGradeCategoryDiscount> {
+
    public List<UserGradeCategoryDiscount> getAllBySPUId(long spuid)throws Exception;
+
+   public UserGradeCategoryDiscount getDiscount(long spuid,long ugid)throws Exception;
 }

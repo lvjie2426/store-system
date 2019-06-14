@@ -11,6 +11,7 @@ import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
 import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientOrder;
+import com.store.system.client.ClientOrderSku;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientSubordinate;
 import com.store.system.dao.*;
@@ -57,7 +58,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Resource
     private ProductSKUDao productSKUDao;
     @Resource
+    private ProductSPUDao productSPUDao;
+    @Resource
     private UserDao userDao;
+    @Resource
+    private UserGradeDao userGradeDao;
+    @Resource
+    private UserGradeCategoryDiscountDao userGradeCategoryDiscountDao;
     @Resource
     private SubordinateDao subordinateDao;
     @Resource
@@ -470,29 +477,63 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public Order countPrice(Order order) throws Exception {
+    public ClientOrder countPrice(Order order) throws Exception {
         Order orderPrice=new Order();
+        int surchargePrice=0;//附加费
+        int totalPrice=0;//总金额
         ClientOrder clientOrder=new ClientOrder(orderPrice);
 
-        double totalPrice=0.0;
-        //获取skuid 去拿到金额。
-        List<OrderSku> skuids = order.getSkuids();
-        for(OrderSku sku:skuids){
-            ProductSKU productSKU = productSKUDao.load(sku.getSkuid());
-            totalPrice+=sku.getNum()*productSKU.getRetailPrice();
+        List<Surcharge> surchargeList = order.getSurcharges();
+        if(surchargeList.size()>0){
+            // 拿到附加费用加入总价格
+            for(Surcharge surcharge:surchargeList){
+                surchargePrice+= surcharge.getPrice();
+            }
         }
-        clientOrder.setTotalPriceYuan(totalPrice);
+        //小计
+        User userDb = userDao.load(order.getUid());
+        List<OrderSku> orderSkuList = order.getSkuids();
+        List<ClientOrderSku> clientOrderSkus=new ArrayList<>();
+        for(OrderSku orderSku:orderSkuList){
+            ProductSPU productSPU = productSPUDao.load(orderSku.getSpuid());
+            if(productSPU.getType()==ProductSPU.type_common){
+                ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+                UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.getDiscount(orderSku.getSpuid(), userDb.getUserGradeId());
+                double dis=discount.getDiscount()/10.0;
+                ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
+                clientOrderSku.setPrice(productSKU.getRetailPrice());
+                clientOrderSku.setSubtotal(productSKU.getRetailPrice()*orderSku.getNum()*dis);
+                clientOrderSkus.add(clientOrderSku);
+                totalPrice+=productSKU.getRetailPrice()*orderSku.getNum();
+            }else{
+                // 积分
+                if(productSPU.getIntegralNum()<orderSku.getNum()){
+                    throw new StoreSystemException(productSPU.getName()+"积分商品数量兑换上限！");
+                }
+                ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+                ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
+                clientOrderSku.setPrice(productSKU.getIntegralPrice());
+                clientOrderSku.setSubtotal(productSKU.getRetailPrice()*orderSku.getNum());
+                clientOrderSkus.add(clientOrderSku);
+            }
+
+        }
+        int totaoPriceyuan=surchargePrice+totalPrice;
+        clientOrder.setTotalPriceYuan(totaoPriceyuan/100.0);
         long couponid = order.getCouponid();
         if(couponid>0){
             MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
-                clientOrder.setDicountPriceYuan( totalPrice-marketingCoupon.getDescSubtract());
+                clientOrder.setDicountPriceYuan( (totaoPriceyuan-marketingCoupon.getDescSubtract())/100.0);
             }
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
-                clientOrder.setDicountPriceYuan( totalPrice-totalPrice*marketingCoupon.getDescSubtract());
+                clientOrder.setDicountPriceYuan( (totaoPriceyuan-totaoPriceyuan*(marketingCoupon.getDescSubtract()/10.0))/100.0);
             }
         }
-        return orderPrice;
+
+        UserGrade userGrade = userGradeDao.load(userDb.getUserGradeId());
+        clientOrder.setPriceYuan(clientOrder.getDicountPriceYuan()*(userGrade.getDiscount()/10.0));
+        return clientOrder;
     }
 
     @Override

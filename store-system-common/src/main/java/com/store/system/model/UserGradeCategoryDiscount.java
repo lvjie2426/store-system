@@ -24,7 +24,7 @@ public class UserGradeCategoryDiscount implements Serializable{
     private long ugid;//会员等级id
     @CombinationKey
     private long spuid;//spuid
-    private int discount; //折扣
+    private double discount; //折扣
 
     @SortKey
     private long ctime;
