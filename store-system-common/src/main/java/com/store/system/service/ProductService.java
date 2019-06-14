@@ -36,9 +36,9 @@ public interface ProductService {
 
     public ClientProductSPU selectSPU(int type, long subid, long pid, long cid, long bid, long sid) throws Exception;
 
-    public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid) throws Exception;
+    public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid, int type) throws Exception;
 
-    public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid) throws Exception;
+    public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid, long uid) throws Exception;
 
     public boolean updateSaleStatus(long id, int open)throws Exception;
 }

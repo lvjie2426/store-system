@@ -286,8 +286,8 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
 
     @Override
     public Pager getCheckPager(Pager pager, long subid) throws Exception {
-        String sql = "SELECT * FROM `inventory_invoke_bill` where outSubid = " + subid + " and `status` = " + InventoryInvokeBill.status_edit;
-        String sqlCount = "SELECT COUNT(id) FROM `inventory_invoke_bill` where outSubid = " + subid + " and `status` = " + InventoryInvokeBill.status_edit;
+        String sql = "SELECT * FROM `inventory_invoke_bill` where outSubid = " + subid + " and `status` = " + InventoryInvokeBill.status_wait_check;
+        String sqlCount = "SELECT COUNT(id) FROM `inventory_invoke_bill` where outSubid = " + subid + " and `status` = " + InventoryInvokeBill.status_wait_check;
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());

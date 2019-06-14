@@ -15,6 +15,7 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.ProductService;
 import com.store.system.service.UserGradeCategoryDiscountService;
+import com.store.system.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -73,8 +74,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private InventoryWarehouseDao inventoryWarehouseDao;
+
     @Resource
     private UserGradeCategoryDiscountDao userGradeCategoryDiscountDao;
+
+    @Resource
+    private UserService userService;
+
     @Resource
     private JdbcTemplate jdbcTemplate;
     @Resource
@@ -389,6 +395,7 @@ public class ProductServiceImpl implements ProductService {
             sql += " and saleStatus = " + saleStatus;
             sqlCount += " and saleStatus = " + saleStatus;
         }
+
         sql = sql + " order  by `sort` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
@@ -409,7 +416,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid) throws Exception {
+    public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid, int type) throws Exception {
         String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + pSubid;
         String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + pSubid;
         String limit = " limit %d , %d ";
@@ -420,6 +427,10 @@ public class ProductServiceImpl implements ProductService {
         if (bid > 0) {
             sql += " and bid = " + bid;
             sqlCount += " and bid = " + bid;
+        }
+        if (type > -1) {
+            sql += " and type = " + type;
+            sqlCount += " and type = " + type;
         }
         sql = sql + " order  by `sort` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -440,11 +451,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid) throws Exception {
+    public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid, long uid) throws Exception {
         List<ProductSKU> list = productSKUDao.getAllList(spuid, ProductSKU.status_nomore);
         List<ClientProductSKU> res = Lists.newArrayList();
         Set<Long> wids = Sets.newHashSet();
         Set<Long> sids = Sets.newHashSet();
+        UserGradeCategoryDiscount discount = new UserGradeCategoryDiscount();
+        //商品的会员折扣
+        if(uid>0) {
+            User user = userService.load(uid);
+            discount.setSpuid(spuid);
+            discount.setUgid(user.getUserGradeId());
+            discount = userGradeCategoryDiscountDao.load(discount);
+        }
         for (ProductSKU one : list) {
             ClientProductSKU client = new ClientProductSKU(one);
             int num = 0;
@@ -465,6 +484,8 @@ public class ProductServiceImpl implements ProductService {
             client.setDetails(details);
             client.setOtherDetails(otherDetails);
             client.setCanUseNum(num);
+            if(discount!=null)
+                client.setDiscount(discount.getDiscount());
             res.add(client);
         }
         List<InventoryWarehouse> warehouses = inventoryWarehouseDao.load(Lists.newArrayList(wids));
