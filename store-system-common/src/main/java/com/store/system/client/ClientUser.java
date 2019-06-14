@@ -23,6 +23,8 @@ public class ClientUser extends User {
 
     private String tname;//推荐人姓名
 
+    private double discount;//会员折扣
+
     public ClientUser(User user) {
         try {
             BeanUtils.copyProperties(this, user);

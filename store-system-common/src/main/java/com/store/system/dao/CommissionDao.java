@@ -2,6 +2,9 @@ package com.store.system.dao;
 
 import com.quakoo.space.interfaces.HDao;
 import com.store.system.model.Commission;
+import org.springframework.dao.DataAccessException;
+
+import java.util.List;
 
 /**
  * @ClassName CommissionDao
@@ -11,4 +14,6 @@ import com.store.system.model.Commission;
  * @Version 1.0
  **/
 public interface CommissionDao extends HDao<Commission> {
+
+    public List<Commission> getAllList(long subId,long spuId,int type)throws DataAccessException;
 }

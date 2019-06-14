@@ -5,10 +5,13 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
+import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientOrder;
+import com.store.system.client.ClientOrderSku;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientSubordinate;
 import com.store.system.dao.*;
@@ -21,6 +24,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -42,6 +46,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private PropertyUtil propertyUtil = PropertyUtil.getInstance("pay.properties");
     private SimpleDateFormat gmtFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
+    private TransformMapUtils orderMapUtils = new TransformMapUtils(Order.class);
+
+
     @Resource
     private PayPassportDao payPassportDao;
     @Resource
@@ -51,7 +58,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Resource
     private ProductSKUDao productSKUDao;
     @Resource
+    private ProductSPUDao productSPUDao;
+    @Resource
     private UserDao userDao;
+    @Resource
+    private UserGradeDao userGradeDao;
+    @Resource
+    private UserGradeCategoryDiscountDao userGradeCategoryDiscountDao;
     @Resource
     private SubordinateDao subordinateDao;
     @Resource
@@ -60,8 +73,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private OptometryInfoDao optometryInfoDao;
     @Resource
     private AfterSaleDetailDao afterSaleDetailDao;
-
-
+    @Resource
+    private CommissionDao commissionDao;
 
 
     @Autowired(required = false)
@@ -464,29 +477,63 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public Order countPrice(Order order) throws Exception {
+    public ClientOrder countPrice(Order order) throws Exception {
         Order orderPrice=new Order();
+        int surchargePrice=0;//附加费
+        int totalPrice=0;//总金额
         ClientOrder clientOrder=new ClientOrder(orderPrice);
 
-        double totalPrice=0.0;
-        //获取skuid 去拿到金额。
-        List<OrderSku> skuids = order.getSkuids();
-        for(OrderSku sku:skuids){
-            ProductSKU productSKU = productSKUDao.load(sku.getSkuid());
-            totalPrice+=sku.getNum()*productSKU.getRetailPrice();
+        List<Surcharge> surchargeList = order.getSurcharges();
+        if(surchargeList.size()>0){
+            // 拿到附加费用加入总价格
+            for(Surcharge surcharge:surchargeList){
+                surchargePrice+= surcharge.getPrice();
+            }
         }
-        clientOrder.setTotalPriceYuan(totalPrice);
+        //小计
+        User userDb = userDao.load(order.getUid());
+        List<OrderSku> orderSkuList = order.getSkuids();
+        List<ClientOrderSku> clientOrderSkus=new ArrayList<>();
+        for(OrderSku orderSku:orderSkuList){
+            ProductSPU productSPU = productSPUDao.load(orderSku.getSpuid());
+            if(productSPU.getType()==ProductSPU.type_common){
+                ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+                UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.getDiscount(orderSku.getSpuid(), userDb.getUserGradeId());
+                double dis=discount.getDiscount()/10.0;
+                ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
+                clientOrderSku.setPrice(productSKU.getRetailPrice());
+                clientOrderSku.setSubtotal(productSKU.getRetailPrice()*orderSku.getNum()*dis);
+                clientOrderSkus.add(clientOrderSku);
+                totalPrice+=productSKU.getRetailPrice()*orderSku.getNum();
+            }else{
+                // 积分
+                if(productSPU.getIntegralNum()<orderSku.getNum()){
+                    throw new StoreSystemException(productSPU.getName()+"积分商品数量兑换上限！");
+                }
+                ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+                ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
+                clientOrderSku.setPrice(productSKU.getIntegralPrice());
+                clientOrderSku.setSubtotal(productSKU.getRetailPrice()*orderSku.getNum());
+                clientOrderSkus.add(clientOrderSku);
+            }
+
+        }
+        int totaoPriceyuan=surchargePrice+totalPrice;
+        clientOrder.setTotalPriceYuan(totaoPriceyuan/100.0);
         long couponid = order.getCouponid();
         if(couponid>0){
             MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
-                clientOrder.setDicountPriceYuan( totalPrice-marketingCoupon.getDescSubtract());
+                clientOrder.setDicountPriceYuan( (totaoPriceyuan-marketingCoupon.getDescSubtract())/100.0);
             }
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
-                clientOrder.setDicountPriceYuan( totalPrice-totalPrice*marketingCoupon.getDescSubtract());
+                clientOrder.setDicountPriceYuan( (totaoPriceyuan-totaoPriceyuan*(marketingCoupon.getDescSubtract()/10.0))/100.0);
             }
         }
-        return orderPrice;
+
+        UserGrade userGrade = userGradeDao.load(userDb.getUserGradeId());
+        clientOrder.setPriceYuan(clientOrder.getDicountPriceYuan()*(userGrade.getDiscount()/10.0));
+        return clientOrder;
     }
 
     @Override
@@ -544,6 +591,47 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Override
     public ClientOrder loadOrder(long id) throws Exception {
         return transformClient(orderDao.load(id));
+    }
+
+    @Override
+    public Map<String,Object> saleReward(long subid) throws Exception {
+        Map<String,Object> map = Maps.newLinkedHashMap();
+        List<SaleReward> saleRewards = Lists.newArrayList();
+        int total = 0;//总奖励
+        List<Order> orders = orderDao.getAllBySubid(subid,Order.status_pay,Order.makestatus_qu_yes);
+        if(orders.size()>0){
+            for(Order order:orders){
+                List<OrderSku> orderSkus = order.getSkuids();
+                for (OrderSku orderSku:orderSkus){
+                    Commission personal = null;
+                    Commission team = null;
+                    ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+                    if(productSKU!=null){
+                        long spuId = productSKU.getSpuid();
+                        //获得商品的个人提成
+                        List<Commission> commissionsP = commissionDao.getAllList(subid,spuId,Commission.type_personal);
+                        if(commissionsP.size()>0){ personal=commissionsP.get(0); }
+                        //获得商品的团队提成
+                        List<Commission> commissionsT = commissionDao.getAllList(subid,spuId,Commission.type_team);
+                        if(commissionsT.size()>0){ team = commissionsT.get(0); }
+                        if(personal!=null&&team!=null){
+                            SaleReward saleReward = new SaleReward();
+                            saleReward.setNumber(orderSku.getNum());
+                            saleReward.setProductNamw(orderSku.getName());
+                            saleReward.setRewardPersonal(personal.getPrice());//个人提成
+                            saleReward.setRewardTeam(team.getPrice());//团队提成
+                            saleReward.setRoyaltyPersonal(team.getPrice()*orderSku.getNum());//团队奖励 数量*提成
+                            saleReward.setRoyaltyTeam(personal.getPrice()*orderSku.getNum());//个人奖励
+                            saleRewards.add(saleReward);
+                            total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
+                        }
+                    }
+                }
+            }
+        }
+        map.put("saleRewards",saleRewards);
+        map.put("total",total);
+        return map;
     }
 
 

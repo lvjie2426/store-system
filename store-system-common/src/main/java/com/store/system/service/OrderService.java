@@ -2,11 +2,14 @@ package com.store.system.service;
 
 
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientOrder;
 import com.store.system.model.Order;
+import com.store.system.model.SalaryRecord;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 
@@ -24,12 +27,14 @@ public interface OrderService {
 
     public  List<ClientOrder> getAllBySubid(long subid)throws Exception;
 
-    public Order countPrice(Order order)throws Exception;
+    public ClientOrder countPrice(Order order)throws Exception;
 
     public  List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
 
     public   Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid,int makeStatus)throws Exception;
 
     public ClientOrder loadOrder(long id) throws Exception;
+
+    public Map<String,Object> saleReward(long subid)throws Exception;
 
 }

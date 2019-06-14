@@ -1,17 +1,20 @@
 package com.store.system.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.InventoryOutBillItem;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.Order;
-import com.store.system.model.Subordinate;
-import com.store.system.model.User;
+import com.store.system.model.*;
 import com.store.system.service.OrderService;
 import com.store.system.util.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -120,9 +123,21 @@ public class OrderController extends BaseController {
      */
     @RequestMapping("/countPrice")
     public ModelAndView countPrice(HttpServletRequest request, HttpServletResponse response,
-                                  Order order) throws Exception {
+                                  Order order,
+                                   @RequestParam( value = "skuids")   String skuids,
+                                   @RequestParam( value = "surcharges")   String surcharges
+                                 ) throws Exception {
 
         try {
+            List<Surcharge> billItems = Lists.newArrayList();
+            List<OrderSku> orderskuids = Lists.newArrayList();
+            if(StringUtils.isNotBlank(surcharges)) {
+                billItems = JsonUtils.fromJson(surcharges, new TypeReference<List<Surcharge>>() {});
+                order.setSurcharges(billItems);
+            }if(StringUtils.isNotBlank(skuids)) {
+                orderskuids = JsonUtils.fromJson(skuids, new TypeReference<List<OrderSku>>() {});
+                order.setSkuids(orderskuids);
+            }
             order = orderService.countPrice(order);
             return this.viewNegotiating(request, response, new ResultClient(order));
         } catch (StoreSystemException e) {
@@ -221,7 +236,30 @@ public class OrderController extends BaseController {
         }
     }
 
+    ///////////////支付宝条形码支付//////////////////
+    @RequestMapping("/handleAliBarcodeOrder")
+    public ModelAndView handleAliBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
+                                              @RequestParam(name = "passportId")long passportId,
+                                              String authCode, int type, String typeInfo,
+                                              String title, String desc, int price)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleAliBarcodeOrder(passportId,authCode,type,typeInfo,title,desc,price)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
 
+    ///////////////微信条形码支付//////////////////
+    @RequestMapping("/handleWxBarcodeOrder")
+    public ModelAndView handleWxBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
+                                             long passportId, String authCode, int type, String typeInfo,
+                                             String title, String desc, int price, String ip)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleWxBarcodeOrder(request,passportId,authCode,type,typeInfo,title,desc,price,ip)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
 
 
 }
