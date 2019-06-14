@@ -27,7 +27,7 @@ public interface OrderService {
 
     public  List<ClientOrder> getAllBySubid(long subid)throws Exception;
 
-    public Order countPrice(Order order)throws Exception;
+    public ClientOrder countPrice(Order order)throws Exception;
 
     public  List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
 
