@@ -5,9 +5,11 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
+import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientSubordinate;
@@ -21,6 +23,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -42,6 +45,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private PropertyUtil propertyUtil = PropertyUtil.getInstance("pay.properties");
     private SimpleDateFormat gmtFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
+    private TransformMapUtils orderMapUtils = new TransformMapUtils(Order.class);
+
+
     @Resource
     private PayPassportDao payPassportDao;
     @Resource
@@ -60,8 +66,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private OptometryInfoDao optometryInfoDao;
     @Resource
     private AfterSaleDetailDao afterSaleDetailDao;
-
-
+    @Resource
+    private CommissionDao commissionDao;
 
 
     @Autowired(required = false)
@@ -544,6 +550,43 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Override
     public ClientOrder loadOrder(long id) throws Exception {
         return transformClient(orderDao.load(id));
+    }
+
+    @Override
+    public Map<String,Object> saleReward(long subid) throws Exception {
+        Map<String,Object> map = Maps.newLinkedHashMap();
+        List<SaleReward> saleRewards = Lists.newArrayList();
+        int total = 0;//总奖励
+        List<Order> orders = orderDao.getAllBySubid(subid,Order.status_pay,Order.makestatus_qu_yes);
+        if(orders.size()>0){
+            for(Order order:orders){
+                List<OrderSku> orderSkus = order.getSkuids();
+                    for (OrderSku orderSku:orderSkus){
+                        Commission personal = null;
+                        Commission team = null;
+                        //获得商品的个人提成
+                        List<Commission> commissionsP = commissionDao.getAllList(subid,orderSku.getSkuid(),Commission.type_personal);
+                        if(commissionsP.size()>0){ personal=commissionsP.get(0); }
+                        //获得商品的团队提成
+                        List<Commission> commissionsT = commissionDao.getAllList(subid,orderSku.getSkuid(),Commission.type_team);
+                        if(commissionsT.size()>0){ team = commissionsT.get(0); }
+                        if(personal!=null&&team!=null){
+                            SaleReward saleReward = new SaleReward();
+                            saleReward.setNumber(orderSku.getNum());
+                            saleReward.setProductNamw(orderSku.getName());
+                            saleReward.setRewardPersonal(personal.getPrice());//个人提成
+                            saleReward.setRewardTeam(team.getPrice());//团队提成
+                            saleReward.setRoyaltyPersonal(team.getPrice()*orderSku.getNum());//团队奖励 数量*提成
+                            saleReward.setRoyaltyTeam(personal.getPrice()*orderSku.getNum());//个人奖励
+                            saleRewards.add(saleReward);
+                            total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
+                        }
+                    }
+            }
+        }
+        map.put("saleRewards",saleRewards);
+        map.put("total",total);
+        return map;
     }
 
 
