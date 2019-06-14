@@ -561,14 +561,17 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         if(orders.size()>0){
             for(Order order:orders){
                 List<OrderSku> orderSkus = order.getSkuids();
-                    for (OrderSku orderSku:orderSkus){
-                        Commission personal = null;
-                        Commission team = null;
+                for (OrderSku orderSku:orderSkus){
+                    Commission personal = null;
+                    Commission team = null;
+                    ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+                    if(productSKU!=null){
+                        long spuId = productSKU.getSpuid();
                         //获得商品的个人提成
-                        List<Commission> commissionsP = commissionDao.getAllList(subid,orderSku.getSkuid(),Commission.type_personal);
+                        List<Commission> commissionsP = commissionDao.getAllList(subid,spuId,Commission.type_personal);
                         if(commissionsP.size()>0){ personal=commissionsP.get(0); }
                         //获得商品的团队提成
-                        List<Commission> commissionsT = commissionDao.getAllList(subid,orderSku.getSkuid(),Commission.type_team);
+                        List<Commission> commissionsT = commissionDao.getAllList(subid,spuId,Commission.type_team);
                         if(commissionsT.size()>0){ team = commissionsT.get(0); }
                         if(personal!=null&&team!=null){
                             SaleReward saleReward = new SaleReward();
@@ -582,6 +585,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                             total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
                         }
                     }
+                }
             }
         }
         map.put("saleRewards",saleRewards);
