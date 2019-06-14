@@ -9,6 +9,7 @@ import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.SubordinateService;
+import com.store.system.service.UserGradeCategoryDiscountService;
 import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
 import com.google.common.collect.Lists;
@@ -735,11 +736,12 @@ public class UserServiceImpl implements UserService {
             Subordinate subordinate = subordinateMap.get(clientUser.getSid());
             if(subordinate != null) clientUser.setSubName(subordinate.getName());
         }
-        //会员等级
+        //会员等级 && 会员折扣
         if(user!=null&&user.getUserGradeId()>0){
             UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
             if(userGrade!=null){
                 clientUser.setMember(userGrade.getTitle());
+                clientUser.setDiscount(userGrade.getDiscount());
             }
         }
         //消费次数

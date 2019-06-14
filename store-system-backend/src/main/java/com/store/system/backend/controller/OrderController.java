@@ -221,7 +221,30 @@ public class OrderController extends BaseController {
         }
     }
 
+    ///////////////支付宝条形码支付//////////////////
+    @RequestMapping("/handleAliBarcodeOrder")
+    public ModelAndView handleAliBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
+                                              @RequestParam(name = "passportId")long passportId,
+                                              String authCode, int type, String typeInfo,
+                                              String title, String desc, int price)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleAliBarcodeOrder(passportId,authCode,type,typeInfo,title,desc,price)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
 
+    ///////////////微信条形码支付//////////////////
+    @RequestMapping("/handleWxBarcodeOrder")
+    public ModelAndView handleWxBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
+                                             long passportId, String authCode, int type, String typeInfo,
+                                             String title, String desc, int price, String ip)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleWxBarcodeOrder(request,passportId,authCode,type,typeInfo,title,desc,price,ip)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
 
 
 }
