@@ -6,6 +6,7 @@ import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.client.PagerResult;
@@ -13,6 +14,7 @@ import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.CommissionService;
+import com.store.system.service.OrderService;
 import com.store.system.service.ProductService;
 import com.store.system.service.SubordinateService;
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/product")
@@ -38,6 +41,8 @@ public class ProductController extends BaseController {
     private CommissionService commissionService;
     @Resource
     private SubordinateService subordinateService;
+    @Resource
+    private OrderService orderService;
 
     @RequestMapping("/addSPU")
     public ModelAndView addSPU(ProductSPU productSPU, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -305,6 +310,22 @@ public class ProductController extends BaseController {
             return this.viewNegotiating(request,response, new ResultClient(true, sign));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+
+    //实施工作台--销售奖励
+    @RequestMapping("/saleReward")
+    public ModelAndView saleReward(HttpServletRequest request,HttpServletResponse response,
+                                   @RequestParam(name = "subid") long subid)throws Exception{
+        try {
+            Subordinate subordinate = subordinateService.load(subid);
+            long sid = subordinate.getPid();
+            if(sid==0){ throw new StoreSystemException("门店ID有误"); }
+            Map<String,Object> res = orderService.saleReward(subid);
+            return this.viewNegotiating(request,response,new ResultClient(true,res));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }
     }
 
