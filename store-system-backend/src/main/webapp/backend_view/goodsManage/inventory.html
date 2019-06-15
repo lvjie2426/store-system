@@ -85,130 +85,8 @@
     </div>
 </div>
 <!--新增盘点弹窗-->
-<div class="content-view content-view-commonInventory content-view-addInventory clearfix">
-    <!--左边-->
-    <div class="leftBox">
-        <div class="head">
-            <span class="title layui-layer-title">添加商品</span>
-            <div class="selectShop">
-                <div id="box001">门店(多选)<i class="icon iconfont icon-ico_arrow_down"></i></div>
-                <div id="selectBox001">
-                    <ul>
-                        <li>
-                            <form class="layui-form">
-                                <div class="layui-form-item">
-                                    <div class="layui-input-block">
-                                        <input type="checkbox" value="中国" name="like1[write]" lay-skin="primary"
-                                               lay-filter="shop" title="中国">
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
-                        <li>
-                            <form class="layui-form">
-                                <div class="layui-form-item">
-                                    <div class="layui-input-block">
-                                        <input type="checkbox" value="美国" name="shop" lay-skin="primary"
-                                               lay-filter="shop" title="美国">
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
-                        <li>
-                            <form class="layui-form">
-                                <div class="layui-form-item">
-                                    <div class="layui-input-block">
-                                        <input type="checkbox" value="法国" name="shop" lay-skin="primary"
-                                               lay-filter="shop" title="法国">
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
-                        <li>
-                            <form class="layui-form">
-                                <div class="layui-form-item">
-                                    <div class="layui-input-block">
-                                        <input type="checkbox" value="英国" name="shop" lay-skin="primary"
-                                               lay-filter="shop" title="英国">
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
-                        <li>
-                            <form class="layui-form">
-                                <div class="layui-form-item">
-                                    <div class="layui-input-block">
-                                        <input type="checkbox" value="泰国" name="shop" lay-skin="primary"
-                                               lay-filter="shop" title="泰国">
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
-                        <li>
-                            <form class="layui-form">
-                                <div class="layui-form-item">
-                                    <div class="layui-input-block">
-                                        <input type="checkbox" value="埃塞俄比亚" name="shop" lay-skin="primary"
-                                               lay-filter="shop" title="埃塞俄比亚">
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="body">
-            <ul class="contUl">
+<div class="content-view content-view-commonInventory content-view-addInventory clearfix" id="addDom">
 
-            </ul>
-        </div>
-        <div class="foot">
-            <a class="layui-layer-btn0">关闭窗口</a>
-        </div>
-    </div>
-    <!--右边-->
-    <div class="rightBox">
-        <div class="head">
-            <span class="title">盘点单</span>
-            <div class="selectBox" id="perSelect">
-                <div class="select-box-header">
-                    <span class="text">马化腾</span> <i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">发</li>
-                        <li value="02">发起</li>
-                        <li value="03">发起人</li>
-                        <li value="04">发起人一</li>
-                        <li value="05">发起人二</li>
-                    </ul>
-                </div>
-            </div>
-            <span class="person">发起人:</span>
-        </div>
-        <div class="body">
-            <ul class="contUl">
-                <!--js添加-->
-                <li class="yanjing item" style="">
-                    <div class="title">眼镜</div>
-                    <div class="box">
-                        <div class="top">
-                            <span>品牌·系列</span><span>当前库存</span><span>操作</span>
-                        </div>
-                        <ul>
-                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
-                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
-                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="foot">
-            <a class="layui-layer-btn1 cannotCreat">创建盘点</a>
-        </div>
-    </div>
 </div>
 <!--确认盘点弹窗-->
 <div class="content-view content-view-addSuccess">
@@ -746,6 +624,109 @@
 <script src="../resource/js/yanjing/daterange.js"></script>
 <script src="../resource/js/template-native.js"></script>
 
+<script type="text/html" id="addTmp">
+    <!--左边-->
+    <div class="leftBox">
+        <div class="head">
+            <span class="title layui-layer-title">添加商品</span>
+            <div class="selectShop">
+                <div id="box001">门店(多选)<i class="icon iconfont icon-ico_arrow_down"></i></div>
+                <div id="selectBox001">
+                    <ul>
+                        <%for(var i=0;i< shopData.length;i++){%>
+                        <li>
+                            <form class="layui-form">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" value="<%=shopData[i].id%>" name="like1[write]" lay-skin="primary"
+                                               lay-filter="shop" title="<%=shopData[i].name%>">
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <ul class="contUl">
+                <%for(var i=0;i< categoryData.length;i++){%>
+                <li class="item">
+                    <div class="title"><%=categoryData[i].name%></div>
+                    <div class="cont">
+                        <div class="selectBox" id=''>
+                            <div class="select-box-header"><span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i></div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <%for(var j=0;j< brandData.length;j++){%>
+                                    <li class="txtOverflow" value="01"><%=brandData[j].name%></li>
+                                    <%}%>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectBox" id=yanjing02>
+                            <div class="select-box-header">
+                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i></div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li class="txtOverflow" value="01">系列A</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="btnGray active">添加至盘点单</div>
+                    </div>
+                </li>
+                <%}%>
+            </ul>
+        </div>
+        <div class="foot">
+            <a class="layui-layer-btn0">关闭窗口</a>
+        </div>
+    </div>
+    <!--右边-->
+    <div class="rightBox">
+        <div class="head">
+            <span class="title">盘点单</span>
+            <div class="selectBox" id="perSelect">
+                <div class="select-box-header">
+                    <span class="text">马化腾</span> <i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">发</li>
+                        <li value="02">发起</li>
+                        <li value="03">发起人</li>
+                        <li value="04">发起人一</li>
+                        <li value="05">发起人二</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="person">发起人:</span>
+        </div>
+        <div class="body">
+            <ul class="contUl">
+                <!--js添加-->
+                <li class="yanjing item" style="">
+                    <div class="title">眼镜</div>
+                    <div class="box">
+                        <div class="top">
+                            <span>品牌·系列</span><span>当前库存</span><span>操作</span>
+                        </div>
+                        <ul>
+                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
+                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
+                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="foot">
+            <a class="layui-layer-btn1 cannotCreat">创建盘点</a>
+        </div>
+    </div>
+</script>
 <script type="text/html" id="dataTmp">
     <%for(var i=0;i< list.length;i++){%>
     <li class="item">
@@ -798,10 +779,72 @@
 </script>
 <!--//日期范围插件结束-->
 <script>
-    var subid = quakooUser.getUserInfo().sid;//企业id
+    var subid = quakooUser.getUserInfo().psid;//企业/公司id
+    var shopId = quakooDb.getItem('sel_ShopId');//门店id
+
+    var allData = {};//页面请求回来的所有数据
+
     var startTime;//筛选时间开始时间
     var endTime;//筛选时间结束时间
 
+
+    var categoryData = [];//一级类目数据
+    var brandData = [];//品牌数据
+    var providerData = [];//供应商数据
+    var ballData = [];//球数据
+    var columnData = [];//柱数据
+    var peopleData = [];//员工数据
+    var allOutList = {};//全部数据
+    var shopData;//门店数据
+
+    //获取一级类目
+    quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
+        if(ret && ret.success){
+            categoryData = ret.data;
+        }
+    })
+    //获取品牌数据
+    quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
+        if(ret && ret.success){
+            brandData = ret.data;
+        }
+    })
+    //获取属性-球
+    quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:15},function (ret) {
+        if(ret && ret.success){
+            ballData = ret.data.sort(function (a,b) {
+                return b.content-a.content;
+            });
+        }
+    })
+    //获取供应商
+    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
+        if(ret && ret.success){
+            providerData = ret.data;
+        }
+    })
+    //获取属性-柱
+    quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:16},function (ret) {
+        if(ret && ret.success){
+            columnData = ret.data.sort(function (a,b) {
+                return b.content-a.content;
+            });
+        }
+    })
+    //获取门店所有顾客-不分页
+    quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:shopId,userType:1},function (ret) {
+        if(ret && ret.success){
+            peopleData = ret.data;
+        }
+    })
+    //获取当前企业下门店列表
+    quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:subid},function (ret) {
+        if(ret&&ret.success){
+            if(quakooUtils.isNotBlack(ret.data)){
+                shopData = ret.data;
+            }
+        }
+    });
 
     //日期范围初始化
     var selectDate = new dateRange("#select-date");
@@ -811,8 +854,138 @@
         endTime = selectDate.getTime()[3];
         getData()
     })
+
+
     //获取盘点数据
     getData()
+    //盘点列表
+    function getData(){
+        $("#yj-table").bootstrapTable('destroy');
+        $("#yj-table").bootstrapTable({
+            url: config.getUrl_inventoryCheckBill_getCreatePager(),
+            classes: "table",
+            pagination: true,        //是否显示分页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 6,
+            pageList: [6, 12, 18],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            // paginationLoop:false,        //分页是否可以循环
+            columns: [],
+            queryParams:function (param) {
+                param.subid = shopId;
+                param.token = quakooUser.getUserInfo().token;
+                if(startTime){
+                    param.startTime=startTime;
+                }
+                if(endTime){
+                    param.endTime=endTime;
+                }
+                return param
+            },
+            onPreBody: function (data) {
+                console.log(data)
+                var arr = [];
+                for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
+                    if(this.data[i]){
+                        this.data[i].time = quakooUtils.formatTimeToDateDian(this.data[i].ctime);
+                        this.data[i].clientItemsNum = 0;
+                        for(var j=0;j<this.data[i].clientItems.length;j++){
+                            this.data[i].clientItemsNum +=this.data[i].clientItems[j].num;
+                        }
+                        arr.push(this.data[i])
+                        allData[this.data[i].id] = this.data[i]
+                    }
+                }
+                var html = template('dataTmp',{list:arr})
+                $("#showUl").html(html);
+            }
+        });
+    }
+    //新增盘点弹窗
+    function newInventory(id) {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: null,
+            skin: 'content-view-tan content-view-commonInventory-tan content-view-addInventory', //样式类名
+            anim: 0,
+            move:'.title',
+            area: ['735px', '560px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-addInventory'), //容器对象
+            btn: null,
+            success: function (layero, index) {
+                //弹框弹出加载列表
+                $('.content-view-commonInventory-tan .layui-layer-content').height(560);
+                // //底部按钮点击关闭弹窗
+                $('.content-view-addInventory .layui-layer-btn0').click(function () {
+                    layer.close(index);
+                });
+                $('.content-view-addInventory .layui-layer-btn1').click(function () {
+                    layer.close(index);
+                });
+                addRepertorySuccess(index,id)
+            }
+        });
+    }
+    function addRepertorySuccess(index,id) {
+        var html = template('addTmp',{brandData:brandData,categoryData:categoryData,providerData:providerData,shopData:shopData})
+        $('#addDom').html(html);
+
+        var arr = [];//定义一个数组用来接收多选框的值
+        layui.use(['form'], function () {
+            form = layui.form
+            form.on('checkbox(shop)', function (data) {
+                if ($(this).prop("checked")) {
+                    arr.push($(this).val());
+                } else {
+                    var index = getIndex(arr, $(this).val())
+                    arr.splice(index, 1);
+                }
+            });
+        })
+
+        function getIndex(arr, value) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == value) {
+                    return i
+                }
+            }
+        }
+
+        //点击按钮是弹出数组
+        $('#box001').click(function (e) {
+            quakooUtils.stopEventBubble(e)
+            if ($(this).find('.icon').hasClass('icon-ico_arrow_down')) {
+                $(this).find('.icon').removeClass('icon-ico_arrow_down').addClass('icon-ico_arrow_up')
+            } else {
+                $(this).find('.icon').removeClass('icon-ico_arrow_up').addClass('icon-ico_arrow_down')
+            }
+            if ($('#selectBox001').is(':hidden')) {　　//如果node是隐藏的则显示node元素，否则隐藏
+                $('#selectBox001').show(600);
+            } else {
+                $('#selectBox001').hide(600);
+            }
+        })
+        $('#selectBox001').click(function (e) {
+            quakooUtils.stopEventBubble(e)
+        })
+        $(document).click(function () {
+            $("#selectBox001").hide();
+            $(this).find('.icon').removeClass('icon-ico_arrow_up').addClass('icon-ico_arrow_down')
+            //console.log(arr);下拉框复选选中数据
+        });
+
+    }
 
     var dataJpTable = [
         {
@@ -1096,61 +1269,12 @@
     ]
     //复选下拉框执行
     mulSelect();
-    //页面中的select
-    selectTag($("#perSelect"), function (ret) {/*console.log(ret)*/
+   /* //页面中的select
+    selectTag($("#perSelect"), function (ret) {/!*console.log(ret)*!/
     })
-    selectTag($("#perSelect01"), function (ret) {/*console.log(ret)*/
+    selectTag($("#perSelect01"), function (ret) {/!*console.log(ret)*!/
     })
-    getData()
-    //盘点列表
-    function getData(){
-        $("#yj-table").bootstrapTable('destroy');
-        $("#yj-table").bootstrapTable({
-            url: config.getUrl_inventoryCheckBill_getCheckPager(),
-            classes: "table",
-            pagination: true,        //是否显示分页
-            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 6,
-            pageList: [6, 12, 18],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            // paginationLoop:false,        //分页是否可以循环
-            columns: [],
-            queryParams:function (param) {
-                param.subid = subid;
-                param.token = quakooUser.getUserInfo().token;
-                if(startTime){
-                    param.startTime=startTime;
-                }
-                if(endTime){
-                    param.endTime=endTime;
-                }
-                return param
-            },
-            onPreBody: function (data) {
-                console.log(data)
-                var arr = [];
-                for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
-                    if(this.data[i]){
-                        this.data[i].time = quakooUtils.formatTimeToDateDian(this.data[i].ctime);
-                        this.data[i].clientItemsNum = 0;
-                        for(var j=0;j<this.data[i].clientItems.length;j++){
-                            this.data[i].clientItemsNum +=this.data[i].clientItems[j].num;
-                        }
-                        arr.push(this.data[i])
-                    }
-                }
-                var html = template('dataTmp',{list:arr})
-                $("#showUl").html(html);
-            }
-        });
-    }
+*/
 
 
     //table表格初始化
@@ -1356,41 +1480,7 @@
         });
     }
 
-    //新增盘点弹窗
-    function newInventory() {
-        // addRightList();
-        addLeftList();
-        layer.open({
-            type: 1,
-            shade: 0.01,
-            title: null,
-            skin: 'content-view-tan content-view-commonInventory-tan content-view-addInventory', //样式类名
-            anim: 0,
-            area: ['735px', '560px'],
-            closeBtn: 0, //不显示关闭按钮
-            resize: false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-addInventory'), //容器对象
-            btn: null,
-            yes: function (index) {
 
-            },
-            btn2: function (index) {
-
-            },
-            success: function (layero, index) {
-                //弹框弹出加载列表
-                $('.content-view-commonInventory-tan .layui-layer-content').height(560);
-                // //底部按钮点击关闭弹窗
-                $('.content-view-addInventory .layui-layer-btn0').click(function () {
-                    layer.close(index);
-                });
-                $('.content-view-addInventory .layui-layer-btn1').click(function () {
-                    layer.close(index);
-                });
-            }
-        });
-    }
 
     //盘点创建成功弹窗
     function addSuccess() {
@@ -1417,7 +1507,6 @@
             }
         });
     }
-
     //添加商品-左边部分列表
     function addLeftList() {
         $('.content-view-addInventory .leftBox .contUl').html('')
@@ -1457,6 +1546,7 @@
                 '<div class="btnGray">添加至盘点单</div>' +
                 '</div>' +
                 '</li>'
+            console.log(li01)
             $('.content-view-addInventory .leftBox .contUl').append(li01);
             //初始化下拉框
             selectTag($('#' + data01[i].id + '01'), function (ret) {
@@ -1517,49 +1607,7 @@
 
     //下拉框复选
     function mulSelect() {
-        var arr = [];//定义一个数组用来接收多选框的值
-        layui.use(['form'], function () {
-            form = layui.form
-            form.on('checkbox(shop)', function (data) {
-                if ($(this).prop("checked")) {
-                    arr.push($(this).val());
-                } else {
-                    var index = getIndex(arr, $(this).val())
-                    arr.splice(index, 1);
-                }
-            });
-        })
 
-        function getIndex(arr, value) {
-            for (var i = 0; i < arr.length; i++) {
-                if (arr[i] == value) {
-                    return i
-                }
-            }
-        }
-
-        //点击按钮是弹出数组
-        $('#box001').click(function (e) {
-            quakooUtils.stopEventBubble(e)
-            if ($(this).find('.icon').hasClass('icon-ico_arrow_down')) {
-                $(this).find('.icon').removeClass('icon-ico_arrow_down').addClass('icon-ico_arrow_up')
-            } else {
-                $(this).find('.icon').removeClass('icon-ico_arrow_up').addClass('icon-ico_arrow_down')
-            }
-            if ($('#selectBox001').is(':hidden')) {　　//如果node是隐藏的则显示node元素，否则隐藏
-                $('#selectBox001').show(600);
-            } else {
-                $('#selectBox001').hide(600);
-            }
-        })
-        $('#selectBox001').click(function (e) {
-            quakooUtils.stopEventBubble(e)
-        })
-        $(document).click(function () {
-            $("#selectBox001").hide();
-            $(this).find('.icon').removeClass('icon-ico_arrow_up').addClass('icon-ico_arrow_down')
-            //console.log(arr);下拉框复选选中数据
-        });
     }
 
     //开始盘点弹窗

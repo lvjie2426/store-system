@@ -24,13 +24,13 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-        this.serverUrl = "http://39.107.247.82:20005";
+        // this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.53:20005";
         /**马文军*/
-        // this.serverUrl = "http://192.168.1.18:20005";
+        this.serverUrl = "http://192.168.1.18:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -250,11 +250,25 @@ var Config = (function(_super){
     //=======================盘点 开始====================
     /**获取门店盘点列表**/
     _proto.getUrl_inventoryCheckBill_getCheckPager = function(){return this.serverUrl + '/inventoryCheckBill/getCheckPager';};
+    /**获取当前人创建的盘点列表**/
+    _proto.getUrl_inventoryCheckBill_getCreatePager = function(){return this.serverUrl + '/inventoryCheckBill/getCreatePager';};
 
     //=======================盘点 结束====================
     //=======================调货 开始====================
     /**获取编辑状态下的调货单**/
     _proto.getUrl_inventoryInvokeBill_getCheckPager = function(){return this.serverUrl + '/inventoryInvokeBill/getCheckPager';};
+    /**获取某个员工创建的调货单**/
+    _proto.getUrl_inventoryInvokeBill_getCreatePager = function(){return this.serverUrl + '/inventoryInvokeBill/getCreatePager';};
+    /**查询调货单**/
+    _proto.getUrl_inventoryInvokeBill_select = function(){return this.serverUrl + '/inventoryInvokeBill/select';};
+    /**新增调货单**/
+    _proto.getUrl_inventoryInvokeBill_add = function(){return this.serverUrl + '/inventoryInvokeBill/add';};
+    /**修改调货单**/
+    _proto.getUrl_inventoryInvokeBill_update = function(){return this.serverUrl + '/inventoryInvokeBill/update';};
+    /**审核通过调货单**/
+    _proto.getUrl_inventoryInvokeBill_pass = function(){return this.serverUrl + '/inventoryInvokeBill/pass';};
+    /**删除调货单**/
+    _proto.getUrl_inventoryInvokeBill_del = function(){return this.serverUrl + '/inventoryInvokeBill/del';};
 
     //=======================调货 结束====================
 
@@ -267,6 +281,15 @@ var Config = (function(_super){
     //根据职位获取用户列表
     _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
     //=======================订单管理 结束====================
+
+    //=======================售后 开始====================
+    /**获取售后记录*/
+    _proto.getUrl_afterSale_getLogPager = function(){return this.serverUrl + '/afterSale/getLogPager';};
+    /**查看售后*/
+    _proto.getUrl_afterSale_loadDetails = function(){return this.serverUrl + '/afterSale/loadDetails';};
+    /**进行售后*/
+    _proto.getUrl_afterSale_add = function(){return this.serverUrl + '/afterSale/add';};
+    //=======================售后 结束====================
 
 
 

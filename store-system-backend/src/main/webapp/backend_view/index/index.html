@@ -232,14 +232,16 @@
 <!--门店列表开始-->
 <script type="text/html" id="shopList">
     <%for(var i=0;i < list.length;i++){%>
-        <li value="'<%=list[i].id%>'"><%=list[i].name%></li>
+        <li value="<%=list[i].id%>"><%=list[i].name%></li>
     <%}%>
 </script>
 <!--门店列表结束-->
 <script>
     console.log("登录用户信息：",quakooUser.getUserInfo())
     var sid = quakooUser.getUserInfo().psid;//企业ID
-    quakooDb.setItem("sel_ShopId",quakooUser.getUserInfo().sid); //门店ID
+    if(quakooUtils.isBlack(quakooDb.getItem('sel_ShopId'))){
+        quakooDb.setItem("sel_ShopId",quakooUser.getUserInfo().sid); //门店ID
+    }
     getSubordinateStore();//获取公司下门店
     /**获取公司下门店列表*/
     function getSubordinateStore(){
@@ -251,11 +253,15 @@
                     var html = template("shopList", data);
                     document.getElementById("shopUl").innerHTML = html;
                     /**默认加载第一个店*/
-                    document.getElementById("shopDefaultText").innerHTML = "所有门店";
+                    if(quakooDb.getItem('sel_ShopName')){
+                        document.getElementById("shopDefaultText").innerHTML = quakooDb.getItem('sel_ShopName')
+                    }else{
+                        document.getElementById("shopDefaultText").innerHTML = quakooUser.getUserInfo().sname;
+                    }
                     /**下拉框*/
                     selectTag($('#selectBox'), function (ret) {
-                        console.log(ret);
-                        quakooDb.setItem("sel_ShopId",ret.value); //sava 门店ID
+                        console.log(ret)
+                        quakooDb.setItem("sel_ShopId",parseInt(ret.value)); //sava 门店ID
                         quakooDb.setItem("sel_ShopName",ret.text); //save 门店名字
                     });
                 }

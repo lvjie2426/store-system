@@ -481,7 +481,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         Order orderPrice=new Order();
         int surchargePrice=0;//附加费
         int totalPrice=0;//总金额
-        ClientOrder clientOrder=new ClientOrder(orderPrice);
+        int discountPrice=0;//折后金额
+        ClientOrder clientOrder=new ClientOrder(order);
 
         List<Surcharge> surchargeList = order.getSurcharges();
         if(surchargeList.size()>0){
@@ -498,13 +499,33 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             ProductSPU productSPU = productSPUDao.load(orderSku.getSpuid());
             if(productSPU.getType()==ProductSPU.type_common){
                 ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
-                UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.getDiscount(orderSku.getSpuid(), userDb.getUserGradeId());
-                double dis=discount.getDiscount()/10.0;
-                ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
-                clientOrderSku.setPrice(productSKU.getRetailPrice());
-                clientOrderSku.setSubtotal(productSKU.getRetailPrice()*orderSku.getNum()*dis);
-                clientOrderSkus.add(clientOrderSku);
-                totalPrice+=productSKU.getRetailPrice()*orderSku.getNum();
+                UserGradeCategoryDiscount userGradeCategoryDiscount=new UserGradeCategoryDiscount();
+                userGradeCategoryDiscount.setSpuid(orderSku.getSpuid());
+                userGradeCategoryDiscount.setUgid(userDb.getUserGradeId());
+                UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.load(userGradeCategoryDiscount);
+                if(discount!=null){
+                    double dis=discount.getDiscount()/10.0;
+                    ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
+                    clientOrderSku.setSkuid(orderSku.getSkuid());
+                    clientOrderSku.setSpuid(orderSku.getSpuid());
+                    clientOrderSku.setNum(orderSku.getNum());
+                    clientOrderSku.setPrice(productSKU.getRetailPrice()/100.0);
+                    clientOrderSku.setSubtotal((productSKU.getRetailPrice()*orderSku.getNum()*dis)/100.0);
+                    clientOrderSkus.add(clientOrderSku);
+                    discountPrice+=clientOrderSku.getSubtotal();
+                    totalPrice+=productSKU.getRetailPrice()*orderSku.getNum();
+                }else{
+                    ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
+                    clientOrderSku.setSkuid(orderSku.getSkuid());
+                    clientOrderSku.setSpuid(orderSku.getSpuid());
+                    clientOrderSku.setNum(orderSku.getNum());
+                    clientOrderSku.setPrice(productSKU.getRetailPrice()/100.0);
+                    clientOrderSku.setSubtotal((productSKU.getRetailPrice()*orderSku.getNum())/100.0);
+                    clientOrderSkus.add(clientOrderSku);
+                    discountPrice+=clientOrderSku.getSubtotal();
+                    totalPrice+=productSKU.getRetailPrice()*orderSku.getNum();
+                }
+
             }else{
                 // 积分
                 if(productSPU.getIntegralNum()<orderSku.getNum()){
@@ -518,6 +539,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             }
 
         }
+        clientOrder.setClientSkuids(clientOrderSkus);
         int totaoPriceyuan=surchargePrice+totalPrice;
         clientOrder.setTotalPriceYuan(totaoPriceyuan/100.0);
         long couponid = order.getCouponid();
@@ -529,6 +551,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
                 clientOrder.setDicountPriceYuan( (totaoPriceyuan-totaoPriceyuan*(marketingCoupon.getDescSubtract()/10.0))/100.0);
             }
+        }else{
+            clientOrder.setDicountPriceYuan(discountPrice);
         }
 
         UserGrade userGrade = userGradeDao.load(userDb.getUserGradeId());

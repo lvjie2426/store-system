@@ -380,8 +380,8 @@
             <div class="titleBox clearfix">
                 <h4>订单信息</h4>
                 <div class="btnBox">
-                    <button class="btn addRoutineCommodity" onclick="addCGPro()">添加常规商品</button>
-                    <button class="btn addIntegralCommodity">添加积分商品</button>
+                    <button class="btn addRoutineCommodity" onclick="addCGPro(0)">添加常规商品</button>
+                    <button class="btn addIntegralCommodity" onclick="addCGPro(1)">添加积分商品</button>
                     <button class="btn seeHistoryOrder">查看历史订单</button>
                 </div>
             </div>
@@ -446,115 +446,6 @@
                     <textarea name="备注" id="optometryRemarks2" cols="30" rows="10" style="resize:none">神秘顾客</textarea>
                 </div>
                 <div class="rightBox" id="orderForm">
-<!--
-                    <div class="rightHeadBox clearfix">
-                        <input type="text" placeholder="输入条码" class="barCode">
-                        <button class="btnCustomized">定制商品</button>
-                    </div>
-                    <div class="rightFormBox">
-                        <table width="100%" border="1" id="orderForm">
-                            <thead>
-                                <tr>
-                                    <th>商品名称</th>
-                                    <th>数量</th>
-                                    <th>零售价</th>
-                                    <th>会员折扣</th>
-                                    <th>小计</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody class="active">
-                                <tr class="">
-                                    <td>
-                                        <div>明月镜片球面1.50…<span>调货商品</span></div>
-                                    </td>
-                                    <td>2</td>
-                                    <td>￥10</td>
-                                    <td><input type="text" placeholder="10.0"></td>
-                                    <td>-</td>
-                                    <td><u>移除</u></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>明月镜片球面1.50…<span>调货商品</span></div>
-                                    </td>
-                                    <td>2</td>
-                                    <td>￥10</td>
-                                    <td><input type="text" placeholder="10.0"></td>
-                                    <td>-</td>
-                                    <td><u>移除</u></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>明月镜片球面1.50…<span>调货商品</span></div>
-                                    </td>
-                                    <td>2</td>
-                                    <td>￥10</td>
-                                    <td><input type="text" placeholder="10.0"></td>
-                                    <td>-</td>
-                                    <td><u>移除</u></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>明月镜片球面1.50…<span>调货商品</span></div>
-                                    </td>
-                                    <td>2</td>
-                                    <td>￥10</td>
-                                    <td><input type="text" placeholder="10.0"></td>
-                                    <td>-</td>
-                                    <td><u>移除</u></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>明月镜片球面1.50…<span>调货商品</span></div>
-                                    </td>
-                                    <td>2</td>
-                                    <td>￥10</td>
-                                    <td><input type="text" placeholder="10.0"></td>
-                                    <td>-</td>
-                                    <td><u>移除</u></td>
-                                </tr>
-                                <tr class="discount">
-                                    <td>
-                                        <div>促销减免</div>
-                                    </td>
-                                    <td>-￥38</td>
-                                    <td><u>移除</u></td>
-                                </tr>
-                                <tr class="discount">
-                                    <td>
-                                        <div>促销减免</div>
-                                    </td>
-                                    <td>-￥38</td>
-                                    <td><u>移除</u></td>
-                                </tr>
-                                <tr class="discount">
-                                    <td>
-                                        <div>促销减免</div>
-                                    </td>
-                                    <td>-￥38</td>
-                                    <td><u>移除</u></td>
-                                </tr>
-                                <tr class="discount">
-                                    <td>
-                                        <div>促销减免</div>
-                                    </td>
-                                    <td>-￥38</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="rightFooterBox clearfix">
-                        <div class="amountMoney">
-                            <div>原价共计 <span>￥55</span></div>
-                            <div>折后金额 <span>￥47.5</span></div>
-                        </div>
-                        <div class="actualMoney">
-                            <div>实收金额<span> <b>￥</b> <input type="text"></span></div>
-                            <div>折扣<i>6.8</i></div>
-                        </div>
-                    </div>
--->
                 </div>
             </div>
         </div>
@@ -1004,7 +895,7 @@
                     class="cmMain-table2 table table-border"></table>
             </div>
         </div>
-        <!-- 添加常规商品 -->
+        <!-- 添加常规商品 （SPU） -->
         <div class="addRoutineCommodityPop">
             <div class="routineHeader clearfix">
                 <h3>选择商品</h3>
@@ -1036,7 +927,7 @@
                 </div>
             </div>
         </div>
-        <!-- 添加常规商品SKU -->
+        <!-- 添加常规商品 （SKU） -->
         <div class="addRoutineCommodityPro">
             <div class="content">
                 <table border="0" cellpadding="0" cellspacing="0" data-toggle="table" data-height="432px" class="cmMain-table3 table table-border" id="skuTable"></table>
@@ -1065,7 +956,7 @@
             </div>
             <div class="content">
                 <table border="0" cellpadding="0" cellspacing="0" data-toggle="table"
-                    class="cmMain-table4 table table-border"></table>
+                    class="cmMain-table4 table table-border" id="JFProTable"></table>
             </div>
         </div>
         <!-- 付款结算未收全款 -->
@@ -1551,7 +1442,7 @@
             <button class="btnCustomized">定制商品</button>
         </div>
         <div class="rightFormBox">
-            <table width="100%" border="1" id="orderForm">
+            <table width="100%" border="1">
 
             <thead>
             <tr>
@@ -1574,16 +1465,25 @@
                     <%if(list[i].type ==1){%>
                         <tr>
                             <td>
-                                <div><%=list[i].name%><span>本店商品</span></div>
+                                <div><%=list[i].productName%></div>
                             </td>
                             <td><%=list[i].number%></td>
                             <td>￥<%=list[i].price%></td>
-                            <td><input type="text" placeholder="10.0" value=""></td>
-                            <td><%=list[i].subtotal%></td>
+                            <td><input type="text" placeholder="10.0" value="" readonly="readonly"></td>
+                            <td></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
                     <%}else if(list[i].type ==2){%>
-
+                        <tr>
+                            <td>
+                                <div><%=list[i].productName%></div>
+                            </td>
+                            <td><%=list[i].number%></td>
+                            <td>￥<%=list[i].price%></td>
+                            <td><input type="text" placeholder="10.0" value="" readonly="readonly"></td>
+                            <td></td>
+                            <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
+                        </tr>
                     <%}else if(list[i].type ==3){%>
                         <tr class="discount">
                             <td>
@@ -1608,11 +1508,11 @@
         </div>
         <div class="rightFooterBox clearfix">
             <div class="amountMoney">
-                <div>原价共计 <span>￥<%=subtotal.originalTotal%></span></div>
-                <div>折后金额 <span>￥<%=subtotal.discountedPrice%></span></div>
+                <div>原价共计 <span>￥</span></div>
+                <div>折后金额 <span>￥</span></div>
             </div>
             <div class="actualMoney">
-                <div>实收金额<span> <b>￥</b> <input type="text" value="<%=subtotal.practicalPrice%>"></span></div>
+                <div>实收金额<span> <b>￥</b> <input type="text" value="" readonly="readonly"></span></div>
                 <div>折扣<i>6.8</i></div>
             </div>
         </div>
@@ -1621,7 +1521,7 @@
     <script>
         var psid;                                             //企业id
         var subid;                                            //门店id
-        var cusId = 0;                                        //用户id
+        var cusId = 40;                                        //用户id
         var cusPhone;                                         //用户手机号
         var cusJob;                                           //用户职业
         var proOrderId;                                       //临时订单ID
@@ -2241,6 +2141,10 @@
 /***************************************************订单信息开始*****************************************************/
         /**附加费用*/
         function extraCharges(){
+            if(!cusId){
+                layer.msg("请完善用户信息");
+                return;
+            }
             var hasProduct = false;
             for(var i in orderFormData){
                 orderFormData[i].type==1;
@@ -2289,6 +2193,10 @@
                         }
                         $("#ListPromotions").html(html);
                         selectTag($("#promotion"),function (ret) {
+                            if(!cusId){
+                                layer.msg("请完善用户信息");
+                                return;
+                            }
                             var hasProduct = false;
                             for(var i in orderFormData){
                                 orderFormData[i].type==1;
@@ -2296,18 +2204,18 @@
                                 break;
                             }
                             if(!hasProduct){
-                                layer.msg("请先选择商品",{icon:7})
+                                layer.msg("请先选择商品",{icon:7});
                                 return;
                             }
-                            if(quakooUtils.isNotBlack(orderFormData[markup+ret.value])){
-                                layer.msg('已选择此促销方式',{icon:7});
+                            if(quakooUtils.isNotBlack(orderFormData[markup])){
+                                layer.msg('已选择促销方式',{icon:7});
                                 return;
                             }
-                            orderFormData[markup+ret.value] = {};
-                            orderFormData[markup+ret.value].type = 4;
-                            orderFormData[markup+ret.value].id = ret.value;
-                            orderFormData[markup+ret.value].name = couponData[ret.value].title;
-                            orderFormData[markup+ret.value].money = couponData[ret.value].descSubtract;
+                            orderFormData[markup] = {};
+                            orderFormData[markup].type = 4;
+                            orderFormData[markup].id = ret.value;
+                            orderFormData[markup].name = couponData[ret.value].title;
+                            orderFormData[markup].money = couponData[ret.value].descSubtract;
                             renderOrderForm();
                         });
                     }else{
@@ -2317,7 +2225,7 @@
             })
         }
         /**接口——获取企业类目列表*/
-        function getListClass(){
+        function getListClass(type){
             quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:psid},function (ret) {
                 console.log("企业下的类目列表：",ret);
                 if(ret&&ret.success){
@@ -2325,7 +2233,7 @@
                         locOrder.class = ret.data[0].id;
                         var html = "";
                         for(var i=0;i<ret.data.length;i++){
-                            html += '<li onclick="selClass(this,'+ret.data[i].id+')">'+ret.data[i].name+'</li>';
+                            html += '<li onclick="selClass(this,'+ret.data[i].id+','+type+')">'+ret.data[i].name+'</li>';
                         }
                         $("#listClass").html(html);
                         $("#listClass li").first().addClass("active");
@@ -2335,7 +2243,7 @@
                 }
             })
         }/**接口——获取企业品牌列表*/
-        function getListBrand(){
+        function getListBrand(type){
             quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:psid},function (ret) {
                 console.log("企业下的品牌列表：",ret);
                 if(ret&&ret.success){
@@ -2343,7 +2251,7 @@
                         locOrder.brand = ret.data[0].id;
                         var html = "";
                         for(var i=0;i<ret.data.length;i++){
-                            html += '<li onclick="selBrand(this,'+ret.data[i].id+')"><span>'+ret.data[i].name+'</span></li>';
+                            html += '<li onclick="selBrand(this,'+ret.data[i].id+','+type+')"><span>'+ret.data[i].name+'</span></li>';
                         }
                         $("#listBrand").html(html);
                         $("#listBrand li").first().addClass("active");
@@ -2354,19 +2262,19 @@
             })
         }
         //选择常规商品类目
-        function selClass(_self,id) {
+        function selClass(_self,id,type) {
             $(_self).addClass("active").siblings().removeClass("active");
             locOrder.class = id;
-            getSPU();
+            getSPU(type);
         }
         //选择常规商品品牌
-        function selBrand(_self,id) {
+        function selBrand(_self,id,type) {
             $(_self).addClass("active").siblings().removeClass("active");
             locOrder.brand = id;
-            getSPU();
+            getSPU(type);
         }
-        /**获取SPU*/
-        function getSPU() {
+        /**获取常规商品SPU*/
+        function getSPU(type) {
             $("#spuTable").bootstrapTable('destroy');
             $("#spuTable").bootstrapTable({
                 url: config.getUrl_product_getSaleSPUBackPager(),
@@ -2390,7 +2298,7 @@
                     {field: "providerName", title: "来源", align: "left", valign: "middle"},
                     {field: "", title: "操作", align: "left", valign: "middle",formatter: function (value, row, index) {
                             var html;
-                            html = "<div class='btnSeeHistory' onclick='getSKU(" + JSON.stringify(row.id) +","+JSON.stringify(row.categoryName)+")'>选择</div>";
+                            html = "<div class='btnSeeHistory' onclick='getSKU("+type+","+ JSON.stringify(row.id) +","+JSON.stringify(row.categoryName)+")'>选择</div>";
                             return html;
                     }},
                 ],
@@ -2401,6 +2309,7 @@
                     params.subid = subid;                                 //门店ID
                     params.cid = locOrder.class;
                     params.bid = locOrder.brand;
+                    params.type = type;
                     console.log('params:::', params);
                     return params;
                 },
@@ -2413,14 +2322,20 @@
             });
         }
         /**获取SKU*/
-        function getSKU(spuid,categoryName){
+        function getSKU(type,spuid,categoryName){
+            var title = "";
+            if(type==0){
+                title = '添加常规商品'
+            }else if(type ==1){
+                title =  '添加积分商品'
+            }
             var index = layer.open({
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
                 area: '800px',
                 anim: 0,
                 closeBtn: 0,
-                title: '添加常规商品',
+                title: title,
                 shade: 0.1,
                 shadeClose: true, //开启遮罩关闭
                 scrollbar: false,
@@ -2432,31 +2347,206 @@
                     layer.close(index)
                 },
                 success: function () {
-                    renderSku(spuid,categoryName);
+                    renderSku(type,spuid,categoryName);
                 },
             });
         }
         /**渲染SKU*/
-        function renderSku(spuid,categoryName){
-            quakooData.ajaxGetData(config.getUrl_product_getSaleSKUAllList(),{subid:subid,spuid:spuid},function (ret) {
-                console.log("SKU:",ret)
+        function renderSku(type,spuid,categoryName){
+            var params ={};
+            params.subid = subid;
+            params.spuid = spuid;
+            if(cusId){
+                params.uid = spuid;
+            }
+            quakooData.ajaxGetData(config.getUrl_product_getSaleSKUAllList(),{subid:subid,spuid:spuid,uid:cusId},function (ret) {
+                console.log("SKU:",ret);
                 if(ret && ret.success){
                     var column;
                     if(ret.data){
                         nowGoodData = ret.data;
-                        if(categoryName === '镜片'){
+                        if(type == 0){
+                            if(categoryName === '镜片'){
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    { field: 'properties', title: '球' , formatter: function (value) {
+                                            return value[15];
+                                        }  },
+                                    { field: 'properties', title: '柱', formatter: function (value) {
+                                            return value[16];
+                                        }},
+                                    { field: 'costPrice', title: '成本价'},
+                                    { field: 'retailPrice', title: '零售价'},
+                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'num', title: '备货量'},
+                                    { field: 'canUseNum', title: '库存',formatter:function (value) {
+                                            return '<span class="inventory" >'+value+'</span>';
+                                        }},
+                                    {field: '', title: '数量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                        }
+                                    },
+                                    { field: '', title: '来源',formatter:function (value, row, index) {
+                                            return '<div>本店</div>'
+                                        }},
+                                    {field: '', title: '操作'  , formatter: function (value,row,index) {
+                                            return '<div class="btnSeeHistory" onclick="addConventionalProducts('+type+','+spuid+','+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
+                                        }
+                                    }
+                                ]
+                            }else if(categoryName === '镜架' || categoryName === '太阳镜' ){
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    /*{field: '', title: '型号'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input-xinghao" data-index="'+index+'" placeholder="型号">';
+                                        }
+                                    },
+                                    {field: '', title: '色号'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input-sehao" data-index="'+index+'" placeholder="色号">';
+                                        }
+                                    },*/
+                                    { field: 'costPrice', title: '成本价'},
+                                    { field: 'retailPrice', title: '零售价'},
+                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'num', title: '备货量'},
+                                    { field: 'canUseNum', title: '库存',formatter:function (value) {
+                                            return '<span class="inventory" >'+value+'</span>';
+                                        }},
+                                    {field: '', title: '数量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                        }
+                                    },
+                                    { field: '', title: '来源',formatter:function (value, row, index) {
+                                            return '<div>本店</div>'
+                                        }},
+                                    {field: '', title: '操作'  , formatter: function (value,row,index) {
+                                            return '<div class="btnSeeHistory" onclick="addConventionalProducts('+type+','+spuid+','+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
+                                        }
+                                    }
+                                ]
+                            }else if(categoryName === '隐形眼镜'){
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    { field: 'properties', title: '球' , formatter: function (value) {
+                                            return value[15];
+                                        }  },
+                                    { field: 'properties', title: '柱', formatter: function (value) {
+                                            return value[16];
+                                        }},
+                                    /* {field: '', title: '生产批号'  , formatter: function (value,row,index) {
+                                             return '<input type="text" class="in-yj-input-shengchanpihao" data-index="'+index+'" placeholder="生产批号">';
+                                         }
+                                     },
+                                     {field: '', title: '保质期'  , formatter: function (value,row,index) {
+                                             return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="'+index+'" placeholder="保质期">';
+                                         }
+                                     },*/
+                                    { field: 'costPrice', title: '成本价'},
+                                    { field: 'retailPrice', title: '零售价'},
+                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'num', title: '备货量'},
+                                    { field: 'canUseNum', title: '库存',formatter:function (value) {
+                                            return '<span class="inventory" >'+value+'</span>';
+                                        }},
+                                    {field: '', title: '数量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                        }
+                                    },
+                                    { field: '', title: '来源',formatter:function (value, row, index) {
+                                            return '<div>本店</div>'
+                                        }},
+                                    {field: '', title: '操作'  , formatter: function (value,row,index) {
+                                            return '<div class="btnSeeHistory" onclick="addConventionalProducts('+type+','+spuid+','+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
+                                        }
+                                    }
+                                ]
+                            }else if(categoryName === '护理产品'){
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    /*{field: '', title: '生产批号'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input-shengchanpihao" data-index="'+index+'" placeholder="生产批号">';
+                                        }
+                                    },
+                                    {field: '', title: '保质期'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="'+index+'" placeholder="保质期">';
+                                        }
+                                    },*/
+                                    { field: 'costPrice', title: '成本价'},
+                                    { field: 'retailPrice', title: '零售价'},
+                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'num', title: '备货量'},
+                                    { field: 'canUseNum', title: '库存',formatter:function (value) {
+                                            return '<span class="inventory" >'+value+'</span>';
+                                        }},
+                                    {field: '', title: '数量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                        }
+                                    },
+                                    { field: '', title: '来源',formatter:function (value, row, index) {
+                                            return '<div>本店</div>'
+                                        }},
+                                    {field: '', title: '操作'  , formatter: function (value,row,index) {
+                                            return '<div class="btnSeeHistory" onclick="addConventionalProducts('+type+','+spuid+','+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
+                                        }
+                                    }
+                                ]
+                            }else if(categoryName === '其它商品'){
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    /* {field: '', title: '型号'  , formatter: function (value,row,index) {
+                                             return '<input type="text" class="in-yj-input-xinghao" data-index="'+index+'" placeholder="型号">';
+                                         }
+                                     },*/
+                                    { field: 'costPrice', title: '成本价'},
+                                    { field: 'retailPrice', title: '零售价'},
+                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'num', title: '备货量'},
+                                    { field: 'canUseNum', title: '库存',formatter:function (value) {
+                                            return '<span class="inventory" >'+value+'</span>';
+                                        }},
+                                    {field: '', title: '数量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                        }
+                                    },
+                                    { field: '', title: '来源',formatter:function (value, row, index) {
+                                            return '<div>本店</div>'
+                                        }},
+                                    {field: '', title: '操作'  , formatter: function (value,row,index) {
+                                            return '<div class="btnSeeHistory" onclick="addConventionalProducts('+type+','+spuid+','+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
+                                        }
+                                    }
+                                ]
+                            }else if(categoryName === '特殊商品'){
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    /* {field: '', title: '型号'  , formatter: function (value,row,index) {
+                                             return '<input type="text" class="in-yj-input-xinghao" data-index="'+index+'" placeholder="型号">';
+                                         }
+                                     },*/
+                                    { field: 'costPrice', title: '成本价'},
+                                    { field: 'retailPrice', title: '零售价'},
+                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'num', title: '备货量'},
+                                    { field: 'canUseNum', title: '库存',formatter:function (value) {
+                                            return '<span class="inventory" >'+value+'</span>';
+                                        }},
+                                    {field: '', title: '数量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                        }
+                                    },
+                                    { field: '', title: '来源',formatter:function (value, row, index) {
+                                            return '<div>本店</div>'
+                                        }},
+                                    {field: '', title: '操作'  , formatter: function (value,row,index) {
+                                            return '<div class="btnSeeHistory" onclick="addConventionalProducts('+type+','+spuid+','+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
+                                        }
+                                    }
+                                ]
+                            }
+                        }else if(type == 1){
                             column = [
                                 { field: 'code', title: '产品编码'},
-                                { field: 'properties', title: '球' , formatter: function (value) {
-                                        return value[15];
-                                    }  },
-                                { field: 'properties', title: '柱', formatter: function (value) {
-                                        return value[16];
-                                    }},
-                                { field: 'costPrice', title: '成本价'},
-                                { field: 'retailPrice', title: '零售价'},
                                 { field: 'integralPrice', title: '积分价'},
-                                { field: 'num', title: '备货量'},
                                 { field: 'canUseNum', title: '库存',formatter:function (value) {
                                         return '<span class="inventory" >'+value+'</span>';
                                     }},
@@ -2468,157 +2558,12 @@
                                         return '<div>本店</div>'
                                     }},
                                 {field: '', title: '操作'  , formatter: function (value,row,index) {
-                                        return '<div class="btnSeeHistory" onclick="addConventionalProducts('+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
+                                    if(type ==0){
+                                        return '<div class="btnSeeHistory" onclick="addConventionalProducts('+type+','+spuid+','+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
+                                    }else if(type ==1){
+                                        return '<div class="btnSeeHistory" onclick="addConventionalProducts('+type+','+spuid+','+row.id+','+row.code+','+row.integralPrice+','+index+')">添加</div>';
                                     }
-                                }
-                            ]
-                        }else if(categoryName === '镜架' || categoryName === '太阳镜' ){
-                            column = [
-                                { field: 'code', title: '产品编码'},
-                                /*{field: '', title: '型号'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input-xinghao" data-index="'+index+'" placeholder="型号">';
-                                    }
-                                },
-                                {field: '', title: '色号'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input-sehao" data-index="'+index+'" placeholder="色号">';
-                                    }
-                                },*/
-                                { field: 'costPrice', title: '成本价'},
-                                { field: 'retailPrice', title: '零售价'},
-                                { field: 'integralPrice', title: '积分价'},
-                                { field: 'num', title: '备货量'},
-                                { field: 'canUseNum', title: '库存',formatter:function (value) {
-                                        return '<span class="inventory" >'+value+'</span>';
-                                    }},
-                                {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input" placeholder="数量">';
-                                    }
-                                },
-                                { field: '', title: '来源',formatter:function (value, row, index) {
-                                        return '<div>本店</div>'
-                                    }},
-                                {field: '', title: '操作'  , formatter: function (value,row,index) {
-                                        return '<div class="btnSeeHistory" onclick="addConventionalProducts('+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
-                                    }
-                                }
-                            ]
-                        }else if(categoryName === '隐形眼镜'){
-                            column = [
-                                { field: 'code', title: '产品编码'},
-                                { field: 'properties', title: '球' , formatter: function (value) {
-                                        return value[15];
-                                    }  },
-                                { field: 'properties', title: '柱', formatter: function (value) {
-                                        return value[16];
-                                    }},
-                                /* {field: '', title: '生产批号'  , formatter: function (value,row,index) {
-                                         return '<input type="text" class="in-yj-input-shengchanpihao" data-index="'+index+'" placeholder="生产批号">';
-                                     }
-                                 },
-                                 {field: '', title: '保质期'  , formatter: function (value,row,index) {
-                                         return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="'+index+'" placeholder="保质期">';
-                                     }
-                                 },*/
-                                { field: 'costPrice', title: '成本价'},
-                                { field: 'retailPrice', title: '零售价'},
-                                { field: 'integralPrice', title: '积分价'},
-                                { field: 'num', title: '备货量'},
-                                { field: 'canUseNum', title: '库存',formatter:function (value) {
-                                        return '<span class="inventory" >'+value+'</span>';
-                                    }},
-                                {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input" placeholder="数量">';
-                                    }
-                                },
-                                { field: '', title: '来源',formatter:function (value, row, index) {
-                                        return '<div>本店</div>'
-                                    }},
-                                {field: '', title: '操作'  , formatter: function (value,row,index) {
-                                        return '<div class="btnSeeHistory" onclick="addConventionalProducts('+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
-                                    }
-                                }
-                            ]
-                        }else if(categoryName === '护理产品'){
-                            column = [
-                                { field: 'code', title: '产品编码'},
-                                /*{field: '', title: '生产批号'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input-shengchanpihao" data-index="'+index+'" placeholder="生产批号">';
-                                    }
-                                },
-                                {field: '', title: '保质期'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="'+index+'" placeholder="保质期">';
-                                    }
-                                },*/
-                                { field: 'costPrice', title: '成本价'},
-                                { field: 'retailPrice', title: '零售价'},
-                                { field: 'integralPrice', title: '积分价'},
-                                { field: 'num', title: '备货量'},
-                                { field: 'canUseNum', title: '库存',formatter:function (value) {
-                                        return '<span class="inventory" >'+value+'</span>';
-                                    }},
-                                {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input" placeholder="数量">';
-                                    }
-                                },
-                                { field: '', title: '来源',formatter:function (value, row, index) {
-                                        return '<div>本店</div>'
-                                    }},
-                                {field: '', title: '操作'  , formatter: function (value,row,index) {
-                                        return '<div class="btnSeeHistory" onclick="addConventionalProducts('+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
-                                    }
-                                }
-                            ]
-                        }else if(categoryName === '其它商品'){
-                            column = [
-                                { field: 'code', title: '产品编码'},
-                                /* {field: '', title: '型号'  , formatter: function (value,row,index) {
-                                         return '<input type="text" class="in-yj-input-xinghao" data-index="'+index+'" placeholder="型号">';
-                                     }
-                                 },*/
-                                { field: 'costPrice', title: '成本价'},
-                                { field: 'retailPrice', title: '零售价'},
-                                { field: 'integralPrice', title: '积分价'},
-                                { field: 'num', title: '备货量'},
-                                { field: 'canUseNum', title: '库存',formatter:function (value) {
-                                        return '<span class="inventory" >'+value+'</span>';
-                                    }},
-                                {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input" placeholder="数量">';
-                                    }
-                                },
-                                { field: '', title: '来源',formatter:function (value, row, index) {
-                                        return '<div>本店</div>'
-                                    }},
-                                {field: '', title: '操作'  , formatter: function (value,row,index) {
-                                        return '<div class="btnSeeHistory" onclick="addConventionalProducts('+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
-                                    }
-                                }
-                            ]
-                        }else if(categoryName === '特殊商品'){
-                            column = [
-                                { field: 'code', title: '产品编码'},
-                                /* {field: '', title: '型号'  , formatter: function (value,row,index) {
-                                         return '<input type="text" class="in-yj-input-xinghao" data-index="'+index+'" placeholder="型号">';
-                                     }
-                                 },*/
-                                { field: 'costPrice', title: '成本价'},
-                                { field: 'retailPrice', title: '零售价'},
-                                { field: 'integralPrice', title: '积分价'},
-                                { field: 'num', title: '备货量'},
-                                { field: 'canUseNum', title: '库存',formatter:function (value) {
-                                        return '<span class="inventory" >'+value+'</span>';
-                                    }},
-                                {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input" placeholder="数量">';
-                                    }
-                                },
-                                { field: '', title: '来源',formatter:function (value, row, index) {
-                                        return '<div>本店</div>'
-                                    }},
-                                {field: '', title: '操作'  , formatter: function (value,row,index) {
-                                        return '<div class="btnSeeHistory" onclick="addConventionalProducts('+row.id+','+row.code+','+row.retailPrice+','+index+')">添加</div>';
-                                    }
-                                }
+                                }}
                             ]
                         }
                         $("#skuTable").bootstrapTable('destroy');
@@ -2642,7 +2587,7 @@
             })
         }
         /**添加常规商品*/
-        function addCGPro() {
+        function addCGPro(type) {
             var index = layer.open({
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
@@ -2661,18 +2606,32 @@
                     layer.close(index)
                 },
                 success: function (layero) {
-                    getListClass();                 //类目
-                    getListBrand();                 //品牌
+                    if(type==0){
+                        $('.addRoutineCommodityPop h3').html("选择常规商品");
+                    }else if(type==1){
+                        $('.addRoutineCommodityPop h3').html("选择积分商品");
+                    }
+                    getListClass(type);                 //类目
+                    getListBrand(type);                 //品牌
                     setTimeout(function () {
-                        getSPU();                       //获取类目和品牌下的SPU
+                        getSPU(type);                       //获取类目和品牌下的SPU
                     },500)
 
                 },
             });
         }
         /**添加常规商品到订单*/
-        function addConventionalProducts(id,code,price,i){
-            var markup = "changgui";
+        function addConventionalProducts(type,spuid,skuid,code,price,i){
+            if(!cusId){
+                layer.msg("请完善用户信息");
+                return;
+            }
+            var markup = "";
+            if(type==0){
+                markup = "changgui";
+            }else if(type == 1){
+                markup = "jifen";
+            }
             var inventory = $("#skuTable tr[data-index='"+i+"'] .inventory").html();//库存
             var quantity = $("#skuTable tr[data-index='"+i+"'] input").val(); //数量
             if(quantity == 0){
@@ -2682,31 +2641,38 @@
                 layer.msg("没有这么多库存");
                 return;
             }
-            if(quakooUtils.isBlack(orderFormData[markup+id])){
-                orderFormData[markup+id] = {};
-                orderFormData[markup+id].type = 1;
-                orderFormData[markup+id].id = id;
-                orderFormData[markup+id].productName = code;
-                orderFormData[markup+id].number = quantity;
-                orderFormData[markup+id].price = price;
-                orderFormData[markup+id].discount = 10.0;
-            }else if(quakooUtils.isNotBlack(orderFormData[markup+id])){
-                orderFormData[markup+id].number = parseInt(quantity)+parseInt(orderFormData[markup+id].number);
+            if(quakooUtils.isBlack(orderFormData[markup+skuid])){
+                orderFormData[markup+skuid] = {};
+                if(type == 0){
+                    orderFormData[markup+skuid].type = 1;
+                    orderFormData[markup+skuid].discount = 10.0;//积分商品暂时没有折扣
+                }else if(type == 1){
+                    orderFormData[markup+skuid].type = 2;
+                }
+                orderFormData[markup+skuid].spuid = spuid;
+                orderFormData[markup+skuid].skuid = skuid;
+                orderFormData[markup+skuid].productName = code;
+                orderFormData[markup+skuid].number = quantity;
+                orderFormData[markup+skuid].price = price;
+            }else if(quakooUtils.isNotBlack(orderFormData[markup+skuid])){
+                orderFormData[markup+skuid].number = parseInt(quantity)+parseInt(orderFormData[markup+skuid].number);
             }
+            layer.msg(orderFormData[markup+skuid].productName+"已添加"+orderFormData[markup+skuid].number,{icon:1});
             renderOrderForm();
         }
         /**渲染订单表格数据*/
         function renderOrderForm(){
+/*
             var totalPrice ={};
             totalPrice.originalTotal = 0;
             totalPrice.addPrice = 0;
             totalPrice.subtractPrice = 0;
             for(var i in orderFormData){
                 if(orderFormData[i].type == 3){
-                    totalPrice.addPrice+= orderFormData[i].money*1;
+                    totalPrice.addPrice += orderFormData[i].money*1;
                 }
                 if(orderFormData[i].type == 4){
-                    totalPrice.subtractPrice+= orderFormData[i].money*1;
+                    totalPrice.subtractPrice += orderFormData[i].money*1;
                 }
             }
             for(var i in orderFormData){
@@ -2714,26 +2680,61 @@
                     orderFormData[i].subtotal = orderFormData[i].number*orderFormData[i].price*orderFormData[i].discount/10;
                     totalPrice.originalTotal += orderFormData[i].subtotal*1;
                     totalPrice.discountedPrice = totalPrice.originalTotal*0.68.toFixed(2);
-                    if(totalPrice.addPrice){
-                        totalPrice.practicalPrice = totalPrice.discountedPrice*1+totalPrice.addPrice*1;
-                    }
-                    if(totalPrice.subtractPrice){
-                        totalPrice.practicalPrice = totalPrice.discountedPrice-totalPrice.subtractPrice;
-                    }
                 }
             }
+            totalPrice.practicalPrice = totalPrice.discountedPrice*1;
+            if(totalPrice.addPrice){
+                totalPrice.practicalPrice = totalPrice.discountedPrice*1+totalPrice.addPrice*1;
+            }
+            if(totalPrice.subtractPrice){
+                totalPrice.practicalPrice = totalPrice.discountedPrice-totalPrice.subtractPrice;
+            }
+*/
+            /*获取金额*/
+            if(quakooUtils.isNotBlack(orderFormData)){
+                getOrderAmount();
+            }
             console.log("orderFormData",orderFormData);
-            var data = {list: orderFormData,subtotal:totalPrice};
+            var data = {list: orderFormData};
             var html = template("orderFormList", data);
             $("#orderForm").html(html);
 
-
+        }
+        /**获取订单金额*/
+        function getOrderAmount() {
+            var params = {};
+            params.skuids=[];
+            params.surcharges=[];
+            for(var i in orderFormData){
+                if(orderFormData[i].type == 1||orderFormData[i].type == 2){
+                    var obj ={};
+                    obj.skuid = orderFormData[i].skuid;
+                    obj.spuid = orderFormData[i].spuid;
+                    obj.num = orderFormData[i].number;
+                    params.skuids.push(obj);
+                    params.skuids=JSON.stringify(params.skuids);
+                }else if(orderFormData[i].type == 3){//附加费用
+                    var obj = {};
+                    obj.name = orderFormData[i].name;
+                    obj.price = orderFormData[i].money;
+                    params.surcharges.push(obj);
+                    params.surcharges = JSON.stringify(params.surcharges)
+                }else if(orderFormData[i].type == 4){//促销方式
+                    params.couponid = orderFormData[i].id;
+                }
+            }
+            console.log("金额参数：",params);
+            quakooData.ajaxGetData(config.getUrl_order_countPrice(),params,function (ret) {
+                console.log("金额：",ret);
+                return;
+            })
         }
         /**删除订单表格数据*/
-        function delOrderItem(index) {
+        function delOrderItem(index){
             delete orderFormData[index];
             renderOrderForm();
         }
+
         /***************************************************订单信息结束*****************************************************/
 
 
@@ -2899,16 +2900,6 @@
             popupBox: $('.historyRecord'),
             area: ['720px'],
             btn: ['', '关闭窗口'],
-            fn: function (layero) {
-                layero.find('.layui-layer-btn0').hide();
-            }
-        }, historyRecord);
-        $('.addIntegralCommodity').bind('click', {
-            title: false,
-            popupBox: $('.branchCommodity'),
-            area: ['720px'],
-            btn: ['', '关闭窗口'],
-            move:$('h3'),
             fn: function (layero) {
                 layero.find('.layui-layer-btn0').hide();
             }

@@ -814,7 +814,7 @@ div .head{
 .content-view-enter-tan .rightBox .body{
   overflow: scroll;
 }
-.content-view-enter-tan .rightBox .person{
+.content-view-enter-tan .rightBox .person,.leftSetGoods .person{
   display: block;
   float: right;
   line-height: 43px;
@@ -822,13 +822,14 @@ div .head{
   font-size: 12px;
   font-weight: normal;
 }
-.content-view-enter-tan .rightBox .selectBox{
+.content-view-enter-tan .rightBox .selectBox,.leftSetGoods .selectBox{
   float: right;
   margin: 8px 0 6px 6px;
   color: #393953;
   font-weight: 600;
   font-size: 12px;
 }
+
 .content-view-enter-tan .rightBox .formBox{
   line-height: 18px;
   float: right;
