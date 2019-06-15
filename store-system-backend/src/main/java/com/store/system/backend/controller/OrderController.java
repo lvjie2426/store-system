@@ -125,14 +125,14 @@ public class OrderController extends BaseController {
     public ModelAndView countPrice(HttpServletRequest request, HttpServletResponse response,
                                   Order order,
                                    @RequestParam( value = "skuidsList")   String skuidsList,
-                                   @RequestParam( value = "surcharges",defaultValue = "")   String surcharges
+                                   @RequestParam( value = "surchargesJson",defaultValue = "")   String surchargesJson
                                  ) throws Exception {
 
         try {
             List<Surcharge> billItems = Lists.newArrayList();
             List<OrderSku> orderskuids = Lists.newArrayList();
-            if(StringUtils.isNotBlank(surcharges)) {
-                billItems = JsonUtils.fromJson(surcharges, new TypeReference<List<Surcharge>>() {});
+            if(StringUtils.isNotBlank(surchargesJson)) {
+                billItems = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
                 order.setSurcharges(billItems);
             }if(StringUtils.isNotBlank(skuidsList)) {
                 orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});

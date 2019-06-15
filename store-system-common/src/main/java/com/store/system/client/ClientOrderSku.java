@@ -33,7 +33,11 @@ public class ClientOrderSku implements Serializable{
 
     private double price;//单价
 
-    private double subtotal;//小计 price*num*coupon折扣
+    private double discount;//折扣
+
+    private double subtotal;//小计 price*num*spu折扣
+
+    private double lastSubtotal;//小计 price*num*spu折扣*usergrade折扣
 
     private int qualityType;//质保类型
 
