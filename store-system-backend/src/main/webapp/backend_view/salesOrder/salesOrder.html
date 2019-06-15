@@ -945,11 +945,6 @@
                     </div>
                     <div class="optionBox">
                         <ul class="optionUL">
-                            <li value="01">1</li>
-                            <li value="02">2</li>
-                            <li value="03">3</li>
-                            <li value="04">4</li>
-                            <li value="05">5</li>
                         </ul>
                     </div>
                 </div>
@@ -1607,7 +1602,11 @@
         }
         /**接口——获取门店下的顾客手机号*/
         function getShopPhone(){
-            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:0},function (ret) {
+            // alert(subid);
+            quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:0},function (ret) {
+                // alert(2)
+                console.log("门店下顾客的手机号",ret);
+                return
                 var data = {list:ret.rows};
                 var html = template("shopPhoneData",data);
                 document.getElementById("shopPhoneList").innerHTML = html;
@@ -1620,6 +1619,8 @@
         /**接口——根据手机号查询用户信息*/
         function getUserByPhone(){
             quakooData.ajaxGetData(config.getUrl_user_getUserByPhone(),{phone:cusPhone},function (ret) {
+                alert(1)
+                console.log(ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
                         //渲染顾客信息
@@ -2703,7 +2704,8 @@
         /**获取订单金额*/
         function getOrderAmount() {
             var params = {};
-            params.skuids=[];
+            params.uid = cusId;
+            params.skuidsList=[];
             params.surcharges=[];
             for(var i in orderFormData){
                 if(orderFormData[i].type == 1||orderFormData[i].type == 2){
@@ -2711,8 +2713,8 @@
                     obj.skuid = orderFormData[i].skuid;
                     obj.spuid = orderFormData[i].spuid;
                     obj.num = orderFormData[i].number;
-                    params.skuids.push(obj);
-                    params.skuids=JSON.stringify(params.skuids);
+                    params.skuidsList.push(obj);
+                    params.skuidsList=JSON.stringify(params.skuidsList);
                 }else if(orderFormData[i].type == 3){//附加费用
                     var obj = {};
                     obj.name = orderFormData[i].name;
@@ -2742,8 +2744,8 @@
 
         //弹窗开始
 /*
-        $('.noRegisterYZ').bind('click', {
-            title: '<h3 class="set-title">验证会员</h3>',
+            title: '<h3 class="set-title">
+        $('.noRegisterYZ').bind('click', {验证会员</h3>',
             popupBox: $('.verify'),
             area: ['240px'],
             btn: ['验证', '取消']
