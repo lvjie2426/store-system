@@ -25,6 +25,9 @@ input{
     outline: none;
     font-family: PingFangSC-Semibold;
 }
+.nav-header .selectBox{
+    width: 160px;
+}
 .selectBox {
     position: relative;
     cursor: pointer;
@@ -594,6 +597,12 @@ input::-webkit-inner-spin-button{
     height: 44px;
     background-color: rgba(255, 255, 255, 1);
     box-shadow: 0px -1px 0px 0px rgba(236, 236, 244, 1);
+}
+.layui-layer-default .layui-layer-title{
+    width: 100%;
+    padding: 0 16px!important;
+    color: #393953;
+    font-weight: bold;
 }
 .layui-layer .layui-layer-title{
     width: 100%;

@@ -30,25 +30,25 @@
 
 </head>
 <body class="body-bg" id="body">
-<div class="header clear">
+<div class="header">
     <ul class="tab-ul clear">
-        <li class="active">售后处理</li>
-        <li>售后记录</li>
+        <li class="active" onclick="choose(1)">售后处理</li>
+        <li onclick="choose(2)">售后记录</li>
     </ul>
     <div class="right-info">
-        <div class="selectBox" id="selectBox">
+        <div class="selectBox" id="yj-name-id">
             <div class="select-box-header">
                 <span class="text">顾客姓名</span><i class="iconfont icon-ico_arrow_down"></i>
             </div>
             <div class="optionBox">
                 <ul class="optionUL">
-                    <li value="01">1</li>
-                    <li value="02">2</li>
-                    <li value="03">3</li>
+                    <li value="1">顾客姓名</li>
+                    <li value="2">顾客id</li>
                 </ul>
             </div>
         </div>
-        <input type="search" class="search-box" placeholder="搜索顾客姓名">
+        <input type="search" class="search-box" placeholder="搜索顾客姓名" id="yj-value">
+        <div class="btn btn-info" style="margin-left: 10px;" onclick="getData()">搜索</div>
     </div>
 </div>
 <div class="content-main">
@@ -495,12 +495,94 @@
 <script src="../resource/js/lib/quakoo/project.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="../resource/js/plugins/layer/layer.js"></script>
+
+
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+
 <script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/yanjing/daterange.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
 <script src="../resource/js/mobiscroll.2.13.2.js"></script>
 
 <script>
+    var subid = quakooUser.getUserInfo().psid;//企业/公司id
+    var shopId = quakooDb.getItem('sel_ShopId');//门店id
+    var selectType = 1;
 
+    selectTag($('#yj-name-id'),function (ret) {
+        selectType = ret.value;
+    })
+    //type  1售后处理     2售后记录
+    function choose(type) {
+        if(type==1){
+            getData()
+        }else{
+
+        }
+    }
+    //售后处理
+    function getData() {
+        if(quakooUtils.isBlack($('#yj-value').val())){
+            $(".no-order").show();
+            $(".content-inner").hide();
+            return ;
+        }
+        $(".no-order").hide();
+        $(".content-inner").show();
+        $("#as-table").bootstrapTable('destroy');
+        $("#as-table").bootstrapTable({
+            url: config.getUrl_order_getAllOrder(),
+            classes: "table",
+            pagination: true,        //是否显示分页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 6,
+            pageList: [6, 12, 18],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            // paginationLoop:false,        //分页是否可以循环
+            queryParams: function (param) {
+                param.subid = shopId;
+                param.token = quakooUser.getUserInfo().token;
+                if(selectType==1){
+                    param.name = $('#yj-value').val();
+                }else{
+                    param.uid = $('#yj-value').val();
+                }
+                return param
+            },
+            columns:[
+                {field: "onum", title: "订单号", align:"left",valign:"middle"},
+                {field: "otime", title: "销售时间", align:"left",valign:"middle"},
+                {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
+                {field: "phoneNum", title: "联系方式", align:"left",valign:"middle"},
+                {field: "closingPrice", title: "成交金额", align:"left",valign:"middle"},
+                {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
+                {field: "afterNum", title: "售后次数", align:"center",valign:"middle"},
+                {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary" onclick="goAfter()">进行售后</button>';
+                    }
+                }
+
+            ]
+
+        });
+    }
+    //售后记录
+    function getDataLog() {
+
+    }
 
     var data3 = [
         {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
@@ -528,36 +610,7 @@
         {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-black">已作废</div>',afterNum:"10次"},
         {oNum:"123456a45c",lastTime:"2018-06-17 12:31",customerName:"邓裕",phoneNum:"13781728173",afterWhy:"佩戴不适",salesMan:'李燕',oStatus:'<div class="btn-status btn-grays">已完成</div>',afterNum:"10次"}
     ];
-    $("#as-table").bootstrapTable({
-        data:data3,                 //被加载的数据。
-        classes:"table",
-        pagination:true,            //是否显示分页
-        pageNumber:1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign:"center",
-        clickToSelect:true,
-        columns:[
-            {field: "onum", title: "订单号", align:"left",valign:"middle"},
-            {field: "otime", title: "销售时间", align:"left",valign:"middle"},
-            {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
-            {field: "phoneNum", title: "联系方式", align:"left",valign:"middle"},
-            {field: "closingPrice", title: "成交金额", align:"left",valign:"middle"},
-            {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
-            {field: "afterNum", title: "售后次数", align:"center",valign:"middle"},
-            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary" onclick="goAfter()">进行售后</button>';
-                }
-            }
 
-        ]
-
-    });
     $("#record-table").bootstrapTable({
         data:data1,                 //被加载的数据。
         classes:"table",
@@ -644,14 +697,14 @@
     });
 
     /**
-     * 主页tab切换
+     * 主页tab切换 oncl
      * */
-    $(".tab-ul li").click(function(){
+  /*  $(".tab-ul li").click(function(){
         $(this).addClass('active').siblings().removeClass('active');
         $(".tab-item").hide().eq($(this).index()).show();
         showTable();//显示表格
         //$(".right-info").hide().eq($(this).index()).show();
-    });
+    });*/
     /**
      * 弹窗tab切换
      * */

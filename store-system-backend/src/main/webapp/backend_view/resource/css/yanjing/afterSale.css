@@ -1346,4 +1346,8 @@
 /*更换弹窗结束*/
 /*弹窗样式结束*/
 
+.right-info .selectBox{
+    margin: 11px 10px 0 0;
+    float: left;
+}
 

@@ -820,7 +820,8 @@
     </script>
 
     <script>
-        var subid = quakooUser.getUserInfo().psid;//企业id
+        var subid = quakooUser.getUserInfo().psid;//企业/公司id
+        var shopId = quakooDb.getItem('sel_ShopId');//门店id
         var cid = '';//类目id
         var pid = '';//供应商ID
         var bid = '';//品牌ID
@@ -878,7 +879,7 @@
                         if(sid){param.sid = sid;}
                         if(name){param.name = name;}
                         if(saleStatus){param.saleStatus = saleStatus;}
-                        param.subid = quakooUser.getUserInfo().psid;
+                        param.subid = subid;
                         param.token = quakooUser.getUserInfo().token;
                         return param
                     }

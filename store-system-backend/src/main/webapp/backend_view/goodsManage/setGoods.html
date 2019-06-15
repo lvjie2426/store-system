@@ -35,8 +35,8 @@
 <body>
 <div class="yj-header">
     <ul class="tab-ul">
-        <li onclick="chooseGoodsType(this,1)" class="active">发起的调货</li>
-        <li onclick="chooseGoodsType(this,2)">调货请求</li>
+        <li onclick="choose(this,1)" class="active">发起的调货</li>
+        <li onclick="choose(this,2)">调货请求</li>
     </ul>
     <div class="yj-header-right">
         <button class="btn btn-primary" onclick="addGoods()">新增调货</button>
@@ -58,579 +58,35 @@
     <table id="yj-table" data-toggle="table" class="table table-border"></table>
 </div>
 
-<div class="content-view content-view-outbound">
-    <div class="outbound-left">
-        <div class="top">
-            <span class="title layui-layer-title">添加商品</span>
-            <div class="selectBox" id="selectShop">
-                <div class="select-box-header">
-                    <span class="text">门店</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">门店1</li>
-                        <li value="02">门店2</li>
-                        <li value="03">门店3</li>
-                        <li value="04">门店4</li>
-                        <li value="05">门店5</li>
-                    </ul>
-                </div>
-            </div>
-            <span class="select-title">选择门店</span>
-        </div>
-        <ul class="tab-ul">
-            <li class="active">镜片</li>
-            <li>镜架</li>
-            <li>隐形眼镜</li>
-            <li>太阳镜</li>
-            <li>护理产品</li>
-            <li>其它商品</li>
-        </ul>
-        <ul class="tab-content-list">
-            <!--镜片1-->
-            <li class="tab-content-item active">
-                <div class="outbound-left-body">
-                    <div class="outbound-body-option">
-                        <div class="selectBox" id="pp-select">
-                            <div class="select-box-header">
-                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">品牌A</li>
-                                    <li value="02">品牌B</li>
-                                    <li value="03">品牌32</li>
-                                    <li value="04">品牌4</li>
-                                    <li value="05">品牌5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="xl-select">
-                            <div class="select-box-header">
-                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">系列A</li>
-                                    <li value="02">系列B</li>
-                                    <li value="03">系列C</li>
-                                    <li value="04">系列D</li>
-                                    <li value="05">系列E</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="outbound-body-tag">
-                        <div class="tag-list">A品牌A系列</div>
-                        <div class="tag-list">B品牌$系列</div>
-                        <div class="tag-list">F品牌0系列</div>
-                    </div>
-                    <div class="outbound-body-top-hidden">
-                        <span class="text-default">请先选择门店、品牌和系列</span>
-                        <div class="button">添加至调货单</div>
-                    </div>
-                    <div class="outbound-body-top-show clearfix">
-                        <div class="text-end clearfix">
-                            <span>A品牌A系列</span>
-                            <ul class="tab-lr clearfix">
-                                <li class="tab-lr-item active">右</li>
-                                <li class="tab-lr-item">左</li>
-                            </ul>
-                        </div>
-                        <div class="button">添加至调货单</div>
-                    </div>
-                    <table class="layui-hide yj-layui-table" id="outboundTable" lay-filter="outboundEvent"></table>
-                </div>
-            </li>
-            <!--镜架2-->
-            <li class="tab-content-item ">
-                <div class="outbound-left-body">
-                    <div class="outbound-body-option">
-                        <div class="selectBox" id="pp-select2">
-                            <div class="select-box-header">
-                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">品牌A</li>
-                                    <li value="02">品牌B</li>
-                                    <li value="03">品牌32</li>
-                                    <li value="04">品牌4</li>
-                                    <li value="05">品牌5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="xl-select2">
-                            <div class="select-box-header">
-                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">系列A</li>
-                                    <li value="02">系列B</li>
-                                    <li value="03">系列C</li>
-                                    <li value="04">系列D</li>
-                                    <li value="05">系列E</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="cz-select2">
-                            <div class="select-box-header">
-                                <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">材质A</li>
-                                    <li value="02">材质B</li>
-                                    <li value="03">材质C</li>
-                                    <li value="04">材质D</li>
-                                    <li value="05">材质E</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="outbound-body-tag">
-                        <div class="tag-list">A品牌A系列</div>
-                        <div class="tag-list">B品牌$系列</div>
-                        <div class="tag-list">F品牌0系列</div>
-                    </div>
-                    <div class="outbound-body-content">
-                        <div class="selectBox" id="xh-select2">
-                            <div class="select-box-header">
-                                <span class="text">型号</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">型号A</li>
-                                    <li value="02">型号B</li>
-                                    <li value="03">型号32</li>
-                                    <li value="04">型号4</li>
-                                    <li value="05">型号5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="sh-select2">
-                            <div class="select-box-header">
-                                <span class="text">色号</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">色号A</li>
-                                    <li value="02">色号B</li>
-                                    <li value="03">色号C</li>
-                                    <li value="04">色号D</li>
-                                    <li value="05">色号E</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <input type="number" placeholder="数量">
-                    </div>
-                    <div class="outbound-body-add">
-                        添加至调货单
-                    </div>
-                </div>
-            </li>
-            <!--隐形眼镜3-->
-            <li class="tab-content-item">
-                <div class="outbound-left-body">
-                    <div class="outbound-body-option">
-                        <div class="selectBox" id="pp-select3">
-                            <div class="select-box-header">
-                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">品牌A</li>
-                                    <li value="02">品牌B</li>
-                                    <li value="03">品牌32</li>
-                                    <li value="04">品牌4</li>
-                                    <li value="05">品牌5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="xl-select3">
-                            <div class="select-box-header">
-                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">系列A</li>
-                                    <li value="02">系列B</li>
-                                    <li value="03">系列C</li>
-                                    <li value="04">系列D</li>
-                                    <li value="05">系列E</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="outbound-body-tag">
-                        <div class="tag-list">A品牌A系列</div>
-                        <div class="tag-list">B品牌$系列</div>
-                        <div class="tag-list">F品牌0系列</div>
-                    </div>
-                    <div class="outbound-body-content">
-                        <div class="selectBox" id="ballNum-select3">
-                            <div class="select-box-header">
-                                <span class="text">球镜度数</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">-0.25</li>
-                                    <li value="02">-0.25</li>
-                                    <li value="03">-0.25</li>
-                                    <li value="04">-0.25</li>
-                                    <li value="05">-0.25</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="proNum-select3">
-                            <div class="select-box-header">
-                                <span class="text">生产批号</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">A3548265</li>
-                                    <li value="02">A3548265</li>
-                                    <li value="03">A3548265</li>
-                                    <li value="04">A3548265</li>
-                                    <li value="05">A3548265</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <input type="number" placeholder="数量">
-                    </div>
-                    <div class="outbound-body-add">
-                        添加至调货单
-                    </div>
-                </div>
-            </li>
-            <!--太阳镜4-->
-            <li class="tab-content-item">
-                <div class="outbound-left-body">
-                    <div class="outbound-body-option">
-                        <div class="selectBox" id="pp-select4">
-                            <div class="select-box-header">
-                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">品牌A</li>
-                                    <li value="02">品牌B</li>
-                                    <li value="03">品牌32</li>
-                                    <li value="04">品牌4</li>
-                                    <li value="05">品牌5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="xl-select4">
-                            <div class="select-box-header">
-                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">系列A</li>
-                                    <li value="02">系列B</li>
-                                    <li value="03">系列C</li>
-                                    <li value="04">系列D</li>
-                                    <li value="05">系列E</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="cz-select4">
-                            <div class="select-box-header">
-                                <span class="text">材质</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">材质A</li>
-                                    <li value="02">材质B</li>
-                                    <li value="03">材质C</li>
-                                    <li value="04">材质D</li>
-                                    <li value="05">材质E</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="outbound-body-tag">
-                        <div class="tag-list">A品牌A系列</div>
-                        <div class="tag-list">B品牌$系列</div>
-                        <div class="tag-list">F品牌0系列</div>
-                    </div>
-                    <div class="outbound-body-content">
-                        <div class="selectBox" id="xh-select4">
-                            <div class="select-box-header">
-                                <span class="text">型号</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">型号A</li>
-                                    <li value="02">型号B</li>
-                                    <li value="03">型号32</li>
-                                    <li value="04">型号4</li>
-                                    <li value="05">型号5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="sh-select4">
-                            <div class="select-box-header">
-                                <span class="text">色号</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">色号A</li>
-                                    <li value="02">色号B</li>
-                                    <li value="03">色号C</li>
-                                    <li value="04">色号D</li>
-                                    <li value="05">色号E</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <input type="number" placeholder="数量">
-                    </div>
-                    <div class="outbound-body-add">
-                        添加至调货单
-                    </div>
-                </div>
-            </li>
-            <!--护理产品5-->
-            <li class="tab-content-item">
-                <div class="outbound-left-body">
-                    <div class="outbound-body-option">
-                        <div class="selectBox" id="pp-select5">
-                            <div class="select-box-header">
-                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">品牌A</li>
-                                    <li value="02">品牌B</li>
-                                    <li value="03">品牌32</li>
-                                    <li value="04">品牌4</li>
-                                    <li value="05">品牌5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="xl-select5">
-                            <div class="select-box-header">
-                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">系列A</li>
-                                    <li value="02">系列B</li>
-                                    <li value="03">系列C</li>
-                                    <li value="04">系列D</li>
-                                    <li value="05">系列E</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="outbound-body-tag">
-                        <div class="tag-list">A品牌A系列</div>
-                        <div class="tag-list">B品牌$系列</div>
-                        <div class="tag-list">F品牌0系列</div>
-                    </div>
-                    <div class="outbound-body-content">
-                        <div class="selectBox" id="proNum-select5">
-                            <div class="select-box-header">
-                                <span class="text">生产批号</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">A63548112</li>
-                                    <li value="02">A63548112</li>
-                                    <li value="03">A63548112</li>
-                                    <li value="04">A63548112</li>
-                                    <li value="05">A63548112</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <input type="number" placeholder="数量">
-                    </div>
-                    <div class="outbound-body-add">
-                        添加至调货单
-                    </div>
-                </div>
-            </li>
-            <!--其他商品6-->
-            <li class="tab-content-item">
-                <div class="outbound-left-body">
-                    <div class="outbound-body-option">
-                        <div class="selectBox" id="pp-select6">
-                            <div class="select-box-header">
-                                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">品牌A</li>
-                                    <li value="02">品牌B</li>
-                                    <li value="03">品牌32</li>
-                                    <li value="04">品牌4</li>
-                                    <li value="05">品牌5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="xl-select6">
-                            <div class="select-box-header">
-                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">系列A</li>
-                                    <li value="02">系列B</li>
-                                    <li value="03">系列C</li>
-                                    <li value="04">系列D</li>
-                                    <li value="05">系列E</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="outbound-body-tag">
-                        <div class="tag-list">A品牌A系列</div>
-                        <div class="tag-list">B品牌$系列</div>
-                        <div class="tag-list">F品牌0系列</div>
-                    </div>
-                    <div class="outbound-body-content">
-                        <div class="selectBox" id="xh-select6">
-                            <div class="select-box-header">
-                                <span class="text">型号</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">A6521124211</li>
-                                    <li value="02">A6521124211</li>
-                                    <li value="03">A6521124211</li>
-                                    <li value="04">A6521124211</li>
-                                    <li value="05">A6521124211</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="gd-select6">
-                            <div class="select-box-header">
-                                <span class="text">光度</span> <i class="iconfont icon-ico_arrow_down"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li value="01">8</li>
-                                    <li value="02">8</li>
-                                    <li value="03">8</li>
-                                    <li value="04">8</li>
-                                    <li value="05">8</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <input type="number" placeholder="数量">
-                    </div>
-                    <div class="outbound-body-add">
-                        添加至调货单
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div class="outbound-foot">
-            <button class="btn btn-yj">关闭窗口</button>
-        </div>
-    </div>
-    <div class="outbound-right">
-        <div class="outbound-right-head">
-            <div class="layui-layer-title">调货单</div>
-            <div class="outbound-right-head-right">
-                <span>发起人</span>
-                <div class="selectBox" id="selectBox">
-                    <div class="select-box-header">
-                        <span class="text">李小东</span> <i class="iconfont icon-ico_arrow_down" id=""></i>
-                    </div>
-                    <div class="optionBox">
-                        <ul class="optionUL">
-                            <li value="01">1</li>
-                            <li value="02">2</li>
-                            <li value="03">3</li>
-                            <li value="04">4</li>
-                            <li value="05">5</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <ul class="right-content">
-            <li class="right-content-item">
-                <div class="right-item-title">镜片</div>
-                <table class="" id="rightTable1" lay-filter="outboundEvent"></table>
-            </li>
-            <li class="right-content-item">
-                <div class="right-item-title">镜架</div>
-                <table class="" id="rightTable2" lay-filter="outboundEvent"></table>
-            </li>
-            <li class="right-content-item">
-                <div class="right-item-title">隐形眼镜</div>
-                <table class="" id="rightTable3" lay-filter="outboundEvent"></table>
-            </li>
-        </ul>
-        <div class="outbound-foot">
-            <button class="btn btn-yj-default32 active">确认调货</button>
-        </div>
-    </div>
+<div class="content-view content-view-outbound content-view-enter" id="addDom">
+
 </div>
+
+
+
 <!--查看调货单开始-->
-<div class="content-cargo">
-    <div class="cargo-header clearfix">
-        <div class="cargo-title">调货单</div>
-        <div class="cargo-person">
-            <span>发起人:</span>
-            <span>李晓东</span>
-        </div>
-        <div class="cargo-shop">
-            <span>被调店铺:</span>
-            <span id="carg-shop">江苏无锡世贸中心店</span>
-        </div>
-    </div>
-    <div class="cargo-content">
-        <ul class="cargo-content-list">
-            <li class="cargo-content-item">
-                <div class="item-title">镜片</div>
-                <table class=" cargo-table" id="cargo-table1"></table>
-            </li>
-            <li class="cargo-content-item">
-                <div class="item-title">镜架</div>
-                <table class=" cargo-table" id="cargo-table2"></table>
-            </li>
-            <li class="cargo-content-item">
-                <div class="item-title">隐形眼镜</div>
-                <table class=" cargo-table" id="cargo-table3"></table>
-            </li>
-            <li class="cargo-content-item">
-                <div class="item-title">护理产品</div>
-                <table class=" cargo-table" id="cargo-table4"></table>
-            </li>
-            <li class="cargo-content-item">
-                <div class="item-title">其他商品</div>
-                <table class=" cargo-table" id="cargo-table5"></table>
-            </li>
-        </ul>
+<div class="content-cargo-view content-view">
+    <div class="cargo-content" id="diaohuoDom">
+
     </div>
     <div class="log-false">
-        <div class="selectBox" id="selectLog">
+        <div class="selectBox" id="yj-log">
             <div class="select-box-header">
                 <span class="text">物流服务商</span> <i class="iconfont icon-ico_arrow_down" id=""></i>
             </div>
             <div class="optionBox">
                 <ul class="optionUL">
-                    <li value="01">1</li>
-                    <li value="02">2</li>
-                    <li value="03">3</li>
-                    <li value="04">4</li>
-                    <li value="05">5</li>
+                    <li value="圆通">圆通</li>
+                    <li value="申通">申通</li>
+                    <li value="顺丰">顺丰</li>
+                    <li value="邮政">邮政</li>
                 </ul>
             </div>
         </div>
-        <div class="log-num">物流单号</div>
+        <input type="number" class="log-num" placeholder="物流单号" />
     </div>
     <div class="log-true">
         顺丰: 2397186457839
-    </div>
-    <div class="cargo-bottom">
-        <div class="btn-close-win" onclick="layer.closeAll()">关闭窗口</div>
-        <div class="btn-delete-cargo" onclick="deleteCarge()">删除调货</div>
     </div>
 </div>
 <!--查看调货单结束-->
@@ -706,7 +162,7 @@
     <li class="item">
         <div class="head">
             <span class="mainCont-head-left"><%=list[i].time%></span>
-            <span>发起人:<em><%=list[i].outUserName%></em></span>
+            <span>发起人:<em><%=list[i].inUserName%></em></span>
         </div>
         <div class="body">
             <div class="top">
@@ -745,11 +201,16 @@
             <span class="txt">暂无单号</span>
             <%}%>
             <%if(list[i].status==0){%>
-            <button class="btn btn-primary">编辑</button>
+            <button class="btn btn-danger" style="margin-left: 10px;" type="button" onclick="delDiaohuo('<%=list[i].id%>')">删除</button>
+            <button class="btn btn-primary" type="button" onclick="addGoods('<%=list[i].id%>')">编辑</button>
             <%}else if(list[i].status==1){%>
-            <button class="btn btn-danger">等待确认</button>
+                <%if(diaohuotype==1){%>
+                <button class="btn btn-danger" type="button" onclick="lookRepertory('<%=list[i].id%>',false)">等待确认</button>
+                <%}else{%>
+                <button class="btn btn-danger" type="button" onclick="lookRepertory('<%=list[i].id%>',false)">确认调货</button>
+                <%}%>
             <%}else if(list[i].status==2){%>
-            <button class="btn btn-order">查看</button>
+            <button class="btn btn-order" type="button" onclick="lookRepertory('<%=list[i].id%>',true)">查看</button>
             <%}%>
         </div>
     </li>
@@ -761,9 +222,7 @@
             <ul class="tab-ul" id="yj-category">
                 <%for(var i=0;i< categoryData.length;i++){%>
                 <%if(categoryData[i].name!='特殊商品'){%>
-                <li id="category<%=categoryData[i].id%>" onclick="chooseGoodsType('<%=categoryData[i].id%>')">
-                    <%=categoryData[i].name%>
-                </li>
+                <li id="category<%=categoryData[i].id%>" onclick="chooseGoodsType('<%=categoryData[i].id%>')"><%=categoryData[i].name%></li>
                 <%}%>
                 <%}%>
             </ul>
@@ -872,15 +331,81 @@
         </div>
     </div>
 </script>
-
+<script type="text/html" id="outListTmp">
+    <%for(var i in list){%>
+    <%if(list[i].data.length>0){%>
+    <!--<div class="itemDiv">-->
+    <div class="itemDiv _scroll">
+        <p class="name"><%=list[i].name%></p>
+        <div class="box">
+            <div class="thead">
+                <span>产品编码</span>
+                <span>品牌</span>
+                <span>系列</span>
+                <span>商品类型</span>
+                <span>数量</span>
+                <%if(showTool){%>
+                <span class="removeLi">操作</span>
+                <%}%>
+            </div>
+            <ul class="tbody">
+                <%for(var j=0;j< list[i].data.length;j++){%>
+                <li>
+                    <span><%=list[i].data[j].code%></span>
+                    <span><%=list[i].data[j].brandName%></span>
+                    <span><%=list[i].data[j].seriesName%></span>
+                    <%if(list[i].data[j].type==0){%>
+                    <span>常规商品</span>
+                    <%}else{%>
+                    <span>积分商品</span>
+                    <%}%>
+                    <span><%=list[i].data[j].num%></span>
+                    <%if(showTool){%>
+                    <span class="remove" onclick="removeOutLi('<%=i%>','<%=j%>')">移除</span>
+                    <%}%>
+                </li>
+                <%}%>
+            </ul>
+        </div>
+    </div>
+    <%}%>
+    <%}%>
+</script>
 <script>
 
-    var subid = quakooUser.getUserInfo().sid;//企业id
+    var subid = quakooUser.getUserInfo().psid;//企业/公司id
+    var shopId = quakooDb.getItem('sel_ShopId');//门店id
+
+    var diaohuotype = 1;//1发起的调货，  2调货请求
+    var shopData = [];//门店数据
+    var allData = {};//页面请求回来的所有数据
+
+    var categoryData = [];//一级类目数据
+    var brandData = [];//品牌数据
+    var providerData = [];//供应商数据
+    var ballData = [];//球数据
+    var columnData = [];//柱数据
+    var peopleData = [];//员工数据
+    var cid;            //一级类目id
+    var allOutList = {};//全部数据
+    var peopleId;//发起人id
+    var selectSid;//筛选的门店id
+
     var startTime;//筛选时间开始时间
     var endTime;//筛选时间结束时间
 
+    var pid;//添加入库时的供应商id
+    var bid;//添加入库时的品牌id
+    var sid = -1;
+    var type = 0;// 0常规商品，1积分商品
 
-    var peopleData = [];//员工数据
+    var nowGoodData;//查询出来的sku数据
+    var brandName = '';
+    var seriesName = '';
+    var providerName = '';
+    var reqUrl = config.getUrl_inventoryInvokeBill_getCreatePager();
+
+
 
     var selectDate = new dateRange("#select-date");
     selectDate.init()
@@ -890,20 +415,61 @@
         getInData()
     })
 
+    //获取一级类目
+    quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
+        if(ret && ret.success){
+            categoryData = ret.data;
+        }
+    })
+    //获取品牌数据
+    quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
+        if(ret && ret.success){
+            brandData = ret.data;
+        }
+    })
+    //获取属性-球
+    quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:15},function (ret) {
+        if(ret && ret.success){
+            ballData = ret.data.sort(function (a,b) {
+                return b.content-a.content;
+            });
+        }
+    })
+    //获取供应商
+    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
+        if(ret && ret.success){
+            providerData = ret.data;
+        }
+    })
+    //获取属性-柱
+    quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:16},function (ret) {
+        if(ret && ret.success){
+            columnData = ret.data.sort(function (a,b) {
+                return b.content-a.content;
+            });
+        }
+    })
     //获取门店所有顾客-不分页
-    quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {sid: subid, userType: 1}, function (ret) {
+    quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {sid: shopId, userType: 1}, function (ret) {
         if (ret && ret.success) {
             peopleData = ret.data;
         }
     })
-
+    //获取当前企业下门店列表
+    quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:subid},function (ret) {
+        if(ret&&ret.success){
+            if(quakooUtils.isNotBlack(ret.data)){
+                shopData = ret.data;
+            }
+        }
+    });
 
     getInData()
     //获取数据
     function getInData() {
         $("#yj-table").bootstrapTable('destroy');
         $("#yj-table").bootstrapTable({
-            url: config.getUrl_inventoryInvokeBill_getCheckPager(),
+            url: reqUrl,
             classes: "table",
             pagination: true,        //是否显示分页
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
@@ -920,7 +486,11 @@
             // paginationLoop:false,        //分页是否可以循环
             columns: [],
             queryParams: function (param) {
-                param.subid = subid;
+                if(reqUrl==config.getUrl_inventoryInvokeBill_getCreatePager()){
+                    param.createUid = quakooUser.getUserInfo().id;
+                }else{
+                    param.subid = shopId;
+                }
                 param.token = quakooUser.getUserInfo().token;
                 if (startTime) {
                     param.startTime = startTime;
@@ -941,73 +511,67 @@
                             this.data[i].clientItemsNum += this.data[i].clientItems[j].num;
                         }
                         arr.push(this.data[i])
+                        allData[this.data[i].id] = this.data[i]
                     }
                 }
-                var html = template('dataTmp', {list: arr})
+                var html = template('dataTmp', {list: arr,diaohuotype:diaohuotype})
                 $("#showUl").html(html);
             }
         });
     }
 
-    function chooseGoodsType(self, value) {
-        /* goodsType = value;
-         if(goodsType == 1){
-             var Table = new TableInit(openSet);
-             Table.Init();
-         }else{
-             var Table = new TableInit(setApply);
-             Table.Init();
-         }*/
+    //0发起调货   1调货请求
+    function choose(self, value) {
+        diaohuotype = value;
+        if(value == 1){
+            reqUrl = config.getUrl_inventoryInvokeBill_getCreatePager();
+        }else{
+            reqUrl = config.getUrl_inventoryInvokeBill_getCheckPager();
+        }
         getInData()
         $(self).addClass('active').siblings().removeClass('active')
     }
 
     /**
-     * 查看调货单弹窗
-     * */
-    function lookRepertory() {
-        layer.open({
-            type: 1, shade: 0.01, title: null,
-            skin: 'layui-cargo', //样式类名
-            area: ['380px', '560px'],
-            anim: 0,
-            closeBtn: 0, //不显示关闭按钮
-            resize: false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.content-cargo'),
-        });
-
-    }
-
-    /**
-     * 删除调货弹窗
-     * */
-    function deleteCarge() {
-        layer.open({
-            type: 1, shade: 0.01, title: null,
-            skin: 'del-cargo', //样式类名
-            area: ['240px', '130px'],
-            anim: 0,
-            closeBtn: 0, //不显示关闭按钮
-            resize: false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.delete-cargo')
-        })
-    }
-
-    /**
      * 打开新增调货弹窗
      * */
-    function addGoods() {
+    function addGoods(id) {
+        allOutList = {};
+        var outSubName = '门店';
+        var inUserName = '发起人';
+        if(id){
+            inUserName = allData[id].inUserName;
+            outSubName = allData[id].outSubName;
+            selectSid = allData[id].outSubid;
+            peopleId = allData[id].inUid;
+            for(var i=0;i<allData[id].clientItems.length;i++){
+                if(allOutList[allData[id].clientItems[i].cid]){
+                    allOutList[allData[id].clientItems[i].cid].data.push(allData[id].clientItems[i]);
+                }else{
+                    allOutList[allData[id].clientItems[i].cid] = {cid:allData[id].clientItems[i].cid,name:allData[id].clientItems[i].categoryName,data:[allData[id].clientItems[i]]}
+                }
+            }
+        }else{
+            selectSid = '';
+            peopleId = '';
+        }
 
         var html = [];
-        html.push('<div class="leftBox leftBoxTitle"> <div class="head"> <span class="title" style="width: 100%;">添加出库单</span></div></div>');
-        html.push('<div class="rightBox leftBoxTitle"> <div class="head"> <span class="title">出库单</span> <div class="selectBox" id="out-people">');
-        html.push('<div class="select-box-header"><span class="text">出库人</span> <i class="iconfont icon-ico_arrow_down"></i></div><div class="optionBox"><ul class="optionUL">')
+        html.push('<div class="leftBox leftBoxTitle leftSetGoods"> <div class="head"> <span class="title" style="width: auto">添加调货单</span>');
+        html.push('<div class="selectBox" id="out-shop"><div class="select-box-header"><span class="text">'+outSubName+'</span><i class="iconfont icon-ico_arrow_down" id="jt"></i>')
+        html.push('</div><div class="optionBox"><ul class="optionUL">')
+        for (var i = 0; i < shopData.length; i++) {
+            html.push('<li value="' + shopData[i].id + '">' + shopData[i].name + '</li>');
+        }
+        html.push('</ul></div></div><span class="person">选择门店</span>')
+        html.push('</div></div>')
+        html.push('<div class="rightBox leftBoxTitle"> <div class="head"> <span class="title">调货单</span> ');
+        html.push('<div class="selectBox" id="out-people">')
+        html.push('<div class="select-box-header"><span class="text">'+inUserName+'</span> <i class="iconfont icon-ico_arrow_down"></i></div><div class="optionBox"><ul class="optionUL">')
         for (var i = 0; i < peopleData.length; i++) {
             html.push('<li value="' + peopleData[i].id + '">' + peopleData[i].name + '</li>');
         }
-        html.push('</ul></div></div><span class="person">出库人:</span></div></div>')
+        html.push('</ul></div></div><span class="person">发起人:</span></div></div>')
         layer.open({
             type: 1, shade: 0.01, title: html.join(''),
             skin: 'layui-layer-outbound  content-view-enter-tan', //样式类名
@@ -1018,362 +582,434 @@
             resize: false,
             shadeClose: true, //开启遮罩关闭
             content: $('.content-view-outbound'),
-            btn: ['关闭窗口', '创建出库'],
+            btn: ['关闭窗口', '确认调货'],
             success: function (layero, index) {
                 var html = [];
                 html.push('<div class="leftBox"><div class="foot"><a class="layui-layer-btn0">关闭窗口</a></div></div>')
-                html.push('<div class="rightBox"><div class="foot"><a class="layui-layer-btn1">创建出库</a></div></div>')
+                html.push('<div class="rightBox"><div class="foot"><a class="layui-layer-btn1">确认调货</a></div></div>')
                 $('.content-view-enter-tan .layui-layer-btn').html(html.join(''))
 
-                // addRepertorySuccess(index)
+                addRepertorySuccess(index,id)
+            }
+        });
+    }
+    function addRepertorySuccess(index,id) {
+        var html = template('addTmp',{brandData:brandData,categoryData:categoryData,ballData:ballData,columnData:columnData,providerData:providerData})
+        $('#addDom').html(html);
+
+        //编辑的话，赋初值
+        if(id){
+            $("#outListDom").html(template('outListTmp',{list:allOutList,showTool:true}))
+        }
+
+        $('.content-view-enter-tan .layui-layer-btn .layui-layer-btn0').click(function () {
+            addOutList(0,index,id);
+        });
+        $('.content-view-enter-tan .layui-layer-btn .layui-layer-btn1').click(function () {
+            addOutList(1,index,id)
+        });
+        $('#yj-category li').eq(0).click()
+        selectTag($("#out-brand"), function (ret) {
+            if(ret.value){
+                bid = ret.value;
+                brandName = ret.text;
+                sid = -1;
+                $('#out-series').html('');
+                //获取品牌下的系列列表
+                quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
+                    if(ret1 && ret1.success){
+                        var html2 = template('selectTagTmp',{title:'系列',list:ret1.data});
+                        $('#out-series').html(html2).show();
+                        selectTag($("#out-series"),function (series) {
+                            sid = series.value;
+                            seriesName = series.text;
+                        })
+                    }
+                })
+            }
+        })
+        //门店
+        selectTag($("#out-shop"), function (ret) {
+            selectSid = ret.value;
+        })
+        //调货人
+        selectTag($("#out-people"), function (ret) {
+            peopleId = ret.value;
+        })
+        //供应商
+        selectTag($("#out-provider"), function (ret) {
+            pid = ret.value;
+            providerName = ret.text;
+        })
+        //商品类型
+        selectTag($("#out-type"), function (ret) {
+            type = ret.value;
+        })
+    }
+
+    //选择一级类目
+    function chooseGoodsType(value){
+        cid = value;
+        if(!allOutList[cid]){
+            allOutList[cid] = {cid:cid,name:$('#category'+value).text(),data:[]}
+        }
+        $('#category'+value).addClass('active').siblings().removeClass('active');
+        if($('#category'+value).text()=='镜片'){
+            $('.out-table1').show();
+            $('.out-table2').hide();
+            $('.jj-box').hide();
+            $('.jp-box').show();
+            $('.jp-no-box').hide();
+
+        }else{
+            $('.out-table1').hide();
+            $('.out-table2').show();
+            $('.jp-box').hide();
+            $('.jp-no-box').show();
+            if($('#category'+value).text()=='镜架' || $('#category'+value).text()=='太阳镜' || $('#category'+value).text()=='护理产品'){
+                $('.jj-box').show();
+            }else{
+                $('.jj-box').hide();
+            }
+            $("#out-table").bootstrapTable('destroy');
+        }
+    }
+    var skuObj;//镜片所需要的sku集合   键 是球+柱
+    // 获取一个商品的SPU，返回需要确定的所有SKU属性
+    function getSpu() {
+        if(!selectSid){
+            layer.msg('请选择门店')
+            return
+        }
+        if(!bid){
+            layer.msg('请选择品牌')
+            return
+        }
+        if(!pid){
+            layer.msg('请选择供应商')
+            return
+        }
+        quakooData.ajaxGetData(config.getUrl_inventoryInvokeBill_select(),{subid:selectSid,type:type,cid:cid,pid:pid,bid:bid,sid:sid},function (ret) {
+            if(ret && ret.success){
+                console.log(ret)
+                nowGoodData = ret.data;
+                skuObj = {};
+                for(var j=0;j<nowGoodData.length;j++){
+                    if(nowGoodData[j].p_properties){
+                        nowGoodData[j].properties = nowGoodData[j].p_properties;
+                    }
+                    nowGoodData[j].code = nowGoodData[j].p_code;
+                    nowGoodData[j].type = nowGoodData[j].p_type;
+                    if(nowGoodData[j].properties){
+                        skuObj[nowGoodData[j].properties[15]+''+nowGoodData[j].properties[16]] = nowGoodData[j];
+                    }
+                }
+                if(ret.data){
+                    if($('#category'+cid).text()=='镜片'){
+                        var cols = [[], []];//球
+                        var rangeData = [];//柱
+                        cols[0].push({field:'num',rowspan:2,unresize:true, minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+                        for(var i=0;i<ballData.length;i++){
+                            (function (i) {
+                                cols[0].push({align: 'center', title:ballData[i].content, colspan: 2,unresize:true})
+                                cols[1].push({field: '', title: '库存', width: 60,unresize:true ,templet: function (value,row,index) {
+                                        if(skuObj[ballData[i].content + '' + value.num]){
+                                            return skuObj[ballData[i].content + '' + value.num].num
+                                        }else{
+                                            return '-'
+                                        }
+                                    }})
+                                cols[1].push({field: '', title: '调货', width: 60,edit:'text',unresize:true})
+                            })(i)
+                        }
+                        for(var i=0;i<columnData.length;i++){
+                            rangeData.push({num:columnData[i].content,id:columnData[i].id})
+                        }
+                        layui.use('table', function () {
+                            var table = layui.table;
+                            table.render({
+                                elem: '#outboundTable'
+                                , data: rangeData
+                                , width: 488
+                                , height: 260
+                                , unresize: true
+                                , cols: cols
+                            });
+                            //监听单元格事件
+                            table.on('edit(outboundEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                if(parseInt($(this).parents('td').prev().find('.layui-table-cell').html())>0){
+                                    var ball = ballData[Math.floor($(this).parents('td').attr('data-key').split('-')[$(this).parents('td').attr('data-key').split('-').length-1]/2)].content;
+                                    var colum = obj.data.num;
+                                    if(skuObj[ball + '' + colum].num>= obj.value){
+                                        skuObj[ball + '' + colum].newNum = obj.value;
+                                    }else{
+                                        skuObj[ball + '' + colum].newNum = skuObj[ball + '' + colum].num;
+                                        this.value = skuObj[ball + '' + colum].num;
+                                    }
+                                }else{
+                                    this.value = '';
+                                    layer.msg('该规格暂无库存');
+                                }
+                            });
+                        });
+                    }else {
+                        var column = [
+                            { field: 'code', title: '产品编码'},
+                            { field: 'properties', title: '球' , formatter: function (value) {
+                                    return value?value[15]:'-';
+                                }  },
+                            { field: 'properties', title: '柱', formatter: function (value) {
+                                    return value?value[16]:'-';
+                                }},
+                            {field: 'num', title: '库存量' },
+                            {field: '', title: '调货量'  , formatter: function (value,row,index) {
+                                    return '<input type="text" class="in-yj-input" onkeyup="checkNum(this)" data-index="'+index+'" placeholder="数量">';
+                                }
+                            }
+                        ]
+                        $("#out-table").bootstrapTable('destroy');
+                        $("#out-table").bootstrapTable({
+                            data: nowGoodData,                 //被加载的数据。
+                            classes: "table",
+                            sortable: false,
+                            sortOrder: "asc",
+                            showColumns: true,
+                            strictSearch: true,
+                            locale: "zh-CN",
+                            paginationHAlign: "center",
+                            clickToSelect: true,
+                            columns: column
+                        });
+                    }
+                }else{
+                    layer.msg('暂无商品')
+                }
+            }else{
+                layer.msg(ret.data)
+            }
+        })
+    }
+    //添加到本地出库单
+    function addToList() {
+        if(quakooUtils.isBlack(nowGoodData)){
+            layer.msg('请查询商品')
+            return
+        }
+        $('.in-yj-input').each(function (index,item) {
+            if(quakooUtils.isNotBlack(item.value)){
+                nowGoodData[item.getAttribute('data-index')].newNum = item.value;
+            }
+        })
+        var arr = [];
+        if($('#category'+cid).text()=='镜片'){
+            for(var i=0;i<nowGoodData.length;i++){
+                if(nowGoodData[i].properties){
+                    if(skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]] && skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum){
+                        nowGoodData[i].num = skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum;
+                        nowGoodData[i].brandName = brandName;
+                        nowGoodData[i].seriesName = seriesName;
+                        nowGoodData[i].providerName = providerName;
+                        arr.push(nowGoodData[i])
+                    }
+                }
+            }
+        }else{
+            for(var i=0;i<nowGoodData.length;i++){
+                if(nowGoodData[i].newNum){
+                    nowGoodData[i].brandName = brandName;
+                    nowGoodData[i].seriesName = seriesName;
+                    nowGoodData[i].providerName = providerName;
+                    nowGoodData[i].num = nowGoodData[i].newNum;
+                    arr.push(nowGoodData[i])
+                }
+            }
+        }
+        if(arr.length<=0){
+            layer.msg('请输入调货数量')
+            return;
+        }
+        allOutList[cid].data = arr;
+        var html = template('outListTmp',{list:allOutList,showTool:true})
+        $("#outListDom").html(html)
+    }
+    //添加调货单
+    function addOutList(status,index,id) {
+        if(!peopleId){
+            layer.msg('选择发起人');
+            return
+        }
+        var params = {};
+        if(id){
+            params.id = id;
+            params.wid = allData[id].wid;
+        }
+        params.status = status;
+        params.outSubid = selectSid;
+        params.inSubid = shopId;
+        params.inUid = peopleId;
+        params.createUid = quakooUser.getUserInfo().id;
+        params.itemsJson = [];
+        for(var i in allOutList){
+            if(allOutList[i].data){
+                for(var j=0;j<allOutList[i].data.length;j++){
+                    var obj = {};
+                    if(id){
+                        obj.did = allOutList[i].data[j].did;
+                    }else{
+                        obj.did = allOutList[i].data[j].id;
+                    }
+                    obj.num = allOutList[i].data[j].num;
+                    params.itemsJson.push(obj)
+                }
+            }
+        }
+        params.itemsJson = JSON.stringify(params.itemsJson)
+        if(id){
+            quakooData.ajaxGetData(config.getUrl_inventoryInvokeBill_update(),params,function (ret) {
+                if(ret && ret.success){
+                    layer.msg('修改成功',{icon: 1})
+                    layer.close(index)
+                    getInData()
+                }else{
+                    layer.msg(ret.data,{icon: 2})
+                }
+            })
+        }else{
+            quakooData.ajaxGetData(config.getUrl_inventoryInvokeBill_add(),params,function (ret) {
+                if(ret && ret.success){
+                    layer.msg('添加成功',{icon: 1})
+                    layer.close(index)
+                    getInData()
+                }else{
+                    layer.msg(ret.data,{icon: 2})
+                }
+            })
+        }
+    }
+
+
+    /**查看调货单弹窗*/
+    function lookRepertory(id,look) {
+        allOutList = {};
+        var outSubName = '门店';
+        var inUserName = '发起人';
+        if(id){
+            inUserName = allData[id].inUserName;
+            outSubName = allData[id].outSubName;
+            for(var i=0;i<allData[id].clientItems.length;i++){
+                if(allOutList[allData[id].clientItems[i].cid]){
+                    allOutList[allData[id].clientItems[i].cid].data.push(allData[id].clientItems[i]);
+                }else{
+                    allOutList[allData[id].clientItems[i].cid] = {cid:allData[id].clientItems[i].cid,name:allData[id].clientItems[i].categoryName,data:[allData[id].clientItems[i]]}
+                }
+            }
+        }
+        var html;
+        if(diaohuotype==1 && !look){
+            html = '<div class="cargo-header clearfix">\n' +
+            '        <div class="cargo-title">调货单</div>\n' +
+            '        <div class="cargo-person">\n' +
+            '            <span>发起人:</span>\n' +
+            '            <span>'+inUserName+'</span>\n' +
+            '        </div>\n' +
+            '        <div class="cargo-shop">\n' +
+            '            <span>被调店铺:</span>\n' +
+            '            <span id="carg-shop">'+outSubName+'</span>\n' +
+            '        </div>\n' +
+            '    </div>';
+        }else{
+            html = '<div class="cargo-header clearfix">\n' +
+                '        <div class="cargo-title">调货单</div>\n' +
+                '        <div class="cargo-person">\n' +
+                '            <span style="font-weight: normal">'+outSubName+'</span>\n' +
+                '            <span id="carg-shop"> · '+inUserName+'</span>\n' +
+                '        </div>\n' +
+                '    </div>';
+        }
+
+        layer.open({
+            type: 1, shade: 0.01, title: html,
+            move:'cargo-title',
+            skin: 'layui-cargo content-cargo content-view-checkRepertory-tan', //样式类名
+            area: ['auto', '560px'],
+            anim: 0,
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-cargo-view'),
+            btn: [''],
+            success: function (layero, index) {
+                var html = '';
+                if(diaohuotype==1){
+                    $('.log-true').hide();
+                    $('.log-false').hide();
+                    html =  '<div class="foot"><span class="_btn layui-layer-btn0">关闭窗口</span></div>';
+                }else{
+                    html='<div class="foot"><span class="_btn layui-layer-btn0">关闭窗口</span><span class="btn btn-primary fr">完成调货</span></div>'
+                    if(look){
+                        $('.log-true').show();
+                        $('.log-false').hide();
+                        html =  '<div class="foot"><span class="_btn layui-layer-btn0">关闭窗口</span></div>';
+                    }else{
+                        $('.log-true').hide();
+                        $('.log-false').show();
+                    }
+                }
+
+                //物流选择
+                selectTag($('#yj-log'),function (ret) {
+                    console.log(ret)
+                })
+                $('.content-cargo .layui-layer-btn').html(html)
+                $('.content-cargo .layui-layer-btn0').click(function () {
+                    layer.close(index)
+                })
+                $('.content-cargo .layui-layer-btn .btn-primary').click(function () {
+                    //删除出库
+                    layer.confirm('完成调货?', {title:'提示',skin:'layui-layer-default',resize:false}, function(index1){
+                        quakooData.ajaxGetData(config.getUrl_inventoryInvokeBill_pass(),{id:id,outUid:quakooUser.getUserInfo().id},function (ret) {
+                            if(ret && ret.success){
+                                layer.msg('确认成功',{icon:1})
+                                getInData()
+                                layer.close(index1)
+                                layer.close(index)
+                            }else{
+                                layer.msg(data.msg,{icon:2})
+                            }
+                        })
+                    });
+                });
+                var html1 = template('outListTmp',{list:allOutList,showTool:false})
+                $("#diaohuoDom").html(html1)
             }
         });
     }
 
-    /**
-     * 检测门店品牌系列是否为空，显示对应内容
-     * */
-    function threeIsEmpty() {
-        console.log(shop, brand, series);
-
-        if (quakooUtils.isNotBlack(shop) && quakooUtils.isNotBlack(brand) && quakooUtils.isNotBlack(series)) {
-            $(".outbound-body-top-hidden").css("display", "none");
-            $(".outbound-body-top-show").css("display", "block");
-            $(".outbound-left-body table").css("display", "block")
-
-        } else {
-            $(".outbound-body-top-hidden").css("display", "block");
-            $(".outbound-body-top-show").css("display", "none");
-            $(".outbound-left-body table").css("display", "none")
-        }
+    function delDiaohuo(id) {
+        layer.confirm('删除调货?', {title:'提示',skin:'layui-layer-default',resize:false}, function(index1){
+            quakooData.ajaxGetData(config.getUrl_inventoryInvokeBill_del(),{id:id},function (ret) {
+                if(ret && ret.success){
+                    layer.msg('删除成功',{icon:1})
+                    getInData()
+                    layer.close(index1)
+                    layer.close(index)
+                }else{
+                    layer.msg(data.msg,{icon:2})
+                }
+            })
+        });
     }
 
-    /*右侧调货单内容*/
-    //镜片
-    var dataRight1 = [{name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8"}, {
-        name: "名称A",
-        qNum: "-0.25",
-        sNum: "-0.50",
-        num: "8"
-    }, {name: "名称A", qNum: "-0.25", sNum: "-0.50", num: "8"}];
-    var columns1 = [
-        {field: "name", title: "名称", align: "left", valign: "middle"},
-        {field: "qNum", title: "球镜度数", align: "left", valign: "middle"},
-        {field: "sNum", title: "散光度数", align: "left", valign: "middle"},
-        {field: "num", title: "数量", align: "left", valign: "middle"},
-        {
-            field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                return '<span class="button">移除</span>';
-            }
+    //检查调货量是否大于出库量
+    function checkNum(self) {
+        if(self.value > parseInt($(self).parent().prev().text())){
+            self.value = parseInt($(self).parent().prev().text())
         }
-    ];
-    //镜架
-    var dataRight2 = [{name: "名称A", type: "型号A", colour: "色号A", num: "8"}, {
-        name: "名称A",
-        type: "型号A",
-        colour: "色号A",
-        num: "8"
-    }, {name: "名称A", type: "型号A", colour: "色号A", num: "8"}];
-    var columns2 = [
-        {field: "name", title: "名称", align: "left", valign: "middle"},
-        {field: "type", title: "型号", align: "left", valign: "middle"},
-        {field: "colour", title: "色号", align: "left", valign: "middle"},
-        {field: "num", title: "数量", align: "left", valign: "middle"},
-        {
-            field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                return '<span class="button">移除</span>';
-            }
-        }
-    ];
-    //隐形眼镜
-    var dataRight3 = [{name: "名称A", qNum: "-0.25", sNum: "-0.50", proNum: "16428"}, {
-        name: "名称A",
-        qNum: "-0.25",
-        sNum: "-0.50",
-        proNum: "8456134"
-    }, {name: "名称A", qNum: "-0.25", sNum: "-0.50", proNum: "8928654"}];
-    var columns3 = [
-        {field: "name", title: "名称", align: "left", valign: "middle"},
-        {field: "qNum", title: "球镜度数", align: "left", valign: "middle"},
-        {field: "sNum", title: "散光度数", align: "left", valign: "middle"},
-        {field: "proNum", title: "生产批号", align: "left", valign: "middle"},
-        {
-            field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                return '<span class="button">移除</span>';
-            }
-        }
-    ];
-    var dataRight4 = [{
-        name: "名称A",
-        proNum: "A3548789",
-        expDate: "2018.03.30" + "<br/>" + "2019.03.30",
-        num: "8"
-    }, {name: "名称A", proNum: "A3548789", expDate: "2018.03.30" + "<br/>" + "2019.03.30", num: "8"}, {
-        name: "名称A",
-        proNum: "A3548789",
-        expDate: "2018.03.30" + "<br/>" + "2019.03.30",
-        num: "8"
-    }];
-    //护理产品
-    var columns4 = [
-        {field: "name", title: "名称", align: "left", valign: "middle"},
-        {field: "proNum", title: "生产批号", align: "left", valign: "middle"},
-        {field: "expDate", title: "保质期", align: "left", valign: "middle"},
-        {field: "num", title: "数量", align: "left", valign: "middle"},
-        {
-            field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                return '<span class="button">移除</span>';
-            }
-        }
-    ];
-    //其他商品
-    var dataRight5 = [{name: "名称A", type: "A12342", lumNum: "-0.50", num: "8"}, {
-        name: "名称A",
-        type: "A12342",
-        lumNum: "-0.50",
-        num: "8"
-    }, {name: "名称A", type: "A12342", lumNum: "-0.50", num: "8"}];
-    var columns5 = [
-        {field: "name", title: "名称", align: "left", valign: "middle"},
-        {field: "type", title: "型号", align: "left", valign: "middle"},
-        {field: "lumNum", title: "光度", align: "left", valign: "middle"},
-        {field: "num", title: "数量", align: "left", valign: "middle"},
-        {
-            field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                return '<span class="button">移除</span>';
-            }
-        }
-    ];
-    $("#rightTable1").bootstrapTable({
-        data: dataRight1,                 //被加载的数据。
-        classes: "table-cargo",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: columns1
-    });
-    $("#rightTable2").bootstrapTable({
-        data: dataRight2,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: columns2
-    });
-    $("#rightTable3").bootstrapTable({
-        data: dataRight3,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: columns3
-    });
-    $("#rightTable4").bootstrapTable({
-        data: dataRight4,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: columns4
-    });
-    $("#rightTable5").bootstrapTable({
-        data: dataRight5,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: columns5
-    });
+    }
+    //确认出库单
+    function updateListStatus(id) {
 
-    /**
-     * 查看调货单表格
-     * */
-    /*镜片*/
-    var cargoData1 = [
-        {
-            name: "名称A", ballNum: "-0.25", sNum: "-50", num: "3"
-        }, {
-            name: "名称A", ballNum: "-0.25", sNum: "-50", num: "3"
-        }, {
-            name: "名称A", ballNum: "-0.25", sNum: "-50", num: "3"
-        }
-    ];
-    var cargoColumns1 = [
-        {
-            field: "name", title: "名称", align: "left", valign: "middle"
-        }, {
-            field: "ballNum", title: "球镜度数", align: "left", valign: "middle"
-        }, {
-            field: "sNum", title: "散光度数", align: "left", valign: "middle"
-        }, {
-            field: "num", title: "数量", align: "left", valign: "middle"
-        }
-    ];
-    $("#cargo-table1").bootstrapTable({
-        data: cargoData1,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: cargoColumns1,
-    });
-    /*镜架*/
-    var cargoData2 = [
-        {
-            name: "名称A", type: "A3673427112", colour: "色号A", num: "3"
-        }, {
-            name: "名称A", type: "A3673427112", colour: "色号A", num: "3"
-        }, {
-            name: "名称A", type: "A3673427112", colour: "色号A", num: "3"
-        }
-    ];
-    var cargoColumns2 = [
-        {
-            field: "name", title: "名称", align: "left", valign: "middle"
-        }, {
-            field: "type", title: "型号", align: "left", valign: "middle"
-        }, {
-            field: "colour", title: "色号", align: "left", valign: "middle"
-        }, {
-            field: "num", title: "数量", align: "left", valign: "middle"
-        }
-    ];
-    $("#cargo-table2").bootstrapTable({
-        data: cargoData2,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: cargoColumns2,
-    });
-    /*隐形眼镜*/
-    var cargoData3 = [
-        {
-            name: "名称A", ballNum: "-0.25", sNum: "50", num: "3"
-        }, {
-            name: "名称A", ballNum: "-0.25", sNum: "50", num: "3"
-        }, {
-            name: "名称A", ballNum: "-0.25", sNum: "50", num: "3"
-        }
-    ];
-    var cargoColumns3 = [
-        {
-            field: "name", title: "名称", align: "left", valign: "middle"
-        }, {
-            field: "ballNum", title: "球镜度数", align: "left", valign: "middle"
-        }, {
-            field: "sNum", title: "散光度数", align: "left", valign: "middle"
-        }, {
-            field: "num", title: "数量", align: "left", valign: "middle"
-        }
-    ];
-    $("#cargo-table3").bootstrapTable({
-        data: cargoData3,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: cargoColumns3,
-    });
-    /*护理产品*/
-    var cargoData4 = [
-        {
-            name: "名称A", proNum: "2015452", expDate: "2018.03.23" + "<br/>" + "2020.08.30", num: "3"
-        }, {
-            name: "名称A", proNum: "2015452", expDate: "2018.03.23" + "<br/>" + "2020.08.30", num: "3"
-        }, {
-            name: "名称A", proNum: "2015452", expDate: "2018.03.23" + "<br/>" + "2020.08.30", num: "3"
-        }
-    ];
-    var cargoColumns4 = [
-        {
-            field: "name", title: "名称", align: "left", valign: "middle"
-        }, {
-            field: "proNum", title: "生产日期", align: "left", valign: "middle"
-        }, {
-            field: "expDate", title: "保质期", align: "left", valign: "middle"
-        }, {
-            field: "num", title: "数量", align: "left", valign: "middle"
-        }
-    ];
-    $("#cargo-table4").bootstrapTable({
-        data: cargoData4,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: cargoColumns4,
-    });
-    /*其他商品*/
-    var cargoData5 = [
-        {
-            name: "名称A", type: "型号A36", gNum: "50", num: "3"
-        }, {
-            name: "名称A", type: "型号A36", gNum: "50", num: "3"
-        }, {
-            name: "名称A", type: "型号A36", gNum: "50", num: "3"
-        }
-    ];
-    var cargoColumns5 = [
-        {
-            field: "name", title: "名称", align: "left", valign: "middle"
-        }, {
-            field: "type", title: "型号", align: "left", valign: "middle"
-        }, {
-            field: "gNum", title: "光度", align: "left", valign: "middle"
-        }, {
-            field: "num", title: "数量", align: "left", valign: "middle"
-        }
-    ];
-    $("#cargo-table5").bootstrapTable({
-        data: cargoData5,                 //被加载的数据。
-        classes: "table",
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: cargoColumns5,
-    });
-
+    }
 </script>
 </body>
 </html>
