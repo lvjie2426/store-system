@@ -264,15 +264,15 @@ public class ProductController extends BaseController {
      **/
     @RequestMapping("/getSaleSPUBackPager")
     public ModelAndView getSaleSPUBackPager(@RequestParam(value = "subid", defaultValue = "0") long subid,
-                                    @RequestParam(value = "cid", defaultValue = "0") long cid,
-                                    @RequestParam(value = "bid", defaultValue = "0") long bid,
-                                    Pager pager,
-                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+                                            @RequestParam(value = "cid", defaultValue = "0") long cid,
+                                            @RequestParam(value = "bid", defaultValue = "0") long bid,
+                                            @RequestParam(value = "type", defaultValue = "-1") int type,
+                                            Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             long pSubid = subid;
             Subordinate subordinate = subordinateService.load(subid);
             if(subordinate.getPid() > 0) pSubid = subordinate.getPid();
-            pager = productService.getSaleSPUBackPager(pager, pSubid, subid, cid, bid);
+            pager = productService.getSaleSPUBackPager(pager, pSubid, subid, cid, bid, type);
             return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -280,7 +280,7 @@ public class ProductController extends BaseController {
     }
 
     /**
-     * 销售开单 添加商品的SKU列表
+     * 销售开单 添加商品的SKU列表 uid为顾客
      * method_name: getSaleSKUAllList
      * params: [subid, spuid, request, response, model]
      * return: org.springframework.web.servlet.ModelAndView
@@ -290,10 +290,11 @@ public class ProductController extends BaseController {
      **/
     @RequestMapping("/getSaleSKUAllList")
     public ModelAndView getSaleSKUAllList(@RequestParam(value = "subid", defaultValue = "0") long subid,
-                                            @RequestParam(value = "spuid") long spuid,
-                                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+                                          @RequestParam(value = "spuid") long spuid,
+                                          @RequestParam(value = "uid", defaultValue = "0") long uid,
+                                          HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            List<ClientProductSKU> res = productService.getSaleSKUAllList(subid, spuid);
+            List<ClientProductSKU> res = productService.getSaleSKUAllList(subid, spuid, uid);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

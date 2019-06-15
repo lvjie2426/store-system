@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.smartcardio.Card;
 import java.io.File;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -478,64 +479,108 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
     @Override
     public ClientOrder countPrice(Order order) throws Exception {
-        Order orderPrice=new Order();
+        ClientOrder clientOrder=new ClientOrder(order);
+        double dicountPriceYuan=0.0d;
+        double totaoPriceyuan=0.0d;
+        //小计单，通过从数据库取数据计算订单上的单sku的小计
+        User userDb = userDao.load(order.getUid());
+        List<OrderSku> orderSkuList = order.getSkuids();
+        List<ClientOrderSku> clientOrderSkus=new ArrayList<>();
+        for(OrderSku orderSku:orderSkuList){
+            Map map=countSkuPrice(order.getUid(),orderSku.getSpuid(),orderSku.getSkuid(),orderSku.getNum(),order.getCouponid(),order.getSurcharges());
+            dicountPriceYuan+= (double) map.get("DicountPriceYuan");
+            totaoPriceyuan+=(double) map.get("totaoPriceyuan");
+            clientOrderSkus.add((ClientOrderSku)map.get("clientOrderSku"));
+        }
+        clientOrder.setClientSkuids(clientOrderSkus);
+        clientOrder.setDicountPriceYuan(dicountPriceYuan);
+        clientOrder.setTotalPriceYuan(totaoPriceyuan);
+        return clientOrder;
+    }
+    public Map<Object,Object> countSkuPrice(long uid,long spuid,long skuid,int num,long couponid, List<Surcharge> surchargeList){
+        ClientOrderSku clientOrderSku=new ClientOrderSku();
+        Map map=new HashMap();
         int surchargePrice=0;//附加费
         int totalPrice=0;//总金额
-        ClientOrder clientOrder=new ClientOrder(orderPrice);
+        double discountPrice=0;//折后金额
+        User userDb = userDao.load(uid);
+        UserGrade userGrade = userGradeDao.load(userDb.getUserGradeId());
+        //--
+        ProductSPU productSPU = productSPUDao.load(spuid);
+        if(productSPU.getType()==ProductSPU.type_common){
+            ProductSKU productSKU = productSKUDao.load(skuid);
+            UserGradeCategoryDiscount userGradeCategoryDiscount=new UserGradeCategoryDiscount();
+            userGradeCategoryDiscount.setSpuid(spuid);
+            userGradeCategoryDiscount.setUgid(userDb.getUserGradeId());
+            UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.load(userGradeCategoryDiscount);
+            if(discount!=null){
+                //有折扣的商品
+                double dis=discount.getDiscount()/10.0;
+                clientOrderSku.setSkuid(skuid);
+                clientOrderSku.setSpuid(spuid);
+                clientOrderSku.setNum(num);
+                clientOrderSku.setPrice(productSKU.getRetailPrice()/100.0);
+                clientOrderSku.setSubtotal((productSKU.getRetailPrice()*num*dis)/100.0);
+                clientOrderSku.setDiscount(discount.getDiscount());
+                DecimalFormat df = new DecimalFormat("#.00");
+                double subtotal= Double.parseDouble(df.format(productSKU.getRetailPrice()*num*dis*(userGrade.getDiscount()/10.0)*0.01));
+                clientOrderSku.setLastSubtotal(subtotal);
+                discountPrice+=clientOrderSku.getSubtotal();
+                totalPrice+=productSKU.getRetailPrice()*num*dis;
+            }else{
+                //没有设置折扣的商品
+                clientOrderSku.setSkuid(skuid);
+                clientOrderSku.setSpuid(spuid);
+                clientOrderSku.setNum(num);
+                clientOrderSku.setDiscount(0);
+                clientOrderSku.setPrice(productSKU.getRetailPrice()/100.0);
+                clientOrderSku.setSubtotal((productSKU.getRetailPrice()*num)/100.0);
+                clientOrderSku.setLastSubtotal((productSKU.getRetailPrice()*num*(userGrade.getDiscount()/10.0))/100.0);
+                discountPrice+=clientOrderSku.getSubtotal();
+                totalPrice+=productSKU.getRetailPrice()*num;
+            }
 
-        List<Surcharge> surchargeList = order.getSurcharges();
+        }else{
+            // 积分
+            if(productSPU.getIntegralNum()<num){
+                throw new StoreSystemException(productSPU.getName()+"积分商品数量兑换上限！");
+            }
+            ProductSKU productSKU = productSKUDao.load(skuid);
+            //判断用户积分。
+            if(productSKU.getIntegralPrice()>userDb.getScore()){
+                throw new StoreSystemException("会员积分不足兑换该"+productSKU.getName()+"积分商品！");
+            }
+            clientOrderSku.setPrice(productSKU.getIntegralPrice());
+            clientOrderSku.setSubtotal(productSKU.getRetailPrice()*num);
+        }
+        //---
         if(surchargeList.size()>0){
             // 拿到附加费用加入总价格
             for(Surcharge surcharge:surchargeList){
                 surchargePrice+= surcharge.getPrice();
             }
         }
-        //小计
-        User userDb = userDao.load(order.getUid());
-        List<OrderSku> orderSkuList = order.getSkuids();
-        List<ClientOrderSku> clientOrderSkus=new ArrayList<>();
-        for(OrderSku orderSku:orderSkuList){
-            ProductSPU productSPU = productSPUDao.load(orderSku.getSpuid());
-            if(productSPU.getType()==ProductSPU.type_common){
-                ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
-                UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.getDiscount(orderSku.getSpuid(), userDb.getUserGradeId());
-                double dis=discount.getDiscount()/10.0;
-                ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
-                clientOrderSku.setPrice(productSKU.getRetailPrice());
-                clientOrderSku.setSubtotal(productSKU.getRetailPrice()*orderSku.getNum()*dis);
-                clientOrderSkus.add(clientOrderSku);
-                totalPrice+=productSKU.getRetailPrice()*orderSku.getNum();
-            }else{
-                // 积分
-                if(productSPU.getIntegralNum()<orderSku.getNum()){
-                    throw new StoreSystemException(productSPU.getName()+"积分商品数量兑换上限！");
-                }
-                ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
-                ClientOrderSku clientOrderSku=new ClientOrderSku(orderSku);
-                clientOrderSku.setPrice(productSKU.getIntegralPrice());
-                clientOrderSku.setSubtotal(productSKU.getRetailPrice()*orderSku.getNum());
-                clientOrderSkus.add(clientOrderSku);
-            }
-
-        }
         int totaoPriceyuan=surchargePrice+totalPrice;
-        clientOrder.setTotalPriceYuan(totaoPriceyuan/100.0);
-        long couponid = order.getCouponid();
+        double dicountPriceYuan=0.0d;//折后金额
+        //计算促销券
         if(couponid>0){
             MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
-                clientOrder.setDicountPriceYuan( (totaoPriceyuan-marketingCoupon.getDescSubtract())/100.0);
+                dicountPriceYuan=( (totaoPriceyuan-marketingCoupon.getDescSubtract())/100.0);
             }
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
-                clientOrder.setDicountPriceYuan( (totaoPriceyuan-totaoPriceyuan*(marketingCoupon.getDescSubtract()/10.0))/100.0);
+                dicountPriceYuan=( (totaoPriceyuan-totaoPriceyuan*(marketingCoupon.getDescSubtract()/10.0))/100.0);
             }
+        }else{
+            dicountPriceYuan=(discountPrice);
         }
 
-        UserGrade userGrade = userGradeDao.load(userDb.getUserGradeId());
-        clientOrder.setPriceYuan(clientOrder.getDicountPriceYuan()*(userGrade.getDiscount()/10.0));
-        return clientOrder;
+        map.put("surchargeList",surchargeList);//附加费用
+        map.put("DicountPriceYuan",dicountPriceYuan);//折扣后金额
+        map.put("totaoPriceyuan",totaoPriceyuan/100.0);//总金额
+        map.put("clientOrderSku",clientOrderSku);//sku小计单
+        return  map;
     }
-
     @Override
     public List<ClientOrder> getTemporaryOrder(long subid) throws Exception {
         List<Order> list=   orderDao.getTemporaryOrder(subid,Order.makestatus_temporary);

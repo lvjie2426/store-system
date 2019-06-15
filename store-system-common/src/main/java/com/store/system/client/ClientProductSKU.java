@@ -17,6 +17,8 @@ public class ClientProductSKU extends ProductSKU {
 
     private List<ClientInventoryDetail> otherDetails; //其他分店库存详情
 
+    private double discount; //商品的会员折扣
+
     public ClientProductSKU(ProductSKU productSKU) {
         try {
             BeanUtils.copyProperties(this, productSKU);

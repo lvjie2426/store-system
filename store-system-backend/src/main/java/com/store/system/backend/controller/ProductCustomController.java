@@ -55,6 +55,8 @@ public class ProductCustomController extends BaseController {
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
+            long pid = subordinate.getPid();
+            if(pid==0){ throw new StoreSystemException("门店ID错误!"); }
             pager = productCustomService.getBackPager(pager, subid, status);
             return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {

@@ -69,7 +69,7 @@ public class InventoryInBillController extends BaseController {
             if(pSubid == 0) throw new StoreSystemException("店铺为空");
             ClientInventoryInBillSelect res = new ClientInventoryInBillSelect();
             ClientProductSPU productSPU = productService.selectSPU(type, pSubid, pid, cid, bid, sid);
-            List<ClientProductSKU> skuList =  productService.getSaleSKUAllList(subid,productSPU.getId());
+            List<ClientProductSKU> skuList =  productService.getSaleSKUAllList(subid,productSPU.getId(),0);
             if(skuList.size()>0) res.setSkuList(skuList);
 //            if(null != productSPU) {
 //                List<ProductPropertyName> propertyNames = productPropertyNameService.getSubAllList(pSubid, cid);

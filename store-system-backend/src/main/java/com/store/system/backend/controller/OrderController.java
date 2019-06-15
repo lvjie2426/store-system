@@ -124,18 +124,18 @@ public class OrderController extends BaseController {
     @RequestMapping("/countPrice")
     public ModelAndView countPrice(HttpServletRequest request, HttpServletResponse response,
                                   Order order,
-                                   @RequestParam( value = "skuids")   String skuids,
-                                   @RequestParam( value = "surcharges")   String surcharges
+                                   @RequestParam( value = "skuidsList")   String skuidsList,
+                                   @RequestParam( value = "surchargesJson",defaultValue = "")   String surchargesJson
                                  ) throws Exception {
 
         try {
             List<Surcharge> billItems = Lists.newArrayList();
             List<OrderSku> orderskuids = Lists.newArrayList();
-            if(StringUtils.isNotBlank(surcharges)) {
-                billItems = JsonUtils.fromJson(surcharges, new TypeReference<List<Surcharge>>() {});
+            if(StringUtils.isNotBlank(surchargesJson)) {
+                billItems = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
                 order.setSurcharges(billItems);
-            }if(StringUtils.isNotBlank(skuids)) {
-                orderskuids = JsonUtils.fromJson(skuids, new TypeReference<List<OrderSku>>() {});
+            }if(StringUtils.isNotBlank(skuidsList)) {
+                orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(orderskuids);
             }
             order = orderService.countPrice(order);
