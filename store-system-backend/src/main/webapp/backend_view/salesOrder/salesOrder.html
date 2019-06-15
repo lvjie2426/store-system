@@ -109,7 +109,7 @@
                         </div>
                         <div class="layui-form-item phoneNum">
                             <div class="layui-input-block">
-                                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="手机号码" id="cusInfoPhone"
+                                <input type="number" name="title" lay-verify="title" autocomplete="off" placeholder="手机号码" id="cusInfoPhone"
                                     class="layui-input">
                             </div>
                         </div>
@@ -427,7 +427,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="text" class="moneyNum" id="extraCharges" placeholder="金额">
+                        <input type="number" class="moneyNum" id="extraCharges" placeholder="金额">
                         <button class="addOrder" style="padding: 7px 10px;" onclick="extraCharges()">添加</button>
                     </div>
                     <div class="promotionBox mt15">
@@ -453,7 +453,7 @@
     <!-- 固定底部 -->
     <div class="winFooterBox">
         <button class="btnSubmission">提交订单</button>
-        <button class="btnPreservation">保存订单</button>
+        <button class="btnPreservation" onclick="saveOrder()">保存订单</button>
     </div>
 
 
@@ -467,7 +467,7 @@
                         <input type="number" class="member-input" placeholder="手机号" id="reg-phoneNum">
                     </li>
                     <li class="input-item two">
-                        <input type="text" class="member-input" placeholder="输入验证码" id="reg-code">
+                        <input type="number" class="member-input" placeholder="输入验证码" id="reg-code">
                         <span class="send-code" onclick="getSms(this)">发送短信验证码</span>
                     </li>
                     <!--<li class="input-item">
@@ -481,10 +481,10 @@
             <div class="content">
                 <ul class="input-list">
                     <li class="input-item">
-                        <input type="text" class="member-input" placeholder="18728389182">
+                        <input type="number" class="member-input" placeholder="18728389182">
                     </li>
                     <li class="input-item two">
-                        <input type="text" class="member-input" placeholder="输入验证码">
+                        <input type="number" class="member-input" placeholder="输入验证码">
                         <span class="send-code">发送验证码</span>
                     </li>
                     <li class="input-item or-item">
@@ -503,7 +503,7 @@
             <div class="content">
                 <ul class="input-list">
                     <li class="input-item">
-                        <input type="text" class="member-input" placeholder="充值金额">
+                        <input type="number" class="member-input" placeholder="充值金额">
                     </li>
                     <li class="input-item">
                         <form class="layui-form cckXK">
@@ -586,20 +586,20 @@
                     <div class="mb10 rightEyeCustomized eyeCustomized">
                         <h4>右眼定制数量</h4>
                         <div class="reNum clearfix">
-                            <input type="text" class='totalPrice num' placeholder="数量">
+                            <input type="number" class='totalPrice num' placeholder="数量">
                             <div class="reMoney">
                                 <span>￥</span>
-                                <input type="text" class="totalPrice numMoney" placeholder="单价">
+                                <input type="number" class="totalPrice numMoney" placeholder="单价">
                             </div>
                         </div>
                     </div>
                     <div class="mb10 leftEyeCustomized eyeCustomized">
                         <h4>左眼定制数量</h4>
                         <div class="reNum clearfix">
-                            <input type="text" class='totalPrice num' placeholder="数量">
+                            <input type="number" class='totalPrice num' placeholder="数量">
                             <div class="reMoney">
                                 <span>￥</span>
-                                <input type="text" class="totalPrice numMoney" placeholder="单价">
+                                <input type="number" class="totalPrice numMoney" placeholder="单价">
                             </div>
                         </div>
                     </div>
@@ -680,10 +680,10 @@
                     <div class="mb10 eyeCustomizedNum eyeCustomized">
                         <h4>定制数量</h4>
                         <div class="reNum clearfix">
-                            <input type="text" class='totalPrice num' placeholder="数量">
+                            <input type="number" class='totalPrice num' placeholder="数量">
                             <div class="reMoney">
                                 <span>￥</span>
-                                <input type="text" class="totalPrice numMoney" placeholder="单价">
+                                <input type="number" class="totalPrice numMoney" placeholder="单价">
                             </div>
                         </div>
                     </div>
@@ -1371,7 +1371,7 @@
     <!--手机号列表-->
     <script type="text/html" id="shopPhoneData">
         <%for(var i=0; i < list.length;i++){%>
-        <li value="<%=list[i].phone%>"><%=list[i].phone%></li>
+        <li value="<%=list[i].id%>@<%=list[i].phone%>@<%=list[i].score%>@<%=list[i].discount%>"><%=list[i].phone%></li>
         <%}%>
     </script>
     <!--顾客职业列表-->
@@ -1451,11 +1451,7 @@
         </thead>
         <tbody class="active">
         <!--type? 1=>金钱商品 1=>积分商品 3=>附加费用 4=>促销方式-->
-            <%if(list.length==0){%>
-                <tr style="height: 100%;">
-                    <td class="nullInfo" style="width:100%;height: 100%; vertical-align: middle;line-height: 216px;" colspan="2">暂无商品信息</td>
-                </tr>
-            <%}else{%>
+            <%if(price){%>
                 <%for(var i in list){%>
                     <%if(list[i].type ==1){%>
                         <tr>
@@ -1465,7 +1461,7 @@
                             <td><%=list[i].number%></td>
                             <td>￥<%=list[i].price%></td>
                             <td><input type="text" placeholder="10.0" value="" readonly="readonly"></td>
-                            <td></td>
+                            <td><%=list[i].subtotal%></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
                     <%}else if(list[i].type ==2){%>
@@ -1474,7 +1470,7 @@
                                 <div><%=list[i].productName%></div>
                             </td>
                             <td><%=list[i].number%></td>
-                            <td>￥<%=list[i].price%></td>
+                            <td><%=list[i].price%>积分</td>
                             <td><input type="text" placeholder="10.0" value="" readonly="readonly"></td>
                             <td></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
@@ -1497,19 +1493,34 @@
                         </tr>
                     <%}%>
                 <%}%>
+            <%}else{%>
+                <tr style="height: 100%;">
+                    <td class="nullInfo" style="width:100%;height: 100%; vertical-align: middle;line-height: 216px;" colspan="2">暂无商品信息</td>
+                </tr>
             <%}%>
         </tbody>
             </table>
         </div>
         <div class="rightFooterBox clearfix">
-            <div class="amountMoney">
-                <div>原价共计 <span>￥</span></div>
-                <div>折后金额 <span>￥</span></div>
-            </div>
-            <div class="actualMoney">
-                <div>实收金额<span> <b>￥</b> <input type="text" value="" readonly="readonly"></span></div>
-                <div>折扣<i>6.8</i></div>
-            </div>
+            <%if(price){%>
+                <div class="amountMoney">
+                    <div>原价共计 <span>￥<%=price.totalPriceYuan%></span></div>
+                    <div>折后金额 <span>￥<%=price.dicountPriceYuan%></span></div>
+                </div>
+                <div class="actualMoney">
+                    <div>实收金额<span> <b>￥</b> <input type="text"></span></div>
+                    <div >折扣<i id="userDiscount"><%=price.userDiscount%></i></div>
+                </div>
+            <%}else{%>
+                <div class="amountMoney">
+                    <div>原价共计 <span>￥</span></div>
+                    <div>折后金额 <span>￥</span></div>
+                </div>
+                <div class="actualMoney">
+                    <div>实收金额<span> <b>￥</b> <input type="text" value=""></span></div>
+                    <div>折扣<i id="userDiscount">10.0</i></div>
+                </div>
+            <%}%>
         </div>
 
     </script>
@@ -1534,6 +1545,9 @@
         var orderFormData = {};                               //订单表格数据
         var ygInfo = {now:{}};                                //验光信息数据
         var nowGoodData = {};                                 //添加常规商品sku数据
+        var priceData = false;                                   //计算金额
+        var userScore = 0;                                     //会员积分
+        var userDiscount=10.0;                                 //会员折扣
         LocYgInfo.yuanTable={class:'yuan-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
         LocYgInfo.yinTable={class:'yin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'曲率',value:'q'},{name:'直径',value:'d'}]};
         LocYgInfo.jinTable={class:'jin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
@@ -1542,7 +1556,7 @@
             psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
             subid = quakooDb.getItem("sel_ShopId");           //门店ID
             initPage();                                       //页面初始化
-            getYgInfo();
+
         });
         function initPage(){
             //年龄计算
@@ -1567,7 +1581,7 @@
             getUsersByJob("销售员",1,2);                         //获取门店下的销售员
             getUsersByJob("加工师",1,3);                         //获取门店下的加工师
             selDown();                                           //下拉框
-            //getYgInfo();                                       //获取某个用户的验光记录
+            getYgInfo();                                         //获取某个用户的验光记录
             getListPromotions();                                 //获取促销方式
             renderOrderForm();                                   //订单表格
         }
@@ -1602,18 +1616,29 @@
         }
         /**接口——获取门店下的顾客手机号*/
         function getShopPhone(){
-            // alert(subid);
             quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:0},function (ret) {
-                // alert(2)
                 console.log("门店下顾客的手机号",ret);
-                return
-                var data = {list:ret.rows};
-                var html = template("shopPhoneData",data);
-                document.getElementById("shopPhoneList").innerHTML = html;
-                selectTag($("#searchTypeBox"),function (ret) {
-                    cusPhone =ret.value;
-                    getUserByPhone();
-                });
+                if(ret&&ret.success){
+                    if(quakooUtils.isNotBlack(ret.data)){
+                        var data = {list:ret.data};
+                        var html = template("shopPhoneData",data);
+                        console.log(html)
+                        document.getElementById("shopPhoneList").innerHTML = html;
+                        selectTag($("#searchTypeBox"),function (ret) {
+                            cusId =(ret.value).split("@")[0];
+                            cusPhone =(ret.value).split("@")[1];
+                            userScore =(ret.value).split("@")[2];
+                            userDiscount =(ret.value).split("@")[3];
+                            getUserByPhone();
+                        });
+                    }else{
+                        layer.msg("门店下暂无顾客");
+                        return
+                    }
+                }else{
+                    layer.msg(ret.data);
+                    return
+                }
             })
         }
         /**接口——根据手机号查询用户信息*/
@@ -1873,17 +1898,17 @@
                     param.jianJinDuoJiaoDianResJson[$(item).attr('data-attr1')][$(item).attr('data-attr2')] = item.value;
                 }
             });
-            ygInfo[now] = param;
+            ygInfo['now'] = param;
             param.yuanYongResJson = JSON.stringify(param.yuanYongResJson);
             param.yinXingResJson = JSON.stringify(param.yinXingResJson);
             param.jinYongResJson = JSON.stringify(param.jinYongResJson);
             param.jianJinDuoJiaoDianResJson = JSON.stringify(param.jianJinDuoJiaoDianResJson);
             console.log(param);
             quakooData.ajaxGetData(config.getUrl_optometryinfo_add(),param,function (ret) {
-                console.log(ret);
+                console.log("验光信息：",ret);
                 if(ret&&ret.success){
                     layer.msg('验光信息已保存',{icon:1});
-                    ygInfo[now] = ret.data;
+                    ygInfo['now'] = ret.data;
                 }
             })
         }
@@ -2299,7 +2324,11 @@
                     {field: "providerName", title: "来源", align: "left", valign: "middle"},
                     {field: "", title: "操作", align: "left", valign: "middle",formatter: function (value, row, index) {
                             var html;
-                            html = "<div class='btnSeeHistory' onclick='getSKU("+type+","+ JSON.stringify(row.id) +","+JSON.stringify(row.categoryName)+")'>选择</div>";
+                            if(type == 0){
+                                html = "<div class='btnSeeHistory' onclick='getSKU("+type+","+ JSON.stringify(row.id) +","+JSON.stringify(row.categoryName)+")'>选择</div>";
+                            }else if(type == 1){
+                                html = "<div class='btnSeeHistory' onclick='getSKU("+type+","+ JSON.stringify(row.id) +","+JSON.stringify(row.categoryName)+","+JSON.stringify(row.integralNum)+")'>选择</div>";
+                            }
                             return html;
                     }},
                 ],
@@ -2323,7 +2352,7 @@
             });
         }
         /**获取SKU*/
-        function getSKU(type,spuid,categoryName){
+        function getSKU(type,spuid,categoryName,integralNum){
             var title = "";
             if(type==0){
                 title = '添加常规商品'
@@ -2348,12 +2377,12 @@
                     layer.close(index)
                 },
                 success: function () {
-                    renderSku(type,spuid,categoryName);
+                    renderSku(type,spuid,categoryName,integralNum);
                 },
             });
         }
         /**渲染SKU*/
-        function renderSku(type,spuid,categoryName){
+        function renderSku(type,spuid,categoryName,integralNum){
             var params ={};
             params.subid = subid;
             params.spuid = spuid;
@@ -2376,15 +2405,18 @@
                                     { field: 'properties', title: '柱', formatter: function (value) {
                                             return value[16];
                                         }},
-                                    { field: 'costPrice', title: '成本价'},
-                                    { field: 'retailPrice', title: '零售价'},
-                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'costPrice', title: '成本价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
+                                    { field: 'retailPrice', title: '零售价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
                                         }},
                                     {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                            return '<input type="number" class="in-yj-input" placeholder="数量">';
                                         }
                                     },
                                     { field: '', title: '来源',formatter:function (value, row, index) {
@@ -2406,15 +2438,18 @@
                                             return '<input type="text" class="in-yj-input-sehao" data-index="'+index+'" placeholder="色号">';
                                         }
                                     },*/
-                                    { field: 'costPrice', title: '成本价'},
-                                    { field: 'retailPrice', title: '零售价'},
-                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'costPrice', title: '成本价',formatter:function(value){
+                                        return "¥"+value;
+                                    }},
+                                    { field: 'retailPrice', title: '零售价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
                                         }},
                                     {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                            return '<input type="number" class="in-yj-input" placeholder="数量">';
                                         }
                                     },
                                     { field: '', title: '来源',formatter:function (value, row, index) {
@@ -2435,22 +2470,25 @@
                                             return value[16];
                                         }},
                                     /* {field: '', title: '生产批号'  , formatter: function (value,row,index) {
-                                             return '<input type="text" class="in-yj-input-shengchanpihao" data-index="'+index+'" placeholder="生产批号">';
+                                             return '<input type="number" class="in-yj-input-shengchanpihao" data-index="'+index+'" placeholder="生产批号">';
                                          }
                                      },
                                      {field: '', title: '保质期'  , formatter: function (value,row,index) {
-                                             return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="'+index+'" placeholder="保质期">';
+                                             return '<input type="number" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="'+index+'" placeholder="保质期">';
                                          }
                                      },*/
-                                    { field: 'costPrice', title: '成本价'},
-                                    { field: 'retailPrice', title: '零售价'},
-                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'costPrice', title: '成本价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
+                                    { field: 'retailPrice', title: '零售价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
                                         }},
                                     {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                            return '<input type="number" class="in-yj-input" placeholder="数量">';
                                         }
                                     },
                                     { field: '', title: '来源',formatter:function (value, row, index) {
@@ -2472,15 +2510,18 @@
                                             return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="'+index+'" placeholder="保质期">';
                                         }
                                     },*/
-                                    { field: 'costPrice', title: '成本价'},
-                                    { field: 'retailPrice', title: '零售价'},
-                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'costPrice', title: '成本价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
+                                    { field: 'retailPrice', title: '零售价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
                                         }},
                                     {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                            return '<input type="number" class="in-yj-input" placeholder="数量">';
                                         }
                                     },
                                     { field: '', title: '来源',formatter:function (value, row, index) {
@@ -2498,15 +2539,18 @@
                                              return '<input type="text" class="in-yj-input-xinghao" data-index="'+index+'" placeholder="型号">';
                                          }
                                      },*/
-                                    { field: 'costPrice', title: '成本价'},
-                                    { field: 'retailPrice', title: '零售价'},
-                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'costPrice', title: '成本价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
+                                    { field: 'retailPrice', title: '零售价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
                                         }},
                                     {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                            return '<input type="number" class="in-yj-input" placeholder="数量">';
                                         }
                                     },
                                     { field: '', title: '来源',formatter:function (value, row, index) {
@@ -2524,15 +2568,18 @@
                                              return '<input type="text" class="in-yj-input-xinghao" data-index="'+index+'" placeholder="型号">';
                                          }
                                      },*/
-                                    { field: 'costPrice', title: '成本价'},
-                                    { field: 'retailPrice', title: '零售价'},
-                                    { field: 'integralPrice', title: '积分价'},
+                                    { field: 'costPrice', title: '成本价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
+                                    { field: 'retailPrice', title: '零售价',formatter:function(value){
+                                            return "¥"+value;
+                                        }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
                                         }},
                                     {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                            return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                            return '<input type="number" class="in-yj-input" placeholder="数量">';
                                         }
                                     },
                                     { field: '', title: '来源',formatter:function (value, row, index) {
@@ -2547,12 +2594,24 @@
                         }else if(type == 1){
                             column = [
                                 { field: 'code', title: '产品编码'},
-                                { field: 'integralPrice', title: '积分价'},
+                                { field: 'integralPrice', title: '积分价',formatter:function(value){
+                                        return '<span><i class="jfPrice">'+value+'</i>积分</span>';
+                                    }},
                                 { field: 'canUseNum', title: '库存',formatter:function (value) {
                                         return '<span class="inventory" >'+value+'</span>';
                                     }},
+                                {field:'',title:'上限',formatter:function () {
+                                        return '<span class="shangxian" >'+integralNum+'</span>';
+                                    }},
+                                {field:'',title:'可用积分',formatter:function () {
+                                        if(userScore){
+                                            return '<span><i class="jifen">'+userScore+'</i>积分</span>';
+                                        }else{
+                                            return '<span><i class="jifen">0</i>积分</span>';
+                                        }
+                                    }},
                                 {field: '', title: '数量'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input" placeholder="数量">';
+                                        return '<input type="number" class="in-yj-input" placeholder="数量">';
                                     }
                                 },
                                 { field: '', title: '来源',formatter:function (value, row, index) {
@@ -2584,7 +2643,6 @@
                 }else{
                     layer.msg(ret.data)
                 }
-
             })
         }
         /**添加常规商品*/
@@ -2628,19 +2686,53 @@
                 return;
             }
             var markup = "";
-            if(type==0){
+            if(type == 0){
                 markup = "changgui";
             }else if(type == 1){
                 markup = "jifen";
             }
-            var inventory = $("#skuTable tr[data-index='"+i+"'] .inventory").html();//库存
-            var quantity = $("#skuTable tr[data-index='"+i+"'] input").val(); //数量
-            if(quantity == 0){
+            var inventory = $("#skuTable tr[data-index='"+i+"'] .inventory").html()*1;//库存
+            var quantity = $("#skuTable tr[data-index='"+i+"'] input").val()*1; //数量
+            console.log(inventory,quantity);
+            if(quakooUtils.isBlack(quantity)){
                 layer.msg("请输入添加数量")
+                return
+            }else{
+                if(inventory<quantity){
+                    layer.msg("没有这么多库存");
+                    return;
+                }
             }
-            if(inventory<quantity){
-                layer.msg("没有这么多库存");
-                return;
+            if(type == 1){
+                var jfPrice = $("#skuTable tr[data-index='"+i+"'] .jfPrice").html()*1;//积分价
+                var shangxian = $("#skuTable tr[data-index='"+i+"'] .shangxian").html()*1;//上限
+                var jifen = $("#skuTable tr[data-index='"+i+"'] .jifen").html()*1;//会员积分
+/*
+                if(quakooUtils.isNotBlack(orderFormData[markup+skuid])){
+                    if(orderFormData[markup+skuid].number>shangxian){
+                        layer.msg("超过可用上限");
+                        return;
+                    }
+                    for(var i in orderFormData){
+                        if(orderFormData[i].type==2){
+                            jifenf += orderFormData[markup+skuid].number*jfPrice;
+                        }
+                    }
+                    if(orderFormData[markup+skuid].number*jfPrice>jifen){
+                        layer.msg("会员积分不足");
+                        return;
+                    }
+                }
+                if(quantity > shangxian){
+                    layer.msg("超过可用上限");
+                    return;
+                }
+                if(jifen < quantity*jfPrice){
+                    layer.msg("会员积分不足");
+                    return;
+                }
+*/
+
             }
             if(quakooUtils.isBlack(orderFormData[markup+skuid])){
                 orderFormData[markup+skuid] = {};
@@ -2659,84 +2751,96 @@
                 orderFormData[markup+skuid].number = parseInt(quantity)+parseInt(orderFormData[markup+skuid].number);
             }
             layer.msg(orderFormData[markup+skuid].productName+"已添加"+orderFormData[markup+skuid].number,{icon:1});
-            renderOrderForm();
+                renderOrderForm(markup+skuid);
         }
-        /**渲染订单表格数据*/
-        function renderOrderForm(){
-/*
-            var totalPrice ={};
-            totalPrice.originalTotal = 0;
-            totalPrice.addPrice = 0;
-            totalPrice.subtractPrice = 0;
-            for(var i in orderFormData){
-                if(orderFormData[i].type == 3){
-                    totalPrice.addPrice += orderFormData[i].money*1;
-                }
-                if(orderFormData[i].type == 4){
-                    totalPrice.subtractPrice += orderFormData[i].money*1;
-                }
-            }
-            for(var i in orderFormData){
-                if(orderFormData[i].type==1){
-                    orderFormData[i].subtotal = orderFormData[i].number*orderFormData[i].price*orderFormData[i].discount/10;
-                    totalPrice.originalTotal += orderFormData[i].subtotal*1;
-                    totalPrice.discountedPrice = totalPrice.originalTotal*0.68.toFixed(2);
-                }
-            }
-            totalPrice.practicalPrice = totalPrice.discountedPrice*1;
-            if(totalPrice.addPrice){
-                totalPrice.practicalPrice = totalPrice.discountedPrice*1+totalPrice.addPrice*1;
-            }
-            if(totalPrice.subtractPrice){
-                totalPrice.practicalPrice = totalPrice.discountedPrice-totalPrice.subtractPrice;
-            }
-*/
+        /**获取订单金额之后渲染订单表格数据*/
+        function renderOrderForm(nowObj){
+
             /*获取金额*/
             if(quakooUtils.isNotBlack(orderFormData)){
-                getOrderAmount();
+                var params = {};
+                params.uid = cusId;
+                params.skuidsList=[];
+                params.surchargesJson=[];
+                for(var i in orderFormData){
+                    if(orderFormData[i].type == 1||orderFormData[i].type == 2){
+                        var obj ={};
+                        obj.skuid = orderFormData[i].skuid;
+                        obj.spuid = orderFormData[i].spuid;
+                        obj.num = orderFormData[i].number;
+                        params.skuidsList.push(obj);
+                    }else if(orderFormData[i].type == 3){//附加费用
+                        var obj = {};
+                        obj.name = orderFormData[i].name;
+                        obj.price = orderFormData[i].money;
+                        params.surchargesJson.push(obj);
+                    }else if(orderFormData[i].type == 4){//促销方式
+                        params.couponid = orderFormData[i].id;
+                    }
+                }
+                params.skuidsList=JSON.stringify(params.skuidsList);
+                params.surchargesJson = JSON.stringify(params.surchargesJson);
+                console.log("金额参数：",params);
+                quakooData.ajaxGetData(config.getUrl_order_countPrice(),params,function (ret) {
+                    console.log("金额：",ret);
+                    if(ret&&ret.success){
+                        priceData = ret.data;
+                        for(var i in priceData.clientSkuids){
+                            for(var j in orderFormData){
+                                if(priceData.clientSkuids[i].spuid==orderFormData[j].spuid&&priceData.clientSkuids[i].skuid==orderFormData[j].skuid){
+                                    //orderFormData[j].discount = priceData.clientSkuids[i].discount;//折扣
+                                    orderFormData[j].subtotal = priceData.clientSkuids[i].subtotal;//小计
+                                }
+                            }
+                        }
+                        priceData.userDiscount = userDiscount;
+                        var data = {list: orderFormData,price:priceData};
+                        var html = template("orderFormList", data);
+                        $("#orderForm").html(html);
+
+                    }else{
+                        console.log(orderFormData);
+                        console.log(orderFormData[nowObj]);
+                        delete orderFormData[nowObj];
+                        console.log(orderFormData);
+                        var data = {list: orderFormData,price:priceData};
+                        var html = template("orderFormList", data);
+                        $("#orderForm").html(html);
+
+                        layer.msg(ret.data,{icon:4});
+                        return
+                    }
+                })
             }
             console.log("orderFormData",orderFormData);
-            var data = {list: orderFormData};
+            var data = {list: orderFormData,price:priceData};
             var html = template("orderFormList", data);
             $("#orderForm").html(html);
 
-        }
-        /**获取订单金额*/
-        function getOrderAmount() {
-            var params = {};
-            params.uid = cusId;
-            params.skuidsList=[];
-            params.surcharges=[];
-            for(var i in orderFormData){
-                if(orderFormData[i].type == 1||orderFormData[i].type == 2){
-                    var obj ={};
-                    obj.skuid = orderFormData[i].skuid;
-                    obj.spuid = orderFormData[i].spuid;
-                    obj.num = orderFormData[i].number;
-                    params.skuidsList.push(obj);
-                    params.skuidsList=JSON.stringify(params.skuidsList);
-                }else if(orderFormData[i].type == 3){//附加费用
-                    var obj = {};
-                    obj.name = orderFormData[i].name;
-                    obj.price = orderFormData[i].money;
-                    params.surcharges.push(obj);
-                    params.surcharges = JSON.stringify(params.surcharges)
-                }else if(orderFormData[i].type == 4){//促销方式
-                    params.couponid = orderFormData[i].id;
-                }
-            }
-            console.log("金额参数：",params);
-            quakooData.ajaxGetData(config.getUrl_order_countPrice(),params,function (ret) {
-                console.log("金额：",ret);
-                return;
-            })
         }
         /**删除订单表格数据*/
         function delOrderItem(index){
             delete orderFormData[index];
             renderOrderForm();
         }
-
+        /**保存订单*/
+        function saveOrder(){
+            var param = {};
+            if(quakooUtils.isBlack(saleUid)){//销售员
+                layer.msg("请选择销售员",{icon:4});
+                return;
+            }
+            param.personnelid = saleUid;
+            if(quakooUtils.isNotBlack(processUid)){//加工师
+                param.machiningid = processUid;
+            }
+            param.OptometryInfoid = ygInfo['now'].id||0;
+            quakooData.ajaxGetData(config.getUrl_order_saveOrder(),param,function (ret) {
+                console.log(ret);
+                if(ret&&ret.success){
+                }
+            })
+        }
         /***************************************************订单信息结束*****************************************************/
 
 

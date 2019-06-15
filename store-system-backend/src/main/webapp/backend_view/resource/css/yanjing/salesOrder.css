@@ -948,10 +948,12 @@ i {
     display: inline-block;
     width: 25%;
     border-right: 1px solid #ECECF4;
+    vertical-align: middle;
     text-align: center;
 }
 
 .main .orderInfo .rightBox .rightFooterBox .actualMoney div span input {
+    vertical-align: middle;
     width: 70%;
     box-sizing: border-box;
     border: none;
