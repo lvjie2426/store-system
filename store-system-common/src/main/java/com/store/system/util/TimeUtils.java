@@ -244,4 +244,54 @@ public class TimeUtils {
         a.roll(Calendar.DATE, -1);//日期回滚一天，也就是最后一天
         return a.get(Calendar.DATE);
     }
+
+    /**
+     * 获取过去几天(count)的日期
+     * @Param: [count]
+     * @return: java.util.List<java.lang.Integer> 格式:20080808
+     * @Author: LaoMa
+     * @Date: 2019/3/20
+     */
+    public static List<Long> getPastDays(int count) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        List<Long> res = Lists.newArrayList();
+        Calendar calendar = Calendar.getInstance();
+        for (int i = 0; i <= count - 1; i++) {
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, -i);
+            String day = sdf.format(calendar.getTime());
+            res.add(Long.valueOf(day));
+        }
+        return res;
+    }
+
+    /**
+     * 获取过去几个月(count)的日期
+     * @Param: [count]
+     * @return: java.util.List<java.lang.Integer> 格式:20080808
+     * @Author: LaoMa
+     * @Date: 2019/3/20
+     */
+    public static List<Long> getPastMonthDays(int count) {
+        List<Long> dates = Lists.newArrayList();
+        Calendar begin = Calendar.getInstance();// 得到一个Calendar的实例
+        begin.setTime(new Date()); // 设置时间为当前时间
+        begin.add(Calendar.MONTH, -count);// 月份减1
+        begin.add(Calendar.DATE, +1);// 日期加1
+        Calendar end = Calendar.getInstance();
+        Long startTime = begin.getTimeInMillis();
+        Long endTime = end.getTimeInMillis();
+        Long oneDay = 1000 * 60 * 60 * 24l;// 一天的时间转化为ms
+
+        Long time = startTime;
+        int i = 0;
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        while (time <= endTime) {
+            Date d = new Date(time);
+            dates.add(i, Long.valueOf(df.format(d)));
+            i++;
+            time += oneDay;
+        }
+        return dates;
+    }
 }
