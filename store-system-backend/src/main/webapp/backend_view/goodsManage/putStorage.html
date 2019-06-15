@@ -648,7 +648,8 @@
     <%}%>
 </script>
 <script>
-    var subid = quakooUser.getUserInfo().sid;//企业id
+    var subid = quakooUser.getUserInfo().psid;//企业/公司id
+    var shopId = quakooDb.getItem('sel_ShopId');//门店id
     var allData = {};//页面请求回来的所有数据
 
     var selectType = -1;//筛选条件的类型
@@ -713,7 +714,7 @@
         }
     })
     //获取门店所有顾客-不分页
-    quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:1},function (ret) {
+    quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:shopId,userType:1},function (ret) {
         if(ret && ret.success){
             peopleData = ret.data;
         }
@@ -746,7 +747,7 @@
             // paginationLoop:false,        //分页是否可以循环
             columns: [],
             queryParams:function (param) {
-                param.subid = subid;
+                param.subid = shopId;
                 param.token = quakooUser.getUserInfo().token;
                 param.type=selectType;
                 if(startTime){
@@ -782,6 +783,7 @@
     function addRepertory(id) {
         allOutList = {};
         var inUserName = '入库人';
+        peopleId = ''
         if(id){
             inUserName = allData[id].inUserName;
             peopleId = allData[id].inUid;
@@ -949,7 +951,7 @@
                 sid = -1;
                 $('#out-series').html('');
                 //获取品牌下的系列列表
-                quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
+                quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
                     if(ret1 && ret1.success){
                         var html2 = template('selectTagTmp',{title:'系列',list:ret1.data});
                         $('#out-series').html(html2).show();
@@ -999,7 +1001,7 @@
             layer.msg('请选择供应商')
             return
         }
-        quakooData.ajaxGetData(config.getUrl_inventoryInBill_select(),{subid:subid,type:type,cid:cid,pid:pid,bid:bid,sid:sid},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_inventoryInBill_select(),{subid:shopId,type:type,cid:cid,pid:pid,bid:bid,sid:sid},function (ret) {
             if(ret && ret.success){
                 console.log(ret)
                 var column;
@@ -1170,7 +1172,7 @@
             params.id = id;
             params.wid = allData[id].wid;
         }
-        params.subid = subid;
+        params.subid = shopId;
         params.inUid = peopleId;
         params.createUid = quakooUser.getUserInfo().id;
         if($('#out-ckType')[0].checked){
