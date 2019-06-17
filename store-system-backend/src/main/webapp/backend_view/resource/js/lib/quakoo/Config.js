@@ -28,7 +28,7 @@ var Config = (function(_super){
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
-        this.serverUrl = "http://192.168.1.7:20005";
+        // this.serverUrl = "http://192.168.1.3:20005";
         /**马文军*/
         // this.serverUrl = "http://192.168.1.18:20005";
         /**聊天服务地址*/

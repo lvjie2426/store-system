@@ -304,6 +304,10 @@ i {
     font-weight: 600;
     display: inline-block;
 }
+.main .mainCustomerInfo .weiyanzheng,
+.main .mainCustomerInfo .yiyanzheng{
+    display: inline-block;
+}
 
 .main .mainCustomerInfo .footerBox .memberInfo .registerMember,
 .main .mainCustomerInfo .footerBox .memberInfo .wxNoBind {
@@ -317,10 +321,16 @@ i {
     height: auto;
     line-height: normal;
 }
-
+.main .mainCustomerInfo .footerBox .memberInfo .registerMember.active{
+    color: #828297;background: #F4F4F8
+}
 .main .mainCustomerInfo .footerBox .memberInfo .wxNoBind {
     float: right;
     background-color: #54b677;
+}
+.main .mainCustomerInfo .footerBox .memberInfo .wxNoBind.active {
+    color: #828297;
+    background: #F4F4F8
 }
 
 .main .mainCustomerInfo .footerBox .memberInfo .textInfoBox {
@@ -2527,3 +2537,32 @@ input[type=checkbox]:checked:after {
 .select-box-header span {
     max-width: 60%;
 }
+
+.unbound{
+    display: inline-block;
+    width: 45px;
+    height: 18px;
+    border-radius: 2px;
+    border: 1px solid rgba(236, 236, 244, 1);
+    line-height: 16px;
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 11px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+.bounding{
+    display: inline-block;
+    width: 45px;
+    height: 18px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    line-height: 16px;
+    opacity: 0.6;
+    color: rgba(130, 130, 151, 1);
+    font-size: 11px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+}
+
