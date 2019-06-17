@@ -50,49 +50,51 @@ public class CustomerStatisticsJob implements InitializingBean {
             while(true) {
                 Uninterruptibles.sleepUninterruptibly(1000, TimeUnit.MILLISECONDS);
                 try {
-                    long currentTime = System.currentTimeMillis();
                     List<Subordinate> subordinates = subordinateDao.getAllList(0);
                     for(Subordinate subordinate:subordinates){
                         long subid = subordinate.getId();
-                        //查询今天ctime大于 00:00的一条记录
-                        String sqlSubordinate = " SELECT * FORM statistics_customer_job WHERE 1=1 AND ctime <"
-                                + DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8") + " AND subid = " + subid;
-                        List<StatisticsCustomerJob> statisticsCustomers = jdbcTemplate.query(sqlSubordinate,
-                                new HyperspaceBeanPropertyRowMapper<StatisticsCustomerJob>(StatisticsCustomerJob.class));
-                        //查询今天创建的所有用户
-                        String sqlUser = " SELECT * FORM user WHERE 1=1 AND ctime <" + DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8")
-                                +" AND userType = " + User.userType_user + " AND subid = " + subid;
-                        List<User> users =  jdbcTemplate.query(sqlUser,new HyperspaceBeanPropertyRowMapper<User>(User.class));
-                        if(statisticsCustomers.size()>0){
-                            StatisticsCustomerJob statisticsCustomer = statisticsCustomers.get(0);
-                            if(users.size()>0){
-                                for(User user : users){
-                                    statisticsCustomer.getAge().add(user.getAge());
-                                    if(user.getSex()==User.sex_mai){
-                                        statisticsCustomer.setMan(statisticsCustomer.getMan()+1);
-                                    }else{
-                                        statisticsCustomer.setMonth(statisticsCustomer.getWoman()+1);
+                        List<Subordinate> childrens = subordinateDao.getAllList(subid);
+                        for(Subordinate children: childrens){
+                            //查询今天ctime大于 00:00的一条记录
+                            String sqlSubordinate = " SELECT * FORM statistics_customer_job WHERE 1=1 AND ctime >"
+                                    + DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8") + " AND subid = " + children.getId();
+                            List<StatisticsCustomerJob> statisticsCustomers = jdbcTemplate.query(sqlSubordinate,
+                                    new HyperspaceBeanPropertyRowMapper<StatisticsCustomerJob>(StatisticsCustomerJob.class));
+                            //查询今天创建的所有用户
+                            String sqlUser = " SELECT * FORM user WHERE 1=1 AND ctime >" + DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8")
+                                    +" AND userType = " + User.userType_user + " AND subid = " + children.getId();
+                            List<User> users =  jdbcTemplate.query(sqlUser,new HyperspaceBeanPropertyRowMapper<User>(User.class));
+                            if(statisticsCustomers.size()>0){
+                                StatisticsCustomerJob statisticsCustomer = statisticsCustomers.get(0);
+                                if(users.size()>0){
+                                    for(User user : users){
+                                        statisticsCustomer.getAge().add(user.getAge());
+                                        if(user.getSex()==User.sex_mai){
+                                            statisticsCustomer.setMan(statisticsCustomer.getMan()+1);
+                                        }else{
+                                            statisticsCustomer.setMonth(statisticsCustomer.getWoman()+1);
+                                        }
                                     }
+                                    statisticsCustomerJobDao.update(statisticsCustomer);
                                 }
-                                statisticsCustomerJobDao.update(statisticsCustomer);
-                            }
-                        }else{
-                            StatisticsCustomerJob statisticsCustomerJob = new StatisticsCustomerJob();
-                            Calendar calendar = Calendar.getInstance();
-                            statisticsCustomerJob.setSubid(subid);
-                            statisticsCustomerJob.setDay(DateUtils.getDate());
-                            statisticsCustomerJob.setWeek(calendar.get(Calendar.WEEK_OF_YEAR));//今年第几周
-                            statisticsCustomerJob.setMonth(DateUtils.getDate());
-                            if(users.size()>0){
-                                for(User user : users){
-                                    statisticsCustomerJob.getAge().add(user.getAge());
-                                    if(user.getSex()==User.sex_mai){
-                                        statisticsCustomerJob.setMan(statisticsCustomerJob.getMan()+1);
-                                    }else{
-                                        statisticsCustomerJob.setMonth(statisticsCustomerJob.getWoman()+1);
+                            }else{
+                                StatisticsCustomerJob statisticsCustomerJob = new StatisticsCustomerJob();
+                                Calendar calendar = Calendar.getInstance();
+                                statisticsCustomerJob.setSubid(subid);
+                                statisticsCustomerJob.setDay(DateUtils.getDate());
+                                statisticsCustomerJob.setWeek(calendar.get(Calendar.WEEK_OF_YEAR));//今年第几周
+                                statisticsCustomerJob.setMonth(DateUtils.getDate());
+                                if(users.size()>0){
+                                    for(User user : users){
+                                        statisticsCustomerJob.getAge().add(user.getAge());
+                                        if(user.getSex()==User.sex_mai){
+                                            statisticsCustomerJob.setMan(statisticsCustomerJob.getMan()+1);
+                                        }else{
+                                            statisticsCustomerJob.setMonth(statisticsCustomerJob.getWoman()+1);
+                                        }
                                     }
+                                    statisticsCustomerJobDao.insert(statisticsCustomerJob);
                                 }
-                                statisticsCustomerJobDao.insert(statisticsCustomerJob);
                             }
                         }
                     }
