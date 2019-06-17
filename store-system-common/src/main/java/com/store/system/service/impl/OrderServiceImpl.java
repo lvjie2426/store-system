@@ -35,6 +35,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.smartcardio.Card;
 import java.io.File;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -488,8 +489,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         List<ClientOrderSku> clientOrderSkus=new ArrayList<>();
         for(OrderSku orderSku:orderSkuList){
             Map map=countSkuPrice(order.getUid(),orderSku.getSpuid(),orderSku.getSkuid(),orderSku.getNum(),order.getCouponid(),order.getSurcharges());
-            dicountPriceYuan+= (double) map.get("DicountPriceYuan");
-            totaoPriceyuan+=(double) map.get("totaoPriceyuan");
+            dicountPriceYuan= ArithUtils.add(dicountPriceYuan,(double) map.get("DicountPriceYuan"));
+            totaoPriceyuan= ArithUtils.add(totaoPriceyuan,(double) map.get("totaoPriceyuan"));
             clientOrderSkus.add((ClientOrderSku)map.get("clientOrderSku"));
         }
         clientOrder.setClientSkuids(clientOrderSkus);
@@ -502,7 +503,6 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         Map map=new HashMap();
         int surchargePrice=0;//附加费
         int totalPrice=0;//总金额
-        double discountPrice=0;//折后金额
         User userDb = userDao.load(uid);
         UserGrade userGrade = userGradeDao.load(userDb.getUserGradeId());
         //--
@@ -525,7 +525,6 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 DecimalFormat df = new DecimalFormat("#.00");
                 double subtotal= Double.parseDouble(df.format(productSKU.getRetailPrice()*num*dis*(userGrade.getDiscount()/10.0)*0.01));
                 clientOrderSku.setLastSubtotal(subtotal);
-                discountPrice+=clientOrderSku.getSubtotal();
                 totalPrice+=productSKU.getRetailPrice()*num*dis;
             }else{
                 //没有设置折扣的商品
@@ -536,7 +535,6 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 clientOrderSku.setPrice(productSKU.getRetailPrice()/100.0);
                 clientOrderSku.setSubtotal((productSKU.getRetailPrice()*num)/100.0);
                 clientOrderSku.setLastSubtotal((productSKU.getRetailPrice()*num*(userGrade.getDiscount()/10.0))/100.0);
-                discountPrice+=clientOrderSku.getSubtotal();
                 totalPrice+=productSKU.getRetailPrice()*num;
             }
 
@@ -547,11 +545,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             }
             ProductSKU productSKU = productSKUDao.load(skuid);
             //判断用户积分。
-            if(productSKU.getIntegralPrice()>userDb.getScore()){
+            if(productSKU.getIntegralPrice()*num>userDb.getScore()){
                 throw new StoreSystemException("会员积分不足兑换该"+productSKU.getName()+"积分商品！");
             }
             clientOrderSku.setPrice(productSKU.getIntegralPrice());
-            clientOrderSku.setSubtotal(productSKU.getRetailPrice()*num);
+            clientOrderSku.setSubtotal(productSKU.getIntegralPrice()*num);
         }
         //---
         if(surchargeList.size()>0){
@@ -561,22 +559,25 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             }
         }
         int totaoPriceyuan=surchargePrice+totalPrice;
-        double dicountPriceYuan=0.0d;//折后金额
+        double dicountPriceYuan=totaoPriceyuan*userGrade.getDiscount();//折后金额
+        dicountPriceYuan= ArithUtils.sub(dicountPriceYuan,totaoPriceyuan*(5.0/10.0));
         //计算促销券
         if(couponid>0){
             MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
-                dicountPriceYuan=( (totaoPriceyuan-marketingCoupon.getDescSubtract())/100.0);
+                dicountPriceYuan=( (dicountPriceYuan-marketingCoupon.getDescSubtract()));
             }
             if(marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
-                dicountPriceYuan=( (totaoPriceyuan-totaoPriceyuan*(marketingCoupon.getDescSubtract()/10.0))/100.0);
+                dicountPriceYuan=( (dicountPriceYuan-totaoPriceyuan*(marketingCoupon.getDescSubtract()/10.0)));
             }
         }else{
-            dicountPriceYuan=(discountPrice);
+            dicountPriceYuan=(dicountPriceYuan);
         }
-
+        if(dicountPriceYuan<0){
+            dicountPriceYuan=0.0d;
+        }
         map.put("surchargeList",surchargeList);//附加费用
-        map.put("DicountPriceYuan",dicountPriceYuan);//折扣后金额
+        map.put("DicountPriceYuan",dicountPriceYuan/100.0);//折扣后金额
         map.put("totaoPriceyuan",totaoPriceyuan/100.0);//总金额
         map.put("clientOrderSku",clientOrderSku);//sku小计单
         return  map;
