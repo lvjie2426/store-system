@@ -501,4 +501,13 @@
         </property>
     </bean>
 
+    <bean id="staticticsCustomerJobDao" class="com.store.system.dao.impl.StatisticsCustomerJobDaoImpl">
+        <property name="tableName" value="statistics_customer_job" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

@@ -1,10 +1,12 @@
 package com.store.system.util;
 
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.http.util.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
 
@@ -209,6 +211,28 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
 	public static void main(String[] args) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		System.out.println(sdf.format(new Date()));
+	}
+
+	//获得当前时间
+	public static int getDate()throws Exception{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		String day = sdf.format(calendar.getTime());
+		return Integer.valueOf(day);
+	}
+
+	//获取当天（按当前传入的时区）00:00:00点钟 所对应时刻的long型值
+	public static long getStartTimeOfDay(long now, String timeZone) {
+		String tz = TextUtils.isEmpty(timeZone) ? "GMT+8" : timeZone;
+		TimeZone curTimeZone = TimeZone.getTimeZone(tz);
+		Calendar calendar = Calendar.getInstance(curTimeZone);
+		calendar.setTimeInMillis(now);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTimeInMillis();
 	}
 
 }
