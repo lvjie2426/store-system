@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
@@ -27,6 +29,8 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2019/6/15 19:13
  * @Version: 1.0
  */
+@Component
+@EnableScheduling
 public class CustomerStatisticsJob implements InitializingBean {
 
     private Logger logger = LoggerFactory.getLogger(SaleStatisticsJob.class);

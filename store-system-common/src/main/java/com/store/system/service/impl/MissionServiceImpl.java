@@ -3,6 +3,7 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
+import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientMission;
 import com.store.system.dao.MissionDao;
 import com.store.system.dao.SubordinateMissionPoolDao;
@@ -171,26 +172,25 @@ public class MissionServiceImpl  implements MissionService {
     public List<Mission> checkMission(long skuId,long sid,long subid,long uid) throws Exception {
         String sql = "SELECT * FROM `mission` where sid = " + sid  + " AND status = " + Mission.status_yes;
         sql = sql + " order  by `ctime` desc";
-        List<Mission> missions = this.jdbcTemplate.query(sql,new RowMapperHelp<Mission>(Mission.class));
+        List<Mission> missions = this.jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Mission>(Mission.class));
         List<Mission> res = Lists.newArrayList();
-        if(missions.size()>0){
-            for(Mission mission: missions){
+        if(missions.size()>0) {
+            for (Mission mission : missions) {
                 List<Long> ids = mission.getExecutor();
                 List<Long> skus = mission.getSkuIds();
-                if(mission.getType()==Mission.type_tem){
+                if (mission.getType() == Mission.type_tem) {
                     //团队任务:当前任务包含店铺ID并且包含skuID，保存该任务。
-                    if(ids.contains(subid)&&skus.contains(skuId)){
+                    if (ids.contains(subid) && skus.contains(skuId)) {
                         res.add(mission);
                     }
-                }else if(mission.getType()==Mission.type_user){
-                    if(ids.contains(uid)&&skus.contains(skuId)){
+                } else if (mission.getType() == Mission.type_user) {
+                    if (ids.contains(uid) && skus.contains(skuId)) {
                         res.add(mission);
                     }
                 }
             }
-            return res;
         }
-        return null;
+        return res;
     }
 
     private ClientMission transformClient(Mission mission) throws Exception{
