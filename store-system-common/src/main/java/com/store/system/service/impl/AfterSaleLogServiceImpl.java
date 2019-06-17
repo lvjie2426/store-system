@@ -114,7 +114,7 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
             Object[] args = new Object[objects.size()];
             objects.toArray(args);
             afterSaleLogs = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<AfterSaleLog>(AfterSaleLog.class),args);
-            count = this.jdbcTemplate.queryForObject(sqlCount,Integer.class);
+            count = this.jdbcTemplate.queryForObject(sqlCount,Integer.class,args);
         }else{
             afterSaleLogs = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<AfterSaleLog>(AfterSaleLog.class));
             count = this.jdbcTemplate.queryForObject(sqlCount,Integer.class);

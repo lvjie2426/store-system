@@ -748,6 +748,7 @@ public class UserServiceImpl implements UserService {
         List<Order> orders = orderDao.getUserFinishOrders(user.getId(),Order.makestatus_qu_yes);
         if(orders.size()>0){
             clientUser.setPayCount(orders.size());
+            clientUser.setLastMoney(orders.get(0).getPrice());//上次消费金额
         }
         //推荐人
         if(user.getRecommender()>0){

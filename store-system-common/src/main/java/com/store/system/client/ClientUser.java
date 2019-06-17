@@ -25,6 +25,8 @@ public class ClientUser extends User {
 
     private double discount;//会员折扣
 
+    private int lastMoney;//最后一次消费金额(分)
+
     public ClientUser(User user) {
         try {
             BeanUtils.copyProperties(this, user);

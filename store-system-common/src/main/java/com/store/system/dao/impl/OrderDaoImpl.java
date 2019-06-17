@@ -2,9 +2,11 @@ package com.store.system.dao.impl;
 
 import com.quakoo.space.CacheBaseDao;
 import com.quakoo.space.annotation.cache.CacheDaoMethod;
+import com.quakoo.space.annotation.cache.CacheSort;
 import com.quakoo.space.annotation.dao.HyperspaceDao;
 import com.quakoo.space.enums.HyperspaceType;
 import com.quakoo.space.enums.cache.CacheMethodEnum;
+import com.quakoo.space.enums.cache.CacheSortOrder;
 import com.store.system.dao.OrderDao;
 import com.store.system.model.Order;
 
@@ -33,6 +35,7 @@ public class OrderDaoImpl extends CacheBaseDao<Order> implements OrderDao {
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    @CacheSort(order = CacheSortOrder.desc)
     public List<Order> getUserFinishOrders(long uid, int makeStatus) throws Exception {
         return null;
     }

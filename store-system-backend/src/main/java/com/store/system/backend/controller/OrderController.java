@@ -155,9 +155,23 @@ public class OrderController extends BaseController {
      */
     @RequestMapping("/saveOrder")
     public ModelAndView saveOrder(HttpServletRequest request, HttpServletResponse response,
-                                      Order order) throws Exception {
+                                      Order order,
+                                  @RequestParam( value = "skuidsList")   String skuidsList,
+                                  @RequestParam( value = "surchargesJson",defaultValue = "")   String surchargesJson
+
+
+    ) throws Exception {
 
         try {
+            List<Surcharge> billItems = Lists.newArrayList();
+            List<OrderSku> orderskuids = Lists.newArrayList();
+            if(StringUtils.isNotBlank(surchargesJson)) {
+                billItems = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
+                order.setSurcharges(billItems);
+            }if(StringUtils.isNotBlank(skuidsList)) {
+                orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
+                order.setSkuids(orderskuids);
+            }
             order = orderService.saveOrder(order);
             return this.viewNegotiating(request, response, new ResultClient(order));
         } catch (StoreSystemException e) {
