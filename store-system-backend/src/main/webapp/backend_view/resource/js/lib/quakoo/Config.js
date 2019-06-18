@@ -252,6 +252,12 @@ var Config = (function(_super){
     _proto.getUrl_inventoryCheckBill_getCheckPager = function(){return this.serverUrl + '/inventoryCheckBill/getCheckPager';};
     /**获取当前人创建的盘点列表**/
     _proto.getUrl_inventoryCheckBill_getCreatePager = function(){return this.serverUrl + '/inventoryCheckBill/getCreatePager';};
+    /**查询盘点单**/
+    _proto.getUrl_inventoryCheckBill_select = function(){return this.serverUrl + '/inventoryCheckBill/select';};
+    /**新增盘点**/
+    _proto.getUrl_inventoryCheckBill_add = function(){return this.serverUrl + '/inventoryCheckBill/add';};
+    /**编辑盘点**/
+    _proto.getUrl_inventoryCheckBill_update = function(){return this.serverUrl + '/inventoryCheckBill/update';};
 
     //=======================盘点 结束====================
     //=======================调货 开始====================
