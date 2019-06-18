@@ -601,6 +601,16 @@
 </script>
 <!-- 当前页面逻辑 -->
 <script>
+    var psid,subid;
+    $(function () {
+        psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
+        subid = quakooDb.getItem("sel_ShopId");           //门店ID
+        initPage();                                       //页面初始化
+
+    });
+    function initPage(){
+        saleIncentive();    //销售奖励
+    }
     // 数据挂载
     var todaysDetails = [
             {
@@ -875,27 +885,47 @@
             }
         });
         //销售奖励
-        $("#salesIncentives").bootstrapTable('destroy');
-        $("#salesIncentives").bootstrapTable({
-            data: salesIncentives,
-            classes: "table",
-            pagination: false,        //是否显示分页
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            height: 398,
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                {field: "name", title: "商品名称", align: "left", valign: "middle", sortable: true},
-                {field: "royalty", title: "提成", align: "left", valign: "middle", sortable: true},
-                {field: "oknum", title: "完成量", align: "left", valign: "middle", sortable: true},
-                {field: "reward", title: "奖励", align: "left", valign: "middle", sortable: true},
-            ]
-        });
+        function saleIncentive() {
+            var salesIncentives = [];
+            quakooData.ajaxGetData(config.getUrl_product_saleReward(),{subid:subid},function (ret) {
+                if(ret){
+                    console.log("销售奖励",+ret);
+                    for(var i = 0;i<ret.data.saleRewards.length;i++){
+                        var obj = {};
+                        obj.name = ret.data.saleRewards.name;
+                        obj.number = ret.data.saleRewards.number;
+                        obj.rewardPersonal = ret.data.saleRewards.rewardPersonal+"元/片";
+                        obj.royaltyPersonal = ret.data.saleRewards.royaltyPersonal+"元";
+                        salesIncentives.push(obj);
+                    }
+                    renderSaleIncentive();
+                }
+            });
+            renderSaleIncentive();
+        }
+        function renderSaleIncentive(){
+            $("#salesIncentives").bootstrapTable('destroy');
+            $("#salesIncentives").bootstrapTable({
+                data: salesIncentives,
+                classes: "table",
+                pagination: false,        //是否显示分页
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                height: 398,
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                columns: [
+                    {field: "name", title: "商品名称", align: "left", valign: "middle", sortable: true},
+                    {field: "rewardPersonal", title: "提成", align: "left", valign: "middle", sortable: true},
+                    {field: "number", title: "完成量", align: "left", valign: "middle", sortable: true},
+                    {field: "royaltyPersonal", title: "奖励", align: "left", valign: "middle", sortable: true},
+                ]
+            });
+        }
         //今日出入账明细
         $("#todaysDetails").bootstrapTable('destroy');
         $("#todaysDetails").bootstrapTable({
