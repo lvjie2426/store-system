@@ -18,6 +18,8 @@ public interface AfterSaleDetailDao extends HDao<AfterSaleDetail> {
 
     public List<AfterSaleDetail> getAllList(long asId) throws DataAccessException;
 
+    public List<AfterSaleDetail> getAllListByOid(long oid) throws DataAccessException;
+
     public int getCount(long oid) throws DataAccessException;
 
 }

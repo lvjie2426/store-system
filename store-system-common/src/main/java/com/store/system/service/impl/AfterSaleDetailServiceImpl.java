@@ -49,6 +49,11 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
         return transformClient(afterSaleDetailDao.getAllList(asId));
     }
 
+    @Override
+    public List<ClientAfterSaleDetail> getAllListByOid(long oid) throws Exception {
+        return transformClient(afterSaleDetailDao.getAllList(oid));
+    }
+
     private List<ClientAfterSaleDetail> transformClient(List<AfterSaleDetail> afterSaleDetails) throws Exception{
         List<ClientAfterSaleDetail> clientAfterSaleDetails = Lists.newArrayList();
         Set<Long> uids = Sets.newHashSet();

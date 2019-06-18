@@ -114,7 +114,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         check(inventoryCheckBill);
         for(Long li:list){
             inventoryCheckBill.setSubid(li);
-            inventoryCheckBillDao.insert(inventoryCheckBill);
+            inventoryCheckBill = inventoryCheckBillDao.insert(inventoryCheckBill);
         }
         return inventoryCheckBill;
     }

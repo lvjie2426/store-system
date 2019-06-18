@@ -10,13 +10,12 @@ import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
 import com.store.system.bean.SaleReward;
-import com.store.system.client.ClientOrder;
-import com.store.system.client.ClientOrderSku;
-import com.store.system.client.ClientProductSKU;
-import com.store.system.client.ClientSubordinate;
+import com.store.system.client.*;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
+import com.store.system.service.AfterSaleDetailService;
+import com.store.system.service.AfterSaleLogService;
 import com.store.system.service.OrderService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.util.*;
@@ -48,9 +47,6 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private PropertyUtil propertyUtil = PropertyUtil.getInstance("pay.properties");
     private SimpleDateFormat gmtFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    private TransformMapUtils orderMapUtils = new TransformMapUtils(Order.class);
-
-
     @Resource
     private PayPassportDao payPassportDao;
     @Resource
@@ -75,6 +71,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private OptometryInfoDao optometryInfoDao;
     @Resource
     private AfterSaleDetailDao afterSaleDetailDao;
+    @Resource
+    private AfterSaleDetailService afterSaleDetailService;
     @Resource
     private CommissionDao commissionDao;
 
@@ -552,13 +550,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 clientOrderSku.setSubtotal(productSKU.getIntegralPrice() * orderSku.getNum());
             }
             //---
-            if (surchargeList.size() > 0) {
-                // 拿到附加费用加入总价格
-                for (Surcharge surcharge : surchargeList) {
-                    surchargePrice += surcharge.getPrice();
-                }
-            }
-             totaoPriceyuan = surchargePrice + totalPrice;
+
+             totaoPriceyuan = totalPrice;
              dicountPriceYuan = totalPrice * userGrade.getDiscount();//折后金额
             //计算促销券
             if (couponid > 0) {
@@ -576,6 +569,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 dicountPriceYuan = 0.0d;
             }
             clientOrderSkus.add(clientOrderSku);
+            if (surchargeList.size() > 0) {
+                // 拿到附加费用加入总价格
+                for (Surcharge surcharge : surchargeList) {
+                    surchargePrice += surcharge.getPrice();
+                }
+            }
+            totaoPriceyuan+=ArithUtils.add(totaoPriceyuan,(surchargePrice));
         }
         map.put("surchargeList",surchargeList);//附加费用
         map.put("DicountPriceYuan",dicountPriceYuan/100.0);//折扣后金额
@@ -636,8 +636,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         return pager;
     }
     @Override
-    public ClientOrder loadOrder(long id) throws Exception {
-        return transformClient(orderDao.load(id));
+    public Map<String,Object> loadOrder(long id) throws Exception {
+        Map<String,Object> map = Maps.newHashMap();
+        ClientOrder clientOrder = transformClient(orderDao.load(id));
+        List<ClientAfterSaleDetail> details = afterSaleDetailService.getAllListByOid(id);
+        map.put("order",clientOrder);
+        map.put("afterSaleDetails",details);
+        return map;
     }
 
     @Override
@@ -665,10 +670,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                             SaleReward saleReward = new SaleReward();
                             saleReward.setNumber(orderSku.getNum());
                             saleReward.setProductNamw(orderSku.getName());
-                            saleReward.setRewardPersonal(personal.getPrice());//个人提成
-                            saleReward.setRewardTeam(team.getPrice());//团队提成
-                            saleReward.setRoyaltyPersonal(team.getPrice()*orderSku.getNum());//团队奖励 数量*提成
-                            saleReward.setRoyaltyTeam(personal.getPrice()*orderSku.getNum());//个人奖励
+                            saleReward.setRewardPersonal(personal.getPrice()/100);//个人提成
+                            saleReward.setRewardTeam(team.getPrice()/100);//团队提成
+                            saleReward.setRoyaltyPersonal((team.getPrice()*orderSku.getNum())/100);//团队奖励 数量*提成
+                            saleReward.setRoyaltyTeam((personal.getPrice()*orderSku.getNum())/100);//个人奖励
                             saleRewards.add(saleReward);
                             total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
                         }
@@ -762,6 +767,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
                 clientOrder.setDescSubtractType(load.getDescSubtractType());
             }
+            clientOrder.setAsCount(afterSaleDetailDao.getCount(order.getId()));//售后次数
             clientOrderList.add(clientOrder);
         }
 

@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-/**
+/**销售额统计
  * @ClassName SaleStatistics
  * @Description TODO
  * @Author LaoMa
@@ -29,9 +29,6 @@ public class SaleStatistics implements Serializable{
     private long subId;
 
     @CombinationKey
-    private long cid;
-
-    @CombinationKey
     private long day;
 
     @CombinationKey
@@ -45,13 +42,11 @@ public class SaleStatistics implements Serializable{
 
     private int num; //销售单数
 
-    private long perPrice; //平均客单价
+    private double perPrice; //平均客单价
 
     private int userNum;//顾客数量
 
     private long profits;//毛利润
-
-    private Map<Long,List<OrderSku>> salesLog; //记录
 
     @SortKey
     private long ctime;

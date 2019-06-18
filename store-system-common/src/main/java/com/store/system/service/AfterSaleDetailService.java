@@ -15,4 +15,6 @@ public interface AfterSaleDetailService {
 
     public List<ClientAfterSaleDetail> getAllList(long asId) throws Exception;
 
+    public List<ClientAfterSaleDetail> getAllListByOid(long oid) throws Exception;
+
 }

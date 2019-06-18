@@ -243,8 +243,8 @@ public class OrderController extends BaseController {
     public ModelAndView loadOrder(HttpServletRequest request, HttpServletResponse response,
                                   long id) throws Exception {
         try {
-            ClientOrder order = orderService.loadOrder(id);
-            return this.viewNegotiating(request, response, new ResultClient(order));
+            Map<String,Object> res = orderService.loadOrder(id);
+            return this.viewNegotiating(request, response, res);
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
