@@ -36,8 +36,6 @@ public class ClientStatisticsCustomer extends StatisticsCustomerJob implements S
 
     private int total;//总人数
 
-    private List<Integer> customerJobs = new ArrayList<>();//多店统计 每个门店每天的数据
-
     public ClientStatisticsCustomer(StatisticsCustomerJob statisticsCustomerJob) {
         try {
             BeanUtils.copyProperties(this, statisticsCustomerJob);

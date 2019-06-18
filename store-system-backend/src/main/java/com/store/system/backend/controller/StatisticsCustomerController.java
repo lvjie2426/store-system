@@ -80,9 +80,7 @@ public class StatisticsCustomerController extends BaseController{
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
                 ClientStatisticsCustomer customer = statisticsCustomerJobService.getCustomerCount(subid,date,type);
-                if(customer!=null){
-                    res.add(customer);
-                }
+                if(customer!=null){ res.add(customer); }
             }
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){

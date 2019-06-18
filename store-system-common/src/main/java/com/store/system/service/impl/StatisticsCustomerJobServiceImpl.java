@@ -6,6 +6,7 @@ import com.store.system.client.ClientStatisticsCustomer;
 import com.store.system.dao.StatisticsCustomerJobDao;
 import com.store.system.model.StatisticsCustomerJob;
 import com.store.system.service.StatisticsCustomerJobService;
+import com.store.system.util.DateUtils;
 import com.store.system.util.TimeUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,9 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
     public ClientStatisticsCustomer getCustomerCount(long subid, String date, int type) throws Exception {
         List<StatisticsCustomerJob> customers = Lists.newArrayList();
         if(type == 1){//本周
-            customers = statisticsCustomerJobDao.getWeekList(subid,Integer.valueOf(date));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis((Long.valueOf(date)));
+            customers = statisticsCustomerJobDao.getWeekList(subid,calendar.get(Calendar.WEEK_OF_YEAR));
         }else if(type == 2){//本月
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(Long.valueOf(date));
@@ -61,7 +64,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
 
     @Override
     public ClientStatisticsCustomer getCustomerByTime(long subid, long startTime, long endTime) throws Exception {
-        String sql = " SELECT * FROM statistics_customer where 1=1 AND ctime > "+startTime + " AND endTime < " + endTime + " AND subid = " + subid;
+        String sql = " SELECT * FROM statistics_customer_job where 1=1 AND ctime > "+startTime + " AND ctime < " + endTime + " AND subid = " + subid;
         List<StatisticsCustomerJob> customers = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<StatisticsCustomerJob>(StatisticsCustomerJob.class));
         return statisticsCustomer(customers);
     }
@@ -80,7 +83,6 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
                 woman+=customer.getWoman();
                 total+=man+woman;
                 list.add(total);
-                clientStatisticsCustomer.setCustomerJobs(list);
             }
             clientStatisticsCustomer.setTen(getCount(ages,0,10));//年龄 0 - 10人数
             clientStatisticsCustomer.setTwenty(getCount(ages,11,20));
@@ -93,6 +95,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
             clientStatisticsCustomer.setManProportion(calculator(man,total));
             clientStatisticsCustomer.setWomanProportion(calculator(woman,total));
             clientStatisticsCustomer.setTotal(total);
+            clientStatisticsCustomer.setDay(DateUtils.getDate());
             return clientStatisticsCustomer;
         }
         return null;
