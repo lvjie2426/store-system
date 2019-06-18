@@ -228,16 +228,16 @@
                 <div>
                     <span class="_btn" onclick="selectShop('box03')">多店对比</span>
                 </div>
-                <div class="timeBox yj-demo-time yj-demo-time03">
+                <div class="timeBox yj-demo-time yj-demo-time-customer">
                     <div class="yj-date">
                         <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
                     </div>
                 </div>
                 <div class="tabBox">
                     <ul class="tab-ul">
-                        <li class="">本周</li>
-                        <li class="active">本月</li>
-                        <li class="">近半年</li>
+                        <li class="" onclick="getCusWeek()">本周</li>
+                        <li class="active" onclick="getCusMonth()">本月</li>
+                        <li class="" onclick="getCusYear()">近半年</li>
                     </ul>
                 </div>
             </div>
@@ -255,16 +255,16 @@
                                 <span class="sexIcon"><i class="icon iconfont icon-ico_male"></i></span>
                                 <span>男性</span>
                             </p>
-                            <p>59%</p>
-                            <p>共456789人</p>
+                            <p id="cus-man-per"></p>
+                            <p id="cus-man-num"></p>
                         </div>
                         <div class="female">
                             <p class="clearfix">
                                 <span class="sexIcon"><i class="icon iconfont icon-ico_female"></i></span>
                                 <span>女性</span>
                             </p>
-                            <p>41%</p>
-                            <p>共456789人</p>
+                            <p id="cus-woman-per"></p>
+                            <p id="cus-woman-num"></p>
                         </div>
                     </div>
                     <div class="chart">
@@ -620,7 +620,7 @@
         {title: '其它产品', id: 'qita'},
         {title: '水杯', id: 'shuibei'}
     ]
-    var color01 = ['#4186DC', '#57B8DB', '#DD5B4B', '#54B677', '#7D65C5', '#F0983F']
+    var color01 = ['#4186DC', '#57B8DB', '#DD5B4B', '#54B677', '#7D65C5', '#F0983F'];
     var color02 = ['#4286DA', '#3D7BC8', '#3770B5', '#3265A4', '#2B5992']
     var color03 = ['#57B7DA', '#50A8C8', '#4998B6', '#4189A3', '#3A7A91']
     var color04 = ['#DC5A4B', '#CA5245', '#B74B40', '#A54338', '#923C31']
@@ -955,6 +955,69 @@
         var Rand = Math.random();
         return (Math.round(Rand * Range) + 50);
     }
+    /************************************************顾客统计开始****************************************************/
+    var cusDt = new dateRange(".yj-demo-time-customer");
+    cusDt.init();
+    cusDt.getTime();
+    //接口——顾客统计--时间范围
+    function getCusTime() {
+        var startTime = cusDt.getTime()[2];
+        var endTime = cusDt.getTime()[3];
+        var param = {};
+        param.subid = subid;
+        param.startTime = startTime;
+        param.endTime = endTime;
+        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsByTime(),param,function (ret) {
+            console.log("范围", ret)
+            renderCustomer(ret.data);
+        })
+    }
+    $('.yj-demo-time-customer .yj-date-btn button').click(function () {
+        getCusTime();
+    });
+    //接口——顾客统计--本周
+    function getCusWeek() {
+        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsByWeek(),{subid:subid,week:Date.now()},function (ret) {
+            console.log("本周", ret)
+            renderCustomer(ret.data);
+        })
+    }
+    //接口——顾客统计--本月
+    function getCusMonth() {
+        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsByMonth(),{subid:subid,month:Date.now()},function (ret) {
+            console.log("本月", ret)
+            renderCustomer(ret.data);
+        })
+    }
+    //接口——顾客统计--近半年
+    function getCusYear() {
+        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsByHalfYear(),{subid:subid,year:Date.now()},function (ret) {
+            console.log("近半年", ret);
+            if(ret&&ret.success){
+                renderCustomer(ret.data);
+            }
+        })
+    }
+    //接口——顾客统计--多店对比
+    function getCusStoresContrast() {
+        var param = {};
+        param.subids = [];
+
+        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsBySubordinates(),param,function (ret) {
+            console.log("周", ret)
+
+        })
+    }
+    function renderCustomer(data) {
+        console.log("render：",data);
+        $('#cus-man-per').html(data.manProportion+'%');
+        $('#cus-woman-per').html(data.womanProportion+'%');
+        $('#cus-man-num').html('共'+data.man+'人');
+        $('#cus-woman-num').html('共'+data.woman+'人');
+        dataPercent07 =
+
+    }
+    /************************************************顾客统计结束****************************************************/
 
 </script>
 </body>
