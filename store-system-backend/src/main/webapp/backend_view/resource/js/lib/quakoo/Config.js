@@ -291,6 +291,19 @@ var Config = (function(_super){
     _proto.getUrl_afterSale_add = function(){return this.serverUrl + '/afterSale/add';};
     //=======================售后 结束====================
 
+    //=======================统计 开始====================
+    /**顾客统计--时间范围*/
+    _proto.getUrl_statisticsCustomer_statisticsByTime = function(){return this.serverUrl + '/statisticsCustomer/statisticsByTime';};
+    /**顾客统计--本周*/
+    _proto.getUrl_statisticsCustomer_statisticsByWeek = function(){return this.serverUrl + '/statisticsCustomer/statisticsByWeek';};
+    /**顾客统计--本月*/
+    _proto.getUrl_statisticsCustomer_statisticsByMonth = function(){return this.serverUrl + '/statisticsCustomer/statisticsByMonth';};
+    /**顾客统计--近半年*/
+    _proto.getUrl_statisticsCustomer_statisticsByHalfYear = function(){return this.serverUrl + '/statisticsCustomer/statisticsByHalfYear';};
+    /**顾客统计--多店对比*/
+    _proto.getUrl_statisticsCustomer_statisticsBySubordinates = function(){return this.serverUrl + '/statisticsCustomer/statisticsBySubordinates';};
+    //=======================统计 结束====================
+
 
 
     Quakoo.class(Config,'Config',_super);
