@@ -126,22 +126,7 @@
 <script src="../resource/js/yanjing/daterange.js"></script>
 <script src="../resource/js/template-native.js"></script>
 
-<!--下拉选择模板带全部-->
-<script type="text/html" id="selectTagTmpAll">
-    <div class="select-box-header">
-        <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down"></i>
-    </div>
-    <div class="optionBox">
-        <ul class="optionUL">
-            <li value="-1">全部</li>
-            <%for(var i=0;i< list.length;i++){%>
-            <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>">
-                <%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%>
-            </li>
-            <%}%>
-        </ul>
-    </div>
-</script>
+
 <!--下拉选择模板-->
 <script type="text/html" id="selectTagTmp">
     <div class="select-box-header">
@@ -1006,10 +991,13 @@
             self.value = parseInt($(self).parent().prev().text())
         }
     }
-    //确认出库单
-    function updateListStatus(id) {
-
+    //移除出库单中的商品
+    function removeOutLi(i,j) {
+        allOutList[i].data.splice(j,1);
+        var html = template('outListTmp',{list:allOutList,showTool:true})
+        $("#outListDom").html(html)
     }
+
 </script>
 </body>
 </html>

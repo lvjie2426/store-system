@@ -624,11 +624,25 @@
 <script src="../resource/js/yanjing/daterange.js"></script>
 <script src="../resource/js/template-native.js"></script>
 
+<script type="text/html" id="selectTagTmp">
+    <div class="select-box-header">
+        <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down"></i>
+    </div>
+    <div class="optionBox">
+        <ul class="optionUL">
+            <%for(var i=0;i< list.length;i++){%>
+            <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>">
+                <%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%>
+            </li>
+            <%}%>
+        </ul>
+    </div>
+</script>
 <script type="text/html" id="addTmp">
     <!--左边-->
     <div class="leftBox">
         <div class="head">
-            <span class="title layui-layer-title">添加商品</span>
+            <span class="title layui-layer-title">添加盘点</span>
             <div class="selectShop">
                 <div id="box001">门店(多选)<i class="icon iconfont icon-ico_arrow_down"></i></div>
                 <div id="selectBox001">
@@ -652,29 +666,42 @@
         <div class="body">
             <ul class="contUl">
                 <%for(var i=0;i< categoryData.length;i++){%>
-                <li class="item">
+                <li class="item clearfix">
                     <div class="title"><%=categoryData[i].name%></div>
                     <div class="cont">
-                        <div class="selectBox" id=''>
+                        <div class="selectBox" id='yj-brand<%=categoryData[i].id%>'>
                             <div class="select-box-header"><span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i></div>
                             <div class="optionBox">
                                 <ul class="optionUL">
                                     <%for(var j=0;j< brandData.length;j++){%>
-                                    <li class="txtOverflow" value="01"><%=brandData[j].name%></li>
+                                    <li class="txtOverflow" value="<%=brandData[j].id%>"><%=brandData[j].name%></li>
                                     <%}%>
                                 </ul>
                             </div>
                         </div>
-                        <div class="selectBox" id=yanjing02>
-                            <div class="select-box-header">
-                                <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down"></i></div>
+                        <div class="selectBox" >
+
+                        </div>
+                        <div class="selectBox" id='yj-provider<%=categoryData[i].id%>'>
+                            <div class="select-box-header"><span class="text">供应商</span> <i class="iconfont icon-ico_arrow_down"></i></div>
                             <div class="optionBox">
                                 <ul class="optionUL">
-                                    <li class="txtOverflow" value="01">系列A</li>
+                                    <%for(var j=0;j< providerData.length;j++){%>
+                                    <li class="txtOverflow" value="<%=providerData[j].id%>"><%=providerData[j].name%></li>
+                                    <%}%>
                                 </ul>
                             </div>
                         </div>
-                        <div class="btnGray active">添加至盘点单</div>
+                        <div class="selectBox" id='yj-type<%=categoryData[i].id%>'>
+                            <div class="select-box-header"><span class="text">商品类型</span> <i class="iconfont icon-ico_arrow_down"></i></div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li class="txtOverflow" value="0">常规商品</li>
+                                    <li class="txtOverflow" value="1">积分商品</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="btn btn-info" onclick="addToList('<%=categoryData[i].id%>')">添加至盘点单</div>
                     </div>
                 </li>
                 <%}%>
@@ -688,42 +715,28 @@
     <div class="rightBox">
         <div class="head">
             <span class="title">盘点单</span>
-            <div class="selectBox" id="perSelect">
+            <div class="selectBox" id="yj-people">
                 <div class="select-box-header">
-                    <span class="text">马化腾</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <span class="text">发起人</span> <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
-                        <li value="01">发</li>
-                        <li value="02">发起</li>
-                        <li value="03">发起人</li>
-                        <li value="04">发起人一</li>
-                        <li value="05">发起人二</li>
+                        <%for(var i=0;i< peopleData.length;i++){%>
+                        <li value="<%=peopleData[i].id%>"><%=peopleData[i].name%></li>
+                        <%}%>
                     </ul>
                 </div>
             </div>
             <span class="person">发起人:</span>
         </div>
         <div class="body">
-            <ul class="contUl">
-                <!--js添加-->
-                <li class="yanjing item" style="">
-                    <div class="title">眼镜</div>
-                    <div class="box">
-                        <div class="top">
-                            <span>品牌·系列</span><span>当前库存</span><span>操作</span>
-                        </div>
-                        <ul>
-                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
-                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
-                            <li><span>品牌C·系列A</span><span>12</span><span class="removeLi">移除</span></li>
-                        </ul>
-                    </div>
-                </li>
+            <ul class="contUl" id="outListDom">
+
+
             </ul>
         </div>
         <div class="foot">
-            <a class="layui-layer-btn1 cannotCreat">创建盘点</a>
+            <a class="layui-layer-btn1">创建盘点</a>
         </div>
     </div>
 </script>
@@ -777,6 +790,34 @@
     </li>
     <%}%>
 </script>
+<script type="text/html" id="outListTmp">
+    <%for(var i in list){%>
+    <%if(list[i].data){%>
+    <li class="yanjing item" style="">
+        <div class="title"><%=list[i].name%></div>
+        <div class="box">
+            <div class="top">
+                <span>品牌·系列</span>
+                <span>产品编码</span>
+                <span>当前库存</span>
+                <span>操作</span>
+            </div>
+            <ul>
+                <%for(var j in list[i].data){%>
+                <li class="clearfix">
+                    <span><%=list[i].data[j].brandName%>·<%=list[i].data[j].seriesName%></span>
+                    <span><%=list[i].data[j].p_code%></span>
+                    <span><%=list[i].data[j].num%></span>
+                    <span class="removeLi" onclick="removeOutLi('<%=i%>','<%=j%>')">移除</span>
+                </li>
+                <%}%>
+            </ul>
+        </div>
+    </li>
+    <%}%>
+    <%}%>
+</script>
+
 <!--//日期范围插件结束-->
 <script>
     var subid = quakooUser.getUserInfo().psid;//企业/公司id
@@ -796,6 +837,8 @@
     var peopleData = [];//员工数据
     var allOutList = {};//全部数据
     var shopData;//门店数据
+    var peopleId;//发起人
+    var subidsArr = [];//门店id集合
 
     //获取一级类目
     quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
@@ -924,33 +967,79 @@
             content: $('.content-view-addInventory'), //容器对象
             btn: null,
             success: function (layero, index) {
-                //弹框弹出加载列表
                 $('.content-view-commonInventory-tan .layui-layer-content').height(560);
-                // //底部按钮点击关闭弹窗
-                $('.content-view-addInventory .layui-layer-btn0').click(function () {
-                    layer.close(index);
-                });
-                $('.content-view-addInventory .layui-layer-btn1').click(function () {
-                    layer.close(index);
-                });
                 addRepertorySuccess(index,id)
             }
         });
     }
     function addRepertorySuccess(index,id) {
-        var html = template('addTmp',{brandData:brandData,categoryData:categoryData,providerData:providerData,shopData:shopData})
+        var html = template('addTmp',{brandData:brandData,peopleData:peopleData,categoryData:categoryData,providerData:providerData,shopData:shopData})
         $('#addDom').html(html);
+        $('.content-view-addInventory .layui-layer-btn0').click(function () {
+            addOutList(0,index,id);
+        });
+        $('.content-view-addInventory .layui-layer-btn1').click(function () {
+            addOutList(1,index,id);
+        });
+        for(var i=0;i<categoryData.length;i++){
+            (function (i) {
+                selectTag($("#yj-brand"+categoryData[i].id),function (ret) {
+                    if(ret.value){
+                        if(allOutList[categoryData[i].id]){
+                            allOutList[categoryData[i].id].bid = ret.value;
+                            allOutList[categoryData[i].id].sid = -1;
+                        }else{
+                            allOutList[categoryData[i].id] = {cid:categoryData[i].id,bid:ret.value,sid:-1,name:categoryData[i].name,data:{}}
+                        }
+                        $('#yj-brand'+categoryData[i].id).next().html('');
+                        //获取品牌下的系列列表
+                        quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
+                            if(ret1 && ret1.success){
+                                var html2 = template('selectTagTmp',{title:'系列',list:ret1.data});
+                                $('#yj-brand'+categoryData[i].id).next().html(html2).show();
+                                selectTag($('#yj-brand'+categoryData[i].id).next(),function (series) {
+                                    allOutList[categoryData[i].id].sid = series.value;
+                                })
+                            }
+                        })
+                    }
+                })
+                selectTag($("#yj-provider"+categoryData[i].id),function (ret) {
+                    if(ret.value){
+                        if(allOutList[categoryData[i].id]){
+                            allOutList[categoryData[i].id].pid = ret.value;
+                        }else{
+                            allOutList[categoryData[i].id] = {cid:categoryData[i].id,pid:ret.value,name:categoryData[i].name,data:{}}
+                        }
+                    }
+                })
+                selectTag($("#yj-type"+categoryData[i].id),function (ret) {
+                    if(ret.value){
+                        if(allOutList[categoryData[i].id]){
+                            allOutList[categoryData[i].id].type = ret.value;
+                        }else{
+                            allOutList[categoryData[i].id] = {cid:categoryData[i].id,type:ret.value,name:categoryData[i].name,data:{}}
+                        }
+                    }
+                })
+            })(i)
+        }
+        //发起人
+        selectTag($("#yj-people"), function (ret) {
+            peopleId = ret.value;
+        })
 
-        var arr = [];//定义一个数组用来接收多选框的值
+
         layui.use(['form'], function () {
             form = layui.form
             form.on('checkbox(shop)', function (data) {
                 if ($(this).prop("checked")) {
-                    arr.push($(this).val());
+                    subidsArr.push($(this).val());
                 } else {
-                    var index = getIndex(arr, $(this).val())
-                    arr.splice(index, 1);
+                    var index = getIndex(subidsArr, $(this).val())
+                    subidsArr.splice(index, 1);
                 }
+                console.log(subidsArr)
             });
         })
 
@@ -982,8 +1071,101 @@
         $(document).click(function () {
             $("#selectBox001").hide();
             $(this).find('.icon').removeClass('icon-ico_arrow_up').addClass('icon-ico_arrow_down')
-            //console.log(arr);下拉框复选选中数据
         });
+    }
+    function addToList(id) {
+        var param = {};
+        if(!allOutList[id] || !allOutList[id].bid){
+            layer.msg('请选择品牌');return ;
+        }
+        if(!allOutList[id].pid){
+            layer.msg('请选择供应商');return ;
+        }
+        if(allOutList[id].type!=0 && allOutList[id].type!=1){
+            layer.msg('请选择商品类型');return ;
+        }
+        param.type = allOutList[id].type;
+        param.pid = allOutList[id].pid;
+        param.bid = allOutList[id].bid;
+        param.sid = allOutList[id].sid;
+        param.subid = shopId;
+        param.cid = id;
+        quakooData.ajaxGetData(config.getUrl_inventoryCheckBill_select(),param,function (ret) {
+            if(ret&&ret.success){
+                for(var i=0;i<ret.data.details.length;i++){
+                    console.log(i)
+                    allOutList[id].data[''+allOutList[id].bid+allOutList[id].sid+ret.data.details[i].id] = ret.data.details[i]
+                }
+                var html = template('outListTmp',{list:allOutList,showTool:true})
+                $("#outListDom").html(html)
+            }else{
+                layer.msg(ret.data,{icon: 2})
+            }
+        })
+    }
+    //移除盘点单中的商品
+    function removeOutLi(i,j) {
+        delete allOutList[i].data[j];
+        var html = template('outListTmp',{list:allOutList,showTool:true})
+        $("#outListDom").html(html)
+    }
+    //添加盘点
+    function addOutList(status,index,id) {
+        if(subidsArr.length<=0){
+            layer.msg('选择门店');
+            return
+        }
+        if(!peopleId){
+            layer.msg('选择发起人');
+            return
+        }
+        var params = {};
+        if(id){
+            params.id = id;
+            params.wid = allData[id].wid;
+        }
+        params.subid = shopId;
+        params.subids = subidsArr;
+        params.status = status;
+        params.initUid = peopleId;
+        params.createUid = quakooUser.getUserInfo().id;
+        params.itemsJson = [];
+        for(var i in allOutList){
+            if(allOutList[i].data){
+                for(var j in allOutList[i].data){
+                    var obj = {};
+                    if(id){
+                        obj.did = allOutList[i].data[j].did;
+                    }else{
+                        obj.did = allOutList[i].data[j].id;
+                    }
+                    obj.currentNum = allOutList[i].data[j].num;
+                    params.itemsJson.push(obj)
+                }
+            }
+        }
+        params.itemsJson = JSON.stringify(params.itemsJson)
+        if(id){
+            quakooData.ajaxGetData(config.getUrl_inventoryCheckBill_update(),params,function (ret) {
+                if(ret && ret.success){
+                    layer.msg('修改成功',{icon: 1})
+                    layer.close(index)
+                    getInData()
+                }else{
+                    layer.msg(ret.data,{icon: 2})
+                }
+            })
+        }else{
+            quakooData.ajaxGetData(config.getUrl_inventoryCheckBill_add(),params,function (ret) {
+                if(ret && ret.success){
+                    layer.msg('添加成功',{icon: 1})
+                    layer.close(index)
+                    getInData()
+                }else{
+                    layer.msg(ret.data,{icon: 2})
+                }
+            })
+        }
 
     }
 
