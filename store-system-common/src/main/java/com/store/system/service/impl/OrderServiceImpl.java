@@ -17,6 +17,8 @@ import com.store.system.client.ClientSubordinate;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
+import com.store.system.service.AfterSaleDetailService;
+import com.store.system.service.AfterSaleLogService;
 import com.store.system.service.OrderService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.util.*;
@@ -762,6 +764,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
                 clientOrder.setDescSubtractType(load.getDescSubtractType());
             }
+            clientOrder.setAsCount(afterSaleDetailDao.getCount(order.getId()));//售后次数
             clientOrderList.add(clientOrder);
         }
 
