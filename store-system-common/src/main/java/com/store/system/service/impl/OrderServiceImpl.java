@@ -552,13 +552,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 clientOrderSku.setSubtotal(productSKU.getIntegralPrice() * orderSku.getNum());
             }
             //---
-            if (surchargeList.size() > 0) {
-                // 拿到附加费用加入总价格
-                for (Surcharge surcharge : surchargeList) {
-                    surchargePrice += surcharge.getPrice();
-                }
-            }
-             totaoPriceyuan = surchargePrice + totalPrice;
+
+             totaoPriceyuan = totalPrice;
              dicountPriceYuan = totalPrice * userGrade.getDiscount();//折后金额
             //计算促销券
             if (couponid > 0) {
@@ -576,6 +571,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 dicountPriceYuan = 0.0d;
             }
             clientOrderSkus.add(clientOrderSku);
+            if (surchargeList.size() > 0) {
+                // 拿到附加费用加入总价格
+                for (Surcharge surcharge : surchargeList) {
+                    surchargePrice += surcharge.getPrice();
+                }
+            }
+            totaoPriceyuan+=ArithUtils.add(totaoPriceyuan,(surchargePrice));
         }
         map.put("surchargeList",surchargeList);//附加费用
         map.put("DicountPriceYuan",dicountPriceYuan/100.0);//折扣后金额
