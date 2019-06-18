@@ -72,17 +72,16 @@
                 </div>
 
             </div>
-            <button class="btn intention">意向顾客</button>
+            <button class="btn intention" onclick="intentionCustomers()">意向顾客</button>
         </div>
     </div>
     <!-- 页面内容外层盒子 -->
     <div class="main">
         <!-- 顾客信息 -->
-        <div class="mainCustomerInfo">
+        <div class="mainCustomerInfo" id="mainCustomerInfo">
             <div class="titleBox clearfix">
                 <h4>顾客信息</h4>
                 <div class="telephoneNumBox">
-                    <!--<button class="btnPreservation">保存</button>-->
                     <div class="searchTypeBox">
                         <div class="selectBox" id="searchTypeBox">
                             <div class="select-box-header">
@@ -127,6 +126,7 @@
                             <input name="test" id="tests"
                                 class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
                                 placeholder="出生日期" data-type="day" />
+
                         </div>
                         <div class="layui-form-item ageNum">
                             <div class="layui-input-block">
@@ -172,9 +172,19 @@
                     <div style="color: #828297;margin-top: 16px;">暂无</div>
                 </div>
                 <div class="memberInfo  noRegisterWx" style="display: none">
-                    <h4>会员信息</h4>
-                    <button class="btn btn-order registerMember noRegisterYZ">点击验证</button>
-                    <span class="wxNoBind">未绑定微信</span>
+
+                    <span class="weiyanzheng">
+                        <h4>会员信息</h4>
+                        <button class="btn btn-order registerMember">点击验证</button>
+                        <span class="wxNoBind">未绑定微信</span>
+                    </span>
+                    <span class="yiyanzheng">
+                        <h4>会员信息</h4>
+                        <span class="registerMember active">已验证</span>
+                        <button class="btn btn-order registerMember">储值卡充值</button>
+                        <span class="wxNoBind active">已绑定微信</span>
+                    </span>
+
                     <div class="textInfoBox">
                         <div class="textInfo">
                             <span class="mem-tag">卡号</span>
@@ -208,13 +218,6 @@
                 </div>
                 <div class="memberInfo  yesRegister" style="display: none">
                     <h4>会员信息</h4>
-                    <span class="registerMember" style="color: #828297;background: #F4F4F8">
-                        已验证
-                    </span>
-                    <button class="btn btn-order registerMember btnYesRegister">储值卡充值</button>
-                    <span class="wxNoBind" style="color: #828297;background: #F4F4F8">
-                        已绑定微信
-                    </span>
                     <div class="textInfoBox">
                         <div class="textInfo">
                             <span>卡号</span>
@@ -1433,8 +1436,8 @@
     <!--订单信息表格-->
     <script type="text/html" id="orderFormList">
         <div class="rightHeadBox clearfix">
-            <input type="text" placeholder="输入条码" class="barCode">
-            <button class="btnCustomized">定制商品</button>
+            <input type="text" placeholder="输入条码" class="barCode" id="authCode">
+            <!--<button class="btnCustomized">定制商品</button>-->
         </div>
         <div class="rightFormBox">
             <table width="100%" border="1">
@@ -1504,20 +1507,20 @@
         <div class="rightFooterBox clearfix">
             <%if(price){%>
                 <div class="amountMoney">
-                    <div>原价共计 <span>￥<%=price.totalPriceYuan%></span></div>
-                    <div>折后金额 <span>￥<%=price.dicountPriceYuan%></span></div>
+                    <div>原价共计 <span id="totalPrice">¥<%=price.totalPriceYuan%></span></div>
+                    <div>折后金额 <span id="dicountPrice">¥<%=price.dicountPriceYuan%></span></div>
                 </div>
                 <div class="actualMoney">
-                    <div>实收金额<span> <b>￥</b> <input type="text"></span></div>
+                    <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney"></span></div>
                     <div >折扣<i id="userDiscount"><%=price.userDiscount%></i></div>
                 </div>
             <%}else{%>
                 <div class="amountMoney">
-                    <div>原价共计 <span>￥</span></div>
-                    <div>折后金额 <span>￥</span></div>
+                    <div>原价共计 <span id="totalPrice">¥0</span></div>
+                    <div>折后金额 <span id="dicountPrice">¥0</span></div>
                 </div>
                 <div class="actualMoney">
-                    <div>实收金额<span> <b>￥</b> <input type="text" value=""></span></div>
+                    <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney"></span></div>
                     <div>折扣<i id="userDiscount">10.0</i></div>
                 </div>
             <%}%>
@@ -1548,6 +1551,9 @@
         var priceData = false;                                   //计算金额
         var userScore = 0;                                     //会员积分
         var userDiscount=10.0;                                 //会员折扣
+        var couponid;                                          //促销方式（优惠券id）
+        var authCode;                                          //条形码
+
         LocYgInfo.yuanTable={class:'yuan-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
         LocYgInfo.yinTable={class:'yin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'曲率',value:'q'},{name:'直径',value:'d'}]};
         LocYgInfo.jinTable={class:'jin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
@@ -1601,10 +1607,95 @@
             })
         }
 /***************************************************顾客信息开始*****************************************************/
+        /**接口——获取意向顾客*/
+        function intentionCustomers() {
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                area: '720px',
+                anim: 0,
+                closeBtn: 0,
+                title: '',
+                shade: 0.1,
+                shadeClose: true, //开启遮罩关闭
+                scrollbar: false,
+                content: $('.intentionalCustomer'),
+                resize:false,
+                btn: '关闭窗口',
+                move:'.layui-layer-title',
+                yes: function () {
+                    layer.close()
+                },
+                success: function (layero, index) {
+                    showIntention()
+                }
+            });
+        }
+        function showIntention(){
+            var table = $('#JFProTable');
+            table.bootstrapTable('destroy');
+            table.bootstrapTable({
+                url:config.getUrl_user_getCustomerPager(),
+                classes:"table",
+                pagination:true,                    //是否显示分页
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,
+                pageList: [5, 10, 15, 20],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign:"center",
+                clickToSelect:true,
+                paginationLoop:false,
+                columns:[{field: "ctime", title: "时间", align: "left", valign: "middle",formatter:function(value,row,index){
+                        var showTime = quakooUtils.formatTimeToDateDianLY(value);
+                        return showTime;
+                    }},
+                    {field: "name", title: "姓名", align: "left", valign: "middle"},
+                    {field: "sex", title: "性别", align: "left", valign: "middle",formatter:function (value,row,index) {
+                            if(value === 0){
+                                return "-"
+                            }else if(value === 1){
+                                return "男"
+                            }else if(value === 2){
+                                return "女"
+                            }
+                        }},
+                    {field: "age", title: "年龄", align: "left", valign: "middle"},
+                    {field: "phone", title: "手机号", align: "left", valign: "middle",formatter:function (value, row, index) {
+                        var html = value;
+                            if(row.weixinId==null){
+                                html = html + ' <span class="unbound">未绑定</span>';
+                            }else{
+                                html = html + ' <span class="bounding">已绑定</span>';
+                            }
+                            return html;
+                        }},
+                    {field: "subName", title: "来源", align: "left", valign: "middle"},
+                    {field: "", title: "操作", align: "left", valign: "middle",formatter: function (value, row, index) {
+                            var html = "<div class='btnSeeHistory' onclick='showCus("+JSON.stringify(row)+")'>选择</div>";
+                            return html;
+                        }
+                    }],
+                queryParams:function (param) {
+                    param.subid = quakooUser.getUserInfo().psid;
+                    param.userType = 0;
+                    param.token = quakooUser.getUserInfo().token;
+                    param.page = param.offset / param.limit + 1;
+                    param.size = param.limit;
+                    return param
+                }
+            });
+
+        }
 
         /**接口——获取门店下的顾客的职业*/
         function getShopJob(){
             quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{sid:subid,userType:0},function (ret) {
+                console.log("2er",ret);
                 var data = {list:ret.data};
                 var html = template("shopOccupationData",data);
                 document.getElementById("shopOccupationList").innerHTML = html;
@@ -1778,17 +1869,45 @@
         }
         /**回显顾客信息*/
         function showCus(data) {
+
             console.log("data:",data);
-            document.querySelector(".memberInfo.noRegister").style.display="none";
-            document.querySelector(".memberInfo.noRegisterWx").style.display="block";
-            document.querySelector("#memcard-num").innerHTML = data.cardNumber;
-            document.querySelector("#mem-grade").innerHTML = data.member;
-            document.querySelector("#mem-money").innerHTML = data.money+"元";
-            document.querySelector("#mem-integral").innerHTML = data.score+"分";
-            document.querySelector("#last-contime").innerHTML = 110;
-            document.querySelector("#con-num").innerHTML = data.payCount+"次";
-            document.querySelector("#tname").innerHTML = data.tname;
-            document.querySelector("#tphone").innerHTML = data.tphone;
+
+            if(quakooUtils.isNotBlack(data)){//渲染
+                $('#cusInfoName').val(data.name);
+                $('#cusInfoPhone').val(data.phone);
+                if(data.sex==2){
+                    $('#cusInfoSex span').first().removeClass('active');
+                    $('#cusInfoSex span').last().addClass('active');
+                }else{
+                    $('#cusInfoSex span').first().addClass('active');
+                    $('#cusInfoSex span').last().removeClass('active');
+                }
+                $('#tests').val(quakooUtils.formatTimeToDateDianLY(data.birthdate));
+                $('#autoAge').val(data.age);
+                $('#occupationTypeBox .text').html(data.job);
+                $('#recommenderBox .text').html(data.tname);
+                $('.memberInfo.noRegister')[0].style.display = "block";
+                $('.memberInfo.noRegisterWx')[0].style.display = "none";
+                if(quakooUtils.isNotBlack(data.member)){//已注册
+                    $('.memberInfo.noRegister')[0].style.display = "none";
+                    $('.memberInfo.noRegisterWx')[0].style.display = "block";
+                    if(data.weixinId == null){//未绑定微信
+                        $(".noRegisterWx .weiyanzheng")[0].style.display = "block";
+                        $(".noRegisterWx .yiyanzheng")[0].style.display = "none";
+                        $("#memcard-num").html(data.cardNumber);
+                        $("#mem-grade").html(data.member);
+                        $("#mem-money").html(data.money+"元");
+                        $("#mem-integral").html(data.score+"分");
+                        $("#last-contime").html(data.lastMoney);
+                        $("#con-num").html(data.payCount+"次");
+                        $("#tname").html(data.tname);
+                        $("#tphone").html(data.tphone);
+                    }else{//已绑定微信
+                        $(".noRegisterWx .weiyanzheng")[0].style.display = "none";
+                        $(".noRegisterWx .yiyanzheng")[0].style.display = "block";
+                    }
+                }
+            }
         }
         /**接口——检查手机号验证码*/
         function checkPhoneCode(name,phone,sex,birthdate,recommender){
@@ -2237,6 +2356,7 @@
                                 layer.msg('已选择促销方式',{icon:7});
                                 return;
                             }
+                            couponid = ret.value;
                             orderFormData[markup] = {};
                             orderFormData[markup].type = 4;
                             orderFormData[markup].id = ret.value;
@@ -2703,37 +2823,7 @@
                     return;
                 }
             }
-            if(type == 1){
-                var jfPrice = $("#skuTable tr[data-index='"+i+"'] .jfPrice").html()*1;//积分价
-                var shangxian = $("#skuTable tr[data-index='"+i+"'] .shangxian").html()*1;//上限
-                var jifen = $("#skuTable tr[data-index='"+i+"'] .jifen").html()*1;//会员积分
-/*
-                if(quakooUtils.isNotBlack(orderFormData[markup+skuid])){
-                    if(orderFormData[markup+skuid].number>shangxian){
-                        layer.msg("超过可用上限");
-                        return;
-                    }
-                    for(var i in orderFormData){
-                        if(orderFormData[i].type==2){
-                            jifenf += orderFormData[markup+skuid].number*jfPrice;
-                        }
-                    }
-                    if(orderFormData[markup+skuid].number*jfPrice>jifen){
-                        layer.msg("会员积分不足");
-                        return;
-                    }
-                }
-                if(quantity > shangxian){
-                    layer.msg("超过可用上限");
-                    return;
-                }
-                if(jifen < quantity*jfPrice){
-                    layer.msg("会员积分不足");
-                    return;
-                }
-*/
 
-            }
             if(quakooUtils.isBlack(orderFormData[markup+skuid])){
                 orderFormData[markup+skuid] = {};
                 if(type == 0){
@@ -2799,10 +2889,7 @@
                         $("#orderForm").html(html);
 
                     }else{
-                        console.log(orderFormData);
-                        console.log(orderFormData[nowObj]);
                         delete orderFormData[nowObj];
-                        console.log(orderFormData);
                         var data = {list: orderFormData,price:priceData};
                         var html = template("orderFormList", data);
                         $("#orderForm").html(html);
@@ -2811,6 +2898,8 @@
                         return
                     }
                 })
+            }else{
+                priceData = false;
             }
             console.log("orderFormData",orderFormData);
             var data = {list: orderFormData,price:priceData};
@@ -2835,9 +2924,67 @@
                 param.machiningid = processUid;
             }
             param.OptometryInfoid = ygInfo['now'].id||0;
+            if(quakooUtils.isBlack(subid)){
+                layer.msg('请选择门店',{icon:4});
+                return;
+            }
+            param.subid = subid;//门店id
+            param.desc = $('#optometryRemarks2').html();
+            param.marketingType = 1;//
+            if(couponid){
+                param.couponid = couponid;
+            }
+            authCode = $('#authCode').val();
+            if(quakooUtils.isBlack(authCode)){
+                layer.msg("请键入条形码",{icon:4});
+                return;
+            }
+            param.authCode = authCode;
+            if(quakooUtils.isBlack($('#PaidMoney').val())){
+                layer.msg('请输入实收金额',{icon:4});
+                return;
+            }
+            param.price = $('#PaidMoney').val()*100;
+            if(quakooUtils.isBlack($('#dicountPrice').html())){
+                layer.msg("请选择商品",{icon:4});
+                return;
+            }
+            param.dicountPrice = ($('#dicountPrice').html().substring(1,$('#dicountPrice').html().length))*100;
+            if(quakooUtils.isBlack($('#totalPrice').html())){
+                layer.msg("请选择商品",{icon:4});
+                return;
+            }
+            param.totalPrice = ($('#totalPrice').html().substring(1,$('#totalPrice').html().length))*100;
+            param.MakeStatus = 6;
+            if(quakooUtils.isBlack(orderFormData)){
+                layer.msg('请选择商品',{icon:4});
+                return;
+            }
+            param.skuidsList = [];
+            for(var i in orderFormData){
+                if(i.indexOf('changgui')>=0||i.indexOf('jifen')>=0){
+                    var obj = {};
+                    obj.skuid = orderFormData[i].skuid;
+                    obj.spuid = orderFormData[i].spuid;
+                    obj.num = orderFormData[i].number;
+                    obj.price = orderFormData[i].price*100;
+                    obj.subtotal = orderFormData[i].subtotal;
+                    param.skuidsList.push(obj);
+                }
+                if(i.indexOf('extra')>=0){
+                    param.surchargesJson = [];
+                    param.surchargesJson[0].name = orderFormData[i].name;
+                    param.surchargesJson[0].price = orderFormData[i].money*100;
+                }
+            }
+            param.skuidsList = JSON.stringify(param.skuidsList);
+            param.surchargesJson = JSON.stringify(param.surchargesJson);
+
+            // param = JSON.stringify(param);
             quakooData.ajaxGetData(config.getUrl_order_saveOrder(),param,function (ret) {
                 console.log(ret);
                 if(ret&&ret.success){
+                    layer.msg(ret.data)
                 }
             })
         }
@@ -3011,16 +3158,7 @@
             }
         }, historyRecord);
 
-        $('.intention').bind('click', {
-            title: false,
-            popupBox: $('.intentionalCustomer'),
-            area: ['720px'],
-            btn: ['', '关闭窗口'],
-            move:$('h3'),
-            fn: function (layero) {
-                layero.find('.layui-layer-btn0').hide();
-            }
-        }, historyRecord);
+
 
         // 历史消费记录表单
         var data =
@@ -3033,122 +3171,8 @@
                     moneyNum: '￥138',
                     btn: '查看'
                 },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
             ];
 
-        //添加积分商品
-        var data2 = [{ name: '精益眼镜旗舰店', branchNum: '1200积分', number: '3', btn: '选择' },
-        { name: '精益眼镜旗舰店', branchNum: '1200积分', number: '3', btn: '选择' }, {
-            name: '精益眼镜旗舰店',
-            branchNum: '1200积分',
-            number: '3',
-            btn: '选择'
-        }, { name: '精益眼镜旗舰店', branchNum: '1200积分', number: '3', btn: '选择' }, {
-            name: '精益眼镜旗舰店',
-            branchNum: '1200积分',
-            number: '3',
-            btn: '选择'
-        }, { name: '精益眼镜旗舰店', branchNum: '1200积分', number: '3', btn: '选择' }, {
-            name: '精益眼镜旗舰店',
-            branchNum: '1200积分',
-            number: '3',
-            btn: '选择'
-        }, { name: '精益眼镜旗舰店', branchNum: '1200积分', number: '3', btn: '选择' }, {
-            name: '精益眼镜旗舰店',
-            branchNum: '1200积分',
-            number: '3',
-            btn: '选择'
-        }, { name: '精益眼镜旗舰店', branchNum: '1200积分', number: '3', btn: '选择' }, {
-            name: '精益眼镜旗舰店',
-            branchNum: '1200积分',
-            number: '3',
-            btn: '选择'
-        }, { name: '精益眼镜旗舰店', branchNum: '1200积分', number: '3', btn: '选择' }, {
-            name: '精益眼镜旗舰店',
-            branchNum: '1200积分',
-            number: '3',
-            btn: '选择'
-        },
-        ];
 
         // 意向顾客
         var data4 = [
@@ -3280,74 +3304,6 @@
 
             ],
 
-        });
-        //添加积分商品
-        $(".cmMain-table2").bootstrapTable({
-            data: data2,
-            classes: "table",
-            pagination: true,        //是否显示分页
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 5,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            height:335,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                { field: "name", title: "商品名称", align: "left", valign: "middle", width: "60%" },
-                { field: "branchNum", title: "价格", align: "left", valign: "middle" },
-                { field: "number", title: "可用库存", align: "left", valign: "middle" },
-                {
-                    field: "btn", title: "操作", align: "left", valign: "middle", formatter: function () {
-                        return '<div class="btnSeeHistory">选择</div>'
-                    }
-                },
-
-            ],
-            onPageChange: function (number, size) {
-                console.log('1');
-
-                // staffForm.render();
-            }
-        });
-        //意向顾客
-        $(".cmMain-table4").bootstrapTable({
-            data: data4,
-            classes: "table",
-            pagination: true,        //是否显示分页
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 5,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                { field: "date", title: "时间", align: "left", valign: "middle" },
-                { field: "name", title: "姓名", align: "left", valign: "middle" },
-                { field: "gender", title: "性别", align: "left", valign: "middle" },
-                { field: "year", title: "年龄", align: "left", valign: "middle" },
-                { field: "number", title: "手机号", align: "left", valign: "middle" },
-                { field: "source", title: "全部来源", align: "left", valign: "middle" },
-                {
-                    field: "btn", title: "操作", align: "left", valign: "middle", formatter: function () {
-                        return '<div class="btnSeeHistory">选择</div>'
-                    }
-                },
-
-            ],
-            onPageChange: function (number, size) {
-                console.log('1');
-
-                // staffForm.render();
-            }
         });
 
         // 定制商品弹窗

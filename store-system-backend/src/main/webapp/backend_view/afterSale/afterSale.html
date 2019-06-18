@@ -44,11 +44,12 @@
                 <ul class="optionUL">
                     <li value="1">顾客姓名</li>
                     <li value="2">顾客id</li>
+                    <li value="3" style="display: none">顾客手机号</li>
                 </ul>
             </div>
         </div>
         <input type="search" class="search-box" placeholder="搜索顾客姓名" id="yj-value">
-        <div class="btn btn-info" style="margin-left: 10px;" onclick="getData()">搜索</div>
+        <div class="btn btn-info" style="margin-left: 10px;" onclick="search()">搜索</div>
     </div>
 </div>
 <div class="content-main">
@@ -491,11 +492,10 @@
 <!--全局JS引用-->
 <script src="../resource/js/jquery.min.js"></script>
 <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-<script src="../resource/js/lib/quakoo/project.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
-
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
 
 <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
 <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
@@ -513,28 +513,60 @@
 <script>
     var subid = quakooUser.getUserInfo().psid;//企业/公司id
     var shopId = quakooDb.getItem('sel_ShopId');//门店id
-    var selectType = 1;
+    var selectType = 1;  //1姓名   2 id   3手机号
+    var type = 1;   //1售后处理   2售后记录
 
     selectTag($('#yj-name-id'),function (ret) {
         selectType = ret.value;
+        if(selectType==1){
+            $('#yj-value').attr('placeholder','搜索顾客姓名')
+        }else if(selectType==2){
+            $('#yj-value').attr('placeholder','搜索顾客id')
+        }else if(selectType==3){
+            $('#yj-value').attr('placeholder','搜索顾客手机号')
+        }
     })
     //type  1售后处理     2售后记录
-    function choose(type) {
+    function choose(t) {
+        type = t;
         if(type==1){
-            getData()
+            $('#yj-name-id li').eq(2).hide().siblings().show();
         }else{
-
+            $('#yj-name-id li').eq(1).hide().siblings().show();
         }
-    }
-    //售后处理
-    function getData() {
+        $('.header .tab-ul li').eq(type-1).addClass('active').siblings().removeClass('active');
         if(quakooUtils.isBlack($('#yj-value').val())){
             $(".no-order").show();
             $(".content-inner").hide();
             return ;
+        }else{
+            $(".no-order").hide();
+            $(".content-inner").show();
+        }
+        if(type==1){
+            getData()
+        }else{
+            getDataLog()
+        }
+    }
+    function search() {
+        if(quakooUtils.isBlack($('#yj-value').val())){
+            layer.msg('请输入搜索内容')
+            $(".no-order").show();
+            $(".content-inner").hide();
+            return
         }
         $(".no-order").hide();
         $(".content-inner").show();
+        if(type==1){
+            getData()
+        }else{
+            getDataLog()
+        }
+    }
+    //售后处理
+    function getData() {
+        $('.tab-item').eq(0).show().siblings().hide();
         $("#as-table").bootstrapTable('destroy');
         $("#as-table").bootstrapTable({
             url: config.getUrl_order_getAllOrder(),
@@ -581,10 +613,54 @@
     }
     //售后记录
     function getDataLog() {
+        $('.tab-item').eq(1).show().siblings().hide();
+        $("#record-table").bootstrapTable('destroy');
+        $("#record-table").bootstrapTable({
+            url: config.getUrl_afterSale_getLogPager(),
+            classes: "table",
+            pagination: true,        //是否显示分页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 6,
+            pageList: [6, 12, 18],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            // paginationLoop:false,        //分页是否可以循环
+            queryParams: function (param) {
+                param.subId = shopId;
+                param.token = quakooUser.getUserInfo().token;
+                if(selectType==1){
+                    param.userName = $('#yj-value').val();
+                }else{
+                    param.phone = $('#yj-value').val();
+                }
+                return param
+            },
+            columns:[
+                {field: "oNum", title: "订单号", align:"left",valign:"middle"},
+                {field: "lastTime", title: "最后一次售后", align:"left",valign:"middle"},
+                {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
+                {field: "phoneNum", title: "联系方式", align:"left",valign:"middle"},
+                {field: "afterWhy", title: "售后原因", align:"left",valign:"middle"},
+                {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
+                {field: "oStatus", title: "订单状态", align:"left",valign:"middle"},
+                {field: "afterNum", title: "售后次数", align:"center",valign:"middle"},
+                {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary">查看</button>';
+                    }
+                }
 
+            ]
+
+        });
     }
 
-    var data3 = [
+   /* var data3 = [
         {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
         {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
         {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
@@ -642,9 +718,9 @@
         ]
 
     });
-    /**
+    /!**
      * 更换弹窗数据接口
-     * */
+     * *!/
     var brand1 = [
         {
             serice:"A系列",ballEye:"-0.25",degree:"-0.50",price:"300元",stock:"8",source:"本店"
@@ -696,55 +772,55 @@
         ]
     });
 
-    /**
+    /!**
      * 主页tab切换 oncl
-     * */
-  /*  $(".tab-ul li").click(function(){
+     * *!/
+  /!*  $(".tab-ul li").click(function(){
         $(this).addClass('active').siblings().removeClass('active');
         $(".tab-item").hide().eq($(this).index()).show();
         showTable();//显示表格
         //$(".right-info").hide().eq($(this).index()).show();
-    });*/
-    /**
+    });*!/
+    /!**
      * 弹窗tab切换
-     * */
+     * *!/
     $(".dialog-tab-ul li").click(function(){
         $(this).addClass('active').siblings().removeClass('active');
         //$(".dialog-tab-item").hide().eq($(this).index()).show();
         //$(".right-info").hide().eq($(this).index()).show();
     });
-    /**
+    /!**
      * 弹窗验光信息 时间tab切换
-     * */
+     * *!/
     $(".optometry-date-tab .optometry-date-item").click(function(){
         $(this).addClass('active').siblings().removeClass('active');
         //$(".dialog-tab-item").hide().eq($(this).index()).show();
         //$(".right-info").hide().eq($(this).index()).show();
     });
-    /**
+    /!**
      * 弹窗验光信息 种类tab切换
-     * */
+     * *!/
     $(".optometry-content-top-tab-list li").click(function(){
         $(this).addClass('active').siblings().removeClass('active');
         //$(".dialog-tab-item").hide().eq($(this).index()).show();
         //$(".right-info").hide().eq($(this).index()).show();
     });
-    /**
+    /!**
      * 更换弹窗tab切换
-     * */
+     * *!/
     $(".content-view-change .content .left-tab .left-item").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
         $(".content-view-change .content .right-content .right-item").hide().eq($(this).index()).show();
     })
-    /**
+    /!**
      * 下拉框
-     * */
+     * *!/
     selectTag($("#selectBox"),function (ret) {
         console.log(ret)
     });
-    /**
+    /!**
      * 验光信息下拉框
-     * */
+     * *!/
     selectTag($("#select-site"),function (ret) {
         console.log(ret)
     });
@@ -757,39 +833,39 @@
     selectTag($("#select-suggest"),function (ret) {
         console.log(ret)
     });
-    /**
+    /!**
      * 验光记录下拉框
-     * */
+     * *!/
     selectTag($("#selectOptometry"),function (ret) {
         console.log(ret)
     });
-    /**
+    /!**
      * 订单信息下拉框
-     * */
+     * *!/
     selectTag($("#selectOrder"),function (ret) {
         console.log(ret)
     });
-    /**
+    /!**
      * 订单信息批号下拉框
-     * */
+     * *!/
     selectTag($("#selectBatch"),function (ret) {
         console.log(ret)
     });
 
-    /**
+    /!**
      * 售后原因下拉框
-     * */
+     * *!/
     selectTag($("#select-why"),function (ret) {
         console.log(ret)
     });
 
-    /**
+    /!**
      * 操作人下拉框
-     * */
+     * *!/
     selectTag($("#select-who"),function (ret) {
         console.log(ret)
     });
-
+*/
     /**
      * 弹窗进行售后
      * */

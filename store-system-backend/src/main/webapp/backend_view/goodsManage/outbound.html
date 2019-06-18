@@ -801,7 +801,7 @@
                     })
                 }
             })
-            //入库人
+            //出库人
             selectTag($("#out-people"), function (ret) {
                 peopleId = ret.value;
             })
@@ -818,7 +818,7 @@
         //添加出库单
         function addOutList(status,index,id) {
             if(!peopleId){
-                layer.msg('选择入库人');
+                layer.msg('选择出库人');
                 return
             }
             var params = {};
