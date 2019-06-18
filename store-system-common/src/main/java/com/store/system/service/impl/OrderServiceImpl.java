@@ -669,10 +669,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                             SaleReward saleReward = new SaleReward();
                             saleReward.setNumber(orderSku.getNum());
                             saleReward.setProductNamw(orderSku.getName());
-                            saleReward.setRewardPersonal(personal.getPrice());//个人提成
-                            saleReward.setRewardTeam(team.getPrice());//团队提成
-                            saleReward.setRoyaltyPersonal(team.getPrice()*orderSku.getNum());//团队奖励 数量*提成
-                            saleReward.setRoyaltyTeam(personal.getPrice()*orderSku.getNum());//个人奖励
+                            saleReward.setRewardPersonal(personal.getPrice()/100);//个人提成
+                            saleReward.setRewardTeam(team.getPrice()/100);//团队提成
+                            saleReward.setRoyaltyPersonal((team.getPrice()*orderSku.getNum())/100);//团队奖励 数量*提成
+                            saleReward.setRoyaltyTeam((personal.getPrice()*orderSku.getNum())/100);//个人奖励
                             saleRewards.add(saleReward);
                             total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
                         }
