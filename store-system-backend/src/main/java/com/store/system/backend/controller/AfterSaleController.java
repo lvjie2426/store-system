@@ -79,14 +79,14 @@ public class AfterSaleController extends BaseController {
     public ModelAndView add(AfterSale afterSale, HttpServletRequest request, HttpServletResponse response,
                             Model model, @RequestParam(value = "skuJson") String skuJson) throws Exception {
         try {
-            //User user = UserUtils.getUser(request);
-            //long optId = user.getId();
+            User user = UserUtils.getUser(request);
+            long optId = user.getId();
             List<OrderSku> skus = Lists.newArrayList();
             if(StringUtils.isNotBlank(skuJson)) {
                 skus = JsonUtils.fromJson(skuJson, new TypeReference<List<OrderSku>>() {});
             }
             afterSale.setSku(skus);
-            //afterSale.setOid(optId);
+            afterSale.setOid(optId);
             AfterSaleLog afterSaleLog = afterSaleLogService.add(afterSale);
             return this.viewNegotiating(request,response, new ResultClient(afterSaleLog));
         } catch (StoreSystemException e) {

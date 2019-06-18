@@ -83,7 +83,7 @@ public class InventoryCheckBillController extends BaseController {
 
     @RequestMapping("/add")
     public ModelAndView add(InventoryCheckBill inventoryCheckBill,
-                            @RequestParam(value = "subids", required = false, defaultValue = "") List<Long> subids,
+                            @RequestParam(value = "subids[]", required = false, defaultValue = "") List<Long> subids,
                             @RequestParam(value = "itemsJson") String itemsJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {

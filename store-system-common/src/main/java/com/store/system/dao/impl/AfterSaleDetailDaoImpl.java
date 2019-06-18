@@ -33,6 +33,12 @@ public class AfterSaleDetailDaoImpl extends CacheBaseDao<AfterSaleDetail> implem
     }
 
     @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<AfterSaleDetail> getAllListByOid(long oid) throws DataAccessException {
+        return null;
+    }
+
+    @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
     public int getCount(long oid) throws DataAccessException {
         return 0;

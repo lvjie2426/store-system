@@ -10,10 +10,7 @@ import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
 import com.store.system.bean.SaleReward;
-import com.store.system.client.ClientOrder;
-import com.store.system.client.ClientOrderSku;
-import com.store.system.client.ClientProductSKU;
-import com.store.system.client.ClientSubordinate;
+import com.store.system.client.*;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
@@ -50,9 +47,6 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private PropertyUtil propertyUtil = PropertyUtil.getInstance("pay.properties");
     private SimpleDateFormat gmtFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    private TransformMapUtils orderMapUtils = new TransformMapUtils(Order.class);
-
-
     @Resource
     private PayPassportDao payPassportDao;
     @Resource
@@ -77,6 +71,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private OptometryInfoDao optometryInfoDao;
     @Resource
     private AfterSaleDetailDao afterSaleDetailDao;
+    @Resource
+    private AfterSaleDetailService afterSaleDetailService;
     @Resource
     private CommissionDao commissionDao;
 
@@ -640,8 +636,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         return pager;
     }
     @Override
-    public ClientOrder loadOrder(long id) throws Exception {
-        return transformClient(orderDao.load(id));
+    public Map<String,Object> loadOrder(long id) throws Exception {
+        Map<String,Object> map = Maps.newHashMap();
+        ClientOrder clientOrder = transformClient(orderDao.load(id));
+        List<ClientAfterSaleDetail> details = afterSaleDetailService.getAllListByOid(id);
+        map.put("order",clientOrder);
+        map.put("afterSaleDetails",details);
+        return map;
     }
 
     @Override
