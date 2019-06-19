@@ -263,6 +263,28 @@ public class OrderController extends BaseController {
         }
     }
 
+    ///////////////支付宝退款订单//////////////////
+    @RequestMapping("/createAliRefundOrder")
+    public ModelAndView createAliRefundOrder(HttpServletRequest request,HttpServletResponse response,
+                                             long oid)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.createAliRefundOrder(oid)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
+
+    ///////////////支付宝退款//////////////////
+    @RequestMapping("/handleAliRefundOrder")
+    public ModelAndView handleAliRefundOrder(HttpServletRequest request,HttpServletResponse response,
+                                             long roid)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleAliRefundOrder(roid)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
+
     ///////////////微信条形码支付//////////////////
     @RequestMapping("/handleWxBarcodeOrder")
     public ModelAndView handleWxBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
@@ -274,6 +296,29 @@ public class OrderController extends BaseController {
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }
     }
+
+    ///////////////微信退款订单//////////////////
+    @RequestMapping("/createWxRefundOrder")
+    public ModelAndView createWxRefundOrder(HttpServletRequest request,HttpServletResponse response,
+                                             long oid)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.createWxRefundOrder(oid)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
+
+    ///////////////微信退款//////////////////
+    @RequestMapping("/handleWxRefundOrder")
+    public ModelAndView handleWxRefundOrder(HttpServletRequest request,HttpServletResponse response,
+                                             long roid)throws Exception{
+        try {
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleWxRefundOrder(request,roid)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
+
 
 
 }

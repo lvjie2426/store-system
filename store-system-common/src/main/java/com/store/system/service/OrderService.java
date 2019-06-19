@@ -4,10 +4,7 @@ package com.store.system.service;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientOrder;
-import com.store.system.model.Order;
-import com.store.system.model.OrderSku;
-import com.store.system.model.SalaryRecord;
-import com.store.system.model.Surcharge;
+import com.store.system.model.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,6 +17,16 @@ public interface OrderService {
 
     public boolean handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type, String typeInfo,
                                         String title, String desc, int price, String ip) throws Exception;
+
+
+    public RefundOrder createAliRefundOrder(long oid) throws Exception;
+
+    public boolean handleAliRefundOrder(long roid) throws Exception;
+
+    public RefundOrder createWxRefundOrder(long oid) throws Exception;
+
+    public boolean handleWxRefundOrder(HttpServletRequest request, long roid) throws Exception;
+
 
     public  Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus,long subid) throws Exception;
 

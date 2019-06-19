@@ -60,8 +60,25 @@ public class OptometryInfoController extends BaseController {
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(OptometryInfo optometryInfo, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView update(OptometryInfo optometryInfo, HttpServletRequest request, HttpServletResponse response, Model model,
+                               @RequestParam(required = false,value = "yuanYongResJson",defaultValue = "") String yuanYongResJson,
+                               @RequestParam(required = false,value = "yinXingResJson",defaultValue = "")  String yinXingResJson,
+                               @RequestParam(required = false,value = "jinYongResJson",defaultValue = "")  String jinYongResJson,
+                               @RequestParam(required = false,value = "jianJinDuoJiaoDianResJson",defaultValue = "")   String jianJinDuoJiaoDianResJson) throws Exception {
         try {
+            if(StringUtils.isNotBlank(yuanYongResJson)){
+                OptometryInfoRes yuanyongRes = JsonUtils.fromJson(yuanYongResJson, OptometryInfoRes.class);
+                optometryInfo.setYuanYongRes(yuanyongRes);
+            }if(StringUtils.isNotBlank(yinXingResJson)){
+                OptometryInfoRes yinXingRes = JsonUtils.fromJson(yinXingResJson, OptometryInfoRes.class);
+                optometryInfo.setYinXingRes(yinXingRes);
+            }if(StringUtils.isNotBlank(jinYongResJson)){
+                OptometryInfoRes jinYongRes = JsonUtils.fromJson(jinYongResJson, OptometryInfoRes.class);
+                optometryInfo.setJinYongRes(jinYongRes);
+            }if(StringUtils.isNotBlank(jianJinDuoJiaoDianResJson)){
+                OptometryInfoRes jianJinDuoJiaoDianRes = JsonUtils.fromJson(jianJinDuoJiaoDianResJson, OptometryInfoRes.class);
+                optometryInfo.setJianJinDuoJiaoDianRes(jianJinDuoJiaoDianRes);
+            }
             boolean res = optometryInfoService.update(optometryInfo);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {

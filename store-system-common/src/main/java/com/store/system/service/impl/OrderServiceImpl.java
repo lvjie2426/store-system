@@ -5,36 +5,32 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
-import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
 import com.store.system.bean.SaleReward;
-import com.store.system.client.*;
+import com.store.system.client.ClientAfterSaleDetail;
+import com.store.system.client.ClientOrder;
+import com.store.system.client.ClientOrderSku;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.AfterSaleDetailService;
-import com.store.system.service.AfterSaleLogService;
 import com.store.system.service.OrderService;
 import com.store.system.service.ext.OrderPayService;
+import com.store.system.service.ext.OrderRefundService;
 import com.store.system.util.*;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.solr.client.solrj.SolrQuery;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.smartcardio.Card;
 import java.io.File;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -75,6 +71,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private AfterSaleDetailService afterSaleDetailService;
     @Resource
     private CommissionDao commissionDao;
+    @Autowired(required = false)
+    private OrderRefundService orderRefundService;
+    @Resource
+    private RefundOrderDao refundOrderDao;
 
 
     @Autowired(required = false)
@@ -371,6 +371,168 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             orderPayService.successHandleBusiness(order.getPayType(), type, typeInfo);
         }
         orderDao.update(order);
+        return res;
+    }
+
+
+    @Override
+    public RefundOrder createAliRefundOrder(long oid) throws Exception {
+        Order order = orderDao.load(oid);
+        if (null == order) throw new StoreSystemException("order is null!");
+        if (order.getStatus() != Order.status_pay) throw new StoreSystemException("order status is error!");
+        if (order.getPayType() != Order.pay_type_ali) throw new StoreSystemException("order is not ali!");
+        RefundOrder refundOrder = new RefundOrder();
+        long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
+        refundOrder.setGmt(gmt);
+        refundOrder.setPayType(RefundOrder.pay_type_ali);
+        refundOrder.setOid(oid);
+        return refundOrderDao.insert(refundOrder);
+    }
+
+    @Override
+    public RefundOrder createWxRefundOrder(long oid) throws Exception {
+        Order order = orderDao.load(oid);
+        if (null == order) throw new StoreSystemException("order is null!");
+        if (order.getStatus() != Order.status_pay) throw new StoreSystemException("order status is error!");
+        if (order.getPayType() != Order.pay_type_wx) throw new StoreSystemException("order is not wx!");
+        RefundOrder refundOrder = new RefundOrder();
+        long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
+        refundOrder.setGmt(gmt);
+        refundOrder.setPayType(RefundOrder.pay_type_wx);
+        refundOrder.setOid(oid);
+        return refundOrderDao.insert(refundOrder);
+    }
+
+    @Override
+    public boolean handleAliRefundOrder(long roid) throws Exception {
+        RefundOrder refundOrder = refundOrderDao.load(roid);
+        if (null == refundOrder) throw new StoreSystemException("refundOrder is null!");
+        if (refundOrder.getPayType() != RefundOrder.pay_type_ali)
+            throw new StoreSystemException("refundOrder is not ali!");
+        if (refundOrder.getStatus() != 0) throw new StoreSystemException("refundOrder status is error!");
+        long oid = refundOrder.getOid();
+        Order order = orderDao.load(oid);
+        if (null == order) throw new StoreSystemException("order is null!");
+        long passportId = order.getPassportId();
+        PayPassport payPassport = payPassportDao.load(passportId);
+        if (null == payPassport) throw new StoreSystemException("passport is null!");
+        String aliAddid = payPassport.getAliAppid();
+        String aliPrivateKey = payPassport.getAliPrivateKey();
+        if (StringUtils.isBlank(aliAddid)) throw new StoreSystemException("aliAddid is null!");
+        if (StringUtils.isBlank(aliPrivateKey)) throw new StoreSystemException("aliPrivateKey is null!");
+        String trade_no = order.getOrderNo();
+        double refund_amount = order.getPrice();
+        String out_request_no = PayUtils.getOutTradeNo(roid, refundOrder.getGmt());
+        Map<String, Object> bizContentMap = Maps.newLinkedHashMap();
+        bizContentMap.put("trade_no", trade_no);
+        bizContentMap.put("refund_amount", refund_amount);
+        bizContentMap.put("out_request_no", out_request_no);
+        String biz_content = JsonUtils.toJson(bizContentMap);
+        Map<String, String> sParaTemp = Maps.newHashMap();
+        sParaTemp.put("app_id", aliAddid);
+        sParaTemp.put("method", "alipay.trade.refund");
+        sParaTemp.put("charset", Constant.defaultCharset);
+        sParaTemp.put("sign_type", "RSA2");
+        sParaTemp.put("timestamp", DateUtils.simpleDateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        sParaTemp.put("version", "1.0");
+        sParaTemp.put("biz_content", biz_content);
+        String prestr = PayUtils.createLinkString(sParaTemp);
+        String mysign = RSA.sign256(prestr, aliPrivateKey, Constant.defaultCharset);
+        sParaTemp.put("sign", mysign);
+        List<String> keys = new ArrayList<String>(sParaTemp.keySet());
+        Collections.sort(keys);
+        String urlParamStr = "";
+        for (int i = 0; i < keys.size(); i++) {
+            String key = keys.get(i);
+            String value = sParaTemp.get(key);
+            value = URLEncoder.encode(value, Constant.defaultCharset);
+            if (i == keys.size() - 1) { // 拼接时，不包括最后一个&字符
+                urlParamStr += key + "=" + value;
+            } else {
+                urlParamStr += key + "=" + value + "&";
+            }
+        }
+        String url = alipayGateway + urlParamStr;
+        String repStr = PayUtils.send(url);
+        refundOrder.setResDetail(repStr);
+        Map<String, String> repMap = (Map<String, String>) JsonUtils.fromJson(repStr, Map.class)
+                .get("alipay_trade_refund_response");
+        String code = repMap.get("code");
+        boolean res = false;
+        if (code.equals("10000")) {
+            res = true;
+            refundOrder.setStatus(RefundOrder.status_refund_success);
+        } else refundOrder.setStatus(RefundOrder.status_refund_fail);
+
+        if (refundOrder.getStatus() == RefundOrder.status_refund_success) {
+            order.setStatus(Order.status_refund);
+            orderRefundService.successHandleBusiness(order.getType(), order.getTypeInfo());
+            orderDao.update(order);
+        } else {
+            orderRefundService.failHandleBusiness(order.getType(), order.getTypeInfo());
+        }
+        refundOrderDao.update(refundOrder);
+        return res;
+    }
+
+    @Override
+    public boolean handleWxRefundOrder(HttpServletRequest request, long roid) throws Exception {
+        RefundOrder refundOrder = refundOrderDao.load(roid);
+        if (null == refundOrder) throw new StoreSystemException("refundOrder is null!");
+        if (refundOrder.getPayType() != RefundOrder.pay_type_wx) throw new StoreSystemException("refundOrder is not wx!");
+        if (refundOrder.getStatus() != 0) throw new StoreSystemException("refundOrder status is error!");
+        long oid = refundOrder.getOid();
+        Order order = orderDao.load(oid);
+        if (null == order) throw new StoreSystemException("order is null!");
+        long passportId = order.getPassportId();
+        PayPassport payPassport = payPassportDao.load(passportId);
+        if (null == payPassport) throw new StoreSystemException("passport is null!");
+        String wxAppid = payPassport.getWxAppid();
+        String wxMerchantId = payPassport.getWxMerchantId();
+        String wxApiKey = payPassport.getWxApiKey();
+        String wxPkcs12CertificateName = payPassport.getWxPkcs12CertificateName();
+        if (StringUtils.isBlank(wxAppid)) throw new StoreSystemException("wxAppid is null!");
+        if (StringUtils.isBlank(wxMerchantId)) throw new StoreSystemException("wxMerchantId is null!");
+        if (StringUtils.isBlank(wxApiKey)) throw new StoreSystemException("wxApiKey is null!");
+        if (StringUtils.isBlank(wxPkcs12CertificateName))
+            throw new StoreSystemException("wxPkcs12CertificateName is null!");
+        String transaction_id = order.getOrderNo();
+        Map<String, String> sParaTemp = Maps.newHashMap();
+        sParaTemp.put("appid", wxAppid);// 应用ID
+        sParaTemp.put("mch_id", wxMerchantId);// 商户号
+        sParaTemp.put("nonce_str", RandomStringUtils.randomAlphanumeric(16));// 随机字符串
+        sParaTemp.put("transaction_id", transaction_id);
+        String out_refund_no = PayUtils.getOutTradeNo(roid, refundOrder.getGmt());
+        sParaTemp.put("out_refund_no", out_refund_no);
+        long total_fee = (long) (order.getPrice() * 100);
+        sParaTemp.put("total_fee", String.valueOf(total_fee));
+        sParaTemp.put("refund_fee", String.valueOf(total_fee));
+        sParaTemp.put("op_user_id", wxMerchantId);
+        String mysign = PayUtils.buildSign(sParaTemp, wxApiKey);
+        sParaTemp.put("sign", URLEncoder.encode(mysign, Constant.defaultCharset));
+        String xml = PayUtils.createXmlString(sParaTemp);
+        String path = request.getServletContext().getRealPath("");
+        File file = new File(path);
+        path = file.getParent();
+        file = new File(path + "/" + wxPkcs12CertificateName);
+        String sendRes = PayUtils.sendPKCS(file, wxMerchantId, wxpayRefundUrl, xml);
+        Map<String, String> params = PayUtils.xmlStrToMap(sendRes);
+        refundOrder.setResDetail(sendRes);
+        String return_code = params.get("return_code");
+        boolean res = false;
+        if ("SUCCESS".equals(return_code)) {
+            res = true;
+            refundOrder.setStatus(RefundOrder.status_refund_success);
+        } else refundOrder.setStatus(RefundOrder.status_refund_fail);
+
+        if (refundOrder.getStatus() == RefundOrder.status_refund_success) {
+            order.setStatus(Order.status_refund);
+            orderRefundService.successHandleBusiness(order.getType(), order.getTypeInfo());
+            orderDao.update(order);
+        } else {
+            orderRefundService.failHandleBusiness(order.getType(), order.getTypeInfo());
+        }
+        refundOrderDao.update(refundOrder);
         return res;
     }
 
