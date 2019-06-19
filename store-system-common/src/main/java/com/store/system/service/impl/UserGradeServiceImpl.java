@@ -107,26 +107,24 @@ public class UserGradeServiceImpl implements UserGradeService {
     }
 
     @Override
-    public User checkUserScore(User user) throws Exception {
+    public void checkUserScore(User user) throws Exception {
         int score = user.getScore();
-        UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
+        UserGrade userGrade = userGradeDao.load(user.getUserGradeId());//拿到现有的会员等级
         if(userGrade!=null){
             //判断积分
-            if(score>=userGrade.getConditionScore()){//等级改变
-                String sql = " SELECT * FROM user_grade WHERE 1=1 ORDER BY user_grade.conditionScore ";
+            if(score>userGrade.getConditionScore()){//等级改变
+                String sql = " SELECT * FROM user_grade WHERE 1=1 AND subid = " + user.getSid() + " ORDER BY user_grade.conditionScore ";
                 List<UserGrade> userGrades = jdbcTemplate.query(sql,ugMapper);
-                if(userGrades!=null){
-                    for(UserGrade grade : userGrades){
-                        if(score<=grade.getConditionScore()){
-                            user.setUserGradeId(grade.getId());
-                            userDao.update(user);
-                            return user;
-                        }
+                int temp = 0;//临时保存上一次等级的条件
+                for(UserGrade grade : userGrades){
+                    if(score>=temp && score <=grade.getConditionScore()){
+                        user.setUserGradeId(grade.getId());
+                        userDao.update(user);
+                        break;
                     }
+                    temp = grade.getConditionScore();//用作下次比较
                 }
             }
-            return user;
         }
-        return null;
     }
 }

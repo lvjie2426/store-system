@@ -22,7 +22,7 @@ public interface UserGradeService {
 
     public UserGrade loadGrade(long subid, long score) throws Exception;
 
-    //更新用户积分 和 对应的会员等级
-    public User checkUserScore(User user)throws Exception;
+    //积分升级
+    public void checkUserScore(User user)throws Exception;
 
 }
