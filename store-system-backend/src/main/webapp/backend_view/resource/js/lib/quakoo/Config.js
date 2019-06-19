@@ -91,7 +91,7 @@ var Config = (function(_super){
     _proto.getUrl_product_getSaleSKUAllList = function(){return this.serverUrl + '/product/getSaleSKUAllList';};
     //=======================销售开单 结束====================
     //=======================实时工作台 开始====================
-    //获取日常任务和奖励
+    /**获取日常任务和奖励*/
     _proto.getUrl_user_taskReward = function(){return this.serverUrl + '/user/taskReward';};
     /**实时工作台 -- 销售奖励*/
     _proto.getUrl_product_saleReward = function(){return this.serverUrl + '/product/saleReward';};
