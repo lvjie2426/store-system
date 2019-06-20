@@ -1195,7 +1195,7 @@ b {
 
 .layui-layer-title {
     box-sizing: border-box;
-    border: none !important;
+    border: none;
     background: #fff !important;
 }
 
@@ -1378,9 +1378,6 @@ b {
     display: none;
     width: 100%;
     box-sizing: border-box;
-    border-top: 1px solid #ECECF4;
-    border-bottom: 1px solid #ECECF4;
-    padding-top: 44px;
 }
 .historyRecord{
     padding: 0;
@@ -2565,4 +2562,14 @@ input[type=checkbox]:checked:after {
     text-align: center;
     font-family: PingFangSC-Semibold;
 }
+.layui-layer-title{
+    border-bottom: 1px solid #ECECF4;!important;
 
+}
+.layui-layer-btn.layui-layer-btn-{
+    border-top:1px solid #ECECF4;
+}
+/*注册会员弹窗*/
+.layui-register-member .layui-layer-title,.layui-register-member .layui-layer-btn.layui-layer-btn-{
+    border:none;
+}

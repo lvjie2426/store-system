@@ -94,6 +94,7 @@
                         </div>
                     </div>
                     <input id="searchPhoneUser" type="text" placeholder="搜索手机号">
+                    <div class="btn btn-info" style="margin-left: 10px;" onclick="searchCus()">搜索</div>
                 </div>
             </div>
             <div class="contentBox">
@@ -134,6 +135,12 @@
                                     placeholder="年龄（自动）" class="layui-input">
                             </div>
                         </div>
+                        <div class="layui-form-item phoneNum">
+                            <div class="layui-input-block">
+                                <input id="cusJob" type="text" name="title" lay-verify="title" autocomplete="off" placeholder="职业" class="layui-input">
+                            </div>
+                        </div>
+<!--
                         <div class="occupationTypeBox">
                             <div class="selectBox" id="occupationTypeBox">
                                 <div class="select-box-header">
@@ -145,7 +152,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="recommenderBox">
+-->
+                        <div class="recommenderBox" id="cusInfoReferrer">
                             <span class="tuiJianRen">推荐人</span>
                             <div class="selectBox" id="recommenderBox">
                                 <div class="select-box-header">
@@ -153,11 +161,6 @@
                                 </div>
                                 <div class="optionBox">
                                     <ul class="optionUL" id="referer">
-                                        <li value="01">黄桑</li>
-                                        <li value="02">龙翔</li>
-                                        <li value="03">李桑红</li>
-                                        <li value="04">胡珊进</li>
-                                        <li value="05">诸葛武侯</li>
                                     </ul>
                                 </div>
                             </div>
@@ -175,7 +178,7 @@
 
                     <span class="weiyanzheng">
                         <h4>会员信息</h4>
-                        <button class="btn btn-order registerMember">点击验证</button>
+                        <button class="btn btn-order registerMember" onclick="">点击验证</button>
                         <span class="wxNoBind">未绑定微信</span>
                     </span>
                     <span class="yiyanzheng">
@@ -268,8 +271,6 @@
                 <div class="tagDateBox">
                     <ul class="tab-ul" id="tagDataBox">
                         <li class="active">本次</li>
-                        <li>2018.10.27 <span>隐形</span></li>
-                        <li>2018.06.17 <span>远用</span></li>
                     </ul>
                 </div>
             </div>
@@ -383,9 +384,9 @@
             <div class="titleBox clearfix">
                 <h4>订单信息</h4>
                 <div class="btnBox">
-                    <button class="btn addRoutineCommodity" onclick="addCGPro(0)">添加常规商品</button>
-                    <button class="btn addIntegralCommodity" onclick="addCGPro(1)">添加积分商品</button>
-                    <button class="btn seeHistoryOrder">查看历史订单</button>
+                    <button class="btn addRoutineCommodity" onclick="addPro(0)">添加常规商品</button>
+                    <button class="btn addIntegralCommodity" onclick="addPro(1)">添加积分商品</button>
+                    <button class="btn seeHistoryOrder" onclick="hisOrder()">历史订单记录</button>
                 </div>
             </div>
             <div class="contentBox clearfix">
@@ -471,7 +472,7 @@
                     </li>
                     <li class="input-item two">
                         <input type="number" class="member-input" placeholder="输入验证码" id="reg-code">
-                        <span class="send-code" onclick="getSms(this)">发送短信验证码</span>
+                        <span class="send-code" id="sendSmsText" onclick="getSms()">发送短信验证码</span>
                     </li>
                     <!--<li class="input-item">
                         <input type="text" class="member-input" placeholder="搜索推荐人">
@@ -938,20 +939,6 @@
         </div>
         <!-- 意向客户 -->
         <div class="intentionalCustomer">
-            <div class="icHeader clearfix">
-                <h3>意向顾客</h3>
-                <input type="text" class="seachInput" placeholder="搜索手机号">
-                <div class="selectBox branchCommoditySelect">
-                    <div class="select-box-header">
-                        <span class="text">手机号</span>
-                        <i class="iconfont icon-ico_arrow_down"></i>
-                    </div>
-                    <div class="optionBox">
-                        <ul class="optionUL">
-                        </ul>
-                    </div>
-                </div>
-            </div>
             <div class="content">
                 <table border="0" cellpadding="0" cellspacing="0" data-toggle="table"
                     class="cmMain-table4 table table-border" id="JFProTable"></table>
@@ -1533,7 +1520,7 @@
     <script>
         var psid;                                             //企业id
         var subid;                                            //门店id
-        var cusId = 40;                                        //用户id
+        var cusId;                                            //用户id
         var cusPhone;                                         //用户手机号
         var cusJob;                                           //用户职业
         var proOrderId;                                       //临时订单ID
@@ -1556,7 +1543,7 @@
         var userDiscount=10.0;                                 //会员折扣
         var couponid;                                          //促销方式（优惠券id）
         var authCode;                                          //条形码
-
+        var countdown = 30, isRen = true;                      //倒计时
         LocYgInfo.yuanTable={class:'yuan-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
         LocYgInfo.yinTable={class:'yin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'曲率',value:'q'},{name:'直径',value:'d'}]};
         LocYgInfo.jinTable={class:'jin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
@@ -1580,7 +1567,6 @@
             });
             getTemporaryOrder();                                 //获取门店下临时订单
             getShopPhone();                                      //获取门店顾客对应的手机号
-            getShopJob();                                        //获取门店顾客职业
             getShopStaff();                                      //获取门店下员工列表（推荐人==员工）
             getUsersByJob("验光师",1,1);                         //获取门店下的验光师
             renderYgTable(LocYgInfo.yuanTable,"#tableContent",true);  //验光信息远用table
@@ -1590,7 +1576,6 @@
             getUsersByJob("销售员",1,2);                         //获取门店下的销售员
             getUsersByJob("加工师",1,3);                         //获取门店下的加工师
             selDown();                                           //下拉框
-            getYgInfo();                                         //获取某个用户的验光记录
             getListPromotions();                                 //获取促销方式
             renderOrderForm();                                   //订单表格
         }
@@ -1610,15 +1595,30 @@
             })
         }
 /***************************************************顾客信息开始*****************************************************/
+        /**顾客搜索*/
+        function searchCus() {
+            var phone = $('#searchPhoneUser').val();
+            if(quakooUtils.isBlack(phone)){
+                layer.msg("请输入手机号");
+                return
+            }
+            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),{subid:subid,userType:0,phone1:phone},function (ret) {
+                if(ret){
+                    showCus(ret.rows[0])
+                }else{
+                    layer.msg(ret.data)
+                }
+            })
+        }
         /**接口——获取意向顾客*/
         function intentionCustomers() {
             layer.open({
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
-                area: '720px',
+                area: ['720px','560px'],
                 anim: 0,
                 closeBtn: 0,
-                title: '',
+                title: '意向顾客',
                 shade: 0.1,
                 shadeClose: true, //开启遮罩关闭
                 scrollbar: false,
@@ -1626,8 +1626,8 @@
                 resize:false,
                 btn: '关闭窗口',
                 move:'.layui-layer-title',
-                yes: function () {
-                    layer.close()
+                yes: function (index,layero) {
+                    layer.close(index);
                 },
                 success: function (layero, index) {
                     showIntention()
@@ -1695,7 +1695,8 @@
 
         }
 
-        /**接口——获取门店下的顾客的职业*/
+/*
+        /!**接口——获取门店下的顾客的职业（暂时改为输入框）*!/
         function getShopJob(){
             quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{sid:subid,userType:0},function (ret) {
                 console.log("2er",ret);
@@ -1708,6 +1709,7 @@
                 });
             })
         }
+*/
         /**接口——获取门店下的顾客手机号*/
         function getShopPhone(){
             quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:0},function (ret) {
@@ -1738,20 +1740,20 @@
         /**接口——根据手机号查询用户信息*/
         function getUserByPhone(){
             quakooData.ajaxGetData(config.getUrl_user_getUserByPhone(),{phone:cusPhone},function (ret) {
-                alert(1)
                 console.log(ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
                         //渲染顾客信息
-
+                        showCus(ret.data);
                     }else{
-                        layer.msg("未查到该顾客!",{icon:1})
+
                     }
                 }
             })
         }
         /**接口——获取门店下的员工(获取推荐人)*/
         /** 顾客信息弹窗*/
+        /**注册成为会员*/
         function regMember() {
             var name = $("#cusInfoName").val();
             var phone = $("#cusInfoPhone").val();
@@ -1759,7 +1761,7 @@
             var strTime = $("#tests").val().split("-");
             var birthdate = new Date(strTime[0],strTime[1],strTime[2]).getTime();
             var autoAge = $("#autoAge").val();
-            var cusJob = cusJob;
+            var cusJob = $("#cusJob").val();
             var recommender = referrer;
             if(quakooUtils.isBlack(name)){
                 layer.msg("请输入姓名");
@@ -1773,8 +1775,12 @@
                 layer.msg("请输入正确的手机号");
                 return;
             }
-            if(quakooUtils.isBlack(birthdate)){
+            if(quakooUtils.isBlack(birthdate)||isNaN(birthdate)){
                 layer.msg("请选择出生日期");
+                return;
+            }
+            if(quakooUtils.isBlack(cusJob)){
+                layer.msg("请输入用户职业");
                 return;
             }
             if(quakooUtils.isBlack(recommender)){
@@ -1784,18 +1790,18 @@
             /**注册会员弹窗*/
             var index = layer.open({
                 type: 1,
-                skin: 'layui-layer-demo',
+                skin: 'layui-register-member',
                 area: '240px',
                 anim: 0,
                 closeBtn: 0,
-                title: '<h3 class="set-title">注册成为会员</h3>',
+                title: '注册成为会员',
                 shade: 0.4,
                 shadeClose: true, //开启遮罩关闭
                 scrollbar: false,
                 content: $('.register-member'),
                 btn: ['注册成为会员', '取消'],
                 yes: function () {
-                    checkPhoneCode(name,phone,sex,birthdate,recommender);
+                    checkPhoneCode(name,phone,sex,birthdate,cusJob,recommender);
                 },
                 btn2: function () {
                     //取消
@@ -1804,6 +1810,7 @@
                 }
             });
         }
+        /**获取门店下推荐人*/
         function getShopStaff(){
             quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:1},function (ret) {
                 if(ret&&ret.success){
@@ -1819,7 +1826,8 @@
             })
         }
         /**接口——获取短信验证码*/
-        function getSms(_self){
+        function getSms(){
+            if(!isRen){return}
             var phone = $("#reg-phoneNum").val();
             if(quakooUtils.isBlack(phone)){
                 layer.msg("请输入手机号！",{icon:1});
@@ -1831,51 +1839,38 @@
             }
             quakooData.ajaxGetData(config.getUrl_user_createAuthCodeOnReg(),{phone:phone},function (ret) {
                 if(ret){
-                    countDown($(_self));
+                    countDown($('#sendSmsText'));
                     layer.msg("短信已发送，请注意查收！",{icon:1});
                 }
             })
         }
         /**接口——注册成为会员*/
-        function getMember(name,phone,sex,birthdate,recommender){
-            var phone = $("#reg-phoneNum").val();
-            var code = $("#reg-code").val();
-            if(quakooUtils.isBlack(phone)){
-                layer.msg("请输入手机号！",{icon:1});
-                return
-            }
-            if(!quakooUtils.isMobileNum(phone)){
-                layer.msg("请输入正确的手机号！",{icon:1});
-                return
-            }
-            if(quakooUtils.isBlack(code)){
-                layer.msg("请输入验证码！",{icon:1});
-                return
-            }
-            quakooData.ajaxGetData(config.getUrl_user_becomeVip(),{name:name,phone:phone,sex:sex,birthdate:birthdate,psid:psid,sid:subid,recommender:recommender},function (ret) {
+        function getMember(name,phone,sex,birthdate,cusJob,recommender){
+            quakooData.ajaxGetData(config.getUrl_user_becomeVip(),{name:name,phone:phone,sex:sex,birthdate:birthdate,job:cusJob,psid:psid,sid:subid,recommender:recommender},function (ret) {
                 if(ret && ret.success){
                     if(ret.data){
-                        console.log("sdlf::::",ret);
+                        console.log("注册成为会员数据：",ret);
                         cusId = ret.data.id;
                         layer.msg("注册成功", {icon: 1});
                         showCus(ret.data);
-                        getYgInfo();
+                        getYgInfo(ret.data.id);
                         setTimeout(function () {
+                            $(".register-member input").val('');
                             layer.closeAll();
                         },500)
                     }
                 }else{
-                    layer.msg("注册失败",{icon:2});
+                    layer.msg(ret.msg,{icon:2});
                 }
             })
 
         }
         /**回显顾客信息*/
         function showCus(data) {
-
             console.log("data:",data);
-
             if(quakooUtils.isNotBlack(data)){//渲染
+                getYgInfo(data.id)
+                $('#cusInfoReferrer')[0].style.display = "inline-block";
                 $('#cusInfoName').val(data.name);
                 $('#cusInfoPhone').val(data.phone);
                 if(data.sex==2){
@@ -1887,11 +1882,12 @@
                 }
                 $('#tests').val(quakooUtils.formatTimeToDateDianLY(data.birthdate));
                 $('#autoAge').val(data.age);
-                $('#occupationTypeBox .text').html(data.job);
+                $('#cusJob').val(data.job);
                 $('#recommenderBox .text').html(data.tname);
                 $('.memberInfo.noRegister')[0].style.display = "block";
                 $('.memberInfo.noRegisterWx')[0].style.display = "none";
                 if(quakooUtils.isNotBlack(data.member)){//已注册
+                    $('#cusInfoReferrer')[0].style.display = "none";
                     $('.memberInfo.noRegister')[0].style.display = "none";
                     $('.memberInfo.noRegisterWx')[0].style.display = "block";
                     if(data.weixinId == null){//未绑定微信
@@ -1910,44 +1906,60 @@
                         $(".noRegisterWx .yiyanzheng")[0].style.display = "block";
                     }
                 }
+            }else{
+                layer.msg("未查到该顾客!",{icon:1});
+                $('#cusInfoName').val('');
+                $('#cusInfoPhone').val('');
+                $('#cusInfoSex span').first().addClass('active');
+                $('#cusInfoSex span').last().removeClass('active');
+                $('#tests').val('');
+                $('#autoAge').val('');
+                $('#occupationTypeBox .text').html('');
+                $('#recommenderBox .text').html('');
+                $('.memberInfo.noRegister')[0].style.display = "block";
+                $('.memberInfo.noRegisterWx')[0].style.display = "none";
             }
         }
         /**接口——检查手机号验证码*/
-        function checkPhoneCode(name,phone,sex,birthdate,recommender){
+        function checkPhoneCode(name,phone,sex,birthdate,cusJob,recommender){
             var phonesms = $("#reg-phoneNum").val();
             var code = $("#reg-code").val();
+            if(quakooUtils.isBlack(phonesms)){
+                layer.msg("请输入手机号！",{icon:1});
+                return
+            }
+            if(!quakooUtils.isMobileNum(phonesms)){
+                layer.msg("请输入正确的手机号！",{icon:1});
+                return
+            }
+            if(quakooUtils.isBlack(code)){
+                layer.msg("请输入验证码！",{icon:1});
+                return
+            }
             quakooData.ajaxGetData(config.getUrl_user_checkCode(),{phone:phonesms,code:code},function (ret) {
-                if(ret){
-                    getMember(name,phone,sex,birthdate,recommender);
+                if(ret&&ret.success){
+                    getMember(name,phone,sex,birthdate,cusJob,recommender);
                 }else{
-                    layer.msg("验证码不正确！",{icon:1})
+                    layer.msg(ret.msg);
                 }
             })
         }
         //倒计时
         function countDown(ele) {
-            var countdown = 30, isRen = true;
-            ele.on('click', function () {
-                if (!isRen) return;
-                isRen = false;
-                $(this).addClass('active');
-                sendemail($(this));
-            })
-
-            function sendemail(ele) {
+            isRen = false;
+            ele.addClass('active');
+            ele.text(countdown + "s");
+            var timer = setInterval(function () {
+                countdown = countdown - 1;
                 ele.text(countdown + "s");
-                var timer = setInterval(function () {
-                    countdown = countdown - 1;
-                    ele.text(countdown + "s");
-                    if (countdown <= 0) {
-                        countdown = 30;
-                        isRen = true;
-                        ele.text('发送验证码');
-                        ele.removeClass('active');
-                        clearInterval(timer);
-                    }
-                }, 1000)
-            }
+                if (countdown <= 0) {
+                    countdown = 30;
+                    isRen = true;
+                    ele.text('发送验证码');
+                    ele.removeClass('active');
+                    clearInterval(timer);
+                }
+            }, 1000)
         }
 
 /***************************************************顾客信息结束*****************************************************/
@@ -2035,14 +2047,13 @@
             })
         }
         /**接口——获取验光记录*/
-        function getYgInfo() {
+        function getYgInfo(cusId) {
             var param = {};
-           /* if(quakooUtils.isBlack(cusId)){
-                layer.msg("请完善注册用户信息");
+            if(quakooUtils.isBlack(cusId)){
+                layer.msg("请完善用户信息");
                 return;
-            }*/
-            // param.uid = cusId;
-            param.uid = 40;
+            }
+            param.uid = cusId;
             param.size = 10;
             quakooData.ajaxGetData(config.getUrl_optometryinfo_getList(),param,function (ret) {
                 if(ret&&ret.success){
@@ -2769,7 +2780,7 @@
             })
         }
         /**添加常规商品*/
-        function addCGPro(type) {
+        function addPro(type) {
             var index = layer.open({
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
@@ -2846,9 +2857,14 @@
             layer.msg(orderFormData[markup+skuid].productName+"已添加"+orderFormData[markup+skuid].number,{icon:1});
                 renderOrderForm(markup+skuid);
         }
+        /**查看历史记录*/
+        function hisOrder() {
+            quakooData.ajaxGetData(config.getUrl_order_getAllOrder(),{uid:cusId,subid:subid},function (ret) {
+                console.log("查看历史记录", ret)
+            })
+        }
         /**获取订单金额之后渲染订单表格数据*/
         function renderOrderForm(nowObj){
-
             /*获取金额*/
             if(quakooUtils.isNotBlack(orderFormData)){
                 var params = {};
@@ -3375,7 +3391,7 @@
 
         // layui初始化使用ui组件
         layui.use(['form', 'layedit', 'laydate']);
-/****************************公共开始*******************************/
+/*******************************************公共开始**********************************************/
         /**
          * 时间插件
          * */

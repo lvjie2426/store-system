@@ -606,8 +606,8 @@
                     $('#introducer2').val(data.introducer[2]);
                 }
             }
-            title = '<div class="titleBox"><span class="sMove">新增等级</span></div>';
-            btnArr = ['新增', '取消'];
+            title = '<div class="titleBox"><span class="sMove">编辑等级</span></div>';
+            btnArr = ['编辑', '取消'];
         } else {//添加
             $("#grade-title").val("");
             $("#grade-condition").val("");
@@ -619,8 +619,8 @@
             $("#discount").val("");
             $('#jsrChecked').attr("checked", false);
             $('.jsrForm')[0].className = "jsrForm hide";
-            title = '<div class="titleBox"><span class="sMove">编辑等级</span></div>';
-            btnArr = ['编辑', '取消'];
+            title = '<div class="titleBox"><span class="sMove">新增等级</span></div>';
+            btnArr = ['新增', '取消'];
         }
         layer.open({
             type: 1,
@@ -693,13 +693,20 @@
 
     }
 
+    /*删除弹窗*/
 
     /**删除会员等级*/
     function del(id) {
-        quakooData.ajaxGetData(config.getUrl_usergrade_del(), {id: id}, function (ret) {
-            console.log("删除会员等级：", ret);
-            getAllList(psid, config.getUrl_usergrade_getAllList());
-        })
+        layer.confirm('确认删除?', {icon: 2, title:'提示'}, function(index){
+            quakooData.ajaxGetData(config.getUrl_usergrade_del(),{id:id},function (data) {
+                if(data.success){
+                    layer.msg('删除成功',{icon:1})
+                    getAllList(psid, config.getUrl_usergrade_getAllList());
+                }else{
+                    layer.msg(data.msg,{icon:2})
+                }
+            })
+        });
     }
 
     /**会员等级设置*/
