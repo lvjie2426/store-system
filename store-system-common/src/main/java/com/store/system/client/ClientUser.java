@@ -5,9 +5,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.util.Comparator;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ClientUser extends User {
+public class ClientUser extends User implements Comparable<ClientUser>{
 
     private String pSubName; //公司名称
 
@@ -37,4 +39,8 @@ public class ClientUser extends User {
         }
     }
 
+    @Override
+    public int compareTo(ClientUser o) {
+        return o.getSale()-this.sale;
+    }
 }
