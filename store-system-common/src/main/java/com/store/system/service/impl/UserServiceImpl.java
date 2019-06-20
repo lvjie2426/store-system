@@ -1021,7 +1021,7 @@ public class UserServiceImpl implements UserService {
             user.setCardNumber(new Random().nextInt(1000000));
             user.setUserType(User.userType_user);
             //设置一个最低等级的会员
-            String sql = " select * from user_grade where 1=1 and subid = " + user.getSid() + " order by conditionScore asc";
+            String sql = " select * from user_grade where 1=1 AND subid = " + user.getPsid() + " order by conditionScore";
             List<UserGrade> userGrades = jdbcTemplate.query(sql,ugMapper);
             if(userGrades.size()>0){
                 user.setUserGradeId(userGrades.get(0).getId());
@@ -1127,12 +1127,12 @@ public class UserServiceImpl implements UserService {
                 for(Order order:orders){
                     //判断订单是否当前月份
                     if(inExistence(date,order.getPayTime())){
-                        personal += order.getPrice()*100;
+                        personal += order.getPrice()/100;
                     }
                 }
                 //判断是否有完成任务
                 if(userMissionPool.getUid()==user.getId()&&userMissionPool.getProgress()>=100){
-                    personal+=userMissionPool.getPrice()*100;
+                    personal+=userMissionPool.getPrice()/100;
                 }
             }
             tem += personal;
@@ -1141,6 +1141,8 @@ public class UserServiceImpl implements UserService {
             clientUsers.add(clientUser);
             personal = 0;
         }
+        //sale数值大的排前面
+        Collections.sort(clientUsers);
         map.put("tem",tem);
         map.put("clientUsers",clientUsers);
         return map;
