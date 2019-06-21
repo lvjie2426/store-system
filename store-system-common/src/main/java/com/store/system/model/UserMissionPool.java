@@ -2,6 +2,7 @@ package com.store.system.model;
 
 import com.quakoo.space.annotation.domain.*;
 import com.quakoo.space.enums.HyperspaceDomainType;
+import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import java.util.List;
  * creat_date: 2019/5/23
  * creat_time: 10:45
  **/
-@HyperspaceDomain(domainType = HyperspaceDomainType.listDataStructure)
+@HyperspaceDomain(domainType = HyperspaceDomainType.listDataStructure,identityType = IdentityType.human)
 @Data
 public class UserMissionPool implements Serializable {
     @ShardingKey
