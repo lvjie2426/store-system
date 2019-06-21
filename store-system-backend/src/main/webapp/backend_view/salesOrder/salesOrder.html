@@ -178,7 +178,7 @@
 
                     <span class="weiyanzheng">
                         <h4>会员信息</h4>
-                        <button class="btn btn-order registerMember" onclick="">点击验证</button>
+                        <button class="btn btn-order registerMember" onclick="openVerify()">点击验证</button>
                         <span class="wxNoBind">未绑定微信</span>
                     </span>
                     <span class="yiyanzheng">
@@ -1395,13 +1395,13 @@
                 <tr>
                     <th>R</th>
                     <%for(var i=0;i< list.length;i++){%>
-                        <td><input data-attr1="rightResItem" data-attr2="<%=list[i].value%>" type="text" placeholder="请输入"></td>
+                        <td><input data-attr1="rightResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入"></td>
                     <%}%>
                 </tr>
                 <tr>
                     <th>L</th>
                     <%for(var i=0;i< list.length;i++){%>
-                        <td><input data-attr1="leftResItem" data-attr2="<%=list[i].value%>" type="text" placeholder="请输入"></td>
+                        <td><input data-attr1="leftResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入"></td>
                     <%}%>
                 </tr>
             </tbody>
@@ -1409,15 +1409,15 @@
     </script>
     <!--验光记录列表-->
     <script type="text/html" id="tagDateList">
-        <li onclick="renderYgInfo('now',this)" class="active">本次</li>
+        <li onclick="renderYgInfo(1,'now',this)" class="active">本次</li>
         <%for(var i=0; i < list.length;i++){%>
-            <li onclick="renderYgInfo('<%=list[i].showTime%>',this)"><%=list[i].showTime%><%=list[i].span%></li>
+            <li onclick="renderYgInfo(2,'<%=list[i].showTime%>',this)"><%=list[i].showTime%><%=list[i].span%></li>
         <%}%>
     </script>
     <!--验光记录下拉框-->
     <script type="text/html" id="ygRecord">
         <%for(var i=0;i < list.length;i++){%>
-            <li onclick="renderYgInfo('<%=list[i].showTime%>','select')"><%=list[i].showTime%><%=list[i].span%></li>
+            <li onclick="renderYgInfo(2,'<%=list[i].showTime%>','select')"><%=list[i].showTime%><%=list[i].span%></li>
         <%}%>
     </script>
     <!--订单信息表格-->
@@ -1525,6 +1525,9 @@
         var cusJob;                                           //用户职业
         var proOrderId;                                       //临时订单ID
         var referrer;                                         //推荐人
+        var ygSaveBtn = true;                                 //验光记录状态(是保存还是修改)
+        var ygNowStatus = true;                               //验光记录状态本次true:保存，false:修改
+        var presubTime = 'now';                               //验光信息时间下标
         var LocYgInfo = {};                                   //验光信息对象
         var optUid = 0;                                       //验光师ID
         var ygData = {};                                      //保存验光数据
@@ -1575,14 +1578,15 @@
             renderYgTable(LocYgInfo.jianTable,"#tableContent");  //验光信息渐进多焦点table
             getUsersByJob("销售员",1,2);                         //获取门店下的销售员
             getUsersByJob("加工师",1,3);                         //获取门店下的加工师
-            selDown();                                           //下拉框
             getListPromotions();                                 //获取促销方式
             renderOrderForm();                                   //订单表格
         }
         /**接口——获取门店下的临时订单*/
         function getTemporaryOrder(){
             quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(),{subid:subid},function (ret) {
+                console.log("临时订单",ret);
                 if(ret&&ret.data){
+                    document.querySelector("#selectBox .text").innerHTML = "临时订单";
                     var data = {list:ret.data};
                     var html = template("proOrderData",data);
                     document.getElementById("proOrderList").innerHTML = html;
@@ -2032,22 +2036,37 @@
                     param.jianJinDuoJiaoDianResJson[$(item).attr('data-attr1')][$(item).attr('data-attr2')] = item.value;
                 }
             });
-            ygInfo['now'] = param;
             param.yuanYongResJson = JSON.stringify(param.yuanYongResJson);
             param.yinXingResJson = JSON.stringify(param.yinXingResJson);
             param.jinYongResJson = JSON.stringify(param.jinYongResJson);
             param.jianJinDuoJiaoDianResJson = JSON.stringify(param.jianJinDuoJiaoDianResJson);
-            console.log(param);
-            quakooData.ajaxGetData(config.getUrl_optometryinfo_add(),param,function (ret) {
-                console.log("验光信息：",ret);
-                if(ret&&ret.success){
-                    layer.msg('验光信息已保存',{icon:1});
-                    ygInfo['now'] = ret.data;
-                }
-            })
+            if(ygSaveBtn == true){
+                quakooData.ajaxGetData(config.getUrl_optometryinfo_add(),param,function (ret) {
+                    console.log("保存验光信息：",ret);
+                    if(ret&&ret.success){
+                        layer.msg('验光信息已保存',{icon:1});
+                        ygSaveBtn = false;
+                        ygNowStatus = false;
+                    }else{
+                        layer.msg(ret.data)
+                    }
+                })
+            }else{
+                quakooData.ajaxGetData(config.getUrl_optometryinfo_update(),param,function (ret) {
+                    console.log("修改验光信息：",ret);
+                    if(ret&&ret.success){
+                        layer.msg("验光信息已修改",{icon:1});
+                    }else{
+                        layer.msg(ret.data);
+                    }
+                })
+            }
         }
         /**接口——获取验光记录*/
         function getYgInfo(cusId) {
+            ygSaveBtn = true;
+            ygNowStatus = true;
+            clearYgInfo(true);
             var param = {};
             if(quakooUtils.isBlack(cusId)){
                 layer.msg("请完善用户信息");
@@ -2088,36 +2107,106 @@
                     }
                     html= template("tagDateList",{list:data});
                     $("#tagDataBox").html(html);
-                    selHtml = template("ygRecord",{list:selData});
-                    $("#moreYgList").html(selHtml);
+                    if(quakooUtils.isBlack(selData)){
+                        selHtml = template("ygRecord",{list:selData});
+                        $("#moreYgList").html(selHtml);
+                    }
                 }
             })
         }
-        /**根据时间回显验光数据*/
-        function renderYgInfo(time,_self){
-            $('#tableContent input').val('')
+        /**保存表格信息为本地对象*/
+        function savaTableToObj(time){
+            console.log(time);
+            console.log(time,"data:",ygInfo[time]);
+            console.log("属性：",ygInfo[time].desc);
+            ygInfo[time].optUid = optUid;
+            var t = $("#tests2").val();
+            if(quakooUtils.isNotBlack(t)){
+                var year = t.substring(0,4);
+                var month = t.substring(5,7)-1;
+                var day = t.substring(8,10);
+                var hour = t.substring(t.length - 5,t.length - 3);
+                ygInfo[time].optTime = new Date(year,month,day,hour).getTime();
+            }
+            ygInfo[time].desc = $("#optometryRemarks").val();
+            ygInfo[time].farPd = $(".rightFooterBox .companyBox input.text").val();
+            ygInfo[time].wearProp = ygwearProp;
+            ygInfo[time].res = ygResults;
+            ygInfo[time].support = ygAdvise;
+            ygInfo[time].yuanYongRes = {};
+            ygInfo[time].yinXingRes = {};
+            ygInfo[time].jinYongRes = {};
+            ygInfo[time].jianJinDuoJiaoDianRes = {};
+            ygInfo[time].yuanYongRes.rightResItem = {};
+            ygInfo[time].yuanYongRes.leftResItem = {};
+            ygInfo[time].yinXingRes.rightResItem = {};
+            ygInfo[time].yinXingRes.leftResItem = {};
+            ygInfo[time].jinYongRes.rightResItem = {};
+            ygInfo[time].jinYongRes.leftResItem = {};
+            ygInfo[time].jianJinDuoJiaoDianRes.rightResItem = {};
+            ygInfo[time].jianJinDuoJiaoDianRes.leftResItem = {};
+            $('.yuan-table input').each(function (index,item) {
+                if(item.value){
+                    console.log(item.value)
+                    ygInfo[time].yuanYongRes[$(item).attr('data-attr1')][$(item).attr('data-attr2')] = item.value;
+                }
+            });
+            $('.yin-table input').each(function (index,item) {
+                if(item.value){
+                    ygInfo[time].yinXingRes[$(item).attr('data-attr1')][$(item).attr('data-attr2')] = item.value;
+                }
+            });
+            $('.jin-table input').each(function (index,item) {
+                if(item.value){
+                    ygInfo[time].jinYongRes[$(item).attr('data-attr1')][$(item).attr('data-attr2')] = item.value;
+                }
+            });
+            $('.jian-table input').each(function (index,item) {
+                if(item.value){
+                    ygInfo[time].jianJinDuoJiaoDianRes[$(item).attr('data-attr1')][$(item).attr('data-attr2')] = item.value;
+                }
+            });
+        }
+
+        /**根据本地时间下标对象回显验光数据*/
+        function renderYgInfo(type,time,_self){
+            savaTableToObj(presubTime);//保存上一个时间下标的数据到本地
+            presubTime = time;
+            if(type === 1&& ygNowStatus){
+                ygSaveBtn = true;
+            }
+            if(type === 2){
+                ygSaveBtn = false;
+            }
+            console.log("当前数据",ygInfo[time]);
+            $('#tableContent input').val('');
             $(_self).addClass('active').siblings().removeClass('active');
             if(_self == "select"){
                 $("#tagDataBox li").removeClass('active');
             }
-            console.log(ygInfo)
-            console.log(ygInfo[time])
             var data = ygInfo[time];
             //验光师
             if(data.optUserName){
                 $("#optometristName .text").html(data.optUserName);
+            }else{
             }
             //验光时间
             if(data.optTime){
-                $("#tests2").val(quakooUtils.formatTimeToDateDianLY(data.optTime));
+                $("#tests2").val(quakooUtils.formatTimeToDateDian(data.optTime));
+            }else{
+                $('#tests2').val('');
             }
             //验光备注
             if(data.desc){
                 $("#optometryRemarks").val(data.desc);
+            }else{
+                $('#optometryRemarks').val('');
             }
             //远用瞳距
             if(data.farPd){
                 $(".rightFooterBox .companyBox input.text").val(data.farPd);
+            }else{
+                $(".rightFooterBox .companyBox input.text").val('');
             }
             //属性
             if(data.wearProp==1){
@@ -2164,14 +2253,20 @@
             }
         }
         /**清空验光信息*/
-        function clearYgInfo() {
+        function clearYgInfo(type) {
             $('#tableContent input').val('');
-            setTimeout(function () {
-                layer.msg('验光信息已清空',{icon:1});
-            },100);
+            $('#tests2').val('');
+            $('#optometryRemarks').val('');
+            $(".rightFooterBox .companyBox input.text").val('');
+            if(!type){
+                setTimeout(function () {
+                    layer.msg('验光信息已清空',{icon:1});
+                },100);
+            }
         }
         /**渲染表格信息*/
         function renderYgTable(data,eleId,defShow){
+
             data.data.defShow = defShow;
             var html = template("ygTmp",{list:data.data,className:data.class});
             var oldHtml = $(eleId).html();
@@ -2482,7 +2577,6 @@
                 },
                 onLoadSuccess: function (data) {
                 }
-
             });
         }
         /**获取SKU*/
@@ -2859,9 +2953,77 @@
         }
         /**查看历史记录*/
         function hisOrder() {
-            quakooData.ajaxGetData(config.getUrl_order_getAllOrder(),{uid:cusId,subid:subid},function (ret) {
-                console.log("查看历史记录", ret)
-            })
+            var index = layer.open({
+                type: 1,
+                skin: '',
+                area: '720px',
+                anim: 0,
+                closeBtn: 0,
+                title: ' <h3 class="set-title">历史消费记录</h3>',
+                shade: 0.1,
+                shadeClose: true,
+                scrollbar: false,
+                content: $('.historyRecord'),
+                resize:false,
+                btn: '关闭窗口',
+                move:'set-title',
+                yes: function (index,layero) {
+                    layer.close(index);
+                },
+                success: function (layero) {
+                    renderHistory()
+                },
+            });
+            function renderHistory(){
+                quakooData.ajaxGetData(config.getUrl_order_getAllOrder(),{uid:cusId,subid:subid},function (ret) {
+                    console.log("查看历史记录", ret)
+                });
+                //历史消费记录
+                $("#cmMain-table1").bootstrapTable('destroy');
+                $("#cmMain-table1").bootstrapTable({
+                    url: config.getUrl_order_getAllOrder(),
+                    method: 'get',
+                    classes: "table",
+                    pagination: true,                     //是否显示分页
+                    sidePagination: "server",             //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                        //初始化加载第一页，默认第一页
+                    pageSize: 8,
+                    pageList: [5, 10, 15, 20],
+                    sortable: false,
+                    sortOrder: "asc",
+                    showColumns: true,
+                    strictSearch: true,
+                    locale: "zh-CN",
+                    paginationHAlign: "center",
+                    clickToSelect: true,
+                    columns: [
+                        { field: "payTime", title: "时间", align: "left", valign: "middle" },
+                        { field: "subName", title: "门店", align: "left", valign: "middle" },
+                        { field: "personnelName", title: "销售员", align: "left", valign: "middle" },
+                        { field: "title", title: "订单明细", align: "left", valign: "middle", width: '31.5%' },
+                        { field: "priceYuan", title: "消费金额", align: "left", valign: "middle" },
+                        {
+                            field: "btn", title: "操作", align: "left", valign: "middle", formatter: function () {
+                                return '<div class="btnSeeHistory">查看</div>'
+                            }
+                        }
+                    ],
+                    queryParams: function (params) {
+                        params.page = this.pageNumber;
+                        params.size = this.pageSize;
+                        params.token = quakooUser.getUserInfo().token;
+                        params.uid = cusId;
+                        params.subid = subid;
+                        return params;
+                    },
+                    success: function () {
+
+                    },
+                    onLoadSuccess: function (data) {
+                    }
+                });
+
+            }
         }
         /**获取订单金额之后渲染订单表格数据*/
         function renderOrderForm(nowObj){
@@ -3138,192 +3300,7 @@
             });
         }
 
-        //历史记录弹窗/添加积分商品弹窗/意向顾客弹窗
-        function historyRecord(a) {
-            var index = layer.open({
-                type: 1,
-                skin: 'layui-layer-demo', //样式类名
-                area: a.data.area,
-                anim: 0,
-                closeBtn: 0,
-                title: '添加常规商品',
-                shade: 0.1,
-                shadeClose: true, //开启遮罩关闭
-                scrollbar: false,
-                content: a.data.popupBox,
-                resize:false,
-                btn: a.data.btn,
-                move:a.data.move,
-                yes: function () {
-                    layer.close()
-                },
-                btn2: function () {
-                    //    取消
-                    console.log(a);
-                },
-                success: function (layero) {
-                    a.data.fn(layero);
-                },
-            });
-        }
 
-        $('.seeHistoryOrder').bind('click', {
-            title: ' <h3 class="set-title">历史消费记录</h3>',
-            popupBox: $('.historyRecord'),
-            area: ['720px'],
-            btn: ['', '关闭窗口'],
-            fn: function (layero) {
-                layero.find('.layui-layer-btn0').hide();
-            }
-        }, historyRecord);
-
-
-
-        // 历史消费记录表单
-        var data =
-            [
-                {
-                    date: '2018.08.10',
-                    storeName: '精益眼镜旗舰店',
-                    name: '李默然',
-                    text: 'HYDRON 海昌透明黑色单片年抛明月隐形眼镜1.50左眼',
-                    moneyNum: '￥138',
-                    btn: '查看'
-                },
-            ];
-
-
-        // 意向顾客
-        var data4 = [
-            {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }, {
-                date: '2018.08.10',
-                name: '李默然',
-                gender: '男',
-                year: '13',
-                number: '13511112222',
-                source: "精益眼镜旗舰店",
-                btn: "选择"
-            }]
-
-        //历史消费记录
-        $("#cmMain-table1").bootstrapTable({
-            data: data,
-            classes: "table",
-            pagination: true,                    //是否显示分页
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 10,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            height:378,
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                { field: "date", title: "时间", align: "left", valign: "middle" },
-                { field: "storeName", title: "门店", align: "left", valign: "middle" },
-                { field: "name", title: "销售员", align: "left", valign: "middle" },
-                { field: "text", title: "订单明细", align: "left", valign: "middle", width: '31.5%' },
-                { field: "moneyNum", title: "消费金额", align: "left", valign: "middle" },
-                {
-                    field: "btn", title: "操作", align: "left", valign: "middle", formatter: function () {
-                        return '<div class="btnSeeHistory">查看</div>'
-                    }
-                }
-
-            ],
-
-        });
 
         // 定制商品弹窗
         function addAlertCustomized(a) {
@@ -3369,28 +3346,6 @@
             $('.popMainContent .content').eq($(this).index()).show().siblings().hide();
         });
 
-
-
-        // document.addEventListener('DOMMouseScroll', handler, false);
-        // document.addEventListener('mousewheel', handler, false);
-
-        // function handler(event) {
-        //     if (type) return;
-        //     var detail = event.wheelDelta || event.detail;
-        //     var moveForwardStep = 1;
-        //     var moveBackStep = -1;
-        //     var step = 0;
-        //     if (detail < 0) {
-        //         step = moveForwardStep * 100;
-        //     } else {
-        //         step = moveBackStep * 100;
-        //     }
-        //     $('#tableContent')[0].scrollLeft += step;
-        // }
-
-
-        // layui初始化使用ui组件
-        layui.use(['form', 'layedit', 'laydate']);
 /*******************************************公共开始**********************************************/
         /**
          * 时间插件
@@ -3424,45 +3379,7 @@
             $('#demo2').trigger('change');
             return curr;
         });
-        /**
-         * 下拉框
-         * */
-        function selDown() {
-            /**销售员*/
-            selectTag($("#optometrySelect"),function (ret) {
-
-            });
-            /**加工师*/
-            selectTag($("#recommenderBox"),function (ret) {
-                console.log(ret);
-            });
-        }
-
 /****************************公共结束*******************************/
-/*************************************momo********************************************************/
-        // 模糊搜索下拉框
-        layui.use('form', function () {
-            var form = layui.form;
-            //渲染下拉搜索框
-            /* $.post('{:U("api/.../...")}', {}, function (data) {
-                if (data.success) {
-                    var data = data.data;
-                    var len = data.length;
-                    var sel = ''
-                    for (var i = 0; i < len; i++) {
-                        sel += '<option value="' + data[i].id + '" >' + data[i].nickname + '</option>'
-                    }
-                    $('#test_user').append(sel);
-                    form.render(); //更新全部
-                }
-                //监听下拉框
-                form.on('select(test_user)', function (data) {
-                    var txt = $("#test_user option:selected").text();//获取select选中的值
-                    $('.test_user').html(txt);
-                });
-            }); */
-        })
-
 
     </script>
 </body>

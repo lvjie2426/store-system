@@ -69,6 +69,8 @@ var Config = (function(_super){
     _proto.getUrl_order_countPrice = function(){return this.serverUrl + '/order/countPrice';};
     /**保存订单*/
     _proto.getUrl_order_saveOrder = function(){return this.serverUrl + '/order/saveOrder';};
+    /**修改验光信息*/
+    _proto.getUrl_optometryinfo_update = function(){return this.serverUrl + '/optometryinfo/update';};
     /**更多验光记录*/
     _proto.getUrl_optometryinfo_getList = function(){return this.serverUrl + '/optometryinfo/getList';};
     /**根据手机号查询用户信息*/

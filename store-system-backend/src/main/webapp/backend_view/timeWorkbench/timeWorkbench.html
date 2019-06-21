@@ -601,219 +601,27 @@
 </script>
 <!-- 当前页面逻辑 -->
 <script>
-    var psid,subid;
-    $(function () {
-        psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
-        subid = quakooDb.getItem("sel_ShopId");           //门店ID
-        initPage();                                       //页面初始化
-
-    });
-    function initPage(){
-        saleIncentive();    //销售奖励
-    }
-    // 数据挂载
-    var todaysDetails = [
-            {
-                orderNum: '89465100030',
-                date: '2015.08.17 12:52',
-                name: '刘一',
-                number: '18828172818',
-                money: '￥198',
-                mode: '微信',
-                type: '订单状态',
-                saleName: '二哈',
-                btn: '操作'
-            },
-            {
-                orderNum: '564962148654',
-                date: '2015.12.11 05:02',
-                name: '陈二',
-                number: '186452315',
-                money: '￥2548',
-                mode: '微信',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '321631322541',
-                date: '2018.08.17 09:42',
-                name: '张三',
-                number: '15642312',
-                money: '￥9641',
-                mode: '支付宝',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '7468511524',
-                date: '2010.06.17 05:54',
-                name: '李四',
-                number: '135645231',
-                money: '￥4865',
-                mode: '支付宝',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            },
-            {
-                orderNum: '654165125163',
-                date: '2018.06.17 12:52',
-                name: '王五',
-                number: '1664565156',
-                money: '￥15418',
-                mode: '微信',
-                type: '订单状态',
-                saleName: '二哈',
-                btn: '操作'
-            }, {
-                orderNum: '6879865132',
-                date: '2018.06.17 12:52',
-                name: '赵六',
-                number: '1446136556',
-                money: '￥4622',
-                mode: '支付宝',
-                type: '订单状态',
-                saleName: '二哈',
-                btn: '操作'
-            }, {
-                orderNum: '745415634',
-                date: '2018.06.17 12:52',
-                name: '孙七',
-                number: '15686455631',
-                money: '￥4200',
-                mode: '支付宝',
-                type: '订单状态',
-                saleName: '二哈',
-                btn: '操作'
-            }, {
-                orderNum: '5646523148',
-                date: '2018.06.17 12:52',
-                name: '周八',
-                number: '1613245465',
-                money: '￥14552',
-                mode: '支付宝',
-                type: '订单状态',
-                saleName: '二哈',
-                btn: '操作'
-            }, {
-                orderNum: '2356321523561',
-                date: '2019.06.17 04:52',
-                name: '吴九',
-                number: '165646584',
-                money: '￥9413',
-                mode: '微信',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }, {
-                orderNum: '878641556432',
-                date: '2001.05.27 09:52',
-                name: '郑十',
-                number: '133541651',
-                money: '￥198',
-                mode: '微信',
-                type: '订单状态',
-                saleName: '老马',
-                btn: '操作'
-            }
-        ],
-        salesIncentives = [
-            {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }, {name: '商品A', royalty: '10元/片', oknum: '2', reward: '20元'}, {
-                name: '商品A',
-                royalty: '10元/片',
-                oknum: '2',
-                reward: '20元'
-            }],
-        cmyRoyaltyForm = [
-            {name: '商品名称A', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '贷记卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '小娃A', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '迅雷看看', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '系列卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '偶像卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '续集', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '修身显瘦卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '显卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '内存卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '公交卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '银行卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '美食卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '健身卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '社保卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '美发卡', company: '单位', teamRoy: '20元', personalRoy: '10元'},
-            {name: '商场折扣卡', company: '单位', teamRoy: '20元', personalRoy: '10元'}
-        ];
-
-    // 时间范围插件开始
-    var dt = new dateRange(".yj-demo-time");
-    dt.init()
-    var time;//根据时间获取数据
-    var subid;//门店ID
+    var time;//任务奖励参数
+    var subid;
     //初始化页面
     $(function () {
         subid = quakooDb.getItem("sel_ShopId");//门店ID
         var date = new Date();
-        //获取当年当月（201906）格式时间
-        time = parseFloat(date.getFullYear() + '' + (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1 + ""));
+        time=date.format("yyyyMM");
         initPage();
     })
 
     //初始化函数
     function initPage() {
+        // 时间范围插件开始
+        var dt = new dateRange(".yj-demo-time");
+        dt.init()
         popup();
         select();
         questRewardsBanner();
         tabBox();
         fromBox();
     }
-
     // 数据表单初始化函数
     function fromBox() {
         var columns = [
@@ -1076,7 +884,6 @@
 
     //日常任务和奖励轮播
     function questRewardsBanner() {
-
         var ul = $('.questRewardsBanner>ul'),
             quW = $('.questRewardsBanner').outerWidth();
         quakooData.ajaxGetData(config.getUrl_user_taskReward(), {date: time, sid: subid}, function (ret) {
