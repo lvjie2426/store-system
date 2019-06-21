@@ -768,7 +768,7 @@ input[type="number"]::-webkit-input-placeholder{
     font-family: PingFangSC-Medium;
 
 }
-.dialog-voucher .layui-layer-btn .layui-layer-btn0{
+.dialog-voucher .layui-layer-btn0{
     height: 32px;
     line-height: 30px;
     padding:0 10px;
@@ -781,7 +781,7 @@ input[type="number"]::-webkit-input-placeholder{
     font-family: PingFangSC-Semibold;
     margin:0;
 }
-.dialog-voucher .layui-layer-btn .layui-layer-btn1{
+.dialog-voucher .layui-layer-btn1{
     height: 32px;
     line-height: 30px;
     padding:0 10px;
@@ -1729,4 +1729,10 @@ input[type="number"]::-webkit-input-placeholder{
     font-size: 12px;
     text-align: left;
     font-family: Roboto-Medium;
+}
+.dialog-voucher .layui-layer-btn0:hover,.dialog-voucher .layui-layer-btn1:hover{
+    opacity: 1;
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+
 }

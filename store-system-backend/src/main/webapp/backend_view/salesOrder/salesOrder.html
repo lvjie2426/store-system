@@ -3116,10 +3116,10 @@
                 param.couponid = couponid;
             }
             authCode = $('#authCode').val();
-            if(quakooUtils.isBlack(authCode)){
+            /*if(quakooUtils.isBlack(authCode)){
                 layer.msg("请键入条形码",{icon:4});
                 return;
-            }
+            }*/
             param.authCode = authCode;
             if(quakooUtils.isBlack($('#PaidMoney').val())){
                 layer.msg('请输入实收金额',{icon:4});
