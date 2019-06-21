@@ -2,6 +2,7 @@ package com.store.system.ext.job;
 
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Uninterruptibles;
+import com.quakoo.space.annotation.cache.CacheDaoMethod;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.dao.StatisticsCustomerJobDao;
 import com.store.system.dao.SubordinateDao;
@@ -86,7 +87,9 @@ public class CustomerStatisticsJob implements InitializingBean {
                                 Calendar calendar = Calendar.getInstance();
                                 statisticsCustomerJob.setSubid(subid);
                                 statisticsCustomerJob.setDay(DateUtils.getDate());
-                                statisticsCustomerJob.setWeek(calendar.get(Calendar.WEEK_OF_YEAR));//今年第几周
+                                //拼接 201929 2019年的29周
+                                String week = String.valueOf(calendar.get(calendar.get(Calendar.YEAR)))+String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR));
+                                statisticsCustomerJob.setWeek(Integer.valueOf(week));//今年第几周
                                 statisticsCustomerJob.setMonth(DateUtils.getDate());
                                 if(users.size()>0){
                                     for(User user : users){
