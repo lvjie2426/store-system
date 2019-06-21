@@ -170,6 +170,14 @@ public class SubordinateServiceImpl implements SubordinateService {
 	}
 
 	@Override
+	public List<Subordinate> getAllList() throws Exception {
+		String sql = "SELECT  *  FROM `subordinate`   where pid > 0" ;
+		sql = sql + " order  by ctime desc";
+		List<Subordinate> subordinateList = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Subordinate>(Subordinate.class));
+		return subordinateList;
+	}
+
+	@Override
 	public boolean delete(long id) throws Exception {
 		Subordinate subordinate=subordinateDao.load(id);
 		subordinate.setStatus(Subordinate.status_delete);

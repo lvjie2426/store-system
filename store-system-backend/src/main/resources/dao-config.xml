@@ -519,6 +519,15 @@
         </property>
     </bean>
 
+    <bean id="saleCategoryStatisticsDao" class="com.store.system.dao.impl.SaleCategoryStatisticsDaoImpl">
+        <property name="tableName" value="sale_category_statistics" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
     <bean id="refundOrderDao" class="com.store.system.dao.impl.RefundOrderDaoImpl">
         <property name="tableName" value="refund_order" />
         <property name="dataSources">
