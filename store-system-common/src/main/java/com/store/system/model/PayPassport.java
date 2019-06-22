@@ -14,7 +14,8 @@ import java.io.Serializable;
 public class PayPassport implements Serializable  {
 
     @PrimaryKey
-    private long id;
+    private long subId;//门店ID
+
 
     ///////支付宝///////
 
