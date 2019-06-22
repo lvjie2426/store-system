@@ -91,6 +91,18 @@ var Config = (function(_super){
     _proto.getUrl_product_getSaleSPUBackPager = function(){return this.serverUrl + '/product/getSaleSPUBackPager';};
     /**添加商品的SKU列表*/
     _proto.getUrl_product_getSaleSKUAllList = function(){return this.serverUrl + '/product/getSaleSKUAllList';};
+    /**创建微信退款订单*/
+    _proto.getUrl_order_createWxRefundOrder = function(){return this.serverUrl + '/order/createWxRefundOrder';};
+    /**微信退款*/
+    _proto.getUrl_order_handleWxRefundOrder = function(){return this.serverUrl + '/order/handleWxRefundOrder';};
+    /**微信条形码*/
+    _proto.getUrl_order_handleWxBarcodeOrder = function(){return this.serverUrl + '/order/handleWxBarcodeOrder';};
+    /**创建支付宝退款订单*/
+    _proto.getUrl_order_createAliRefundOrder = function(){return this.serverUrl + '/order/createAliRefundOrder';};
+    /**支付宝退款*/
+    _proto.getUrl_order_handleAliRefundOrder = function(){return this.serverUrl + '/order/handleAliRefundOrder';};
+    /**支付宝条形码*/
+    _proto.getUrl_order_handleAliBarcodeOrder = function(){return this.serverUrl + '/order/handleAliBarcodeOrder';};
     //=======================销售开单 结束====================
     //=======================实时工作台 开始====================
     /**获取日常任务和奖励*/
