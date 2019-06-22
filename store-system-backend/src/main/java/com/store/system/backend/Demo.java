@@ -24,10 +24,10 @@ public class Demo {
 //        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
 //        String currentYearAndMonth = sdf.format(calendar.getTime());
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.WEEK_OF_YEAR));//20190615 获得15
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+//        List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.WEEK_OF_YEAR));//20190615 获得15
 
-        System.out.println(days);
+//        System.out.println(days);
     }
 }
