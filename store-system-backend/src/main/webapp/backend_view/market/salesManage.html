@@ -125,11 +125,13 @@
     <form action="">
         <div class="lay-header">
             <span class="lay-title" id="voucher-title">新增抵用券</span>
+<!--
             <div class="switch active fr" id="voucherSwitch">
                 <span class="off">未开启</span>
                 <span class="on">已启用</span>
                 <span class="switch-btn"><i></i></span>
             </div>
+-->
         </div>
         <div class="lay-content">
             <ol>
@@ -315,7 +317,7 @@
 </div>
 
 
-<!--创建任务-->
+<!--任务奖励弹窗——创建任务弹窗-->
 <div class="create-task">
     <div class="create-task-header">
         <ul class="create-task-header-tab clear">
@@ -329,9 +331,9 @@
             <div class="task-first clear">
                 <div class="first-item fl">
                     <div class="text">任务名称</div>
-                    <input type="text" class="name" placeholder="名称">
+                    <input type="text" class="name" placeholder="名称" id="taskName">
                 </div>
-                <div class="first-item fr">
+                <div class="first-item fr" id="selObjects">
                     <div class="text">任务门店</div>
                     <button type="button" class="shop" onclick="selectShop()">选择门店<i class="iconfont icon-ico_list"></i>
                     </button>
@@ -398,6 +400,7 @@
         </li>
     </ul>
 </div>
+<!--任务奖励弹窗——选择任务对象-->
 <div class="task-object">
     <div class="tash-header layui-layer-title">选择任务对象</div>
     <div class="content">
@@ -406,6 +409,7 @@
         </div>
     </div>
 </div>
+<!--任务奖励弹窗——选择任务门店-->
 <div class="task-shop scroll-content">
     <div class="task-header">选择任务门店</div>
     <div class="content">
@@ -414,6 +418,7 @@
         </div>
     </div>
 </div>
+<!--任务奖励弹窗——选择任务产品-->
 <div class="task-product">
     <div class="task-header">选择任务产品</div>
     <ul class="product-tab clear" id="product-tab">
@@ -433,6 +438,7 @@
         <li class="product-list-item"></li>
     </ol>
 </div>
+<!--任务奖励弹窗——确定删除任务-->
 <div class="delete-task">
     <div class="delete-header layui-layer-title">确定删除任务？</div>
     <div class="content">此操作不可撤销</div>
@@ -470,12 +476,12 @@
     <li class="card-item">
         <div class="top">
             <%if(list[i].open == 1){%>
-            <div class="switch active fr" onclick="updateOpen('<%=list[i].id%>',2)">
+            <div class="switch active fr" attr-open="2" onclick="updateOpen('<%=list[i].id%>',this)">
                 <span class="on">已启用</span>
                 <span class="switch-btn"><i></i></span>
             </div>
             <%}else if(list[i].open == 2){%>
-            <div class="switch fr" onclick="updateOpen('<%=list[i].id%>',1)">
+            <div class="switch fr" attr-open="1" onclick="updateOpen('<%=list[i].id%>',this)">
                 <span class="off">未开启</span>
                 <span class="switch-btn"><i></i></span>
             </div>
@@ -522,16 +528,16 @@
 <!--短信群发——职业下拉框-->
 <script type="text/html" id="jobList">
     <%for(var i =0;i< list.length;i++){%>
-    <li value="<%=list[i]%>"><%=list[i]%></li>
+        <li value="<%=list[i]%>"><%=list[i]%></li>
     <%}%>
 </script>
 
 <!--任务产品类型-->
 <script type="text/html" id="categoryTmp">
     <%for(var i=0;i< list.length;i++){%>
-    <%if(list[i].pid==0){%>
-    <li class="product-item" id="category<%=list[i].id%>" onclick="chooseGoodsType('<%=list[i].id%>')"><%=list[i].name%></li>
-    <%}%>
+        <%if(list[i].pid==0){%>
+            <li class="product-item" id="category<%=list[i].id%>" onclick="chooseGoodsType('<%=list[i].id%>')"><%=list[i].name%></li>
+        <%}%>
     <%}%>
 </script>
 
@@ -541,6 +547,7 @@
     var cid = '';                                         //类目id
     var arr = [];                                         //抵用券数据
     var diaMsgJob;                                        //短信群发职位
+    var executor = [];                                    //公司下门店（选择任务门店）
     /**初始化页面*/
     $(function () {
         initPage();
@@ -559,9 +566,9 @@
                     chooseGoodsType(ret.data[0].id)
                 }
             }
-        })
+        });
         Table.Init();
-        fromBox();
+        missionRewards();
     }
 
     /************************************<抵用券营销开始>******************************************/
@@ -591,6 +598,8 @@
                 paginationLoop: false,
                 columns: [],
                 queryParams: function (param) {
+                    param.page = param.offset / param.limit +1;
+                    param.size = param.limit;
                     param.subid = psid;
                     param.token = quakooUser.getUserInfo().token;
                     return param
@@ -617,14 +626,12 @@
                 arr.push(_this.data[i])
             }
         }
-        // console.log("抵用券数据：", arr);
         var html = template("voucherList", {list: arr});
         $("#card-list1").html(html);
     }
 
     /**接口——新增抵用券（编辑抵用券）*/
-    function addVoucher(descFullType, descSubtractType, conditionType, startTime, endTime, voucherId) {
-        alert(voucherId)
+    function addVoucher(index,descFullType, descSubtractType, conditionType, startTime, endTime, voucherId) {
         var url;
         var title = $("#voucherTitle").val();              //抵用券名字
         var descFull = $("#describefull").val();           //抵用券满
@@ -647,7 +654,7 @@
         //判断是否为空
         if (quakooUtils.isBlack(startTime) || quakooUtils.isBlack(endTime)) {
             layer.msg("请选择有效期", {icon: 1});
-            return
+            return;
         }
         if (quakooUtils.isBlack(title)) {
             layer.msg("抵用券名字不能为空", {icon: 1});
@@ -691,13 +698,14 @@
             param.endTime = endTime;                     //起始时间
         }
         if (quakooUtils.isNotBlack(voucherId)) {
-            alert(voucherId)
             param.id = voucherId;
             url = config.getUrl_marketingcoupon_updateMarketing();
             quakooData.ajaxGetData(url, param, function (ret) {
                 if (ret && ret.success) {
-                    layer.msg("已重新编辑抵用券", {icon: 1});
                     Table.Init();
+                    layer.msg("成功编辑抵用券", {icon: 1});
+                    layer.close(index);
+
                 } else {
                     layer.msg(ret.data, {icon: 2});
                 }
@@ -706,8 +714,9 @@
             url = config.getUrl_marketingcoupon_add();
             quakooData.ajaxGetData(url, param, function (ret) {
                 if (ret && ret.success) {
-                    layer.msg("成功添加抵用券", {icon: 1});
                     Table.Init();
+                    layer.msg("成功添加抵用券", {icon: 1});
+                    layer.close(index);
                 } else {
                     layer.msg(ret.data, {icon: 2});
                 }
@@ -717,26 +726,40 @@
 
     /**接口——删除抵用券*/
     function delVoucher(id) {
-        quakooData.ajaxGetData(config.getUrl_marketingcoupon_del(), {id: id}, function (ret) {
-            if (ret && ret.success) {
-                layer.msg("成功删除抵用券", {icon: 1});
-            } else {
-                layer.msg(ret.data, {icon: 2});
-            }
-            Table.Init();
-        })
+        layer.confirm('确定删除?', {icon: 3, title:'提示'}, function(index){
+            quakooData.ajaxGetData(config.getUrl_marketingcoupon_del(), {id: id}, function (ret) {
+                if (ret && ret.success) {
+                    layer.msg("成功删除抵用券", {icon: 1});
+                    Table.Init();
+                    layer.close(index);
+                } else {
+                    layer.msg(ret.data, {icon: 2});
+                }
+            })
+
+        });
     }
 
     /**接口——启用/关闭抵用卷*/
-    function updateOpen(id, open) {
+    function updateOpen(id,_self) {
+        var switchBox = $(_self);
+        var switchText = switchBox.children('span')[0];
+        var open = switchBox.attr("attr-open");
         quakooData.ajaxGetData(config.getUrl_marketingcoupon_updateOpen(), {open: open, id: id}, function (ret) {
             if (ret && ret.success) {
                 if (open == 1) {
+                    switchBox.attr("attr-open",2);
+                    switchBox.addClass("active");
+                    $(switchText).html("已启用");
+                    $(switchText).attr('class','on');
                     layer.msg("抵用券已启用", {icon: 1});
                 } else if (open == 2) {
-                    layer.msg("抵用券已关闭", {icon: 1})
+                    switchBox.attr("attr-open",1);
+                    switchBox.removeClass("active");
+                    $(switchText).html("未开启");
+                    $(switchText).attr('class','off');
+                    layer.msg("抵用券已关闭", {icon: 1});
                 }
-                Table.Init();
             } else {
                 layer.msg(ret.data, {icon: 2});
             }
@@ -776,7 +799,7 @@
         }
         if (quakooUtils.isBlack(data)) {
             //新增按钮
-            var btn = ['取消', '新增']
+            var btn = ['取消', '  新增']
         } else {
             //编辑按钮
             var btn = ['取消', '编辑']
@@ -797,14 +820,15 @@
             yes: function (index) {
                 layer.close(index)
             },
-            btn2: function () {
+            btn2: function (index,layero) {
                 if (quakooUtils.isBlack(data)) {
                     //新增
-                    addVoucher(descFullType, descSubtractType, conditionType);//提交抵用券
+                    addVoucher(index,descFullType, descSubtractType, conditionType);//提交抵用券
                 } else {
                     //编辑
-                    addVoucher(descFullType, descSubtractType, conditionType, startTime, endTime, data);
+                    addVoucher(index,descFullType, descSubtractType, conditionType, startTime, endTime, data);
                 }
+                return false
             },
             success: function (layero, index) {
                 document.getElementById("voucherReset").click(); //重置表单
@@ -1231,238 +1255,10 @@
 
 
     /************************************<任务奖励开始>******************************************/
-    //销售额奖励销售量奖励单选
-    $("input:radio[name='sales']").click(function () {
-        var salesSelect = $('input:radio[name="sales"]:checked').attr('data-id');
-        if (salesSelect == 1) {
-            $("#saleroom-box")[0].style.display = "block";
-            $("#saleVolume-box")[0].style.display = "none";
-        } else if (salesSelect == 2) {
-            $("#saleroom-box")[0].style.display = "none";
-            $("#saleVolume-box")[0].style.display = "block";
-        }
-    })
-
     /**
-     * 选择任务产品
+     * 任务奖励列表table
      * */
-    var $table = $('#jp-table');//商品列表表格
-    var TableInit = function (columns) {
-        var oTableInit = new Object();
-        //初始化Table
-        oTableInit.Init = function () {
-            $table.bootstrapTable('destroy')
-            $table.bootstrapTable({
-                url: config.getUrl_product_getSPUPager(),
-                classes: "table",
-                pagination: true,        //是否显示分页
-                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 10,
-                pageList: [5, 10, 15, 20],
-                sortable: false,
-                sortOrder: "asc",
-                showColumns: true,
-                strictSearch: true,
-                locale: "zh-CN",
-                paginationHAlign: "center",
-                clickToSelect: true,
-                paginationLoop: false,
-                columns: columns,
-                queryParams: function (param) {
-                    if (cid) {
-                        param.cid = cid;
-                    }
-                    param.subid = quakooUser.getUserInfo().psid;
-                    param.token = quakooUser.getUserInfo().token;
-                    return param
-                }
-            });
-        };
-        return oTableInit;
-    };
-    columns = [
-        {checkbox: true, valign: "middle"},
-        {field: "brandName", title: "品牌", valign: "middle"},
-        {field: "seriesName", title: "系列", valign: "middle"},
-        {field: "canUseNum", title: "可用数量", valign: "middle"},
-        {
-            field: "", title: "提成", valign: "middle", formatter: function (value, row, index) {
-                return '<span class="goods-ticheng">团</span>';
-            }
-        },
-        {
-            field: "", title: "库存总值", valign: "middle", formatter: function (value, row, index) {
-                return '￥10000';
-            }
-        },
-        {
-            field: "", title: "操作", valign: "middle", formatter: function (value, row, index) {
-                return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
-            }
-        }
-    ];
-
-    //选择一级类目
-    function chooseGoodsType(value) {
-        if (value) {
-            cid = value;
-        }
-        var Table = new TableInit(columns);
-        Table.Init();
-        $('#category' + cid).addClass('active').siblings().removeClass('active');
-    }
-
-    // 数据表单初始化函数
-    function fromBox() {
-        /**
-         * 任务奖励
-         * */
-        var data4 = [{
-            taskName: "月销售额任务",
-            deadline: "2018.01.20 - 2018.05.20",
-            award: "2000元",
-            taskNum: "50000元",
-            completed: "50000元",
-            taskTracker: "团队",
-            progress: "60"
-        },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "10"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "50"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "60"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "80"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "80"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "20"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "0"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "80"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "80"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "100"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "100"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "100"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "80"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "50"
-            },
-            {
-                taskName: "月销售额任务",
-                deadline: "2018.01.20 - 2018.05.20",
-                award: "2000元",
-                taskNum: "50000元",
-                completed: "50000元",
-                taskTracker: "团队",
-                progress: "70"
-            }];
-        //任务奖励
+    function missionRewards() {
         $("#rwjl-table").bootstrapTable('destroy');
         $("#rwjl-table").bootstrapTable({
             url: config.getUrl_mission_getAllList(),
@@ -1542,7 +1338,8 @@
                     var id = parseFloat($(this).attr('data-id'));
                     quakooData.ajaxGetData(config.getUrl_mission_del(), {id: id}, function (ret) {
                         if (ret && ret.success) {
-                            layer.msg('删除成功', {icon: 1, shade: 0.01});
+                            layer.msg('删除成功', {icon: 1});
+                            fromBox();
                         }
                     })
                 })
@@ -1555,7 +1352,6 @@
                 return param
             }
         });
-
         function canvasFn() {
             var element = document.getElementsByClassName('canvas');
             for (var i = 0; i < element.length; i++) {
@@ -1597,81 +1393,208 @@
                 blueCircle(value);
             }
         };
-        /**
-         * 选择任务门店
-         * */
-        var data5 = [{shopName: "杭州市西湖区湖滨银泰店"}, {shopName: "杭州市旗舰店"}, {shopName: "杭州市西湖区湖滨银泰店"}, {shopName: "杭州市旗舰店"}, {shopName: "杭州市西湖区湖滨银泰店"}, {shopName: "杭州市旗舰店"}, {shopName: "杭州市西湖区湖滨银泰店"}, {shopName: "杭州市旗舰店"}, {shopName: "杭州市西湖区湖滨银泰店"}, {shopName: "杭州市旗舰店"}, {shopName: "杭州市西湖区湖滨银泰店"}, {shopName: "杭州市旗舰店"}];
-        $("#yj-table").bootstrapTable({
-            data: data5,
-            classes: "table",
-            pagination: false,//是否显示分页
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                {checkbox: true, align: "center", valign: "middle"},
-                {field: "shopName", title: "门店名称", align: "left", valign: "middle"},
-                {
-                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
-                    }
-                }
-            ]
-
-        });
-
-        /**
-         * 选择任务对象
-         * */
-        var data7 = [{}];
-        $("#shop-table").bootstrapTable('destroy');
-        $("#shop-table").bootstrapTable({
-            data: data5,
-            classes: "table",
-            pagination: false,//是否显示分页
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                {checkbox: true, align: "center", valign: "middle"},
-                {field: "shopName", title: "门店名称", align: "left", valign: "middle"},
-                {
-                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
-                    }
-                }
-            ]
-
-        });
     }
 
     /**
      * 弹窗创建任务
      * */
     function createTask() {
-        var index = layer.open({
+        layer.open({
             type: 1,
             shade: 0.01,
             shadeClose: true,
-            skin: 'layui-layer-demo', //样式类名
+            skin: 'createTask', //样式类名
             area: ['360px', 'auto'],
-            anim: 0,
             closeBtn: 0,
             resize: false,
-            title: null,
+            title: false,
             move: ".move",
             content: $('.create-task'),
-            btn: ['取消', '确定']
+            btn: ['取消', '确定'],
+            yes:function (index,layero) {
+                layero.close(index);
+            },
+            btn2: function (index,layero) {
+                addTask(index);
+                return false
+            },
+            success: function (layero, index) {
+                //创建任务弹窗tab切换
+                $(".create-task-header-tab li").click(function () {
+                    $(this).addClass('active').siblings().removeClass('active');
+                });
+                //销售额奖励&&销售量奖励单选
+                $("input:radio[name='sales']").click(function () {
+                    var salesSelect = $('input:radio[name="sales"]:checked').attr('data-id');
+                    if (salesSelect == 1) {
+                        $("#saleroom-box")[0].style.display = "block";
+                        $("#saleVolume-box")[0].style.display = "none";
+                    } else if (salesSelect == 2) {
+                        $("#saleroom-box")[0].style.display = "none";
+                        $("#saleVolume-box")[0].style.display = "block";
+                    }
+                });
+
+
+
+            }
         });
     }
+
+    /**接口——创建任务*/
+    function addTask(index) {
+        var param ={};
+        var taskName = $('#taskName').val();
+        if(quakooUtils.isBlack(taskName)){
+            layer.msg("请输入任务名称");
+            return;
+        }
+
+
+        param.name = taskName;
+        param.executor = executor;
+        quakooData.ajaxGetData(config.getUrl_mission_add(),param,function (ret) {
+            console.log("创建任务接口数据",ret)
+        })
+    }
+
+    /**
+     * 任务奖励——创建任务——选择任务产品table
+     * */
+    var $table = $('#jp-table');//商品列表表格
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable('destroy');
+            $table.bootstrapTable({
+                url: config.getUrl_product_getSPUPager(),
+                classes: "table",
+                pagination: true,        //是否显示分页
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,
+                pageList: [5, 10, 15, 20],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                paginationLoop: false,
+                columns: columns,
+                queryParams: function (param) {
+                    if (cid) {
+                        param.cid = cid;
+                    }
+                    param.subid = quakooUser.getUserInfo().psid;
+                    param.token = quakooUser.getUserInfo().token;
+                    return param
+                }
+            });
+        };
+        return oTableInit;
+    };
+    columns = [
+        {checkbox: true, valign: "middle"},
+        {field: "brandName", title: "品牌", valign: "middle"},
+        {field: "seriesName", title: "系列", valign: "middle"},
+        {field: "canUseNum", title: "可用数量", valign: "middle"},
+        {
+            field: "", title: "提成", valign: "middle", formatter: function (value, row, index) {
+                return '<span class="goods-ticheng">团</span>';
+            }
+        },
+        {
+            field: "", title: "库存总值", valign: "middle", formatter: function (value, row, index) {
+                return '￥10000';
+            }
+        },
+        {
+            field: "", title: "操作", valign: "middle", formatter: function (value, row, index) {
+                return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+            }
+        }
+    ];
+    /**任务奖励——创建任务——选择任务产品table选择一级类目*/
+    function chooseGoodsType(value) {
+        if (value) {
+            cid = value;
+        }
+        var Table = new TableInit(columns);
+        Table.Init();
+        $('#category' + cid).addClass('active').siblings().removeClass('active');
+    }
+    /**
+     * 选择任务门店
+     * */
+    function renderTaskShop() {
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:psid},function (ret) {
+           if(ret&&ret.success){
+               for(var i =0;i<ret.data.length;i++){
+                   executor.push(ret.data[i]);
+               }
+
+
+
+           }
+        });
+        $("#yj-table").bootstrapTable({
+            data: executor,
+            classes: "table",
+            pagination: false,//是否显示分页
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {checkbox: true, align: "center", valign: "middle"},
+                {field: "name", title: "门店名称"},
+                {
+                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+                    }
+                }
+            ]
+
+        });
+
+    }
+
+
+    /**
+     * 选择任务对象
+     * */
+    var data7 = [{}];
+    $("#shop-table").bootstrapTable('destroy');
+    $("#shop-table").bootstrapTable({
+        data: data5,
+        classes: "table",
+        pagination: false,//是否显示分页
+        sortable: false,
+        sortOrder: "asc",
+        showColumns: true,
+        strictSearch: true,
+        locale: "zh-CN",
+        paginationHAlign: "center",
+        clickToSelect: true,
+        columns: [
+            {checkbox: true, align: "center", valign: "middle"},
+            {field: "shopName", title: "门店名称", align: "left", valign: "middle"},
+            {
+                field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+                }
+            }
+        ]
+
+    });
+
+
 
     /**
      * 弹窗选择任务产品
@@ -1733,8 +1656,6 @@
      * */
     function selectShop() {
         var index = layer.open({
-            width: 360,
-            height: 308,
             type: 1,
             shade: 0.01,
             shadeClose: true,
@@ -1750,9 +1671,8 @@
             yes: function (index) {
                 layer.close(index);
             },
-            btn2: function () {
-            },
             success: function (layero, index) {
+                renderTaskShop();
             }
         });
 
@@ -1760,7 +1680,7 @@
 
     /**
      * 弹窗删除任务
-     *
+     */
      function deleteTask() {
         var index = layer.open({
             type: 1,
@@ -1783,21 +1703,7 @@
             }
         });
     }
-     */
-    /**
-     * 创建任务弹窗tab切换
-     * */
-    $(".create-task-header-tab li").click(function () {
-        $(this).addClass('active').siblings().removeClass('active');
-        $(".task-item").hide().eq($(this).index()).show();
-    });
-    /**
-     * 选择任务产品tab切换
-     * */
-    // $(".product-tab .product-item").click(function () {
-    //     $(this).addClass("active").siblings().removeClass("active");
-    //     $(".product-list-item").removeClass("active").eq($(this).index()).addClass("active");
-    // });
+
 
 
     /************************************</任务奖励结束>******************************************/

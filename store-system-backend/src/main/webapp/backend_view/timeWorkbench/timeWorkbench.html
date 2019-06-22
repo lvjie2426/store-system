@@ -162,9 +162,11 @@
                 <p>日常任务和奖励</p>
                 <span>销售奖励为本月数据</span>
             </div>
+<!--
             <div class="btnCmyRoyalty">
                 提成商品清单
             </div>
+-->
         </div>
         <div class="questRewardsBanner">
             <div class="gradual btnLeft">
@@ -184,7 +186,7 @@
                 </div>
             </div>
             <div class="salesIncentives">
-                <h3>销售奖励&nbsp;&nbsp;￥8890</h3>
+                <h3>销售奖励&nbsp;&nbsp;¥<span id="salesBonus"></span></h3>
                 <div class="content">
                     <table data-toggle="table" class="table table-border" id="salesIncentives">
                     </table>
@@ -581,15 +583,15 @@
     <%for (var i = 0; i < list.length; i++){%>
     <li>
         <%if (i == 0){%>
-        <span><%=list[i].name%><i class="iconfont ico_medal_first icon-ico_medal_first"
+        <span><%=list[i].name%><i class="iconfont icon-ico_medal_first"
                                   style="color:#EDC74E"></i></span>
         <%}%>
         <%if (i == 1){%>
-        <span><%=list[i].name%><i class="iconfont ico_medal_first icon-ico_medal_first"
+        <span><%=list[i].name%><i class="iconfont icon-ico_medal_second"
                                   style="color:#B9B9B9"></i></span>
         <%}%>
         <%if (i == 2){%>
-        <span><%=list[i].name%><i class="iconfont ico_medal_first icon-ico_medal_first"
+        <span><%=list[i].name%><i class="iconfont icon-ico_medal_third"
                                   style="color:#C99F7E"></i></span>
         <%}%>
         <%if (i > 2){%>
@@ -693,11 +695,12 @@
             }
         });
         //销售奖励
-        function saleIncentive() {
+        (function saleIncentive() {
             var salesIncentives = [];
             quakooData.ajaxGetData(config.getUrl_product_saleReward(),{subid:subid},function (ret) {
-                if(ret){
-                    console.log("销售奖励",+ret);
+                if(ret&&ret.success){
+                    $('#salesBonus').html(ret.data.total);
+                    console.log("销售奖励:",ret);
                     for(var i = 0;i<ret.data.saleRewards.length;i++){
                         var obj = {};
                         obj.name = ret.data.saleRewards.name;
@@ -710,7 +713,7 @@
                 }
             });
             renderSaleIncentive();
-        }
+        })();
         function renderSaleIncentive(){
             $("#salesIncentives").bootstrapTable('destroy');
             $("#salesIncentives").bootstrapTable({
