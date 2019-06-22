@@ -61,13 +61,13 @@ public class CustomerStatisticsJob implements InitializingBean {
                         List<Subordinate> childrens = subordinateDao.getAllList(subid);
                         for(Subordinate children: childrens){
                             //查询今天ctime大于 00:00的一条记录
-                            String sqlSubordinate = " SELECT * FORM statistics_customer_job WHERE 1=1 AND ctime >"
+                            String sqlSubordinate = " SELECT * from statistics_customer_job WHERE 1=1 AND ctime >"
                                     + DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8") + " AND subid = " + children.getId();
                             List<StatisticsCustomerJob> statisticsCustomers = jdbcTemplate.query(sqlSubordinate,
                                     new HyperspaceBeanPropertyRowMapper<StatisticsCustomerJob>(StatisticsCustomerJob.class));
                             //查询今天创建的所有用户
-                            String sqlUser = " SELECT * FORM user WHERE 1=1 AND ctime >" + DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8")
-                                    +" AND userType = " + User.userType_user + " AND subid = " + children.getId();
+                            String sqlUser = " SELECT * from user WHERE 1=1 AND ctime >" + DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8")
+                                    +" AND userType = " + User.userType_user + " AND sid = " + children.getId();
                             List<User> users =  jdbcTemplate.query(sqlUser,new HyperspaceBeanPropertyRowMapper<User>(User.class));
                             if(statisticsCustomers.size()>0){
                                 StatisticsCustomerJob statisticsCustomer = statisticsCustomers.get(0);
@@ -88,7 +88,7 @@ public class CustomerStatisticsJob implements InitializingBean {
                                 statisticsCustomerJob.setSubid(subid);
                                 statisticsCustomerJob.setDay(DateUtils.getDate());
                                 //拼接 201929 2019年的29周
-                                String week = String.valueOf(calendar.get(calendar.get(Calendar.YEAR)))+String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR));
+                                String week = String.valueOf((calendar.get(Calendar.YEAR)))+String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR));
                                 statisticsCustomerJob.setWeek(Integer.valueOf(week));//今年第几周
                                 statisticsCustomerJob.setMonth(DateUtils.getDate());
                                 if(users.size()>0){

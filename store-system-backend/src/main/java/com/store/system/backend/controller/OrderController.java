@@ -172,8 +172,7 @@ public class OrderController extends BaseController {
                 orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(orderskuids);
             }
-            order = orderService.saveOrder(order);
-            return this.viewNegotiating(request, response, new ResultClient(order));
+            return this.viewNegotiating(request, response, new ResultClient(orderService.saveOrder(order)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
