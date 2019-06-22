@@ -9,6 +9,7 @@ import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -38,18 +39,17 @@ public class SaleStatistics implements Serializable{
     private long month;
 
 
-    private long sale; //销售额
+    private double sale; //销售额
 
     private int num; //销售单数
 
     private double perPrice; //平均客单价
 
-    private int userNum;//顾客数量
-
-    private long profits;//毛利润
+    private double profits;//毛利润
 
     @SortKey
     private long ctime;
 
     private long utime;
+
 }

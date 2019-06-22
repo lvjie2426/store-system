@@ -1,10 +1,9 @@
 package com.store.system.model;
 
-import com.quakoo.space.annotation.domain.CombinationKey;
-import com.quakoo.space.annotation.domain.HyperspaceDomain;
-import com.quakoo.space.annotation.domain.ShardingKey;
+import com.quakoo.space.annotation.domain.*;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import com.store.system.client.ClientOrderSku;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -41,9 +40,15 @@ public class SaleCategoryStatistics implements Serializable{
 
     private double sale; //产品分类销售额
 
+    private int num; //产品分类销售单数
+
     private double perPrice; //平均客单价
 
-    private int userNum;//顾客数量
+    @HyperspaceColumn(isJson = true)
+    private List<ClientOrderSku> salesLog; //记录
 
-    private Map<Long,List<OrderSku>> salesLog; //记录
+    @SortKey
+    private long ctime;
+
+    private long utime;
 }

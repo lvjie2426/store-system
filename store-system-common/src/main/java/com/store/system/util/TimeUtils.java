@@ -78,18 +78,18 @@ public class TimeUtils {
         return time.getTime();
     }
 
-    public static List<Integer> getWeekDays(int year, int week) {
-        List<Integer> res = Lists.newArrayList();
+    public static List<Long> getWeekDays(int year, int week) {
+        List<Long> res = Lists.newArrayList();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year); // 2016年
         cal.set(Calendar.WEEK_OF_YEAR, week); // 设置为2016年的第10周
         cal.set(Calendar.DAY_OF_WEEK, 2); // 1表示周日，2表示周一，7表示周六
-        int one = Integer.parseInt(sdf.format(cal.getTime()));
+        Long one = Long.parseLong(sdf.format(cal.getTime()));
         res.add(one);
         for(int i = 1; i <= 6; i++) {
             cal.add(Calendar.DAY_OF_WEEK, 1);
-            one = Integer.parseInt(sdf.format(cal.getTime()));
+            one = Long.parseLong(sdf.format(cal.getTime()));
             res.add(one);
         }
         return res;

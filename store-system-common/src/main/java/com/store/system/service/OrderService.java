@@ -32,7 +32,7 @@ public interface OrderService {
 
     public  Pager getBackPager(Pager pager, long subid, String name, String phone, String orderNo) throws Exception;
 
-    public Order saveOrder(Order order)throws Exception;
+    public ClientOrder saveOrder(Order order)throws Exception;
 
     public  List<ClientOrder> getAllBySubid(long subid)throws Exception;
 

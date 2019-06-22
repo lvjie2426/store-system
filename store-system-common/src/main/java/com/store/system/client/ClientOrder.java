@@ -25,7 +25,7 @@ public class ClientOrder extends Order {
     private String uName; //顾客
     private String uPhone;
     private String personnelName; //员工姓名
-    private double descSubtract;// 折扣（打折）、金额
+    private double descSubtract;// 促销券折扣（代表打掉的折扣）、减掉的金额
     private double priceYuan;// 实际支付金额 元 折后金额*会员自身等级折扣
     private double dicountPriceYuan;// 折后金额 元
     private double totalPriceYuan;// 总金额 元

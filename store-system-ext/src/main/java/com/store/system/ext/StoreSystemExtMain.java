@@ -63,7 +63,7 @@ public class StoreSystemExtMain extends AbstractServer {
 				String separator = System.getProperty("file.separator");
 				StringBuilder webapp = new StringBuilder().append(System.getProperty("user.dir")).append(separator)
 						.append("src").append(separator).append("main").append(separator).append("webapp");
-				args = new String[] { "StoreSystemExtMain", "10005", webapp.toString() };
+				args = new String[] { "StoreSystemExtMain", "10205", webapp.toString() };
 			}
 			runServer(args);
 		} catch (Exception e) {

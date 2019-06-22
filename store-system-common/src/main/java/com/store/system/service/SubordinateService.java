@@ -31,4 +31,6 @@ public interface SubordinateService {
 	public boolean updateStatus(long id, int status)throws Exception;
 
 	public List<Subordinate> getAllSubordinate()throws Exception;
+
+	public List<Subordinate> getAllList()throws Exception;
 }

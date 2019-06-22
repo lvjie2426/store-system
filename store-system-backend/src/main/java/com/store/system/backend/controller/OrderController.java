@@ -172,8 +172,7 @@ public class OrderController extends BaseController {
                 orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(orderskuids);
             }
-            order = orderService.saveOrder(order);
-            return this.viewNegotiating(request, response, new ResultClient(order));
+            return this.viewNegotiating(request, response, new ResultClient(orderService.saveOrder(order)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
@@ -253,11 +252,11 @@ public class OrderController extends BaseController {
     ///////////////支付宝条形码支付//////////////////
     @RequestMapping("/handleAliBarcodeOrder")
     public ModelAndView handleAliBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
-                                              @RequestParam(name = "passportId")long passportId,
+                                              @RequestParam(name = "subId")long subId,
                                               String authCode, int type, String typeInfo,
                                               String title, String desc, int price)throws Exception{
         try {
-            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleAliBarcodeOrder(passportId,authCode,type,typeInfo,title,desc,price)));
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleAliBarcodeOrder(subId,authCode,type,typeInfo,title,desc,price)));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }
@@ -288,10 +287,10 @@ public class OrderController extends BaseController {
     ///////////////微信条形码支付//////////////////
     @RequestMapping("/handleWxBarcodeOrder")
     public ModelAndView handleWxBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
-                                             long passportId, String authCode, int type, String typeInfo,
+                                             @RequestParam(name = "subId")long subId, String authCode, int type, String typeInfo,
                                              String title, String desc, int price, String ip)throws Exception{
         try {
-            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleWxBarcodeOrder(request,passportId,authCode,type,typeInfo,title,desc,price,ip)));
+            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleWxBarcodeOrder(request,subId,authCode,type,typeInfo,title,desc,price,ip)));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }

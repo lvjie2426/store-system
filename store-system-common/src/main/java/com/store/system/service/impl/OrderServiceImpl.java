@@ -16,6 +16,7 @@ import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.AfterSaleDetailService;
+import com.store.system.service.OptometryInfoService;
 import com.store.system.service.OrderService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.service.ext.OrderRefundService;
@@ -628,8 +629,32 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public Order saveOrder(Order order) throws Exception {
-        return  orderDao.insert(order);
+    public ClientOrder saveOrder(Order order) throws Exception {
+        Order insertOrder = orderDao.insert(order);
+        ClientOrder clientOrder=new ClientOrder(insertOrder);
+        List<OptometryInfo> optometryInfos =new ArrayList<>();
+        //转换金额
+        clientOrder.setTotalPriceYuan( insertOrder.getTotalPrice()/100.0);//总金额
+        clientOrder.setDicountPriceYuan(insertOrder.getDicountPrice()/100.0);//折扣金额
+        clientOrder.setPriceYuan(insertOrder.getPrice()/100.0); //实际支付金额
+
+        if(insertOrder.getOiId()>0){
+            // 验光信息
+            OptometryInfo load = optometryInfoDao.load(insertOrder.getOiId());
+            optometryInfos.add(load);
+            clientOrder.setOptometryInfos(optometryInfos);
+        }
+        if(insertOrder.getCouponid()>0){
+            //优惠券信息
+            MarketingCoupon marketingCoupon = marketingCouponDao.load(insertOrder.getCouponid());
+            clientOrder.setCouponName(marketingCoupon.getTitle());
+            if(marketingCoupon.getDescSubtractType()==MarketingCoupon.desc_subtract_type_money){
+                clientOrder.setDescSubtract(marketingCoupon.getDescSubtract()/100.0);
+            }else{
+                clientOrder.setDescSubtract(marketingCoupon.getDescSubtract());
+            }
+        }
+        return  clientOrder;
     }
 
     @Override
@@ -664,50 +689,60 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         double totaoPriceyuan=0.0d;
         for(OrderSku orderSku:orderSkuList) {
             ClientOrderSku clientOrderSku=new ClientOrderSku();
-
+            ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
             //--
             ProductSPU productSPU = productSPUDao.load(orderSku.getSpuid());
+
             if (productSPU.getType() == ProductSPU.type_common) {
-                ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
-                UserGradeCategoryDiscount userGradeCategoryDiscount = new UserGradeCategoryDiscount();
-                userGradeCategoryDiscount.setSpuid(orderSku.getSpuid());
-                userGradeCategoryDiscount.setUgid(userDb.getUserGradeId());
-                UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.load(userGradeCategoryDiscount);
-                if (discount != null) {
-                    //有折扣的商品
-                    double dis = discount.getDiscount() / 10.0;
-                    clientOrderSku.setSkuid(orderSku.getSkuid());
-                    clientOrderSku.setSpuid(orderSku.getSpuid());
-                    clientOrderSku.setNum(orderSku.getNum());
-                    clientOrderSku.setPrice(productSKU.getRetailPrice() / 100.0);
-                    clientOrderSku.setSubtotal((productSKU.getRetailPrice() * orderSku.getNum() * dis) / 100.0);
-                    clientOrderSku.setDiscount(discount.getDiscount());
-                    DecimalFormat df = new DecimalFormat("#.00");
-                    double subtotal = Double.parseDouble(df.format(productSKU.getRetailPrice() * orderSku.getNum() * dis * (userGrade.getDiscount() / 10.0) * 0.01));
-                    clientOrderSku.setLastSubtotal(subtotal);
-                    totalPrice += productSKU.getRetailPrice() * orderSku.getNum() * dis;
-                } else {
-                    //没有设置折扣的商品
-                    clientOrderSku.setSkuid(orderSku.getSkuid());
-                    clientOrderSku.setSpuid(orderSku.getSpuid());
-                    clientOrderSku.setNum(orderSku.getNum());
-                    clientOrderSku.setDiscount(0);
-                    clientOrderSku.setPrice(productSKU.getRetailPrice() / 100.0);
-                    clientOrderSku.setSubtotal((productSKU.getRetailPrice() * orderSku.getNum()) / 100.0);
-                    clientOrderSku.setLastSubtotal((productSKU.getRetailPrice() * orderSku.getNum() * (userGrade.getDiscount() / 10.0)) / 100.0);
-                    totalPrice += productSKU.getRetailPrice() * orderSku.getNum();
+                if(productSKU.getNum()>orderSku.getNum()){
+                    UserGradeCategoryDiscount userGradeCategoryDiscount = new UserGradeCategoryDiscount();
+                    userGradeCategoryDiscount.setSpuid(orderSku.getSpuid());
+                    userGradeCategoryDiscount.setUgid(userDb.getUserGradeId());
+                    UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.load(userGradeCategoryDiscount);
+                    if (discount != null) {
+                        //有折扣的商品
+                        double dis = discount.getDiscount() / 10.0;
+                        clientOrderSku.setSkuid(orderSku.getSkuid());
+                        clientOrderSku.setSpuid(orderSku.getSpuid());
+                        clientOrderSku.setNum(orderSku.getNum());
+                        clientOrderSku.setPrice(productSKU.getRetailPrice() / 100.0);
+                        clientOrderSku.setSubtotal((productSKU.getRetailPrice() * orderSku.getNum() * dis) / 100.0);
+                        clientOrderSku.setDiscount(discount.getDiscount());
+                        DecimalFormat df = new DecimalFormat("#.00");
+                        double subtotal = Double.parseDouble(df.format(productSKU.getRetailPrice() * orderSku.getNum() * dis * (userGrade.getDiscount() / 10.0) * 0.01));
+                        clientOrderSku.setLastSubtotal(subtotal);
+                        totalPrice += productSKU.getRetailPrice() * orderSku.getNum() * dis;
+                    } else {
+                        //没有设置折扣的商品
+                        clientOrderSku.setSkuid(orderSku.getSkuid());
+                        clientOrderSku.setSpuid(orderSku.getSpuid());
+                        clientOrderSku.setNum(orderSku.getNum());
+                        clientOrderSku.setDiscount(0);
+                        clientOrderSku.setPrice(productSKU.getRetailPrice() / 100.0);
+                        clientOrderSku.setSubtotal((productSKU.getRetailPrice() * orderSku.getNum()) / 100.0);
+                        clientOrderSku.setLastSubtotal((productSKU.getRetailPrice() * orderSku.getNum() * (userGrade.getDiscount() / 10.0)) / 100.0);
+                        totalPrice += productSKU.getRetailPrice() * orderSku.getNum();
+                    }
+                }else{
+                    throw new StoreSystemException("当前商品库存不足！");
                 }
+
 
             } else {
                 // 积分
-                if (productSPU.getIntegralNum() < orderSku.getNum()) {
-                    throw new StoreSystemException(productSPU.getName() + "积分商品数量兑换上限！");
+                // 判断库存
+                if(productSKU.getNum()>orderSku.getNum()){
+                    if (productSPU.getIntegralNum() < orderSku.getNum()) {
+                        throw new StoreSystemException("积分商品数量兑换上限！");
+                    }
+                    //判断用户积分。
+                    if (productSKU.getIntegralPrice() * orderSku.getNum() > userDb.getScore()) {
+                        throw new StoreSystemException("会员积分不足兑换该积分商品！");
+                    }
+                }else{
+                    throw new StoreSystemException("当前商品库存不足！");
                 }
-                ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
-                //判断用户积分。
-                if (productSKU.getIntegralPrice() * orderSku.getNum() > userDb.getScore()) {
-                    throw new StoreSystemException("会员积分不足兑换该" + productSKU.getName() + "积分商品！");
-                }
+
                 clientOrderSku.setPrice(productSKU.getIntegralPrice());
                 clientOrderSku.setSubtotal(productSKU.getIntegralPrice() * orderSku.getNum());
             }
