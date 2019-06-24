@@ -36,9 +36,9 @@ public interface OrderService {
 
     public  List<ClientOrder> getAllBySubid(long subid)throws Exception;
 
-    public ClientOrder countPrice(Order order)throws Exception;
+    public ClientOrder countPrice(Order order,long sid)throws Exception;
 
-    public  Map<Object,Object> countSkuPrice(long uid, List<OrderSku> orderSkuList, long couponid, List<Surcharge> surchargeList) throws Exception;
+    public  Map<Object,Object> countSkuPrice(long uid, List<OrderSku> orderSkuList, long couponid, List<Surcharge> surchargeList,long sid) throws Exception;
 
     public  List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
 

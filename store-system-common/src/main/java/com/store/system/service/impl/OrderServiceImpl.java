@@ -10,6 +10,7 @@ import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
 import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientAfterSaleDetail;
+import com.store.system.client.ClientInventoryDetail;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ClientOrderSku;
 import com.store.system.dao.*;
@@ -62,6 +63,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private UserGradeCategoryDiscountDao userGradeCategoryDiscountDao;
     @Resource
     private SubordinateDao subordinateDao;
+    @Resource
+    private InventoryDetailDao inventoryDetailDao;
     @Resource
     private MarketingCouponDao marketingCouponDao;
     @Resource
@@ -664,13 +667,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public ClientOrder countPrice(Order order) throws Exception {
+    public ClientOrder countPrice(Order order,long sid) throws Exception {
         ClientOrder clientOrder=new ClientOrder(order);
         double dicountPriceYuan=0.0d;
         double totaoPriceyuan=0.0d;
         //小计单，通过从数据库取数据计算订单上的单sku的小计
         List<OrderSku> orderSkuList = order.getSkuids();
-            Map map=countSkuPrice(order.getUid(),orderSkuList,order.getCouponid(),order.getSurcharges());
+            Map map=countSkuPrice(order.getUid(),orderSkuList,order.getCouponid(),order.getSurcharges(),sid);
             dicountPriceYuan= (double) map.get("DicountPriceYuan");
             totaoPriceyuan= (double) map.get("totaoPriceyuan");
         clientOrder.setClientSkuids((List<ClientOrderSku>)map.get("clientOrderSkus"));
@@ -678,7 +681,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         clientOrder.setTotalPriceYuan(totaoPriceyuan);
         return clientOrder;
     }
-    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList){
+    @Override
+    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList,long sid){
         List<ClientOrderSku> clientOrderSkus=new ArrayList<>();
         Map map=new HashMap();
         int surchargePrice=0;//附加费
@@ -688,13 +692,21 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         double dicountPriceYuan=0.0d;
         double totaoPriceyuan=0.0d;
         for(OrderSku orderSku:orderSkuList) {
+            int num=0;
             ClientOrderSku clientOrderSku=new ClientOrderSku();
             ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
             //--
             ProductSPU productSPU = productSPUDao.load(orderSku.getSpuid());
 
+            // 拿取库存
+            List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(productSKU.getId());
+            for (InventoryDetail detail : allDetails) {
+                if (detail.getSubid() == sid) {
+                    num += detail.getNum();
+                }
+            }
             if (productSPU.getType() == ProductSPU.type_common) {
-                if(productSKU.getNum()>orderSku.getNum()){
+                if(num>orderSku.getNum()){
                     UserGradeCategoryDiscount userGradeCategoryDiscount = new UserGradeCategoryDiscount();
                     userGradeCategoryDiscount.setSpuid(orderSku.getSpuid());
                     userGradeCategoryDiscount.setUgid(userDb.getUserGradeId());
