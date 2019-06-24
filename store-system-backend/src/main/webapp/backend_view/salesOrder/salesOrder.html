@@ -456,7 +456,7 @@
     </div>
     <!-- 固定底部 -->
     <div class="winFooterBox">
-        <button class="btnSubmission">提交订单</button>
+        <button class="btnSubmission" onclick="saveOrder(true)">提交订单</button>
         <button class="btnPreservation" onclick="saveOrder()">保存订单</button>
     </div>
 
@@ -944,7 +944,7 @@
                     class="cmMain-table4 table table-border" id="JFProTable"></table>
             </div>
         </div>
-        <!-- 付款结算未收全款 -->
+        <!-- 付款结算横向小票 -->
         <div class="uncollectedFunds uncollectedFundsPop">
             <h3 class="title">付款结算</h3>
             <div class="ufHeader">
@@ -1013,15 +1013,15 @@
                 </div>
             </div>
         </div>
-        <!-- 付款弹窗已收全款 -->
+        <!-- 订单竖向小票 -->
         <div class="wholeParagraph uncollectedFunds">
             <h3 class="title">付款结算</h3>
             <div class="ufHeader">
                 <ul>
-                    <li>原价共计 <span>￥55</span></li>
-                    <li>折后金额 <span>￥47.5</span></li>
-                    <li>特惠减免 <span>-￥10</span></li>
-                    <li>实收金额 <span>￥37.5</span></li>
+                    <li>原价共计 <span class="yuanjia">￥55</span></li>
+                    <li>折后金额 <span class="zhehoujia">￥47.5</span></li>
+                    <li>特惠减免 <span class="tehuijianmian">-￥10</span></li>
+                    <li>实收金额 <span class="shishou">￥37.5</span></li>
                 </ul>
             </div>
             <div style="width: 100%;padding: 10px 16px;overflow: hidden;height: 435px;">
@@ -1034,19 +1034,17 @@
                         <ul>
                             <li>
                                 <div class="topic">支付宝</div>
-                                <div class="valueBox btnBlack">10 <span class="btnRed fr mr10">退款</span></div>
+                                <div class="valueBox btnBlue" onclick="payDialog(1)">点击支付</div>
+                                <!--<div class="valueBox btnBlack">10 <span class="btnRed fr mr10">退款</span></div>-->
                             </li>
                             <li>
                                 <div class="topic">微信</div>
-                                <div class="valueBox btnBlack">20 <span class="btnRed fr mr10">退款</span></div>
-                            </li>
-                            <li>
-                                <div class="topic">微信</div>
-                                <div class="valueBox"><input type="text" placeholder="输入"></div>
+                                <div class="valueBox btnBlue" onclick="payDialog(2)">点击支付</div>
+                                <!--<div class="valueBox btnBlack">20 <span class="btnRed fr mr10">退款</span></div>-->
                             </li>
                             <li>
                                 <div class="topic">现金</div>
-                                <div class="valueBox btnBlue">点击支付</div>
+                                <div class="valueBox"><input type="text" placeholder="输入"></div>
                             </li>
                             <li>
                                 <div class="topic">银行卡</div>
@@ -1180,7 +1178,7 @@
         </div>
         <!-- 支付/三种状态 -->
         <div class="paymentPopup">
-            <div class="inputNumber hide">
+            <div class="inputNumber ">
                 <div class="speedProgress">
                     <ul>
                         <li class="active">1.输入金额 <i class="iconfont icon-ico_arrow_down"></i></li>
@@ -1188,36 +1186,38 @@
                         <li>3.完成支付</li>
                     </ul>
                 </div>
-                <div class="inputBox">
-                    <span>输入需要支付的金额</span>
-                    <input type="number" placeholder="0" class="moneyNum">
-                </div>
-            </div>
-            <div class="sweepCode hide">
-                <div class="speedProgress">
-                    <ul>
-                        <li>1.输入金额 <i class="iconfont icon-ico_arrow_down"></i></li>
-                        <li class="active">2.扫码支付 <i class="iconfont icon-ico_arrow_down"></i></li>
-                        <li>3.完成支付</li>
-                    </ul>
-                </div>
-                <div class="sweepCodeImg">
-                    <img src="../resource//images/pay_01.jpg" alt="付款码" id="sweepCode">
-                    <span>扫描顾客的付款码</span>
-                </div>
-            </div>
-            <div class="successAanRefund ">
-                <div class="speedProgress">
-                    <ul>
-                        <li>1.输入金额 <i class="iconfont icon-ico_arrow_down"></i></li>
-                        <li>2.扫码支付 <i class="iconfont icon-ico_arrow_down"></i></li>
-                        <li class="active">3.完成支付</li>
-                    </ul>
-                </div>
-                <div class="successBox">
-                    <img src="../resource//images/pay_02.jpg" alt="付款码" id="successImg">
-                    <span>扫描顾客的付款码 <u id="reimburse" onclick="reimburse()">退款</u></span>
-                </div>
+                <ul class="payContent">
+                    <li class="content-item first active">
+                        <div class="inputBox">
+                            <span>输入需要支付的金额</span>
+                            <input type="number" placeholder="0" class="moneyNum" id="payNum">
+                        </div>
+                        <div class="btn-pay">
+                            <button class="first-next" type="button" onclick="firstNext()">下一步</button>
+                            <button class="cancel" type="button" onclick="closePay()">取消</button>
+                        </div>
+                    </li>
+                    <li class="content-item second">
+                        <div class="sweepCodeImg">
+                            <img src="../resource//images/pay_01.jpg" alt="付款码" id="sweepCode">
+                            <span>扫描顾客的付款码</span>
+                            <input type="number" placeholder="或输入付款码" id="testCode">
+                        </div>
+                        <div class="btn-pay">
+                            <button class="second-next" type="button" onclick="secondNext()">下一步</button>
+                            <button class="second-pre" type="button" onclick="secondPre()">上一步</button>
+                        </div>
+                    </li>
+                    <li class="content-item third">
+                        <div class="successBox">
+                            <img src="../resource//images/pay_02.jpg" alt="付款码" id="successImg">
+                            <span>支付成功 <u id="reimburse" onclick="reimburse()">退款</u></span>
+                        </div>
+                        <div class="btn-pay">
+                            <button class="third-end" type="button">完成</button>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         <!-- 退款弹窗 -->
@@ -1547,6 +1547,8 @@
         var couponid;                                          //促销方式（优惠券id）
         var authCode;                                          //条形码
         var countdown = 30, isRen = true;                      //倒计时
+        var onlinePayMoney;                                    //线上支付金额
+        var payType;                                           //线上支付类型
         LocYgInfo.yuanTable={class:'yuan-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
         LocYgInfo.yinTable={class:'yin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'曲率',value:'q'},{name:'直径',value:'d'}]};
         LocYgInfo.jinTable={class:'jin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
@@ -1717,7 +1719,6 @@
         /**接口——获取门店下的顾客手机号*/
         function getShopPhone(){
             quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:subid,userType:0},function (ret) {
-                console.log("门店下顾客的手机号",ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
                         var data = {list:ret.data};
@@ -1825,8 +1826,6 @@
                         referrer = ret.value;
                     })
                 }
-                console.log("获取推荐人：",ret);
-
             })
         }
         /**接口——获取短信验证码*/
@@ -1853,7 +1852,6 @@
             quakooData.ajaxGetData(config.getUrl_user_becomeVip(),{name:name,phone:phone,sex:sex,birthdate:birthdate,job:cusJob,psid:psid,sid:subid,recommender:recommender},function (ret) {
                 if(ret && ret.success){
                     if(ret.data){
-                        console.log("注册成为会员数据：",ret);
                         cusId = ret.data.id;
                         layer.msg("注册成功", {icon: 1});
                         showCus(ret.data);
@@ -1871,7 +1869,6 @@
         }
         /**回显顾客信息*/
         function showCus(data) {
-            console.log("data:",data);
             if(quakooUtils.isNotBlack(data)){//渲染
                 getYgInfo(data.id)
                 $('#cusInfoReferrer')[0].style.display = "inline-block";
@@ -2042,7 +2039,6 @@
             param.jianJinDuoJiaoDianResJson = JSON.stringify(param.jianJinDuoJiaoDianResJson);
             if(ygSaveBtn == true){
                 quakooData.ajaxGetData(config.getUrl_optometryinfo_add(),param,function (ret) {
-                    console.log("保存验光信息：",ret);
                     if(ret&&ret.success){
                         layer.msg('验光信息已保存',{icon:1});
                         ygSaveBtn = false;
@@ -2053,7 +2049,6 @@
                 })
             }else{
                 quakooData.ajaxGetData(config.getUrl_optometryinfo_update(),param,function (ret) {
-                    console.log("修改验光信息：",ret);
                     if(ret&&ret.success){
                         layer.msg("验光信息已修改",{icon:1});
                     }else{
@@ -2080,7 +2075,6 @@
                     var data = [];
                     var selHtml = "";
                     var selData = [];
-                    console.log("验光记录：",ret);
                     for(var i=0;i<ret.data.length;i++){
                         ret.data[i].showTime = quakooUtils.formatTimeToDateDianLY(ret.data[i].optTime);
                         ygInfo[ret.data[i].showTime] = ret.data[i];
@@ -2116,9 +2110,6 @@
         }
         /**保存表格信息为本地对象*/
         function savaTableToObj(time){
-            console.log(time);
-            console.log(time,"data:",ygInfo[time]);
-            console.log("属性：",ygInfo[time].desc);
             ygInfo[time].optUid = optUid;
             var t = $("#tests2").val();
             if(quakooUtils.isNotBlack(t)){
@@ -2147,7 +2138,6 @@
             ygInfo[time].jianJinDuoJiaoDianRes.leftResItem = {};
             $('.yuan-table input').each(function (index,item) {
                 if(item.value){
-                    console.log(item.value)
                     ygInfo[time].yuanYongRes[$(item).attr('data-attr1')][$(item).attr('data-attr2')] = item.value;
                 }
             });
@@ -2178,7 +2168,6 @@
             if(type === 2){
                 ygSaveBtn = false;
             }
-            console.log("当前数据",ygInfo[time]);
             $('#tableContent input').val('');
             $(_self).addClass('active').siblings().removeClass('active');
             if(_self == "select"){
@@ -2436,10 +2425,8 @@
             var param = {};
             param.subid = psid;//公司ID
             quakooData.ajaxGetData(config.getUrl_marketingcoupon_getCanUseList(),param,function(ret){
-                console.log("促销",ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
-                        console.log("couponData",couponData);
                         var html = '';
                         for(var i=0;i<ret.data.length;i++){
                             couponData[ret.data[i].id] = ret.data[i];
@@ -2482,7 +2469,6 @@
         /**接口——获取企业类目列表*/
         function getListClass(type){
             quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:psid},function (ret) {
-                console.log("企业下的类目列表：",ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
                         locOrder.class = ret.data[0].id;
@@ -2500,7 +2486,6 @@
         }/**接口——获取企业品牌列表*/
         function getListBrand(type){
             quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:psid},function (ret) {
-                console.log("企业下的品牌列表：",ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
                         locOrder.brand = ret.data[0].id;
@@ -2569,7 +2554,6 @@
                     params.cid = locOrder.class;
                     params.bid = locOrder.brand;
                     params.type = type;
-                    console.log('params:::', params);
                     return params;
                 },
                 success: function () {
@@ -2618,7 +2602,6 @@
                 params.uid = spuid;
             }
             quakooData.ajaxGetData(config.getUrl_product_getSaleSKUAllList(),{subid:subid,spuid:spuid,uid:cusId},function (ret) {
-                console.log("SKU:",ret);
                 if(ret && ret.success){
                     var column;
                     if(ret.data){
@@ -2921,7 +2904,6 @@
             }
             var inventory = $("#skuTable tr[data-index='"+i+"'] .inventory").html()*1;//库存
             var quantity = $("#skuTable tr[data-index='"+i+"'] input").val()*1; //数量
-            console.log(inventory,quantity);
             if(quakooUtils.isBlack(quantity)){
                 layer.msg("请输入添加数量")
                 return
@@ -2975,9 +2957,6 @@
                 },
             });
             function renderHistory(){
-                quakooData.ajaxGetData(config.getUrl_order_getAllOrder(),{uid:cusId,subid:subid},function (ret) {
-                    console.log("查看历史记录", ret)
-                });
                 //历史消费记录
                 $("#cmMain-table1").bootstrapTable('destroy');
                 $("#cmMain-table1").bootstrapTable({
@@ -3051,9 +3030,7 @@
                 }
                 params.skuidsList=JSON.stringify(params.skuidsList);
                 params.surchargesJson = JSON.stringify(params.surchargesJson);
-                console.log("金额参数：",params);
                 quakooData.ajaxGetData(config.getUrl_order_countPrice(),params,function (ret) {
-                    console.log("金额：",ret);
                     if(ret&&ret.success){
                         priceData = ret.data;
                         for(var i in priceData.clientSkuids){
@@ -3094,7 +3071,7 @@
             renderOrderForm();
         }
         /**保存订单*/
-        function saveOrder(){
+        function saveOrder(type){
             var param = {};
             if(quakooUtils.isBlack(saleUid)){//销售员
                 layer.msg("请选择销售员",{icon:4});
@@ -3125,17 +3102,17 @@
                 layer.msg('请输入实收金额',{icon:4});
                 return;
             }
-            param.price = $('#PaidMoney').val()*100;
+            param.price = parseInt($('#PaidMoney').val()*100);
             if(quakooUtils.isBlack($('#dicountPrice').html())){
                 layer.msg("请选择商品",{icon:4});
                 return;
             }
-            param.dicountPrice = ($('#dicountPrice').html().substring(1,$('#dicountPrice').html().length))*100;
+            param.dicountPrice = parseInt(($('#dicountPrice').html().substring(1,$('#dicountPrice').html().length))*100);
             if(quakooUtils.isBlack($('#totalPrice').html())){
                 layer.msg("请选择商品",{icon:4});
                 return;
             }
-            param.totalPrice = ($('#totalPrice').html().substring(1,$('#totalPrice').html().length))*100;
+            param.totalPrice = parseInt(($('#totalPrice').html().substring(1,$('#totalPrice').html().length))*100);
             param.MakeStatus = 6;
             if(quakooUtils.isBlack(orderFormData)){
                 layer.msg('请选择商品',{icon:4});
@@ -3148,27 +3125,140 @@
                     obj.skuid = orderFormData[i].skuid;
                     obj.spuid = orderFormData[i].spuid;
                     obj.num = orderFormData[i].number;
-                    obj.price = orderFormData[i].price*100;
+                    obj.price = parseInt(orderFormData[i].price*100);
                     obj.subtotal = orderFormData[i].subtotal;
                     param.skuidsList.push(obj);
                 }
                 if(i.indexOf('extra')>=0){
                     param.surchargesJson = [];
                     param.surchargesJson[0].name = orderFormData[i].name;
-                    param.surchargesJson[0].price = orderFormData[i].money*100;
+                    param.surchargesJson[0].price = parseInt(orderFormData[i].money*100);
                 }
             }
             param.skuidsList = JSON.stringify(param.skuidsList);
             param.surchargesJson = JSON.stringify(param.surchargesJson);
-
-            // param = JSON.stringify(param);
+            console.log("保存订单传参：",param);
             quakooData.ajaxGetData(config.getUrl_order_saveOrder(),param,function (ret) {
                 console.log(ret);
                 if(ret&&ret.success){
-                    layer.msg(ret.data)
+                    if(type){
+                        submitOrder(ret.data)
+                    }
+                    // layer.msg(ret.data)
                 }
             })
         }
+        /**提交订单*/
+        function submitOrder(submitOrderData){
+            if(submitOrderData){
+                layer.open({
+                    type: 1,
+                    skin: 'submit-Payment', //样式类名
+                    area: '600px',
+                    anim: 0,
+                    closeBtn: 0,
+                    title: false,
+                    shade: 0.01,
+                    shadeClose: true, //开启遮罩关闭
+                    scrollbar: false,
+                    content: $('.wholeParagraph '),
+                    resize:false,
+                    btn: ['结算并打印小票', '取消'],
+                    move:$('.title'),
+                    yes: function () {
+
+                    },
+                    btn2: function (layero, index) {
+                        a.data.fn(layero, index);
+                    },
+                    success: function (layero, index) {
+                        //底部取货勾选框
+                        $('.layui-layer-btn').prepend('<div class="noPickUp"><input type="checkbox" id="week" /><label for="week">未取货</label></div>')
+                        //渲染订单数据
+                        renderSubmit(submitOrderData);
+                    }
+                });
+            }
+        }
+        /**渲染提交订单信息*/
+        function renderSubmit(data){
+            console.log("order:",data)
+            $('.wholeParagraph .yuanjia').html = '¥'+data.totalPrice;
+            $('.wholeParagraph .zhehoujia').html = '¥'+data.dicountPrice;
+            $('.wholeParagraph .yuanjia').html = '¥'+data.totalPrice;
+            $('.wholeParagraph .yuanjia').html = '¥'+data.price;
+        }
+        /**线上付款*/
+        function payDialog(type) {
+            payType = type;
+            var title;
+            if(type == 1){
+                title = '<h3 class="set-title">支付宝支付</h3>';
+            }else if(type == 2){
+                title = '<h3 class="set-title">微信支付</h3>';
+            }
+            layer.open({
+                type: 1,
+                skin: '', //样式类名
+                area: '600px',
+                anim: 0,
+                closeBtn: 0,
+                title: title,
+                shade: 0.1,
+                shadeClose: true, //开启遮罩关闭
+                scrollbar: false,
+                content: $('.paymentPopup'),
+                resize:false,
+                btn: false,
+                move:$('.title'),
+                success: function (layero, index) {
+                    payDialogIndex = index;
+                    secondPre();
+                }
+            });
+        }
+        function closePay() {
+            layer.close(payDialogIndex);
+        }
+        function firstNext() {
+            onlinePayMoney = $('#payNum').val();
+            if(quakooUtils.isBlack(onlinePayMoney)){
+                layer.msg("请输入金额");
+                return;
+            }
+            $('.paymentPopup .speedProgress li').removeClass("active").eq(1).addClass("active");
+            $('.paymentPopup .payContent .content-item').removeClass('active');
+            $('.paymentPopup .payContent .content-item.second').addClass('active');
+        }
+        function secondPre() {
+            $('.paymentPopup .speedProgress li').removeClass("active").eq(0).addClass("active");
+            $('.paymentPopup .payContent .content-item').removeClass('active');
+            $('.paymentPopup .payContent .content-item.first').addClass('active');
+        }
+        function secondNext() {
+            var authCode = $('#testCode').val();
+            if(quakooUtils.isBlack(authCode)){
+                layer.msg('请输入条形码',{icon:1});
+                return;
+            }
+            var param = {};
+            param.subId= subid;
+            param.authCode = authCode;
+            param.type = payType;
+            param.typeInfo = "typeInfo";
+            param.title = "title";
+            param.desc = "desc";
+            param.price = parseInt(onlinePayMoney*100);
+            quakooData.ajaxGetData(config.getUrl_order_handleAliBarcodeOrder(),param,function (ret) {
+                console.log("线上付款：",ret);
+                if(ret&&ret.success){
+                    $('.paymentPopup .speedProgress li').removeClass("active").eq(2).addClass("active");
+                    $('.paymentPopup .payContent .content-item').removeClass('active');
+                    $('.paymentPopup .payContent .content-item.third').addClass('active');
+                }
+            });
+        }
+
         /***************************************************订单信息结束*****************************************************/
 
 
@@ -3193,159 +3283,6 @@
         }, addAlert);
 */
         //付款结算弹窗
-        function addAlert2(a) {
-            layer.closeAll();
-            console.log(a);
-            var index = layer.open({
-                type: 1,
-                skin: 'layui-layer-demo', //样式类名
-                area: a.area,
-                anim: 0,
-                closeBtn: 0,
-                title: false,
-                shade: opacity,
-                shadeClose: true, //开启遮罩关闭
-                scrollbar: false,
-                content: a.popupBox,
-                resize:false,
-                btn: false,
-                move:a.move
-            });
-        }
-
-        function uncollectedFunds(a) {
-
-            var index = layer.open({
-                type: 1,
-                skin: 'yourclass', //样式类名
-                area: a.data.area,
-                anim: 0,
-                closeBtn: 0,
-                title: false,
-                shade: opacity,
-                shadeClose: true, //开启遮罩关闭
-                scrollbar: false,
-                content: a.data.popupBox,
-                resize:false,
-                btn: a.data.btn,
-                move:a.data.move,
-                yes: function () {
-                },
-                btn2: function (layero, index) {
-                    a.data.fn(layero, index);
-                },
-                success: function (layero, index) {
-                    //    a.data.fn(layero,index);
-                }
-            });
-            $('.layui-layer-btn').prepend('<div class="noPickUp"><input type="checkbox" id="week" /><label for="week">未取货</label></div>')
-        }
-
-        $('.btnSubmission').bind('click', {
-            popupBox: $('.wholeParagraph '),
-            btn: ['结算并打印小票', '取消'],
-            area: ['600px'],
-            move:$('.title'),
-            fn: function (lay, index) {
-                layer.close();
-                addAlert2({
-                    popupBox: $('.horizontalTicket'),
-                    area: ['640px'],
-                });
-            }
-        }, uncollectedFunds);
-/*
-        $('#topicZFB').bind('click', {
-            popupBox: $('.paymentPopup'),
-            title: '<h3 class="set-title">支付宝支付</h3>',
-            btn: ['下一步', '取消'],
-            move:$('.title'),
-            area: ['600px'],
-        }, addAlert);
-        $('#topicWX').bind('click', {
-            popupBox: $('.paymentPopup'),
-            title: '<h3 class="set-title">微信支付</h3>',
-            btn: ['下一步', '取消'],
-            move:$('.title'),
-            area: ['600px'],
-        }, addAlert);
-
-*/
-        //退款弹窗
-        function reimburse() {
-            layer.closeAll()
-            layer.open({
-                type: 1,
-                shade: 0.01,
-                title: '确定退款？',
-                skin: 'layui-layer-removeStaff-tan', //样式类名
-                anim: 0,
-                area: ['240px', '130px'],
-                closeBtn: 0, //不显示关闭按钮
-                shade: opacity,
-                resize:false,
-                resize: false,
-                shadeClose: true, //开启遮罩关闭
-                content: $('.content-view-removeStaff'),
-                btn: ['确定', '取消'],
-                yes: function (index) {
-
-                },
-                btn2: function (index) {
-
-                },
-                success: function (index) {
-
-                }
-            });
-        }
-
-
-
-        // 定制商品弹窗
-        function addAlertCustomized(a) {
-            console.log(a);
-            var index = layer.open({
-                type: 1,
-                skin: 'layui-layer-demo', //样式类名
-                area: ['360px'],
-                anim: 0,
-                closeBtn: 0,
-                title: a.data.title,
-                shade: opacity,
-                shadeClose: true, //开启遮罩关闭
-                resize:false,
-                scrollbar: false,
-                content: a.data.popupBox,
-                btn: a.data.btn,
-                yes: function () {
-                },
-                btn2: function () {
-                    //    取消
-                    console.log(a);
-                },
-                success: function (layero, index) {
-                    console.log(a);
-                }
-            });
-        }
-
-        $('.btnCustomized').bind('click', {
-            title: ' <h3 class="set-title" style="border-bottom: 1px solid #ECECF4;"> 定制商品</h3>',
-            popupBox: $('.popupCustomized'),
-            btn: ['添加', '取消'],
-            fn: function () {
-                console.log(1);
-            }
-        }, addAlertCustomized);
-
-        //定制商品弹窗tag切换
-        $(document).on('click', '.popupCustomized .tagBox .tab-ul>li', function () {
-            console.log();
-            $(this).parents('.layui-layer-content').css('height', 'auto');
-            $('.popMainContent .content').eq($(this).index()).show().siblings().hide();
-        });
-
 /*******************************************公共开始**********************************************/
         /**
          * 时间插件
