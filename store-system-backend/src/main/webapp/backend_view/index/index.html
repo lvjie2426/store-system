@@ -260,7 +260,7 @@
                     }
                     /**下拉框*/
                     selectTag($('#selectBox'), function (ret) {
-                        console.log(ret)
+                        console.log(ret);
                         quakooDb.setItem("sel_ShopId",parseInt(ret.value)); //sava 门店ID
                         quakooDb.setItem("sel_ShopName",ret.text); //save 门店名字
                     });
