@@ -88,5 +88,23 @@ public class StatisticsCustomerController extends BaseController{
         }
     }
 
+    //多店对比时间查询
+    @RequestMapping("/timeInterval")
+    public ModelAndView timeInterval(HttpServletRequest request,HttpServletResponse response,
+                                     @RequestParam(name = "subids") List<Long> subids,
+                                     @RequestParam(name = "startTime") long startTime,
+                                     @RequestParam(name = "endTime") long endTime)throws Exception{
+        try{
+            List<ClientStatisticsCustomer> res = Lists.newArrayList();
+            for(Long subid:subids){
+                ClientStatisticsCustomer customer = statisticsCustomerJobService.getCustomerByTime(subid,startTime,endTime);
+                if(customer!=null){ res.add(customer); }
+            }
+            return this.viewNegotiating(request,response,new ResultClient(true,res));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
+
 
 }
