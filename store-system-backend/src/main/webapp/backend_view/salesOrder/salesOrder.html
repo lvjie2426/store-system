@@ -1294,8 +1294,12 @@
                                 <div><%=list[i].productName%></div>
                             </td>
                             <td><%=list[i].number%></td>
-                            <td>￥<%=list[i].price%></td>
-                            <td><input type="text" placeholder="10.0" value="" readonly="readonly"></td>
+                            <td>¥<%=list[i].price%></td>
+                            <%if(0< list[i].discount <= 10){%>
+                                <td><input type="text" placeholder="<%=list[i].discount%>" value="<%=list[i].discount%>" readonly="readonly"></td>
+                            <%}else{%>
+                                <td><input type="text" placeholder="无折扣" value="" readonly="readonly"></td>
+                            <%}%>
                             <td><%=list[i].subtotal%></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
@@ -1306,7 +1310,11 @@
                             </td>
                             <td><%=list[i].number%></td>
                             <td><%=list[i].price%>积分</td>
-                            <td><input type="text" placeholder="10.0" value="" readonly="readonly"></td>
+                            <%if(0< list[i].discount <= 10){%>
+                            <td><input type="text" placeholder="<%=list[i].discount%>" value="<%=list[i].discount%>" readonly="readonly"></td>
+                            <%}else{%>
+                            <td><input type="text" placeholder="无折扣" value="" readonly="readonly"></td>
+                            <%}%>
                             <td></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
@@ -1315,7 +1323,7 @@
                             <td>
                                 <div><%=list[i].name%></div>
                             </td>
-                            <td>￥<%=list[i].money%></td>
+                            <td>¥<%=list[i].money%></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
                     <%}else if(list[i].type ==4){%>
@@ -1323,7 +1331,7 @@
                             <td>
                                 <div><%=list[i].name%></div>
                             </td>
-                            <td>-￥<%=list[i].money%></td>
+                            <td>-¥<%=list[i].money%></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
                     <%}%>
@@ -1343,7 +1351,7 @@
                     <div>折后金额 <span id="dicountPrice">¥<%=price.dicountPriceYuan%></span></div>
                 </div>
                 <div class="actualMoney">
-                    <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney"></span></div>
+                    <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney" value="<%=price.dicountPriceYuan%>"></span></div>
                     <div >折扣<i id="userDiscount"><%=price.userDiscount%></i></div>
                 </div>
             <%}else{%>
