@@ -129,6 +129,7 @@ public class OrderController extends BaseController {
                                  ) throws Exception {
 
         try {
+            User user=UserUtils.getUser(request);
             List<Surcharge> billItems = Lists.newArrayList();
             List<OrderSku> orderskuids = Lists.newArrayList();
             if(StringUtils.isNotBlank(surchargesJson)) {
@@ -138,7 +139,7 @@ public class OrderController extends BaseController {
                 orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(orderskuids);
             }
-            order = orderService.countPrice(order);
+            order = orderService.countPrice(order,user.getSid());
             return this.viewNegotiating(request, response, new ResultClient(order));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -172,8 +173,7 @@ public class OrderController extends BaseController {
                 orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(orderskuids);
             }
-            order = orderService.saveOrder(order);
-            return this.viewNegotiating(request, response, new ResultClient(order));
+            return this.viewNegotiating(request, response, new ResultClient(orderService.saveOrder(order)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
