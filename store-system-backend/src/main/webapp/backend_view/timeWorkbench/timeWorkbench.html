@@ -33,8 +33,8 @@
 <!--头部开始-->
 <header>
     <ul>
-        <li class="xuan">今日概览</li>
-        <li>资金管理</li>
+        <li class="xuan" onclick="chooseType(this)">今日概览</li>
+        <li onclick="chooseType(this)">资金管理</li>
     </ul>
 </header>
 <!--头部结束-->
@@ -70,13 +70,13 @@
     <div class="salesData">
         <div class="salesDataTop">
             <ul>
-                <li class="suanZ">今日</li>
-                <li>昨日</li>
-                <li>本周</li>
-                <li>本月</li>
+                <li onclick="chooseTime(1,this)">今日</li>
+                <li onclick="chooseTime(2,this)">昨日</li>
+                <li onclick="chooseTime(3,this)">本周</li>
+                <li onclick="chooseTime(4,this)">本月</li>
             </ul>
             <div class="moreSales">更多数据</div>
-            <div class="yj-demo-time">
+            <div class="yj-demo-time" id="yj-sale-time">
                 <i class="i iconfont ico_arrow_left icon-ico_arrow_left"></i>
                 <div class="yj-date">
                     <span>开始时间-结束时间</span>
@@ -84,76 +84,8 @@
                 <i class="i iconfont ico_arrow_right icon-ico_arrow_right"></i>
             </div>
         </div>
-        <div class="salesDatacen">
-            <ul>
-                <li>
-                    <div>
-                        <span class="n">9000</span>
-                        <div>
-                            <i class="iconfont ico_increase_filled icon-ico_increase_filled"
-                               style="color:#54B677;"></i>
-                            <em class="n">10</em>%
-                        </div>
-                    </div>
-                    <div>
-                        销售额|元
-                    </div>
-                    <div style="clear: both"></div>
-                </li>
-                <li>
-                    <div>
-                        <span class="n">32</span>
-                        <div>
-                            <i class="iconfont ico_decrease_filled icon-ico_decrease_filled"
-                               style="color:#DD5B4B;"></i>
-                            <em style="color:#DD5B4B;" class="n">6</em>%
-                        </div>
-                    </div>
-                    <div>
-                        销售单数|单
-                    </div>
-                    <div style="clear: both"></div>
-                </li>
-                <li>
-                    <div>
-                        <span class="n">282</span>
-                    </div>
-                    <div>
-                        客单价|元
-                    </div>
-                    <div style="clear: both"></div>
-                </li>
-                <li>
-                    <div>
-                        <span class="n">1019</span>
-                    </div>
-                    <div>
-                        毛利润|元
-                    </div>
-                    <div style="clear: both"></div>
-                </li>
-            </ul>
-        </div>
-        <div class="salesDatabot">
-            <p>去年同期</p>
-            <ul>
-                <li>
-                    <span>销售额</span>
-                    <em class="n">9027 </em>元
-                </li>
-                <li>
-                    <span>销售单数</span>
-                    <em class="n">40 </em>单
-                </li>
-                <li>
-                    <span>客单价</span>
-                    <em class="n">200 </em>元
-                </li>
-                <li>
-                    <span>毛利润</span>
-                    <em class="n">1019 </em>元
-                </li>
-            </ul>
+        <div id="saleMoneyDom">
+
         </div>
     </div>
     <div class="questRewards">
@@ -572,9 +504,7 @@
 <script src="../resource/js/yanjing/daterange.js"></script>
 <!-- echarts插件 -->
 <script src="../resource/js/echarts.js"></script>
-<!-- <link href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css" rel="stylesheet"> -->
 
-<!-- <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script> -->
 <script type="text/html" id="bannerList">
     <li>
         <span>全店</span>
@@ -601,181 +531,128 @@
     </li>
     <%}%>
 </script>
+<script type="text/html" id="saleMoneyTmp">
+    <div class="salesDatacen">
+        <ul>
+            <li>
+                <div>
+                    <span><%=list.sale%></span>
+                    <div>
+                        <%if(list.saleStatus==1){%>
+                        <i class="iconfont ico_decrease_filled icon-ico_increase_filled"
+                           style="color:#54B677;"></i>
+                        <em style="color:#54B677;"><%=list.saleRate%></em>%
+                        <%}else{%>
+                        <i class="iconfont ico_decrease_filled icon-ico_decrease_filled"
+                           style="color:#DD5B4B;"></i>
+                        <em style="color:#DD5B4B;"><%=list.saleRate%></em>%
+                        <%}%>
+                    </div>
+                </div>
+                <div>
+                    销售额|元
+                </div>
+                <div style="clear: both"></div>
+            </li>
+            <li>
+                <div>
+                    <span><%=list.num%></span>
+                    <div>
+                        <%if(list.numStatus==1){%>
+                        <i class="iconfont ico_decrease_filled icon-ico_increase_filled"
+                           style="color:#54B677;"></i>
+                        <em style="color:#54B677;"><%=list.numRate%></em>%
+                        <%}else{%>
+                        <i class="iconfont ico_decrease_filled icon-ico_decrease_filled"
+                           style="color:#DD5B4B;"></i>
+                        <em style="color:#DD5B4B;" ><%=list.numRate%></em>%
+                        <%}%>
+                    </div>
+                </div>
+                <div>
+                    销售单数|单
+                </div>
+                <div style="clear: both"></div>
+            </li>
+            <li>
+                <div>
+                    <span><%=list.perPrice%></span>
+                </div>
+                <div>
+                    客单价|元
+                </div>
+                <div style="clear: both"></div>
+            </li>
+            <li>
+                <div>
+                    <span><%=list.profits%></span>
+                </div>
+                <div>
+                    毛利润|元
+                </div>
+                <div style="clear: both"></div>
+            </li>
+        </ul>
+    </div>
+    <div class="salesDatabot">
+        <p>去年同期</p>
+        <ul>
+            <li>
+                <span>销售额</span>
+                <em><%=list.saleOld%> </em>元
+            </li>
+            <li>
+                <span>销售单数</span>
+                <em ><%=list.numOld%> </em>单
+            </li>
+            <li>
+                <span>客单价</span>
+                <em><%=list.perPriceOld%> </em>元
+            </li>
+            <li>
+                <span>毛利润</span>
+                <em ><%=list.profitsOld%> </em>元
+            </li>
+        </ul>
+    </div>
+</script>
 <!-- 当前页面逻辑 -->
 <script>
     var time;//任务奖励参数
-    var subid;
-    //初始化页面
-    $(function () {
-        subid = quakooDb.getItem("sel_ShopId");//门店ID
-        var date = new Date();
-        time=date.format("yyyyMM");
-        initPage();
+    var subid = quakooUser.getUserInfo().psid;//企业/公司id
+    var shopId = quakooDb.getItem('sel_ShopId');//门店id
+
+    var date = new Date();
+    time=date.format("yyyyMM");
+    //今日概览的时间选择
+    var saleTime = new dateRange("#yj-sale-time");
+    saleTime.init()
+    $('#yj-sale-time button').click(function () {
+        chooseTime(5)
     })
 
-    //初始化函数
-    function initPage() {
-        // 时间范围插件开始
-        var dt = new dateRange(".yj-demo-time");
-        dt.init()
-        popup();
-        select();
-        questRewardsBanner();
-        tabBox();
-        fromBox();
-    }
+    //任务奖励
+    missionRewards()
+    //销售奖励
+    renderSaleIncentive()
+
+    //日常任务和奖励轮播
+    questRewardsBanner();
+    $('.salesDataTop li').eq(0).click()
+    popup();
+    fromBox();
+
+    //今日出入账明细
+    getTodayDetails()
+
     // 数据表单初始化函数
     function fromBox() {
-        var columns = [
-            {field: "name", title: "商品名称", align: "left", valign: "middle", width: '50%'},
-            {field: "company", title: "单位", align: "left", valign: "middle"},
-            {field: "teamRoy", title: "团队提成", align: "left", valign: "middle"},
-            {field: "personalRoy", title: "个人提成", align: "left", valign: "middle"},
-            {
-                field: 'btn', title: "操作", align: "left", valign: "middle", formatter: function () {
-                    return "<buttom class='btnSetOrder'>查看订单</buttom>"
-                }
-            },
-        ], columns2 = [
+        var columns2 = [
             {field: "name", title: "商品名称", align: "left", valign: "middle", width: '50%'},
             {field: "company", title: "单位", align: "left", valign: "middle"},
             {field: "teamRoy", title: "团队提成", align: "left", valign: "middle"},
             {field: "personalRoy", title: "个人提成", align: "left", valign: "middle"}
         ];
-        //任务奖励
-        $("#taskReward").bootstrapTable('destroy');
-        $("#taskReward").bootstrapTable({
-            url: config.getUrl_mission_getAllList(),
-            method: 'get',
-            classes: "table",
-            pagination: true,            //是否显示分页
-            pageNumber: 1,               //初始化加载第一页，默认第一页
-            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-            pageSize: 5,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                {
-                    field: "name", title: "任务名称", align: "left", valign: "middle"
-                },
-                {
-                    field: "startTime", title: "截止时间", align: "left", valign: "middle", formatter: function (val, obj) {
-                        return quakooUtils.formatTimeToDateDianLY(val) + '-' + quakooUtils.formatTimeToDateDianLY(obj.endTime);
-                    }
-                },
-                {field: "amount", title: "奖励", align: "left", valign: "middle"},
-                {
-                    field: "target", title: "任务量", align: "left", valign: "middle", formatter: function (item, obj) {
-                        var val = item + '元';
-                        if (obj.amountType == 1) {
-                            val = item + '个'
-                        }
-                        return val;
-                    }
-                },
-                {field: "allAmount", title: "已完成", align: "left", valign: "middle"},
-                {
-                    field: "allProgress", title: "进度", align: "left", valign: "middle", formatter: function (v, e) {
-                        return v >= 100 ? "<span class='end'><i class='iconfont icon-ico_check'></i></span>" : canvasFn(v, 14);
-                    }
-                }
-            ],
-            queryParams: function (param) {
-                param.sid = subid;
-                param.page = param.offset / param.limit + 1;
-                param.size = param.limit;
-                param.token = quakooUser.getUserInfo().token;
-                return param
-            }
-        });
-        //销售奖励
-        (function saleIncentive() {
-            var salesIncentives = [];
-            quakooData.ajaxGetData(config.getUrl_product_saleReward(),{subid:subid},function (ret) {
-                if(ret&&ret.success){
-                    $('#salesBonus').html(ret.data.total);
-                    console.log("销售奖励:",ret);
-                    for(var i = 0;i<ret.data.saleRewards.length;i++){
-                        var obj = {};
-                        obj.name = ret.data.saleRewards.name;
-                        obj.number = ret.data.saleRewards.number;
-                        obj.rewardPersonal = ret.data.saleRewards.rewardPersonal+"元/片";
-                        obj.royaltyPersonal = ret.data.saleRewards.royaltyPersonal+"元";
-                        salesIncentives.push(obj);
-                    }
-                    renderSaleIncentive();
-                }
-            });
-            renderSaleIncentive();
-        })();
-        function renderSaleIncentive(){
-            $("#salesIncentives").bootstrapTable('destroy');
-            $("#salesIncentives").bootstrapTable({
-                data: salesIncentives,
-                classes: "table",
-                pagination: false,        //是否显示分页
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                height: 398,
-                sortable: false,
-                sortOrder: "asc",
-                showColumns: true,
-                strictSearch: true,
-                locale: "zh-CN",
-                paginationHAlign: "center",
-                clickToSelect: true,
-                columns: [
-                    {field: "name", title: "商品名称", align: "left", valign: "middle", sortable: true},
-                    {field: "rewardPersonal", title: "提成", align: "left", valign: "middle", sortable: true},
-                    {field: "number", title: "完成量", align: "left", valign: "middle", sortable: true},
-                    {field: "royaltyPersonal", title: "奖励", align: "left", valign: "middle", sortable: true},
-                ]
-            });
-        }
-        //今日出入账明细
-        $("#todaysDetails").bootstrapTable('destroy');
-        $("#todaysDetails").bootstrapTable({
-            data: todaysDetails,
-            classes: "table",
-            pagination: true,        //是否显示分页
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 10,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            height: 564,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                {field: "orderNum", title: "订单号", align: "left", valign: "middle"},
-                {field: "date", title: "时间", align: "left", valign: "middle"},
-                {field: "name", title: "顾客姓名", align: "left", valign: "middle"},
-                {field: "number", title: "手机号", align: "left", valign: "middle"},
-                {field: "money", title: "出入账金额", align: "left", valign: "middle"},
-                {field: "mode", title: "支付方式", align: "left", valign: "middle"},
-                {
-                    field: "type", title: "订单状态", align: "left", valign: "middle",
-                    formatter: function (a, b, c) {
-                        return '<span class="spanType span1">已完成</span>';
-                    }
-                },
-                {field: "saleName", title: "销售员", align: "left", valign: "middle"},
-                {
-                    field: "btn", title: "操作", align: "left", valign: "middle", formatter: function () {
-                        return "<buttom class='btnViewOrder'>查看订单</buttom>"
-                    }
-                },
-
-            ]
-        });
         $('#cmyRoyaltyForm').bootstrapTable({
             data: cmyRoyaltyForm,
             classes: "table",
@@ -870,26 +747,141 @@
         }
     }
 
-    // 当前页面切换区函数
-    function tabBox() {
-        // 今日概览tab资金管理
-        $('header>ul>li').on('click', function () {
-            $(this).addClass('xuan').siblings().removeClass('xuan');
-            $('.winBox').hide(0);
-            $('.winBox').eq($(this).index()).show(0);
-            chart();
+    function getTodayDetails() {
+        //今日出入账明细
+        $("#todaysDetails").bootstrapTable('destroy');
+        $("#todaysDetails").bootstrapTable({
+            data: todaysDetails,
+            classes: "table",
+            pagination: true,        //是否显示分页
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            height: 564,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {field: "orderNum", title: "订单号", align: "left", valign: "middle"},
+                {field: "date", title: "时间", align: "left", valign: "middle"},
+                {field: "name", title: "顾客姓名", align: "left", valign: "middle"},
+                {field: "number", title: "手机号", align: "left", valign: "middle"},
+                {field: "money", title: "出入账金额", align: "left", valign: "middle"},
+                {field: "mode", title: "支付方式", align: "left", valign: "middle"},
+                {
+                    field: "type", title: "订单状态", align: "left", valign: "middle",
+                    formatter: function (a, b, c) {
+                        return '<span class="spanType span1">已完成</span>';
+                    }
+                },
+                {field: "saleName", title: "销售员", align: "left", valign: "middle"},
+                {
+                    field: "btn", title: "操作", align: "left", valign: "middle", formatter: function () {
+                        return "<buttom class='btnViewOrder'>查看订单</buttom>"
+                    }
+                },
+
+            ]
         });
-        // 总数据日期切换
-        $('.salesDataTop>ul>li').on('click', function () {
-            $(this).addClass('suanZ').siblings().removeClass('suanZ');
+    }
+
+    //任务奖励
+    function missionRewards() {
+        $("#taskReward").bootstrapTable('destroy');
+        $("#taskReward").bootstrapTable({
+            url: config.getUrl_mission_getAllList(),
+            method: 'get',
+            classes: "table",
+            pagination: false,            //是否显示分页
+            pageNumber: 1,               //初始化加载第一页，默认第一页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageSize: 5,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {
+                    field: "name", title: "任务名称", align: "left", valign: "middle"
+                },
+                {
+                    field: "startTime", title: "截止时间", align: "left", valign: "middle", formatter: function (val, obj) {
+                        return quakooUtils.formatTimeToDateDianLY(val) + '-' + quakooUtils.formatTimeToDateDianLY(obj.endTime);
+                    }
+                },
+                {field: "amount", title: "奖励", align: "left", valign: "middle"},
+                {
+                    field: "target", title: "任务量", align: "left", valign: "middle", formatter: function (item, obj) {
+                        var val = item + '元';
+                        if (obj.amountType == 1) {
+                            val = item + '个'
+                        }
+                        return val;
+                    }
+                },
+                {field: "allAmount", title: "已完成", align: "left", valign: "middle"},
+                {
+                    field: "allProgress", title: "进度", align: "left", valign: "middle", formatter: function (v, e) {
+                        return v >= 100 ? "<span class='end'><i class='iconfont icon-ico_check'></i></span>" : canvasFn(v, 14);
+                    }
+                }
+            ],
+            queryParams: function (param) {
+                param.sid = shopId;
+                param.token = quakooUser.getUserInfo().token;
+                return param
+            }
         });
+    }
+
+    function chooseType(self) {
+        $(self).addClass('xuan').siblings().removeClass('xuan');
+        $('.winBox').hide();
+        $('.winBox').eq($(self).index()).show();
+        chart();
+    }
+
+    //选择type   今日1 昨日2 本周3 ，本月4
+    function chooseTime(type,self) {
+        var params = {subId:shopId}
+        if(self){
+            $(self).addClass('suanZ').siblings().removeClass('suanZ');
+        }else{
+            $(".salesDataTop li").removeClass('suanZ')
+            params.startTime = saleTime.getTime()[2]
+            params.endTime = saleTime.getTime()[3]
+        }
+        var url = '';
+        if(type==1){
+            url = config.getUrl_statisticsSale_saleToday();
+        }else if(type==2){
+            url = config.getUrl_statisticsSale_saleYesterday();
+        }else if(type==3){
+            url = config.getUrl_statisticsSale_saleWeek();
+        }else if(type==4){
+            url = config.getUrl_statisticsSale_saleMonth();
+        }else if(type==5){
+            url = config.getUrl_statisticsSale_searchSale();
+        }
+        quakooData.ajaxGetData(url,params,function (ret) {
+            var html = template('saleMoneyTmp',{list:ret.data})
+            $("#saleMoneyDom").html(html)
+        })
     }
 
     //日常任务和奖励轮播
     function questRewardsBanner() {
         var ul = $('.questRewardsBanner>ul'),
             quW = $('.questRewardsBanner').outerWidth();
-        quakooData.ajaxGetData(config.getUrl_user_taskReward(), {date: time, sid: subid}, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_user_taskReward(), {date: time, sid: shopId}, function (ret) {
             if (ret && ret.success) {
                 ul.html(template('bannerList', {list: ret.data.clientUsers, tem: ret.data.tem}));
                 var liW = ul.children('li').outerWidth(),
@@ -931,65 +923,7 @@
         })
     }
 
-    // canvas进度圈
-    function canvasFn(element, number) {
 
-        var dom = null;
-        dom = $('<canvas class="canvas" width="16" height="16"></canvas>')[0];
-
-        var aaa = canFor(dom, element);
-
-        function canFor(canvas, num) {
-            var context = canvas.getContext('2d'),  //获取画图环境，指明为2d
-                centerX = canvas.width / 2,   //Canvas中心点x轴坐标
-                centerY = canvas.height / 2,  //Canvas中心点y轴坐标
-                rad = Math.PI * 2 / 100, //将360度分成100份，那么每一份就是rad度
-                speed = num; //加载的快慢就靠它了
-
-            //绘制5像素宽的运动外圈
-            function blueCircle(n) {
-                context.save();
-                context.strokeStyle = "#DD5B4B"; //设置描边样式
-                context.lineWidth = 2; //设置线宽
-                context.beginPath(); //路径开始
-                context.arc(centerX, centerY, number / 2, -Math.PI / 2, -Math.PI / 2 + n * rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
-                context.stroke(); //绘制
-                context.closePath(); //路径结束
-                context.restore();
-            }
-
-            //绘制白色外圈
-            function whiteCircle() {
-                context.save();
-                context.beginPath();
-                context.lineWidth = 2; //设置线宽
-                context.strokeStyle = "#FBEEED";
-                context.arc(centerX, centerY, number / 2, 0, Math.PI * 2, false);
-                context.stroke();
-                context.closePath();
-                context.restore();
-            }
-
-            function inte() {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                whiteCircle();
-                blueCircle(speed);
-                var ele = $('<img src=""/>')[0];
-                ele.src = canvas.toDataURL("image/png");
-                return ele
-            }
-
-            return inte();
-        }
-
-        //新Image对象，可以理解为DOM
-
-        // canvas.toDataURL 返回的是一串Base64编码的URL
-        // 指定格式 PNG
-        var D = document.createElement('div');
-        D.appendChild(aaa);
-        return D.innerHTML;
-    }
 
     // 数据统计图
     function chart() {
@@ -1123,27 +1057,39 @@
         $('.btnSettlementRecord').on('click', settlementRecord);
     }
 
-
-    // 下拉框执行函数
-    function select() {
-        // 现金结算弹窗
-        selectTag($("#closeCashSele"))
+    //销售奖励
+    function renderSaleIncentive(){
+        $("#salesIncentives").bootstrapTable('destroy');
+        $("#salesIncentives").bootstrapTable({
+            url: config.getUrl_product_saleReward(),
+            method: 'get',
+            classes: "table",
+            pagination: false,            //是否显示分页
+            pageNumber: 1,               //初始化加载第一页，默认第一页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageSize: 5,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {field: "name", title: "商品名称", align: "left", valign: "middle", sortable: true},
+                {field: "rewardPersonal", title: "提成", align: "left", valign: "middle", sortable: true},
+                {field: "number", title: "完成量", align: "left", valign: "middle", sortable: true},
+                {field: "royaltyPersonal", title: "奖励", align: "left", valign: "middle", sortable: true},
+            ],
+            queryParams: function (param) {
+                param.subid = shopId;
+                param.token = quakooUser.getUserInfo().token;
+                return param
+            }
+        });
     }
 
-    var dataObj = {
-        1: [9000, 10, 32, 6, 282, 1019, 9027, 40, 200, 1019],
-        2: [6156, 18, 35, 73, 683, 671, 4546, 76, 400, 2456],
-        3: [2354, 50, 11, 59, 233, 321, 5813, 82, 400, 356],
-        4: [4354, 90, 89, 43, 198, 945, 9652, 354, 54, 245]
-    }
-    //-----------------障眼法开始---------------
-    $(".salesDataTop>ul>li").on('click', function () {
-        var index = $(this).index() + 1;
-        var nDom = $('.n');
-        dataObj[index].forEach(function (item, index) {
-            nDom.eq(index).text(item);
-        })
-    })
 </script>
 
 </html>

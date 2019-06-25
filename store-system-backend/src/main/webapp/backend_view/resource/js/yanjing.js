@@ -85,3 +85,63 @@ function selectTag(ele, callback) {
     }
 
 }
+
+// canvas进度圈
+function canvasFn(element, number) {
+
+    var dom = null;
+    dom = $('<canvas class="canvas" width="16" height="16"></canvas>')[0];
+
+    var aaa = canFor(dom, element);
+
+    function canFor(canvas, num) {
+        var context = canvas.getContext('2d'),  //获取画图环境，指明为2d
+            centerX = canvas.width / 2,   //Canvas中心点x轴坐标
+            centerY = canvas.height / 2,  //Canvas中心点y轴坐标
+            rad = Math.PI * 2 / 100, //将360度分成100份，那么每一份就是rad度
+            speed = num; //加载的快慢就靠它了
+
+        //绘制5像素宽的运动外圈
+        function blueCircle(n) {
+            context.save();
+            context.strokeStyle = "#DD5B4B"; //设置描边样式
+            context.lineWidth = 2; //设置线宽
+            context.beginPath(); //路径开始
+            context.arc(centerX, centerY, number / 2, -Math.PI / 2, -Math.PI / 2 + n * rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+            context.stroke(); //绘制
+            context.closePath(); //路径结束
+            context.restore();
+        }
+
+        //绘制白色外圈
+        function whiteCircle() {
+            context.save();
+            context.beginPath();
+            context.lineWidth = 2; //设置线宽
+            context.strokeStyle = "#FBEEED";
+            context.arc(centerX, centerY, number / 2, 0, Math.PI * 2, false);
+            context.stroke();
+            context.closePath();
+            context.restore();
+        }
+
+        function inte() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            whiteCircle();
+            blueCircle(speed);
+            var ele = $('<img src=""/>')[0];
+            ele.src = canvas.toDataURL("image/png");
+            return ele
+        }
+
+        return inte();
+    }
+
+    //新Image对象，可以理解为DOM
+
+    // canvas.toDataURL 返回的是一串Base64编码的URL
+    // 指定格式 PNG
+    var D = document.createElement('div');
+    D.appendChild(aaa);
+    return D.innerHTML;
+}
