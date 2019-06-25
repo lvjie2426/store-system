@@ -220,6 +220,10 @@ input{
     color:#FFFFFF;
     background-color: #DD5B4B;
 }
+.btn-green{
+    color:#FFFFFF;
+    background-color: #4186DC;
+}
 /************************* 小标签样式结束 **********************/
 /************************* 修改bootstrap-table样式开始 **********************/
 #yj-table{

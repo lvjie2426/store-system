@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.3:20005";
         /**马文军*/
-        // this.serverUrl = "http://192.168.1.18:20005";
+        this.serverUrl = "http://192.168.1.24:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -97,6 +97,16 @@ var Config = (function(_super){
     _proto.getUrl_user_taskReward = function(){return this.serverUrl + '/user/taskReward';};
     /**实时工作台 -- 销售奖励*/
     _proto.getUrl_product_saleReward = function(){return this.serverUrl + '/product/saleReward';};
+    /**实时工作台 -- 昨日销售额统计*/
+    _proto.getUrl_statisticsSale_saleYesterday = function(){return this.serverUrl + '/statisticsSale/saleYesterday';};
+    /**实时工作台 -- 今日销售额统计*/
+    _proto.getUrl_statisticsSale_saleToday = function(){return this.serverUrl + '/statisticsSale/saleToday';};
+    /**实时工作台 -- 本周销售额统计*/
+    _proto.getUrl_statisticsSale_saleWeek = function(){return this.serverUrl + '/statisticsSale/saleWeek';};
+    /**实时工作台 -- 本月销售额统计*/
+    _proto.getUrl_statisticsSale_saleMonth = function(){return this.serverUrl + '/statisticsSale/saleMonth';};
+    /**实时工作台 -- 查询销售额统计*/
+    _proto.getUrl_statisticsSale_searchSale = function(){return this.serverUrl + '/statisticsSale/searchSale';};
 
     //=======================实时工作台 结束====================
 
@@ -263,6 +273,12 @@ var Config = (function(_super){
     _proto.getUrl_inventoryCheckBill_add = function(){return this.serverUrl + '/inventoryCheckBill/add';};
     /**编辑盘点**/
     _proto.getUrl_inventoryCheckBill_update = function(){return this.serverUrl + '/inventoryCheckBill/update';};
+    /**删除盘点**/
+    _proto.getUrl_inventoryCheckBill_del = function(){return this.serverUrl + '/inventoryCheckBill/del';};
+    /**完成盘点**/
+    _proto.getUrl_inventoryCheckBill_end = function(){return this.serverUrl + '/inventoryCheckBill/end';};
+    /**保存盘点**/
+    _proto.getUrl_inventoryCheckBill_save = function(){return this.serverUrl + '/inventoryCheckBill/save';};
 
     //=======================盘点 结束====================
     //=======================调货 开始====================
@@ -280,6 +296,7 @@ var Config = (function(_super){
     _proto.getUrl_inventoryInvokeBill_pass = function(){return this.serverUrl + '/inventoryInvokeBill/pass';};
     /**删除调货单**/
     _proto.getUrl_inventoryInvokeBill_del = function(){return this.serverUrl + '/inventoryInvokeBill/del';};
+
 
     //=======================调货 结束====================
 

@@ -65,7 +65,85 @@
 
 </div>
 
-<div class="content-view1">
+<div class="content-view content-view1" id="afterDom">
+
+</div>
+<div class="content-view-change">
+    <div class="header">
+        <span class="title">全部镜片</span>
+        <input type="text" placeholder="搜索系列">
+    </div>
+    <div class="content clear">
+        <ul class="left-tab">
+            <li class="left-item active">澳洲明月</li>
+            <li class="left-item">美国暴龙</li>
+            <li class="left-item">宝丽来</li>
+            <li class="left-item">Calvin Kle</li>
+        </ul>
+        <ul class="right-content">
+            <li class="right-item">
+                <table id="brand-table-1" data-toggle="table"  class="table table-border"></table>
+            </li>
+            <li class="right-item">
+                <table id="brand-table-2" data-toggle="table"  class="table table-border"></table>
+            </li>
+            <li class="right-item">
+                <table id="brand-table-3" data-toggle="table"  class="table table-border"></table>
+            </li>
+            <li class="right-item">
+                <table id="brand-table-4" data-toggle="table"  class="table table-border"></table>
+            </li>
+        </ul>
+    </div>
+    <div class="bottom clear">
+        <div class="wear-tear">
+            <input type="checkbox" id="wear-tear">
+            <label for="wear-tear">损耗原商品<i class="iconfont">&#xe6a8;</i></label>
+        </div>
+        <div class="close-win">
+            关闭窗口
+        </div>
+    </div>
+</div>
+<div class="content-view-salesReturn">
+    <div class="header">确定退货</div>
+    <div class="content">确定将「HYDRON 海昌透明黑色单片年抛」退货？</div>
+    <div class="bot clear">
+        <span class="confirm">确定</span>
+        <span class="cancel">取消</span>
+    </div>
+</div>
+<div class="content-view-breakage">
+    <div class="header">确定报损</div>
+    <div class="content">确定将「HYDRON 海昌透明黑色单片年抛」报损？</div>
+    <div class="bot clear">
+        <span class="confirm">确定</span>
+        <span class="cancel">取消</span>
+    </div>
+</div>
+
+<!--全局JS引用-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+
+<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/yanjing/daterange.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
+<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+
+<script type="text/html" id="afterTmp">
     <div class="dialog-header">
         <ul class="dialog-tab-ul">
             <li class="active">本次</li>
@@ -276,15 +354,15 @@
             <div class="order-table">
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th>商品名称</th>
-                            <th>数量</th>
-                            <th>零售价</th>
-                            <th>会员折扣</th>
-                            <th>小计</th>
-                            <th>质保状态</th>
-                            <th>操作</th>
-                        </tr>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>数量</th>
+                        <th>零售价</th>
+                        <th>会员折扣</th>
+                        <th>小计</th>
+                        <th>质保状态</th>
+                        <th>操作</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -434,81 +512,7 @@
         <button type="button" class="submit btn btn-primary">提交订单</button>
         <button type="button" class="save btn btn-order">保存订单</button>
     </div>
-</div>
-<div class="content-view-change">
-    <div class="header">
-        <span class="title">全部镜片</span>
-        <input type="text" placeholder="搜索系列">
-    </div>
-    <div class="content clear">
-        <ul class="left-tab">
-            <li class="left-item active">澳洲明月</li>
-            <li class="left-item">美国暴龙</li>
-            <li class="left-item">宝丽来</li>
-            <li class="left-item">Calvin Kle</li>
-        </ul>
-        <ul class="right-content">
-            <li class="right-item">
-                <table id="brand-table-1" data-toggle="table"  class="table table-border"></table>
-            </li>
-            <li class="right-item">
-                <table id="brand-table-2" data-toggle="table"  class="table table-border"></table>
-            </li>
-            <li class="right-item">
-                <table id="brand-table-3" data-toggle="table"  class="table table-border"></table>
-            </li>
-            <li class="right-item">
-                <table id="brand-table-4" data-toggle="table"  class="table table-border"></table>
-            </li>
-        </ul>
-    </div>
-    <div class="bottom clear">
-        <div class="wear-tear">
-            <input type="checkbox" id="wear-tear">
-            <label for="wear-tear">损耗原商品<i class="iconfont">&#xe6a8;</i></label>
-        </div>
-        <div class="close-win">
-            关闭窗口
-        </div>
-    </div>
-</div>
-<div class="content-view-salesReturn">
-    <div class="header">确定退货</div>
-    <div class="content">确定将「HYDRON 海昌透明黑色单片年抛」退货？</div>
-    <div class="bot clear">
-        <span class="confirm">确定</span>
-        <span class="cancel">取消</span>
-    </div>
-</div>
-<div class="content-view-breakage">
-    <div class="header">确定报损</div>
-    <div class="content">确定将「HYDRON 海昌透明黑色单片年抛」报损？</div>
-    <div class="bot clear">
-        <span class="confirm">确定</span>
-        <span class="cancel">取消</span>
-    </div>
-</div>
-
-<!--全局JS引用-->
-<script src="../resource/js/jquery.min.js"></script>
-<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
-<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="../resource/js/plugins/layer/layer.js"></script>
-<script src="../resource/layui/layui.js"></script>
-
-<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
-<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
-<script src="../resource/js/lib/quakoo/Config.js"></script>
-<script src="../resource/js/lib/quakoo/project.js"></script>
-<script src="../resource/common/common.js?" +Math.random()></script>
-
-<script src="../resource/js/yanjing.js"></script>
-<script src="../resource/js/yanjing/daterange.js"></script>
-<script src="../resource/js/template-native.js"></script>
-
-<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+</script>
 
 <script>
     var subid = quakooUser.getUserInfo().psid;//企业/公司id
@@ -528,6 +532,11 @@
     })
     //type  1售后处理     2售后记录
     function choose(t) {
+        if(type==t){
+            return
+        }
+        selectType = 1;
+        $('#yj-name-id .text').html('顾客姓名')
         type = t;
         if(type==1){
             $('#yj-name-id li').eq(2).hide().siblings().show();
@@ -595,15 +604,17 @@
                 return param
             },
             columns:[
-                {field: "onum", title: "订单号", align:"left",valign:"middle"},
-                {field: "otime", title: "销售时间", align:"left",valign:"middle"},
-                {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
-                {field: "phoneNum", title: "联系方式", align:"left",valign:"middle"},
-                {field: "closingPrice", title: "成交金额", align:"left",valign:"middle"},
-                {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
-                {field: "afterNum", title: "售后次数", align:"center",valign:"middle"},
+                {field: "orderNo", title: "订单号", align:"left",valign:"middle"},
+                {field: "ctime", title: "销售时间", align:"left",valign:"middle"},
+                {field: "uname", title: "顾客姓名", align:"left",valign:"middle"},
+                {field: "uphone", title: "联系方式", align:"left",valign:"middle"},
+                {field: "priceYuan", title: "成交金额", align:"left",valign:"middle",formatter:function (value, row, index) {
+                        return '￥'+value;
+                    }},
+                {field: "personnelName", title: "销售员", align:"left",valign:"middle"},
+                {field: "asCount", title: "售后次数", align:"center",valign:"middle"},
                 {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary" onclick="goAfter()">进行售后</button>';
+                        return '<button class="btn btn-primary" onclick=\'goAfter('+JSON.stringify(row)+')\'>进行售后</button>';
                     }
                 }
 
@@ -642,16 +653,27 @@
                 return param
             },
             columns:[
-                {field: "oNum", title: "订单号", align:"left",valign:"middle"},
+                {field: "orderNo", title: "订单号", align:"left",valign:"middle"},
                 {field: "lastTime", title: "最后一次售后", align:"left",valign:"middle"},
-                {field: "customerName", title: "顾客姓名", align:"left",valign:"middle"},
-                {field: "phoneNum", title: "联系方式", align:"left",valign:"middle"},
-                {field: "afterWhy", title: "售后原因", align:"left",valign:"middle"},
-                {field: "salesMan", title: "销售员", align:"left",valign:"middle"},
-                {field: "oStatus", title: "订单状态", align:"left",valign:"middle"},
-                {field: "afterNum", title: "售后次数", align:"center",valign:"middle"},
-                {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary">查看</button>';
+                {field: "userName", title: "顾客姓名", align:"left",valign:"middle"},
+                {field: "userPhone", title: "联系方式", align:"left",valign:"middle"},
+                {field: "resaon", title: "售后原因", align:"left",valign:"middle"},
+                {field: "salesName", title: "销售员", align:"left",valign:"middle"},
+                {field: "status", title: "订单状态", align:"left",valign:"middle",formatter: function (value, row, index) {
+                        var str = '-';
+                        switch (value){
+                            case 1:str = '<div class="btn-status btn-red">未加工</div>';break;
+                            case 2:str = '<div class="btn-status btn-blue">欠￥500</div>';break;
+                            case 3:str = '<div class="btn-status btn-yellow">未取货</div>';break;
+                            case 4:str = '<div class="btn-status btn-grays">已完成</div>';break;
+                            case 5:str = '<div class="btn-status btn-black">已作废</div>';break;
+                            case 6:str = '<div class="btn-status btn-green">临时订单</div>';break;
+                        }
+                        return str;
+                    }},
+                {field: "times", title: "售后次数", align:"center",valign:"middle"},
+                {field: "id", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary" onclick="lookAfter('+value+')">查看</button>';
                     }
                 }
 
@@ -659,7 +681,34 @@
 
         });
     }
+    //查看售后
+    function lookAfter(id) {
 
+    }
+    //进行售后
+    function goAfter(data) {
+        console.log(data)
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo layui-layer-view1', //样式类名
+            area: ['960px', '560px'],
+            anim: 0,
+            closeBtn:0,
+            title:"",
+            content: $('.content-view1'),
+            btn: "",
+            yes: function(){
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                $(".layui-layer-view1 .closewin").click(function () {
+                    layer.close(index);
+                })
+            }
+        });
+    }
    /* var data3 = [
         {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
         {onum:"123456a45c",otime:"2018.06.17 12:31",customerName:"邓裕",phoneNum:"13781728173",closingPrice:"￥380",salesMan:'李燕',afterNum:"12次"},
@@ -869,28 +918,7 @@
     /**
      * 弹窗进行售后
      * */
-    function goAfter() {
-        var index = layer.open({
-            type: 1,
-            shade: 0.01,
-            shadeClose: true,
-            skin: 'layui-layer-demo layui-layer-view1', //样式类名
-            area: ['960px', '560px'],
-            anim: 0,
-            closeBtn:0,
-            title:"",
-            content: $('.content-view1'),
-            btn: "",
-            yes: function(){
-            },
-            btn2: function(){},
-            success: function(layero, index){
-                $(".layui-layer-view1 .closewin").click(function () {
-                    layer.close(index);
-                })
-            }
-        });
-    }
+
     /**
      * 弹窗更换
      * */
