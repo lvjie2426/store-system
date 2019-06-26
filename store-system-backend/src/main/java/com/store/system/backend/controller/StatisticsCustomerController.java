@@ -76,12 +76,12 @@ public class StatisticsCustomerController extends BaseController{
     //多店对比查询
     @RequestMapping("/statisticsBySubordinates")
     public ModelAndView statisticsBySubordinates(HttpServletRequest request,HttpServletResponse response,
-                                                 @RequestParam(name = "subids") List<Long> subids,String date,int type)throws Exception{
+                                                 @RequestParam(name = "subids[]") List<Long> subids,String date,int type)throws Exception{
         try {
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
-                List<ClientStatisticsCustomer> customerList = statisticsCustomerJobService.getCustomerCount(subid,date,type);
-                res.addAll(customerList);
+                ClientStatisticsCustomer customerList = statisticsCustomerJobService.getCustomerCount(subid,date,type);
+                res.add(customerList);
             }
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
@@ -98,25 +98,9 @@ public class StatisticsCustomerController extends BaseController{
         try{
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
-                List<ClientStatisticsCustomer> customerList = statisticsCustomerJobService.getCustomerByTime(subid,startTime,endTime);
-                res.addAll(customerList);
+                ClientStatisticsCustomer customerList = statisticsCustomerJobService.getCustomerByTime(subid,startTime,endTime);
+                res.add((customerList));
             }
-            return this.viewNegotiating(request,response,new ResultClient(true,res));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
-        }
-    }
-
-    //多店对比查询 总数居
-    @RequestMapping("/statisticsBySubordinatesAll")
-    public ModelAndView statisticsBySubordinatesAll(HttpServletRequest request,HttpServletResponse response,
-                                                 @RequestParam(name = "subids") List<Long> subids,
-                                                 @RequestParam(required = false,name = "startTime",defaultValue = "0") long startTime,
-                                                 @RequestParam(required = false,name = "endTime",defaultValue = "0") long endTime,
-                                                 @RequestParam(required = false,name = "date",defaultValue = "0") String date,
-                                                 @RequestParam(required = false,name = "type",defaultValue = "0")int type)throws Exception{
-        try {
-            ClientStatisticsCustomer res = statisticsCustomerJobService.getCustomerBySub(subids,startTime,endTime,date,type);
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));

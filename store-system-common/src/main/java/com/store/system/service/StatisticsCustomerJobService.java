@@ -15,10 +15,8 @@ import java.util.Map;
 public interface StatisticsCustomerJobService {
 
 
-    public List<ClientStatisticsCustomer> getCustomerCount(long subid, String date, int type)throws Exception;
+    public ClientStatisticsCustomer getCustomerCount(long subid, String date, int type)throws Exception;
 
-    public List<ClientStatisticsCustomer> getCustomerByTime(long subid,long startTime,long endTime)throws Exception;
-
-    public ClientStatisticsCustomer getCustomerBySub(List<Long> subIds,long startTime,long endTime, String date, int type)throws Exception;
+    public ClientStatisticsCustomer getCustomerByTime(long subid,long startTime,long endTime)throws Exception;
 
 }

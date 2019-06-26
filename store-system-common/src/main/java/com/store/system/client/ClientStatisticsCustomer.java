@@ -36,6 +36,8 @@ public class ClientStatisticsCustomer extends StatisticsCustomerJob implements S
 
     private int total;//总人数
 
+    private String subName;//店铺名称
+
     public ClientStatisticsCustomer(StatisticsCustomerJob statisticsCustomerJob) {
         try {
             BeanUtils.copyProperties(this, statisticsCustomerJob);
