@@ -44,6 +44,7 @@
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
+                        <li value="1">顾客姓名</li>
                     </ul>
                 </div>
             </div>
@@ -157,7 +158,7 @@
     //初始化页面
     $(function () {
         initPage();
-    })
+    });
 
     //初始化函数
     function initPage() {
@@ -165,20 +166,6 @@
         ajaxTemplate(config.getUrl_order_getAllOrder());
         ajaxNameList();
         ajaxSalespersonList();
-    }
-
-    //获取下拉框顾客姓名
-    function ajaxNameList() {
-        quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {sid: subid, userType: 0}, function (ret) {
-            if (ret && ret.success) {
-                $('#selectCustomer').find('.optionUL').html(template('nameList', {list: ret.data}));
-                //根据下拉框顾客id获取数据
-                selectTag($("#selectCustomer"), function (ret) {
-                    customerId = parseFloat(ret.value);
-                    ajaxIsRen();
-                });
-            }
-        })
     }
 
     //获取全部销售员
@@ -362,7 +349,7 @@
     //请求判断全部||未完成||作废
     function ajaxIsRen() {
         if (ordersType == 0) ajaxTemplate(config.getUrl_order_getAllOrder());
-        if (ordersType == 1) ajaxTemplate(config.getUrl_order_getIncomplete())
+        if (ordersType == 1) ajaxTemplate(config.getUrl_order_getIncomplete());
         if (ordersType == 2) ajaxTemplate(config.getUrl_order_getAllOrder());
     }
 
