@@ -14,8 +14,8 @@ import java.util.List;
 public interface StatisticsCustomerJobService {
 
 
-    public ClientStatisticsCustomer getCustomerCount(long subid, String date, int type)throws Exception;
+    public List<ClientStatisticsCustomer> getCustomerCount(long subid, String date, int type)throws Exception;
 
-    public ClientStatisticsCustomer getCustomerByTime(long subid,long startTime,long endTime)throws Exception;
+    public List<ClientStatisticsCustomer> getCustomerByTime(long subid,long startTime,long endTime)throws Exception;
 
 }

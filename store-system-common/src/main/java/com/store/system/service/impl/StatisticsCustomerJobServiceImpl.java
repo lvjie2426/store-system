@@ -32,7 +32,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
     private StatisticsCustomerJobDao statisticsCustomerJobDao;
 
     @Override
-    public ClientStatisticsCustomer getCustomerCount(long subid, String date, int type) throws Exception {
+    public List<ClientStatisticsCustomer> getCustomerCount(long subid, String date, int type) throws Exception {
         List<StatisticsCustomerJob> customers = Lists.newArrayList();
         if(type == 1){//本周
             Calendar calendar = Calendar.getInstance();
@@ -64,13 +64,14 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
     }
 
     @Override
-    public ClientStatisticsCustomer getCustomerByTime(long subid, long startTime, long endTime) throws Exception {
+    public List<ClientStatisticsCustomer> getCustomerByTime(long subid, long startTime, long endTime) throws Exception {
         String sql = " SELECT * FROM statistics_customer_job where 1=1 AND ctime > "+startTime + " AND ctime < " + endTime + " AND subid = " + subid;
         List<StatisticsCustomerJob> customers = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<StatisticsCustomerJob>(StatisticsCustomerJob.class));
         return statisticsCustomer(customers);
     }
 
-    private ClientStatisticsCustomer statisticsCustomer(List<StatisticsCustomerJob> customers)throws Exception{
+    private List<ClientStatisticsCustomer> statisticsCustomer(List<StatisticsCustomerJob> customers)throws Exception{
+        List<ClientStatisticsCustomer> clientStatisticsCustomerList = Lists.newArrayList();
         ClientStatisticsCustomer clientStatisticsCustomer = new ClientStatisticsCustomer(new StatisticsCustomerJob());
         List<Integer> list = Lists.newArrayList();
         int man = 0;
@@ -84,20 +85,21 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
                 woman+=customer.getWoman();
                 total+=man+woman;
                 list.add(total);
+                clientStatisticsCustomer.setTen(getCount(ages,0,10));//年龄 0 - 10人数
+                clientStatisticsCustomer.setTwenty(getCount(ages,11,20));
+                clientStatisticsCustomer.setForty(getCount(ages,21,40));
+                clientStatisticsCustomer.setSixty(getCount(ages,41,60));
+                clientStatisticsCustomer.setMore(getCount(ages,61,999));
+                clientStatisticsCustomer.setAge(ages);
+                clientStatisticsCustomer.setMan(man);
+                clientStatisticsCustomer.setWoman(woman);
+                clientStatisticsCustomer.setManProportion(calculator(man,total));
+                clientStatisticsCustomer.setWomanProportion(calculator(woman,total));
+                clientStatisticsCustomer.setTotal(total);
+                clientStatisticsCustomer.setDay(DateUtils.getDate());
+                clientStatisticsCustomerList.add(clientStatisticsCustomer);
             }
-            clientStatisticsCustomer.setTen(getCount(ages,0,10));//年龄 0 - 10人数
-            clientStatisticsCustomer.setTwenty(getCount(ages,11,20));
-            clientStatisticsCustomer.setForty(getCount(ages,21,40));
-            clientStatisticsCustomer.setSixty(getCount(ages,41,60));
-            clientStatisticsCustomer.setMore(getCount(ages,61,999));
-            clientStatisticsCustomer.setAge(ages);
-            clientStatisticsCustomer.setMan(man);
-            clientStatisticsCustomer.setWoman(woman);
-            clientStatisticsCustomer.setManProportion(calculator(man,total));
-            clientStatisticsCustomer.setWomanProportion(calculator(woman,total));
-            clientStatisticsCustomer.setTotal(total);
-            clientStatisticsCustomer.setDay(DateUtils.getDate());
-            return clientStatisticsCustomer;
+            return clientStatisticsCustomerList;
         }
         return null;
     }
