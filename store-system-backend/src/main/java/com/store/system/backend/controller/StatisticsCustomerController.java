@@ -79,8 +79,8 @@ public class StatisticsCustomerController extends BaseController{
         try {
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
-                ClientStatisticsCustomer customer = statisticsCustomerJobService.getCustomerCount(subid,date,type);
-                if(customer!=null){ res.add(customer); }
+                List<ClientStatisticsCustomer> customerList = statisticsCustomerJobService.getCustomerCount(subid,date,type);
+                res.addAll(customerList);
             }
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
@@ -97,8 +97,8 @@ public class StatisticsCustomerController extends BaseController{
         try{
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
-                ClientStatisticsCustomer customer = statisticsCustomerJobService.getCustomerByTime(subid,startTime,endTime);
-                if(customer!=null){ res.add(customer); }
+                List<ClientStatisticsCustomer> customerList = statisticsCustomerJobService.getCustomerByTime(subid,startTime,endTime);
+                res.addAll(customerList);
             }
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
