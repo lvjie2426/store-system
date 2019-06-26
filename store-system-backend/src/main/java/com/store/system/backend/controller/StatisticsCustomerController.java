@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -106,5 +107,20 @@ public class StatisticsCustomerController extends BaseController{
         }
     }
 
+    //多店对比查询 总数居
+    @RequestMapping("/statisticsBySubordinatesAll")
+    public ModelAndView statisticsBySubordinatesAll(HttpServletRequest request,HttpServletResponse response,
+                                                 @RequestParam(name = "subids") List<Long> subids,
+                                                 @RequestParam(required = false,name = "startTime",defaultValue = "0") long startTime,
+                                                 @RequestParam(required = false,name = "endTime",defaultValue = "0") long endTime,
+                                                 @RequestParam(required = false,name = "date",defaultValue = "0") String date,
+                                                 @RequestParam(required = false,name = "type",defaultValue = "0")int type)throws Exception{
+        try {
+            ClientStatisticsCustomer res = statisticsCustomerJobService.getCustomerBySub(subids,startTime,endTime,date,type);
+            return this.viewNegotiating(request,response,new ResultClient(true,res));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
 
 }
