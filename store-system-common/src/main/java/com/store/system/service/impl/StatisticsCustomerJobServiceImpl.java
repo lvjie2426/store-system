@@ -37,7 +37,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
         if(type == 1){//本周
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis((Long.valueOf(date)));
-            String week = String.valueOf(calendar.get(calendar.get(Calendar.YEAR)))+String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR));
+            String week = String.valueOf(calendar.get(Calendar.YEAR))+String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR));
             customers = statisticsCustomerJobDao.getWeekList(subid,Integer.valueOf(week));
         }else if(type == 2){//本月
             Calendar calendar = Calendar.getInstance();
