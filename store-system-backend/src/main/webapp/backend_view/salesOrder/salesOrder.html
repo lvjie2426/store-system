@@ -3272,10 +3272,6 @@
                 return;
             }*/
             param.authCode = authCode;
-            if(quakooUtils.isBlack($('#PaidMoney').val())){
-                layer.msg('请输入实收金额',{icon:4});
-                return;
-            }
             param.price = parseInt($('#PaidMoney').val()*100);
             if(quakooUtils.isBlack($('#dicountPrice').html())){
                 layer.msg("请选择商品",{icon:4});
@@ -3292,6 +3288,11 @@
                 layer.msg('请选择商品',{icon:4});
                 return;
             }
+            if(quakooUtils.isBlack($('#PaidMoney').val())){
+                layer.msg('请输入实收金额',{icon:4});
+                return;
+            }
+
             param.skuidsList = [];
             for(var i in orderFormData){
                 if(i.indexOf('changgui')>=0||i.indexOf('jifen')>=0){
