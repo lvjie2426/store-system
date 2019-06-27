@@ -82,6 +82,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
 
     private ClientStatisticsCustomer statisticsCustomer(List<StatisticsCustomerJob> customers,long subid)throws Exception{
         ClientStatisticsCustomer res = new ClientStatisticsCustomer(new StatisticsCustomerJob());
+        List<StatisticsCustomerJob> details = Lists.newArrayList();
         int man =  0;
         int woman = 0;
         int total = 0;
@@ -92,6 +93,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
                 man+=customer.getMan();
                 woman+=customer.getWoman();
                 total+=man+woman;
+                details.add(customer);
             }
             res.setAge(ages);
             res.setMan(man);
@@ -105,6 +107,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
             res.setSixty(getCount(ages,41,60));
             res.setMore(getCount(ages,61,999));
             res.setSubid(subid);
+            res.setDetails(details);
             Subordinate subordinate = subordinateDao.load(subid);
             if(subordinate!=null){ res.setSubName(subordinate.getName()); }
         }

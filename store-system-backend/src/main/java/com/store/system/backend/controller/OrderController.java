@@ -6,6 +6,7 @@ import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.bean.InventoryOutBillItem;
+import com.store.system.bean.OrderTypeInfo;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
@@ -123,13 +124,15 @@ public class OrderController extends BaseController {
      */
     @RequestMapping("/countPrice")
     public ModelAndView countPrice(HttpServletRequest request, HttpServletResponse response,
-                                  Order order,
-                                   @RequestParam( value = "skuidsList")   String skuidsList,
-                                   @RequestParam( value = "surchargesJson",defaultValue = "")   String surchargesJson
-                                 ) throws Exception {
-
+                                   Order order,
+                                   @RequestParam(value = "skuidsList") String skuidsList,
+                                   @RequestParam(value = "surchargesJson", defaultValue = "") String surchargesJson) throws Exception {
         try {
             User user=UserUtils.getUser(request);
+            long sid=0;
+            if(user!=null){
+                sid=user.getSid();
+            }
             List<Surcharge> billItems = Lists.newArrayList();
             List<OrderSku> orderskuids = Lists.newArrayList();
             if(StringUtils.isNotBlank(surchargesJson)) {
@@ -139,7 +142,8 @@ public class OrderController extends BaseController {
                 orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(orderskuids);
             }
-            order = orderService.countPrice(order,user.getSid());
+            order.setSubid(sid);
+            order = orderService.countPrice(order);
             return this.viewNegotiating(request, response, new ResultClient(order));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -250,14 +254,27 @@ public class OrderController extends BaseController {
         }
     }
 
-    ///////////////支付宝条形码支付//////////////////
+    //支付宝条形码支付
     @RequestMapping("/handleAliBarcodeOrder")
     public ModelAndView handleAliBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
-                                              @RequestParam(name = "subId")long subId,
-                                              String authCode, int type, String typeInfo,
-                                              String title, String desc, int price)throws Exception{
+                                              @RequestParam(name = "subid")long subid, String authCode, int type, String desc, int price,
+                                              Order order,
+                                              @RequestParam( value = "skuidsList") String skuidsList,
+                                              @RequestParam( value = "surchargesJson",defaultValue = "") String surchargesJson)throws Exception{
         try {
-            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleAliBarcodeOrder(subId,authCode,type,typeInfo,title,desc,price)));
+            List<Surcharge> surcharges = Lists.newArrayList();
+            List<OrderSku> skus = Lists.newArrayList();
+            if (StringUtils.isNotBlank(surchargesJson)) {
+                surcharges = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
+                order.setSurcharges(surcharges);
+            }
+            if (StringUtils.isNotBlank(skuidsList)) {
+                skus = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
+                order.setSkuids(skus);
+            }
+            OrderTypeInfo typeInfo = new OrderTypeInfo(order.getUid(), 0, order.getPrice());
+            ResultClient res = orderService.handleAliBarcodeOrder(subid, authCode, type, OrderTypeInfo.getJsonStr(typeInfo), "商品购买订单", desc, price, order);
+            return this.viewNegotiating(request,response,res);
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }
@@ -288,10 +305,24 @@ public class OrderController extends BaseController {
     ///////////////微信条形码支付//////////////////
     @RequestMapping("/handleWxBarcodeOrder")
     public ModelAndView handleWxBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
-                                             @RequestParam(name = "subId")long subId, String authCode, int type, String typeInfo,
-                                             String title, String desc, int price, String ip)throws Exception{
+                                             @RequestParam(name = "subid")long subid, String authCode, int type, String desc, int price,
+                                             Order order,
+                                             @RequestParam( value = "skuidsList") String skuidsList,
+                                             @RequestParam( value = "surchargesJson",defaultValue = "") String surchargesJson)throws Exception{
         try {
-            return this.viewNegotiating(request,response,new ResultClient(true,orderService.handleWxBarcodeOrder(request,subId,authCode,type,typeInfo,title,desc,price,ip)));
+            List<Surcharge> surcharges = Lists.newArrayList();
+            List<OrderSku> skus = Lists.newArrayList();
+            if (StringUtils.isNotBlank(surchargesJson)) {
+                surcharges = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
+                order.setSurcharges(surcharges);
+            }
+            if (StringUtils.isNotBlank(skuidsList)) {
+                skus = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
+                order.setSkuids(skus);
+            }
+            OrderTypeInfo typeInfo = new OrderTypeInfo(order.getUid(), 0, order.getPrice());
+            ResultClient res = orderService.handleWxBarcodeOrder(request,subid, authCode, type, OrderTypeInfo.getJsonStr(typeInfo), "商品购买订单", desc, price, order);
+            return this.viewNegotiating(request,response,res);
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }

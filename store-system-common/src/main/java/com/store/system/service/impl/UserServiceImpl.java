@@ -1,28 +1,25 @@
 package com.store.system.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.redis.JedisX;
+import com.quakoo.baseFramework.secure.MD5Utils;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.SubordinateService;
-import com.store.system.service.UserGradeCategoryDiscountService;
 import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.quakoo.baseFramework.model.pagination.Pager;
-import com.quakoo.baseFramework.redis.JedisX;
-import com.quakoo.baseFramework.secure.MD5Utils;
-import com.quakoo.ext.RowMapperHelp;
-import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -191,19 +188,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager searchBackendUser(Pager pager,long sid, long subid,int userType,String name,String phone,String userName,long rid,int status,long startTime,long endTime) throws Exception {
+    public Pager searchBackendUser(Pager pager,long sid, long psid,int userType,String name,String phone,String userName,long rid,int status,long startTime,long endTime) throws Exception {
         final String selectCount = "select count(*) from `user` where 1=1  ";
         final String selectData = "select * from `user` where 1=1  ";
         final String limit = "  limit %d , %d ";
         String sql = selectData;
         String countSql = selectCount;
-        if(sid>-1){
-            sql = sql + " and `sid` = " + sid;
-            countSql = countSql + " and `sid` = " + sid;
+        if(sid>-1&&psid>-1){
+            sql = sql + " and `psid` = " + psid + " and `sid` = " + sid;
+            countSql = countSql + " and `psid` = " + sid + " and `sid` = " + sid;
         }
-        if(sid==-1){
-            sql = sql + " and `sid` != 0";
-            countSql = countSql + " and `sid` != 0";
+        if(psid>-1&&sid<=-1){
+            sql = sql + " and `psid` = " + psid + " and `sid` = 0 ";
+            countSql = countSql + " and `psid` = " + sid + " and `sid` = 0 ";
+        }
+        if(sid<=-1&&psid<=-1){
+            sql = sql + " and `psid` != 0 and `sid` != 0 ";
+            countSql = countSql + " and `psid` != 0 and `sid` != 0 ";
         }
         if(status>-1){
             sql = sql + " and `status` = " + status;
@@ -238,14 +239,9 @@ public class UserServiceImpl implements UserService {
             sql = sql + " and `ctime` < " + endTime;
             countSql = countSql + " and `ctime` < " + endTime;
         }
-        if(subid>-1){
-            sql = sql + " and `psid` = " + subid;
-            countSql = countSql + " and `psid` = " + subid;
-        }
-        if(subid==-1){
-            sql = sql + " and `psid` != 0";
-            countSql = countSql + " and `psid` != 0";
-        }
+
+
+        sql = sql + " order by ctime desc";
         System.err.println(sql);
         sql = sql + String.format(limit,pager.getSize()*(pager.getPage()-1),pager.getSize());
         List<User> users =null;
@@ -1005,11 +1001,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ClientUser getUser(String phone) throws Exception {
-        List<User> user = userDao.getAllLists(User.userType_user,User.status_nomore,phone);
-        if(user.size()>0){
-            return transformClient(user.get(0));
-        }
-        return null ;
+        User user = userDao.getUserByPhone(User.userType_user,User.status_nomore,phone);
+        return transformClient(user);
     }
 
     @Override

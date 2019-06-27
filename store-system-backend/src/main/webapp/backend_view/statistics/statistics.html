@@ -48,8 +48,16 @@
                     </ul>
                 </div>
             </div>
-            <div id="salesDom">
+            <div class="body clearfix">
+                <div class="left">
+                    <div class="chartCont" id="chartCont01">
+                    </div>
+                    <div class="_btn prev"><</div>
+                    <div class="_btn next">></div>
+                </div>
+                <div class="right" id="salesDom">
 
+                </div>
             </div>
         </div>
         <div class="box box02">
@@ -94,8 +102,11 @@
                 </div>
             </div>
             <div class="body clearfix">
-                <div class="left" id="peopleLeftDom">
-
+                <div class="left">
+                    <div class="chartCont" id="chartCont02">
+                    </div>
+                    <div class="_btn prev"><</div>
+                    <div class="_btn next">></div>
                 </div>
                 <div class="right" id="peopleRightDom">
 
@@ -199,12 +210,6 @@
 <script src="../resource/js/echarts.js"></script>
 <script src="../resource/js/template-native.js"></script>
 
-<script type="text/html" id="peopleLeftTmp">
-    <div class="chartCont" id="chartCont02">
-    </div>
-    <div class="_btn prev"><</div>
-    <div class="_btn next">></div>
-</script>
 <script type="text/html" id="peopleRightTmp">
     <div class="sex">
         <div class="male">
@@ -239,30 +244,20 @@
     </div>
 </script>
 <script type="text/html" id="salesTmp">
-    <div class="body clearfix">
-        <div class="left">
-            <div class="chartCont" id="chartCont01">
-            </div>
-            <div class="_btn prev"><</div>
-            <div class="_btn next">></div>
-        </div>
-        <div class="right">
-            <ul class="clearfix">
-                <li class="active">产品分类销售额占比</li>
-                <li>客单价分布占比</li>
-            </ul>
-            <div class="percentCont percentCont01" id="salesNum">
-                <!--js插入，百分比div-->
-            </div>
-            <div class="bottomBox clearfix">
-                <span><em class="_bgColor01"></em>眼镜</span>
-                <span><em class="_bgColor02"></em>镜片</span>
-                <span><em class="_bgColor03"></em>隐形眼镜</span>
-                <span><em class="_bgColor04"></em>太阳镜</span>
-                <span><em class="_bgColor05"></em>护理产品</span>
-                <span><em class="_bgColor06"></em>其它</span>
-            </div>
-        </div>
+    <ul class="clearfix">
+        <li class="active">产品分类销售额占比</li>
+        <li>客单价分布占比</li>
+    </ul>
+    <div class="percentCont percentCont01" id="salesNum">
+        <!--js插入，百分比div-->
+    </div>
+    <div class="bottomBox clearfix">
+        <span><em class="_bgColor01"></em>眼镜</span>
+        <span><em class="_bgColor02"></em>镜片</span>
+        <span><em class="_bgColor03"></em>隐形眼镜</span>
+        <span><em class="_bgColor04"></em>太阳镜</span>
+        <span><em class="_bgColor05"></em>护理产品</span>
+        <span><em class="_bgColor06"></em>其它</span>
     </div>
 </script>
 <script type="text/html" id="kdjTmp">
@@ -440,7 +435,6 @@
             parms.type = parseInt(salesRangeType)+2;
         }
         quakooData.ajaxGetData(config.getUrl_statisticsSale_saleSubordinates(),parms,function (ret) {
-            console.log("销售额", ret)
             //顾客统计折线图初始化
             templateInit(ret.data,1)
         })
@@ -485,46 +479,41 @@
     //顾客初始化
     function peopleInit(){
         var url = '';
-        var parms = {};
-        var parmsRight = {subids:peopleShopArr  };
-        if(peopleShopArr.length==1 && peopleShopArr[0]==shopId){
-            parms.subid = shopId;
-            if(peopleRangeType==1){
-                url = config.getUrl_statisticsCustomer_statisticsByWeek();
-                parms.week = new Date().getTime();
-            }else if(peopleRangeType==2){
-                url = config.getUrl_statisticsCustomer_statisticsByMonth();
-                parms.month = new Date().getTime();
-            }else if(peopleRangeType==3){
-                url = config.getUrl_statisticsCustomer_statisticsByHalfYear();
-                parms.year = new Date().getTime();
-            }else if(peopleRangeType==4){
-                url = config.getUrl_statisticsCustomer_statisticsByTime();
-                parms.startTime = peopleTime.getTime()[2];
-                parms.endTime = peopleTime.getTime()[3];
-            }
-        }else{
-            parms.subids = peopleShopArr;
-            if(peopleRangeType==4){
-                url = config.getUrl_statisticsCustomer_timeInterval();
-                parms.startTime = peopleTime.getTime()[2];
-                parms.endTime = peopleTime.getTime()[3];
-            }else{
-                url = config.getUrl_statisticsCustomer_statisticsBySubordinates();
-                parms.type = peopleRangeType;
-                parms.date = new Date().getTime();
-            }
-        }
-        if(peopleRangeType==4){
+        var urlRight = '';
+        var parms = {subids:peopleShopArr};
+        var parmsRight = {subid:shopId};
+
+        if(peopleRangeType==1){
+            urlRight = config.getUrl_statisticsCustomer_statisticsByWeek();
+            parmsRight.week = new Date().getTime();
+        }else if(peopleRangeType==2){
+            urlRight = config.getUrl_statisticsCustomer_statisticsByMonth();
+            parmsRight.month = new Date().getTime();
+        }else if(peopleRangeType==3){
+            urlRight = config.getUrl_statisticsCustomer_statisticsByHalfYear();
+            parmsRight.year = new Date().getTime();
+        }else if(peopleRangeType==4){
+            urlRight = config.getUrl_statisticsCustomer_statisticsByTime();
             parmsRight.startTime = peopleTime.getTime()[2];
             parmsRight.endTime = peopleTime.getTime()[3];
-        }else{
-            parmsRight.type = peopleRangeType;
-            parmsRight.date = new Date().getTime();
         }
+
+        parms.subids = peopleShopArr;
+        if(peopleRangeType==4){
+            url = config.getUrl_statisticsCustomer_timeInterval();
+            parms.startTime = peopleTime.getTime()[2];
+            parms.endTime = peopleTime.getTime()[3];
+        }else{
+            url = config.getUrl_statisticsCustomer_statisticsBySubordinates();
+            parms.type = peopleRangeType;
+            parms.date = new Date().getTime();
+        }
+
         //顾客右边
-        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsBySubordinatesAll(),parmsRight,function (ret) {
+        quakooData.ajaxGetData(urlRight,parmsRight,function (ret) {
+            var data = ret.data;
             $('#peopleRightDom').html(template('peopleRightTmp',{list:data}))
+            setPercent([data.ten,data.twenty,data.forty,data.sixty,data.more],$('#peopleNum'),color01,'people')
         })
         //顾客左边的折线图
         quakooData.ajaxGetData(url,parms,function (ret) {
@@ -539,7 +528,7 @@
         if(data){
             if(type==1){
                 $('#salesDom').html(template('salesTmp',{list:data}))
-                setPercent([data.ten,data.twenty,data.forty,data.sixty,data.more],$('#salesNum'),color01,'sales');
+                // setPercent([data.ten,data.twenty,data.forty,data.sixty,data.more],$('#salesNum'),color01,'sales');
                 chartInit(data,type)
             }else if(type==2){
                 $('#kdjDom').html(template('kdjTmp',{list:data}))
@@ -550,8 +539,6 @@
                 setPercent(dataPercent06,$('.percentCont06'),color06)
                 setPercent(dataPercent07,$('.percentCont07'),color07)
             }else if(type==3){
-                $('#peopleLeftDom').html(template('peopleLeftTmp',{list:data}))
-                setPercent([data.ten,data.twenty,data.forty,data.sixty,data.more],$('#peopleNum'),color01,'people')
                 chartInit(data,type)
             }else if(type==4){
 
@@ -586,13 +573,12 @@
             initOp.title = '顾客数量走势图'
             initOp.span = '单位: 人'
             seriseNum = peopleShopArr.length;
-           /* for (var i = 0; i < data.length; i++) {
+            for (var i = 0; i < data.length; i++) {
                 source[data[i].subName] = [];
-                for (var j = 0; j < data[i].details.length; j++) {
-                    source.xAxis.push(data[i].details[j].day)
-                    source[data[i].subName].push(data[i].details[j].sale)
-                }
-            }*/
+                source.xAxis.push(data[i].day)
+                source[data[i].subName].push(data[i].total)
+            }
+            console.log(source)
         }
 
 
@@ -670,11 +656,18 @@
             },
             series: seriseArr,
         };
-        if(document.getElementById('chartCont01')){
+        if(type==1){
+            if(myChart){
+                myChart.dispose();
+            }
             myChart = echarts.init(document.getElementById('chartCont01'));
             myChart.setOption(option);
         }
-        if(document.getElementById('chartCont02')){
+
+        if(type==3){
+            if(myChart3){
+                myChart3.dispose();
+            }
             myChart3 = echarts.init(document.getElementById('chartCont02'));
             myChart3.setOption(option);
         }
@@ -778,24 +771,36 @@
                     nameArr.push($(el).siblings('span').text())
                 })
                 //多选门店头部显示店铺名
-                if(peopleShopArr.length>0){
-                    if(type == 'sales'){
+                if(type == 'sales'){
+                    if(salesShopArr.length>0){
                         $('.box01 .txt01').hide();
                         $('.box01 .head ._btn').css({'border':'none','color':'#4186DC'}).text('重新选择');
                         $('.box01 .head .shopName').remove()
                         for(var i=0;i<nameArr.length;i++){
                             $('.box01 .head').prepend('<div class="shopName">'+nameArr[i]+'</div>')
                         }
-                        salesInit()
-                    }else if(type == 'people'){
+                    }else{
+                        $('.box01 .txt01').show();
+                        $('.box01 .head ._btn').css({'border':'1px solid #ececf4','color':'#828297'}).text('选择门店');
+                        $('.box01 .head .shopName').remove()
+                        salesShopArr = [shopId]
+                    }
+                    salesInit()
+                }else if(type == 'people'){
+                    if(peopleShopArr.length>0){
                         $('.box03 .head ._btn').css({'border':'none','color':'#4186DC'}).text('重新选择');
                         $('.box03 .txt01').hide();
                         $('.box03 .head .shopName').remove()
                         for(var i=0;i<nameArr.length;i++){
                             $('.box03 .head').prepend('<div class="shopName">'+nameArr[i]+'</div>')
                         }
-                        peopleInit()
+                    }else{
+                        $('.box03 .head ._btn').css({'border':'1px solid #ececf4','color':'#828297'}).text('选择门店');
+                        $('.box03 .txt01').show();
+                        $('.box03 .head .shopName').remove()
+                        peopleShopArr = [shopId]
                     }
+                    peopleInit()
                 }
                 layer.close(index);
             },
@@ -870,10 +875,13 @@
     //设置百分比div然后添加入容器 (传入数据 容器 颜色)
     function setPercent(data,el,color,type) {
         var str = '';
+        var danwei = '';
         if(type=='sales'){
             str = '销售额'
+            danwei = '元'
         }else if(type=='people'){
             str = '人数'
+            danwei = '人'
         }
         var total = data.reduce(function (a,b) {return a+b})
         for(var i = 0;i<data.length;i++){
@@ -886,7 +894,7 @@
             var div =
                 "<div class='percentDiv' style='width:"+width+";"+"background:"+color[i]+";position: relative "+" '>" +
                 span +
-                "<div class='hoverBox'>"+'<div class="triangle-down"></div>'+str+':'+data[i]+'元'+"</div>"+
+                "<div class='hoverBox'>"+'<div class="triangle-down"></div>'+str+':'+data[i]+danwei+"</div>"+
                 "</div>";
             el.append(div)
         }

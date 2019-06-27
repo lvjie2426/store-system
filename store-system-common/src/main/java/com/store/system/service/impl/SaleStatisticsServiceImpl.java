@@ -40,20 +40,27 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
     public ClientSaleStatistics getDayList(List<Long> days, long subId) throws Exception {
         List<SaleStatistics> list = Lists.newArrayList();
         for(Long day:days) {
-            list.addAll(saleStatisticsDao.getDayList(subId, day));
+            list.addAll(saleStatisticsDao.getDayList(day, subId));
         }
-        return transformClient(list,null);
+        ClientSaleStatistics res = transformClient(list,new ArrayList<SaleStatistics>());
+        res.setDetails(list);
+        return res;
     }
 
 
     @Override
     public ClientSaleStatistics getDay(long dayTime, long subId) throws Exception {
+        List<SaleStatistics> list=Lists.newArrayList();
+        List<SaleStatistics> oldList=Lists.newArrayList();
         SaleStatistics saleStatistics = new SaleStatistics();
         saleStatistics.setDay(TimeUtils.getDayFormTime(dayTime));
         saleStatistics.setSubId(subId);
         saleStatistics.setWeek(TimeUtils.getWeekFormTime(dayTime));
         saleStatistics.setMonth(TimeUtils.getMonthFormTime(dayTime));
         saleStatistics = saleStatisticsDao.load(saleStatistics);
+        if(saleStatistics!=null){
+            list.add(saleStatistics);
+        }
 
         //去年同期数据
         GregorianCalendar calendar = new GregorianCalendar();
@@ -65,6 +72,9 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         old.setWeek(TimeUtils.getWeekFormTime(oldTime));
         old.setMonth(TimeUtils.getMonthFormTime(oldTime));
         old = saleStatisticsDao.load(old);
+        if(old!=null){
+            oldList.add(old);
+        }
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
@@ -75,74 +85,81 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         yesterday.setWeek(TimeUtils.getWeekFormTime(yesterdayTime));
         yesterday.setMonth(TimeUtils.getMonthFormTime(yesterdayTime));
         yesterday = saleStatisticsDao.load(yesterday);
-        ClientSaleStatistics res = transformClient(Lists.newArrayList(saleStatistics),Lists.newArrayList(old));
+        ClientSaleStatistics res = transformClient(list,oldList);
 
         //计算销售额昨日比较今日的增长率或减少率
-        if(saleStatistics.getSale()-yesterday.getSale()>=0){
-            res.setSaleStatus(ClientSaleStatistics.saleStatus_increase);
-            double subSale = ArithUtils.sub(saleStatistics.getSale(),yesterday.getSale());
-            double rate = ArithUtils.div(subSale,yesterday.getSale(),2);
-            res.setSaleRate(rate);
-        }else{
-            res.setSaleStatus(ClientSaleStatistics.saleStatus_decrement);
-            double subSale = ArithUtils.sub(yesterday.getSale(),saleStatistics.getSale());
-            double rate = ArithUtils.div(subSale,yesterday.getSale(),2);
-            res.setSaleRate(rate);
-        }
-        //计算销售单数昨日比较今日的增长率或减少率
-        if(saleStatistics.getNum()-yesterday.getNum()>=0){
-            res.setNumStatus(ClientSaleStatistics.numStatus_increase);
-            int subNum = saleStatistics.getNum()-yesterday.getNum();
-            double rate = ArithUtils.div((double) subNum,(double) yesterday.getNum(),2);
-            res.setNumRate(rate);
-        }else{
-            res.setNumStatus(ClientSaleStatistics.saleStatus_decrement);
-            int subNum = saleStatistics.getNum()-yesterday.getNum();
-            double rate = ArithUtils.div((double) subNum,(double) yesterday.getNum(),2);
-            res.setNumRate(rate);
+        if(saleStatistics!=null&&yesterday!=null) {
+            if (saleStatistics.getSale() - yesterday.getSale() >= 0) {
+                res.setSaleStatus(ClientSaleStatistics.saleStatus_increase);
+                double subSale = ArithUtils.sub(saleStatistics.getSale(), yesterday.getSale());
+                double rate = ArithUtils.div(subSale, yesterday.getSale(), 2);
+                res.setSaleRate(rate);
+            } else {
+                res.setSaleStatus(ClientSaleStatistics.saleStatus_decrement);
+                double subSale = ArithUtils.sub(yesterday.getSale(), saleStatistics.getSale());
+                double rate = ArithUtils.div(subSale, yesterday.getSale(), 2);
+                res.setSaleRate(rate);
+            }
+            //计算销售单数昨日比较今日的增长率或减少率
+            if (saleStatistics.getNum() - yesterday.getNum() >= 0) {
+                res.setNumStatus(ClientSaleStatistics.numStatus_increase);
+                int subNum = saleStatistics.getNum() - yesterday.getNum();
+                double rate = ArithUtils.div((double) subNum, (double) yesterday.getNum(), 2);
+                res.setNumRate(rate);
+            } else {
+                res.setNumStatus(ClientSaleStatistics.saleStatus_decrement);
+                int subNum = saleStatistics.getNum() - yesterday.getNum();
+                double rate = ArithUtils.div((double) subNum, (double) yesterday.getNum(), 2);
+                res.setNumRate(rate);
+            }
         }
         return res;
     }
 
     @Override
     public ClientSaleStatistics getWeek(long week, long subId) throws Exception {
-        List<SaleStatistics> saleStatistics = saleStatisticsDao.getWeekList(week,subId);
+        List<SaleStatistics> saleStatistics = saleStatisticsDao.getWeekList(week, subId);
 
         //去年同期数据
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1);
         long oldWeek = TimeUtils.getWeekFormTime(calendar.getTimeInMillis());
-        List<SaleStatistics> oldList = saleStatisticsDao.getWeekList(oldWeek,subId);
-        ClientSaleStatistics res = transformClient(saleStatistics,oldList);
+        List<SaleStatistics> oldList = saleStatisticsDao.getWeekList(oldWeek, subId);
+        ClientSaleStatistics res = transformClient(saleStatistics, oldList);
+        res.setDetails(saleStatistics);
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.WEEK_OF_YEAR, -1);
         long lastWeek = TimeUtils.getWeekFormTime(cal.getTimeInMillis());
-        List<SaleStatistics> lastList = saleStatisticsDao.getWeekList(lastWeek,subId);
-        ClientSaleStatistics last = transformClient(lastList,Lists.<SaleStatistics>newArrayList());
-        //计算销售单数上周比较这周的增长率或减少率
-        if(res.getSale()-last.getSale()>=0){
-            res.setSaleStatus(ClientSaleStatistics.saleStatus_increase);
-            double subSale = ArithUtils.sub(res.getSale(),last.getSale());
-            double rate = ArithUtils.div(subSale,last.getSale(),2);
-            res.setSaleRate(rate);
-        }else{
-            res.setSaleStatus(ClientSaleStatistics.saleStatus_decrement);
-            double subSale = ArithUtils.sub(last.getSale(),res.getSale());
-            double rate = ArithUtils.div(subSale,last.getSale(),2);
-            res.setSaleRate(rate);
-        }
-        //计算销售单数上周比较这周的增长率或减少率
-        if(res.getNum()-last.getNum()>=0){
-            res.setNumStatus(ClientSaleStatistics.numStatus_increase);
-            int subNum = res.getNum()-last.getNum();
-            double rate = ArithUtils.div((double) subNum,(double) last.getNum(),2);
-            res.setNumRate(rate);
-        }else{
-            res.setNumStatus(ClientSaleStatistics.saleStatus_decrement);
-            int subNum = res.getNum()-last.getNum();
-            double rate = ArithUtils.div((double) subNum,(double) last.getNum(),2);
-            res.setNumRate(rate);
+        List<SaleStatistics> lastList = saleStatisticsDao.getWeekList(lastWeek, subId);
+        if (lastList.size() > 0) {
+            ClientSaleStatistics last = transformClient(lastList, Lists.<SaleStatistics>newArrayList());
+            //计算销售单数上周比较这周的增长率或减少率
+            if (res != null && last != null) {
+                if (res.getSale() - last.getSale() >= 0) {
+                    res.setSaleStatus(ClientSaleStatistics.saleStatus_increase);
+                    double subSale = ArithUtils.sub(res.getSale(), last.getSale());
+                    double rate = ArithUtils.div(subSale, last.getSale(), 2);
+                    res.setSaleRate(rate);
+                } else {
+                    res.setSaleStatus(ClientSaleStatistics.saleStatus_decrement);
+                    double subSale = ArithUtils.sub(last.getSale(), res.getSale());
+                    double rate = ArithUtils.div(subSale, last.getSale(), 2);
+                    res.setSaleRate(rate);
+                }
+                //计算销售单数上周比较这周的增长率或减少率
+                if (res.getNum() - last.getNum() >= 0) {
+                    res.setNumStatus(ClientSaleStatistics.numStatus_increase);
+                    int subNum = res.getNum() - last.getNum();
+                    double rate = ArithUtils.div((double) subNum, (double) last.getNum(), 2);
+                    res.setNumRate(rate);
+                } else {
+                    res.setNumStatus(ClientSaleStatistics.saleStatus_decrement);
+                    int subNum = res.getNum() - last.getNum();
+                    double rate = ArithUtils.div((double) subNum, (double) last.getNum(), 2);
+                    res.setNumRate(rate);
+                }
+            }
         }
         return res;
     }
@@ -157,6 +174,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         long oldMonth = TimeUtils.getWeekFormTime(calendar.getTimeInMillis());
         List<SaleStatistics> oldList = saleStatisticsDao.getMonthList(oldMonth,subId);
         ClientSaleStatistics res = transformClient(saleStatistics,oldList);
+        res.setDetails(saleStatistics);
 
 
         Calendar cal = Calendar.getInstance();
@@ -165,28 +183,30 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         List<SaleStatistics> lastList = saleStatisticsDao.getMonthList(lastMonth,subId);
         ClientSaleStatistics last = transformClient(lastList,Lists.<SaleStatistics>newArrayList());
         //计算销售单数上月比较这月的增长率或减少率
-        if(res.getSale()-last.getSale()>=0){
-            res.setSaleStatus(ClientSaleStatistics.saleStatus_increase);
-            double subSale = ArithUtils.sub(res.getSale(),last.getSale());
-            double rate = ArithUtils.div(subSale,last.getSale(),2);
-            res.setSaleRate(rate);
-        }else{
-            res.setSaleStatus(ClientSaleStatistics.saleStatus_decrement);
-            double subSale = ArithUtils.sub(last.getSale(),res.getSale());
-            double rate = ArithUtils.div(subSale,last.getSale(),2);
-            res.setSaleRate(rate);
-        }
-        //计算销售单数上月比较这月的增长率或减少率
-        if(res.getNum()-last.getNum()>=0){
-            res.setNumStatus(ClientSaleStatistics.numStatus_increase);
-            int subNum = res.getNum()-last.getNum();
-            double rate = ArithUtils.div((double) subNum,(double) last.getNum(),2);
-            res.setNumRate(rate);
-        }else{
-            res.setNumStatus(ClientSaleStatistics.saleStatus_decrement);
-            int subNum = res.getNum()-last.getNum();
-            double rate = ArithUtils.div((double) subNum,(double) last.getNum(),2);
-            res.setNumRate(rate);
+        if(res!=null&&last!=null) {
+            if (res.getSale() - last.getSale() >= 0) {
+                res.setSaleStatus(ClientSaleStatistics.saleStatus_increase);
+                double subSale = ArithUtils.sub(res.getSale(), last.getSale());
+                double rate = ArithUtils.div(subSale, last.getSale(), 2);
+                res.setSaleRate(rate);
+            } else {
+                res.setSaleStatus(ClientSaleStatistics.saleStatus_decrement);
+                double subSale = ArithUtils.sub(last.getSale(), res.getSale());
+                double rate = ArithUtils.div(subSale, last.getSale(), 2);
+                res.setSaleRate(rate);
+            }
+            //计算销售单数上月比较这月的增长率或减少率
+            if (res.getNum() - last.getNum() >= 0) {
+                res.setNumStatus(ClientSaleStatistics.numStatus_increase);
+                int subNum = res.getNum() - last.getNum();
+                double rate = ArithUtils.div((double) subNum, (double) last.getNum(), 2);
+                res.setNumRate(rate);
+            } else {
+                res.setNumStatus(ClientSaleStatistics.saleStatus_decrement);
+                int subNum = res.getNum() - last.getNum();
+                double rate = ArithUtils.div((double) subNum, (double) last.getNum(), 2);
+                res.setNumRate(rate);
+            }
         }
         return res;
     }
@@ -235,8 +255,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         int numOld=0;
         double perPriceOld=0;
         double profitsOld=0;
-        if(oldList!=null&&oldList.size()>0){
-
+        if(oldList.size()>0){
             for(SaleStatistics statistics:oldList){
                 saleOld = ArithUtils.add(saleOld,statistics.getSale());
                 numOld += statistics.getNum();

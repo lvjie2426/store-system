@@ -4,20 +4,20 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.quakoo.baseFramework.lock.ZkLock;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.OrderExpireUnit;
 import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientAfterSaleDetail;
-import com.store.system.client.ClientInventoryDetail;
 import com.store.system.client.ClientOrder;
-import com.store.system.client.ClientOrderSku;
+import com.store.system.client.ResultClient;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.AfterSaleDetailService;
-import com.store.system.service.OptometryInfoService;
 import com.store.system.service.OrderService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.service.ext.OrderRefundService;
@@ -44,6 +44,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
     private PropertyUtil propertyUtil = PropertyUtil.getInstance("pay.properties");
     private SimpleDateFormat gmtFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+
+    private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
+    private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
 
     @Resource
     private PayPassportDao payPassportDao;
@@ -79,6 +82,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private OrderRefundService orderRefundService;
     @Resource
     private RefundOrderDao refundOrderDao;
+    @Resource
+    private OrderNotifyDao orderNotifyDao;
 
 
     @Autowired(required = false)
@@ -102,12 +107,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     private Order createAliOrder(long passportId, int payMode, int type, String typeInfo, String title, String desc,
-                                 int price, OrderExpireUnit expireUnit, int expireNum) throws Exception {
+                                 int price, OrderExpireUnit expireUnit, int expireNum, Order order) throws Exception {
         if(price == 0) throw new StoreSystemException("price is zero!");
         if(payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0)) throw new StoreSystemException("expire is error!");
         PayPassport payPassport = payPassportDao.load(passportId);
         if(null == payPassport) throw new StoreSystemException("passport is null!");
-        Order order = new Order();
         long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
         order.setGmt(gmt);
         order.setPassportId(passportId);
@@ -129,8 +133,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public boolean handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo, String title, String desc, int price) throws Exception {
-        Order order = createAliOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0);
+    public ResultClient handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo,
+                                              String title, String desc, int price, Order orderInfo) throws Exception {
+        Order order = createAliOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
         Map<String, String> sParaTemp = this.aliOrderPayParam(order.getId(), Order.pay_mode_barcode, authCode);
         List<String> keys = new ArrayList<String>(sParaTemp.keySet());
         Collections.sort(keys);
@@ -154,15 +159,84 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         boolean res = false;
         if(code.equals("10000")) {
             res = true;
+            order.setOrderNo(resMap.get("trade_no"));
             order.setStatus(Order.status_pay);
+            long pay_time = 0;
+            String paymentStr = resMap.get("gmt_payment"); //交易付款时间
+            if (StringUtils.isNotBlank(paymentStr))
+                pay_time = DateUtils.parseDate(paymentStr, "yyyy-MM-dd HH:mm:ss").getTime();
+            order.setPayTime(pay_time);
         }
         if(order.getStatus() == Order.status_pay) {
-            orderPayService.successHandleBusiness(order.getPayType(), type, typeInfo);
+            orderPayService.successHandleBusiness(order);
         }
         orderDao.update(order);
-        return res;
+        if(res){
+            return new ResultClient(true,transformClient(order));
+        }else{
+            return new ResultClient(false);
+        }
     }
 
+    @Override
+    public boolean aliOrderNotify(Map<String, String> params) throws Exception {
+        String out_trade_no = PayUtils.getParam(params, "out_trade_no"); // 商户订单号
+        long orderId = PayUtils.getOrderId(out_trade_no);
+        Order order = orderDao.load(orderId);
+        if (null == order) throw new StoreSystemException("order is null!");
+        long passportId = order.getPassportId();
+        PayPassport payPassport = payPassportDao.load(passportId);
+        if (null == payPassport) throw new StoreSystemException("passport is null!");
+        String aliPublicKey = payPassport.getAliPublicKey();
+        if (StringUtils.isBlank(aliPublicKey)) throw new StoreSystemException("aliPublicKey is null!");
+
+        String sign = "";
+        if (params.get("sign") != null) {
+            sign = params.get("sign");
+        }
+        params.remove("sign");
+        params.remove("sign_type");
+        StringBuffer checkContent = new StringBuffer();
+        List<String> keys = new ArrayList<String>(params.keySet());
+        Collections.sort(keys);
+        for (int i = 0; i < keys.size(); i++) {
+            String key = keys.get(i);
+            String value = params.get(key);
+            checkContent.append((i == 0 ? "" : "&") + key + "=" + value);
+        }
+        boolean verify = RSA.verify256(checkContent.toString(), sign, aliPublicKey, Constant.defaultCharset);
+        if (!verify) return false;
+        ZkLock lock = null;
+        try {
+            lock = ZkLock.getAndLock(lockZkAddress, projectName, projectName + "_order_" + orderId + "_lock",
+                    true, 5000, 10000);
+            String trade_no = PayUtils.getParam(params, "trade_no"); // 支付宝交易号
+            long notify_time = DateUtils.parseDate(PayUtils.getParam(params, "notify_time"),
+                    "yyyy-MM-dd HH:mm:ss").getTime(); // 通知时间
+            String trade_status = PayUtils.getParam(params, "trade_status"); // 交易状态
+            long pay_time = 0;
+            String paymentStr = PayUtils.getParam(params, "gmt_payment"); //交易付款时间
+            if (StringUtils.isNotBlank(paymentStr))
+                pay_time = DateUtils.parseDate(paymentStr, "yyyy-MM-dd HH:mm:ss").getTime();
+            String detail = JsonUtils.toJson(params);
+            OrderNotify orderNotify = new OrderNotify();
+            orderNotify.setOid(orderId);
+            orderNotify.setNotifyTime(notify_time);
+            orderNotify.setDetail(detail);
+            orderNotifyDao.insert(orderNotify);
+            int status = order.getStatus();
+            if (trade_status.equals("TRADE_SUCCESS") && status == Order.status_no_pay) {
+                order.setStatus(Order.status_pay);
+                order.setOrderNo(trade_no);
+                order.setPayTime(pay_time);
+                orderPayService.successHandleBusiness(order);
+                orderDao.update(order);
+            }
+            return true;
+        } finally {
+            if (null != lock) lock.release();
+        }
+    }
 
     private Map<String, String> aliOrderPayParam(long oid, int payMode, String authCode) throws Exception {
         if(payMode == Order.pay_mode_barcode && StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
@@ -207,7 +281,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         if(payMode == Order.pay_mode_barcode) bizContentMap.put("scene", "bar_code");
         if(payMode == Order.pay_mode_barcode) bizContentMap.put("auth_code", authCode);
         if(StringUtils.isNotBlank(itBPay)) bizContentMap.put("timeout_express", String.valueOf(itBPay));
-        bizContentMap.put("total_amount", String.valueOf(order.getPrice()));
+        double price = ArithUtils.div(order.getPrice(),100d,2);
+        bizContentMap.put("total_amount", String.valueOf(price));
         bizContentMap.put("product_code", product_code);
         String biz_content = JsonUtils.toJson(bizContentMap);
         Map<String, String> sParaTemp = Maps.newHashMap();
@@ -229,13 +304,12 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     private Order createWxOrder(long passportId, int payMode, int type, String typeInfo, String title, String desc,
-                                int price, OrderExpireUnit expireUnit, int expireNum) throws Exception {
+                                int price, OrderExpireUnit expireUnit, int expireNum, Order order) throws Exception {
         if(price == 0) throw new StoreSystemException("price is zero!");
         if(payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0))throw new StoreSystemException("expire is error!");
         PayPassport payPassport = payPassportDao.load(passportId);
         if(null == payPassport) throw new StoreSystemException("passport is null!");
         long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
-        Order order = new Order();
         order.setPayType(Order.pay_type_wx);
         order.setPayMode(payMode);
         order.setGmt(gmt);
@@ -325,8 +399,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public boolean handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type, String typeInfo, String title, String desc, int price, String ip) throws Exception {
-        Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0);
+    public ResultClient handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type,
+                                             String typeInfo, String title, String desc, int price, Order orderInfo) throws Exception {
+        Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
         if(StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
         PayPassport payPassport = payPassportDao.load(passportId);
         if(null == payPassport) throw new StoreSystemException("passport is null!");
@@ -338,7 +413,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         if(StringUtils.isBlank(wxMerchantId)) throw new StoreSystemException("wxMerchantId is null!");
         if(StringUtils.isBlank(wxApiKey)) throw new StoreSystemException("wxApiKey is null!");
         if(StringUtils.isBlank(wxPkcs12CertificateName)) throw new StoreSystemException("wxPkcs12CertificateName is null!");
-        int totalFee = (int) ArithUtils.mul(order.getPrice() , 100);
+//        int totalFee = (int) ArithUtils.mul(order.getPrice() , 100);
         Map<String, String> sParaTemp = Maps.newHashMap();
         sParaTemp.put("appid", wxAppid);// 应用ID
         sParaTemp.put("mch_id", wxMerchantId);// 商户号
@@ -346,8 +421,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         sParaTemp.put("body", StringUtils.isNotBlank(order.getTitle()) ? order.getTitle() : "");// 商品描述String(128)
         sParaTemp.put("detail", StringUtils.isNotBlank(order.getDesc()) ? order.getDesc() : "");// 商品详情String(8192)
         sParaTemp.put("out_trade_no", PayUtils.getOutTradeNo(order.getId(), order.getGmt()));// 商户订单号
-        sParaTemp.put("total_fee", String.valueOf(totalFee));// total_fee,Int,单位为分
-        sParaTemp.put("spbill_create_ip", ip);
+        sParaTemp.put("total_fee", String.valueOf(order.getPrice()));// total_fee,Int,单位为分
+        sParaTemp.put("spbill_create_ip", request.getRemoteAddr());
         sParaTemp.put("auth_code", authCode);
         String mysign = PayUtils.buildSign(sParaTemp, wxApiKey);
         sParaTemp.put("sign", URLEncoder.encode(mysign, Constant.defaultCharset));
@@ -356,11 +431,15 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         Map<String, String> resMap = PayUtils.xmlStrToMap(sendRes);
         String code = resMap.get("return_code");
         boolean res = false;
+        long time_end=0;
         if(code.equals("SUCCESS")) {
             String result_code = resMap.get("result_code");
             if("SUCCESS".equals(result_code)) {
                 order.setStatus(Order.status_pay);
+                order.setOrderNo(resMap.get("trade_no"));
                 order.setDetail(sendRes);
+                time_end = DateUtils.parseDate(resMap.get("time_end"), "yyyyMMddHHmmss").getTime();
+                order.setPayTime(time_end);
             } else {
                 String path = request.getServletContext().getRealPath("");
                 File file = new File(path);
@@ -372,12 +451,58 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         }
         if(order.getStatus() == Order.status_pay) {
             res = true;
-            orderPayService.successHandleBusiness(order.getPayType(), type, typeInfo);
+            orderPayService.successHandleBusiness(order);
         }
         orderDao.update(order);
-        return res;
+        if(res){
+            return new ResultClient(true,transformClient(order));
+        }else{
+            return new ResultClient(false);
+        }
     }
 
+    @Override
+    public boolean wxOrderNotify(String xmlStr) throws Exception {
+        Map<String, String> params = PayUtils.xmlStrToMap(xmlStr);
+        String out_trade_no = PayUtils.getParam(params, "out_trade_no");// 商户订单号
+        long orderId = PayUtils.getOrderId(out_trade_no);
+        Order order = orderDao.load(orderId);
+        if (null == order) throw new StoreSystemException("order is null!");
+        long passportId = order.getPassportId();
+        PayPassport payPassport = payPassportDao.load(passportId);
+        if (null == payPassport) throw new StoreSystemException("passport is null!");
+        String wxApiKey = payPassport.getWxApiKey();
+        if (StringUtils.isBlank(wxApiKey)) throw new StoreSystemException("wxApiKey is null!");
+        if (validSign(params, wxApiKey)) {
+            ZkLock lock = null;
+            try {
+                lock = ZkLock.getAndLock(lockZkAddress, projectName, projectName + "_order_" + orderId + "_lock",
+                        true, 5000, 10000);
+                String transaction_id = PayUtils.getParam(params, "transaction_id");// 微信支付订单号
+                long notify_time = System.currentTimeMillis();
+                String result_code = PayUtils.getParam(params, "result_code");
+                long time_end = DateUtils.parseDate(PayUtils.getParam(params, "time_end"), "yyyyMMddHHmmss").getTime();
+                String detail = JsonUtils.toJson(params);
+                OrderNotify orderNotify = new OrderNotify();
+                orderNotify.setDetail(detail);
+                orderNotify.setNotifyTime(notify_time);
+                orderNotify.setOid(orderId);
+                orderNotifyDao.insert(orderNotify);
+                int status = order.getStatus();
+                if (result_code.equals("SUCCESS") && status == Order.status_no_pay) {
+                    order.setStatus(Order.status_pay);
+                    order.setOrderNo(transaction_id);
+                    order.setPayTime(time_end);
+                    orderPayService.successHandleBusiness(order);
+                    orderDao.update(order);
+                }
+                return true;
+            } finally {
+                if (null != lock) lock.release();
+            }
+        }
+        return false;
+    }
 
     @Override
     public RefundOrder createAliRefundOrder(long oid) throws Exception {
@@ -667,131 +792,267 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public ClientOrder countPrice(Order order,long sid) throws Exception {
+    public ClientOrder countPrice(Order order) throws Exception {
         ClientOrder clientOrder=new ClientOrder(order);
         double dicountPriceYuan=0.0d;
         double totaoPriceyuan=0.0d;
         //小计单，通过从数据库取数据计算订单上的单sku的小计
         List<OrderSku> orderSkuList = order.getSkuids();
-            Map map=countSkuPrice(order.getUid(),orderSkuList,order.getCouponid(),order.getSurcharges(),sid);
-            dicountPriceYuan= (double) map.get("DicountPriceYuan");
-            totaoPriceyuan= (double) map.get("totaoPriceyuan");
-        clientOrder.setClientSkuids((List<ClientOrderSku>)map.get("clientOrderSkus"));
+        Map map = countSkuPrice(order.getUid(), orderSkuList, order.getCouponid(), order.getSurcharges());
+        dicountPriceYuan = (double) map.get("discountPriceYuan");
+        totaoPriceyuan = (double) map.get("totalPriceYuan");
+        clientOrder.setClientSkuids((List<OrderSku>) map.get("clientOrderSkus"));
         clientOrder.setDicountPriceYuan(dicountPriceYuan);
         clientOrder.setTotalPriceYuan(totaoPriceyuan);
         return clientOrder;
     }
+//    public Map<Object,Object> countSkuPriceddddd(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList){
+//        List<ClientOrderSku> clientOrderSkus=new ArrayList<>();
+//        Map map=new HashMap();
+//        int surchargePrice=0;//附加费
+//        int totalPrice=0;//总金额
+//        User userDb = userDao.load(uid);
+//        UserGrade userGrade = userGradeDao.load(userDb.getUserGradeId());
+//        double dicountPriceYuan=0.0d;
+//        double totaoPriceyuan=0.0d;
+//        for(OrderSku orderSku:orderSkuList) {
+//            int num=0;
+//            ClientOrderSku clientOrderSku=new ClientOrderSku();
+//            ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+//            //--
+//            ProductSPU productSPU = productSPUDao.load(orderSku.getSpuid());
+//
+//            // 拿取库存
+//            List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(productSKU.getId());
+//            for (InventoryDetail detail : allDetails) {
+//                if (detail.getSubid() == userDb.getSid()) {
+//                    num += detail.getNum();
+//                }
+//            }
+//            if (productSPU.getType() == ProductSPU.type_common) {
+//                if(num>orderSku.getNum()){
+//                    UserGradeCategoryDiscount userGradeCategoryDiscount = new UserGradeCategoryDiscount();
+//                    userGradeCategoryDiscount.setSpuid(orderSku.getSpuid());
+//                    userGradeCategoryDiscount.setUgid(userDb.getUserGradeId());
+//                    UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.load(userGradeCategoryDiscount);
+//                    if (discount != null) {
+//                        //有折扣的商品
+//                        double dis = discount.getDiscount() / 10.0;
+//                        clientOrderSku.setSkuid(orderSku.getSkuid());
+//                        clientOrderSku.setSpuid(orderSku.getSpuid());
+//                        clientOrderSku.setNum(orderSku.getNum());
+//                        clientOrderSku.setPrice(productSKU.getRetailPrice() / 100.0);
+//                        clientOrderSku.setSubtotal((productSKU.getRetailPrice() * orderSku.getNum() * dis) / 100.0);
+//                        clientOrderSku.setDiscount(discount.getDiscount());
+//                        DecimalFormat df = new DecimalFormat("#.00");
+//                        double subtotal = Double.parseDouble(df.format(productSKU.getRetailPrice() * orderSku.getNum() * dis * (userGrade.getDiscount() / 10.0) * 0.01));
+//                        clientOrderSku.setLastSubtotal(subtotal);
+//                        totalPrice += productSKU.getRetailPrice() * orderSku.getNum() * dis;
+//                    } else {
+//                        //没有设置折扣的商品
+//                        clientOrderSku.setSkuid(orderSku.getSkuid());
+//                        clientOrderSku.setSpuid(orderSku.getSpuid());
+//                        clientOrderSku.setNum(orderSku.getNum());
+//                        clientOrderSku.setDiscount(0);
+//                        clientOrderSku.setPrice(productSKU.getRetailPrice() / 100.0);
+//                        clientOrderSku.setSubtotal((productSKU.getRetailPrice() * orderSku.getNum()) / 100.0);
+//                        clientOrderSku.setLastSubtotal((productSKU.getRetailPrice() * orderSku.getNum() * (userGrade.getDiscount() / 10.0)) / 100.0);
+//                        totalPrice += productSKU.getRetailPrice() * orderSku.getNum();
+//                    }
+//                }else{
+//                    throw new StoreSystemException("当前商品库存不足！");
+//                }
+//
+//
+//            } else {
+//                // 积分
+//                // 判断库存
+//                if(productSKU.getNum()>orderSku.getNum()){
+//                    if (productSPU.getIntegralNum() < orderSku.getNum()) {
+//                        throw new StoreSystemException("积分商品数量兑换上限！");
+//                    }
+//                    //判断用户积分。
+//                    if (productSKU.getIntegralPrice() * orderSku.getNum() > userDb.getScore()) {
+//                        throw new StoreSystemException("会员积分不足兑换该积分商品！");
+//                    }
+//                }else{
+//                    throw new StoreSystemException("当前商品库存不足！");
+//                }
+//
+//                clientOrderSku.setPrice(productSKU.getIntegralPrice());
+//                clientOrderSku.setSubtotal(productSKU.getIntegralPrice() * orderSku.getNum());
+//            }
+//            //---
+//
+//             totaoPriceyuan = totalPrice;
+//             dicountPriceYuan = totalPrice * userGrade.getDiscount();//折后金额
+//            //计算促销券
+//            if (couponid > 0) {
+//                MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
+//                if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
+//                    dicountPriceYuan = ((dicountPriceYuan - marketingCoupon.getDescSubtract()));
+//                }
+//                if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
+//                    dicountPriceYuan = ((dicountPriceYuan - totaoPriceyuan * (marketingCoupon.getDescSubtract() / 10.0)));
+//                }
+//            } else {
+//                dicountPriceYuan = dicountPriceYuan;
+//            }
+//            if (dicountPriceYuan < 0) {
+//                dicountPriceYuan = 0.0d;
+//            }
+//            clientOrderSkus.add(clientOrderSku);
+//            if (surchargeList.size() > 0) {
+//                // 拿到附加费用加入总价格
+//                for (Surcharge surcharge : surchargeList) {
+//                    surchargePrice += surcharge.getPrice();
+//                }
+//            }
+//            totaoPriceyuan+=ArithUtils.add(totaoPriceyuan,(surchargePrice));
+//        }
+//        map.put("surchargeList",surchargeList);//附加费用
+//        map.put("DicountPriceYuan",dicountPriceYuan/100.0);//折扣后金额
+//        map.put("totaoPriceyuan",totaoPriceyuan/100.0);//总金额
+//        map.put("clientOrderSkus",clientOrderSkus);//sku小计单
+//        return  map;
+//    }
+
     @Override
-    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList,long sid){
-        List<ClientOrderSku> clientOrderSkus=new ArrayList<>();
-        Map map=new HashMap();
-        int surchargePrice=0;//附加费
-        int totalPrice=0;//总金额
-        User userDb = userDao.load(uid);
-        UserGrade userGrade = userGradeDao.load(userDb.getUserGradeId());
-        double dicountPriceYuan=0.0d;
-        double totaoPriceyuan=0.0d;
-        for(OrderSku orderSku:orderSkuList) {
-            int num=0;
-            ClientOrderSku clientOrderSku=new ClientOrderSku();
-            ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
-            //--
-            ProductSPU productSPU = productSPUDao.load(orderSku.getSpuid());
+    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList) throws Exception {
+        Map<Object, Object> map = Maps.newHashMap();
+        List<Long> skuIds = Lists.newArrayList();
+        List<Long> spuIds = Lists.newArrayList();
+        Map<Long, Integer> inventoryMap = Maps.newHashMap();
 
-            // 拿取库存
-            List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(productSKU.getId());
+        User user = userDao.load(uid);
+
+        //会员等级折扣
+        UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
+        double userDisCount = 0;
+        if (userGrade != null) {
+            userDisCount = userGrade.getDiscount();
+        }
+
+        for(OrderSku orderSku:orderSkuList){
+            skuIds.add(orderSku.getSkuid());
+            spuIds.add(orderSku.getSpuid());
+
+            int inventoryNum = 0;//库存量
+            List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(orderSku.getSkuid());
             for (InventoryDetail detail : allDetails) {
-                if (detail.getSubid() == sid) {
-                    num += detail.getNum();
+                if (detail.getSubid() == user.getSid()) {
+                    inventoryNum += detail.getNum();
                 }
             }
-            if (productSPU.getType() == ProductSPU.type_common) {
-                if(num>orderSku.getNum()){
-                    UserGradeCategoryDiscount userGradeCategoryDiscount = new UserGradeCategoryDiscount();
-                    userGradeCategoryDiscount.setSpuid(orderSku.getSpuid());
-                    userGradeCategoryDiscount.setUgid(userDb.getUserGradeId());
-                    UserGradeCategoryDiscount discount = userGradeCategoryDiscountDao.load(userGradeCategoryDiscount);
-                    if (discount != null) {
-                        //有折扣的商品
-                        double dis = discount.getDiscount() / 10.0;
-                        clientOrderSku.setSkuid(orderSku.getSkuid());
-                        clientOrderSku.setSpuid(orderSku.getSpuid());
-                        clientOrderSku.setNum(orderSku.getNum());
-                        clientOrderSku.setPrice(productSKU.getRetailPrice() / 100.0);
-                        clientOrderSku.setSubtotal((productSKU.getRetailPrice() * orderSku.getNum() * dis) / 100.0);
-                        clientOrderSku.setDiscount(discount.getDiscount());
-                        DecimalFormat df = new DecimalFormat("#.00");
-                        double subtotal = Double.parseDouble(df.format(productSKU.getRetailPrice() * orderSku.getNum() * dis * (userGrade.getDiscount() / 10.0) * 0.01));
-                        clientOrderSku.setLastSubtotal(subtotal);
-                        totalPrice += productSKU.getRetailPrice() * orderSku.getNum() * dis;
-                    } else {
-                        //没有设置折扣的商品
-                        clientOrderSku.setSkuid(orderSku.getSkuid());
-                        clientOrderSku.setSpuid(orderSku.getSpuid());
-                        clientOrderSku.setNum(orderSku.getNum());
-                        clientOrderSku.setDiscount(0);
-                        clientOrderSku.setPrice(productSKU.getRetailPrice() / 100.0);
-                        clientOrderSku.setSubtotal((productSKU.getRetailPrice() * orderSku.getNum()) / 100.0);
-                        clientOrderSku.setLastSubtotal((productSKU.getRetailPrice() * orderSku.getNum() * (userGrade.getDiscount() / 10.0)) / 100.0);
-                        totalPrice += productSKU.getRetailPrice() * orderSku.getNum();
-                    }
-                }else{
-                    throw new StoreSystemException("当前商品库存不足！");
-                }
+            inventoryMap.put(orderSku.getSkuid(),inventoryNum);
+       }
+
+       List<ProductSKU> skuList = productSKUDao.load(skuIds);
+        List<ProductSPU> spuList = productSPUDao.load(spuIds);
+        Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(skuList, "id");
+        Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
+
+        double discountPriceYuan=0;
+        double totalPriceYuan=0;
+        double totalPrice=0;//总金额
+        int surchargePrice=0;//附加费
 
 
-            } else {
-                // 积分
-                // 判断库存
-                if(productSKU.getNum()>orderSku.getNum()){
-                    if (productSPU.getIntegralNum() < orderSku.getNum()) {
-                        throw new StoreSystemException("积分商品数量兑换上限！");
-                    }
-                    //判断用户积分。
-                    if (productSKU.getIntegralPrice() * orderSku.getNum() > userDb.getScore()) {
-                        throw new StoreSystemException("会员积分不足兑换该积分商品！");
-                    }
-                }else{
-                    throw new StoreSystemException("当前商品库存不足！");
+        for(OrderSku orderSku:orderSkuList){
+            long skuId=orderSku.getSkuid();
+            long spuId=orderSku.getSpuid();
+            double spuDiscount=0;//商品折扣
+
+            //常规商品
+            if(spuMap.get(spuId).getType()==ProductSPU.type_common){
+                if(orderSku.getNum()>inventoryMap.get(skuId)) throw new StoreSystemException("当前常规商品库存数量不足！");
+                UserGradeCategoryDiscount ugcd = new UserGradeCategoryDiscount();
+                ugcd.setSpuid(spuId);
+                ugcd.setUgid(user.getUserGradeId());
+                ugcd = userGradeCategoryDiscountDao.load(ugcd);
+                if(ugcd!=null){
+                    spuDiscount = ugcd.getDiscount();
                 }
 
-                clientOrderSku.setPrice(productSKU.getIntegralPrice());
-                clientOrderSku.setSubtotal(productSKU.getIntegralPrice() * orderSku.getNum());
-            }
-            //---
+                double retailPrice = 0;
+                double subPrice = 0;
+                double subTotal = 0;
+                if (spuDiscount == 0) {
+                    //小计
+                    subPrice = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum()) / 100.0;
 
-             totaoPriceyuan = totalPrice;
-             dicountPriceYuan = totalPrice * userGrade.getDiscount();//折后金额
-            //计算促销券
-            if (couponid > 0) {
-                MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
-                if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
-                    dicountPriceYuan = ((dicountPriceYuan - marketingCoupon.getDescSubtract()));
+                    subTotal = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (userDisCount / 10.0)) / 100.0;
+
+                } else if (userDisCount == 0) {
+                    //小计
+                    subPrice = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (spuDiscount / 10.0)) / 100.0;
+
+                    subTotal = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (spuDiscount / 10.0)) / 100.0;
+                } else {
+                    //小计
+                    subPrice = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (spuDiscount / 10.0)) / 100.0;
+
+                    subTotal = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (spuDiscount / 10.0) * (userDisCount / 10.0)) / 100.0;
                 }
-                if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
-                    dicountPriceYuan = ((dicountPriceYuan - totaoPriceyuan * (marketingCoupon.getDescSubtract() / 10.0)));
+                //商品单价
+                retailPrice = skuMap.get(skuId).getRetailPrice() / 100.0;
+                orderSku.setPrice(retailPrice);
+                orderSku.setCode(skuMap.get(skuId).getCode());
+                orderSku.setName(skuMap.get(skuId).getName());
+                orderSku.setDiscount(spuDiscount);
+                orderSku.setSubtotal(subPrice);
+                orderSku.setLastSubtotal(subTotal);
+                totalPrice = ArithUtils.add(subPrice,totalPrice);
+
+            }
+
+            //积分商品
+            if(spuMap.get(spuId).getType()==ProductSPU.type_integral){
+                if(orderSku.getNum()>inventoryMap.get(skuId)) {
+                    throw new StoreSystemException("当前积分商品库存数量不足！");
                 }
-            } else {
-                dicountPriceYuan = dicountPriceYuan;
-            }
-            if (dicountPriceYuan < 0) {
-                dicountPriceYuan = 0.0d;
-            }
-            clientOrderSkus.add(clientOrderSku);
-            if (surchargeList.size() > 0) {
-                // 拿到附加费用加入总价格
-                for (Surcharge surcharge : surchargeList) {
-                    surchargePrice += surcharge.getPrice();
+                if (spuMap.get(spuId).getIntegralNum() < orderSku.getNum()) {
+                    throw new StoreSystemException("积分商品数量兑换上限！");
                 }
+                if (skuMap.get(skuId).getIntegralPrice() * orderSku.getNum() > user.getScore()) {
+                    throw new StoreSystemException("会员积分不足以兑换该积分商品！");
+                }
+
+                orderSku.setPrice(skuMap.get(skuId).getIntegralPrice());
+                orderSku.setSubtotal(skuMap.get(skuId).getIntegralPrice() * orderSku.getNum());
             }
-            totaoPriceyuan+=ArithUtils.add(totaoPriceyuan,(surchargePrice));
+
+        totalPriceYuan = totalPrice;
+        if(userDisCount==0) {
+            discountPriceYuan = totalPrice;
+        }else{
+            discountPriceYuan = totalPrice * userDisCount;//折后金额
+        }
+        //计算促销券
+        if (couponid > 0) {
+            MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
+            if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
+                discountPriceYuan = ((discountPriceYuan - marketingCoupon.getDescSubtract()));
+            }
+            if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
+                discountPriceYuan = ((discountPriceYuan - totalPriceYuan * (marketingCoupon.getDescSubtract() / 10.0)));
+            }
+        }
+        //添加附加费用
+        if (surchargeList.size() > 0) {
+            for (Surcharge surcharge : surchargeList) {
+                surchargePrice += surcharge.getPrice();
+            }
+        }
+        totalPriceYuan+=ArithUtils.add(totalPriceYuan,surchargePrice);
         }
         map.put("surchargeList",surchargeList);//附加费用
-        map.put("DicountPriceYuan",dicountPriceYuan/100.0);//折扣后金额
-        map.put("totaoPriceyuan",totaoPriceyuan/100.0);//总金额
-        map.put("clientOrderSkus",clientOrderSkus);//sku小计单
-        return  map;
+        map.put("discountPriceYuan",discountPriceYuan/100.0);//折扣后金额
+        map.put("totalPriceYuan",totalPriceYuan/100.0);//总金额
+        map.put("orderSkus",orderSkuList);//sku小计单
+        return map;
     }
+
     @Override
     public List<ClientOrder> getTemporaryOrder(long subid) throws Exception {
         List<Order> list=   orderDao.getTemporaryOrder(subid,Order.makestatus_temporary);
@@ -986,6 +1247,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
     private ClientOrder transformClient(Order order) throws Exception{
         ClientOrder clientOrder = new ClientOrder(order);
+
         OptometryInfo optometryInfo = optometryInfoDao.load(order.getOiId());
         Subordinate subordinate = subordinateDao.load(order.getSubid());
         if(subordinate != null) clientOrder.setSubName(subordinate.getName());
@@ -1004,6 +1266,25 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         clientOrder.setOptometryInfos(optometryInfos);
         int count = afterSaleDetailDao.getCount(order.getId());
         clientOrder.setAsCount(count);
+        if(order.getOiId()>0){
+            // 验光信息
+            OptometryInfo load = optometryInfoDao.load(order.getOiId());
+            if(load!=null) {
+                clientOrder.setInfo(load);
+            }
+        }
+        if(order.getCouponid()>0){
+            //优惠券信息
+            MarketingCoupon marketingCoupon = marketingCouponDao.load(order.getCouponid());
+            if(marketingCoupon!=null) {
+                clientOrder.setCouponName(marketingCoupon.getTitle());
+                if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
+                    clientOrder.setDescSubtract(marketingCoupon.getDescSubtract() / 100.0);
+                } else {
+                    clientOrder.setDescSubtract(marketingCoupon.getDescSubtract());
+                }
+            }
+        }
         return clientOrder;
     }
 

@@ -11,19 +11,72 @@
     <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
     <link href="../resource/css/animate.css" rel="stylesheet">
     <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="../resource/css/common.css" rel="stylesheet">
     <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <style>
+        .fixed-table-toolbar{display: block}
+    </style>
 </head>
 
 <body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInDown tree-view"  style="display: none;">
+    <div class="col-sm-10">
+        <div class="ibox float-e-margins" id="ztree">
+            <div class="ibox-title">
+                <h5>选择权限</h5>
+            </div>
+            <div class="ibox-content" >
+                <ul id="treeDemo" class="ztree">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
     <div class="wrapper wrapper-content animated fadeInDown  content-view  ">
         <!-- Panel Other -->
         <form method="get" class="form-horizontal" id="userForm">
             <div class="form-group">
+                <label class="col-sm-2 control-label">所属公司</label>
+                <div class="col-sm-8">
+                    <select id="psub"  class="form-control">
+                    </select>
+
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所属门店</label>
+                <div class="col-sm-8">
+                    <select id="sub"  class="form-control">
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户类型</label>
+                <div class="col-sm-4">
+                    <select name="" id="userType" class="form-control" onchange="userTypeChange()">
+                        <option value="0">顾客</option>
+                        <option value="1">员工</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label">用户名称</label>
-                <div class="col-sm-10">
+                <div class="col-sm-8">
                     <input type="text" class="form-control hiddenid" id="id">
                     <input type="text" class="form-control" id="name" placeholder="请输入用户名称">
                     <span class="help-block m-b-none validate">请输入用户名称</span>
@@ -32,17 +85,27 @@
             <div class="hr-line-dashed"></div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">密码</label>
-                <div class="col-sm-10">
+                <div class="col-sm-8">
                     <input type="text" class="form-control" id="password" placeholder="请输入密码">
                     <span class="help-block m-b-none validate">请输入密码</span>
                 </div>
             </div>
-            <div class="hr-line-dashed"></div>
-            <div class="form-group">
+
+            <div class="form-group" id="phoneDiv">
+                <div class="hr-line-dashed"></div>
                 <label class="col-sm-2 control-label">手机号</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="phone" placeholder="请输入用户手机号" onkeyup="value=value.replace(/[^\d]/g,'')">
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="phone" placeholder="请输入用户手机号">
                     <span class="help-block m-b-none validate">请输入用户手机号</span>
+                </div>
+            </div>
+
+            <div class="form-group" id="accountDiv" hidden>
+                <div class="hr-line-dashed"></div>
+                <label class="col-sm-2 control-label">账户名</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="account" placeholder="请输入账户名(4到16位字母，数字，下划线，减号)">
+                    <span class="help-block m-b-none validate">请输入账户名</span>
                 </div>
             </div>
 
@@ -108,21 +171,17 @@
 
                                     </select>
                                 </div>
-                                <label class="col-sm-1 control-label"></label>
-                                <div class="col-sm-2">
-                                    <button type="button" class="btn  btn-info "  id="btn_search" name="like_search" >
-                                        <i class="fa fa-search"></i> 点击查询
-                                    </button>
-                                </div>
                             </div>
                         </form>
-
                         <div id="toolbar" >
                             <button class="btn btn-success  btn-outline" id="btn_add">
                                 <i class="fa fa-plus">添加</i>
                             </button>
-
+                            <button type="button" class="btn  btn-info "  id="btn_search" name="like_search" style="margin-left: 1100px;" >
+                                <i class="fa fa-search"></i> 点击查询
+                            </button>
                         </div>
+
                         <table id="tb_table"></table>
                     </div>
                 </div>
@@ -137,6 +196,9 @@
     <!-- Bootstrap table -->
     <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
     <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
     <script src="../resource/js/plugins/laydate/laydate.js"></script>
     <script src="../resource/js/plugins/select2/js/select2.js"></script>
     <script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
@@ -154,7 +216,7 @@
     <script src="../resource/js/yanjing.js"></script>
     <script src="../resource/js/content.js?v=1.0.0"></script>
 
-    <script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
     <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
     <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
@@ -169,6 +231,13 @@
         initSelectSubject("#parentSubordinate",serverUrl+"/subordinate/getAllSubordinate?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
         var pid =  $("#parentSubordinate").val();
         initSelectSubject("#subordinate",serverUrl+"/subordinate/getSubordinateStoreBySid?sid="+pid+"&token="+encodeURIComponent(quakooUser.getUserInfo().token) + "&sid=" + sid+ "&pid=" + pid ,false,true);
+    })
+
+    initSelectSubject("#psub",serverUrl+"/subordinate/getAllSubordinate?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
+    $("#psub").on("select2:select",function(e){
+        initSelectSubject("#psub",serverUrl+"/subordinate/getAllSubordinate?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
+        var pid =  $("#psub").val();
+        initSelectSubject("#sub",serverUrl+"/subordinate/getSubordinateStoreBySid?sid="+pid+"&token="+encodeURIComponent(quakooUser.getUserInfo().token) + "&sid=" + sid+ "&pid=" + pid ,false,true);
     })
     function formatSubject(item) {
         if (item.loading) return item;
@@ -215,7 +284,7 @@
                     queryParams: function (params) {
                         var startTime = $("#startTime").val();
                         var endTime = $("#endTime").val();
-                        var subid = $("#parentSubordinate").val();
+                        var psid = $("#parentSubordinate").val();
                         var sid = $("#subordinate").val();
                         return {
                             token:quakooUser.getUserInfo().token,
@@ -226,7 +295,7 @@
                             // sid:0,//暂无下属机构
                             status:$("#searchStatus").val(),
                             userType:$("#searchUserType").val(),
-                            subid:isBlank(subid)?-1:subid,
+                            psid:isBlank(psid)?-1:psid,
                             sid:isBlank(sid)?-1:sid,
                             startTime: isBlank(startTime) ? 0 : new Date(startTime).getTime(),
                             endTime: isBlank(endTime) ? 0 : new Date(endTime).getTime(),
@@ -248,12 +317,15 @@
 //                            return '-';
 //                        }
 //                }},
-                {field: "name",title: "姓名",align: "center",formatter: function(value, row, index) {
+                {field: "name",title: "用户姓名",align: "center",formatter: function(value, row, index) {
                         return value;
                     }
                 },
                 {field: "phone",  title: "手机号",align: "center",formatter: function(value, row, index) {
                         return value;
+                }},
+                {field: "userName",  title: "账户名",align: "center",formatter: function(value, row, index) {
+                    return value;
                 }},
                 {field: "ctime",title: "创建时间",align: "center",formatter: function(value, row, index) {
                         return formatDateTime(value);
@@ -280,18 +352,30 @@
                             html += '&nbsp';
                         }
                         html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)'  onclick=\'editUser(" + data + ")\'>编辑</a>";
+
+                        html +="<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editUserPermission("+data+")\'>权限</a>"
+                        html +='&nbsp';
                         return html;
                     }
                 }
         ];
 
-
+    function userTypeChange() {
+        var type = $("#userType").val();
+        if(type==0){
+            $("#phoneDiv").show();
+            $("#accountDiv").hide();
+        }else if(type==1){
+            $("#accountDiv").show();
+            $("#phoneDiv").hide();
+        }
+    }
 
     //删除 == 切换状态
     function updateStatus(id,status) {
         var url;
         var param = { id: id,status:status };
-        url = '/user/updateStatus';
+        url = serverUrl + '/user/updateStatus';
 
         layer.msg("确定执行该操作吗？", {
             shade: [0.1, '##f5f5f5'],
@@ -305,7 +389,7 @@
                 function handle(data, param) {
                     if (data.success == true) {
                         layer.msg('修改成功', { icon: 1, shade: 0.01 });
-                        handleTable('', 3, serverUrl+'/user/searchUser');
+                        handleTable('', 3, serverUrl+'/user/searchBackendUser');
                     } else {
                         layer.msg('操作失败，请重试！', { icon: 2, shade: 0.01 });
                     }
@@ -319,20 +403,34 @@
             var index = layer.open({
                 type: 1,shade: 0.01,
                 skin: 'layui-layer-demo', //样式类名
-                area: ['550px', '500px'],
+                area: ['550px', '600px'],
                 anim: 0,
                 shadeClose: true, //开启遮罩关闭
                 content: $('.content-view'),
                 btn: ['提交', '关闭'],
                 yes: function(){
                     var param = {};
-                    var Url = '/user/add';
+                    var Url = serverUrl + '/user/add';
                     var result =  {succ:'添加成功！',fail:'添加失败！'};
-                    var phone =  $("#phone").val();
-                    var name =  $("#name").val();
-                    var password =  $("#password").val();
-                    if(isBlank(phone)){
-                        showValidate('#phone');
+                    var psid= $("#psub").val();             //公司ID
+                    var sid= $("#sub").val();              //门店ID
+                    var phone =  $("#phone").val();         //手机号
+                    var account = $("#account").val();      //账户名
+                    var userType = $("#userType").val();    //用户类型
+                    var name =  $("#name").val();           //用户名称
+                    var password =  $("#password").val();   //密码
+
+                    if(isBlank(psid)){
+                        layer.msg('请选择所属公司', {icon: 2,time:1000, shade: 0.01});
+                        return;
+                    }
+
+//                    if(isBlank(sid)){
+//                        layer.msg('请选择所属门店', {icon: 2,time:1000, shade: 0.01});
+//                        return;
+//                    }
+                    if(isBlank(name)){
+                        showValidate('#name');
                         return  ;
                     }
                     if(isBlank(password)){
@@ -340,19 +438,43 @@
                         return  ;
                     }
 
-                    param.phone = phone;
+                    if(userType==0){
+                        var mobile = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+                        if(!(mobile.test(phone))){
+                            layer.msg('手机号不规范,请重新输入！', {icon: 2,time:1000, shade: 0.01});
+                            return;
+                        }
+
+                    }else {
+                        var res = /^[a-zA-Z0-9_-]{4,16}$/;
+                        if(!res.test(account)){
+                            layer.msg('账户名输入不规范,请重新输入！', {icon: 2,time:1000, shade: 0.01});
+                            return;
+                        }
+                    }
+
+                    param.psid = psid;
+                    if(isNotBlank(sid)) {
+                        param.sid = sid;
+                    }
+                    param.userType = userType;
+                    if(userType==0){
+                        param.phone = phone;
+                    }else {
+                        param.userName = account;
+                    }
                     param.name = name;
                     param.password = password;
-                    myAjax(Url,param,handle);
-                    function handle(data, param){
+
+                    quakooData.ajaxGetData(Url,param,function (data,param){
                         var msg = (data.msg == undefined ? '':','+data.msg);
                         if(data.success) {
                             layer.msg(result.succ, {icon: 1,shade: 0.01});
-                            handleTable("", 3, serverUrl+'/user/searchUser');
+                            handleTable("", 3, serverUrl+'/user/searchBackendUser');
                         }else{
-                            layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                            layer.msg(result.fail + msg, {icon: 2,shade: 0.01});
                         }
-                    }
+                    })
                 },
                 btn2: function(){},
                 success: function(layero, index){
@@ -375,29 +497,171 @@
             btn: ['提交', '关闭'],
             yes: function() {
                 layer.close(index);
-                var url = '/user/update';
+                var url = serverUrl + '/user/update';
                 var params = {
                     id: data.id,
                     name: $("#name").val(),
                     password: $("#password").val(),
                     phone: $("#phone").val(),
                 };
-                myAjax(url, params, handle);
-
-                function handle(data) {
+                quakooData.ajaxGetData(url,params,function (data,param){
                     if (data.success == true) {
                         layer.msg('修改成功', { icon: 1, shade: 0.01 });
-                        handleTable('', 3, serverUrl+'/user/searchUser');
+                        handleTable('', 3, serverUrl+'/user/searchBackendUser');
                     } else {
                         layer.msg('操作失败，请重试！', { icon: 2, shade: 0.01 });
                     }
-                };
+                })
             },
             btn2: function() {},
             success: function(layero, index) {
                 echoUser(data);
             }
         });
+    }
+
+    function editUserPermission(data){
+        reInitTree(data.id);
+        var index = layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['620px', '520px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.tree-view'),
+            btn: ['提交', '关闭'],
+            btnAlign: 'r',
+            yes: function(){
+                var param = {};
+                var treeData =  filterNode();
+                layer.close(index);
+                param.uid = data.id;
+                param.pids = treeData;
+                submitUserPermissionData(param);
+            },
+            btn2: function(){},
+        });
+    }
+
+    function submitUserPermissionData(params) {
+        var url = '';
+        var result;
+        url = serverUrl+'/user/updateUserPermissions';
+        result =  {succ:'更新成功！',fail:'更新失败！'};
+        var index = loading();
+        layer.close(index);
+        quakooData.ajaxGetData(url,params,function (data,param){
+            if (data && data.success) {
+                layer.msg(result.succ, {icon: 1});
+            }else{
+                layer.msg(result.fail, {icon: 2});
+            }
+        })
+
+    }
+
+
+    //回显节点
+
+    var zNodes =[];
+    var zTree;
+    var setting = {
+        view: {
+            selectedMulti: false
+        },
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: { "Y" : "s", "N" : "s" }
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        },
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(treeNode)
+    };
+    function initZtree(){
+        var url = serverUrl+"/permission/getAll";
+//                myAjax(url,"",handle);
+        quakooData.ajaxGetData(url,{},function (data,param){
+            if(data.success) {
+                var treeData = transTreeData(data.data);
+                zNodes = treeData;
+            } else {
+                layer.msg("请求失败");
+                return;
+            }
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        })
+
+    }
+    function refreshTree(){
+        zTree.checkAllNodes(false);
+        zTree.refresh();
+    }
+
+    function transTreeData(data){
+        var temp = [];
+        for(var i = 0;i<data.length;i++){
+            var obj = {};
+            if(data[i].pid == 0){
+                obj.open = true;
+                obj.nocheck = false;
+            }
+            obj.id = data[i].id;
+            obj.sort = data[i].sort;
+            obj.cssName = data[i].cssName;
+            obj.name = data[i].text;
+            obj.pId = data[i].pid;
+            obj.href = data[i].href;
+            temp.push(obj)
+        }
+
+        return temp;
+    }
+
+    function reInitTree(id) {
+        var url =  serverUrl+"/user/getUserPermissions";
+        quakooData.ajaxGetData(url,{uid:id},function (data,param){
+            if(data.success) {
+                reviewNodes(data.data);
+            } else {
+                layer.msg("请求失败");
+            }
+        })
+    }
+    //回显ztree数据
+    function reviewNodes(data) {
+        var Nodes = cloneObj(zNodes);
+        for (var m = 0; m < Nodes.length; m++) {
+            for (var n = 0; n < data.length; n++) {
+                if (Nodes[m].id == data[n].id) {
+                    Nodes[m].checked = true;
+                }
+            }
+        }
+        zTree.destroy();
+        $.fn.zTree.init($("#treeDemo"), setting, Nodes);
+
+    }
+    //获取ztree选中数据
+    function filterNode(){
+        var attr = [];
+        if(zTree){
+            var nodes = zTree.getCheckedNodes(true);
+            for(var i = 0;l = nodes.length, i< l;i++){
+                attr.push(nodes[i].id);
+            }
+        }
+        return attr;
     }
 
     //数据回显
@@ -427,6 +691,7 @@
 	    Table.Init();
         var oButtonInit = new ButtonInit();
         oButtonInit.Init();
+        initZtree();
         laydate.render({
             elem: '#startTime',
             type: 'datetime'

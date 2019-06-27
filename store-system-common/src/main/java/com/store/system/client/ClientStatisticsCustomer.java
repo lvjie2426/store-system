@@ -34,9 +34,9 @@ public class ClientStatisticsCustomer extends StatisticsCustomerJob implements S
 
     private int womanProportion;//女比例
 
-    private int total;//总人数
-
     private String subName;//店铺名称
+
+    private List<StatisticsCustomerJob> details = new ArrayList<>();//每天的明细
 
     public ClientStatisticsCustomer(StatisticsCustomerJob statisticsCustomerJob) {
         try {

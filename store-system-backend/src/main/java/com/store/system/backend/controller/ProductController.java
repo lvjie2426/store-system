@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/product")
@@ -91,7 +93,12 @@ public class ProductController extends BaseController {
                 if(StringUtils.isNotBlank(ugDiscount)){
                     ugDiscountList = JsonUtils.fromJson(ugDiscount, new TypeReference<List<UserGradeCategoryDiscount>>() {});
                 }
-
+                for(UserGradeCategoryDiscount info:ugDiscountList){
+                    String regex = "^[1-9]+(.[1-9]{1})?$";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcherUser = pattern.matcher(String.valueOf(info.getDiscount()));
+                    if (!matcherUser.matches()) throw new StoreSystemException("会员折扣输入格式有误！");
+                }
             } catch (Exception e) {
                 throw new StoreSystemException("会员折扣格式错误");
             }

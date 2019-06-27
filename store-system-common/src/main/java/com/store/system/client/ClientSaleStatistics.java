@@ -1,6 +1,10 @@
 package com.store.system.client;
 
+import com.google.common.collect.Lists;
+import com.store.system.model.SaleStatistics;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @ClassName ClientSaleStatistics
@@ -24,6 +28,7 @@ public class ClientSaleStatistics {
     public static final int type_week = 3; //本周
     public static final int type_month = 4; //本月
     public static final int type_halfYear = 5; //近半年
+    public static final int type_search = 6; //按时间查询
 
     private String subName;//门店名称
 
@@ -52,4 +57,5 @@ public class ClientSaleStatistics {
 
     private double profitsOld;//毛利润(元)
 
+    private List<SaleStatistics> details = Lists.newArrayList();
 }

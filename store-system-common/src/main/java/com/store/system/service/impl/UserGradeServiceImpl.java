@@ -18,6 +18,8 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserGradeServiceImpl implements UserGradeService {
@@ -34,7 +36,10 @@ public class UserGradeServiceImpl implements UserGradeService {
     private SubordinateDao subordinateDao;
 
     private void check(UserGrade userGrade) throws StoreSystemException {
-        if (userGrade.getDiscount() == 0) throw new StoreSystemException("折扣不能为0");
+        String regex = "^[1-9]+(.[1-9]{1})?$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcherUser = pattern.matcher(String.valueOf(userGrade.getDiscount()));
+        if (!matcherUser.matches()) throw new StoreSystemException("会员等级折扣输入格式有误！");
         if (userGrade.getGainMoney() == 0) throw new StoreSystemException("积分获取金额不能为0");
         if (userGrade.getGainScore() == 0) throw new StoreSystemException("积分获取数值不能为0");
         if (userGrade.getSubstituteMoney() == 0) throw new StoreSystemException("积分抵现金额不能为0");
