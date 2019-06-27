@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientStatisticsCustomer;
 import com.store.system.dao.StatisticsCustomerJobDao;
+import com.store.system.dao.SubordinateDao;
 import com.store.system.model.StatisticsCustomerJob;
+import com.store.system.model.Subordinate;
 import com.store.system.service.StatisticsCustomerJobService;
 import com.store.system.util.DateUtils;
 import com.store.system.util.TimeUtils;
@@ -15,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: store-system
@@ -28,16 +31,22 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
 
     @Resource
     private JdbcTemplate jdbcTemplate;
+
+    @Resource
+    private SubordinateDao subordinateDao;
+
     @Resource
     private StatisticsCustomerJobDao statisticsCustomerJobDao;
 
+
+    //右侧 查询当前门店 总数据
     @Override
     public ClientStatisticsCustomer getCustomerCount(long subid, String date, int type) throws Exception {
         List<StatisticsCustomerJob> customers = Lists.newArrayList();
         if(type == 1){//本周
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis((Long.valueOf(date)));
-            String week = String.valueOf(calendar.get(calendar.get(Calendar.YEAR)))+String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR));
+            String week = String.valueOf(calendar.get(Calendar.YEAR))+String.valueOf(calendar.get(Calendar.WEEK_OF_YEAR));
             customers = statisticsCustomerJobDao.getWeekList(subid,Integer.valueOf(week));
         }else if(type == 2){//本月
             Calendar calendar = Calendar.getInstance();
@@ -60,20 +69,20 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
                 }
             }
         }
-        return statisticsCustomer(customers);
+        return statisticsCustomer(customers,subid);
     }
 
     @Override
     public ClientStatisticsCustomer getCustomerByTime(long subid, long startTime, long endTime) throws Exception {
         String sql = " SELECT * FROM statistics_customer_job where 1=1 AND ctime > "+startTime + " AND ctime < " + endTime + " AND subid = " + subid;
         List<StatisticsCustomerJob> customers = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<StatisticsCustomerJob>(StatisticsCustomerJob.class));
-        return statisticsCustomer(customers);
+        return statisticsCustomer(customers,subid);
     }
 
-    private ClientStatisticsCustomer statisticsCustomer(List<StatisticsCustomerJob> customers)throws Exception{
-        ClientStatisticsCustomer clientStatisticsCustomer = new ClientStatisticsCustomer(new StatisticsCustomerJob());
-        List<Integer> list = Lists.newArrayList();
-        int man = 0;
+
+    private ClientStatisticsCustomer statisticsCustomer(List<StatisticsCustomerJob> customers,long subid)throws Exception{
+        ClientStatisticsCustomer res = new ClientStatisticsCustomer(new StatisticsCustomerJob());
+        int man =  0;
         int woman = 0;
         int total = 0;
         List<Integer> ages = Lists.newArrayList();
@@ -83,26 +92,26 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
                 man+=customer.getMan();
                 woman+=customer.getWoman();
                 total+=man+woman;
-                list.add(total);
             }
-            clientStatisticsCustomer.setTen(getCount(ages,0,10));//年龄 0 - 10人数
-            clientStatisticsCustomer.setTwenty(getCount(ages,11,20));
-            clientStatisticsCustomer.setForty(getCount(ages,21,40));
-            clientStatisticsCustomer.setSixty(getCount(ages,41,60));
-            clientStatisticsCustomer.setMore(getCount(ages,61,999));
-            clientStatisticsCustomer.setAge(ages);
-            clientStatisticsCustomer.setMan(man);
-            clientStatisticsCustomer.setWoman(woman);
-            clientStatisticsCustomer.setManProportion(calculator(man,total));
-            clientStatisticsCustomer.setWomanProportion(calculator(woman,total));
-            clientStatisticsCustomer.setTotal(total);
-            clientStatisticsCustomer.setDay(DateUtils.getDate());
-            return clientStatisticsCustomer;
+            res.setAge(ages);
+            res.setMan(man);
+            res.setWoman(woman);
+            res.setTotal(total);
+            res.setManProportion(calculator(man,total));
+            res.setWomanProportion(calculator(woman,total));
+            res.setTen(getCount(ages,0,10));//年龄 0 - 10人数
+            res.setTwenty(getCount(ages,11,20));
+            res.setForty(getCount(ages,21,40));
+            res.setSixty(getCount(ages,41,60));
+            res.setMore(getCount(ages,61,999));
+            res.setSubid(subid);
+            Subordinate subordinate = subordinateDao.load(subid);
+            if(subordinate!=null){ res.setSubName(subordinate.getName()); }
         }
-        return null;
+        return res;
     }
 
-    //计算 某个年龄段的人数
+        //计算 某个年龄段的人数
     private int getCount(List<Integer> ages,int start,int end)throws Exception{
         int count = 0;
         for(Integer age : ages){

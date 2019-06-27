@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -75,12 +76,12 @@ public class StatisticsCustomerController extends BaseController{
     //多店对比查询
     @RequestMapping("/statisticsBySubordinates")
     public ModelAndView statisticsBySubordinates(HttpServletRequest request,HttpServletResponse response,
-                                                 @RequestParam(name = "subids") List<Long> subids,String date,int type)throws Exception{
+                                                 @RequestParam(name = "subids[]") List<Long> subids,String date,int type)throws Exception{
         try {
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
-                ClientStatisticsCustomer customer = statisticsCustomerJobService.getCustomerCount(subid,date,type);
-                if(customer!=null){ res.add(customer); }
+                ClientStatisticsCustomer customerList = statisticsCustomerJobService.getCustomerCount(subid,date,type);
+                res.add(customerList);
             }
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
@@ -97,14 +98,13 @@ public class StatisticsCustomerController extends BaseController{
         try{
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
-                ClientStatisticsCustomer customer = statisticsCustomerJobService.getCustomerByTime(subid,startTime,endTime);
-                if(customer!=null){ res.add(customer); }
+                ClientStatisticsCustomer customerList = statisticsCustomerJobService.getCustomerByTime(subid,startTime,endTime);
+                res.add((customerList));
             }
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
         }
     }
-
 
 }
