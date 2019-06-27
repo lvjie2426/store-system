@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class="selectBox" id="select-type">
+        <!--<div class="selectBox" id="select-type">
             <div class="select-box-header">
                 <span class="text">全部类型</span> <i class="iconfont icon-ico_arrow_down" ></i>
             </div>
@@ -64,7 +64,7 @@
                     <li value="1">赠品仓库</li>
                 </ul>
             </div>
-        </div>
+        </div>-->
     </div>
     <div class="goods-body">
         <ul class="contUl" id="showUl">
@@ -604,12 +604,12 @@
         var seriesName = '';
         var providerName = '';
         // 筛选条件的类型
-        selectTag($("#select-type"),function (data) {
+        /*selectTag($("#select-type"),function (data) {
             if(data.value){
                 selectType = data.value;
                 getInData();
             }
-        })
+        })*/
         var selectDate = new dateRange("#select-date");
         selectDate.init()
         $('#select-date button').click(function () {
@@ -628,14 +628,6 @@
         quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
                 brandData = ret.data;
-                var html = template('selectTagTmpAll',{title:'全部商品类型',list:ret.data});
-                //商品列表的筛选
-                $('#select-type').html(html);
-                selectTag($("#select-type"),function (data) {
-                    if(data.value){
-                        selectBid = data.value;
-                    }
-                })
             }
         })
         //获取属性-球

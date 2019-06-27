@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.3:20005";
         /**马文军*/
-        this.serverUrl = "http://192.168.1.24:20005";
+        // this.serverUrl = "http://192.168.1.24:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/

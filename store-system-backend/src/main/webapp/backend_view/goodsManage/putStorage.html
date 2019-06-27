@@ -615,8 +615,10 @@
                     <!--<span><%=list[i].data[j].providerName%></span>-->
                     <%if(list[i].data[j].type==0){%>
                     <span>常规商品</span>
-                    <%}else{%>
+                    <%}else if(list[i].data[j].type==1){%>
                     <span>积分商品</span>
+                    <%}else{%>
+                    <span>-</span>
                     <%}%>
                     <%if(list[i].name=='镜片'){%>
                     <span><%=list[i].data[j].properties[15]%></span>

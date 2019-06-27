@@ -278,9 +278,9 @@
         <tr>
             <td><%=list[i].title%></td>
             <%if(list[i].value){%>
-                <td><input type="text" value="<%=list[i].value%>" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
+                <td><input type="number" value="<%=list[i].value%>" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
             <%}else{%>
-                <td><input type="text" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
+                <td><input type="number" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
             <%}%>
         </tr>
         <%}%>
@@ -294,9 +294,11 @@
                 <div class="selectBox"  onclick="uploadTsspIcon()">
                     <%if(list.icon){%>
                     <div style="display: block;">
+                    <%}else{%>
+                    <div>
+                    <%}%>
                         <img src="<%=list.newIcon%>" id="cover" alt="" style="<%=list.style%>">
                     </div>
-                    <%}%>
                     <i class="iconfont icon-ico_plus"></i>
                 </div>
             </div>
@@ -921,8 +923,9 @@
                 }
             },
             {field: "", title: "操作", valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary" type="button" onclick="openNumInfo()" style="margin-right: 8px;">库存详情</button>' +
-                        '<button class="btn btn-info" type="button" onclick="updateGoods('+row.id+')">编辑</button>';
+                    /*return '<button class="btn btn-primary" type="button" onclick="openNumInfo()" style="margin-right: 8px;">库存详情</button>' +
+                        '<button class="btn btn-info" type="button" onclick="updateGoods('+row.id+')">编辑</button>';*/
+                    return '<button class="btn btn-info" type="button" onclick="updateGoods('+row.id+')">编辑</button>';
                 }
             }
         ];
@@ -1285,14 +1288,14 @@
 
                             var html = template('vipTmp',{list:ret.rows});
                             $('#vipDom').html(html);
-                            $('.vipInput').each(function (index,item) {
+                            /*$('.vipInput').each(function (index,item) {
                                 item.oninput = function(){
                                     if(!quakooUtils.isNum(this.value)){
                                         layer.msg('折扣必须是数字');
                                         this.value = ''
                                     }
                                 }
-                            })
+                            })*/
                         })
                     }
                 });
