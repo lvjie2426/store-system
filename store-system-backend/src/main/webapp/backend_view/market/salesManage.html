@@ -33,10 +33,10 @@
 <body class="body-bg">
 <div class="header clear">
     <ul class="tab-ul clear">
-        <li class="active">抵用券营销</li>
+        <li class="active" onclick="changeType(1)">抵用券营销</li>
         <!--<li>短信营销</li>-->
-        <li data-id="send">短信群发</li>
-        <li>任务奖励</li>
+        <li data-id="send" onclick="changeType(2)">短信群发</li>
+        <li onclick="changeType(3)">任务奖励</li>
     </ul>
     <ol>
         <li class="right-info active">
@@ -125,13 +125,11 @@
     <form action="">
         <div class="lay-header">
             <span class="lay-title" id="voucher-title">新增抵用券</span>
-<!--
             <div class="switch active fr" id="voucherSwitch">
                 <span class="off">未开启</span>
                 <span class="on">已启用</span>
                 <span class="switch-btn"><i></i></span>
             </div>
--->
         </div>
         <div class="lay-content">
             <ol>
@@ -548,86 +546,87 @@
     var arr = [];                                         //抵用券数据
     var diaMsgJob;                                        //短信群发职位
     var executor = [];                                    //公司下门店（选择任务门店）
+
+    var categoryData = [];
+    var type;   //1 抵用券营销   2短信群发   3任务奖励
     /**初始化页面*/
     $(function () {
-        initPage();
-    });
-
-    /**初始化函数*/
-    function initPage() {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
         subid = quakooDb.getItem("sel_ShopId");          //门店ID
+        // initPage();
+
         //获取一级类目
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
-                if(ret.data.length>0){
-                    var html = template('categoryTmp',{list:ret.data});
-                    $('#product-tab').html(html);
-                    chooseGoodsType(ret.data[0].id)
-                }
+                categoryData = ret.data;
+                /* if(ret.data.length>0){
+                     var html = template('categoryTmp',{list:ret.data});
+                     $('#product-tab').html(html);
+                     chooseGoodsType(ret.data[0].id)
+                 }*/
             }
         });
-        Table.Init();
-        missionRewards();
+        manage()
+    });
+
+    function changeType(t) {
+        type = t;
+        if(type==1){
+            manage()
+        }else if(type==2){
+            getSendList();
+        }else if(type==3){
+            missionRewards();
+        }
+        $(".tab-ul li").eq(type-1).addClass('active').siblings().removeClass('active');
+        $(".tab-item").hide().eq(type-1).show();
+        $(".right-info").hide().eq(type-1).show();
     }
 
     /************************************<抵用券营销开始>******************************************/
     /*卡片分页-抵用券营销*/
-    var $table = $("#yj-page-table");
-    var TableInit = function (callback) {
-        var oTableInit = new Object();
-        //初始化Table
-        oTableInit.Init = function () {
-            $table.bootstrapTable('destroy');
-            $table.bootstrapTable({
-                url: config.getUrl_marketingcoupon_getAllList(),
-                method: 'get',
-                classes: "table",
-                pagination: true,                    //是否显示分页
-                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 6,
-                pageList: [6, 12, 18],
-                sortable: false,
-                sortOrder: "asc",
-                showColumns: true,
-                strictSearch: true,
-                locale: "zh-CN",
-                paginationHAlign: "center",
-                clickToSelect: true,
-                paginationLoop: false,
-                columns: [],
-                queryParams: function (param) {
-                    param.page = param.offset / param.limit +1;
-                    param.size = param.limit;
-                    param.subid = psid;
-                    param.token = quakooUser.getUserInfo().token;
-                    return param
-                },
-                onPreBody: function () {
-                    if (callback) {
-                        callback(this)
+
+    function manage() {
+        $("#yj-page-table").bootstrapTable('destroy');
+        $("#yj-page-table").bootstrapTable({
+            url: config.getUrl_marketingcoupon_getAllList(),
+            method: 'get',
+            classes: "table",
+            pagination: true,                    //是否显示分页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 6,
+            pageList: [6, 12, 18],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            paginationLoop: false,
+            columns: [],
+            queryParams: function (param) {
+                param.subid = psid;
+                param.token = quakooUser.getUserInfo().token;
+                return param
+            },
+            onPreBody: function (data) {
+                var arr = [];
+                for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
+                    if(this.data[i]){
+                        this.data[i].oStartTime = this.data[i].oStartTime;
+                        this.data[i].oEndTime = this.data[i].oEndTime;
+                        this.data[i].startTime = quakooUtils.formatTimeToDateDianLY(this.data[i].startTime);
+                        this.data[i].endTime = quakooUtils.formatTimeToDateDianLY(this.data[i].endTime);
+                        arr.push(this.data[i])
                     }
                 }
-            });
-        };
-        return oTableInit;
-    };
-    var Table = new TableInit(manage);
-
-    function manage(_this) {
-        arr = [];
-        for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
-            if (_this.data[i]) {
-                _this.data[i].oStartTime = _this.data[i].startTime;  //供编辑使用
-                _this.data[i].oEndTime = _this.data[i].endTime;      //供编辑使用
-                _this.data[i].startTime = quakooUtils.formatTimeToDateDianLY(_this.data[i].startTime);
-                _this.data[i].endTime = quakooUtils.formatTimeToDateDianLY(_this.data[i].endTime);
-                arr.push(_this.data[i])
+                var html = template("voucherList", {list: arr});
+                $("#card-list1").html(html);
             }
-        }
-        var html = template("voucherList", {list: arr});
-        $("#card-list1").html(html);
+        });
+
     }
 
     /**接口——新增抵用券（编辑抵用券）*/
@@ -834,9 +833,10 @@
                 document.getElementById("voucherReset").click(); //重置表单
                 /**编辑*/
                 if (quakooUtils.isNotBlack(data)) {
+                    var obj = {}
                     for (var i = 0; i < arr.length; i++) {  //获取对应的数据
                         if (arr[i].id == data) {
-                            var obj = arr[i];
+                            obj = arr[i];
                         }
                     }
                     $("#voucher-title").html("编辑抵用券");
@@ -1535,9 +1535,6 @@
                for(var i =0;i<ret.data.length;i++){
                    executor.push(ret.data[i]);
                }
-
-
-
            }
         });
         $("#yj-table").bootstrapTable({
@@ -1572,7 +1569,7 @@
     var data7 = [{}];
     $("#shop-table").bootstrapTable('destroy');
     $("#shop-table").bootstrapTable({
-        data: data5,
+        data: data7,
         classes: "table",
         pagination: false,//是否显示分页
         sortable: false,
@@ -1859,17 +1856,7 @@
     }
 
 
-    /**
-     * tab切换
-     * */
-    $(".tab-ul li").click(function () {
-        $(this).addClass('active').siblings().removeClass('active');
-        $(".tab-item").hide().eq($(this).index()).show();
-        $(".right-info").hide().eq($(this).index()).show();
-        if ($(this).attr("data-id") == "send") {
-            getSendList();
-        }
-    });
+
     /**
      * 开关切换
      * */

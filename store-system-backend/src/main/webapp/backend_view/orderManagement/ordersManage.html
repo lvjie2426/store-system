@@ -44,11 +44,12 @@
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
-                        <li value="1">顾客姓名</li>
+                        <li value="1">顾客名称</li>
                     </ul>
                 </div>
             </div>
-            <input type="search" class="search-box" placeholder="搜索顾客姓名" id="searchInput" onblur="searchName(this)">
+            <input type="search" class="search-box" placeholder="搜索顾客名称" id="searchInput" onblur="searchName(this)">
+            <div class="btn btn-info" onclick="searchName()">查询</div>
         </li>
     </ol>
 </div>
@@ -68,16 +69,7 @@
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL" id="salespersonBox">
-                        <li value="1">刘一</li>
-                        <li value="2">陈二</li>
-                        <li value="3">张三</li>
-                        <li value="4">李四</li>
-                        <li value="5">王五</li>
-                        <li value="6">赵六</li>
-                        <li value="7">孙七</li>
-                        <li value="8">周八</li>
-                        <li value="9">吴九</li>
-                        <li value="10">郑十</li>
+
                     </ul>
                 </div>
             </div>
@@ -158,13 +150,15 @@
     //初始化页面
     $(function () {
         initPage();
+        selectTag($("#selectCustomer"),function (ret) {
+
+        })
     });
 
     //初始化函数
     function initPage() {
         subid = quakooDb.getItem("sel_ShopId");//门店ID
         ajaxTemplate(config.getUrl_order_getAllOrder());
-        ajaxNameList();
         ajaxSalespersonList();
     }
 
@@ -263,7 +257,7 @@
                     title: "订单状态",
                     align: "center",
                     valign: "middle",
-                    formatter: function (value, rowm, index) {
+                    formatter: function (value, row, index) {
                         var html = '';
                         if (value) {
                             if (value == 1) html = '<div class="btn-status btn-red">未加工</div>';
@@ -271,6 +265,7 @@
                             if (value == 3) html = '<div class="btn-status btn-yellow">未取货</div>';
                             if (value == 4) html = '<div class="btn-status btn-grays">已完成</div>';
                             if (value == 5) html = '<div class="btn-status btn-black">已作废</div>';
+                            if (value == 6) html = '<div class="btn-status btn-green">临时订单</div>';
                         }
                         return html;
                     }
@@ -332,17 +327,9 @@
         ajaxIsRen();
     });
 
-    //根据name查询数据
-    $('#searchInput').bind('keydown', function (event) {
-        if (event.keyCode == "13") {
-            this.blur();
-            searchName(this);
-        }
-    })
 
-    function searchName(t) {
-        // if ($(t).val() == "" || $.trim($(t).val()).length == 0) return;
-        customerName = $(t).val();
+    function searchName() {
+        customerName = $('#searchInput').val();
         ajaxIsRen();
     }
 

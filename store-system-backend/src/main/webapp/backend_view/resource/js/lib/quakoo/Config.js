@@ -346,9 +346,6 @@ var Config = (function(_super){
     /**顾客统计--多店对比*/
     _proto.getUrl_statisticsCustomer_statisticsBySubordinates = function(){return this.serverUrl + '/statisticsCustomer/statisticsBySubordinates';};
 
-    /**顾客统计--右边部分*/
-    _proto.getUrl_statisticsCustomer_statisticsBySubordinatesAll = function(){return this.serverUrl + '/statisticsCustomer/statisticsBySubordinatesAll';};
-
     /**客单价-客单价本周*/
     _proto.getUrl_statisticsSaleCategory_saleWeek = function(){return this.serverUrl + '/statisticsSaleCategory/saleWeek';};
     /**客单价-客单价本月*/
