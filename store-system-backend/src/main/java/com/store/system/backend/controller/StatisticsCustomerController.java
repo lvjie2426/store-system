@@ -92,9 +92,7 @@ public class StatisticsCustomerController extends BaseController{
     //多店对比时间查询
     @RequestMapping("/timeInterval")
     public ModelAndView timeInterval(HttpServletRequest request,HttpServletResponse response,
-                                     @RequestParam(name = "subids") List<Long> subids,
-                                     @RequestParam(name = "startTime") long startTime,
-                                     @RequestParam(name = "endTime") long endTime)throws Exception{
+                                     @RequestParam(name = "subids[]") List<Long> subids, long startTime, long endTime)throws Exception{
         try{
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
