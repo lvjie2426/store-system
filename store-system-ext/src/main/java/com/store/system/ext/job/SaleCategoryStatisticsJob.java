@@ -1,12 +1,8 @@
 package com.store.system.ext.job;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.store.system.client.ClientOrder;
-import com.store.system.client.ClientOrderSku;
-import com.store.system.dao.ProductSKUDao;
 import com.store.system.dao.ProductSPUDao;
 import com.store.system.dao.SaleCategoryStatisticsDao;
 import com.store.system.model.*;
@@ -23,7 +19,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -95,8 +90,8 @@ public class SaleCategoryStatisticsJob implements InitializingBean {
 
         double sale=0;
         double perPrice=0;
-        List<ClientOrderSku> skus = Lists.newArrayList();
-        List<ClientOrderSku> skuList = Lists.newArrayList();
+        List<OrderSku> skus = Lists.newArrayList();
+        List<OrderSku> skuList = Lists.newArrayList();
         List<ClientOrder> orders = orderService.getAllBySubid(subId);
         for(ClientOrder order:orders){
             for(OrderSku sku:order.getSkuids()){
@@ -104,13 +99,13 @@ public class SaleCategoryStatisticsJob implements InitializingBean {
                 if(productSPU.getCid()==cid){
                     Map<Object,Object> map = orderService.countSkuPrice(order.getUid(),
                             Lists.newArrayList(sku),0,new ArrayList<Surcharge>());
-                    List<ClientOrderSku> clientOrderSkus = (List<ClientOrderSku>) map.get("clientOrderSkus");
+                    List<OrderSku> clientOrderSkus = (List<OrderSku>) map.get("clientOrderSkus");
                     skus.addAll(clientOrderSkus);
                     skuList.addAll(clientOrderSkus);
                 }
             }
         }
-        for(ClientOrderSku sku:skus){
+        for(OrderSku sku:skus){
             sale = ArithUtils.add(sale,sku.getLastSubtotal());
         }
         perPrice = ArithUtils.div(sale,(double) skus.size(),2);
