@@ -59,7 +59,7 @@ public class InventoryStatisticsServiceImpl implements InventoryStatisticsServic
         }
 
         sql = sql + " order  by ctime desc";
-        List<InventoryStatistics> inventoryStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleCategoryStatistics.class));
+        List<InventoryStatistics> inventoryStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(InventoryStatistics.class));
         return transformClient(inventoryStatistics);
     }
 
