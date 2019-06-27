@@ -1303,7 +1303,7 @@
                             <%}else{%>
                                 <td><input type="text" placeholder="无折扣" value="" readonly="readonly"></td>
                             <%}%>
-                            <td><%=list[i].subtotal%></td>
+                            <td>¥<%=list[i].subtotal%></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
                     <%}else if(list[i].type ==2){%>
@@ -2787,10 +2787,10 @@
                                             return value[16];
                                         }},
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
+                                            return "¥"+(value/100).toFixed(2);
                                         }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
+                                            return "¥"+(value/100).toFixed(2);
                                         }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
@@ -2820,11 +2820,11 @@
                                         }
                                     },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                        return "¥"+value;
+                                        return "¥"+(value/100).toFixed(2);
                                     }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -2859,11 +2859,11 @@
                                          }
                                      },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -2892,11 +2892,11 @@
                                         }
                                     },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -2921,11 +2921,11 @@
                                          }
                                      },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -2950,11 +2950,11 @@
                                          }
                                      },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
