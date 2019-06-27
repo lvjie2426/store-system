@@ -1,5 +1,7 @@
 package com.store.system.backend.controller;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientCategoryStatistics;
 import com.store.system.client.ClientSaleStatistics;
@@ -82,6 +84,43 @@ public class StatisticsSaleCategoryController extends BaseController{
                                    @RequestParam(name = "endTime") long endTime,long subId)throws Exception{
         try {
             Map<Long,List<ClientCategoryStatistics>> res = saleCategoryStatisticsService.searchSale(startTime,endTime,subId);
+            return this.viewNegotiating(request,response,new ResultClient(true,res));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
+
+
+    @RequestMapping("/saleSubordinates")
+    public ModelAndView statisticsBySubordinates(HttpServletRequest request, HttpServletResponse response,
+                                                 @RequestParam(name = "subIds[]") List<Long> subIds, int type,
+                                                 @RequestParam(name = "startTime",required = false,defaultValue = "0") long startTime,
+                                                 @RequestParam(name = "endTime",required = false,defaultValue = "0") long endTime)throws Exception{
+        try {
+            Map<Long,List<ClientCategoryStatistics>> map = Maps.newHashMap();
+            List<Map<Long,List<ClientCategoryStatistics>>> res = Lists.newArrayList();
+            for(Long subId:subIds) {
+                if (type == ClientSaleStatistics.type_week) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_WEEK) - 1);
+                    map = saleCategoryStatisticsService.getDayList(subId, days);
+                } else if (type == ClientSaleStatistics.type_month) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_MONTH));
+                    map = saleCategoryStatisticsService.getDayList(subId, days);
+                } else if (type == ClientSaleStatistics.type_halfYear) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    List<Long> days = TimeUtils.getPastMonthDays(calendar.get(Calendar.MONTH) + 1);
+                    map = saleCategoryStatisticsService.getDayList(subId, days);
+                } else if (type == ClientSaleStatistics.type_search) {
+                    map = saleCategoryStatisticsService.searchSale(startTime, endTime, subId);
+                }
+                res.add(map);
+            }
+
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));

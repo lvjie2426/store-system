@@ -977,22 +977,20 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 double retailPrice = 0;
                 double subPrice = 0;
                 double subTotal = 0;
+                double unitPrice = skuMap.get(skuId).getRetailPrice() * orderSku.getNum();
                 if (spuDiscount == 0) {
                     //小计
-                    subPrice = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum()) / 100.0;
-
-                    subTotal = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (userDisCount / 10.0)) / 100.0;
+                    subPrice = (unitPrice) / 100.0;
+                    subTotal = (unitPrice * (userDisCount / 10.0)) / 100.0;
 
                 } else if (userDisCount == 0) {
                     //小计
-                    subPrice = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (spuDiscount / 10.0)) / 100.0;
-
-                    subTotal = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (spuDiscount / 10.0)) / 100.0;
+                    subPrice = (unitPrice * (spuDiscount / 10.0)) / 100.0;
+                    subTotal = (unitPrice * (spuDiscount / 10.0)) / 100.0;
                 } else {
                     //小计
-                    subPrice = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (spuDiscount / 10.0)) / 100.0;
-
-                    subTotal = (skuMap.get(skuId).getRetailPrice() * orderSku.getNum() * (spuDiscount / 10.0) * (userDisCount / 10.0)) / 100.0;
+                    subPrice = (unitPrice * (spuDiscount / 10.0)) / 100.0;
+                    subTotal = (unitPrice * (spuDiscount / 10.0) * (userDisCount / 10.0)) / 100.0;
                 }
                 //商品单价
                 retailPrice = skuMap.get(skuId).getRetailPrice() / 100.0;
@@ -1008,6 +1006,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
             //积分商品
             if(spuMap.get(spuId).getType()==ProductSPU.type_integral){
+
                 if(orderSku.getNum()>inventoryMap.get(skuId)) {
                     throw new StoreSystemException("当前积分商品库存数量不足！");
                 }
@@ -1017,9 +1016,22 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 if (skuMap.get(skuId).getIntegralPrice() * orderSku.getNum() > user.getScore()) {
                     throw new StoreSystemException("会员积分不足以兑换该积分商品！");
                 }
-
-                orderSku.setPrice(skuMap.get(skuId).getIntegralPrice());
-                orderSku.setSubtotal(skuMap.get(skuId).getIntegralPrice() * orderSku.getNum());
+                double integralPrice = 0;
+                double subPrice = 0;
+                double subTotal = 0;
+                integralPrice = skuMap.get(skuId).getIntegralPrice() / 100.0;
+                double unitPrice = integralPrice * orderSku.getNum();
+                if (userDisCount == 0) {
+                    subTotal = (unitPrice) / 100.0;
+                } else {
+                    subTotal = (unitPrice * (userDisCount / 10.0)) / 100.0;
+                }
+                orderSku.setPrice(integralPrice);
+                orderSku.setCode(skuMap.get(skuId).getCode());
+                orderSku.setName(skuMap.get(skuId).getName());
+                orderSku.setDiscount(0);//积分商品没有折扣
+                orderSku.setSubtotal(subPrice);
+                orderSku.setLastSubtotal(subTotal);
             }
 
         totalPriceYuan = totalPrice;
@@ -1047,8 +1059,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         totalPriceYuan+=ArithUtils.add(totalPriceYuan,surchargePrice);
         }
         map.put("surchargeList",surchargeList);//附加费用
-        map.put("discountPriceYuan",discountPriceYuan/100.0);//折扣后金额
-        map.put("totalPriceYuan",totalPriceYuan/100.0);//总金额
+        map.put("discountPriceYuan",ArithUtils.div(discountPriceYuan,100.0,2));//折扣后金额
+        map.put("totalPriceYuan",ArithUtils.div(totalPriceYuan,100.0,2));//总金额
         map.put("orderSkus",orderSkuList);//sku小计单
         return map;
     }

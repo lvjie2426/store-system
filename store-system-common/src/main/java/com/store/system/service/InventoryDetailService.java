@@ -23,4 +23,6 @@ public interface InventoryDetailService {
 
     public List<InventoryDetail> getAllOriginList(long wid, long p_spuid) throws Exception;
 
+    public List<ClientInventoryDetail> getAllList(long subid) throws Exception;
+
 }
