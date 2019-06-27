@@ -40,7 +40,7 @@
     </ul>
     <ol>
         <li class="right-info active">
-            <button onclick="newVouchers1()">新增抵用券</button>
+            <button onclick="editVoucher()">新增抵用券</button>
         </li>
         <!--<li class="right-info">-->
         <!--&lt;!&ndash;<span>剩余 1200 条信息可用</span>&ndash;&gt;-->
@@ -124,7 +124,7 @@
 <div class="content-view1">
     <form action="">
         <div class="lay-header">
-            <span class="lay-title" id="voucher-title">新增抵用券</span>
+            <span class="lay-title" id="voucher-title"></span>
             <div class="switch active fr" id="voucherSwitch">
                 <span class="off">未开启</span>
                 <span class="on">已启用</span>
@@ -515,7 +515,7 @@
             </div>
         </div>
         <div class="bot-cont">
-            <span class="button button-thin-blue" onclick="newVouchers1('<%=list[i].id%>')">编辑</span>
+            <span class="button button-thin-blue" onclick="editVoucher('<%=list[i].id%>')">编辑</span>
             <span class="button button-thin-red" onclick="delVoucher('<%=list[i].id%>')">删除</span>
         </div>
     </li>
@@ -553,17 +553,15 @@
     $(function () {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
         subid = quakooDb.getItem("sel_ShopId");          //门店ID
-        // initPage();
-
         //获取一级类目
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
                 categoryData = ret.data;
-                /* if(ret.data.length>0){
-                     var html = template('categoryTmp',{list:ret.data});
-                     $('#product-tab').html(html);
-                     chooseGoodsType(ret.data[0].id)
-                 }*/
+                if(ret.data.length>0){
+                    var html = template('categoryTmp',{list:ret.data});
+                    $('#product-tab').html(html);
+                    chooseGoodsType(ret.data[0].id)
+                }
             }
         });
         manage()
@@ -585,7 +583,6 @@
 
     /************************************<抵用券营销开始>******************************************/
     /*卡片分页-抵用券营销*/
-
     function manage() {
         $("#yj-page-table").bootstrapTable('destroy');
         $("#yj-page-table").bootstrapTable({
@@ -612,7 +609,7 @@
                 return param
             },
             onPreBody: function (data) {
-                var arr = [];
+                arr = [];
                 for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
                     if(this.data[i]){
                         this.data[i].oStartTime = this.data[i].oStartTime;
@@ -697,11 +694,13 @@
             param.endTime = endTime;                     //起始时间
         }
         if (quakooUtils.isNotBlack(voucherId)) {
+            alert(1)
+            $('#voucherSwitch').css('display','none');
             param.id = voucherId;
             url = config.getUrl_marketingcoupon_updateMarketing();
             quakooData.ajaxGetData(url, param, function (ret) {
                 if (ret && ret.success) {
-                    Table.Init();
+                    manage()
                     layer.msg("成功编辑抵用券", {icon: 1});
                     layer.close(index);
 
@@ -713,7 +712,7 @@
             url = config.getUrl_marketingcoupon_add();
             quakooData.ajaxGetData(url, param, function (ret) {
                 if (ret && ret.success) {
-                    Table.Init();
+                    manage()
                     layer.msg("成功添加抵用券", {icon: 1});
                     layer.close(index);
                 } else {
@@ -729,7 +728,7 @@
             quakooData.ajaxGetData(config.getUrl_marketingcoupon_del(), {id: id}, function (ret) {
                 if (ret && ret.success) {
                     layer.msg("成功删除抵用券", {icon: 1});
-                    Table.Init();
+                    manage();
                     layer.close(index);
                 } else {
                     layer.msg(ret.data, {icon: 2});
@@ -765,14 +764,12 @@
         })
     }
 
-    /**
-     * 弹窗新增抵用券(编辑)
-     * */
-    function newVouchers1(data) {
+    /**弹窗——新增抵用券(编辑)*/
+    function editVoucher(voucherId) {
         var descFullType = 1;                                   //描述-消费满 类型(1-金额 2-个数)
         var descSubtractType = 1;                               //描述-消费减 类型(1-金额 2-百分比)
         var conditionType = 1;                                  //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
-        if (data) {//编辑日期传值
+        if (voucherId) {//编辑日期传值
             var startTime;
             var endTime;
         }
@@ -796,12 +793,11 @@
                 conditionType = ret.value;
             });
         }
-        if (quakooUtils.isBlack(data)) {
-            //新增按钮
-            var btn = ['取消', '  新增']
+        var btn;
+        if (quakooUtils.isBlack(voucherId)) {
+            btn = ['取消', '新增']
         } else {
-            //编辑按钮
-            var btn = ['取消', '编辑']
+            btn = ['取消', '编辑']
         }
         var index = layer.open({
             type: 1,
@@ -820,22 +816,21 @@
                 layer.close(index)
             },
             btn2: function (index,layero) {
-                if (quakooUtils.isBlack(data)) {
-                    //新增
-                    addVoucher(index,descFullType, descSubtractType, conditionType);//提交抵用券
+                if (quakooUtils.isBlack(voucherId)) {
+                    addVoucher(index,descFullType, descSubtractType, conditionType);
                 } else {
-                    //编辑
-                    addVoucher(index,descFullType, descSubtractType, conditionType, startTime, endTime, data);
+                    addVoucher(index,descFullType, descSubtractType, conditionType, startTime, endTime, voucherId);
                 }
                 return false
             },
             success: function (layero, index) {
                 document.getElementById("voucherReset").click(); //重置表单
                 /**编辑*/
-                if (quakooUtils.isNotBlack(data)) {
+                if (quakooUtils.isNotBlack(voucherId)) {
                     var obj = {}
+                    console.table(arr);
                     for (var i = 0; i < arr.length; i++) {  //获取对应的数据
-                        if (arr[i].id == data) {
+                        if (arr[i].id == voucherId) {
                             obj = arr[i];
                         }
                     }
@@ -1106,9 +1101,7 @@
         })
     }
 
-    /**
-     * 弹窗新增（编辑）短信群发
-     * */
+    /**弹窗——新增（编辑）短信群发*/
     function newVouchers3(data) {
         var startAge, endAge, btns;
         var starAgeNum = 30;
@@ -1237,10 +1230,7 @@
                     $('.demo-' + demo).show();
                 });
                 $('#demo').trigger('change');
-
                 // 时间插件JS结束
-
-
             }
         });
 
