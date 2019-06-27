@@ -319,8 +319,8 @@
 <div class="create-task">
     <div class="create-task-header">
         <ul class="create-task-header-tab clear">
-            <li class="active">创建团队任务</li>
-            <li id="person-task">创建个人任务</li>
+            <li class="active" data-type="1">创建团队任务</li>
+            <li id="person-task" data-type="2">创建个人任务</li>
             <li class="move"></li>
         </ul>
     </div>
@@ -546,7 +546,7 @@
     var arr = [];                                         //抵用券数据
     var diaMsgJob;                                        //短信群发职位
     var executor = [];                                    //公司下门店（选择任务门店）
-
+    var taskType;                                         // 1:创建团队任务; 2:创建个人任务;
     var categoryData = [];
     var type;   //1 抵用券营销   2短信群发   3任务奖励
     /**初始化页面*/
@@ -694,16 +694,13 @@
             param.endTime = endTime;                     //起始时间
         }
         if (quakooUtils.isNotBlack(voucherId)) {
-            alert(1)
-            $('#voucherSwitch').css('display','none');
             param.id = voucherId;
             url = config.getUrl_marketingcoupon_updateMarketing();
             quakooData.ajaxGetData(url, param, function (ret) {
                 if (ret && ret.success) {
-                    manage()
+                    manage();
                     layer.msg("成功编辑抵用券", {icon: 1});
                     layer.close(index);
-
                 } else {
                     layer.msg(ret.data, {icon: 2});
                 }
@@ -712,7 +709,7 @@
             url = config.getUrl_marketingcoupon_add();
             quakooData.ajaxGetData(url, param, function (ret) {
                 if (ret && ret.success) {
-                    manage()
+                    manage();
                     layer.msg("成功添加抵用券", {icon: 1});
                     layer.close(index);
                 } else {
@@ -827,8 +824,8 @@
                 document.getElementById("voucherReset").click(); //重置表单
                 /**编辑*/
                 if (quakooUtils.isNotBlack(voucherId)) {
+                    $('#voucherSwitch').css('display','none');
                     var obj = {}
-                    console.table(arr);
                     for (var i = 0; i < arr.length; i++) {  //获取对应的数据
                         if (arr[i].id == voucherId) {
                             obj = arr[i];
@@ -887,6 +884,8 @@
                     $("#voucherTime").addClass("sel-time").html(staTimeTxt + "-" + endTimeTxt);
                     $("#voucherSort").val(obj.sort);
                 } else {
+                    $('#voucherSwitch').css('display','block');
+
                     $("#voucher-title").html("新增抵用券");
                     if ($("#voucherTime").hasClass("sel-time")) {
                         $("#voucherTime").removeClass("sel-time");
@@ -927,26 +926,37 @@
         if (diaMsgJob) {
             param.job = diaMsgJob;                                                         //职业
         }
-        param.startAge = startAge;                                                         //起始年龄
-        param.endAge = endAge;                                                             //结束年龄
-        param.sendTime = sendTime;                                                         //发送时间
-        var html = $('#fill-div').html();
-        var tags = [];
-        for (var i = 0; i < barArr.length; i++) {
-            if (barArr[i].text == "顾客姓名") {
-                html = html.replace(barArr[i].html, "@var(user_name)");
-                tags.push("@var(user_name)");                                              //顾客姓名
-            } else if (barArr[i].text == "门店名称") {
-                html = html.replace(barArr[i].html, "@var(sub_name)");
-                tags.push("@var(sub_name)");                                               //门店名称
-            }
+        param.startAge = startAge;
+        param.endAge = endAge;
+        if(quakooUtils.isBlack(content)){
+            layer.msg("请编辑短信内容");
+            return;
         }
-        html = html.replace(/<span>/g, '').replace(/<\/span>/g, '');
-        content = html;
+        if(quakooUtils.isBlack(sendTime)){
+            layer.msg('请选择短信的发送时间');
+            return;
+        }
+        if(!id){
+            var html = $('#fill-div').html();
+            var tags = [];
+            console.table(barArr);
+            for (var i = 0; i < barArr.length; i++) {
+                if (barArr[i].text == "顾客姓名") {
+                    html = html.replace(barArr[i].html, "@var(user_name)");
+                    tags.push("@var(user_name)");                                              //顾客姓名
+                } else if (barArr[i].text == "门店名称") {
+                    html = html.replace(barArr[i].html, "@var(sub_name)");
+                    tags.push("@var(sub_name)");                                               //门店名称
+                }
+            }
+            html = html.replace(/<span>/g,'').replace(/<\/span>/g,'');
+            content = html;
+        }
+        param.sendTime = sendTime;
         param.content = content;                                                           //内容
         param.tagsJson = JSON.stringify(tags);                                             //标签
-        param.range = $('#pro input:radio[name="property"]:checked').val();                       //全部0，会员1，非会员2
-        param.sex = $('#sex input:radio[name="sex"]:checked').val();                            //全部0，男1，女2
+        param.range = $('#pro input:radio[name="property"]:checked').val();                //全部0，会员1，非会员2
+        param.sex = $('#sex input:radio[name="sex"]:checked').val();                       //全部0，男1，女2
         if (id) {//编辑
             param.id = id;
             url = config.getUrl_marketingtimingsms_update();
@@ -956,16 +966,17 @@
         quakooData.ajaxGetData(url, param, function (ret) {
             if (ret && ret.success) {
                 if (id) {
+                    getSendList();
                     layer.msg("成功编辑短信群发", {icon: 1});
                 } else {
-                    layer.msg("成功新增短信群发", {icon: 1});
+                    getSendList();
+                    layer.msg("新增成功", {icon: 1});
                 }
             } else {
                 layer.msg(ret.data, {icon: 2});
             }
         })
     }
-
     /**获取门店下顾客的所有职业(职业下拉框)*/
     function getAllUserJob() {
         quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {sid: subid, userType: 0}, function (ret) {
@@ -1104,7 +1115,7 @@
     /**弹窗——新增（编辑）短信群发*/
     function newVouchers3(data) {
         var startAge, endAge, btns;
-        var starAgeNum = 30;
+        var starAgeNum = 30;//滑块的默认值
         var endAgeNum = 70;
         if (quakooUtils.isNotBlack(data)) {
             starAgeNum = data.startAge;
@@ -1348,7 +1359,6 @@
                 var item = element[i];
                 canFor(item, item.getAttribute('data-value'));
             }
-
             function canFor(document, value) {
                 var context = document.getContext('2d'), //获取画图环境，指明为2d
                     centerX = document.width / 2, //document中心点x轴坐标
@@ -1412,6 +1422,7 @@
                 //创建任务弹窗tab切换
                 $(".create-task-header-tab li").click(function () {
                     $(this).addClass('active').siblings().removeClass('active');
+                    taskType = $(this).attr('',);
                 });
                 //销售额奖励&&销售量奖励单选
                 $("input:radio[name='sales']").click(function () {
@@ -1424,9 +1435,6 @@
                         $("#saleVolume-box")[0].style.display = "block";
                     }
                 });
-
-
-
             }
         });
     }
