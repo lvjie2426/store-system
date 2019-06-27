@@ -1,6 +1,7 @@
 package com.store.system.client;
 
 import com.google.common.collect.Lists;
+import com.store.system.model.OrderSku;
 import com.store.system.model.SaleCategoryStatistics;
 import lombok.Data;
 
@@ -17,6 +18,8 @@ import java.util.List;
 public class ClientCategoryStatistics {
 
     private String cName; //分类名称
+
+    private String subName; //门店名称
 
     private double sale;//产品分类销售额
 

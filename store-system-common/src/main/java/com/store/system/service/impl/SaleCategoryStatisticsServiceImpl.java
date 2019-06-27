@@ -8,6 +8,7 @@ import com.store.system.dao.SaleCategoryStatisticsDao;
 import com.store.system.model.OrderSku;
 import com.store.system.model.ProductCategory;
 import com.store.system.model.SaleCategoryStatistics;
+import com.store.system.model.Subordinate;
 import com.store.system.service.ProductCategoryService;
 import com.store.system.service.SaleCategoryStatisticsService;
 import com.store.system.util.ArithUtils;
@@ -36,6 +37,8 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
     private ProductCategoryService productCategoryService;
     @Resource
     private JdbcTemplate jdbcTemplate;
+    @Resource
+    private SubordinateServiceImpl subordinateService;
 
 
 
@@ -45,7 +48,7 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         for (Long day : days) {
             list.addAll(saleCategoryStatisticsDao.getSubList(subId, day));
         }
-        return transformClientSale(list);
+        return transformClientSale(list,subId);
     }
 
     @Override
@@ -63,10 +66,10 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
 
         sql = sql + " order  by ctime desc";
         List<SaleCategoryStatistics> saleStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleCategoryStatistics.class));
-        return transformClient(saleStatistics);
+        return transformClientSale(saleStatistics,subId);
     }
 
-    private Map<Long,List<ClientCategoryStatistics>> transformClient(List<SaleCategoryStatistics> saleCategoryStatistics) throws Exception {
+    /*private Map<Long,List<ClientCategoryStatistics>> transformClient(List<SaleCategoryStatistics> saleCategoryStatistics) throws Exception {
         Map<Long,List<ClientCategoryStatistics>>  map = Maps.newHashMap();
         Map<Long,List<OrderSku>> listMap = Maps.newHashMap();
         Map<Long,List<SaleCategoryStatistics>> salesMap = Maps.newHashMap();
@@ -135,14 +138,13 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
 //            }
         }
         return map;
-    }
+    }*/
 
-    private Map<Long,List<ClientCategoryStatistics>> transformClientSale(List<SaleCategoryStatistics> saleCategoryStatistics) throws Exception {
+    private Map<Long,List<ClientCategoryStatistics>> transformClientSale(List<SaleCategoryStatistics> saleCategoryStatistics, long subId) throws Exception {
         List<ProductCategory> productCategories = productCategoryService.getAllList();
+        Subordinate subordinate = subordinateService.load(subId);
         double total=0;
-        int num=0;
         for(ProductCategory category:productCategories) {
-            List<ClientCategoryStatistics> clientList = Lists.newArrayList();
             List<SaleCategoryStatistics> list = Lists.newArrayList();
             for (SaleCategoryStatistics statistics : saleCategoryStatistics) {
                 if (statistics.getCid() == category.getId()) {
@@ -151,32 +153,34 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
             }
             ClientCategoryStatistics client = transformClientList(list);
             total += client.getSale();
-            num += client.getNum();
         }
 
         Map<Long,List<ClientCategoryStatistics>> map=new HashMap<>();
         for(ProductCategory category:productCategories){
             List<ClientCategoryStatistics> clientList = Lists.newArrayList();
             List<SaleCategoryStatistics> list = Lists.newArrayList();
+            List<OrderSku> skus = Lists.newArrayList();
             for(SaleCategoryStatistics statistics:saleCategoryStatistics){
                 if(statistics.getCid()==category.getId()){
                     list.add(statistics);
+                    skus.addAll(statistics.getSalesLog());
                 }
             }
             ClientCategoryStatistics client = transformClientList(list);
             client.setCName(category.getName());
+            client.setSubName(subordinate.getName());
             clientList.add(client);
-            double rate = ArithUtils.div(client.getSale(),total,2);
-            client.setRate(rate);
+            if(total>0) {
+                double rate = ArithUtils.div(client.getSale(), total, 2);
+                client.setRate(rate);
+            }
 
-            Map<Long,List<OrderSku>> listMap = Maps.newHashMap();
-            List<OrderSku> skuList = listMap.get(category.getId());
             int rate_0to100=0;
             int rate_100to500=0;
             int rate_500to1000=0;
             int rate_1000to2000=0;
             int rate_2000=0;
-            for(OrderSku sku:skuList){
+            for(OrderSku sku:skus){
                 if(sku.getLastSubtotal()>0&&sku.getLastSubtotal()<=100){
                     rate_0to100++;
                 }
@@ -193,11 +197,13 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
                     rate_2000++;
                 }
             }
-            client.setRate_0to100(ArithUtils.div(rate_0to100,num,2));
-            client.setRate_100to500(ArithUtils.div(rate_100to500,num,2));
-            client.setRate_500to1000(ArithUtils.div(rate_500to1000,num,2));
-            client.setRate_1000to2000(ArithUtils.div(rate_1000to2000,num,2));
-            client.setRate_2000(ArithUtils.div(rate_2000,num,2));
+            if(client.getNum()>0) {
+                client.setRate_0to100(ArithUtils.div(rate_0to100, client.getNum(), 2));
+                client.setRate_100to500(ArithUtils.div(rate_100to500, client.getNum(), 2));
+                client.setRate_500to1000(ArithUtils.div(rate_500to1000, client.getNum(), 2));
+                client.setRate_1000to2000(ArithUtils.div(rate_1000to2000, client.getNum(), 2));
+                client.setRate_2000(ArithUtils.div(rate_2000, client.getNum(), 2));
+            }
             map.put(category.getId(),clientList);
         }
         return map;
