@@ -26,11 +26,11 @@ var Config = (function(_super){
         /**测试服务器地址*/
         this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
-        // this.serverUrl = "http://192.168.1.29:20005";
+        this.serverUrl = "http://192.168.1.28:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.3:20005";
         /**马文军*/
-        this.serverUrl = "http://192.168.1.24:20005";
+        this.serverUrl = "http://192.168.1.40:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -319,6 +319,8 @@ var Config = (function(_super){
     _proto.getUrl_order_getIncomplete = function(){return this.serverUrl + '/order/getIncomplete';};
     //根据职位获取用户列表
     _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
+    //获取订单详情
+    _proto.getUrl_order_loadOrder = function(){return this.serverUrl + '/order/loadOrder';};
     //=======================订单管理 结束====================
 
     //=======================售后 开始====================
@@ -339,8 +341,25 @@ var Config = (function(_super){
     _proto.getUrl_statisticsCustomer_statisticsByMonth = function(){return this.serverUrl + '/statisticsCustomer/statisticsByMonth';};
     /**顾客统计--近半年*/
     _proto.getUrl_statisticsCustomer_statisticsByHalfYear = function(){return this.serverUrl + '/statisticsCustomer/statisticsByHalfYear';};
+    /**顾客统计--多店统计时间区间*/
+    _proto.getUrl_statisticsCustomer_timeInterval = function(){return this.serverUrl + '/statisticsCustomer/timeInterval';};
     /**顾客统计--多店对比*/
     _proto.getUrl_statisticsCustomer_statisticsBySubordinates = function(){return this.serverUrl + '/statisticsCustomer/statisticsBySubordinates';};
+
+    /**顾客统计--右边部分*/
+    _proto.getUrl_statisticsCustomer_statisticsBySubordinatesAll = function(){return this.serverUrl + '/statisticsCustomer/statisticsBySubordinatesAll';};
+
+    /**客单价-客单价本周*/
+    _proto.getUrl_statisticsSaleCategory_saleWeek = function(){return this.serverUrl + '/statisticsSaleCategory/saleWeek';};
+    /**客单价-客单价本月*/
+    _proto.getUrl_statisticsSaleCategory_saleMonth = function(){return this.serverUrl + '/statisticsSaleCategory/saleMonth';};
+    /**客单价-客单价近半年*/
+    _proto.getUrl_statisticsSaleCategory_saleHalfYear = function(){return this.serverUrl + '/statisticsSaleCategory/saleHalfYear';};
+    /**客单价-按时间查询*/
+    _proto.getUrl_statisticsSaleCategory_searchSale = function(){return this.serverUrl + '/statisticsSaleCategory/searchSale';};
+
+    /**销售额-多店对比查询销售额*/
+    _proto.getUrl_statisticsSale_saleSubordinates = function(){return this.serverUrl + '/statisticsSale/saleSubordinates';};
     //=======================统计 结束====================
 
 

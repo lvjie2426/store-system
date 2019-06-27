@@ -27,52 +27,29 @@
     <div class="title">
         <span><i class="icon iconfont icon-ico_statistics_fille"></i></span>
         <span>统计数据</span>
-        <!--<span class="_btn" onclick="addRepertory()">新增入库</span>-->
     </div>
     <div class="mainCont wrap90">
         <div class="box box01">
             <div class="head">
                 <div class="txt01">销售统计</div>
                 <div>
-                    <span class="_btn" onclick="selectShop('box01')">多店对比</span>
+                    <span class="_btn" onclick="selectShop('sales')">多店对比</span>
                 </div>
-                <div class="timeBox yj-demo-time yj-demo-time01">
+                <div class="timeBox yj-demo-time yj-demo-time01" id="salesTime">
                     <div class="yj-date">
                         <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
                     </div>
                 </div>
                 <div class="tabBox">
-                    <ul class="tab-ul">
-                        <li class="">本周</li>
-                        <li class="active">本月</li>
-                        <li class="">近半年</li>
+                    <ul class="tab-ul" id="salesType">
+                        <li class="active" onclick="changeType(1,1)">本周</li>
+                        <li class="" onclick="changeType(2,1)">本月</li>
+                        <li class="" onclick="changeType(3,1)">近半年</li>
                     </ul>
                 </div>
             </div>
-            <div class="body clearfix">
-                <div class="left">
-                    <div class="chartCont" id="chartCont01">
-                    </div>
-                    <div class="_btn prev"><</div>
-                    <div class="_btn next">></div>
-                </div>
-                <div class="right">
-                    <ul class="clearfix">
-                        <li class="active">产品分类销售额占比</li>
-                        <li>客单价分布占比</li>
-                    </ul>
-                    <div class="percentCont percentCont01">
-                        <!--js插入，百分比div-->
-                    </div>
-                    <div class="bottomBox clearfix">
-                        <span><em class="_bgColor01"></em>眼镜</span>
-                        <span><em class="_bgColor02"></em>镜片</span>
-                        <span><em class="_bgColor03"></em>隐形眼镜</span>
-                        <span><em class="_bgColor04"></em>太阳镜</span>
-                        <span><em class="_bgColor05"></em>护理产品</span>
-                        <span><em class="_bgColor06"></em>其它</span>
-                    </div>
-                </div>
+            <div id="salesDom">
+
             </div>
         </div>
         <div class="box box02">
@@ -84,141 +61,16 @@
                     </div>
                 </div>
                 <div class="tabBox">
-                    <ul class="tab-ul">
-                        <li class="">本周</li>
-                        <li class="active">本月</li>
-                        <li class="">近半年</li>
+                    <ul class="tab-ul" id="kdjType">
+                        <li class="active" onclick="changeType(1,2)">本周</li>
+                        <li class="" onclick="changeType(2,2)">本月</li>
+                        <li class="" onclick="changeType(3,2)">近半年</li>
                     </ul>
                 </div>
             </div>
             <div class="body">
-                <ul class="contUl clearfix">
-                    <li class="item">
-                        <div class="left">
-                            <p><i class="icon iconfont icon-ico_lens"></i></p>
-                            <p>镜片</p>
-                            <p class="_color01">199</p>
-                            <p>平均客单价 | 元</p>
-                        </div>
-                        <div class="right">
-                            <p class="title">客单价分布比例</p>
-                            <div class="percentCont percentCont02">
-                                <!--js插入百分比div-->
-                            </div>
-                            <div class="bottomBox clearfix">
-                                <span><em class="_bgColor01"></em>0-100</span>
-                                <span><em class="_bgColor02"></em>100-500</span>
-                                <span><em class="_bgColor03"></em>500-1000</span>
-                                <span><em class="_bgColor04"></em>1555-2000</span>
-                                <span><em class="_bgColor05"></em>2000+</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="left">
-                            <p><i class="icon iconfont icon-ico_frame"></i></p>
-                            <p>镜架</p>
-                            <p class="_color02">199</p>
-                            <p>平均客单价 | 元</p>
-                        </div>
-                        <div class="right">
-                            <p class="title">客单价分布比例</p>
-                            <div class="percentCont percentCont03">
-                                <!--js插入百分比div-->
-                            </div>
-                            <div class="bottomBox clearfix">
-                                <span><em class="_bgColor01"></em>0-100</span>
-                                <span><em class="_bgColor02"></em>100-500</span>
-                                <span><em class="_bgColor03"></em>500-1000</span>
-                                <span><em class="_bgColor04"></em>1555-2000</span>
-                                <span><em class="_bgColor05"></em>2000+</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="left">
-                            <p><i class="icon iconfont icon-ico_contact_lens"></i></p>
-                            <p>隐形眼镜</p>
-                            <p class="_color03">199</p>
-                            <p>平均客单价 | 元</p>
-                        </div>
-                        <div class="right">
-                            <p class="title">客单价分布比例</p>
-                            <div class="percentCont percentCont04">
-                                <!--js插入百分比div-->
-                            </div>
-                            <div class="bottomBox clearfix">
-                                <span><em class="_bgColor01"></em>0-100</span>
-                                <span><em class="_bgColor02"></em>100-500</span>
-                                <span><em class="_bgColor03"></em>500-1000</span>
-                                <span><em class="_bgColor04"></em>1555-2000</span>
-                                <span><em class="_bgColor05"></em>2000+</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="left">
-                            <p><i class="icon iconfont icon-ico_sunglasses"></i></p>
-                            <p>太阳镜</p>
-                            <p class="_color04">199</p>
-                            <p>平均客单价 | 元</p>
-                        </div>
-                        <div class="right">
-                            <p class="title">客单价分布比例</p>
-                            <div class="percentCont percentCont05">
-                                <!--js插入百分比div-->
-                            </div>
-                            <div class="bottomBox clearfix">
-                                <span><em class="_bgColor01"></em>0-100</span>
-                                <span><em class="_bgColor02"></em>100-500</span>
-                                <span><em class="_bgColor03"></em>500-1000</span>
-                                <span><em class="_bgColor04"></em>1555-2000</span>
-                                <span><em class="_bgColor05"></em>2000+</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="left">
-                            <p><i class="icon iconfont icon-ico_care_solution"></i></p>
-                            <p>护理产品</p>
-                            <p class="_color05">199</p>
-                            <p>平均客单价 | 元</p>
-                        </div>
-                        <div class="right">
-                            <p class="title">客单价分布比例</p>
-                            <div class="percentCont percentCont06">
-                                <!--js插入百分比div-->
-                            </div>
-                            <div class="bottomBox clearfix">
-                                <span><em class="_bgColor01"></em>0-100</span>
-                                <span><em class="_bgColor02"></em>100-500</span>
-                                <span><em class="_bgColor03"></em>500-1000</span>
-                                <span><em class="_bgColor04"></em>1555-2000</span>
-                                <span><em class="_bgColor05"></em>2000+</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="left">
-                            <p><i class="icon iconfont icon-ico_more"></i></p>
-                            <p>其它</p>
-                            <p class="_color05">199</p>
-                            <p>平均客单价 | 元</p>
-                        </div>
-                        <div class="right">
-                            <p class="title">客单价分布比例</p>
-                            <div class="percentCont percentCont07">
-                                <!--js插入百分比div-->
-                            </div>
-                            <div class="bottomBox clearfix">
-                                <span><em class="_bgColor01"></em>0-100</span>
-                                <span><em class="_bgColor02"></em>100-500</span>
-                                <span><em class="_bgColor03"></em>500-1000</span>
-                                <span><em class="_bgColor04"></em>1555-2000</span>
-                                <span><em class="_bgColor05"></em>2000+</span>
-                            </div>
-                        </div>
-                    </li>
+                <ul class="contUl clearfix" id="kdjDom">
+
                 </ul>
             </div>
         </div>
@@ -226,60 +78,27 @@
             <div class="head">
                 <div class="txt01">顾客统计</div>
                 <div>
-                    <span class="_btn" onclick="selectShop('box03')">多店对比</span>
+                    <span class="_btn" onclick="selectShop('people')">多店对比</span>
                 </div>
-                <div class="timeBox yj-demo-time yj-demo-time-customer">
+                <div class="timeBox yj-demo-time " id="peopleTime">
                     <div class="yj-date">
                         <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
                     </div>
                 </div>
                 <div class="tabBox">
-                    <ul class="tab-ul">
-                        <li class="" onclick="getCusWeek()">本周</li>
-                        <li class="active" onclick="getCusMonth()">本月</li>
-                        <li class="" onclick="getCusYear()">近半年</li>
+                    <ul class="tab-ul" id="peopleType">
+                        <li class="active" onclick="changeType(1,3)">本周</li>
+                        <li onclick="changeType(2,3)">本月</li>
+                        <li onclick="changeType(3,3)">近半年</li>
                     </ul>
                 </div>
             </div>
             <div class="body clearfix">
-                <div class="left">
-                    <div class="chartCont" id="chartCont02">
-                    </div>
-                    <div class="_btn prev"><</div>
-                    <div class="_btn next">></div>
+                <div class="left" id="peopleLeftDom">
+
                 </div>
-                <div class="right">
-                    <div class="sex">
-                        <div class="male">
-                            <p class="clearfix">
-                                <span class="sexIcon"><i class="icon iconfont icon-ico_male"></i></span>
-                                <span>男性</span>
-                            </p>
-                            <p id="cus-man-per"></p>
-                            <p id="cus-man-num"></p>
-                        </div>
-                        <div class="female">
-                            <p class="clearfix">
-                                <span class="sexIcon"><i class="icon iconfont icon-ico_female"></i></span>
-                                <span>女性</span>
-                            </p>
-                            <p id="cus-woman-per"></p>
-                            <p id="cus-woman-num"></p>
-                        </div>
-                    </div>
-                    <div class="chart">
-                        <p class="title">各年龄段顾客数量占比</p>
-                        <div class="percentCont percentCont08">
-                            <!--js插入百分比div-->
-                        </div>
-                        <div class="bottomBox clearfix">
-                            <span><em class="_bgColor01"></em>0-10</span>
-                            <span><em class="_bgColor02"></em>11-20</span>
-                            <span><em class="_bgColor03"></em>21-40</span>
-                            <span><em class="_bgColor04"></em>41-60</span>
-                            <span><em class="_bgColor05"></em>60+</span>
-                        </div>
-                    </div>
+                <div class="right" id="peopleRightDom">
+
                 </div>
             </div>
         </div>
@@ -292,10 +111,10 @@
                     </div>
                 </div>
                 <div class="tabBox">
-                    <ul class="tab-ul">
-                        <li class="">本周</li>
-                        <li class="active">本月</li>
-                        <li class="">近半年</li>
+                    <ul class="tab-ul" id="kucunType">
+                        <li class="active" onclick="changeType(1,4)">本周</li>
+                        <li onclick="changeType(2,4)">本月</li>
+                        <li onclick="changeType(3,4)">近半年</li>
                     </ul>
                 </div>
             </div>
@@ -353,175 +172,7 @@
         </div>
     </div>
 </div>
-<!--新增入库弹窗-->
-<div class="content-view content-view-enter clearfix" id="addDom">
 
-</div>
-<!--查看不可入库弹窗-->
-<div class="content-view content-view-checkRepertory">
-    <div class="body">
-        <!--带滚动-->
-        <div class="itemDiv _scroll">
-            <p class="name">眼镜</p>
-            <div class="box">
-                <div class="thead">
-                    <span>名称</span>
-                    <span>球镜度数</span>
-                    <span>散光度数</span>
-                    <span>数量</span>
-                    <span>保质期</span>
-                    <span>生产批号</span>
-                </div>
-                <ul class="tbody">
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span class="line16">20180402<br/>20190806
-            </span>
-                        <span>色号A</span>
-                        <span>8</span>
-                        <span>5449685</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span class="line16">20180402<br/>20190806
-            </span>
-                        <span>色号A</span>
-                        <span>8</span>
-                        <span>5449685</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span class="line16">20180402<br/>20190806
-            </span>
-                        <span>色号A</span>
-                        <span>8</span>
-                        <span>5449685</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span class="line16">20180402<br/>20190806
-            </span>
-                        <span>色号A</span>
-                        <span>8</span>
-                        <span>5449685</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span class="line16">20180402<br/>20190806
-            </span>
-                        <span>色号A</span>
-                        <span>8</span>
-                        <span>5449685</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!--不带滚动-->
-        <div class="itemDiv">
-            <p class="name">眼镜</p>
-            <div class="box">
-                <div class="thead">
-                    <span>名称</span>
-                    <span>球镜度数</span>
-                    <span>散光度数</span>
-                    <span>数量</span>
-                </div>
-                <ul class="tbody">
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="itemDiv">
-            <p class="name">眼镜</p>
-            <div class="box">
-                <div class="thead">
-                    <span>名称</span>
-                    <span>球镜度数</span>
-                    <span>散光度数</span>
-                    <span>数量</span>
-                </div>
-                <ul class="tbody">
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="itemDiv">
-            <p class="name">眼镜</p>
-            <div class="box">
-                <div class="thead">
-                    <span>名称</span>
-                    <span>球镜度数</span>
-                    <span>散光度数</span>
-                    <span>数量</span>
-                </div>
-                <ul class="tbody">
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                    <li>
-                        <span>名称A</span>
-                        <span>型号A</span>
-                        <span>色号A</span>
-                        <span>8</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="foot">
-        <span class="_btn layui-layer-btn0">关闭窗口</span>
-        <span class="_btn _bgColor01">打印入库单</span>
-        <span class="_btn _bgColor02">打印条码</span>
-    </div>
-</div>
 <!--选择多家门店弹窗-->
 <div class="content-view content-view-selectShop">
     <ul>
@@ -543,32 +194,214 @@
 <script src="../resource/js/lib/quakoo/Config.js"></script>
 <script src="../resource/js/lib/quakoo/project.js"></script>
 <script src="../resource/common/common.js?" +Math.random()></script>
-<script src="../resource/js/template-native.js"></script>
 <script src="../resource/js/yanjing.js"></script>
-<!--//日期范围插件开始-->
 <script src="../resource/js/yanjing/daterange.js"></script>
 <script src="../resource/js/echarts.js"></script>
+<script src="../resource/js/template-native.js"></script>
 
-<!--下拉选择模板-->
+<script type="text/html" id="peopleLeftTmp">
+    <div class="chartCont" id="chartCont02">
+    </div>
+    <div class="_btn prev"><</div>
+    <div class="_btn next">></div>
+</script>
+<script type="text/html" id="peopleRightTmp">
+    <div class="sex">
+        <div class="male">
+            <p class="clearfix">
+                <span class="sexIcon"><i class="icon iconfont icon-ico_male"></i></span>
+                <span>男性</span>
+            </p>
+            <p><%=list.manProportion%>%</p>
+            <p>共<%=list.man%>人</p>
+        </div>
+        <div class="female">
+            <p class="clearfix">
+                <span class="sexIcon"><i class="icon iconfont icon-ico_female"></i></span>
+                <span>女性</span>
+            </p>
+            <p><%=list.womanProportion%>%</p>
+            <p>共<%=list.woman%>人</p>
+        </div>
+    </div>
+    <div class="chart">
+        <p class="title">各年龄段顾客数量占比</p>
+        <div class="percentCont percentCont08" id="peopleNum">
+            <!--js插入百分比div-->
+        </div>
+        <div class="bottomBox clearfix">
+            <span><em class="_bgColor01"></em>0-10</span>
+            <span><em class="_bgColor02"></em>11-20</span>
+            <span><em class="_bgColor03"></em>21-40</span>
+            <span><em class="_bgColor04"></em>41-60</span>
+            <span><em class="_bgColor05"></em>60+</span>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="salesTmp">
+    <div class="body clearfix">
+        <div class="left">
+            <div class="chartCont" id="chartCont01">
+            </div>
+            <div class="_btn prev"><</div>
+            <div class="_btn next">></div>
+        </div>
+        <div class="right">
+            <ul class="clearfix">
+                <li class="active">产品分类销售额占比</li>
+                <li>客单价分布占比</li>
+            </ul>
+            <div class="percentCont percentCont01" id="salesNum">
+                <!--js插入，百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>眼镜</span>
+                <span><em class="_bgColor02"></em>镜片</span>
+                <span><em class="_bgColor03"></em>隐形眼镜</span>
+                <span><em class="_bgColor04"></em>太阳镜</span>
+                <span><em class="_bgColor05"></em>护理产品</span>
+                <span><em class="_bgColor06"></em>其它</span>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="kdjTmp">
+    <li class="item">
+        <div class="left">
+            <p><i class="icon iconfont icon-ico_lens"></i></p>
+            <p>镜片</p>
+            <p class="_color01">199</p>
+            <p>平均客单价 | 元</p>
+        </div>
+        <div class="right">
+            <p class="title">客单价分布比例</p>
+            <div class="percentCont percentCont02">
+                <!--js插入百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+            </div>
+        </div>
+    </li>
+    <li class="item">
+        <div class="left">
+            <p><i class="icon iconfont icon-ico_frame"></i></p>
+            <p>镜架</p>
+            <p class="_color02">199</p>
+            <p>平均客单价 | 元</p>
+        </div>
+        <div class="right">
+            <p class="title">客单价分布比例</p>
+            <div class="percentCont percentCont03">
+                <!--js插入百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+            </div>
+        </div>
+    </li>
+    <li class="item">
+        <div class="left">
+            <p><i class="icon iconfont icon-ico_contact_lens"></i></p>
+            <p>隐形眼镜</p>
+            <p class="_color03">199</p>
+            <p>平均客单价 | 元</p>
+        </div>
+        <div class="right">
+            <p class="title">客单价分布比例</p>
+            <div class="percentCont percentCont04">
+                <!--js插入百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+            </div>
+        </div>
+    </li>
+    <li class="item">
+        <div class="left">
+            <p><i class="icon iconfont icon-ico_sunglasses"></i></p>
+            <p>太阳镜</p>
+            <p class="_color04">199</p>
+            <p>平均客单价 | 元</p>
+        </div>
+        <div class="right">
+            <p class="title">客单价分布比例</p>
+            <div class="percentCont percentCont05">
+                <!--js插入百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+            </div>
+        </div>
+    </li>
+    <li class="item">
+        <div class="left">
+            <p><i class="icon iconfont icon-ico_care_solution"></i></p>
+            <p>护理产品</p>
+            <p class="_color05">199</p>
+            <p>平均客单价 | 元</p>
+        </div>
+        <div class="right">
+            <p class="title">客单价分布比例</p>
+            <div class="percentCont percentCont06">
+                <!--js插入百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+            </div>
+        </div>
+    </li>
+    <li class="item">
+        <div class="left">
+            <p><i class="icon iconfont icon-ico_more"></i></p>
+            <p>其它</p>
+            <p class="_color05">199</p>
+            <p>平均客单价 | 元</p>
+        </div>
+        <div class="right">
+            <p class="title">客单价分布比例</p>
+            <div class="percentCont percentCont07">
+                <!--js插入百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+            </div>
+        </div>
+    </li>
+</script>
+
 <script>
-    var subid = quakooUser.getUserInfo().sid;//企业id
+    var subid = quakooUser.getUserInfo().psid;//企业/公司id
+    var shopId = quakooDb.getItem('sel_ShopId');//门店id
+
     var categoryData = [];//一级类目数据
-    var brandData = [];//品牌数据
-    var providerData = [];//供应商数据
-    var ballData = [];//球数据
-    var columnData = [];//柱数据
-    var peopleData = [];//员工数据
-    var cid;            //一级类目id
-    var allOutList = {};//全部数据
-    var ckType = 0;//仓库类型 普通仓库(0) 赠品仓库(1)
-    var peopleId;//入库人id
+    var shopData = [];//门店数据
+    var myChart,myChart3;//两个折线图
 
-    var bid;
-    var sid = -1;
-    var outDate;
-
-    var pid;
-    var type = 0;
 
     //获取一级类目
     quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
@@ -576,110 +409,361 @@
             categoryData = ret.data;
         }
     })
-    //获取品牌数据
-    quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
-        if(ret && ret.success){
-            brandData = ret.data;
+    //获取当前企业下门店列表
+    quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:subid},function (ret) {
+        if(ret&&ret.success){
+            if(quakooUtils.isNotBlack(ret.data)){
+                shopData = ret.data;
+            }
         }
-    })
-    //获取属性-球
-    quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:15},function (ret) {
-        if(ret && ret.success){
-            ballData = ret.data.sort(function (a,b) {
-                return b.content-a.content;
-            });
-        }
-    })
-    //获取供应商
-    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
-        if(ret && ret.success){
-            providerData = ret.data;
-        }
-    })
-    //获取属性-柱
-    quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:16},function (ret) {
-        if(ret && ret.success){
-            columnData = ret.data.sort(function (a,b) {
-                return b.content-a.content;
-            });
-        }
-    })
-    //获取门店所有顾客-不分页
-    quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(),{sid:sid,userType:1},function (ret) {
-        if(ret && ret.success){
-            peopleData = ret.data;
-        }
-    })
-    data01 = [
-        {title: '眼镜', id: 'yanjing'},
-        {title: '镜片', id: 'jingpian'},
-        {title: '镜架', id: 'jingjia'},
-        {title: '隐形眼镜', id: 'yinxing'},
-        {title: '太阳镜', id: 'taiyang'},
-        {title: '护理产品', id: 'huli'},
-        {title: '其它产品', id: 'qita'},
-        {title: '水杯', id: 'shuibei'}
-    ]
-    var color01 = ['#4186DC', '#57B8DB', '#DD5B4B', '#54B677', '#7D65C5', '#F0983F'];
-    var color02 = ['#4286DA', '#3D7BC8', '#3770B5', '#3265A4', '#2B5992']
-    var color03 = ['#57B7DA', '#50A8C8', '#4998B6', '#4189A3', '#3A7A91']
-    var color04 = ['#DC5A4B', '#CA5245', '#B74B40', '#A54338', '#923C31']
-    var color05 = ['#52B577', '#4CA66D', '#449763', '#3E8859', '#37784F']
-    var color06 = ['#7d65c3', '#735db3', '#6854a2', '#5e4c93', '#534382']
-    var color07 = ['#ef9741', '#db8a3b', '#c77e36', '#b37130', '#9f642b']
-    var dataPercent01 = [getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500)]
-    var dataPercent02 = [getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500)]
-    var dataPercent03 = [getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500)]
-    var dataPercent04 = [getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500)]
-    var dataPercent05 = [getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500)]
-    var dataPercent06 = [getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500)]
-    var dataPercent07 = [getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500), getRandomNum(0, 500)]
-
-    echartsInit();
-    setPercent(dataPercent01, $('.percentCont01'), color01)
-    setPercent(dataPercent02, $('.percentCont02'), color02)
-    setPercent(dataPercent03, $('.percentCont03'), color03)
-    setPercent(dataPercent04, $('.percentCont04'), color04)
-    setPercent(dataPercent05, $('.percentCont05'), color05)
-    setPercent(dataPercent06, $('.percentCont06'), color06)
-    setPercent(dataPercent07, $('.percentCont07'), color07)
-    setPercent(dataPercent07, $('.percentCont08'), color01)
-
-    //日期范围初始化
-    //下拉框初始化
-   /* selectTag($("#perSelect"), function (ret) {/!*console.log(ret)*!/
-    })
-    selectTag($("#ppSelect"), function (ret) {/!*console.log(ret)*!/
-    })
-    selectTag($("#xlSelect"), function (ret) {/!*console.log(ret)*!/
-    })
-    selectTag($("#czSelect"), function (ret) {/!*console.log(ret)*!/
-    })*/
-    //日期范围插件开始
-    var date1 = new dateRange(".yj-demo-time01");
-    // var date2 = new dateRange(".yj-demo-time02");
-    // var date3 = new dateRange(".yj-demo-time03");
-    // var date4 = new dateRange(".yj-demo-time04");
-    // var date5 = new dateRange(".expiryDate-demo-time", true);
-    // date1.init()
-    // date2.init()
-    // date3.init()
-    // date4.init()
-    // date5.init()
-    //tab切换
-    $(".tab-ul li,.box01 .right ul li").click(function () {
-        $(this).addClass('active').siblings().removeClass('active')
     });
 
+    //销售额统计
+    var salesShopArr = [shopId];
+    //顾客统计时间初始化
+    var salesTime = new dateRange("#salesTime");
+    salesTime.init()
+    $("#salesTime button").click(function () {
+        salesRangeType = 4;
+        salesInit()
+    })
+    var salesRangeType = 1;   //1本周   2本月   3近半年   4 时间范围   5多店对比
+    salesInit()
+    function salesInit() {
+        var parms = {};
+        parms.subIds = salesShopArr;
+        if(salesRangeType==4){
+            parms.startTime = salesTime.getTime()[2];
+            parms.endTime = salesTime.getTime()[3];
+            parms.type = 6;
+        }else{
+            parms.type = parseInt(salesRangeType)+2;
+        }
+        quakooData.ajaxGetData(config.getUrl_statisticsSale_saleSubordinates(),parms,function (ret) {
+            console.log("销售额", ret)
+            //顾客统计折线图初始化
+            templateInit(ret.data,1)
+        })
+    }
+
+    //客单价同价
+    var kdjType = 1;
+    kdjInit()
+    function kdjInit() {
+        var url = '';
+        var parms = {};
+        parms.subid = shopId;
+        if(kdjType==1){
+            url = config.getUrl_statisticsSaleCategory_saleWeek();
+        }else if(kdjType==2){
+            url = config.getUrl_statisticsSaleCategory_saleMonth();
+        }else if(kdjType==3){
+            url = config.getUrl_statisticsSaleCategory_saleHalfYear();
+        }else if(kdjType==4){
+            url = config.getUrl_statisticsSaleCategory_searchSale();
+            parms.startTime = peopleTime.getTime()[2];
+            parms.endTime = peopleTime.getTime()[3];
+        }
+        quakooData.ajaxGetData(url,parms,function (ret) {
+            console.log("客单价", ret)
+            //顾客统计折线图初始化
+            templateInit(ret.data,2)
+        })
+    }
+
+    //顾客统计
+    var peopleShopArr = [shopId];
+    //顾客统计时间初始化
+    var peopleTime = new dateRange("#peopleTime");
+    peopleTime.init()
+    $("#peopleTime button").click(function () {
+        peopleRangeType = 4;
+        peopleInit()
+    })
+    var peopleRangeType = 1;   //1本周   2本月   3近半年   4 时间范围
+    peopleInit()
+    //顾客初始化
+    function peopleInit(){
+        var url = '';
+        var parms = {};
+        var parmsRight = {subids:peopleShopArr  };
+        if(peopleShopArr.length==1 && peopleShopArr[0]==shopId){
+            parms.subid = shopId;
+            if(peopleRangeType==1){
+                url = config.getUrl_statisticsCustomer_statisticsByWeek();
+                parms.week = new Date().getTime();
+            }else if(peopleRangeType==2){
+                url = config.getUrl_statisticsCustomer_statisticsByMonth();
+                parms.month = new Date().getTime();
+            }else if(peopleRangeType==3){
+                url = config.getUrl_statisticsCustomer_statisticsByHalfYear();
+                parms.year = new Date().getTime();
+            }else if(peopleRangeType==4){
+                url = config.getUrl_statisticsCustomer_statisticsByTime();
+                parms.startTime = peopleTime.getTime()[2];
+                parms.endTime = peopleTime.getTime()[3];
+            }
+        }else{
+            parms.subids = peopleShopArr;
+            if(peopleRangeType==4){
+                url = config.getUrl_statisticsCustomer_timeInterval();
+                parms.startTime = peopleTime.getTime()[2];
+                parms.endTime = peopleTime.getTime()[3];
+            }else{
+                url = config.getUrl_statisticsCustomer_statisticsBySubordinates();
+                parms.type = peopleRangeType;
+                parms.date = new Date().getTime();
+            }
+        }
+        if(peopleRangeType==4){
+            parmsRight.startTime = peopleTime.getTime()[2];
+            parmsRight.endTime = peopleTime.getTime()[3];
+        }else{
+            parmsRight.type = peopleRangeType;
+            parmsRight.date = new Date().getTime();
+        }
+        //顾客右边
+        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsBySubordinatesAll(),parmsRight,function (ret) {
+            $('#peopleRightDom').html(template('peopleRightTmp',{list:data}))
+        })
+        //顾客左边的折线图
+        quakooData.ajaxGetData(url,parms,function (ret) {
+            console.log("顾客", ret)
+            //顾客统计折线图初始化
+            templateInit(ret.data,3)
+        })
+    }
+
+    //页面渲染
+    function templateInit(data,type){
+        if(data){
+            if(type==1){
+                $('#salesDom').html(template('salesTmp',{list:data}))
+                setPercent([data.ten,data.twenty,data.forty,data.sixty,data.more],$('#salesNum'),color01,'sales');
+                chartInit(data,type)
+            }else if(type==2){
+                $('#kdjDom').html(template('kdjTmp',{list:data}))
+                setPercent(dataPercent02,$('.percentCont02'),color02)
+                setPercent(dataPercent03,$('.percentCont03'),color03)
+                setPercent(dataPercent04,$('.percentCont04'),color04)
+                setPercent(dataPercent05,$('.percentCont05'),color05)
+                setPercent(dataPercent06,$('.percentCont06'),color06)
+                setPercent(dataPercent07,$('.percentCont07'),color07)
+            }else if(type==3){
+                $('#peopleLeftDom').html(template('peopleLeftTmp',{list:data}))
+                setPercent([data.ten,data.twenty,data.forty,data.sixty,data.more],$('#peopleNum'),color01,'people')
+                chartInit(data,type)
+            }else if(type==4){
+
+            }
+        }
+    }
+    //表格渲染
+    function chartInit(data,type) {
+        var seriseArr = [] //放入options下series的数组
+        var obj = {type: 'line', smooth:true}//统计图显示样式，固定为line
+        var seriseNum = 0;
+        var initOp = {};
+        var source = {};
+        source.xAxis = [];
+        var startNum1 = 0;
+        var endNum1 = 6;
+        var startNum3 = 0;
+        var endNum3 = 6;
+        if(type==1){
+            initOp.title = '销售额走势图'
+            initOp.span = '单位: 千元'
+            seriseNum = salesShopArr.length;
+            for (var i = 0; i < data.length; i++) {
+                source[data[i].subName] = [];
+                for (var j = 0; j < data[i].details.length; j++) {
+                    source.xAxis.push(data[i].details[j].day)
+                    source[data[i].subName].push(data[i].details[j].sale)
+                }
+            }
+            console.log(source)
+        }else{
+            initOp.title = '顾客数量走势图'
+            initOp.span = '单位: 人'
+            seriseNum = peopleShopArr.length;
+           /* for (var i = 0; i < data.length; i++) {
+                source[data[i].subName] = [];
+                for (var j = 0; j < data[i].details.length; j++) {
+                    source.xAxis.push(data[i].details[j].day)
+                    source[data[i].subName].push(data[i].details[j].sale)
+                }
+            }*/
+        }
+
+
+        for (var i = 0;i<seriseNum;i++){
+            seriseArr.push(obj)
+        }
+
+        //echarts配置项
+        var option = {
+            color:color01,
+            //底部缩放拉条
+            grid:{right:'5%',},
+            dataZoom:{
+                show:false,
+                zoomLock:true,
+                type:'slider',
+                minValueSpan: 7,
+                maxValueSpan: 7,
+                startValue:0,
+                endValue:6
+            },
+            //标题
+            title:{
+                text:initOp.title,
+                textStyle:{
+                    color: '#393953',
+                    fontSize: 12,
+                    lineHeight:17,
+                    // align:'center'
+                },
+                subtext: initOp.span,
+                subtextStyle: {
+                    color: '#828297',
+                    fontSize: 12,
+                    lineHeight:17,
+                },
+            },
+            //右上角图列组件
+            legend: {
+                type:'scroll',
+                icon:'roundRect',//'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+                itemWidth:10,//icon宽高
+                itemHeight:4,//icon宽高
+                itemGap:16,//间距
+                right:50,
+                top:0,
+                width:300,//组件宽度超出滚动
+                textStyle:{
+                    color:'#828297',
+                    fontSize:12,
+                }
+            },
+            //提示组件
+            tooltip: {
+                show:true,
+                trigger: 'axis',//鼠标悬停显示详细item、axis、none,axis多用在有轴
+                axisPointer: {
+                    type: 'line',//鼠标悬停显示详情形式line,shadow,cross
+                    axis:'x',//显示x或y轴内容
+                    //snap:false
+                    lineStyle:{
+                        type: 'dotted',
+                        shadowColor: '#000',
+                        shadowBlur: 15,
+                    }
+                }
+            },
+            //数据传入   //统计图主要数据
+            dataset: {source: source},
+            xAxis: {
+                type: 'category',//value,time,log
+            },
+            yAxis: {
+                type: 'value',
+            },
+            series: seriseArr,
+        };
+        if(document.getElementById('chartCont01')){
+            myChart = echarts.init(document.getElementById('chartCont01'));
+            myChart.setOption(option);
+        }
+        if(document.getElementById('chartCont02')){
+            myChart3 = echarts.init(document.getElementById('chartCont02'));
+            myChart3.setOption(option);
+        }
+
+        $('.mainCont .box01 .prev').click(function () {
+            if(startNum1 == 0){
+                startNum1 = 0 ;
+                return false;
+            }
+            startNum1--;
+            endNum1--;
+            myChart.dispatchAction({
+                type: 'dataZoom',
+                startValue: startNum1,
+                endValue:endNum1
+            })
+        })
+        $('.mainCont .box01 .next').click(function () {
+            if(endNum1>=source.xAxis.length-1){
+                endNum1 = source.xAxis.length-1
+                return false;
+            }
+            startNum1++;
+            endNum1++;
+            myChart.dispatchAction({
+                type: 'dataZoom',
+                startValue: startNum1,
+                endValue:endNum1
+            })
+        })
+
+
+        $('.mainCont .box03 .prev').click(function () {
+            if(startNum3 == 0){
+                startNum3 = 0 ;
+                return false;
+            }
+            startNum3--;
+            endNum3--;
+            myChart3.dispatchAction({
+                type: 'dataZoom',
+                startValue: startNum3,
+                endValue:endNum3
+            })
+        })
+        $('.mainCont .box03 .next').click(function () {
+            if(endNum3>= source.xAxis.length-1){
+                endNum3 = source.xAxis.length-1
+                return false;
+            }
+            startNum3++;
+            endNum3++;
+            myChart3.dispatchAction({
+                type: 'dataZoom',
+                startValue: startNum3,
+                endValue:endNum3
+            })
+        })
+
+    }
+
+    //改变本周   本月  近半年
+    function changeType(t,type) {
+        if(type==1){
+            salesRangeType = t;
+            $("#salesType li").eq(t-1).addClass('active').siblings().removeClass('active');
+            salesInit()
+        }else if(type==2){
+            kdjType = t;
+            $("#kdjType li").eq(t-1).addClass('active').siblings().removeClass('active');
+            kdjInit()
+        }else if(type==3){
+            peopleRangeType = t;
+            $("#peopleType li").eq(t-1).addClass('active').siblings().removeClass('active');
+            peopleInit()
+        }else if(type==4){
+
+        }
+    }
+
     //选择多家门店弹窗
-    function selectShop(str) {
+    function selectShop(type) {
         layer.open({
             type: 1,
             shade: 0.01,
             title: '添加要进行对比的门店',
             skin: 'content-view-selectShop-tan', //样式类名
             anim: 0,
-            area: ['360px', '440px'],
+            area: ['360px','440px'],
             closeBtn: 0, //不显示关闭按钮
             resize: false,
             shadeClose: true, //开启遮罩关闭
@@ -689,42 +773,54 @@
                 layer.close(index);
             },
             btn2: function (index) {
-                var arr = []
-                $('.content-view-selectShop .icon-ico_circle_cross_fil').each(function (i, el) {
-                    arr.push($(el).siblings('span').text())
+                var nameArr = [];
+                $('.content-view-selectShop .icon-ico_circle_cross_fil').each(function (i,el) {
+                    nameArr.push($(el).siblings('span').text())
                 })
-                $('.content-view-selectShop ul').html('');
                 //多选门店头部显示店铺名
-                if (arr.length > 0) {
-                    arr = arr.reverse()
-                    if (str == 'box01') {
+                if(peopleShopArr.length>0){
+                    if(type == 'sales'){
                         $('.box01 .txt01').hide();
-                        $('.box01 .head ._btn').css({'border': 'none', 'color': '#4186DC'});
+                        $('.box01 .head ._btn').css({'border':'none','color':'#4186DC'}).text('重新选择');
                         $('.box01 .head .shopName').remove()
-                        for (var i = 0; i < arr.length; i++) {
-                            $('.box01 .head').prepend('<div class="shopName">' + arr[i] + '</div>')
+                        for(var i=0;i<nameArr.length;i++){
+                            $('.box01 .head').prepend('<div class="shopName">'+nameArr[i]+'</div>')
                         }
-
-                    } else if (str == 'box03') {
-                        $('.box03 .head ._btn').css({'border': 'none', 'color': '#4186DC'});
+                        salesInit()
+                    }else if(type == 'people'){
+                        $('.box03 .head ._btn').css({'border':'none','color':'#4186DC'}).text('重新选择');
                         $('.box03 .txt01').hide();
                         $('.box03 .head .shopName').remove()
-                        for (var i = 0; i < arr.length; i++) {
-                            $('.box03 .head').prepend('<div class="shopName">' + arr[i] + '</div>')
+                        for(var i=0;i<nameArr.length;i++){
+                            $('.box03 .head').prepend('<div class="shopName">'+nameArr[i]+'</div>')
                         }
+                        peopleInit()
                     }
                 }
                 layer.close(index);
             },
             success: function (layero, index) {
-                for (var i = 0; i < 20; i++) {
-                    var li = '<li><span>' + '精益眼镜分店' + i + '</span><i class="icon iconfont icon-ico_circle_plus_fill"></i></li>'
+                $('.content-view-selectShop ul').html('')
+                var arr = [];
+                if(type=='people'){
+                    arr = peopleShopArr;
+                }else{
+                    arr = salesShopArr;
+                }
+                for(var i = 0;i<shopData.length;i++){
+                    if(arr.indexOf(shopData[i].id)>=0){
+                        var li = '<li value="'+shopData[i].id+'"><span>'+shopData[i].name+'</span><i class="icon iconfont icon-ico_circle_cross_fil "></i></li>'
+                    }else{
+                        var li = '<li value="'+shopData[i].id+'"><span>'+shopData[i].name+'</span><i class="icon iconfont icon-ico_circle_plus_fill"></i></li>'
+                    }
                     $('.content-view-selectShop ul').append(li)
                 }
                 $('.content-view-selectShop .iconfont').click(function () {
-                    if ($(this).hasClass('icon-ico_circle_plus_fill')) {
+                    if($(this).hasClass('icon-ico_circle_plus_fill')){
+                        arr.push($(this).parents('li').attr('value'));
                         $(this).removeClass('icon-ico_circle_plus_fill').addClass('icon-ico_circle_cross_fil')
-                    } else {
+                    }else {
+                        arr.splice(peopleShopArr.indexOf($(this).parents('li').attr('value')),1);
                         $(this).removeClass('icon-ico_circle_cross_fil').addClass('icon-ico_circle_plus_fill')
                     }
                 })
@@ -732,293 +828,91 @@
         });
     }
 
+    var color01 = ['#4186DC','#57B8DB','#DD5B4B','#54B677','#7D65C5','#F0983F']
+    var color02 = ['#4286DA','#3D7BC8','#3770B5','#3265A4','#2B5992']
+    var color03 = ['#57B7DA','#50A8C8','#4998B6','#4189A3','#3A7A91']
+    var color04 = ['#DC5A4B','#CA5245','#B74B40','#A54338','#923C31']
+    var color05 = ['#52B577','#4CA66D','#449763','#3E8859','#37784F']
+    var color06 = ['#7d65c3','#735db3','#6854a2','#5e4c93','#534382']
+    var color07 = ['#ef9741','#db8a3b','#c77e36','#b37130','#9f642b']
+    var dataPercent01 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+    var dataPercent02 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+    var dataPercent03 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+    var dataPercent04 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+    var dataPercent05 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+    var dataPercent06 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+    var dataPercent07 = [getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500),getRandomNum(0,500)]
+
+    // echartsInit();
+    /*setPercent(dataPercent01,$('.percentCont01'),color01)
+    setPercent(dataPercent02,$('.percentCont02'),color02)
+    setPercent(dataPercent03,$('.percentCont03'),color03)
+    setPercent(dataPercent04,$('.percentCont04'),color04)
+    setPercent(dataPercent05,$('.percentCont05'),color05)
+    setPercent(dataPercent06,$('.percentCont06'),color06)
+    setPercent(dataPercent07,$('.percentCont07'),color07)*/
+    layui.use(['form'], function(){
+        form = layui.form
+        form.on('checkbox(print)', function (data) {
+
+        });
+    })
+    //日期范围插件开始
+    // var date4 = new dateRange(".yj-demo-time04");
+    // var date5 = new dateRange(".expiryDate-demo-time",true);
+    // date4.init()
+    // date5.init()
+    //tab切换
+    $(".tab-ul li,.box01 .right ul li").click(function(){
+        $(this).addClass('active').siblings().removeClass('active')
+    });
+
     //设置百分比div然后添加入容器 (传入数据 容器 颜色)
-    function setPercent(data, el, color) {
-        var total = data.reduce(function (a, b) {
-            return a + b
-        })
-        for (var i = 0; i < data.length; i++) {
-            var width = toPercent(data[i] / total, 10);
-            var width2 = toPercent(data[i] / total, 0);
-            var span = "<span>" + '|<br/>' + '|<br/>' + width2 + "</span>"
-            if (i % 2 != 0) {
-                var span = "<span>" + width2 + '<br/>' + '|<br/>' + '|<br/>' + "</span>"
+    function setPercent(data,el,color,type) {
+        var str = '';
+        if(type=='sales'){
+            str = '销售额'
+        }else if(type=='people'){
+            str = '人数'
+        }
+        var total = data.reduce(function (a,b) {return a+b})
+        for(var i = 0;i<data.length;i++){
+            var width = toPercent(data[i]/total,10);
+            var width2 = toPercent(data[i]/total,0);
+            var span = "<span>" +'|<br/>'+'|<br/>'+ width2 +"</span>"
+            if(i%2 != 0){
+                var span = "<span>"+width2+'<br/>'+'|<br/>'+'|<br/>'+"</span>"
             }
             var div =
-                "<div class='percentDiv' style='width:" + width + ";" + "background:" + color[i] + ";position: relative " + " '>" +
+                "<div class='percentDiv' style='width:"+width+";"+"background:"+color[i]+";position: relative "+" '>" +
                 span +
-                "<div class='hoverBox'>" + '<div class="triangle-down"></div>' + '销售额:' + data[i] + '元' + "</div>" +
+                "<div class='hoverBox'>"+'<div class="triangle-down"></div>'+str+':'+data[i]+'元'+"</div>"+
                 "</div>";
             el.append(div)
         }
         $('.percentDiv').hover(function () {
             $(this).find('.hoverBox').show();
-        }, function () {
+        },function () {
             $(this).find('.hoverBox').hide();
         })
-
-        function toPercent(point, i) {
-            var str = Number(point * 100).toFixed(i);
-            str += "%";
+        function toPercent(point,i){
+            var str=Number(point*100).toFixed(i);
+            str+="%";
             return str;
         }
     }
 
 
-    //echarts初始化
-    function echartsInit() {
-        start = 0
-        start2 = 0
-        end = 6
-        end2 = 6
-        Xdata = []
-        shopNum = ['旗舰店A', '旗舰店B', '旗舰店B'] //传入门店数组 ajax传入
-        var seriseArr = []//放入options下series的数组
-        var obj = {type: 'line', smooth: true}//统计图显示样式，固定为line
-        for (var i = 0; i < shopNum.length; i++) {
-            seriseArr.push(obj)
-        }
-        getRandomNum = function () {
-            var Range = 100 - 0;
-            var Rand = Math.random();
-            return Math.round(Rand * Range);
-        }
-
-        for (var i = 0; i < 20; i++) {
-            var day = '3.' + (1 + i)
-            Xdata.push(day)
-        }
-        //echarts配置项
-        option = {
-            color: ['#4186DC', '#57B8DB', '#DD5B4B'],
-            //底部缩放拉条
-            grid: {
-                right: '5%',
-                // containLabel:true
-            },
-            dataZoom: {
-                show: false,
-                zoomLock: true,
-                type: 'slider',
-                // start:0,
-                // end:70
-                minValueSpan: 7,
-                maxValueSpan: 7,
-                startValue: start,
-                endValue: end
-            },
-            //标题
-            title: {
-                text: '销售额走势图',
-                textStyle: {
-                    color: '#393953',
-                    fontSize: 12,
-                    lineHeight: 17,
-                    // align:'center'
-                },
-                subtext: '单位(元)',
-                subtextStyle: {
-                    color: '#828297',
-                    fontSize: 12,
-                    lineHeight: 17,
-                    // align:'center'
-                },
-            },
-            //右上角图列组件
-            legend: {
-                type: 'scroll',
-                icon: 'roundRect',//'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
-                itemWidth: 10,//icon宽高
-                itemHeight: 4,//icon宽高
-                itemGap: 16,//间距
-                right: 50,
-                top: 0,
-                width: 300,//组件宽度超出滚动
-                textStyle: {
-                    color: '#828297',
-                    fontSize: 12,
-                }
-            },
-            //提示组件
-            tooltip: {
-                show: true,
-                trigger: 'axis',//鼠标悬停显示详细item、axis、none,axis多用在有轴
-                axisPointer: {
-                    type: 'line',//鼠标悬停显示详情形式line,shadow,cross
-                    axis: 'x',//显示x或y轴内容
-                    //snap:false
-                    lineStyle: {
-                        type: 'dotted',
-                        shadowColor: '#000',
-                        shadowBlur: 15,
-                    }
-                }
-            },
-            //数据传入
-            dataset: {//统计图主要数据
-                source: {
-                    'xAxis': Xdata,
-                    '旗舰店A': [getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum()],
-                    '旗舰店B': [getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum()],
-                    '旗舰店C': [getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum()],
-                    '旗舰店D': [getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum()],
-                    '旗舰店E': [getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum()],
-                    '旗舰店F': [getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum(), getRandomNum()]
-                }
-            },
-            xAxis: {
-                // show:false,
-                // name:'日期',
-                // nameLocation:'end',
-                type: 'category',//value,time,log
-                // axisLine:{
-                //   show:false
-                // }
-            },
-            yAxis: {
-                // show:false,
-                type: 'value',
-                // axisLine:{
-                //   show:false
-                // }
-            },
-            series: seriseArr,
-        };
-        myChart = echarts.init(document.getElementById('chartCont01'));
-        myChart2 = echarts.init(document.getElementById('chartCont02'));
-        myChart.setOption(option);
-        myChart2.setOption(option);
-
-        $('.mainCont .box01 .prev').click(function () {
-            if (start == 0) {
-                start = 0;
-                return false;
-            }
-            start--;
-            end--;
-            myChart.dispatchAction({
-                type: 'dataZoom',
-                startValue: start,
-                endValue: end
-            })
-        })
-        $('.mainCont .box01 .next').click(function () {
-            if (end >= Xdata.length - 1) {
-                end = Xdata.length - 1
-                return false;
-            }
-            start++;
-            end++;
-            myChart.dispatchAction({
-                type: 'dataZoom',
-                startValue: start,
-                endValue: end
-            })
-        })
-
-
-        $('.mainCont .box03 .prev').click(function () {
-            if (start2 == 0) {
-                start2 = 0;
-                return false;
-            }
-            start2--;
-            end2--;
-            myChart2.dispatchAction({
-                type: 'dataZoom',
-                startValue: start2,
-                endValue: end2
-            })
-        })
-        $('.mainCont .box03 .next').click(function () {
-            if (end2 >= Xdata.length - 1) {
-                end2 = Xdata.length - 1
-                return false;
-            }
-            start2++;
-            end2++;
-            myChart2.dispatchAction({
-                type: 'dataZoom',
-                startValue: start2,
-                endValue: end2
-            })
-        })
-    }
     window.onresize = function () {
         myChart.resize();
-        myChart2.resize();
+        myChart3.resize();
     }
-
     //获取随机数函数
-    function getRandomNum(a, b) {
+    function getRandomNum(a,b) {
         var Range = b - a;
         var Rand = Math.random();
-        return (Math.round(Rand * Range) + 50);
+        return  (Math.round(Rand * Range)+50);
     }
-    /************************************************顾客统计开始****************************************************/
-    var cusDt = new dateRange(".yj-demo-time-customer");
-    cusDt.init();
-    cusDt.getTime();
-    //接口——顾客统计--时间范围
-    function getCusTime() {
-        var startTime = cusDt.getTime()[2];
-        var endTime = cusDt.getTime()[3];
-        var param = {};
-        param.subid = subid;
-        param.startTime = startTime;
-        param.endTime = endTime;
-        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsByTime(),param,function (ret) {
-            console.log("范围", ret)
-            renderCustomer(ret.data);
-        })
-    }
-    $('.yj-demo-time-customer .yj-date-btn button').click(function () {
-        getCusTime();
-    });
-    //接口——顾客统计--本周
-    function getCusWeek() {
-        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsByWeek(),{subid:subid,week:Date.now()},function (ret) {
-            console.log("本周", ret)
-            renderCustomer(ret.data);
-        })
-    }
-    //接口——顾客统计--本月
-    function getCusMonth() {
-        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsByMonth(),{subid:subid,month:Date.now()},function (ret) {
-            console.log("本月", ret)
-            renderCustomer(ret.data);
-        })
-    }
-    //接口——顾客统计--近半年
-    function getCusYear() {
-        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsByHalfYear(),{subid:subid,year:Date.now()},function (ret) {
-            console.log("近半年", ret);
-            if(ret&&ret.success){
-                renderCustomer(ret.data);
-            }
-        })
-    }
-    //接口——顾客统计--多店对比
-    function getCusStoresContrast() {
-        var param = {};
-        param.subids = [];
-
-        quakooData.ajaxGetData(config.getUrl_statisticsCustomer_statisticsBySubordinates(),param,function (ret) {
-            console.log("周", ret)
-
-        })
-    }
-    function renderCustomer(data) {
-        console.log("render：",data);
-        $('#cus-man-per').html(data.manProportion+'%');
-        $('#cus-woman-per').html(data.womanProportion+'%');
-        $('#cus-man-num').html('共'+data.man+'人');
-        $('#cus-woman-num').html('共'+data.woman+'人');
-        dataPercent07 =
-
-    }
-    /************************************************顾客统计结束****************************************************/
-
 </script>
 </body>
 </html>

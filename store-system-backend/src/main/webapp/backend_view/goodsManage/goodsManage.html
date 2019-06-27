@@ -278,9 +278,9 @@
         <tr>
             <td><%=list[i].title%></td>
             <%if(list[i].value){%>
-                <td><input type="text" value="<%=list[i].value%>" data-id="<%=list[i].id%>" class="vipInput" placeholder=""></td>
+                <td><input type="text" value="<%=list[i].value%>" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
             <%}else{%>
-                <td><input type="text" data-id="<%=list[i].id%>" class="vipInput" placeholder=""></td>
+                <td><input type="text" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
             <%}%>
         </tr>
         <%}%>
@@ -1261,6 +1261,13 @@
                                 arr.push(obj)
                             }
                         })
+                        for(var i=0;i<arr.length;i++){
+                            if(parseFloat(arr[i].discount)<=0 || parseFloat(arr[i].discount)>10){
+                                layer.msg('请输入0~10之间的折扣')
+                                return false
+                                break ;
+                            }
+                        }
                         params[cid].ugDiscount = arr;
                     },
                     success: function(layero, index){
