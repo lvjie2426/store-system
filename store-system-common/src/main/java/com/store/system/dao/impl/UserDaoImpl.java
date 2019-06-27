@@ -85,6 +85,19 @@ public class UserDaoImpl extends CacheBaseDao<User> implements UserDao {
     }
 
     @Override
+    public User getUserByPhone(int userType, int status,String phone) throws Exception {
+        long startTime=System.currentTimeMillis();
+        String sql="SELECT id FROM "+this.getTable(0)+" where userType = ? and status = ? and phone = ?";
+        List<Long> result = this.getJdbcTemplate(0, true).getJdbcTemplate().query(sql,new LongRowMapper("id"),userType,status,phone);
+        logger.info(daoClassName + "getlist sql:{},time:{}", new Object[]{sql,(System.currentTimeMillis()-startTime)});
+        if (null != result&&result.size()>0) {
+            return (User) load(result);
+        } else {
+            return new User();
+        }
+    }
+
+    @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
     public List<User> getAllListByJob(int userType, int status, String job, long sid) throws Exception {
         return null;

@@ -6,7 +6,6 @@ import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.bean.InventoryCheckBillItem;
-import com.store.system.bean.InventoryOutBillItem;
 import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryCheckBill;
@@ -139,8 +138,17 @@ public class InventoryCheckBillController extends BaseController {
     }
 
     @RequestMapping("/save")
-    public ModelAndView save(InventoryCheckBill inventoryCheckBill, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView save(InventoryCheckBill inventoryCheckBill, HttpServletRequest request, HttpServletResponse response, Model model,
+                             @RequestParam(value = "itemsJson") String itemsJson) throws Exception {
         try {
+            List<InventoryCheckBillItem> billItems = Lists.newArrayList();
+            if(StringUtils.isNotBlank(itemsJson)) {
+                billItems = JsonUtils.fromJson(itemsJson, new TypeReference<List<InventoryCheckBillItem>>() {});
+            }
+            inventoryCheckBill.setItems(billItems);
+            List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(inventoryCheckBill.getSubid());
+            if(warehouses.size()>0)
+                inventoryCheckBill.setWid(warehouses.get(0).getId());
             boolean res = inventoryCheckBillService.save(inventoryCheckBill);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {

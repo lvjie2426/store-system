@@ -23,15 +23,21 @@ public class OrderSku implements Serializable {
     public static final int status_loss = 3; //报损
 
     private long skuid;
+
     private long spuid;
 
     private int num;
 
-    private String name;
+    private String code; //产品编码
+    private String name; //sku名称
 
-    private int price;//单价
+    private double price;//单价
 
-    private int subtotal;//小计 price*num*coupon折扣
+    private double discount;//折扣
+
+    private double subtotal;//小计 price*num*spu折扣
+
+    private double lastSubtotal;//小计 price*num*spu折扣*usergrade折扣
 
     private int qualityType;//质保类型
 

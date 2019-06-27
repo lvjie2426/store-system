@@ -32,4 +32,10 @@ public class SaleCategoryStatisticsDaoImpl extends CacheBaseDao<SaleCategoryStat
     public List<SaleCategoryStatistics> getSubList(long subId, long day) throws DataAccessException {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
+    public List<SaleCategoryStatistics> getSubList(long subId, long day, long cid) throws DataAccessException {
+        return null;
+    }
 }

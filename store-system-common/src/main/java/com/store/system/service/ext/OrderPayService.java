@@ -1,8 +1,10 @@
 package com.store.system.service.ext;
 
 
+import com.store.system.model.Order;
+
 public interface OrderPayService {
 
-    public void successHandleBusiness(int payType, int type, String typeInfo);
+    public void successHandleBusiness(Order order) throws Exception;
 
 }

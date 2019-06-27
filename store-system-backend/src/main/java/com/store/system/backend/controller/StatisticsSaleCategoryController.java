@@ -40,7 +40,7 @@ public class StatisticsSaleCategoryController extends BaseController{
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_WEEK)-1);
-            Map<Long,ClientCategoryStatistics> res = saleCategoryStatisticsService.getDayList(subId,days);
+            Map<Long,List<ClientCategoryStatistics>> res = saleCategoryStatisticsService.getDayList(subId,days);
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -54,7 +54,7 @@ public class StatisticsSaleCategoryController extends BaseController{
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_MONTH));
-            Map<Long,ClientCategoryStatistics> res = saleCategoryStatisticsService.getDayList(subId,days);
+            Map<Long,List<ClientCategoryStatistics>> res = saleCategoryStatisticsService.getDayList(subId,days);
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -68,7 +68,7 @@ public class StatisticsSaleCategoryController extends BaseController{
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             List<Long> days = TimeUtils.getPastMonthDays(calendar.get(Calendar.MONTH)+1);
-            Map<Long,ClientCategoryStatistics> res = saleCategoryStatisticsService.getDayList(subId,days);
+            Map<Long,List<ClientCategoryStatistics>>  res = saleCategoryStatisticsService.getDayList(subId,days);
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -81,7 +81,7 @@ public class StatisticsSaleCategoryController extends BaseController{
                                    @RequestParam(name = "startTime") long startTime,
                                    @RequestParam(name = "endTime") long endTime,long subId)throws Exception{
         try {
-            Map<Long,ClientCategoryStatistics> res = saleCategoryStatisticsService.searchSale(startTime,endTime,subId);
+            Map<Long,List<ClientCategoryStatistics>> res = saleCategoryStatisticsService.searchSale(startTime,endTime,subId);
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));

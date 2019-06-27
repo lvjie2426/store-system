@@ -1,6 +1,10 @@
 package com.store.system.client;
 
+import com.google.common.collect.Lists;
+import com.store.system.model.SaleCategoryStatistics;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @ClassName ClientCategoryStatistics
@@ -20,6 +24,8 @@ public class ClientCategoryStatistics {
 
     private int num;//产品分类销售单数
 
+    private double rate;//占比
+
     private double rate_0to100;
 
     private double rate_100to500;
@@ -30,8 +36,6 @@ public class ClientCategoryStatistics {
 
     private double rate_2000;
 
-
-
-
+    private List<SaleCategoryStatistics> statistics = Lists.newArrayList();
 
 }

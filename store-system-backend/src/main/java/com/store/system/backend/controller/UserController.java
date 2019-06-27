@@ -3,7 +3,10 @@ package com.store.system.backend.controller;
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
-import com.store.system.bean.Result;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.client.PagerResult;
@@ -20,10 +23,6 @@ import com.store.system.service.UserService;
 import com.store.system.util.FileDownload;
 import com.store.system.util.SmsUtils;
 import com.store.system.util.UserUtils;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.quakoo.baseFramework.model.pagination.Pager;
-import com.quakoo.webframework.BaseController;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Controller;
@@ -36,7 +35,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -125,12 +127,12 @@ public class UserController extends BaseController {
                                    @RequestParam(required = false, value = "name",defaultValue = "") String name,
                                    @RequestParam(required = false, value = "userName",defaultValue = "") String userName,
                                    @RequestParam(required = false, value = "sid",defaultValue = "-1") long sid,
-                                   @RequestParam(required = false, value = "subid",defaultValue = "-1") long subid,
+                                   @RequestParam(required = false, value = "psid",defaultValue = "-1") long psid,
                                    @RequestParam(required = false, value = "userType",defaultValue = "-1") int userType,
                                    @RequestParam(required = false, value = "rid",defaultValue = "0") long rid,
                                    @RequestParam(required = false, value = "status",defaultValue = "-1") int status,
                                    Model model) throws Exception {
-        pager= userService.searchUser(pager,sid,subid,userType,name,phone,userName,rid,status,startTime,endTime);
+        pager= userService.searchBackendUser(pager,sid,psid,userType,name,phone,userName,rid,status,startTime,endTime);
         return this.viewNegotiating(request,response,new PagerResult<>(pager));
     }
 

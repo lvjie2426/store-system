@@ -114,7 +114,9 @@ public class StatisticsSaleController extends BaseController{
     //多店对比查询销售额
     @RequestMapping("/saleSubordinates")
     public ModelAndView statisticsBySubordinates(HttpServletRequest request, HttpServletResponse response,
-                                                 @RequestParam(name = "subIds") List<Long> subIds, int type)throws Exception{
+                                                 @RequestParam(name = "subIds[]") List<Long> subIds, int type,
+                                                 @RequestParam(name = "startTime",required = false,defaultValue = "0") long startTime,
+                                                 @RequestParam(name = "endTime",required = false,defaultValue = "0") long endTime)throws Exception{
         try {
             long week = TimeUtils.getWeekFormTime(System.currentTimeMillis());
             long month = TimeUtils.getMonthFormTime(System.currentTimeMillis());
@@ -137,6 +139,11 @@ public class StatisticsSaleController extends BaseController{
                     ClientSaleStatistics statisticsYear = saleStatisticsService.getDayList(days,subId);
                     if (statisticsYear != null) {
                         res.add(statisticsYear);
+                    }
+                }else if(type==ClientSaleStatistics.type_search){
+                    ClientSaleStatistics statistics = saleStatisticsService.searchSale(startTime,endTime,subId);
+                    if (statistics != null) {
+                        res.add(statistics);
                     }
                 }
             }

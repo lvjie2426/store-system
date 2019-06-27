@@ -8,8 +8,8 @@ import java.io.Serializable;
 @Data
 public class Surcharge implements Serializable{
 
-    private  String name;
-    private  int price;//单位 分
+    private String name;
 
+    private long price;//单位 分
 
 }

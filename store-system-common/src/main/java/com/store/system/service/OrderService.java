@@ -4,6 +4,7 @@ package com.store.system.service;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientOrder;
+import com.store.system.client.ResultClient;
 import com.store.system.model.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,16 +13,22 @@ import java.util.Map;
 
 public interface OrderService {
 
-    public boolean handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo,
-                                         String title, String desc, int price) throws Exception;
+    //阿里
+    public ResultClient handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo,
+                                              String title, String desc, int price, Order order) throws Exception;
 
-    public boolean handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type, String typeInfo,
-                                        String title, String desc, int price, String ip) throws Exception;
-
+    public boolean aliOrderNotify(Map<String, String> params) throws Exception;
 
     public RefundOrder createAliRefundOrder(long oid) throws Exception;
 
     public boolean handleAliRefundOrder(long roid) throws Exception;
+
+
+    //微信
+    public ResultClient handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type, String typeInfo,
+                                        String title, String desc, int price,  Order order) throws Exception;
+
+    public boolean wxOrderNotify(String xmlStr) throws Exception;
 
     public RefundOrder createWxRefundOrder(long oid) throws Exception;
 
@@ -36,9 +43,9 @@ public interface OrderService {
 
     public  List<ClientOrder> getAllBySubid(long subid)throws Exception;
 
-    public ClientOrder countPrice(Order order,long sid)throws Exception;
+    public ClientOrder countPrice(Order order)throws Exception;
 
-    public  Map<Object,Object> countSkuPrice(long uid, List<OrderSku> orderSkuList, long couponid, List<Surcharge> surchargeList,long sid) throws Exception;
+    public  Map<Object,Object> countSkuPrice(long uid, List<OrderSku> orderSkuList, long couponid, List<Surcharge> surchargeList) throws Exception;
 
     public  List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
 

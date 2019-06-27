@@ -16,4 +16,6 @@ import java.util.List;
 public interface SaleCategoryStatisticsDao extends HDao<SaleCategoryStatistics>{
 
     public List<SaleCategoryStatistics> getSubList(long subId, long day) throws DataAccessException;
+
+    public List<SaleCategoryStatistics> getSubList(long subId, long day, long cid) throws DataAccessException;
 }

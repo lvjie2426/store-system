@@ -27,6 +27,8 @@ public class Order implements Serializable {
     public static final int pay_type_ali = 1; //支付宝
     public static final int pay_type_wx = 2; //微信
 
+    public static final int type_goods = 1; //商品购买
+
     public static final int pay_mode_app = 1; //app支付
     public static final int pay_mode_wap = 2; //手机网页支付
     public static final int pay_mode_public = 3; //公众号支付
@@ -70,7 +72,7 @@ public class Order implements Serializable {
 
     private int totalPrice;//总金额(分)
     private double discount;//折扣
-    private int dicountPrice;//折后金额(分)
+    private int dicountPrice;//折后金额(分)0
     private int price;//实际支付金额(分)
     private long couponid;//营销券id
     private int marketingType;//促销类型
