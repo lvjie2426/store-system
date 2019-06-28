@@ -1371,7 +1371,7 @@ input[type="number"]::-webkit-input-placeholder{
     text-align: left;
     font-family: PingFangSC-Medium;
 }
-.create-task .task-third .mission-time .send-time{
+.create-task .task-third .mission-time .left{
     width: 180px;
     height:28px;
     float: left;
@@ -1379,48 +1379,49 @@ input[type="number"]::-webkit-input-placeholder{
     margin:6px 0 16px;
     position: relative;
 }
-.create-task .task-third .mission-time .send-time input{
+
+.create-task .send-time{
     width: 100%;
     height: 28px;
-    line-height: 26px;
-    padding:0 8px;
+    line-height:26px;
     border-radius: 2px;
     background-color: rgba(255, 255, 255, 1);
-    border: 1px solid rgba(236, 236, 244, 1);
-    color: rgba(130, 130, 151, 1);
+    color: #393953;
     font-size: 12px;
     text-align: left;
-    font-family: PingFangSC-Medium;
+    font-family: PingFangSC-Semibold;
+    position:relative;
+    cursor: pointer;
 }
-.create-task .task-third .mission-time .send-time i{
-    color:#828297;
+.create-task .send-time input{
+    border:none;
+    color: #393953;
+    border: 1px solid rgba(236, 236, 244, 1);
     position: absolute;
-    top: 5px;
-    right: 6px;
-}
-.create-task .task-third .mission-time .yj-demo-time{
-    width: 180px;
-    height:28px;
-    float: left;
-    display:none;
-}
-.create-task .task-third .mission-time .yj-date{
-    width: 180px;
+    left: 0px;
+    top:0px;
+    width: 100%;
     height: 28px;
     padding:0 8px;
-    margin-top: 6px;
-    border-radius: 2px;
+    cursor: pointer;
+}
+.create-task .send-time input::-webkit-input-placeholder{
     color: rgba(130, 130, 151, 1);
-    font-size: 12px;
-    text-align: left;
-    font-family: PingFangSC-Medium;
-    background-color: rgba(255, 255, 255, 1);
-    border: 1px solid rgba(236, 236, 244, 1);
+}
+.create-task .send-time i{
+    position: absolute;
+    right: 6px;
+    top: 2px;
+    color:#828297;
+}
 
+.create-task .task-third .mission-time .yj-demo2-time{
+    width: 100%;
+    height:28px;
+    float: left;
+    display: none;
 }
-.create-task .task-third .mission-time i{
-    float: right;
-}
+
 .create-task .task-third .award input::-webkit-input-placeholder{
     opacity: 0.6;
     color: rgba(130, 130, 151, 1);
