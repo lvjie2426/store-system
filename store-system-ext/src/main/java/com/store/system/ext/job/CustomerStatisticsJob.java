@@ -80,6 +80,7 @@ public class CustomerStatisticsJob implements InitializingBean {
                                             statisticsCustomer.setMonth(statisticsCustomer.getWoman()+1);
                                         }
                                     }
+                                    statisticsCustomer.setTotal(statisticsCustomer.getMan()+statisticsCustomer.getWoman());
                                     statisticsCustomerJobDao.update(statisticsCustomer);
                                 }
                             }else{
@@ -100,6 +101,7 @@ public class CustomerStatisticsJob implements InitializingBean {
                                             statisticsCustomerJob.setMonth(statisticsCustomerJob.getWoman()+1);
                                         }
                                     }
+                                    statisticsCustomerJob.setTotal(statisticsCustomerJob.getMan()+statisticsCustomerJob.getWoman());
                                     statisticsCustomerJobDao.insert(statisticsCustomerJob);
                                 }
                             }
