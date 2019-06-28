@@ -335,6 +335,8 @@
                     <div class="text">任务门店</div>
                     <button type="button" class="shop" onclick="selectShop()">选择门店<i class="iconfont icon-ico_list"></i>
                     </button>
+                    <button type="button" class="obj" style="display:none" onclick="selectObject()">选择<i class="iconfont icon-ico_list"></i>
+                    </button>
                 </div>
             </div>
             <div class="task-second">
@@ -345,18 +347,18 @@
             </div>
             <div class="task-third">
                 <div id="saleroom-box" style="display: block;">
-                    <input type="radio" name="salesNum" id="allShop">
+                    <input type="radio" name="salesNum" id="allShop" data-id="1">
                     <label for="allShop">
                         <span>全店总销售额达到</span>
-                        <input type="number" placeholder="金额">
+                        <input type="number" placeholder="金额" id="target3">
                         <span>元</span>
                     </label>
-                    <input type="radio" name="salesNum" id="selectProduct" checked="checked">
+                    <input type="radio" name="salesNum" id="selectProduct" checked="checked" data-id="2">
                     <label for="selectProduct">
                         <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i>
                         </button>
                         <span>销售额达到</span>
-                        <input type="number" placeholder="金额">
+                        <input type="number" placeholder="金额" id="target2">
                         <span>元</span>
                     </label>
                 </div>
@@ -366,12 +368,12 @@
                         <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i>
                         </button>
                         <span>销售量达到</span>
-                        <input type="number" placeholder="数量">
+                        <input type="number" placeholder="数量" id="target1">
                     </label>
                 </div>
                 <div class="award">
                     <div class="award-text">奖励</div>
-                    <input type="number" placeholder="输入金额">
+                    <input type="number" placeholder="输入金额" id="amount">
                 </div>
                 <div class="mission-time clear">
                     <div class="mission-text">任务时间</div>
@@ -420,20 +422,11 @@
 <div class="task-product">
     <div class="task-header">选择任务产品</div>
     <ul class="product-tab clear" id="product-tab">
-        <li class="product-item active">镜片</li>
-        <li class="product-item">镜架</li>
-        <li class="product-item">隐形眼镜</li>
-        <li class="product-item">太阳镜</li>
-        <li class="product-item">其他商品</li>
     </ul>
     <ol class="product-list-tab">
         <li class="product-list-item active">
             <table id="jp-table" data-toggle="table" class="table"></table>
         </li>
-        <li class="product-list-item"></li>
-        <li class="product-list-item"></li>
-        <li class="product-list-item"></li>
-        <li class="product-list-item"></li>
     </ol>
 </div>
 <!--任务奖励弹窗——确定删除任务-->
@@ -547,24 +540,23 @@
     var diaMsgJob;                                        //短信群发职位
     var executor = [];                                    //公司下门店（选择任务门店）
     var taskType;                                         // 1:创建团队任务; 2:创建个人任务;
-    var categoryData = [];
-    var type;   //1 抵用券营销   2短信群发   3任务奖励
+    var type;                                             //1 抵用券营销   2短信群发   3任务奖励
+    var firstCid;                                               //第一个类目id
     /**初始化页面*/
     $(function () {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
         subid = quakooDb.getItem("sel_ShopId");          //门店ID
+        manage()
         //获取一级类目
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
-                categoryData = ret.data;
-                if(ret.data.length>0){
+                if(quakooUtils.isNotBlack(ret.data)){
                     var html = template('categoryTmp',{list:ret.data});
                     $('#product-tab').html(html);
-                    chooseGoodsType(ret.data[0].id)
+                    firstCid = ret.data[0].id;
                 }
             }
         });
-        manage()
     });
 
     function changeType(t) {
@@ -1398,6 +1390,9 @@
     /**
      * 弹窗创建任务
      * */
+    var taskType = 1;//1=>团队任务；2=>个人任务
+    var amountType = 3;//1销售量-个 2销售额-元 3全店销售额
+    var target;//完成目标;
     function createTask() {
         layer.open({
             type: 1,
@@ -1422,15 +1417,33 @@
                 //创建任务弹窗tab切换
                 $(".create-task-header-tab li").click(function () {
                     $(this).addClass('active').siblings().removeClass('active');
-                    taskType = $(this).attr('',);
+                    taskType = $(this).attr('data-type');
+                    if(taskType==1){
+                        $('#selObjects div.text').html('任务门店');
+                        $('#selObjects button.shop')[0].style.display = "block";
+                        $('#selObjects button.obj')[0].style.display = "none";
+                    }else if(taskType==2){
+                        $('#selObjects div.text').html('任务对象');
+                        $('#selObjects button.shop')[0].style.display = "none";
+                        $('#selObjects button.obj')[0].style.display = "block";
+                    }
                 });
                 //销售额奖励&&销售量奖励单选
                 $("input:radio[name='sales']").click(function () {
                     var salesSelect = $('input:radio[name="sales"]:checked').attr('data-id');
-                    if (salesSelect == 1) {
+                    if (salesSelect == 1) {//销售额奖励
                         $("#saleroom-box")[0].style.display = "block";
                         $("#saleVolume-box")[0].style.display = "none";
-                    } else if (salesSelect == 2) {
+                        $("input:radio[name='salesNum']").click(function(){
+                            var salesNumSelect = $("input:radio[name='salesNum']:checked").attr("data-id");
+                            if(salesNumSelect==1){//全店总销售额
+                                amountType = 3;
+                            }else if(salesNumSelect == 2){//销售额选
+                                amountType = 2;
+                            }
+                        })
+                    } else if (salesSelect == 2) {//销售量奖励
+                        amountType = 1;
                         $("#saleroom-box")[0].style.display = "none";
                         $("#saleVolume-box")[0].style.display = "block";
                     }
@@ -1443,102 +1456,60 @@
     function addTask(index) {
         var param ={};
         var taskName = $('#taskName').val();
+        var amount = $("#amount").val();
+        if(amountType==1){
+            target = $("#target1").val();
+        }else if(amountType==2){
+            target = $("#target2").val();
+        }else if(amountType==3){
+            target = $("#target3").val();
+        }
         if(quakooUtils.isBlack(taskName)){
             layer.msg("请输入任务名称");
             return;
         }
-
-
+        if(quakooUtils.isBlack(executor)){
+            layer.msg("请选择门店或员工");
+            return;
+        }
+        if(quakooUtils.isBlack(target)){
+            layer.msg("请输入目标数");
+            return;
+        }
+        if(quakooUtils.isBlack(amount)){
+            layer.msg("请输入奖励金额");
+            return;
+        }
         param.name = taskName;
         param.executor = executor;
+        param.sid = psid;
+        param.amount = amount;
+        param.amountType= amountType;
+        param.startTime = startTime;
+        param.endTime = endTime;
+        param.type = taskType;
+        param.target = target;
+        if(quakooUtils.isBlack(skuIds)){
+            param.skuIds = skuIds;
+        }
         quakooData.ajaxGetData(config.getUrl_mission_add(),param,function (ret) {
             console.log("创建任务接口数据",ret)
         })
     }
 
-    /**
-     * 任务奖励——创建任务——选择任务产品table
-     * */
-    var $table = $('#jp-table');//商品列表表格
-    var TableInit = function (columns) {
-        var oTableInit = new Object();
-        //初始化Table
-        oTableInit.Init = function () {
-            $table.bootstrapTable('destroy');
-            $table.bootstrapTable({
-                url: config.getUrl_product_getSPUPager(),
-                classes: "table",
-                pagination: true,        //是否显示分页
-                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 10,
-                pageList: [5, 10, 15, 20],
-                sortable: false,
-                sortOrder: "asc",
-                showColumns: true,
-                strictSearch: true,
-                locale: "zh-CN",
-                paginationHAlign: "center",
-                clickToSelect: true,
-                paginationLoop: false,
-                columns: columns,
-                queryParams: function (param) {
-                    if (cid) {
-                        param.cid = cid;
-                    }
-                    param.subid = quakooUser.getUserInfo().psid;
-                    param.token = quakooUser.getUserInfo().token;
-                    return param
-                }
-            });
-        };
-        return oTableInit;
-    };
-    columns = [
-        {checkbox: true, valign: "middle"},
-        {field: "brandName", title: "品牌", valign: "middle"},
-        {field: "seriesName", title: "系列", valign: "middle"},
-        {field: "canUseNum", title: "可用数量", valign: "middle"},
-        {
-            field: "", title: "提成", valign: "middle", formatter: function (value, row, index) {
-                return '<span class="goods-ticheng">团</span>';
-            }
-        },
-        {
-            field: "", title: "库存总值", valign: "middle", formatter: function (value, row, index) {
-                return '￥10000';
-            }
-        },
-        {
-            field: "", title: "操作", valign: "middle", formatter: function (value, row, index) {
-                return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
-            }
-        }
-    ];
     /**任务奖励——创建任务——选择任务产品table选择一级类目*/
-    function chooseGoodsType(value) {
-        if (value) {
-            cid = value;
-        }
-        var Table = new TableInit(columns);
-        Table.Init();
+    function chooseGoodsType(cid) {
+        saveSkuids();
         $('#category' + cid).addClass('active').siblings().removeClass('active');
-    }
-    /**
-     * 选择任务门店
-     * */
-    function renderTaskShop() {
-        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:psid},function (ret) {
-           if(ret&&ret.success){
-               for(var i =0;i<ret.data.length;i++){
-                   executor.push(ret.data[i]);
-               }
-           }
-        });
-        $("#yj-table").bootstrapTable({
-            data: executor,
+        $('#jp-table').bootstrapTable('destroy');
+        $('#jp-table').bootstrapTable({
+            url: config.getUrl_product_getSPUPager(),
             classes: "table",
-            pagination: false,//是否显示分页
+            pagination: true,                    //是否显示分页
+            sidePagination: "server",            //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
             sortable: false,
             sortOrder: "asc",
             showColumns: true,
@@ -1546,48 +1517,69 @@
             locale: "zh-CN",
             paginationHAlign: "center",
             clickToSelect: true,
-            columns: [
-                {checkbox: true, align: "center", valign: "middle"},
-                {field: "name", title: "门店名称"},
+            paginationLoop: false,
+            columns:[
+                {checkbox: true, valign: "middle"},
+                {field: "brandName", title: "品牌", valign: "middle"},
+                {field: "seriesName", title: "系列", valign: "middle"},
+                {field: "canUseNum", title: "可用数量", valign: "middle"},
                 {
-                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                    field: "", title: "提成", valign: "middle", formatter: function (value, row, index) {
+                    return '<span class="goods-ticheng">团</span>';
+                }
+                },
+                {
+                    field: "", title: "库存总值", valign: "middle", formatter: function (value, row, index) {
+                    return '￥10000';
+                }
+                },
+                {
+                    field: "", title: "操作", valign: "middle", formatter: function (value, row, index) {
                         return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
                     }
                 }
-            ]
-
+            ],
+            queryParams: function (param) {
+                param.cid = cid;
+                param.subid = quakooUser.getUserInfo().psid;
+                param.token = quakooUser.getUserInfo().token;
+                return param
+            }
         });
-
+    }
+    /**
+     * 选择任务门店(渲染)
+     * */
+    function renderTaskShop() {
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:psid},function (ret) {
+            console.log("任务门店",ret);
+            if(ret&&ret.success){
+                $("#shop-table").bootstrapTable('destroy');
+                $("#shop-table").bootstrapTable({
+                    data: ret.data,
+                    classes: "table",
+                    pagination: false,//是否显示分页
+                    sortable: false,
+                    sortOrder: "asc",
+                    showColumns: true,
+                    strictSearch: true,
+                    locale: "zh-CN",
+                    paginationHAlign: "center",
+                    clickToSelect: true,
+                    columns: [
+                        {checkbox: true, align: "center", valign: "middle"},
+                        {field: "name", title: "门店名称",align:"center",valign:'middle'},
+                        {
+                            field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                                return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+                            }
+                        }
+                    ]
+                });
+            }
+        });
     }
 
-
-    /**
-     * 选择任务对象
-     * */
-    var data7 = [{}];
-    $("#shop-table").bootstrapTable('destroy');
-    $("#shop-table").bootstrapTable({
-        data: data7,
-        classes: "table",
-        pagination: false,//是否显示分页
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: [
-            {checkbox: true, align: "center", valign: "middle"},
-            {field: "shopName", title: "门店名称", align: "left", valign: "middle"},
-            {
-                field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
-                }
-            }
-        ]
-
-    });
 
 
 
@@ -1595,10 +1587,12 @@
      * 弹窗选择任务产品
      * */
     function selectProduct() {
+        skuIds =[];
+        console.log("xindakai",skuIds)
         var index = layer.open({
             type: 1,
             shade: 0.01,
-            shadeClose: true,
+            shadeClose: false,
             skin: 'layui-layer-demo', //样式类名
             area: ['720px', '600px'],
             anim: 0,
@@ -1609,15 +1603,28 @@
             content: $('.task-product'),
             btn: ['关闭窗口'],
             yes: function (index) {
+                saveSkuids()
+                console.log("选择任务产品选择的数据",skuIds);
                 layer.close(index);
             },
             btn2: function () {
             },
             success: function (layero, index) {
+                chooseGoodsType(firstCid);
             }
         });
-
     }
+
+    /**保存skuids*/
+    function saveSkuids(){
+        var selectData = $("#jp-table").bootstrapTable('getAllSelections');
+        for(var i=0;i<selectData.length;i++){
+            if(skuIds.indexOf(selectData[i].id)<0){
+                skuIds.push(selectData[i].id);
+            }
+        }
+    }
+
 
     /**
      * 弹窗选择任务对象
@@ -1653,7 +1660,7 @@
         var index = layer.open({
             type: 1,
             shade: 0.01,
-            shadeClose: true,
+            shadeClose: false,
             skin: 'dialog-shop', //样式类名
             area: ['360px', '308px'],
             anim: 0,
@@ -1664,6 +1671,11 @@
             content: $('.task-shop'),
             btn: ["关闭窗口"],
             yes: function (index) {
+                executor = [];
+                var selectData = $("#shop-table").bootstrapTable('getAllSelections');
+                for(var i=0;i<selectData.length;i++){
+                    executor.push(selectData[i].id);
+                }
                 layer.close(index);
             },
             success: function (layero, index) {
