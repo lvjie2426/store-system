@@ -165,4 +165,10 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         return details;
     }
 
+    @Override
+    public List<ClientInventoryDetail> getAllList(long subid) throws Exception {
+        List<InventoryDetail> details = inventoryDetailDao.getAllListBySubId(subid);
+        return transformClients(details);
+    }
+
 }

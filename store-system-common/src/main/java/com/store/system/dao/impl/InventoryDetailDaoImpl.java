@@ -40,6 +40,12 @@ public class InventoryDetailDaoImpl extends CacheBaseDao<InventoryDetail> implem
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryDetail> getAllListBySubId(long subid) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
     public List<InventoryDetail> getAllListBySubAndSPU(long subid, long p_spuid) throws DataAccessException {
         return null;
     }

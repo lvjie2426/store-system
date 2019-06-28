@@ -1303,7 +1303,7 @@
                             <%}else{%>
                                 <td><input type="text" placeholder="无折扣" value="" readonly="readonly"></td>
                             <%}%>
-                            <td><%=list[i].subtotal%></td>
+                            <td>¥<%=list[i].subtotal%></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
                     <%}else if(list[i].type ==2){%>
@@ -1467,16 +1467,75 @@
                             <%}%>
                         </ul>
                     </div>
+                    <%if(list.returnData.info){%>
                     <div class="infoOptometry">
                         <h3>验光信息</h3>
-                        <ul>
-                            <%if(list.returnData.info){%>
-                            <%}%>
-                            <li><span>右眼</span></li>
-                            <li><span>左眼</span></li>
-                            <li><span>瞳距</span><%=list.returnData.info.farPd%></li>
-                        </ul>
+                        <%if(list.returnData.info&&list.returnData.info.yuanYongRes){%>
+                        <div class="name">远用</div>
+                        <%if(list.returnData.info.yuanYongRes.rightResItem){%>
+                        <div class="eye">
+                            <span class="eyeText">右眼</span>
+                            <span class="eyeContent"><%=list.returnData.info.yuanYongRes.rightResItemHtml%></span>
+                        </div>
+                        <%}%>
+                        <%if(list.returnData.info.yuanYongRes.leftResItem){%>
+                        <div class="eye">
+                            <span class="eyeText">左眼</span>
+                            <span class="eyeContent"><%=list.returnData.info.yuanYongRes.leftResItemHtml%></span>
+                        </div>
+                        <%}%>
+                        <%}%>
+                        <%if(list.returnData.info&&list.returnData.info.jinYongRes){%>
+                        <div class="name">近用</div>
+                        <%if(list.returnData.info.jinYongRes.rightResItem){%>
+                        <div class="eye">
+                            <span class="eyeText">右眼</span>
+                            <span class="eyeContent"><%=list.returnData.info.jinYongRes.rightResItemHtml%></span>
+                        </div>
+                        <%}%>
+                        <%if(list.returnData.info.jinYongRes.leftResItem){%>
+                        <div class="eye">
+                            <span class="eyeText">左眼</span>
+                            <span class="eyeContent"><%=list.returnData.info.jinYongRes.leftResItemHtml%></span>
+                        </div>
+                        <%}%>
+                        <%}%>
+                        <%if(list.returnData.info&&list.returnData.info.yinXingRes){%>
+                        <div class="name">隐形</div>
+                        <%if(list.returnData.info.yinXingRes.rightResItem){%>
+                        <div class="eye">
+                            <span class="eyeText">右眼</span>
+                            <span class="eyeContent"><%=list.returnData.info.yinXingRes.rightResItemHtml%></span>
+                        </div>
+                        <%}%>
+                        <%if(list.returnData.info.yinXingRes.leftResItem){%>
+                        <div class="eye">
+                            <span class="eyeText">左眼</span>
+                            <span class="eyeContent"><%=list.returnData.info.yinXingRes.leftResItemHtml%></span>
+                        </div>
+                        <%}%>
+                        <%}%>
+                        <%if(list.returnData.info&&list.returnData.info.jianJinDuoJiaoDianRes){%>
+                        <div class="name">渐进多焦点</div>
+                        <%if(list.returnData.info.jianJinDuoJiaoDianRes.rightResItem){%>
+                        <div class="eye">
+                            <span class="eyeText">右眼</span>
+                            <span class="eyeContent"><%=list.returnData.info.jianJinDuoJiaoDianRes.rightResItemHtml%></span>
+                        </div>
+                        <%}%>
+                        <%if(list.returnData.info.jianJinDuoJiaoDianRes.leftResItem){%>
+                        <div class="eye">
+                            <span class="eyeText">左眼</span>
+                            <span class="eyeContent"><%=list.returnData.info.jianJinDuoJiaoDianRes.leftResItemHtml%></span>
+                        </div>
+                        <%}%>
+                        <%}%>
+                        <div class="tongju">
+                            <span class="eyeText">瞳距</span>
+                            <span class="eyeContent"><%=list.returnData.info.farPd%></span>
+                        </div>
                     </div>
+                    <%}%>
                     <div class="purchaseItems">
                         <ul>
                             <%for(var i = 0;i < list.returnData.skuids.length;i++){%>
@@ -1543,100 +1602,6 @@
                             <li><span class="fl">订单号</span><span class="fr"></span></li>
                             <li><span class="fl">销售员</span><span class="fr"></span></li>
                             <li class="btnRed"><span class="fl">订单状态</span><span class="fr"></span></li>
-                        </ul>
-                    </div>
-                    <div class="infoOptometry">
-                        <h3>验光信息</h3>
-                        <%if(list.returnData.info&&list.returnData.info.yuanYongRes){%>
-                            <div class="name">远用</div>
-                            <%if(list.returnData.info.yuanYongRes.rightResItem){%>
-                                <div class="eye">
-                                    <span class="eyeText">右眼</span>
-                                    <span class="eyeContent"><%=list.returnData.info.yuanYongRes.rightResItemHtml%></span>
-                                </div>
-                            <%}%>
-                            <%if(list.returnData.info.yuanYongRes.leftResItem){%>
-                                <div class="eye">
-                                    <span class="eyeText">左眼</span>
-                                    <span class="eyeContent"><%=list.returnData.info.yuanYongRes.leftResItemHtml%></span>
-                                </div>
-                            <%}%>
-                        <%}%>
-                        <%if(list.returnData.info&&list.returnData.info.jinYongRes){%>
-                            <div class="name">近用</div>
-                            <%if(list.returnData.info.jinYongRes.rightResItem){%>
-                                <div class="eye">
-                                    <span class="eyeText">右眼</span>
-                                    <span class="eyeContent"><%=list.returnData.info.jinYongRes.rightResItemHtml%></span>
-                                </div>
-                            <%}%>
-                            <%if(list.returnData.info.jinYongRes.leftResItem){%>
-                                <div class="eye">
-                                    <span class="eyeText">左眼</span>
-                                    <span class="eyeContent"><%=list.returnData.info.jinYongRes.leftResItemHtml%></span>
-                                </div>
-                            <%}%>
-                        <%}%>
-                        <%if(list.returnData.info&&list.returnData.info.yinXingRes){%>
-                            <div class="name">隐形</div>
-                            <%if(list.returnData.info.yinXingRes.rightResItem){%>
-                                <div class="eye">
-                                    <span class="eyeText">右眼</span>
-                                    <span class="eyeContent"><%=list.returnData.info.yinXingRes.rightResItemHtml%></span>
-                                </div>
-                            <%}%>
-                            <%if(list.returnData.info.yinXingRes.leftResItem){%>
-                                <div class="eye">
-                                    <span class="eyeText">左眼</span>
-                                    <span class="eyeContent"><%=list.returnData.info.yinXingRes.leftResItemHtml%></span>
-                                </div>
-                            <%}%>
-                        <%}%>
-                        <%if(list.returnData.info&&list.returnData.info.jianJinDuoJiaoDianRes){%>
-                            <div class="name">渐进多焦点</div>
-                            <%if(list.returnData.info.jianJinDuoJiaoDianRes.rightResItem){%>
-                                <div class="eye">
-                                    <span class="eyeText">右眼</span>
-                                    <span class="eyeContent"><%=list.returnData.info.jianJinDuoJiaoDianRes.rightResItemHtml%></span>
-                                </div>
-                            <%}%>
-                            <%if(list.returnData.info.jianJinDuoJiaoDianRes.leftResItem){%>
-                                <div class="eye">
-                                    <span class="eyeText">左眼</span>
-                                    <span class="eyeContent"><%=list.returnData.info.jianJinDuoJiaoDianRes.leftResItemHtml%></span>
-                                </div>
-                            <%}%>
-                        <%}%>
-
-
-                        <div class="name">近用</div>
-                        <div class="eye">
-                            <span class="eyeText">右眼</span>
-                            <span class="eyeContent">s:0 dadf:23 </span>
-                        </div>
-                        <div class="eye">
-                            <span class="eyeText">左眼</span>
-                            <span class="eyeContent">s:0 dadf:23 </span>
-                        </div>
-                        <div class="tongju">
-                            <span class="eyeText">瞳距</span>
-                            <span class="eyeContent"><%=list.returnData.info.farPd%></span>
-                        </div>
-                        <div>隐形</div>
-                        <div>渐进多焦点</div>
-                        <ul>
-                            <li><span>右眼</span></li>
-                            <li><span>左眼</span></li>
-                            <li><span>瞳距</span></li>
-                        </ul>
-                    </div>
-                    <div class="purchaseItems">
-                        <ul>
-                            <li>
-                                <span class="text">HYDRON 海昌透明黑色单片年抛</span>
-                                <span class="num">X1</span>
-                                <span class="price">￥30</span>
-                            </li>
                         </ul>
                     </div>
                     <div class="reduction">
@@ -2468,6 +2433,7 @@
                     if(index === 1){
                         //验光师下拉框
                         if(quakooUtils.isNotBlack(ret.data)){
+                            console.log('验光师',ret.data);
                             document.querySelector("#optometristName .text").innerHTML = ret.data[0].name;
                             optUid = ret.data[0].id;
                             var html="";
@@ -2741,10 +2707,10 @@
                     {field: "providerName", title: "来源", align: "left", valign: "middle"},
                     {field: "", title: "操作", align: "left", valign: "middle",formatter: function (value, row, index) {
                             var html;
-                            if(type == 0){
-                                html = "<div class='btnSeeHistory' onclick='getSKU("+type+","+ JSON.stringify(row.id) +","+JSON.stringify(row.name)+","+JSON.stringify(row.categoryName)+")'>选择</div>";
-                            }else if(type == 1){
-                                html = "<div class='btnSeeHistory' onclick='getSKU("+type+","+ JSON.stringify(row.id) +","+JSON.stringify(row.name)+","+JSON.stringify(row.categoryName)+","+JSON.stringify(row.integralNum)+")'>选择</div>";
+                            if(locOrder.type == 0){
+                                html = "<div class='btnSeeHistory' onclick='getSKU("+locOrder.type+","+ JSON.stringify(row.id) +","+JSON.stringify(row.seriesName)+","+JSON.stringify(row.categoryName)+")'>选择</div>";
+                            }else if(locOrder.type == 1){
+                                html = "<div class='btnSeeHistory' onclick='getSKU("+locOrder.type+","+ JSON.stringify(row.id) +","+JSON.stringify(row.seriesName)+","+JSON.stringify(row.categoryName)+","+JSON.stringify(row.integralNum)+")'>选择</div>";
                             }
                             return html;
                     }},
@@ -2768,7 +2734,7 @@
         }
         /**获取SKU*/
         function getSKU(type,spuid,spuName,categoryName,integralNum){
-            locOrder.series = spuName;
+            locOrder.series = spuName||"";
             var title = "";
             if(type==0){
                 title = '添加常规商品'
@@ -2821,10 +2787,10 @@
                                             return value[16];
                                         }},
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
+                                            return "¥"+(value/100).toFixed(2);
                                         }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
+                                            return "¥"+(value/100).toFixed(2);
                                         }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
@@ -2854,11 +2820,11 @@
                                         }
                                     },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                        return "¥"+value;
+                                        return "¥"+(value/100).toFixed(2);
                                     }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -2893,11 +2859,11 @@
                                          }
                                      },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -2926,11 +2892,11 @@
                                         }
                                     },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -2955,11 +2921,11 @@
                                          }
                                      },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -2984,11 +2950,11 @@
                                          }
                                      },*/
                                     { field: 'costPrice', title: '成本价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'retailPrice', title: '零售价',formatter:function(value){
-                                            return "¥"+value;
-                                        }},
+                                        return "¥"+(value/100).toFixed(2);
+                                    }},
                                     { field: 'num', title: '备货量'},
                                     { field: 'canUseNum', title: '库存',formatter:function (value) {
                                             return '<span class="inventory" >'+value+'</span>';
@@ -3062,6 +3028,7 @@
         }
         /**添加常规商品*/
         function addPro(type) {
+//            debugger;
             var index = layer.open({
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
@@ -3125,13 +3092,15 @@
                 }
                 orderFormData[markup+skuid].spuid = spuid;
                 orderFormData[markup+skuid].skuid = skuid;
-                orderFormData[markup+skuid].productName = locOrder.className+locOrder.brandName+locOrder.series+code;
+                if(locOrder.series){
+                    orderFormData[markup+skuid].productName = locOrder.className+'-'+locOrder.brandName+'-'+locOrder.series+'-'+code;
+                }
+                orderFormData[markup+skuid].productName = locOrder.className+'-'+locOrder.brandName+'-'+code;
                 orderFormData[markup+skuid].number = quantity;
                 orderFormData[markup+skuid].price = price;
             }else if(quakooUtils.isNotBlack(orderFormData[markup+skuid])){
                 orderFormData[markup+skuid].number = parseInt(quantity)+parseInt(orderFormData[markup+skuid].number);
             }
-            layer.msg(orderFormData[markup+skuid].productName+"已添加"+orderFormData[markup+skuid].number,{icon:1});
                 renderOrderForm(markup+skuid);
         }
         /**查看历史记录*/
@@ -3205,6 +3174,7 @@
 
             }
         }
+        var countSkuList;
         /**获取订单金额之后渲染订单表格数据*/
         function renderOrderForm(nowObj){
             /*获取金额*/
@@ -3223,7 +3193,7 @@
                     }else if(orderFormData[i].type == 3){//附加费用
                         var obj = {};
                         obj.name = orderFormData[i].name;
-                        obj.price = orderFormData[i].money;
+                        obj.price = orderFormData[i].money*100;
                         params.surchargesJson.push(obj);
                     }else if(orderFormData[i].type == 4){//促销方式
                         params.couponid = orderFormData[i].id;
@@ -3233,12 +3203,14 @@
                 params.surchargesJson = JSON.stringify(params.surchargesJson);
                 quakooData.ajaxGetData(config.getUrl_order_countPrice(),params,function (ret) {
                     if(ret&&ret.success){
+                        layer.msg("添加成功",{icon:1});
+                        countSkuList = ret.data.skuids
                         priceData = ret.data;
-                        for(var i in priceData.clientSkuids){
+                        for(var i in priceData.skuids){
                             for(var j in orderFormData){
-                                if(priceData.clientSkuids[i].spuid==orderFormData[j].spuid&&priceData.clientSkuids[i].skuid==orderFormData[j].skuid){
-                                    //orderFormData[j].discount = priceData.clientSkuids[i].discount;//折扣
-                                    orderFormData[j].subtotal = priceData.clientSkuids[i].subtotal;//小计
+                                if(priceData.skuids[i].spuid==orderFormData[j].spuid&&priceData.skuids[i].skuid==orderFormData[j].skuid){
+                                    orderFormData[j].discount = priceData.skuids[i].discount;//折扣
+                                    orderFormData[j].subtotal = priceData.skuids[i].subtotal;//小计
                                 }
                             }
                         }
@@ -3300,10 +3272,6 @@
                 return;
             }*/
             param.authCode = authCode;
-            if(quakooUtils.isBlack($('#PaidMoney').val())){
-                layer.msg('请输入实收金额',{icon:4});
-                return;
-            }
             param.price = parseInt($('#PaidMoney').val()*100);
             if(quakooUtils.isBlack($('#dicountPrice').html())){
                 layer.msg("请选择商品",{icon:4});
@@ -3320,6 +3288,11 @@
                 layer.msg('请选择商品',{icon:4});
                 return;
             }
+            if(quakooUtils.isBlack($('#PaidMoney').val())){
+                layer.msg('请输入实收金额',{icon:4});
+                return;
+            }
+
             param.skuidsList = [];
             for(var i in orderFormData){
                 if(i.indexOf('changgui')>=0||i.indexOf('jifen')>=0){
@@ -3333,18 +3306,20 @@
                 }
                 if(i.indexOf('extra')>=0){
                     param.surchargesJson = [];
+                    param.surchargesJson[0] = {};
                     param.surchargesJson[0].name = orderFormData[i].name;
                     param.surchargesJson[0].price = parseInt(orderFormData[i].money*100);
                 }
             }
-            param.skuidsList = JSON.stringify(param.skuidsList);
+//            param.skuidsList = JSON.stringify(param.skuidsList);
+            param.skuidsList = JSON.stringify(countSkuList);
             param.surchargesJson = JSON.stringify(param.surchargesJson);
             console.log("保存订单传参：",param);
-            if(type){
+            if(type){//提交订单
                 submitInfo = param;
                 submitOrder();//提交订单弹窗
                 return;
-            }else{
+            }else{//保存订单
                 quakooData.ajaxGetData(config.getUrl_order_saveOrder(),param,function (ret) {
                     console.log(ret);
                     if(ret&&ret.success){
@@ -3390,7 +3365,6 @@
         /**渲染提交订单信息*/
         function renderSubmit(data){
             if(data){
-                console.log("order:",data);
                 payOrderData.yuanjia = (data.totalPrice/100).toFixed(2);
                 payOrderData.zhehoujia = (data.dicountPrice/100).toFixed(2);
                 payOrderData.tehuijianmian = 0;
@@ -3476,8 +3450,60 @@
                     layer.msg("支付成功",{icon:1});
                     // payOrderData.weishou = payOrderData.weishou-ret.data.;
                     ret.data.price = (ret.data.price/100).toFixed(2);
+                    if(quakooUtils.isNotBlack(ret.data.info)){
+                        if(quakooUtils.isBlack(ret.data.info.yuanYongRes)||(quakooUtils.isBlack(ret.data.info.yuanYongRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.yuanYongRes.rightResItem))){
+                            ret.data.info.yuanYongRes = null;
+                        }else{
+                            ret.data.info.yuanYongRes.leftResItemHtml ='';
+                            ret.data.info.yuanYongRes.rightResItemHtml ='';
+                            for(var i in ret.data.info.yuanYongRes.leftResItem){
+                                ret.data.info.yuanYongRes.leftResItemHtml+= i+':'+ret.data.info.yuanYongRes.leftResItem[i]+'&nbsp';
+                            }
+                            for(var i in ret.data.info.yuanYongRes.rightResItem){
+                                ret.data.info.yuanYongRes.rightResItemHtml += i+':'+ret.data.info.yuanYongRes.rightResItem[i]+'&nbsp';
+                            }
+                        }
+                        if(quakooUtils.isBlack(ret.data.info.yinXingRes)||(quakooUtils.isBlack(ret.data.info.yinXingRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.yinXingRes.rightResItem))){
+                            ret.data.info.yinXingRes = null;
+                        }else{
+                            ret.data.info.yinXingRes.leftResItemHtml ='';
+                            ret.data.info.yinXingRes.rightResItemHtml ='';
+                            for(var i in ret.data.info.yinXingRes.leftResItem){
+                                ret.data.info.yinXingRes.leftResItemHtml+= i+':'+ret.data.info.yinXingRes.leftResItem[i]+'&nbsp';
+                            }
+                            for(var i in ret.data.info.yinXingRes.rightResItem){
+                                ret.data.info.yinXingRes.rightResItemHtml += i+':'+ret.data.info.yinXingRes.rightResItem[i]+'&nbsp';
+                            }
+                        }
+                        if(quakooUtils.isBlack(ret.data.info.jinYongRes)||(quakooUtils.isBlack(ret.data.info.jinYongRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.jinYongRes.rightResItem))){
+                            ret.data.info.jinYongRes = null;
+                        }else{
+                            ret.data.info.jinYongRes.leftResItemHtml ='';
+                            ret.data.info.jinYongRes.rightResItemHtml ='';
+                            for(var i in ret.data.info.jinYongRes.leftResItem){
+                                ret.data.info.jinYongRes.leftResItemHtml+= i+':'+ret.data.info.jinYongRes.leftResItem[i]+'&nbsp';
+                            }
+                            for(var i in ret.data.info.jinYongRes.rightResItem){
+                                ret.data.info.jinYongRes.rightResItemHtml += i+':'+ret.data.info.jinYongRes.rightResItem[i]+'&nbsp';
+                            }
+                        }
+                        if(quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes)||(quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes.rightResItem))){
+                            ret.data.info.jianJinDuoJiaoDianRes = null;
+                        }else{
+                            ret.data.info.jianJinDuoJiaoDianRes.leftResItemHtml ='';
+                            ret.data.info.jianJinDuoJiaoDianRes.rightResItemHtml ='';
+                            for(var i in ret.data.info.jianJinDuoJiaoDianRes.leftResItem){
+                                ret.data.info.jianJinDuoJiaoDianRes.leftResItemHtml+= i+':'+ret.data.info.jianJinDuoJiaoDianRes.leftResItem[i]+'&nbsp';
+                            }
+                            for(var i in ret.data.info.jianJinDuoJiaoDianRes.rightResItem){
+                                ret.data.info.jianJinDuoJiaoDianRes.rightResItemHtml += i+':'+ret.data.info.jianJinDuoJiaoDianRes.rightResItem[i]+'&nbsp';
+                            }
+                        }
+                    }
+                    console.log("支付渲染数据",ret.data);
                     payOrderData.returnData = ret.data;
                     renderSubmit();
+
                     $('.paymentPopup .speedProgress li').removeClass("active").eq(2).addClass("active");
                     $('.paymentPopup .payContent .content-item').removeClass('active');
                     $('.paymentPopup .payContent .content-item.third').addClass('active');
