@@ -41,4 +41,6 @@ public interface ProductService {
     public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid, long uid) throws Exception;
 
     public boolean updateSaleStatus(long id, int open)throws Exception;
+
+    public List<ProductSKU> getSkuBySubid(long subid,int type)throws Exception;
 }
