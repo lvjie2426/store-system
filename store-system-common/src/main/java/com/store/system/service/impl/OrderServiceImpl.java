@@ -550,7 +550,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         if (StringUtils.isBlank(aliAddid)) throw new StoreSystemException("aliAddid is null!");
         if (StringUtils.isBlank(aliPrivateKey)) throw new StoreSystemException("aliPrivateKey is null!");
         String trade_no = order.getOrderNo();
-        double refund_amount = order.getPrice();
+        double refund_amount = ArithUtils.div(order.getPrice(),100.0,2);
         String out_request_no = PayUtils.getOutTradeNo(roid, refundOrder.getGmt());
         Map<String, Object> bizContentMap = Maps.newLinkedHashMap();
         bizContentMap.put("trade_no", trade_no);
@@ -953,10 +953,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
 
         double discountPriceYuan=0;
-        double totalPriceYuan=0;
-        double totalPrice=0;//总金额
+        double totalPrice=0;//总金额 原价
         int surchargePrice=0;//附加费
-
 
         for(OrderSku orderSku:orderSkuList){
             long skuId=orderSku.getSkuid();
@@ -980,17 +978,17 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 double unitPrice = skuMap.get(skuId).getRetailPrice() * orderSku.getNum();
                 if (spuDiscount == 0) {
                     //小计
-                    subPrice = (unitPrice) / 100.0;
-                    subTotal = (unitPrice * (userDisCount / 10.0)) / 100.0;
+                    subPrice = unitPrice;
+                    subTotal = unitPrice * (userDisCount / 10.0);
 
                 } else if (userDisCount == 0) {
                     //小计
-                    subPrice = (unitPrice * (spuDiscount / 10.0)) / 100.0;
-                    subTotal = (unitPrice * (spuDiscount / 10.0)) / 100.0;
+                    subPrice = unitPrice * (spuDiscount / 10.0);
+                    subTotal = unitPrice * (spuDiscount / 10.0);
                 } else {
                     //小计
-                    subPrice = (unitPrice * (spuDiscount / 10.0)) / 100.0;
-                    subTotal = (unitPrice * (spuDiscount / 10.0) * (userDisCount / 10.0)) / 100.0;
+                    subPrice = unitPrice * (spuDiscount / 10.0);
+                    subTotal = unitPrice * (spuDiscount / 10.0) * (userDisCount / 10.0);
                 }
                 //商品单价
                 retailPrice = skuMap.get(skuId).getRetailPrice() / 100.0;
@@ -998,10 +996,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 orderSku.setCode(skuMap.get(skuId).getCode());
                 orderSku.setName(skuMap.get(skuId).getName());
                 orderSku.setDiscount(spuDiscount);
-                orderSku.setSubtotal(subPrice);
-                orderSku.setLastSubtotal(subTotal);
+                orderSku.setSubtotal(subPrice/100.0);
+                orderSku.setLastSubtotal(subTotal/100.0);
                 totalPrice = ArithUtils.add(subPrice,totalPrice);
-
             }
 
             //积分商品
@@ -1032,35 +1029,36 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 orderSku.setDiscount(0);//积分商品没有折扣
                 orderSku.setSubtotal(subPrice);
                 orderSku.setLastSubtotal(subTotal);
+                totalPrice = ArithUtils.add(subPrice,totalPrice);
             }
 
-        totalPriceYuan = totalPrice;
         if(userDisCount==0) {
             discountPriceYuan = totalPrice;
         }else{
-            discountPriceYuan = totalPrice * userDisCount;//折后金额
+            discountPriceYuan = totalPrice * userDisCount/10.0;//折后金额
         }
+        //todo:
         //计算促销券
-        if (couponid > 0) {
+/*        if (couponid > 0) {
             MarketingCoupon marketingCoupon = marketingCouponDao.load(couponid);
             if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_money) {
                 discountPriceYuan = ((discountPriceYuan - marketingCoupon.getDescSubtract()));
             }
             if (marketingCoupon.getDescSubtractType() == MarketingCoupon.desc_subtract_type_rate) {
-                discountPriceYuan = ((discountPriceYuan - totalPriceYuan * (marketingCoupon.getDescSubtract() / 10.0)));
+                discountPriceYuan = ((discountPriceYuan - totalPrice * (marketingCoupon.getDescSubtract() / 10.0)));
             }
-        }
+        }*/
         //添加附加费用
         if (surchargeList.size() > 0) {
             for (Surcharge surcharge : surchargeList) {
                 surchargePrice += surcharge.getPrice();
             }
         }
-        totalPriceYuan+=ArithUtils.add(totalPriceYuan,surchargePrice);
+            totalPrice = ArithUtils.add(totalPrice, surchargePrice);
         }
         map.put("surchargeList",surchargeList);//附加费用
         map.put("discountPriceYuan",ArithUtils.div(discountPriceYuan,100.0,2));//折扣后金额
-        map.put("totalPriceYuan",ArithUtils.div(totalPriceYuan,100.0,2));//总金额
+        map.put("totalPriceYuan",ArithUtils.div(totalPrice,100.0,2));//总金额
         map.put("orderSkus",orderSkuList);//sku小计单
         return map;
     }
@@ -1262,7 +1260,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
         OptometryInfo optometryInfo = optometryInfoDao.load(order.getOiId());
         Subordinate subordinate = subordinateDao.load(order.getSubid());
-        if(subordinate != null) clientOrder.setSubName(subordinate.getName());
+        if(subordinate != null) {
+            clientOrder.setSubName(subordinate.getName());
+            clientOrder.setThreePolicy(subordinate.getThreePolicy());
+            clientOrder.setPhone(subordinate.getPhone());
+            clientOrder.setAddress(subordinate.getAddress());
+        }
+
         User user = userDao.load(order.getUid());
         if(user != null) {
             clientOrder.setUName(user.getName());

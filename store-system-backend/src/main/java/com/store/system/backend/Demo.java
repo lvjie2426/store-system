@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @ClassName Demo
@@ -28,6 +30,11 @@ public class Demo {
 //        calendar.setTimeInMillis(System.currentTimeMillis());
 //        List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.WEEK_OF_YEAR));//20190615 获得15
 
-//        System.out.println(days);
+        String regex = "^[1-9]+(.[1-9]{1})?$";
+//        String regex = "[1-9](\.[1-9])?|0\.[1-9]";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher("5.5");
+        boolean flag = matcher.matches();
+            System.err.println(flag);
     }
 }

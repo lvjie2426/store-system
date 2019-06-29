@@ -5,16 +5,9 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientMission;
-import com.store.system.dao.MissionDao;
-import com.store.system.dao.SubordinateMissionPoolDao;
-import com.store.system.dao.UserMissionPoolDao;
-import com.store.system.model.Mission;
-import com.store.system.model.Subordinate;
-import com.store.system.model.SubordinateMissionPool;
-import com.store.system.model.UserMissionPool;
-import com.store.system.service.MissionService;
-import com.store.system.service.SubordinateMissionPoolService;
-import com.store.system.service.UserMissionPoolService;
+import com.store.system.dao.*;
+import com.store.system.model.*;
+import com.store.system.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -46,9 +39,13 @@ public class MissionServiceImpl  implements MissionService {
     @Resource
     private UserMissionPoolDao userMissionPoolDao;
 
+    @Resource
+    private ProductService productService;
+
     @Override
     @Transactional
     public Mission insert(Mission mission) throws Exception {
+        mission.setStartTime(System.currentTimeMillis());
         mission = missionDao.insert(mission);
         if(mission.getType()==Mission.type_tem){
             //团队任务
@@ -197,11 +194,12 @@ public class MissionServiceImpl  implements MissionService {
         ClientMission clientMission = new ClientMission(mission);
         int allProgress = 0;
         int allAmount = 0;
-        List<Long> ids = clientMission.getExecutor();
+
         if(mission.getType()==Mission.type_tem){
-            //团队任务
-            for(Long id:ids){
-                SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(mission.getId(),id);
+            //团队任务 需要先查询门店下的所有sku 然后进行统计
+            List<ProductSKU> ids = productService.getSkuBySubid(mission.getSid(),ProductSPU.type_common);
+            for(ProductSKU sku:ids){
+                SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(mission.getId(),sku.getId());
                 if(subordinateMissionPool!=null){
                     if(mission.getAmountType()==Mission.amountType_number){
                         allAmount+=subordinateMissionPool.getNumber();//总数量
@@ -213,7 +211,7 @@ public class MissionServiceImpl  implements MissionService {
             allProgress += getProgress(allAmount,mission.getTarget());//完成度 当前完成数量/目标数量
         }else{
             //个人任务
-            for(Long id:ids){
+            for(Long id:clientMission.getExecutor()){
                 UserMissionPool userMissionPool = userMissionPoolService.load(mission.getId(),id);
                 if(userMissionPool!=null){
                     if(mission.getAmountType()==Mission.amountType_number){

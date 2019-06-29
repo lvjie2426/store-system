@@ -1,8 +1,11 @@
 package com.store.system.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.InventoryCheckBillItem;
 import com.store.system.client.ClientMission;
 import com.store.system.client.ClientUser;
 import com.store.system.client.PagerResult;
@@ -13,6 +16,7 @@ import com.store.system.service.MissionService;
 import com.store.system.service.SubordinateMissionPoolService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserMissionPoolService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +47,19 @@ public class MissionController extends BaseController {
     private SubordinateService subordinateService;
 
     @RequestMapping("/add")
-    public ModelAndView add(Mission mission, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView add(Mission mission, String executorJson, String skuIdsJson,
+                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            List<Long> ids = Lists.newArrayList();
+            List<Long> skuIds = Lists.newArrayList();
+            if(StringUtils.isNotBlank(executorJson)) {
+                ids = JsonUtils.fromJson(executorJson, new TypeReference<List<Long>>() {});
+            }
+            if(StringUtils.isNotBlank(skuIdsJson)) {
+                skuIds = JsonUtils.fromJson(skuIdsJson, new TypeReference<List<Long>>() {});
+            }
+            mission.setExecutor(ids);
+            mission.setSkuIds(skuIds);
             Mission missionEntity = missionService.insert(mission);
             return this.viewNegotiating(request,response, new ResultClient(true, missionEntity));
         } catch (StoreSystemException e) {

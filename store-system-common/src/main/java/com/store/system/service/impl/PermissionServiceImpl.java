@@ -41,6 +41,7 @@ public class PermissionServiceImpl implements PermissionService {
         currentPermission.setHref(permission.getHref());
         currentPermission.setText(permission.getText());
         currentPermission.setSort(permission.getSort());
+        currentPermission.setMenu(permission.getMenu());
         currentPermission.setSubordinate(permission.getSubordinate());
         boolean sign = permissionDao.update(currentPermission);
         return sign;

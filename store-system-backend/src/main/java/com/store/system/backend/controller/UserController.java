@@ -51,6 +51,7 @@ public class UserController extends BaseController {
     @Resource
     private UserService userService;
 
+
     @Resource
     private PermissionService permissionService;
 
@@ -74,19 +75,19 @@ public class UserController extends BaseController {
                 continue;
             }
             long pid = permission.getPid();
-            List<Permission>  subPermissions = res.get(pid);
+            List<Permission> subPermissions = res.get(pid);
             if(null == subPermissions) {
                 subPermissions = Lists.newArrayList();
                 res.put(pid, subPermissions);
             }
             subPermissions.add(permission);
         }
-        List<Permission> rootPermissions = res.get(0l);
-        if(null != rootPermissions) {
-            for(Iterator<Permission> it = rootPermissions.iterator(); it.hasNext();) {
-                if(!res.keySet().contains(it.next().getId())) it.remove();
-            }
-        }
+//        List<Permission> rootPermissions = res.get(0l);
+//        if(null != rootPermissions) {
+//            for(Iterator<Permission> it = rootPermissions.iterator(); it.hasNext();) {
+//                if(!res.keySet().contains(it.next().getId())) it.remove();
+//            }
+//        }
         for(List<Permission> one : res.values()) {
             Collections.sort(one);
         }

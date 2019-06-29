@@ -302,10 +302,16 @@
             if(isNotBlank(subordinate)){
                 param.subordinate = subordinate;
                 trNode.subordinate = subordinate;
+            }else{
+                param.subordinate=0;
+                trNode.subordinate=0
             }
             if(isNotBlank(menu)){
                 param.menu = menu;
                 trNode.menu = menu;
+            }else{
+                param.menu=0;
+                trNode.menu=0;
             }
             if(isNotBlank(href)){
                 param.href = href;

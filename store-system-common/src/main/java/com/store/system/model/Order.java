@@ -68,7 +68,9 @@ public class Order implements Serializable {
 
     private String title;
 
-    private String desc; //描述
+    private String desc; //订单备注
+
+    private String receiptDesc; //小票备注
 
     private int totalPrice;//总金额(分)
     private double discount;//折扣

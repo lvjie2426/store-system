@@ -1,12 +1,11 @@
 ﻿// var serverUrl = "http://xiuqiangback.ikid06.cn";//秀强线上服务器//
-//  var serverUrl = "http://127.0.0.1:10004";//本地服务器mvn
+// var serverUrl = "http://127.0.0.1:20005";//本地服务器mvn
 var serverUrl = "http://39.107.247.82:20005";//测试服务器
 // var serverUrl = "http://192.168.1.30:20005";//李浩杰服务器
-// var serverUrl = "http://192.168.1.28:20005";//服务器
 var loginUrl = serverUrl + "/login/in"; //登录 userName=456&password=456&code=xxxx
 var loginCodeUrl = serverUrl + "/login/verifyCode"; //登录验证码
 // var serverToken = '?token=bPra5sVLqHa24nmIdLBpXhnRP%2FtJhO1pr3vZ3v%2FOA8A%3D';
-// app 快捷功能管理
+// app 快捷功能gi
 // var functionPortAllList = serverUrl + '/functionPort/getAllList';
 
 //获取集团管理员的轮播图列表
