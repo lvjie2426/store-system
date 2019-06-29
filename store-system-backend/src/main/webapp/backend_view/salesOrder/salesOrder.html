@@ -1392,7 +1392,7 @@
                         <li>
                             <div class="topic">支付宝</div>
                             <%if(list.returnData&&list.returnData.payType==1&&list.returnData.status==1){%>
-                                <div class="valueBox btnBlack"><%=list.returnData.price%> <span class="btnRed fr mr10" onclick="reimburse('<%=list.returnData.id%>')">退款</span></div>
+                                <div class="valueBox btnBlack"><%=list.returnData.price%> <span class="btnRed fr mr10" onclick="reimburse('<%=list.returnData.id%>',1)">退款</span></div>
                             <%}else if(list.returnData&&list.returnData.payType==1&&list.returnData.status==3){%>
                             <div class="valueBox btnBlack"><span class="btnRed fr mr10">已退款</span></div>
                             <%}else{%>
@@ -1401,7 +1401,7 @@
                         </li>
                         <li>
                             <%if(list.returnData&&list.returnData.payType==2){%>
-                            <div class="valueBox btnBlack"><%=list.returnData.price%><span class="btnRed fr mr10">退款</span></div>
+                            <div class="valueBox btnBlack"><%=list.returnData.price%><span class="btnRed fr mr10" onclick="reimburse('<%=list.returnData.id%>',2)">退款</span></div>
                             <%}else{%>
                             <div class="valueBox btnBlue" onclick="payDialog(2)">点击支付</div>
                             <%}%>
@@ -1542,7 +1542,7 @@
                         <ul>
                             <%for(var i = 0;i < list.returnData.skuids.length;i++){%>
                                 <li>
-                                    <span class="text"></span>
+                                    <span class="text"><%=list.returnData.skuids[i].code%></span>
                                     <span class="num">X<%=list.returnData.skuids[i].num%></span>
                                     <span class="price">¥<%=list.returnData.skuids[i].price%></span>
                                 </li>
@@ -1583,17 +1583,17 @@
                     </div>
                     <div class="threePacks">
                         <h6>三包政策</h6>
-                        详细内容详细内容详细内容详细内容详细内容
+                        <%=list.returnData.threePolicy%>
                     </div>
                     <div class="address">
                         <ul>
                             <li>
                                 <span class="fl">地址</span>
-                                <span class="fr ">黔北大道二高西门人行岛天桥处将军大酒店附近</span>
+                                <span class="fr "><%=list.returnData.address%></span>
                             </li>
                             <li>
                                 <span class="fl">电话</span>
-                                <span class="fr">0571-20193819</span>
+                                <span class="fr"><%=list.returnData.phone%></span>
                             </li>
                         </ul>
                     </div>
@@ -1603,7 +1603,6 @@
                     <i id="smallTicketBg"></i>
                 </div>
             <%}%>
-
         </div>
 
     </script>
@@ -1642,6 +1641,8 @@
         var onlinePayMoney;                                   //支付金额
         var payType;                                          //支付类型
         var payOrderData ={};                                 //支付返回值
+        var refundType;                                       //退款类型
+        var printId;                                          //打印小票的ID
         LocYgInfo.yuanTable={class:'yuan-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
         LocYgInfo.yinTable={class:'yin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'曲率',value:'q'},{name:'直径',value:'d'}]};
         LocYgInfo.jinTable={class:'jin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
@@ -3286,6 +3287,7 @@
         function submitOrder(){
             console.log("提交订单页面间的传参:",submitInfo);
             if(submitInfo){
+                printId = 0;
                 layer.open({
                     type: 1,
                     skin: 'submit-Payment', //样式类名
@@ -3300,18 +3302,25 @@
                     resize:false,
                     btn: ['结算并打印小票', '取消'],
                     move:$('.title'),
-                    yes: function () {
-
+                    yes: function (index, layero) {
+                        printId =18;
+                        if(printId){
+                            printReceipts();
+                        }else{
+                            layer.msg("请先完成支付");
+                        }
+                        return false
                     },
-                    btn2: function (layero, index) {
+                    btn2: function (index, layero) {
                         layer.close(index);
                     },
                     success: function (layero, index) {
                         //底部取货勾选框
-                        $('.layui-layer-btn').prepend('<div class="noPickUp"><input type="checkbox" id="week" /><label for="week">未取货</label></div>')
+//                        $('.layui-layer-btn').prepend('<div class="noPickUp"><input type="checkbox" id="week" /><label for="week">未取货</label></div>')
                         //渲染订单数据
                         renderSubmit(submitInfo);
                     }
+
                 });
             }
         }
@@ -3330,6 +3339,7 @@
         }
         /**线上付款*/
         function payDialog(type) {
+            payType = type;
             var title;
             if(type == 1){
                 title = '<h3 class="set-title">支付宝支付</h3>';
@@ -3397,73 +3407,146 @@
             submitInfo.type = 1;
             submitInfo.desc = "desc";
             console.log("支付接口参数：",submitInfo);
-            quakooData.ajaxGetData(config.getUrl_order_handleAliBarcodeOrder(),submitInfo,function (ret) {
-                console.log("线上付款返回值：",ret);
-                if(ret&&ret.success){
-                    layer.msg("支付成功",{icon:1});
-                    // payOrderData.weishou = payOrderData.weishou-ret.data.;
-                    ret.data.price = (ret.data.price/100).toFixed(2);
-                    if(quakooUtils.isNotBlack(ret.data.info)){
-                        if(quakooUtils.isBlack(ret.data.info.yuanYongRes)||(quakooUtils.isBlack(ret.data.info.yuanYongRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.yuanYongRes.rightResItem))){
-                            ret.data.info.yuanYongRes = null;
-                        }else{
-                            ret.data.info.yuanYongRes.leftResItemHtml ='';
-                            ret.data.info.yuanYongRes.rightResItemHtml ='';
-                            for(var i in ret.data.info.yuanYongRes.leftResItem){
-                                ret.data.info.yuanYongRes.leftResItemHtml+= i+':'+ret.data.info.yuanYongRes.leftResItem[i]+'&nbsp';
+            if(payType == 1){
+                quakooData.ajaxGetData(config.getUrl_order_handleAliBarcodeOrder(),submitInfo,function (ret) {
+                    console.log("支付宝付款返回值：",ret);
+                    if(ret&&ret.success){
+                        printId = ret.data.id;
+                        layer.msg("支付成功",{icon:1});
+                        // payOrderData.weishou = payOrderData.weishou-ret.data.;
+                        ret.data.price = (ret.data.price/100).toFixed(2);
+                        if(quakooUtils.isNotBlack(ret.data.info)){
+                            if(quakooUtils.isBlack(ret.data.info.yuanYongRes)||(quakooUtils.isBlack(ret.data.info.yuanYongRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.yuanYongRes.rightResItem))){
+                                ret.data.info.yuanYongRes = null;
+                            }else{
+                                ret.data.info.yuanYongRes.leftResItemHtml ='';
+                                ret.data.info.yuanYongRes.rightResItemHtml ='';
+                                for(var i in ret.data.info.yuanYongRes.leftResItem){
+                                    ret.data.info.yuanYongRes.leftResItemHtml+= i+':'+ret.data.info.yuanYongRes.leftResItem[i]+'&nbsp';
+                                }
+                                for(var i in ret.data.info.yuanYongRes.rightResItem){
+                                    ret.data.info.yuanYongRes.rightResItemHtml += i+':'+ret.data.info.yuanYongRes.rightResItem[i]+'&nbsp';
+                                }
                             }
-                            for(var i in ret.data.info.yuanYongRes.rightResItem){
-                                ret.data.info.yuanYongRes.rightResItemHtml += i+':'+ret.data.info.yuanYongRes.rightResItem[i]+'&nbsp';
+                            if(quakooUtils.isBlack(ret.data.info.yinXingRes)||(quakooUtils.isBlack(ret.data.info.yinXingRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.yinXingRes.rightResItem))){
+                                ret.data.info.yinXingRes = null;
+                            }else{
+                                ret.data.info.yinXingRes.leftResItemHtml ='';
+                                ret.data.info.yinXingRes.rightResItemHtml ='';
+                                for(var i in ret.data.info.yinXingRes.leftResItem){
+                                    ret.data.info.yinXingRes.leftResItemHtml+= i+':'+ret.data.info.yinXingRes.leftResItem[i]+'&nbsp';
+                                }
+                                for(var i in ret.data.info.yinXingRes.rightResItem){
+                                    ret.data.info.yinXingRes.rightResItemHtml += i+':'+ret.data.info.yinXingRes.rightResItem[i]+'&nbsp';
+                                }
+                            }
+                            if(quakooUtils.isBlack(ret.data.info.jinYongRes)||(quakooUtils.isBlack(ret.data.info.jinYongRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.jinYongRes.rightResItem))){
+                                ret.data.info.jinYongRes = null;
+                            }else{
+                                ret.data.info.jinYongRes.leftResItemHtml ='';
+                                ret.data.info.jinYongRes.rightResItemHtml ='';
+                                for(var i in ret.data.info.jinYongRes.leftResItem){
+                                    ret.data.info.jinYongRes.leftResItemHtml+= i+':'+ret.data.info.jinYongRes.leftResItem[i]+'&nbsp';
+                                }
+                                for(var i in ret.data.info.jinYongRes.rightResItem){
+                                    ret.data.info.jinYongRes.rightResItemHtml += i+':'+ret.data.info.jinYongRes.rightResItem[i]+'&nbsp';
+                                }
+                            }
+                            if(quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes)||(quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes.rightResItem))){
+                                ret.data.info.jianJinDuoJiaoDianRes = null;
+                            }else{
+                                ret.data.info.jianJinDuoJiaoDianRes.leftResItemHtml ='';
+                                ret.data.info.jianJinDuoJiaoDianRes.rightResItemHtml ='';
+                                for(var i in ret.data.info.jianJinDuoJiaoDianRes.leftResItem){
+                                    ret.data.info.jianJinDuoJiaoDianRes.leftResItemHtml+= i+':'+ret.data.info.jianJinDuoJiaoDianRes.leftResItem[i]+'&nbsp';
+                                }
+                                for(var i in ret.data.info.jianJinDuoJiaoDianRes.rightResItem){
+                                    ret.data.info.jianJinDuoJiaoDianRes.rightResItemHtml += i+':'+ret.data.info.jianJinDuoJiaoDianRes.rightResItem[i]+'&nbsp';
+                                }
                             }
                         }
-                        if(quakooUtils.isBlack(ret.data.info.yinXingRes)||(quakooUtils.isBlack(ret.data.info.yinXingRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.yinXingRes.rightResItem))){
-                            ret.data.info.yinXingRes = null;
-                        }else{
-                            ret.data.info.yinXingRes.leftResItemHtml ='';
-                            ret.data.info.yinXingRes.rightResItemHtml ='';
-                            for(var i in ret.data.info.yinXingRes.leftResItem){
-                                ret.data.info.yinXingRes.leftResItemHtml+= i+':'+ret.data.info.yinXingRes.leftResItem[i]+'&nbsp';
-                            }
-                            for(var i in ret.data.info.yinXingRes.rightResItem){
-                                ret.data.info.yinXingRes.rightResItemHtml += i+':'+ret.data.info.yinXingRes.rightResItem[i]+'&nbsp';
-                            }
-                        }
-                        if(quakooUtils.isBlack(ret.data.info.jinYongRes)||(quakooUtils.isBlack(ret.data.info.jinYongRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.jinYongRes.rightResItem))){
-                            ret.data.info.jinYongRes = null;
-                        }else{
-                            ret.data.info.jinYongRes.leftResItemHtml ='';
-                            ret.data.info.jinYongRes.rightResItemHtml ='';
-                            for(var i in ret.data.info.jinYongRes.leftResItem){
-                                ret.data.info.jinYongRes.leftResItemHtml+= i+':'+ret.data.info.jinYongRes.leftResItem[i]+'&nbsp';
-                            }
-                            for(var i in ret.data.info.jinYongRes.rightResItem){
-                                ret.data.info.jinYongRes.rightResItemHtml += i+':'+ret.data.info.jinYongRes.rightResItem[i]+'&nbsp';
-                            }
-                        }
-                        if(quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes)||(quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes.rightResItem))){
-                            ret.data.info.jianJinDuoJiaoDianRes = null;
-                        }else{
-                            ret.data.info.jianJinDuoJiaoDianRes.leftResItemHtml ='';
-                            ret.data.info.jianJinDuoJiaoDianRes.rightResItemHtml ='';
-                            for(var i in ret.data.info.jianJinDuoJiaoDianRes.leftResItem){
-                                ret.data.info.jianJinDuoJiaoDianRes.leftResItemHtml+= i+':'+ret.data.info.jianJinDuoJiaoDianRes.leftResItem[i]+'&nbsp';
-                            }
-                            for(var i in ret.data.info.jianJinDuoJiaoDianRes.rightResItem){
-                                ret.data.info.jianJinDuoJiaoDianRes.rightResItemHtml += i+':'+ret.data.info.jianJinDuoJiaoDianRes.rightResItem[i]+'&nbsp';
-                            }
-                        }
+                        console.log("支付渲染数据",ret.data);
+                        payOrderData.returnData = ret.data;
+                        renderSubmit();
+                        $('.paymentPopup .speedProgress li').removeClass("active").eq(2).addClass("active");
+                        $('.paymentPopup .payContent .content-item').removeClass('active');
+                        $('.paymentPopup .payContent .content-item.third').addClass('active');
+                    }else{
+                        layer.msg(ret.data);
                     }
-                    console.log("支付渲染数据",ret.data);
-                    payOrderData.returnData = ret.data;
-                    renderSubmit();
+                });
+            }else if(payType == 2){
+                alert("微信");
+                quakooData.ajaxGetData(config.getUrl_order_handleWxBarcodeOrder(),submitInfo,function(ret){
+                    console.log("微信支付返回值：",ret);
+                    if(ret&&ret.success){
+                        printId = ret.data.id;
+                        layer.msg("支付成功",{icon:1});
+                        // payOrderData.weishou = payOrderData.weishou-ret.data.;
+                        ret.data.price = (ret.data.price/100).toFixed(2);
+                        if(quakooUtils.isNotBlack(ret.data.info)){
+                            if(quakooUtils.isBlack(ret.data.info.yuanYongRes)||(quakooUtils.isBlack(ret.data.info.yuanYongRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.yuanYongRes.rightResItem))){
+                                ret.data.info.yuanYongRes = null;
+                            }else{
+                                ret.data.info.yuanYongRes.leftResItemHtml ='';
+                                ret.data.info.yuanYongRes.rightResItemHtml ='';
+                                for(var i in ret.data.info.yuanYongRes.leftResItem){
+                                    ret.data.info.yuanYongRes.leftResItemHtml+= i+':'+ret.data.info.yuanYongRes.leftResItem[i]+'&nbsp';
+                                }
+                                for(var i in ret.data.info.yuanYongRes.rightResItem){
+                                    ret.data.info.yuanYongRes.rightResItemHtml += i+':'+ret.data.info.yuanYongRes.rightResItem[i]+'&nbsp';
+                                }
+                            }
+                            if(quakooUtils.isBlack(ret.data.info.yinXingRes)||(quakooUtils.isBlack(ret.data.info.yinXingRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.yinXingRes.rightResItem))){
+                                ret.data.info.yinXingRes = null;
+                            }else{
+                                ret.data.info.yinXingRes.leftResItemHtml ='';
+                                ret.data.info.yinXingRes.rightResItemHtml ='';
+                                for(var i in ret.data.info.yinXingRes.leftResItem){
+                                    ret.data.info.yinXingRes.leftResItemHtml+= i+':'+ret.data.info.yinXingRes.leftResItem[i]+'&nbsp';
+                                }
+                                for(var i in ret.data.info.yinXingRes.rightResItem){
+                                    ret.data.info.yinXingRes.rightResItemHtml += i+':'+ret.data.info.yinXingRes.rightResItem[i]+'&nbsp';
+                                }
+                            }
+                            if(quakooUtils.isBlack(ret.data.info.jinYongRes)||(quakooUtils.isBlack(ret.data.info.jinYongRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.jinYongRes.rightResItem))){
+                                ret.data.info.jinYongRes = null;
+                            }else{
+                                ret.data.info.jinYongRes.leftResItemHtml ='';
+                                ret.data.info.jinYongRes.rightResItemHtml ='';
+                                for(var i in ret.data.info.jinYongRes.leftResItem){
+                                    ret.data.info.jinYongRes.leftResItemHtml+= i+':'+ret.data.info.jinYongRes.leftResItem[i]+'&nbsp';
+                                }
+                                for(var i in ret.data.info.jinYongRes.rightResItem){
+                                    ret.data.info.jinYongRes.rightResItemHtml += i+':'+ret.data.info.jinYongRes.rightResItem[i]+'&nbsp';
+                                }
+                            }
+                            if(quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes)||(quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes.leftResItem)&&quakooUtils.isBlack(ret.data.info.jianJinDuoJiaoDianRes.rightResItem))){
+                                ret.data.info.jianJinDuoJiaoDianRes = null;
+                            }else{
+                                ret.data.info.jianJinDuoJiaoDianRes.leftResItemHtml ='';
+                                ret.data.info.jianJinDuoJiaoDianRes.rightResItemHtml ='';
+                                for(var i in ret.data.info.jianJinDuoJiaoDianRes.leftResItem){
+                                    ret.data.info.jianJinDuoJiaoDianRes.leftResItemHtml+= i+':'+ret.data.info.jianJinDuoJiaoDianRes.leftResItem[i]+'&nbsp';
+                                }
+                                for(var i in ret.data.info.jianJinDuoJiaoDianRes.rightResItem){
+                                    ret.data.info.jianJinDuoJiaoDianRes.rightResItemHtml += i+':'+ret.data.info.jianJinDuoJiaoDianRes.rightResItem[i]+'&nbsp';
+                                }
+                            }
+                        }
+                        console.log("支付渲染数据",ret.data);
+                        payOrderData.returnData = ret.data;
+                        renderSubmit();
 
-                    $('.paymentPopup .speedProgress li').removeClass("active").eq(2).addClass("active");
-                    $('.paymentPopup .payContent .content-item').removeClass('active');
-                    $('.paymentPopup .payContent .content-item.third').addClass('active');
-                }else{
-                    layer.msg(ret.data);
-                }
-            });
+                        $('.paymentPopup .speedProgress li').removeClass("active").eq(2).addClass("active");
+                        $('.paymentPopup .payContent .content-item').removeClass('active');
+                        $('.paymentPopup .payContent .content-item.third').addClass('active');
+                    }else{
+                        layer.msg(ret.data);
+                    }
+
+                })
+            }
         }
         //btn——完成支付
         function finish(){
@@ -3474,7 +3557,7 @@
 
         }
         /**退款弹窗*/
-        function reimburse(oid) {
+        function reimburse(oid,type) {
             layer.open({
                 type: 1,
                 shade: 0.01,
@@ -3489,17 +3572,42 @@
                 content: $('.content-view-removeStaff'),
                 btn: ['确定', '取消'],
                 yes: function (index) {
+                    if(type==1){
                         quakooData.ajaxGetData(config.getUrl_order_createAliRefundOrder(),{oid:oid},function(ret){
                             console.log('创建支付订单',ret);
                             if(ret&&ret.data){
                                 quakooData.ajaxGetData(config.getUrl_order_handleAliRefundOrder(),{roid:ret.data.id},function(ret){
                                     console.log("支付宝退款：",ret);
                                     if(ret&&ret.success&&ret.data){
+
                                         layer.msg("退款成功",{icon:1});
+                                        layer.close(index);
+
                                     }
                                 })
                             }
                         })
+                    }else if(type == 2){
+                        quakooData.ajaxGetData(config.getUrl_order_createWxRefundOrder(),{oid:oid},function(ret){
+                            console.log('创建支付订单',ret);
+                            if(ret&&ret.data){
+                                quakooData.ajaxGetData(config.getUrl_order_handleWxRefundOrder(),{roid:ret.data.id},function(ret){
+                                    console.log("微信退款：",ret);
+                                    if(ret&&ret.success&&ret.data){
+                                        layer.msg("退款成功",{icon:1});
+                                        layer.close(index);
+
+                                    }else{
+                                        layer.msg("退款失败");
+                                        layer.close(index);
+                                    }
+                                })
+                            }else{
+                                layer.msg("退款失败");
+                                layer.close(index);
+                            }
+                        })
+                    }
                 },
                 btn2: function (index) {
 
@@ -3507,6 +3615,13 @@
             });
         }
 
+        /**结算并打印小票*/
+        function printReceipts(){
+
+            quakooData.ajaxGetData(config.getUrl_order_loadOrder(),{id:printId},function(ret){
+                console.log("订单详情：",ret)
+            })
+        }
         /***************************************************订单信息结束*****************************************************/
 
 
