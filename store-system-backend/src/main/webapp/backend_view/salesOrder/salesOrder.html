@@ -467,6 +467,7 @@
 
 
     <!-- 弹窗结构 -->
+    <div id="printBox"></div>
     <div id="salesOrder">
         <!-- 注册成为会员弹窗 -->
         <div class="register-member">
@@ -1014,7 +1015,7 @@
                         <div class="total">￥30</div>
                         <span>总计</span>
                     </div>
-                    <textarea class="noteNote" placeholder="小票备注"></textarea>
+                    <textarea class="noteNote" placeholder="小票备注" ></textarea>
                 </div>
             </div>
         </div>
@@ -1057,7 +1058,7 @@
                     <li class="content-item third">
                         <div class="successBox">
                             <img src="../resource//images/pay_02.jpg" alt="付款码" id="successImg">
-                            <span>支付成功 <u id="reimburse" onclick="reimburse()">退款</u></span>
+                            <span>支付成功</span>
                         </div>
                         <div class="btn-pay">
                             <button class="third-end" type="button" onclick="finish()">完成</button>
@@ -1392,16 +1393,20 @@
                         <li>
                             <div class="topic">支付宝</div>
                             <%if(list.returnData&&list.returnData.payType==1&&list.returnData.status==1){%>
-                                <div class="valueBox btnBlack"><%=list.returnData.price%> <span class="btnRed fr mr10" onclick="reimburse('<%=list.returnData.id%>',1)">退款</span></div>
-                            <%}else if(list.returnData&&list.returnData.payType==1&&list.returnData.status==3){%>
-                            <div class="valueBox btnBlack"><span class="btnRed fr mr10">已退款</span></div>
+                                <div class="valueBox btnBlack"><%=list.returnData.price%>
+                                    <span class="btnRed fr mr10" onclick="reimburse('<%=list.returnData.id%>',1)" id="alirefund">退款</span>
+                                    <span class="btnRed fr mr10" id="alirefunded" style="display: none">已退款</span>
+                                </div>
                             <%}else{%>
                                 <div class="valueBox btnBlue" onclick="payDialog(1)">点击支付</div>
                             <%}%>
                         </li>
                         <li>
                             <%if(list.returnData&&list.returnData.payType==2){%>
-                            <div class="valueBox btnBlack"><%=list.returnData.price%><span class="btnRed fr mr10" onclick="reimburse('<%=list.returnData.id%>',2)">退款</span></div>
+                                <div class="valueBox btnBlack"><%=list.returnData.price%>
+                                    <span class="btnRed fr mr10" onclick="reimburse('<%=list.returnData.id%>',2)" >退款</span>
+                                    <span class="btnRed fr mr10" id="weirefunded" style="display: none;">已退款</span>
+                                </div>
                             <%}else{%>
                             <div class="valueBox btnBlue" onclick="payDialog(2)">点击支付</div>
                             <%}%>
@@ -1442,170 +1447,169 @@
                     <span>总计</span>
                 </div>
                 <%if(list.returnData){%>
-                <textarea class="noteNote" placeholder="小票备注" value="<%=list.returnData.desc%>" readonly="readonly"></textarea>
+                <textarea class="noteNote" placeholder="小票备注" id="paymentNote" value="<%=list.returnData.desc%>" readonly="readonly"></textarea>
                 <%}else{%>
-                <textarea class="noteNote" placeholder="小票备注"></textarea>
+                <textarea class="noteNote" placeholder="小票备注" id="paymentNote"></textarea>
                 <%}%>
             </div>
-            <%if(list.returnData){%>
-            <!--startprint1-->
-                <div class="smallTicket h" id="printTmp">
-                    <i id="smallTicketBg"></i>
-                    <div class="stHeader">
-                        <div class="stTitle"><span></span>
-                            <h3><%=list.returnData.subName%></h3><span></span>
-                        </div>
-                        <ul>
-                            <li><span class="fl">下单时间</span><span class="fr"><%=getDateTimeDian(list.returnData.payTime)%></span></li>
-                            <li><span class="fl">订单号</span><span class="fr"><%=list.returnData.orderNo%></span></li>
-                            <li><span class="fl">销售员</span><span class="fr"><%=list.returnData.uName%></span></li>
-                            <%if(list.returnData.status==0){%>
-                                <li class="btnRed"><span class="fl">订单状态</span><span class="fr" >未交费</span></li>
-                            <%}else if(list.returnData.status==1){%>
-                                <li class="btnRed"><span class="fl">订单状态</span><span class="fr" >已缴费</span></li>
-                            <%}else if(list.returnData.status==2){%>
-                                <li class="btnRed"><span class="fl">订单状态</span><span class="fr" >已过期</span></li>
-                            <%}else if(list.returnData.status==3){%>
-                                <li class="btnRed"><span class="fl">订单状态</span><span class="fr" >已退款</span></li>
-                            <%}%>
-                        </ul>
-                    </div>
-                    <%if(list.returnData.info){%>
-                    <div class="infoOptometry">
-                        <h3>验光信息</h3>
-                        <%if(list.returnData.info&&list.returnData.info.yuanYongRes){%>
-                        <div class="name">远用</div>
-                        <%if(list.returnData.info.yuanYongRes.rightResItem){%>
-                        <div class="eye">
-                            <span class="eyeText">右眼</span>
-                            <span class="eyeContent"><%=list.returnData.info.yuanYongRes.rightResItemHtml%></span>
-                        </div>
-                        <%}%>
-                        <%if(list.returnData.info.yuanYongRes.leftResItem){%>
-                        <div class="eye">
-                            <span class="eyeText">左眼</span>
-                            <span class="eyeContent"><%=list.returnData.info.yuanYongRes.leftResItemHtml%></span>
-                        </div>
-                        <%}%>
-                        <%}%>
-                        <%if(list.returnData.info&&list.returnData.info.jinYongRes){%>
-                        <div class="name">近用</div>
-                        <%if(list.returnData.info.jinYongRes.rightResItem){%>
-                        <div class="eye">
-                            <span class="eyeText">右眼</span>
-                            <span class="eyeContent"><%=list.returnData.info.jinYongRes.rightResItemHtml%></span>
-                        </div>
-                        <%}%>
-                        <%if(list.returnData.info.jinYongRes.leftResItem){%>
-                        <div class="eye">
-                            <span class="eyeText">左眼</span>
-                            <span class="eyeContent"><%=list.returnData.info.jinYongRes.leftResItemHtml%></span>
-                        </div>
-                        <%}%>
-                        <%}%>
-                        <%if(list.returnData.info&&list.returnData.info.yinXingRes){%>
-                        <div class="name">隐形</div>
-                        <%if(list.returnData.info.yinXingRes.rightResItem){%>
-                        <div class="eye">
-                            <span class="eyeText">右眼</span>
-                            <span class="eyeContent"><%=list.returnData.info.yinXingRes.rightResItemHtml%></span>
-                        </div>
-                        <%}%>
-                        <%if(list.returnData.info.yinXingRes.leftResItem){%>
-                        <div class="eye">
-                            <span class="eyeText">左眼</span>
-                            <span class="eyeContent"><%=list.returnData.info.yinXingRes.leftResItemHtml%></span>
-                        </div>
-                        <%}%>
-                        <%}%>
-                        <%if(list.returnData.info&&list.returnData.info.jianJinDuoJiaoDianRes){%>
-                        <div class="name">渐进多焦点</div>
-                        <%if(list.returnData.info.jianJinDuoJiaoDianRes.rightResItem){%>
-                        <div class="eye">
-                            <span class="eyeText">右眼</span>
-                            <span class="eyeContent"><%=list.returnData.info.jianJinDuoJiaoDianRes.rightResItemHtml%></span>
-                        </div>
-                        <%}%>
-                        <%if(list.returnData.info.jianJinDuoJiaoDianRes.leftResItem){%>
-                        <div class="eye">
-                            <span class="eyeText">左眼</span>
-                            <span class="eyeContent"><%=list.returnData.info.jianJinDuoJiaoDianRes.leftResItemHtml%></span>
-                        </div>
-                        <%}%>
-                        <%}%>
-                        <div class="tongju">
-                            <span class="eyeText">瞳距</span>
-                            <span class="eyeContent"><%=list.returnData.info.farPd%></span>
-                        </div>
-                    </div>
-                    <%}%>
-                    <div class="purchaseItems">
-                        <ul>
-                            <%for(var i = 0;i < list.returnData.skuids.length;i++){%>
-                                <li>
-                                    <span class="text"><%=list.returnData.skuids[i].code%></span>
-                                    <span class="num">X<%=list.returnData.skuids[i].num%></span>
-                                    <span class="price">¥<%=list.returnData.skuids[i].price%></span>
-                                </li>
-                            <%}%>
-                        </ul>
-                    </div>
-
-                    <div class="reduction">
-                        <ul>
-                            <%if(list.surcharges&&list.surcharges.name){%>
-                                <li><span class="fl"><%=list.surcharges.name%></span><span class="fr">-¥<%=list.surcharges.price%></span></li>
-                            <%}%>
-                            <%if(list.descSubtract){%>
-                                <li><span class="fl">促销减免</span><span class="fr">-¥<%=list.descSubtract%></span></li>
-                            <%}%>
-                        </ul>
-                    </div>
-                    <div style="width: 100%;overflow: hidden;padding: 16px 0;">
-                        <span class="fl btnRed" style="font-size:14px;font-weight: 600;">总计</span>
-                        <span class="fr btnRed" style="font-size:14px;font-weight: 600;">¥<%=list.returnData.price%></span>
-                    </div>
-                    <div class="payment">
-                        <%if(list.returnData.payType==1){%>
-                            <li>
-                                <span class="fl">支付宝支付</span>
-                                <span class="fr">¥<%=list.returnData.price%></span>
-                            </li>
-                        <%}else if(list.returnData.payType==2){%>
-                            <li>
-                                <span class="fl">微信支付</span>
-                                <span class="fr">¥<%=list.returnData.price%></span>
-                            </li>
-                        <%}%>
-                    </div>
-                    <div class="noteText">
-                        <h6>小票备注</h6>
-                        <%=list.returnData.desc%>
-                    </div>
-                    <div class="threePacks">
-                        <h6>三包政策</h6>
-                        <%=list.returnData.threePolicy%>
-                    </div>
-                    <div class="address">
-                        <ul>
-                            <li>
-                                <span class="fl">地址</span>
-                                <span class="fr "><%=list.returnData.address%></span>
-                            </li>
-                            <li>
-                                <span class="fl">电话</span>
-                                <span class="fr"><%=list.returnData.phone%></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            <!--endprint1-->
-            <%}else{%>
-                <div class="smallTicket h">
-                    <i id="smallTicketBg"></i>
-                </div>
-            <%}%>
+            <div class="smallTicket h" id="printTicketUl"></div>
         </div>
+    </script>
+    <script type="text/html" id="printTicketTmp">
+        <%if(list.returnData){%>
+            <i id="smallTicketBg"></i>
+            <div class="stHeader">
+                <div class="stTitle"><span></span>
+                    <h3><%=list.returnData.subName%></h3><span></span>
+                </div>
+                <ul>
+                    <li><span class="fl">下单时间</span><span class="fr"><%=getDateTimeDian(list.returnData.payTime)%></span></li>
+                    <li><span class="fl">订单号</span><span class="fr"><%=list.returnData.orderNo%></span></li>
+                    <li><span class="fl">销售员</span><span class="fr"><%=list.returnData.uName%></span></li>
+                    <%if(list.returnData.status==0){%>
+                    <li class="btnRed"><span class="fl">订单状态</span><span class="fr" >未交费</span></li>
+                    <%}else if(list.returnData.status==1){%>
+                    <li class="btnRed"><span class="fl">订单状态</span><span class="fr" >已缴费</span></li>
+                    <%}else if(list.returnData.status==2){%>
+                    <li class="btnRed"><span class="fl">订单状态</span><span class="fr" >已过期</span></li>
+                    <%}else if(list.returnData.status==3){%>
+                    <li class="btnRed"><span class="fl">订单状态</span><span class="fr" >已退款</span></li>
+                    <%}%>
+                </ul>
+            </div>
+            <%if(list.returnData.info){%>
+            <div class="infoOptometry">
+                <h3>验光信息</h3>
+                <%if(list.returnData.info&&list.returnData.info.yuanYongRes){%>
+                <div class="name">远用</div>
+                <%if(list.returnData.info.yuanYongRes.rightResItem){%>
+                <div class="eye">
+                    <span class="eyeText">右眼</span>
+                    <span class="eyeContent"><%=list.returnData.info.yuanYongRes.rightResItemHtml%></span>
+                </div>
+                <%}%>
+                <%if(list.returnData.info.yuanYongRes.leftResItem){%>
+                <div class="eye">
+                    <span class="eyeText">左眼</span>
+                    <span class="eyeContent"><%=list.returnData.info.yuanYongRes.leftResItemHtml%></span>
+                </div>
+                <%}%>
+                <%}%>
+                <%if(list.returnData.info&&list.returnData.info.jinYongRes){%>
+                <div class="name">近用</div>
+                <%if(list.returnData.info.jinYongRes.rightResItem){%>
+                <div class="eye">
+                    <span class="eyeText">右眼</span>
+                    <span class="eyeContent"><%=list.returnData.info.jinYongRes.rightResItemHtml%></span>
+                </div>
+                <%}%>
+                <%if(list.returnData.info.jinYongRes.leftResItem){%>
+                <div class="eye">
+                    <span class="eyeText">左眼</span>
+                    <span class="eyeContent"><%=list.returnData.info.jinYongRes.leftResItemHtml%></span>
+                </div>
+                <%}%>
+                <%}%>
+                <%if(list.returnData.info&&list.returnData.info.yinXingRes){%>
+                <div class="name">隐形</div>
+                <%if(list.returnData.info.yinXingRes.rightResItem){%>
+                <div class="eye">
+                    <span class="eyeText">右眼</span>
+                    <span class="eyeContent"><%=list.returnData.info.yinXingRes.rightResItemHtml%></span>
+                </div>
+                <%}%>
+                <%if(list.returnData.info.yinXingRes.leftResItem){%>
+                <div class="eye">
+                    <span class="eyeText">左眼</span>
+                    <span class="eyeContent"><%=list.returnData.info.yinXingRes.leftResItemHtml%></span>
+                </div>
+                <%}%>
+                <%}%>
+                <%if(list.returnData.info&&list.returnData.info.jianJinDuoJiaoDianRes){%>
+                <div class="name">渐进多焦点</div>
+                <%if(list.returnData.info.jianJinDuoJiaoDianRes.rightResItem){%>
+                <div class="eye">
+                    <span class="eyeText">右眼</span>
+                    <span class="eyeContent"><%=list.returnData.info.jianJinDuoJiaoDianRes.rightResItemHtml%></span>
+                </div>
+                <%}%>
+                <%if(list.returnData.info.jianJinDuoJiaoDianRes.leftResItem){%>
+                <div class="eye">
+                    <span class="eyeText">左眼</span>
+                    <span class="eyeContent"><%=list.returnData.info.jianJinDuoJiaoDianRes.leftResItemHtml%></span>
+                </div>
+                <%}%>
+                <%}%>
+                <div class="tongju">
+                    <span class="eyeText">瞳距</span>
+                    <span class="eyeContent"><%=list.returnData.info.farPd%></span>
+                </div>
+            </div>
+            <%}%>
+            <div class="purchaseItems">
+                <ul>
+                    <%for(var i = 0;i < list.returnData.skuids.length;i++){%>
+                    <li>
+                        <span class="text"><%=list.returnData.skuids[i].code%></span>
+                        <span class="num">X<%=list.returnData.skuids[i].num%></span>
+                        <span class="price">¥<%=list.returnData.skuids[i].price%></span>
+                    </li>
+                    <%}%>
+                </ul>
+            </div>
+
+            <div class="reduction">
+                <ul>
+                    <%if(list.surcharges&&list.surcharges.name){%>
+                    <li><span class="fl"><%=list.surcharges.name%></span><span class="fr">-¥<%=list.surcharges.price%></span></li>
+                    <%}%>
+                    <%if(list.descSubtract){%>
+                    <li><span class="fl">促销减免</span><span class="fr">-¥<%=list.descSubtract%></span></li>
+                    <%}%>
+                </ul>
+            </div>
+            <div style="width: 100%;overflow: hidden;padding: 16px 0;">
+                <span class="fl btnRed" style="font-size:14px;font-weight: 600;">总计</span>
+                <span class="fr btnRed" style="font-size:14px;font-weight: 600;">¥<%=list.returnData.price%></span>
+            </div>
+            <div class="payment">
+                <%if(list.returnData.payType==1){%>
+                <li>
+                    <span class="fl">支付宝支付</span>
+                    <span class="fr">¥<%=list.returnData.price%></span>
+                </li>
+                <%}else if(list.returnData.payType==2){%>
+                <li>
+                    <span class="fl">微信支付</span>
+                    <span class="fr">¥<%=list.returnData.price%></span>
+                </li>
+                <%}%>
+            </div>
+            <div class="noteText">
+                <h6>小票备注</h6>
+                <%=list.returnData.desc%>
+            </div>
+            <div class="threePacks">
+                <h6>三包政策</h6>
+                <%=list.returnData.threePolicy%>
+            </div>
+            <div class="address">
+                <ul>
+                    <li>
+                        <span class="fl">地址</span>
+                        <span class="fr "><%=list.returnData.address%></span>
+                    </li>
+                    <li>
+                        <span class="fl">电话</span>
+                        <span class="fr"><%=list.returnData.phone%></span>
+                    </li>
+                </ul>
+            </div>
+
+        <%}else{%>
+            <i id="smallTicketBg"></i>
+        <%}%>
+
 
     </script>
     <script>
@@ -1645,6 +1649,8 @@
         var payOrderData ={};                                 //支付返回值
         var refundType;                                       //退款类型
         var printId;                                          //打印小票的ID
+        var paymentNote;                                      //支付小票备注
+        var printContent;                                     //打印内容
         LocYgInfo.yuanTable={class:'yuan-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
         LocYgInfo.yinTable={class:'yin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'曲率',value:'q'},{name:'直径',value:'d'}]};
         LocYgInfo.jinTable={class:'jin-table',data:[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}]};
@@ -1720,7 +1726,6 @@
                 return;
             }
             if(cusInfoType==1){
-                alert("搜索手机号");
                 /**接口——根据手机号查询用户信息*/
                 quakooData.ajaxGetData(config.getUrl_user_getUserByPhone(),{phone:phone},function (ret) {
                     console.log(ret);
@@ -1733,9 +1738,7 @@
                     }
                 });
             }else if(cusInfoType == 2){
-                alert("搜索会员卡号");
                 return;
-
             }
         }
         /**接口——获取意向顾客*/
@@ -3306,14 +3309,13 @@
                     move:$('.title'),
                     yes: function (index, layero) {
                         if(printId){
-                            printReceipts(1);
+                            printReceipts();
                         }else{
                             layer.msg("请先完成支付");
                         }
-                        return false
                     },
                     btn2: function (index, layero) {
-                        layer.close(index);
+//                        layer.close(index);
                     },
                     success: function (layero, index) {
                         //底部取货勾选框
@@ -3336,10 +3338,18 @@
                 payOrderData.weishou = (data.dicountPrice/100).toFixed(2);
             }
             var html = template('payDiaVerticalList',{list:payOrderData});
+            var printHtml = template('printTicketTmp',{list:payOrderData});
+            printContent = printHtml;
             $('#payDiaVertical').html(html);
+            $('#printTicketUl').html(printHtml);
         }
         /**线上付款*/
         function payDialog(type) {
+            var paymentNote = $('#paymentNote').val();
+            if(quakooUtils.isBlack(paymentNote)){
+                layer.msg('请输入小票备注');
+                return;
+            }
             payType = type;
             var title;
             if(type == 1){
@@ -3406,7 +3416,7 @@
             submitInfo.price = 1;
             submitInfo.authCode = authCode;
             submitInfo.type = 1;
-            submitInfo.desc = "desc";
+            submitInfo.desc = paymentNote;
             console.log("支付接口参数：",submitInfo);
             if(payType == 1){
                 quakooData.ajaxGetData(config.getUrl_order_handleAliBarcodeOrder(),submitInfo,function (ret) {
@@ -3580,10 +3590,12 @@
                                 quakooData.ajaxGetData(config.getUrl_order_handleAliRefundOrder(),{roid:ret.data.id},function(ret){
                                     console.log("支付宝退款：",ret);
                                     if(ret&&ret.success&&ret.data){
-
+                                        $('#alirefund').css("display","none");
+                                        $('#alirefunded').css("display","inline-block");
                                         layer.msg("退款成功",{icon:1});
                                         layer.close(index);
-
+                                    }else{
+                                        layer.msg("退款失败");
                                     }
                                 })
                             }
@@ -3595,9 +3607,10 @@
                                 quakooData.ajaxGetData(config.getUrl_order_handleWxRefundOrder(),{roid:ret.data.id},function(ret){
                                     console.log("微信退款：",ret);
                                     if(ret&&ret.success&&ret.data){
+                                        $('#weirefund').css("display","none");
+                                        $('#weirefunded').css("display","inline-block");
                                         layer.msg("退款成功",{icon:1});
                                         layer.close(index);
-
                                     }else{
                                         layer.msg("退款失败");
                                         layer.close(index);
@@ -3617,18 +3630,25 @@
         }
 
         /**结算并打印小票*/
-        function printReceipts(oper){
-            bdhtml=window.document.body.innerHTML;	//获取当前页的html代码
-            sprnstr="<!--startprint"+oper+"-->";	//设置打印开始区域
-            eprnstr="<!--endprint"+oper+"-->";	//设置打印结束区域
-            prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
-            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
-            window.document.body.innerHTML=prnhtml;
-            window.print();
-            window.document.body.innerHTML=bdhtml;
+        function printReceipts(){
+            var index = layer.open({
+                        type: 1,
+                        shade: 0.01,
+                        title: '',
+                        skin: '', //样式类名
+                        anim: 0,
+                        area: ['270px', '500px'],
+                        closeBtn: 0, //不显示关闭按钮
+                        resize:false,
+                        shadeClose: true, //开启遮罩关闭
+                        content: $('#printBox'),
+                        btn: '',
+                        success:function(){
+                            $('#printBox').html(printContent)
+                        }
+                    })
         }
         /***************************************************订单信息结束*****************************************************/
-
 
 
 

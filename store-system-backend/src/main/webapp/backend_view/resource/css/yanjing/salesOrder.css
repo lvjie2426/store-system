@@ -2726,3 +2726,15 @@ input[type=checkbox]:checked:after {
 .layui-register-member .layui-layer-title,.layui-register-member .layui-layer-btn.layui-layer-btn-{
     border:none;
 }
+#printBox{
+    width:90%;
+    margin:0px auto;
+    float: right;
+    background: #fff;
+    padding: 20px 6px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+
+}
