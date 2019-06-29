@@ -198,10 +198,15 @@ span._btn,div._btn{
   margin: 0 auto;
   margin-top: 52px;
 }
+.mainCont .box01 .body .right .percentCont08{
+  position: relative;
+  width: 87%;
+  height: 10px;
+  margin: 0 auto;
+}
 .mainCont .box01 .body .right .bottomBox{
   position: relative;
   padding: 0 28px;
-  top: 62px;
 }
 .mainCont .box01 .body .right .bottomBox span{
   display: inline-block;
@@ -427,9 +432,10 @@ span._btn,div._btn{
 }
 .mainCont .box04 .body .left{
   width: 20%;
-  height: 182px;
+  height: 273px;
   float: left;
   padding: 28px;
+  border-right: 1px solid #DFDFE9;
   border-bottom: 1px solid #DFDFE9;
 }
 .mainCont .box04 .body .left p{
@@ -468,8 +474,12 @@ span._btn,div._btn{
   float: left;
   position: relative;
   border-bottom: 1px solid #DFDFE9;
-  border-left: 1px solid #DFDFE9;
+  border-right: 1px solid #DFDFE9;
   padding:24px 24px 0 24px;
+}
+.mainCont .box04 .body ul li:nth-of-type(3n){
+
+  border-right: none;
 }
 .mainCont .box04 .body ul li p{
   height: 24px;

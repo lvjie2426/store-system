@@ -1068,7 +1068,7 @@
         </div>
         <!-- 退款弹窗 -->
         <div class="content-view content-view-removeStaff" style="display:none">
-            <p>这将禁用该员工的账号及一切操作</p>
+            <p>确定退款20元？</p>
         </div>
         <!-- 横向小票 -->
         <div class="horizontalTicket">
@@ -1297,7 +1297,7 @@
                                 <div><%=list[i].productName%></div>
                             </td>
                             <td><%=list[i].number%></td>
-                            <td>¥<%=list[i].price%></td>
+                            <td>¥<%=(list[i].price/100).toFixed(2)%></td>
                             <%if(0< list[i].discount <= 10){%>
                                 <td><input type="text" placeholder="<%=list[i].discount%>" value="<%=list[i].discount%>" readonly="readonly"></td>
                             <%}else{%>
@@ -1318,7 +1318,7 @@
                             <%}else{%>
                             <td><input type="text" placeholder="无折扣" value="" readonly="readonly"></td>
                             <%}%>
-                            <td></td>
+                            <td><%=list[i].subtotal%>积分</td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
                         </tr>
                     <%}else if(list[i].type ==3){%>
@@ -1391,8 +1391,10 @@
                     <ul>
                         <li>
                             <div class="topic">支付宝</div>
-                            <%if(list.returnData&&list.returnData.payType==1){%>
-                                <div class="valueBox btnBlack"><%=list.returnData.price%> <span class="btnRed fr mr10">退款</span></div>
+                            <%if(list.returnData&&list.returnData.payType==1&&list.returnData.status==1){%>
+                                <div class="valueBox btnBlack"><%=list.returnData.price%> <span class="btnRed fr mr10" onclick="reimburse('<%=list.returnData.id%>')">退款</span></div>
+                            <%}else if(list.returnData&&list.returnData.payType==1&&list.returnData.status==3){%>
+                            <div class="valueBox btnBlack"><span class="btnRed fr mr10">已退款</span></div>
                             <%}else{%>
                                 <div class="valueBox btnBlue" onclick="payDialog(1)">点击支付</div>
                             <%}%>
@@ -1547,9 +1549,15 @@
                             <%}%>
                         </ul>
                     </div>
+
                     <div class="reduction">
                         <ul>
-                            <li><span class="fl">促销减免</span><span class="fr">-￥38</span></li>
+                            <%if(list.surcharges&&list.surcharges.name){%>
+                                <li><span class="fl"><%=list.surcharges.name%></span><span class="fr">-¥<%=list.surcharges.price%></span></li>
+                            <%}%>
+                            <%if(list.descSubtract){%>
+                                <li><span class="fl">促销减免</span><span class="fr">-¥<%=list.descSubtract%></span></li>
+                            <%}%>
                         </ul>
                     </div>
                     <div style="width: 100%;overflow: hidden;padding: 16px 0;">
@@ -1593,61 +1601,6 @@
             <%}else{%>
                 <div class="smallTicket h">
                     <i id="smallTicketBg"></i>
-                    <div class="stHeader">
-                        <div class="stTitle"><span></span>
-                            <h3></h3><span></span>
-                        </div>
-                        <ul>
-                            <li><span class="fl">下单时间</span><span class="fr"></span></li>
-                            <li><span class="fl">订单号</span><span class="fr"></span></li>
-                            <li><span class="fl">销售员</span><span class="fr"></span></li>
-                            <li class="btnRed"><span class="fl">订单状态</span><span class="fr"></span></li>
-                        </ul>
-                    </div>
-                    <div class="reduction">
-                        <ul>
-                            <li><span class="fl">促销减免</span><span class="fr"></span></li>
-                            <li><span class="fl">特惠减免</span><span class="fr"></span></li>
-                        </ul>
-                    </div>
-                    <div style="width: 100%;overflow: hidden;padding: 16px 0;">
-                        <span class="fl btnRed" style="font-size:14px;font-weight: 600;">总计</span>
-                        <span class="fr btnRed" style="font-size:14px;font-weight: 600;">¥0</span>
-                    </div>
-                    <div class="payment">
-                        <li>
-                            <span class="fl">微信支付</span>
-                            <span class="fr">¥0</span>
-                        </li>
-                        <li>
-                            <span class="fl">支付宝支付</span>
-                            <span class="fr">¥0</span>
-                        </li>
-                        <li>
-                            <span class="fl">他人存储支付</span>
-                            <span class="fr">¥0</span>
-                        </li>
-                    </div>
-                    <div class="noteText">
-                        <h6>小票备注</h6>
-                        这位顾客人很好，下次再来！这位顾客人很好，下次再来！
-                    </div>
-                    <div class="threePacks">
-                        <h6>三包政策</h6>
-                        详细内容详细内容详细内容详细内容详细内容
-                    </div>
-                    <div class="address">
-                        <ul>
-                            <li>
-                                <span class="fl">地址</span>
-                                <span class="fr "></span>
-                            </li>
-                            <li>
-                                <span class="fl">电话</span>
-                                <span class="fr"></span>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             <%}%>
 
@@ -3520,6 +3473,40 @@
         function redrawSubmitOrder(data){
 
         }
+        /**退款弹窗*/
+        function reimburse(oid) {
+            layer.open({
+                type: 1,
+                shade: 0.01,
+                title: '确定退款？',
+                skin: 'layui-layer-removeStaff-tan', //样式类名
+                anim: 0,
+                area: ['240px', '130px'],
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                resize: false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-removeStaff'),
+                btn: ['确定', '取消'],
+                yes: function (index) {
+                        quakooData.ajaxGetData(config.getUrl_order_createAliRefundOrder(),{oid:oid},function(ret){
+                            console.log('创建支付订单',ret);
+                            if(ret&&ret.data){
+                                quakooData.ajaxGetData(config.getUrl_order_handleAliRefundOrder(),{roid:ret.data.id},function(ret){
+                                    console.log("支付宝退款：",ret);
+                                    if(ret&&ret.success&&ret.data){
+                                        layer.msg("退款成功",{icon:1});
+                                    }
+                                })
+                            }
+                        })
+                },
+                btn2: function (index) {
+
+                }
+            });
+        }
+
         /***************************************************订单信息结束*****************************************************/
 
 

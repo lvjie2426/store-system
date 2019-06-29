@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.3:20005";
         /**马文军*/
-        // this.serverUrl = "http://192.168.1.24:20005";
+        //this.serverUrl = "http://192.168.1.33:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -346,17 +346,15 @@ var Config = (function(_super){
     /**顾客统计--多店对比*/
     _proto.getUrl_statisticsCustomer_statisticsBySubordinates = function(){return this.serverUrl + '/statisticsCustomer/statisticsBySubordinates';};
 
-    /**客单价-客单价本周*/
-    _proto.getUrl_statisticsSaleCategory_saleWeek = function(){return this.serverUrl + '/statisticsSaleCategory/saleWeek';};
-    /**客单价-客单价本月*/
-    _proto.getUrl_statisticsSaleCategory_saleMonth = function(){return this.serverUrl + '/statisticsSaleCategory/saleMonth';};
-    /**客单价-客单价近半年*/
-    _proto.getUrl_statisticsSaleCategory_saleHalfYear = function(){return this.serverUrl + '/statisticsSaleCategory/saleHalfYear';};
-    /**客单价-按时间查询*/
-    _proto.getUrl_statisticsSaleCategory_searchSale = function(){return this.serverUrl + '/statisticsSaleCategory/searchSale';};
+
+    /**客单价-查询客单价占比*/
+    _proto.getUrl_statisticsSaleCategory_saleSubordinates = function(){return this.serverUrl + '/statisticsSaleCategory/saleSubordinates';};
 
     /**销售额-多店对比查询销售额*/
     _proto.getUrl_statisticsSale_saleSubordinates = function(){return this.serverUrl + '/statisticsSale/saleSubordinates';};
+
+    /**库存统计*/
+    _proto.getUrl_statisticsInventory_saleSubordinates = function(){return this.serverUrl + '/statisticsInventory/saleSubordinates';};
     //=======================统计 结束====================
 
 
