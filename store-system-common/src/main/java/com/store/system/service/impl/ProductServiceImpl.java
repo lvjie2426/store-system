@@ -6,6 +6,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
+import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientInventoryDetail;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
@@ -517,6 +518,12 @@ public class ProductServiceImpl implements ProductService {
         ProductSPU productSPU = productSPUDao.load(id);
         productSPU.setSaleStatus(open);
         return  productSPUDao.update(productSPU);
+    }
+
+    @Override
+    public List<ProductSKU> getSkuBySubid(long subid, int type) throws Exception {
+        String sql = " SELECT * FROM product_sku WHERE 1=1 AND spuid in (SELECT id FROM product_spu WHERE 1=1 AND subid = " + subid + " AND type = " + type + ")";
+        return jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<ProductSKU>(ProductSKU.class));
     }
 
 }
