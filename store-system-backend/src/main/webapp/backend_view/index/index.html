@@ -84,7 +84,8 @@
                 <li class="nav-header">
                     <div class="selectBox" id="selectBox">
                         <div class="select-box-header">
-                            <span class="text" id="shopDefaultText">精益眼镜旗舰店</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            <span class="text" id="shopDefaultText">精益眼镜旗舰店</span> <i
+                                class="iconfont icon-ico_arrow_down"></i>
                         </div>
                         <div class="optionBox">
                             <ul class="optionUL" id="shopUl">
@@ -111,7 +112,7 @@
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
-                <li class="nav-header">
+                <!--<li class="nav-header">
                     <div class="xiaoshoukaidan nav nav-second-level">
                         <a class='J_menuItem' href="../salesOrder/salesOrder.html"><i
                                 class="icon iconfont icon-ico_circle_plus_fill"></i>销售开单</a>
@@ -149,9 +150,9 @@
                         <li>
                             <a class="J_menuItem" href="../goodsManage/inventory.html">盘点</a>
                         </li>
-                        <!--<li>
+                        &lt;!&ndash;<li>
                             <a class="J_menuItem" href="../goodsManage/medical.html">医疗器械</a>
-                        </li>-->
+                        </li>&ndash;&gt;
                     </ul>
                 </li>
                 <li>
@@ -188,7 +189,7 @@
                     <a class="J_menuItem" href="./setting.html"><i class="icon iconfont icon-ico_setting"></i>
                         <span class="nav-label">设置</span>
                     </a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </nav>
@@ -232,48 +233,66 @@
 <!--门店列表开始-->
 <script type="text/html" id="shopList">
     <%for(var i=0;i < list.length;i++){%>
-        <li value="<%=list[i].id%>"><%=list[i].name%></li>
+    <li value="<%=list[i].id%>"><%=list[i].name%></li>
     <%}%>
 </script>
 <!--门店列表结束-->
 <script>
-    console.log("登录用户信息：",quakooUser.getUserInfo())
+    console.log("登录用户信息：", quakooUser.getUserInfo())
     var sid = quakooUser.getUserInfo().psid;//企业ID
-    if(quakooUtils.isBlack(quakooDb.getItem('sel_ShopId'))){
-        quakooDb.setItem("sel_ShopId",quakooUser.getUserInfo().sid); //门店ID
+    if (quakooUtils.isBlack(quakooDb.getItem('sel_ShopId'))) {
+        quakooDb.setItem("sel_ShopId", quakooUser.getUserInfo().sid); //门店ID
     }
     getSubordinateStore();//获取公司下门店
     /**获取公司下门店列表*/
-    function getSubordinateStore(){
-        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:sid},function (ret) {
-            console.log('公司下门店列表：',ret);
-            if(ret&&ret.success){
-                if(quakooUtils.isNotBlack(ret.data)){
-                    var data = {list:ret.data};
+    function getSubordinateStore() {
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(), {sid: sid}, function (ret) {
+            console.log('公司下门店列表：', ret);
+            if (ret && ret.success) {
+                if (quakooUtils.isNotBlack(ret.data)) {
+                    var data = {list: ret.data};
                     var html = template("shopList", data);
                     document.getElementById("shopUl").innerHTML = html;
                     /**默认加载第一个店*/
-                    if(quakooDb.getItem('sel_ShopName')){
+                    if (quakooDb.getItem('sel_ShopName')) {
                         document.getElementById("shopDefaultText").innerHTML = quakooDb.getItem('sel_ShopName')
-                    }else{
+                    } else {
                         document.getElementById("shopDefaultText").innerHTML = quakooUser.getUserInfo().sname;
                     }
                     /**下拉框*/
                     selectTag($('#selectBox'), function (ret) {
                         console.log(ret);
-                        quakooDb.setItem("sel_ShopId",parseInt(ret.value)); //sava 门店ID
-                        quakooDb.setItem("sel_ShopName",ret.text); //save 门店名字
+                        quakooDb.setItem("sel_ShopId", parseInt(ret.value)); //sava 门店ID
+                        quakooDb.setItem("sel_ShopName", ret.text); //save 门店名字
                     });
                 }
             }
         });
     }
+
     $(function () {
         /*下拉框*/
-
+        initMenu();
         selectTag($('#select-admin'));
-        getDefaultValue()
     });
+
+    function initMenu() {
+        var param = {};
+        var user = quakooUser.getUserInfo();
+        param.token = user.token;
+        $('#side-menu').hide();
+        quakooData.ajaxGetData(config.getUrl_web_user_getTree(), param, function (data) {
+            var msg = (data.msg == undefined ? '' : ',' + data.msg);
+            if (data.success) {
+                var menu = addMenu(data.data);
+                $("#side-menu").append(menu);
+                showMenu()
+            } else {
+                layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
+            }
+        })
+    }
+
 
     function include_js(path) {
         var sobj = document.createElement('script');
@@ -282,23 +301,54 @@
         var headobj = document.getElementsByTagName('head')[0];
         headobj.appendChild(sobj);
     }
-    include_js('../resource/js/backhand.js');
-    include_js('../resource/js/contabs.js');
-    $('#side-menu').metisMenu();
+
+    function showMenu() {
+        // MetsiMenu
+        $('#side-menu').metisMenu();
+        $('#side-menu').show();
+        include_js('../resource/js/backhand.js');
+        include_js('../resource/js/contabs.js');
+    }
+
     //退出
     function logout() {
         quakooUser.removeUserInfo()
-        window.location.href="../login/login.html";
+        window.location.href = "../login/login.html";
     }
-    
-    
-    function getDefaultValue() {
-        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:1},function (data) {
-            if(data && data.success){
 
+    function addMenu(data) {
+        var permissionData = data[0];
+        var content = '';
+
+        for (var i = 0; i < permissionData.length; i++) {
+            var level2 = data[permissionData[i].id];
+            content += ' <li>';
+            if (permissionData[i].pid == 0 && permissionData[i].href.indexOf("html") > 0) {
+                content += ' <a class="J_menuItem"  data-index = ' + permissionData[i].id + ' href="' + permissionData[i].href.substring(2, permissionData[i].href.length - 2) + '">';
+                content += '  <i class="' + permissionData[i].cssName + '"></i>';
+                content += ' <span class="nav-label">' + permissionData[i].text + '</span>';
+            } else {
+                content += '  <a href="#"><i class="' + permissionData[i].cssName + '"></i>';
+                content += ' <span class="nav-label">' + permissionData[i].text + '</span>';
             }
-        })
+            content += '</a>';
+            // content+='<span class="fa arrow"></span></a>';
+
+            if (level2 && level2.length > 0) {
+                for (var j = 0; j < level2.length; j++) {
+                    content += '  <ul class="nav nav-second-level">';
+                    content += ' <li>';
+                    content += ' <a class="J_menuItem"  data-index = ' + level2[j].id + ' href="' + level2[j].href.substring(2, level2[j].href.length - 2) + '">' + level2[j].text + '</a>';
+                    content += ' </li>';
+                    content += ' </ul>';
+                }
+            }
+
+            content += ' </li>';
+        }
+        return content;
     }
+
 </script>
 
 

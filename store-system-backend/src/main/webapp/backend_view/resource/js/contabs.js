@@ -131,7 +131,6 @@ $(function () {
                 return false;
             }
         });
-
         // 选项卡菜单不存在
         if (flag) {
             var str = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
@@ -307,7 +306,4 @@ $(function () {
         $('.page-tabs-content').css("margin-left", "0");
     });
 
-    function sayHi(){
-        aler(666)
-    }
 });
