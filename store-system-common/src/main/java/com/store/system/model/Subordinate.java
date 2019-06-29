@@ -53,7 +53,7 @@ public class Subordinate implements Serializable {
     private String content;//介绍
 
     private String desc;
-    private long phone;
+    private String phone; //联系电话
     private String icon;
 
     private String address;

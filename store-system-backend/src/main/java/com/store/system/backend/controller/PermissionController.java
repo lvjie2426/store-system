@@ -78,6 +78,7 @@ public class PermissionController extends BaseController {
             }
         }
         permission.setHref(JsonUtils.toJson(list));
+        permission.setMenu(permission.getMenu());
         boolean res = permissionService.update(permission);
         return this.viewNegotiating(request, response, new ResultClient(res));
     }

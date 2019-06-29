@@ -112,10 +112,21 @@
 <script src="../../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 
-<script src="../../resource/common/common.js?" +Math.random()></script>
+<!-- 公司内部库 -->
+<script src="../../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../../resource/js/lib/quakoo/Config.js"></script>
+<script src="../../resource/js/lib/quakoo/project.js"></script>
+<script src="../../resource/js/template-native.js"></script>
+
+<!-- 全局公共js -->
+<script src="../../resource/js/yanjing.js"></script>
+
+<script src="../../resource/common/common.js?"+Math.random()></script>
 
 <script>
-    var sid=getUserInfo().sid;
+    var sid=quakooUser.getUserInfo().sid;
 
     var $table =  $('#tb_table');
     var TableInit = function (columns) {
@@ -152,7 +163,7 @@
                 },
                 queryParams: function (params) {
                     return {
-                        token:getUserInfo().token,
+                        token:quakooUser.getUserInfo().token,
                         pageNumber: params.offset+1,
                         pageSize: params.limit,
                     };
@@ -353,8 +364,7 @@
 
     function initZtree(){
         var url = serverUrl+"/permission/getAll?sid="+sid;
-        myAjax(url,"",handle);
-        function handle(data,param){
+        quakooData.ajaxGetData(url,{}, function handle(data,param){
             if(data.success) {
                 var treeData = transTreeData(data.data);
                 zNodes = treeData;
@@ -364,7 +374,7 @@
             }
             $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        }
+        })
 
     }
     function refreshTree(){
@@ -395,13 +405,13 @@
     function reInitTree(id) {
         var url =  serverUrl+"/role/getRolePermissions";
         myAjax(url,{rid:id},handle);
-        function handle(data,param){
+        quakooData.ajaxGetData(url,{rid:id}, function handle(data,param){
             if(data.success) {
                 reviewNodes(data.data);
             }else{
                 layer.msg("请求失败");
             }
-        }
+        })
     }
     //回显ztree数据
     function reviewNodes(data) {

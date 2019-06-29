@@ -19,6 +19,9 @@ import java.util.List;
 public class ClientOrder extends Order {
 
     private String subName; //门店名称
+    private String threePolicy;//三包
+    private String address;//门店地址
+    private String phone;//门店联系电话
     private String machiningName; //加工师
     private String oiName; //验光师
     private OptometryInfo info;//该订单的验光信息
