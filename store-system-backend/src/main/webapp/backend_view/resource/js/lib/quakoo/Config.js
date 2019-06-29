@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-        //this.serverUrl = "http://192.168.1.33:20005";
+        this.serverUrl = "http://192.168.1.3:20005";
         // this.serverUrl = "http://192.168.1.24:20005";
         // this.serverUrl = "http://127.0.0.1:20005";
         // this.serverUrl = "http://192.168.1.40:20005";
@@ -55,6 +55,8 @@ var Config = (function(_super){
     _proto.getUrl_web_img_uploadUrl = function(){return this.serverUrl + '/storage/handle';};
     /**登陆*/
     _proto.getUrl_web_user_loginUrl = function(){return this.serverUrl + '/login/in';};
+    /**登陆*/
+    _proto.getUrl_web_user_getTree = function(){return this.serverUrl + '/user/getTree';};
     /**登陆验证码*/
     _proto.getUrl_web_user_loginCodeUrl = function(){return this.serverUrl + '/login/verifyCode'};
 
