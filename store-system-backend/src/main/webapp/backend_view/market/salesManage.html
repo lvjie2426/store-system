@@ -395,7 +395,8 @@
                         </div>
 
                     </div>
-                    <label for="time-frame"><input type="checkbox" id="time-frame">选择时间段</label>
+                    <input type="checkbox" id="time-frame">
+                    <label for="time-frame">选择时间段</label>
                 </div>
             </div>
         </li>
@@ -406,7 +407,7 @@
     <div class="tash-header layui-layer-title">选择任务对象</div>
     <div class="content">
         <div class="table">
-            <table id="yj-table" data-toggle="table" class="table"></table>
+            <table id="object-table" data-toggle="table" class="table"></table>
         </div>
     </div>
 </div>
@@ -1403,7 +1404,7 @@
             content: $('.create-task'),
             btn: ['取消', '确定'],
             yes:function (index,layero) {
-                layero.close(index);
+                layer.close(index);
             },
             btn2: function (index,layero) {
                 addTask(index);
@@ -1474,7 +1475,7 @@
             target = $("#target3").val();
         }
         if(!timeType){//时间节点
-            taskStartTime = 0;
+            taskStartTime = new Date().getTime();
             taskEndTime = $('#deadline-time').val();
             taskEndTime = taskEndTime.replace(/-/g, ',').replace(/:/g, ',').replace(/\s/, ',').split(',');
             taskEndTime = new Date(taskEndTime[0], taskEndTime[1] - 1, taskEndTime[2], taskEndTime[3], taskEndTime[4]).getTime();
@@ -1503,16 +1504,17 @@
             return;
         }
         param.name = taskName;
-        param.executor = JSON.stringify(executor);
+        param.executorJson = JSON.stringify(executor);
         param.sid = psid;
-        param.amount = amount;
+        param.amoun= amount*1;
         param.amountType= amountType;
         param.startTime = taskStartTime;
         param.endTime = taskEndTime;
         param.type = taskType;
-        param.target = target;
+        param.target = target*1;
+        console.log(param);
         if(quakooUtils.isNotBlack(skuIds)){
-            param.skuIds = skuIds;
+            param.skuIdsJson = JSON.stringify(skuIds);
         }
         quakooData.ajaxGetData(config.getUrl_mission_add(),param,function (ret) {
             console.log("创建任务接口数据",ret)
