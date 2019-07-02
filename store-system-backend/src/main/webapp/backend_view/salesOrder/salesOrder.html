@@ -1299,10 +1299,10 @@
                             </td>
                             <td><%=list[i].number%></td>
                             <td>¥<%=(list[i].price/100).toFixed(2)%></td>
-                            <%if(0< list[i].discount <= 10){%>
+                            <%if(list[i].discount > 0 && list[i].discount<10){%>
                                 <td><input type="text" placeholder="<%=list[i].discount%>" value="<%=list[i].discount%>" readonly="readonly"></td>
                             <%}else{%>
-                                <td><input type="text" placeholder="无折扣" value="" readonly="readonly"></td>
+                                <td><input type="text" placeholder="无折扣" value="无折扣" readonly="readonly"></td>
                             <%}%>
                             <td>¥<%=list[i].subtotal%></td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
@@ -1317,7 +1317,7 @@
                             <%if(0< list[i].discount <= 10){%>
                             <td><input type="text" placeholder="<%=list[i].discount%>" value="<%=list[i].discount%>" readonly="readonly"></td>
                             <%}else{%>
-                            <td><input type="text" placeholder="无折扣" value="" readonly="readonly"></td>
+                            <td><input type="text" placeholder="无折扣" value="无折扣" readonly="readonly"></td>
                             <%}%>
                             <td><%=list[i].subtotal%>积分</td>
                             <td><u onclick="delOrderItem('<%=i%>')">移除</u></td>
@@ -1720,26 +1720,29 @@
 /***************************************************顾客信息开始*****************************************************/
         /**顾客搜索*/
         function searchCus() {
-            var phone = $('#searchPhoneUser').val();
-            if(quakooUtils.isBlack(phone)){
+            var content = $('#searchPhoneUser').val();
+            if(quakooUtils.isBlack(content)){
                 layer.msg("请输入搜索内容");
                 return;
             }
+            var param = {};
+            param.subid = subid;
+            param.userType =0;
+
             if(cusInfoType==1){
-                /**接口——根据手机号查询用户信息*/
-                quakooData.ajaxGetData(config.getUrl_user_getUserByPhone(),{phone:phone},function (ret) {
-                    console.log(ret);
-                    if(ret&&ret.success){
-                        if(quakooUtils.isNotBlack(ret.data)){
-                            showCus(ret.data);
-                        }else{
-                            showCus();
-                        }
-                    }
-                });
+                param.phone1 = content;
             }else if(cusInfoType == 2){
-                return;
+                param.cardNumber = content;
             }
+            console.log('请求参数',param);
+            quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(),param,function(ret){
+                console.log('用户信息搜索：',ret);
+                if(quakooUtils.isNotBlack(ret.rows[0])){
+                    showCus(ret.rows[0]);
+                }else{
+                    showCus()
+                }
+            });
         }
         /**接口——获取意向顾客*/
         function intentionCustomers() {
@@ -3413,7 +3416,7 @@
                 return;
             }
             submitInfo.uid = cusId;
-            submitInfo.price = 1;
+            submitInfo.price = (onlinePayMoney*100).toFixed(0);
             submitInfo.authCode = authCode;
             submitInfo.type = 1;
             submitInfo.desc = paymentNote;
@@ -3644,7 +3647,8 @@
                         content: $('#printBox'),
                         btn: '',
                         success:function(){
-                            $('#printBox').html(printContent)
+                            $('#printBox').html(printContent);
+                            $('#smallTicketBg').css("display",'none')
                         }
                     })
         }
