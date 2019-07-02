@@ -802,18 +802,15 @@
         </ul>
         <div class="headRight">
             <div class="child newShop" onclick="creatShop()">创建门店</div>
+            <div class="btn btn-info" style="margin-left: 10px;" onclick="searchShop()">搜索</div>
             <input class="child" type="text" placeholder="搜索门店" id="searchShop">
-            <div class="selectBox child" id="selectBox">
+            <div class="selectBox child" id="searchShopType">
                 <div class="select-box-header">
-                    <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <span class="text">名称</span> <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
-                        <li value="01">暴龙1</li>
-                        <li value="02">暴龙2</li>
-                        <li value="03">暴龙3</li>
-                        <li value="04">暴龙4</li>
-                        <li value="05">暴龙5</li>
+                        <li value="1">名称</li>
                     </ul>
                 </div>
             </div>
@@ -1209,15 +1206,19 @@
 </script>
 <script>
     var sid;      //企业ID
+    var searchType = 1;//搜索门店类型
     $(function () {
         initPage();
     });
 
     function initPage() {
         sid = quakooUser.getUserInfo().psid;          //企业ID
-        getShopList();                                //获取当前企业下门店列表
-        searchShop();                                 //根据名称搜索门店
+        selectTag($("#searchShopType"),function (ret) {
+            searchType = ret.value;
+
+        });
         getComInfo();                                 //获取当前公司信息
+        getShopList();                                //获取当前企业下门店列表
     }
 
     /**接口——获取当前公司信息*/
@@ -1278,26 +1279,52 @@
 
     /**接口——根据名称搜索门店*/
     function searchShop() {
-        var name;
-        document.getElementById('searchShop').onkeypress = function (e) {
-            var keycode = e.keyCode;
-            if (keycode == '13') {
-                document.getElementById('searchShop').blur();
-                e.preventDefault();
-                keyWord = document.getElementById('searchShop').value;
-                if (quakooUtils.isBlack(keyWord)) {
-                    layer.msg("请输入门店名称");
-                    return;
-                }
-                name = keyWord;
-                quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStoreByName(), {
-                    sid: sid,
-                    name: name
-                }, function (data) {
-                    console.log(data);
-                })
+        if(searchType == 1){
+            var searchContext = document.getElementById('searchShop').value;
+            if (quakooUtils.isBlack(searchContext)) {
+                layer.msg("请输入门店名称");
+                return;
             }
-        };
+            var param = {};
+            param.sid = sid;
+            param.name = searchContext;
+            quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStoreByName(),param,function (ret) {
+                console.log("门店搜索",ret);
+                //和门店列表接口相同
+                if (ret && ret.success) {
+                    if (quakooUtils.isNotBlack(ret.data)) {
+                        var data = {list: ret.data};
+                        var html = template("shopList", data);
+                        document.getElementById("shopUl").innerHTML = html;
+                        $(".switch-btn").click(function () {
+                            var $dom = $(this).parent(".switch");
+                            var id = $dom.attr("attr-id");
+                            var status = $dom.attr("attr-status");
+                            quakooData.ajaxGetData(config.getUrl_subordinate_updateOpen(), {
+                                id: id,
+                                status: status
+                            }, function (ret) {
+                                if (ret && ret.success) {
+                                    $dom.toggleClass('active');
+                                    if (status == 1) {
+                                        $dom.attr("attr-status", 0);
+                                        $dom.find(".shopOn").removeClass("shopOn").addClass("shopOff").html("未开启");
+                                        layer.msg("门店已关闭", {icon: 1})
+                                    } else if (status == 0) {
+                                        $dom.attr("attr-status", 1);
+                                        $dom.find(".shopOff").removeClass("shopOff").addClass("shopOn").html("已启用");
+                                        layer.msg("门店已启用", {icon: 1})
+                                    }
+
+                                }
+                            });
+                        })
+                    }
+                }
+            })
+        }else if(searchType == 2){
+
+        }
     }
 
     /**接口——开启关闭门店*/
@@ -1309,7 +1336,7 @@
 
     /**接口——企业下创建门店*/
     function f() {
-        var param;
+        var param = {};
         param.id = id;                                //公司ID
         param.name = name;                            //门店名字
         param.storeCode = storeCode;                //门店简码
