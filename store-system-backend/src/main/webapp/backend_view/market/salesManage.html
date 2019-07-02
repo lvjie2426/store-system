@@ -404,10 +404,18 @@
 </div>
 <!--任务奖励弹窗——选择任务对象-->
 <div class="task-object">
-    <div class="tash-header layui-layer-title">选择任务对象</div>
+    <div class="tash-header layui-layer-title">选择任务对象门店列表</div>
     <div class="content">
         <div class="table">
             <table id="object-table" data-toggle="table" class="table"></table>
+        </div>
+    </div>
+</div>
+<div class="task-object2" style="display: none;">
+    <div class="tash-header layui-layer-title">选择任务对象员工列表</div>
+    <div class="content">
+        <div class="table">
+            <table id="object-table2" data-toggle="table" class="table"></table>
         </div>
     </div>
 </div>
@@ -551,10 +559,11 @@
     var type;                                             //1 抵用券营销   2短信群发   3任务奖励
     var classIds;                                         //所有的类目ID
     var timeType=false;                                  //创建任务时间类型，时间节点||时间段
-    var skuIds;
+    var skuIds = [];
     var taskStartTime;
     var taskEndTime;
     var date1,date2;
+    var selObject = {};
     /**初始化页面*/
     $(function () {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
@@ -1377,7 +1386,6 @@
                     context.closePath(); //路径结束
                     context.restore();
                 }
-
                 whiteCircle();
                 blueCircle(value);
             }
@@ -1385,12 +1393,15 @@
     }
 
     /**
-     * 弹窗创建任务
+     * 弹窗——创建任务
      * */
     var taskType = 1;//1=>团队任务；2=>个人任务
     var amountType = 3;//1销售量-个 2销售额-元 3全店销售额
     var target;//完成目标;
     function createTask() {
+        skuIds =[];
+        executor = [];
+        selObject = {};
         layer.open({
             type: 1,
             shade: 0.01,
@@ -1474,6 +1485,7 @@
         }else if(amountType==3){
             target = $("#target3").val();
         }
+
         if(!timeType){//时间节点
             taskStartTime = new Date().getTime();
             taskEndTime = $('#deadline-time').val();
@@ -1487,9 +1499,22 @@
             layer.msg("请输入任务名称");
             return;
         }
-        if(quakooUtils.isBlack(executor)){
-            layer.msg("请选择门店或员工");
-            return;
+        if(type ==1){
+            if(quakooUtils.isBlack(executor)){
+                layer.msg("请选择门店");
+                return;
+            }
+        }else if(type == 2){
+            var personArr = [];
+            for(var i in selObject){
+                for(var j =0;j<selObject[i].length;j++){
+                    personArr.push(selObject[i][j]);
+                }
+            }
+            if(quakooUtils.isBlack(personArr)){
+                layer.msg('请选择任务对象');
+                return;
+            }
         }
         if(quakooUtils.isBlack(target)){
             layer.msg("请输入目标数");
@@ -1504,7 +1529,11 @@
             return;
         }
         param.name = taskName;
-        param.executorJson = JSON.stringify(executor);
+        if(type==1){
+            param.executorJson = JSON.stringify(executor);
+        }else if(type ==2){
+            param.executorJson = JSON.stringify(personArr);
+        }
         param.sid = psid;
         param.amoun= amount*1;
         param.amountType= amountType;
@@ -1542,7 +1571,15 @@
                 clickToSelect: true,
                 paginationLoop: false,
                 columns:[
-                    {checkbox: true, valign: "middle"},
+                    {checkbox: true, valign: "middle",formatter: function (value, row, index) {
+                        if(skuIds.indexOf(row.id)>=0){
+                            return {
+                                checked:true
+                            }
+                        }else{
+                            return value
+                        }
+                    }},
                     {field: "brandName", title: "品牌", valign: "middle"},
                     {field: "seriesName", title: "系列", valign: "middle"},
                     {field: "canUseNum", title: "可用数量", valign: "middle"},
@@ -1596,7 +1633,16 @@
                     paginationHAlign: "center",
                     clickToSelect: true,
                     columns: [
-                        {checkbox: true, align: "center", valign: "middle"},
+                        {checkbox: true, align: "center", valign: "middle",formatter: function (value, row, index) {
+                                if(executor.indexOf(row.id)>=0){
+                                    return {
+                                        checked:true
+                                    }
+                                }else{
+                                    return value
+                                }
+                            }
+                        },
                         {field: "name", title: "门店名称",align:"center",valign:'middle'},
                         {
                             field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
@@ -1613,8 +1659,6 @@
      * 弹窗选择任务产品
      * */
     function selectProduct() {
-        skuIds =[];
-        console.log("xindakai",skuIds)
         var index = layer.open({
             type: 1,
             shade: 0.01,
@@ -1643,12 +1687,11 @@
     /**保存skuids*/
     function saveSkuids(){
         var data;
+        skuIds = [];
         for(var i=0;i<classIds.length;i++){
             data = $("#jp-table"+classIds[i]).bootstrapTable('getAllSelections');
             for(var j=0;j< data.length;j++){
-                if(skuIds.indexOf(data[j].id)<0){
-                    skuIds.push(data[j].id);
-                }
+                skuIds.push(data[j].id);
             }
         }
     }
@@ -1673,15 +1716,102 @@
             yes: function (index) {
                 layer.close(index);
             },
-            btn2: function () {
+            success: function (layero, index) {
+                quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:psid},function (ret) {
+                    console.log("任务门店",ret);
+                    if(ret&&ret.success){
+                        $("#object-table").bootstrapTable('destroy');
+                        $("#object-table").bootstrapTable({
+                            data: ret.data,
+                            classes: "table",
+                            pagination: false,//是否显示分页
+                            sortable: false,
+                            sortOrder: "asc",
+                            showColumns: true,
+                            strictSearch: true,
+                            locale: "zh-CN",
+                            paginationHAlign: "center",
+                            clickToSelect: true,
+                            columns: [
+                                {field: "name", title: "门店名称",align:"center",valign:'middle'},
+                                {
+                                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                                        return '<button class="btn btn-primary" style="margin-right: 8px;" onclick="selectPerson('+row.id+')">选择</button>';
+                                    }
+                                }
+                            ]
+                        });
+                    }
+                });
+
+            }
+        });
+    }
+
+    function selectPerson(id) {
+        var index= layer.open({
+            type: 1,
+            shade: 0.01,
+            shadeClose: true,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['360px', '448px'],
+            anim: 0,
+            closeBtn: 0,
+            resize: false,
+            title: "",
+            content: $('.task-object2'),
+            btn: ['关闭窗口'],
+            yes: function (index) {
+                selObject[id]= [];
+                var data = $('#object-table2').bootstrapTable('getAllSelections');
+                for(var i=0;i<data.length;i++){
+                    selObject[id].push(data[i].id)
+                }
+                console.log(selObject)
+                layer.close(index);
             },
             success: function (layero, index) {
+                quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid: id,userType: 1},function (ret) {
+                    console.log("任务门店",ret);
+                    if(ret&&ret.success){
+                        $("#object-table2").bootstrapTable('destroy');
+                        $("#object-table2").bootstrapTable({
+                            data: ret.data,
+                            classes: "table",
+                            pagination: false,//是否显示分页
+                            sortable: false,
+                            sortOrder: "asc",
+                            showColumns: true,
+                            strictSearch: true,
+                            locale: "zh-CN",
+                            paginationHAlign: "center",
+                            clickToSelect: true,
+                            columns: [
+                                {checkbox: true, align: "center", valign: "middle",formatter:function(value, row, index){
+                                    if(selObject[id] && selObject[id].indexOf(row.id)>=0){
+                                            return {
+                                                checked: true
+                                            }
+                                        }else{
+                                            return value;
+                                        }
+                                    }
+                                },
+                                {field: "name", title: "门店名称",align:"center",valign:'middle'},
+                                {
+                                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                                        return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
+                                    }
+                                }
+                            ]
+                        });
+                    }
+                });
 
             }
         });
 
     }
-
     /**
      * 弹窗选择任务门店
      * */
@@ -1705,6 +1835,7 @@
                 for(var i=0;i<selectData.length;i++){
                     executor.push(selectData[i].id);
                 }
+                console.log('已选门店',executor)
                 layer.close(index);
             },
             success: function (layero, index) {

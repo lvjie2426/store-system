@@ -791,6 +791,11 @@
             vertical-align: middle;
             font-family: PingFangSC-Medium;
         }
+        .search-btn{
+            float: right;
+            margin: 12px 12px 12px 0;
+            margin-left: 0!important;
+        }
     </style>
 </head>
 <body>
@@ -802,7 +807,7 @@
         </ul>
         <div class="headRight">
             <div class="child newShop" onclick="creatShop()">创建门店</div>
-            <div class="btn btn-info" style="margin-left: 10px;" onclick="searchShop()">搜索</div>
+            <div class="btn btn-info search-btn" style="margin-left: 10px;" onclick="searchShop()">搜索</div>
             <input class="child" type="text" placeholder="搜索门店" id="searchShop">
             <div class="selectBox child" id="searchShopType">
                 <div class="select-box-header">
@@ -1283,6 +1288,7 @@
             var searchContext = document.getElementById('searchShop').value;
             if (quakooUtils.isBlack(searchContext)) {
                 layer.msg("请输入门店名称");
+                getShopList();
                 return;
             }
             var param = {};
