@@ -902,7 +902,7 @@ public class UserServiceImpl implements UserService {
     //name 是精确查询
     //name1 是模糊查询
     @Override
-    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String phone1, String name, String name1, int sex, int userType, String job, long userGradeId) throws Exception {
+    public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String phone1, String name, String name1, int sex, int userType, String job, long userGradeId,int cardNumber) throws Exception {
         String sql = "SELECT * FROM `user` where sid = " + subid ;
         String sqlCount = "SELECT COUNT(id) FROM `user` where sid = " + subid ;
         String limit = " limit %d , %d ";
@@ -911,6 +911,11 @@ public class UserServiceImpl implements UserService {
         if(userType>-1){
             sql = sql + " AND userType =" + userType;
             sqlCount = sqlCount + " AND userType =" + userType;
+        }
+        if(cardNumber>-1){
+            sql = sql + " AND cardNumber LIKE ?";
+            sqlCount = sqlCount + " AND cardNumber LIKE ?";
+            objects.add("%" + cardNumber + "%");
         }
         if(StringUtils.isNotBlank(job)){
             sql = sql + " and `job` =" + job;

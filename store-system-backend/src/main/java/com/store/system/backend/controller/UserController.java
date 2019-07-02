@@ -223,13 +223,14 @@ public class UserController extends BaseController {
                                             @RequestParam(required = false, value = "name1",defaultValue = "") String name1,
                                             @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
                                             @RequestParam(required = false,value = "job",defaultValue = "") String job,
+                                            @RequestParam(required = false,value = "cardNumber",defaultValue = "-1") int cardNumber,
                                             @RequestParam(required = false,value = "userGradeId",defaultValue = "0") long userGradeId,
                                     HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("分店ID错误");
-            pager = userService.getBackSubCustomerPager(pager, subid,phone,phone1,name,name1,sex,userType,job,userGradeId);
+            pager = userService.getBackSubCustomerPager(pager, subid,phone,phone1,name,name1,sex,userType,job,userGradeId,cardNumber);
             return this.viewNegotiating(request,response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
