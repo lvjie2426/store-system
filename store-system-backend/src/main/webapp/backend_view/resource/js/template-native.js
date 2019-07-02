@@ -103,6 +103,9 @@ template.helper('getDateTime', function (l,formatStr) {
 	}
 	return new Date(l).format(formatStr);
 });
+template.helper('formatDateToDotted', function (time) {
+	return quakooUtils.formatTimeToDateDianLY(time)
+});
 
 /**
  * 将图片切割成正方形

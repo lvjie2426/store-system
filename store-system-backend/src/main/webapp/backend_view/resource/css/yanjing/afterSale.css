@@ -22,7 +22,7 @@
 }
 
 ::-webkit-scrollbar {
-    width: 0;height: 0;
+    /*width: 0;height: 0;*/
     background-color: #F5F5F5;
 }
 
@@ -422,7 +422,8 @@
 }
 .content-view1 .customer .customer-info{
     width:100%;
-    height:50px;
+    overflow: hidden;
+    /*height:50px;*/
     line-height: 50px;
     padding:0 16px;
     background-color: rgba(255, 255, 255, 1);
@@ -505,10 +506,11 @@
 /*验光信息开始*/
 .content-view1 .optometry{
     width: 100%;
-    height: 256px;
+    /*height: 256px;*/
     background-color: rgba(255, 255, 255, 1);
     border: 1px solid rgba(130, 130, 151, 0.2);
     margin-bottom:8px;
+    padding-bottom: 10px;
 }
 .content-view1 .optometry-top{
     width: 100%;
@@ -664,6 +666,7 @@
     text-align: center;
     padding: 8px 0;
     min-width: 72px;
+    background: #F4F4F8;
 }
 .tableContent table thead th:nth-child(1) {
     width: auto;
@@ -799,6 +802,11 @@
     width:95.55%;
     height:248px;
     margin:16px auto 0;
+    overflow-x: scroll;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 0.1rem;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 .order-table .table{
     width:100%;
@@ -977,6 +985,7 @@
 }
 .order .order-bottom{
     padding:14px 16px 16px;
+    overflow: hidden;
 }
 .order .order-bottom .extra{
     margin-left:16px;
@@ -1053,11 +1062,13 @@
     font-size: 12px;
     text-align: left;
     font-family: PingFangSC-Semibold;
+    vertical-align: middle;
 }
 .content-view1 .dialog-content .bot .bot-item .selectBox{
     min-width:120px;
     height:28px;
     border:1px solid #ECECF4;
+    vertical-align: middle;
 }
 .content-view1 .dialog-content .bot .bot-item .selectBox .text{
     color: rgba(130, 130, 151, 1);
@@ -1108,7 +1119,7 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-.content-view-salesReturn .bot .cancel,.content-view-breakage .bot .cancel{
+.layui-layer-salesReturn .layui-layer-btn .layui-layer-btn1,.layui-layer-breakage .layui-layer-btn .layui-layer-btn1{
     display: inline-block;
     width: 44px;
     height: 32px;
@@ -1121,21 +1132,24 @@
     text-align: center;
     font-family: PingFangSC-Semibold;
     float:right;
-    margin-left: 8px;
+    margin: 0 0 0 8px;
+    padding: 0;
 }
-.content-view-salesReturn .bot .confirm,.content-view-breakage .bot .confirm{
+.layui-layer-salesReturn .layui-layer-btn .layui-layer-btn0,.layui-layer-breakage .layui-layer-btn .layui-layer-btn0{
     display: inline-block;
     width: 44px;
     height: 32px;
     line-height: 30px;
     border-radius: 2px;
+    border: none;
     background-color: rgba(221, 91, 75, 1);
     color: rgba(255, 255, 255, 1);
     font-size: 12px;
     text-align: center;
     font-family: PingFangSC-Semibold;
     float: right;
-    margin-left: 8px;
+    margin: 0 0 0 8px;
+    padding: 0;
 }
 
 
