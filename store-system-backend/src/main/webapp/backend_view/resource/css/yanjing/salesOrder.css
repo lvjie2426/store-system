@@ -2729,7 +2729,6 @@ input[type=checkbox]:checked:after {
 #printBox{
     width:90%;
     margin:0px auto;
-    float: right;
     background: #fff;
     padding: 20px 6px;
     box-sizing: border-box;
