@@ -22,9 +22,11 @@
     <!--标签样式重置结束-->
     <!--公用组件样式-->
     <link rel="stylesheet" href="../resource/css/common.css">
+    <link rel="stylesheet" href="../resource/css/style.css">
     <!--公用组件样式结束-->
     <!--单页样式-->
     <link rel="stylesheet" href="../resource/css/yanjing/ordersManage.css">
+    <link rel="stylesheet" href="../resource/css/yanjing/afterSale.css">
     <!--单页样式结束-->
 
 </head>
@@ -97,7 +99,11 @@
 <div class="content">
     <table id="dxqf-table" data-toggle="table" class="table table-border"></table>
 </div>
-<div class="content-view"></div>
+<div class="content-view content-view1">
+    <div id="orderDom"></div>
+</div>
+
+
 <!-- 固定底部 -->
 <div class="winFooterBox">
     <span id="numLen"> 选中0项</span>
@@ -138,6 +144,267 @@
     <%}%>
 </script>
 
+<script type="text/html" id="orderTmp">
+    <div class="dialog-content">
+        <div class="customer">
+            <div class="customer-title">顾客信息</div>
+            <ul class="customer-info">
+                <li class="info-item">
+                    <button type="button">姓名</button>
+                    <span><%=list.uname%></span>
+                </li>
+                <li class="info-item">
+                    <button type="button">年龄</button>
+                    <span><%=list.uname%></span>
+                </li>
+                <li class="info-item">
+                    <button type="button">联系方式</button>
+                    <span><%=list.uphone%></span>
+                </li>
+                <li class="info-item">
+                    <button type="button">订单金额</button>
+                    <span><%=list.totalPrice%></span>
+                </li>
+                <li class="info-item">
+                    <button type="button">折扣</button>
+                    <span><%=list.discount%></span>
+                </li>
+                <li class="info-item">
+                    <button type="button">验光师</button>
+                    <span><%=list.uname%></span>
+                </li>
+                <li class="info-item">
+                    <button type="button">加工师</button>
+                    <span><%=list.machiningName%></span>
+                </li>
+            </ul>
+            <div class="remark">备注: <%=list.desc%></div>
+        </div>
+        <div class="optometry">
+            <div class="optometry-top">
+                <div class="optometry-title">验光信息</div>
+                <div class="selectBox" id="selectYgInfo" style="width: 160px;">
+                    <div class="select-box-header">
+                        <%if(list.optometryInfos.length>0){%>
+                        <span class="text"><%=formatDateToDotted(list.optometryInfos[0].ctime)%></span><i class="iconfont icon-ico_arrow_down"></i>
+                        <%}else{%>
+                        <span class="text">更多验光记录</span><i class="iconfont icon-ico_arrow_down"></i>
+                        <%}%>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL" id="moreYgList">
+                            <%for(var i=0;i< list.optometryInfos.length;i++){%>
+                            <li value="<%=list.optometryInfos[i].id%>"><%=formatDateToDotted(list.optometryInfos[i].ctime)%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+                <!--<ul class="optometry-date-tab clear">
+                    <li class="optometry-date-item active" id="tagDataBox">本次</li>
+                   &lt;!&ndash; <li class="optometry-date-item">
+                        <span>2018.10.27</span>
+                        <button type="button">隐形</button>
+                    </li>&ndash;&gt;
+
+                </ul>-->
+            </div>
+            <div class="optometry-content" id="ygInfoDom">
+
+            </div>
+        </div>
+        <div class="order">
+            <div class="order-header">
+                <div class="order-title">订单信息</div>
+                <!--<button type="button" class="fr btn btn-primary add">添加</button>
+                <input type="text" class="fr money" placeholder="金额" >
+                <div class="selectBox fr" id="selectOrder">
+                    <div class="select-box-header">
+                        <span class="text">附加收费</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                        </ul>
+                    </div>
+                </div>-->
+            </div>
+            <div class="order-table">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>数量</th>
+                        <th>零售价</th>
+                        <th>会员折扣</th>
+                        <th>小计</th>
+                        <th>质保状态</th>
+                        <!--<th>操作</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <%for(var i=0;i< list.skuids.length;i++){%>
+                    <tr>
+                        <td><%=list.skuids[i].code%>
+                            <!--<span class="sign-btn">定制商品</span>
+                            <div class="selectBox small-select selectBatch" id="selectBatch">
+                                <div class="select-box-header">
+                                    <span class="text">选择批号</span><i class="iconfont icon-ico_arrow_down"></i>
+                                </div>
+                                <div class="optionBox">
+                                    <ul class="optionUL">
+                                        <li value="01">1</li>
+                                        <li value="02">2</li>
+                                        <li value="03">3</li>
+                                    </ul>
+                                </div>
+                            </div>-->
+                        </td>
+                        <td><%=list.skuids[i].num%></td>
+                        <td>￥<%=list.skuids[i].price%></td>
+                        <td>
+                            <input type="number" class="discount" readonly="readonly" value="<%=list.skuids[i].discount%>" placeholder="10.0">
+                        </td>
+                        <td>￥<%=list.skuids[i].subtotal%></td>
+                        <%if(list.skuids[i].qualityType==1){%>
+                        <td><i class="indate indate-danger"></i>过期</td>
+                        <%}else if(list.skuids[i].qualityType==2){%>
+                        <td><i class="indate indate-going"></i>保修中</td>
+                        <%}else if(list.skuids[i].qualityType==3){%>
+                        <td><i class="indate indate-renew"></i>换新</td>
+                        <%}else{%>
+                        <td><i class="indate"></i>-</td>
+                        <%}%>
+                        <!--<td>
+                            <span class="change" onclick="change()">更换</span>
+                            <span class="sales-return" onclick="salesReturn()">退货</span>
+                            <span class="breakage" onclick="breakage()">报损</span>
+                        </td>-->
+                    </tr>
+                    <%}%>
+                    <%for(var i=0;i< list.surcharges.length;i++){%>
+                    <tr class="promotion">
+                        <td colspan="4"><%=list.surcharges[i].name%></td>
+                        <td colspan="3">-￥<%=list.surcharges[i].price%></td>
+                    </tr>
+                    <%}%>
+                    </tbody>
+                </table>
+            </div>
+            <div class="order-bottom">
+                <div class="fl origin">
+                    <span class="text">原价共计</span>
+                    <span class="money">￥<%=list.totalPrice%></span>
+                </div>
+                <div class="fl last">
+                    <span class="text">上次支付</span>
+                    <span class="money">￥<%=list.price%></span>
+                </div>
+                <div class="fr extra">
+                    <span class="text">额外支付</span>
+                    <span class="case">
+                        <i>￥</i><input type="number" readonly="readonly" value="<%=list.extra%>" placeholder="0">
+                    </span>
+                </div>
+                <div class="fr ">
+                    <span class="text">退款金额</span>
+                    <span class="case">
+                        <i>￥</i><input type="number" readonly="readonly" value="<%=list.refund%>" placeholder="0">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="bot clear">
+            <div class="bot-item">
+                <span class="name">售后原因:<%=list.reason%></span>
+            </div>
+            <div class="bot-item">
+                <span class="name">操作人:<%=list.optId%></span>
+            </div>
+        </div>
+    </div>
+   <!-- <div class="dialog-bottom">
+        <button type="button" class="closewin btn btn-gray">关闭窗口</button>
+        <button type="button" class="submit btn btn-primary">提交订单</button>
+        <button type="button" class="save btn btn-order">保存订单</button>
+    </div>-->
+</script>
+
+<script type="text/html" id="ygInfoTmp">
+    <div class="optometry-content-top clear">
+        <ul class="optometry-content-top-tab-list clear" id="ygType">
+            <li class="active" onclick="changeYgSelect('yuanYongRes')">远用</li>
+            <li onclick="changeYgSelect('yinXingRes')">隐形</li>
+            <li onclick="changeYgSelect('jinYongRes')">近用</li>
+            <li onclick="changeYgSelect('jianJinDuoJiaoDianRes')">渐进多焦点</li>
+        </ul>
+    </div>
+    <div class="visionForm">
+        <div class="formLeftBorder"></div>
+        <div class="tableContent active" id="tableContent">
+            <%for(var i in LocYgInfo){%>
+            <%if(i=='yuanYongRes'){%>
+            <table border="" cellpadding="1" cellspacing="0" style="width:100%;display: block" class="<%=i%>">
+            <%}else{%>
+            <table border="" cellpadding="1" cellspacing="0" style="width:100%;display: none" class="<%=i%>">
+            <%}%>
+                <thead>
+                <tr>
+                    <th></th>
+                    <%for(var j=0; j < LocYgInfo[i].length;j++){%>
+                    <th><%=LocYgInfo[i][j].name%></th>
+                    <%}%>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>R</th>
+                    <%for(var j=0;j< LocYgInfo[i].length;j++){%>
+                    <td style="background: #fff"><%=LocYgInfo[i][j].valueRight%></td>
+                    <%}%>
+                </tr>
+                <tr>
+                    <th>L</th>
+                    <%for(var j=0;j< LocYgInfo[i].length;j++){%>
+                    <td style="background: #fff"><%=LocYgInfo[i][j].valueLeft%></td>
+                    <%}%>
+                </tr>
+                </tbody>
+            </table>
+            <%}%>
+        </div>
+        <div class="formRightBorder"></div>
+    </div>
+    <div class="optometry-content-bot clear">
+        <div class="kuang">
+            <input type="text" readonly="readonly" value="<%=list.farPd%>" placeholder="远用瞳距">
+            <span class="mm">mm</span>
+        </div>
+        <!--<div class="selectBox">
+            <div class="select-box-header">
+                <span class="text">右眼</span>
+            </div>
+        </div>-->
+        <div class="selectBox" >
+            <div class="select-box-header">
+                <span class="text"><%=list.wearProp%></span>
+            </div>
+        </div>
+        <div class="selectBox" id="select-suggest">
+            <div class="select-box-header">
+                <span class="text"><%=list.support%></span>
+            </div>
+        </div>
+        <div class="selectBox" id="select-results">
+            <div class="select-box-header">
+                <span class="text"><%=list.res%></span>
+            </div>
+        </div>
+    </div>
+
+</script>
+
 <script>
     var ordersType = 0;//订单状态
     var subid;//门店id
@@ -147,6 +414,14 @@
     var personnelId;//销售员id
     var customerId;//顾客id
     var customerName;//顾客姓名
+
+    var LocYgInfo = {};  //验光信息对象
+    var allYgInfo = {};//选择某个订单时所有的验光信息
+    LocYgInfo.yuanYongRes=[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}];
+    LocYgInfo.yinXingRes=[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'曲率',value:'q'},{name:'直径',value:'d'}];
+    LocYgInfo.jinYongRes=[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'瞳距(PD)',value:'pd'},{name:'瞳高',value:'ph'},{name:'棱镜(V)',value:'v'},{name:'基底(SC)',value:'sc'}];
+    LocYgInfo.jianJinDuoJiaoDianRes=[{name:'裸眼视力',value:'nakedEyesight'},{name:'球镜(S)',value:'s'},{name:'柱镜(C)',value:'c'},{name:'轴位(A)',value:'a'},{name:'矫正视力',value:'correctEyesight'},{name:'远瞳距',value:'fpd'},{name:'近瞳距',value:'npd'},{name:'ADD',value:'add'},{name:'瞳高',value:'ph'}];
+
     //初始化页面
     $(function () {
         initPage();
@@ -271,8 +546,8 @@
                     }
                 },
                 {
-                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary">查看</button>';
+                    field: "id", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary" onclick="lookOrderInfo('+value+')">查看</button>';
                     }
                 }
             ],
@@ -339,6 +614,63 @@
         if (ordersType == 1) ajaxTemplate(config.getUrl_order_getIncomplete());
         if (ordersType == 2) ajaxTemplate(config.getUrl_order_getAllOrder());
     }
+    //查看订单
+    function lookOrderInfo(id){
+        layer.open({
+            type: 1,
+            skin: '',
+            area: ['720px','500px'],
+            anim: 0,
+            closeBtn: 0,
+            title: '订单详情',
+            shade: 0.1,
+            shadeClose: true,
+            scrollbar: false,
+            content: $('.content-view'),
+            resize:false,
+            btn: '关闭窗口',
+            yes: function (index,layero) {
+                layer.close(index);
+            },
+            success: function (layero) {
+                quakooData.ajaxGetData(config.getUrl_order_loadOrder(),{id:id},function (ret) {
+                    for(var i=0;i<ret.order.optometryInfos.length;i++){
+                        allYgInfo[ret.order.optometryInfos[i].id] = ret.order.optometryInfos[i];
+                    }
+                    $("#orderDom").html(template('orderTmp',{list:ret.order}))
+                    if(ret.order.optometryInfos.length>0){
+                        for(var i in LocYgInfo){
+                            for(var j=0;j<LocYgInfo[i].length;j++){
+                                if(allYgInfo[ret.order.optometryInfos[0].id][i] && allYgInfo[ret.order.optometryInfos[0].id][i].leftResItem&& allYgInfo[ret.order.optometryInfos[0].id][i].leftResItem[LocYgInfo[i][j].value]){
+                                    LocYgInfo[i][j].valueLeft = allYgInfo[ret.order.optometryInfos[0].id][i].leftResItem[LocYgInfo[i][j].value]
+                                }
+                                if(allYgInfo[ret.order.optometryInfos[0].id][i] && allYgInfo[ret.order.optometryInfos[0].id][i].rightResItem&& allYgInfo[ret.order.optometryInfos[0].id][i].rightResItem[LocYgInfo[i][j].value]){
+                                    LocYgInfo[i][j].valueRight = allYgInfo[ret.order.optometryInfos[0].id][i].rightResItem[LocYgInfo[i][j].value]
+                                }
+                            }
+                        }
+                        $('#ygInfoDom').html(template('ygInfoTmp',{list:allYgInfo[ret.order.optometryInfos[0].id],LocYgInfo:LocYgInfo}))
+                    }
+                    //选择验光信息
+                    selectTag($("#selectYgInfo"), function (ret) {
+                        for(var i in LocYgInfo){
+                            for(var j=0;j<LocYgInfo[i].length;j++){
+                                if(allYgInfo[ret.value][i] && allYgInfo[ret.value][i].leftResItem&& allYgInfo[ret.value][i].leftResItem[LocYgInfo[i][j].value]){
+                                    LocYgInfo[i][j].valueLeft = allYgInfo[ret.value][i].leftResItem[LocYgInfo[i][j].value]
+                                }
+                                if(allYgInfo[ret.value][i] && allYgInfo[ret.value][i].rightResItem&& allYgInfo[ret.value][i].rightResItem[LocYgInfo[i][j].value]){
+                                    LocYgInfo[i][j].valueRight = allYgInfo[ret.value][i].rightResItem[LocYgInfo[i][j].value]
+                                }
+                            }
+                        }
+                        $('#ygInfoDom').html(template('ygInfoTmp',{list:allYgInfo[ret.value],LocYgInfo:LocYgInfo}))
+                    });
+                })
+            },
+        });
+
+
+    }
 
 
     /**
@@ -349,6 +681,13 @@
         console.log(makeStatusType);
         ajaxIsRen();
     });
+    //改变验光信息
+    function changeYgSelect(className,self) {
+        $("#tableContent table").hide();
+        $('.'+className).show();
+        $(self).removeClass('active').siblings().addClass('active');
+    }
+
 
 </script>
 </body>

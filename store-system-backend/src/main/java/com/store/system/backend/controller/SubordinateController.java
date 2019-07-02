@@ -143,7 +143,8 @@ public class SubordinateController extends BaseController {
                                            Pager pager, long sid,String name,
                                             Model model) throws Exception {
         try {
-            return this.viewNegotiating(request,response,new ResultClient(true,subordinateService.getSubordinateStoreByName(pager,sid,name)));
+            pager = subordinateService.getSubordinateStoreByName(pager,sid,name);
+            return this.viewNegotiating(request,response,new ResultClient(true,pager.getData()));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }
