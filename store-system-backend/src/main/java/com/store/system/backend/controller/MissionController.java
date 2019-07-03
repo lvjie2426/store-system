@@ -68,8 +68,18 @@ public class MissionController extends BaseController {
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(Mission mission, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView update(Mission mission, String executorJson, String skuIdsJson, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            List<Long> ids = Lists.newArrayList();
+            List<Long> skuIds = Lists.newArrayList();
+            if(StringUtils.isNotBlank(executorJson)) {
+                ids = JsonUtils.fromJson(executorJson, new TypeReference<List<Long>>() {});
+            }
+            if(StringUtils.isNotBlank(skuIdsJson)) {
+                skuIds = JsonUtils.fromJson(skuIdsJson, new TypeReference<List<Long>>() {});
+            }
+            mission.setExecutor(ids);
+            mission.setSkuIds(skuIds);
             boolean res = missionService.update(mission);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
