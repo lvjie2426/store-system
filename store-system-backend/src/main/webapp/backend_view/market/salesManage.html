@@ -340,20 +340,20 @@
                 </div>
             </div>
             <div class="task-second">
-                <input type="radio" name="sales" id="money" checked="checked" data-id="1">
+                <input type="radio" name="sales" id="money" data-id="1">
                 <label for="money">销售额奖励</label>
                 <input type="radio" name="sales" id="number" data-id="2">
                 <label for="number">销售量奖励</label>
             </div>
             <div class="task-third">
                 <div id="saleroom-box" style="display: block;">
-                    <input type="radio" name="salesNum" id="allShop" data-id="1">
+                    <input type="radio" name="salesNum" id="allShop" checked="checked" data-id="1">
                     <label for="allShop">
                         <span>全店总销售额达到</span>
                         <input type="number" placeholder="金额" id="target3">
                         <span>元</span>
                     </label>
-                    <input type="radio" name="salesNum" id="selectProduct" checked="checked" data-id="2">
+                    <input type="radio" name="salesNum" id="selectProduct" data-id="2">
                     <label for="selectProduct">
                         <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i>
                         </button>
@@ -363,7 +363,7 @@
                     </label>
                 </div>
                 <div id="saleVolume-box" style="display: none">
-                    <input type="radio" name="salesNum" id="selectProduct1" checked="checked">
+                    <input type="radio" name="salesNum" id="selectProduct1">
                     <label for="selectProduct1">
                         <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i>
                         </button>
@@ -404,7 +404,6 @@
 </div>
 <!--任务奖励弹窗——选择任务对象-->
 <div class="task-object">
-    <div class="tash-header layui-layer-title">选择任务对象门店列表</div>
     <div class="content">
         <div class="table">
             <table id="object-table" data-toggle="table" class="table"></table>
@@ -412,7 +411,6 @@
     </div>
 </div>
 <div class="task-object2" style="display: none;">
-    <div class="tash-header layui-layer-title">选择任务对象员工列表</div>
     <div class="content">
         <div class="table">
             <table id="object-table2" data-toggle="table" class="table"></table>
@@ -1321,12 +1319,14 @@
                         return html;
                     }
                 }, {
-                    field: "id",
+                    field: "",
                     title: "操作",
                     align: "center",
                     valign: "middle",
                     formatter: function (value, row, index) {
-                        return '<button class="btn btn-primary" style="margin-right: 8px;" onclick="newVouchers2()">编辑</button><button class="btn btn-danger" style="margin-right: 8px;" data-id="' + value + '">删除</button>';
+                        var data = JSON.stringify(row);
+                        var html = "<button class='btn btn-primar' style='margin-right: 8px;' onclick='createTask("+data+")'>编辑</button><button class='btn btn-danger' style='margin-right: 8px;' data-id= \'"+ row.id + "\'>删除</button>";
+                        return html;
                     }
                 }
             ],
@@ -1395,10 +1395,31 @@
     /**
      * 弹窗——创建任务
      * */
-    var taskType = 1;//1=>团队任务；2=>个人任务
+    var taskType = 2;//1=>团队任务；2=>个人任务
     var amountType = 3;//1销售量-个 2销售额-元 3全店销售额
     var target;//完成目标;
-    function createTask() {
+    function createTask(taskData) {
+        var btn=['取消', '确定']
+        if(taskData){
+            console.log(taskData);
+            var btn = ['取消','编辑'];
+            if(taskData.amountType == 1){
+                alert(1)
+                $('input:radio[name="sales"]').eq(0).prop('checked','false');
+                $('input:radio[name="sales"]').eq(1).prop('checked','true');
+                $('#target1').val(taskData.target);
+            }else if(taskData.amountType == 2){
+                alert(2)
+                $('input:radio[name="sales"]').eq(0).prop('checked','true');
+                $('input:radio[name="sales"]').eq(1).prop('checked','false');
+                $("#target2").val(taskData.target);
+            }else if(taskData.amountType = 3){
+                alert(3)
+                $('input:radio[name="sales"]').eq(0).prop('checked','true');
+                $('input:radio[name="sales"]').eq(1).prop('checked','false');
+                $("#target3").val(taskData.target);
+            }
+        }
         skuIds =[];
         executor = [];
         selObject = {};
@@ -1413,31 +1434,78 @@
             title: false,
             move: ".move",
             content: $('.create-task'),
-            btn: ['取消', '确定'],
+            btn: btn,
             yes:function (index,layero) {
                 layer.close(index);
             },
             btn2: function (index,layero) {
-                addTask(index);
+                if(taskData){
+                    addTask(index,taskData.id)
+                }else{
+                    addTask(index);
+                }
                 return false
             },
             success: function (layero, index) {
-                //选择任务截止时间
-                $('#deadline').trigger('change');
-                //创建任务弹窗tab切换
-                $(".create-task-header-tab li").click(function () {
-                    $(this).addClass('active').siblings().removeClass('active');
-                    taskType = $(this).attr('data-type');
-                    if(taskType==1){
+                if(taskData){
+                    if(taskData.type == 1){
+                        executor = taskData.executor;
+                        $(".create-task-header-tab li").eq(0).addClass("active").siblings().removeClass('active');
                         $('#selObjects div.text').html('任务门店');
                         $('#selObjects button.shop')[0].style.display = "block";
                         $('#selObjects button.obj')[0].style.display = "none";
-                    }else if(taskType==2){
+                    }else if(taskData.type == 2){
+                        executor = taskData.executor;
+                        $(".create-task-header-tab li").eq(1).addClass("active").siblings().removeClass('active');
                         $('#selObjects div.text').html('任务对象');
                         $('#selObjects button.shop')[0].style.display = "none";
                         $('#selObjects button.obj')[0].style.display = "block";
                     }
-                });
+                    $('#taskName').val(taskData.name);
+                    if(quakooUtils.isNotBlack(taskData.skuIds)){
+                        skuIds = taskData.skuIds;
+                    }
+                    if(taskData.amountType == 1){
+                        $("#saleroom-box")[0].style.display = "none";
+                        $("#saleVolume-box")[0].style.display = "block";
+                        $('input:radio[name="sales"]').prop('checked','false');
+                        $('input:radio[name="sales"]').eq(1).prop('checked','true');
+                        $('#target1').val(taskData.target);
+                    }else if(taskData.amountType == 2){
+                        $("#saleroom-box")[0].style.display = "block";
+                        $("#saleVolume-box")[0].style.display = "none";
+                        $('input:radio[name="sales"]').prop('checked','false');
+                        $('input:radio[name="sales"]').eq(0).prop('checked','true');
+                        $("#target2").val(taskData.target);
+                    }else if(taskData.amountType = 3){
+                        $("#saleroom-box")[0].style.display = "block";
+                        $("#saleVolume-box")[0].style.display = "none";
+                        $('input:radio[name="sales"]').prop('checked','false');
+                        $('input:radio[name="sales"]').eq(0).prop('checked','true');
+                        $("#target3").val(taskData.target);
+                    }
+                    $('#amount').val(taskData.amount);
+                    $('#amount').attr("checked","checked");
+                    $('.create-task .send-time')[0].style.display = "none";
+                    $('.create-task .yj-demo2-time')[0].style.display = "block";
+                    var time = quakooUtils.formatTimeToDateDianLY(taskData.startTime)+"-"+quakooUtils.formatTimeToDateDianLY(taskData.endTime);
+                    $('.task-third .yj-date span').addClass('sel-time').html(time);
+                }else{
+                    $(".create-task-header-tab li").eq(0).addClass("active").siblings().removeClass('active');
+                    $('#selObjects div.text').html('任务门店');
+                    $('#selObjects button.shop')[0].style.display = "block";
+                    $('#selObjects button.obj')[0].style.display = "none";
+                    $('#taskName').val('');
+                    $("#saleroom-box")[0].style.display = "block";
+                    $("#saleVolume-box")[0].style.display = "none";
+                    $('input:radio[name="sales"]').prop('checked','false');
+                    $('input:radio[name="sales"]').eq(0).prop('checked','ture');
+                    $('#target1').val();
+
+
+
+
+                }
                 //销售额奖励&&销售量奖励单选
                 $("input:radio[name='sales']").click(function () {
                     var salesSelect = $('input:radio[name="sales"]:checked').attr('data-id');
@@ -1469,12 +1537,29 @@
                     timeType = !timeType;
 
                 })
+
+                //选择任务截止时间
+                $('#deadline').trigger('change');
+                //创建任务弹窗tab切换
+                $(".create-task-header-tab li").click(function () {
+                    $(this).addClass('active').siblings().removeClass('active');
+                    taskType = $(this).attr('data-type');
+                    if(taskType==1){
+                        $('#selObjects div.text').html('任务门店');
+                        $('#selObjects button.shop')[0].style.display = "block";
+                        $('#selObjects button.obj')[0].style.display = "none";
+                    }else if(taskType==2){
+                        $('#selObjects div.text').html('任务对象');
+                        $('#selObjects button.shop')[0].style.display = "none";
+                        $('#selObjects button.obj')[0].style.display = "block";
+                    }
+                });
             }
         });
     }
 
     /**接口——创建任务*/
-    function addTask(index) {
+    function addTask(index,id) {
         var param ={};
         var taskName = $('#taskName').val();
         var amount = $("#amount").val();
@@ -1541,13 +1626,23 @@
         param.endTime = taskEndTime;
         param.type = taskType;
         param.target = target*1;
-        console.log(param);
+
         if(quakooUtils.isNotBlack(skuIds)){
             param.skuIdsJson = JSON.stringify(skuIds);
         }
-        quakooData.ajaxGetData(config.getUrl_mission_add(),param,function (ret) {
-            console.log("创建任务接口数据",ret)
-        })
+        if(id){
+            param.id = id;
+            console.log(param);
+            quakooData.ajaxGetData(config.getUrl_mission_update(),param,function(ret){
+                alert("bianji")
+
+            })
+        }else{
+            console.log(param);
+            quakooData.ajaxGetData(config.getUrl_mission_add(),param,function (ret) {
+                console.log("创建任务接口数据",ret)
+            })
+        }
     }
 
     /**任务奖励——创建任务——选择任务产品table选择一级类目*/
@@ -1710,7 +1805,7 @@
             anim: 0,
             closeBtn: 0,
             resize: false,
-            title: "",
+            title: "选择任务对象门店列表",
             content: $('.task-object'),
             btn: ['关闭窗口'],
             yes: function (index) {
@@ -1758,7 +1853,7 @@
             anim: 0,
             closeBtn: 0,
             resize: false,
-            title: "",
+            title: "选择任务对象员工列表",
             content: $('.task-object2'),
             btn: ['关闭窗口'],
             yes: function (index) {

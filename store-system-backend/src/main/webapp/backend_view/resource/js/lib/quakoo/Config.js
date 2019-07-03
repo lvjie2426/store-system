@@ -215,6 +215,8 @@ var Config = (function(_super){
     _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
     /**获取抵用卷列表*/
     _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
+    /**获取抵用卷列表*/
+    _proto.getUrl_mission_update = function(){return this.serverUrl + '/mission/update';};
     /**设置短信营销（待定）*/
     //_proto.getUrl_subordinate_getSu = function(){return this.serverUrl + '/marketingtimingsms/add';};
     /**编辑短信营销(待定)*/
