@@ -883,6 +883,8 @@
                         if(saleStatus){param.saleStatus = saleStatus;}
                         param.subid = subid;
                         param.token = quakooUser.getUserInfo().token;
+                        param.page = param.offset / param.limit + 1;
+                        param.size = param.limit;
                         return param
                     }
                 });
@@ -1169,13 +1171,15 @@
             var html = [];
             html.push('<div class="layui-yj-header"><div class="layui-layer-title mine-title"><div>');
             html.push(title+params[cid].categoryName)
-            html.push('</div> </div><div class="title-right" >销售状态');
-            html.push('<div class="yj-search ');
-            if(params[cid].saleStatus==0){
-                html.push('active')
+            html.push('</div> </div>');
+            if(!isUpdate){
+                html.push('<div class="title-right" >销售状态');
+                html.push('<div class="yj-search ');
+                if(params[cid].saleStatus==0){
+                    html.push('active')
+                }
+                html.push('" id="yj-add-status" onclick="changeYjStatus(this)"><i></i></div></div></div>')
             }
-            html.push('" id="yj-add-status" onclick="changeYjStatus(this)"><i></i></div></div></div>')
-
             console.log(params[cid])
             layer.open({
                 type: 1,shade: 0.01,title:html.join(''),
@@ -1874,6 +1878,9 @@
             //时间范围
             yjDate = new dateRange('#yj-add-time',true);
             yjDate.init()
+        }
+        function changeYjStatus(self) {
+            $(self).toggleClass('active');
         }
         // 新增眼镜
         function addYjGoods(isUpdate,index) {

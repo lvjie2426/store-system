@@ -22,10 +22,14 @@
     <link rel="stylesheet" href="../resource/fonts/iconfont.css">
     <!-- 清除默认样式 -->
     <link rel="stylesheet" href="../resource/css/reset.css">
+    <link rel="stylesheet" href="../resource/css/style.css">
     <!-- 公共样式 -->
     <link href="../resource/css/common.css" rel="stylesheet">
     <!-- 当前页面样式 -->
     <link rel="stylesheet" href="../resource/css/yanjing/custManagement.css">
+    <style>
+        /*.table {table-layout:fixed;}*/
+    </style>
 </head>
 
 <body>
@@ -65,7 +69,8 @@
                         </div>
                     </div>
         -->
-        <input type="text" placeholder="搜索手机号" id="searchPhoneNum">
+        <input type="text" style="margin-left: 20px;" placeholder="搜索手机号" id="searchPhoneNum">
+        <div class="btn btn-info" style="padding: 0 10px;margin-right: 10px;" onclick="searchPhoneNum()">查询</div>
     </div>
 </header>
 <!-- 二级头部 -->
@@ -268,7 +273,6 @@
         </div>
     </form>
 </div>
-</div>
 
 <!--弹窗-->
 <!--编辑员工弹窗-->
@@ -338,6 +342,13 @@
 <div class="content-view content-view-removeStaff" style="display:none">
     <p>这将禁用该员工的账号及一切操作</p>
 </div>
+
+<div class="content-view content-order" >
+    <div style="width: 90%;margin: auto;padding-top: 20px;">
+        <table id="dxqf-table" data-toggle="table" class="table table-border" ></table>
+    </div>
+</div>
+
 <!--全局js-->
 <!-- jq库 -->
 <script src="../resource/js/jquery.min.js"></script>
@@ -402,39 +413,12 @@
         selGetAllList();                                  //查询会员列表（渲染下拉框）                                          //
         getAllUserJob(subid);                              //获取公司下所有职业
         getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());//门店下顾客
-        searchPhoneNum();                                  //手机号搜索
-
     }
 
     /**手机号搜索*/
     function searchPhoneNum() {
-        document.getElementById('searchPhoneNum').onkeypress = function (e) {
-            var keycode = e.keyCode;
-            if (keycode == '13') {
-                document.getElementById('searchPhoneNum').blur();
-                e.preventDefault();
-                keyWord = document.getElementById('searchPhoneNum').value;
-                if (quakooUtils.isBlack(keyWord)) {
-                    layer.msg('请输入手机号');
-                    return;
-                }
-                cusPhone = keyWord;
-                getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());
-            }
-        }
-        $(document).on('input propertychange', '#seek', function (e) {
-            if (e.type === "input" || e.orignalEvent.propertyName === "value") {
-                if (this.value.length == 0) {
-                    api.closeFrameGroup({name: "search"});
-                    flag = true;
-                    document.activeElement.focus();
-                    document.getElementById('searchBtn').style.display = 'block';
-                } else {
-                    // document.activeElement.blur();
-                }
-            }
-        });
-
+        cusPhone = document.getElementById('searchPhoneNum').value;
+        getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());
     }
 
     /**获取门店下顾客的所有职业(职业下拉框)*/
@@ -507,13 +491,14 @@
                 },
                 {field: "payCount", title: "消费次数", align: "left", valign: "middle"},
                 {
-                    field: "",
+                    field: "id",
                     title: "操作",
                     align: "left",
                     valign: "middle",
                     width: '180',
                     formatter: function (value, row, index) {
-                        return "<button class='btn btnEedit' onclick='showStffEdit(" + JSON.stringify(row) + ")'>编辑</button><button class='btn btnRecord ml8'>历史订单</button"
+                        return "<button class='btn btnEedit' onclick='showStffEdit(" + JSON.stringify(row) + ")'>编辑</button>" +
+                            "<button class='btn btnRecord ml8' onclick='showOrder("+value+")'>历史订单</button"
                     }
                 }
             ],
@@ -731,6 +716,92 @@
             },
             btn2: function () {
             },
+        });
+    }
+
+    /**查看历史订单*/
+    function showOrder(id){
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '历史订单',
+            skin: 'layui-layer-editStff-tan content-view-submit', //样式类名
+            anim: 0,
+            area: ['720px', '480px'],
+            closeBtn: 0,      //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-order'),
+            btn: ['关闭窗口'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            success: function (layero, index) {
+
+                $("#dxqf-table").bootstrapTable('destroy');
+                $("#dxqf-table").bootstrapTable({
+                    url: config.getUrl_order_getAllOrder(),
+                    method: 'get',
+                    classes: "table",
+                    pagination: true,            //是否显示分页
+                    pageNumber: 1,               //初始化加载第一页，默认第一页
+                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageSize: 5,
+                    pageList: [5, 10, 15, 20],
+                    sortable: false,
+                    sortOrder: "asc",
+                    showColumns: true,
+                    strictSearch: true,
+                    locale: "zh-CN",
+                    paginationHAlign: "center",
+                    clickToSelect: true,
+                    columns: [
+                        {checkbox: true, valign: "middle"},
+                        {field: "orderNo", title: "订单号",align: "left", valign: "middle"},
+                        {
+                            field: "ctime",
+                            title: "时间",
+                            align: "left",
+                            valign: "middle",
+                            formatter: function (val, obj, index) {
+                                return quakooUtils.formatTimeToDay(val);
+                            }
+                        },
+                        {field: "uname", title: "顾客姓名", align: "left", valign: "middle"},
+                        {field: "uphone", title: "手机号", align: "left", valign: "middle"},
+                        {field: "totalPrice", title: "原价", align: "left", valign: "middle"},
+                        {field: "price", title: "成交金额", align: "left", valign: "middle"},
+                        {field: "descSubtract", title: "折扣", align: "left", valign: "middle"},
+                        {field: "personnelName", title: "销售员", align: "left", valign: "middle"},
+                        {
+                            field: "makeStatus",
+                            title: "订单状态",
+                            align: "center",
+                            valign: "middle",
+                            formatter: function (value, row, index) {
+                                var html = '';
+                                if (value) {
+                                    if (value == 1) html = '<div style="min-width: 70px;" class="btn-status btn-red">未加工</div>';
+                                    if (value == 2) html = '<div style="min-width: 70px;" class="btn-status btn-blue">欠￥ 0</div>';
+                                    if (value == 3) html = '<div style="min-width: 70px;" class="btn-status btn-yellow">未取货</div>';
+                                    if (value == 4) html = '<div style="min-width: 70px;" class="btn-status btn-grays">已完成</div>';
+                                    if (value == 5) html = '<div style="min-width: 70px;" class="btn-status btn-black">已作废</div>';
+                                    if (value == 6) html = '<div style="min-width: 70px;" class="btn-status btn-green">临时订单</div>';
+                                }
+                                return html;
+                            }
+                        }
+                    ],
+                    queryParams: function (param) {
+                        param.page = param.offset / param.limit + 1;
+                        param.size = param.limit;
+                        param.subid = subid;
+                        param.uid = id;
+                        param.token = quakooUser.getUserInfo().token;
+                        return param
+                    }
+                });
+            }
         });
     }
 
