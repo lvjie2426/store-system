@@ -64,7 +64,25 @@
         .staffManageCont .contHeader .headRight {
             width: 60%;
             float: right;
-            height: 100%;
+            height: 53px;
+        }
+
+        .headRight .search-box{
+            height:53px;
+            line-height: 53px;
+            float:right;
+            margin-right:12px;
+        }
+
+        .headRight .search-box .searchTypeBox {
+            display: inline-block;
+            height: 28px;
+            line-height: 28px;
+            vertical-align: middle;
+        }
+
+        #searchStaff{
+            vertical-align: middle;
         }
 
         .staffManageCont .contHeader .headRight .child {
@@ -728,15 +746,21 @@
         <div class="headLeft">员工管理</div>
         <div class="headRight">
             <div class="child newShop" onclick="employee()">创建员工</div>
-            <input class="child " type="text" placeholder="搜索员工" id="searchStaff">
-            <div class="selectBox child" id="selectBox">
-                <div class="select-box-header">
-                    <span class="text">姓名</span> <i class="iconfont icon-ico_arrow_down"></i>
+            <div class="search-box">
+                <div class="searchTypeBox">
+                    <div class="selectBox" id="searchTypeBox">
+                        <div class="select-box-header">
+                            <span class="text">姓名</span> <i class="iconfont icon-ico_arrow_down"></i>
+                        </div>
+                        <div class="optionBox">
+                            <ul class="optionUL" id="shopPhoneList">
+                                <li value="1">姓名</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="optionBox">
-                    <ul class="optionUL" id="staffNameUl">
-                    </ul>
-                </div>
+                <input id="searchStaff" type="text" placeholder='搜索员工'>
+                <div class="btn btn-info" style="margin-left: 10px;" onclick="search()">搜索</div>
             </div>
             <div class="child payroll" onclick="updataSalary()">导入<span id="nowMonth">xx</span>月份工资单</div>
             <div class="child  download-btn" onclick="deriveExcel()">下载模板</div>
@@ -1011,9 +1035,8 @@
 <script>
     var psid;                                                //企业ID
     var subid;                                               //门店ID
-    var selStaName;                                          //下拉框员工姓名
-    var seaStaName;                                          //搜索框员工姓名
     var staffSex;                                            //下拉框员工性别
+    var userType =1;
     var editJob;
     $(function () {
         var preid = window.location.search.replace(/\?subid=/, ""); //前一个页面传参（门店ID）
@@ -1025,67 +1048,28 @@
 
     /**初始化页面*/
     function initPage() {
-        getStaffList(subid);                                 //获取员工列表
-        getStaffNameList(subid);                             //获取员工名字
-        selectTag($("#selectBox3"), function (ret) {         //获取员工列表（根据下拉框性别）
+        getStaffList();
+        selectTag($("#selectBox3"), function (ret) {
             staffSex = ret.value;
             getStaffList();
         });
-        searchStaffName();                                   //获取员工列表（根据搜索框姓名）
-    }
-
-    /**员工姓名搜索*/
-    function searchStaffName() {
-        document.getElementById('searchStaff').onkeypress = function (e) {
-            var keycode = e.keyCode;
-            if (keycode == '13') {
-                document.getElementById('searchStaff').blur();
-                e.preventDefault();
-                keyWord = document.getElementById('searchStaff').value;
-                if (quakooUtils.isBlack(keyWord)) {
-                    seaStaName = "";
-                    getStaffList();
-                    layer.msg('请输入员工姓名进行搜索');
-                    return;
-                }
-                seaStaName = keyWord;
-                getStaffList();
-            }
-        };
-        $(document).on('input propertychange', '#searchStaff', function (e) {
-            if (e.type === "input" || e.orignalEvent.propertyName === "value") {
-                if (this.value.length == 0) {
-                    seaStaName = "";
-                    getStaffList();
-                    document.activeElement.focus();
-                } else {
-                    //document.activeElement.blur();
-                    seaStaName = this.value;
-                    getStaffList();
-                }
-            }
+        selectTag($("#searchTypeBox"),function (ret) {
+            userType = ret.value;
         });
     }
 
-    /**接口——获取员工姓名*/
-    function getStaffNameList(subid) {
-        quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {sid: subid, userType: 1}, function (ret) {
-            console.log("员工名字：", ret);
-            if (ret && ret.success) {
-                if (quakooUtils.isNotBlack(ret.data)) {
-                    var html = "<li value='520'>所有人</li>";
-                    for (var i = 0; i < ret.data.length; i++) {
-                        html += "<li value='" + ret.data[i].name + "'>" + ret.data[i].name + "</li>"
-                    }
-                    document.getElementById("staffNameUl").innerHTML = html;
-                    selectTag($("#selectBox"), function (ret) {/**/
-                        selStaName = ret.value;
-                        getStaffList();       //获取员工列表（根据下拉框姓名）
-                    })
-                }
-            }
-        })
+    /**顾客搜索*/
+    function search() {
+        var content = $('#searchStaff').val();
+        if(quakooUtils.isBlack(content)){
+            layer.msg("请输入搜索内容");
+            return;
+        }
+        if(userType == 1){
+            getStaffList(content);
+        }
     }
+
 
     /**接口——获取员工的职位列表*/
     function getJobList() {
@@ -1109,17 +1093,14 @@
     }
 
     /**接口——获取员工列表*/
-    function getStaffList() {
+    function getStaffList(searchContent) {
         var url = config.getUrl_user_getSubCustomerPager();
         var param = {};
         param.subid = subid;                                 //门店ID
         param.userType = 1;                                  //用户类型
         param.token = quakooUser.getUserInfo().token;
-        if (selStaName && selStaName != 520) {                   //下拉框姓名
-            param.name = selStaName;
-        }
-        if (seaStaName) {                                      //搜索框姓名
-            param.name1 = seaStaName;
+        if(searchContent) {                                      //搜索框姓名
+            param.name1 = searchContent;
         }
         if (staffSex && (staffSex == 1 || staffSex == 2)) {
             param.sex = staffSex;
