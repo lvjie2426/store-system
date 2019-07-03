@@ -1429,7 +1429,6 @@ input[type="number"]::-webkit-input-placeholder{
     width: 100%;
     height:28px;
     float: left;
-    display: none;
 }
 
 .create-task .task-third .award input::-webkit-input-placeholder{

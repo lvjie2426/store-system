@@ -316,91 +316,7 @@
 
 
 <!--任务奖励弹窗——创建任务弹窗-->
-<div class="create-task">
-    <div class="create-task-header">
-        <ul class="create-task-header-tab clear">
-            <li class="active" data-type="1">创建团队任务</li>
-            <li id="person-task" data-type="2">创建个人任务</li>
-            <li class="move"></li>
-        </ul>
-    </div>
-    <ul class="task-tab">
-        <li class="task-item">
-            <div class="task-first clear">
-                <div class="first-item fl">
-                    <div class="text">任务名称</div>
-                    <input type="text" class="name" placeholder="名称" id="taskName">
-                </div>
-                <div class="first-item fr" id="selObjects">
-                    <div class="text">任务门店</div>
-                    <button type="button" class="shop" onclick="selectShop()">选择门店<i class="iconfont icon-ico_list"></i>
-                    </button>
-                    <button type="button" class="obj" style="display:none" onclick="selectObject()">选择<i class="iconfont icon-ico_list"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="task-second">
-                <input type="radio" name="sales" id="money" data-id="1">
-                <label for="money">销售额奖励</label>
-                <input type="radio" name="sales" id="number" data-id="2">
-                <label for="number">销售量奖励</label>
-            </div>
-            <div class="task-third">
-                <div id="saleroom-box" style="display: block;">
-                    <input type="radio" name="salesNum" id="allShop" checked="checked" data-id="1">
-                    <label for="allShop">
-                        <span>全店总销售额达到</span>
-                        <input type="number" placeholder="金额" id="target3">
-                        <span>元</span>
-                    </label>
-                    <input type="radio" name="salesNum" id="selectProduct" data-id="2">
-                    <label for="selectProduct">
-                        <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i>
-                        </button>
-                        <span>销售额达到</span>
-                        <input type="number" placeholder="金额" id="target2">
-                        <span>元</span>
-                    </label>
-                </div>
-                <div id="saleVolume-box" style="display: none">
-                    <input type="radio" name="salesNum" id="selectProduct1">
-                    <label for="selectProduct1">
-                        <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i>
-                        </button>
-                        <span>销售量达到</span>
-                        <input type="number" placeholder="数量" id="target1">
-                    </label>
-                </div>
-                <div class="award">
-                    <div class="award-text">奖励</div>
-                    <input type="number" placeholder="输入金额" id="amount">
-                </div>
-                <div class="mission-time clear">
-                    <div class="mission-text">任务时间</div>
-                    <div class="left">
-                        <div class="send-time">
-                            <div class="settings" style="display:none;">
-                                <select name="demo" id="deadline">
-                                    <option value="date"></option>
-                                </select>
-                            </div>
-                            <input name="test" id="deadline-time" class="demo-test-date demo-test-datetime demo-test-time
-                             demo-test-credit" placeholder="选择截止时间" data-type="time"/>
-                            <i class="iconfont icon-ico_calendar"></i>
-                        </div>
-                        <div class="yj-demo2-time">
-                            <div class="yj-date">
-                                <span >开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                            </div>
-                        </div>
-
-                    </div>
-                    <input type="checkbox" id="time-frame">
-                    <label for="time-frame">选择时间段</label>
-                </div>
-            </div>
-        </li>
-    </ul>
+<div class="create-task" id="taskDialogHtml">
 </div>
 <!--任务奖励弹窗——选择任务对象-->
 <div class="task-object">
@@ -546,6 +462,152 @@
 
 </script>
 
+<!--任务奖励弹窗-->
+<script type="text/html" id="taskDialogTem">
+    <div class="create-task-header">
+        <ul class="create-task-header-tab clear">
+            <%if(list.type == 1){%>
+                <li class="active" data-type="1">创建团队任务</li>
+                <li id="person-task" data-type="2">创建个人任务</li>
+            <%}else if(list.type == 2){%>
+                <li data-type="1">创建团队任务</li>
+                <li id="person-task" class="active" data-type="2">创建个人任务</li>
+            <%}%>
+            <li class="move"></li>
+        </ul>
+    </div>
+    <ul class="task-tab">
+        <li class="task-item">
+            <div class="task-first clear">
+                <div class="first-item fl">
+                    <div class="text">任务名称</div>
+                    <%if(list.name){%>
+                        <input type="text" class="name" placeholder="名称" value="<%=list.name%>" id="taskName">
+                    <%}else{%>
+                        <input type="text" class="name" placeholder="名称" id="taskName">
+                    <%}%>
+                </div>
+                <div class="first-item fr" id="selObjects">
+                    <%if(list.type==1){%>
+                        <div class="text">任务门店</div>
+                        <button type="button" class="shop" onclick="selectShop()">选择门店<i class="iconfont icon-ico_list"></i>
+                        </button>
+                        <button type="button" class="obj" style="display: none" onclick="selectObject()">选择<i class="iconfont icon-ico_list"></i>
+                        </button>
+                    <%}else if(list.type==2){%>
+                        <div class="text">任务对象</div>
+                        <button type="button" class="shop" style="display: none;" onclick="selectShop()">选择门店<i class="iconfont icon-ico_list"></i>
+                        </button>
+                        <button type="button" class="obj" onclick="selectObject()">选择<i class="iconfont icon-ico_list"></i>
+                        </button>
+                    <%}%>
+                </div>
+            </div>
+            <div class="task-second">
+                <%if(list.amountType==1){%>
+                    <input type="radio" name="sales" id="money" data-id="1">
+                    <label for="money">销售额奖励</label>
+                    <input type="radio" name="sales" id="number" data-id="2" checked="checked">
+                    <label for="number">销售量奖励</label>
+                <%}else{%>
+                    <input type="radio" name="sales" id="money" data-id="1" checked="checked">
+                    <label for="money">销售额奖励</label>
+                    <input type="radio" name="sales" id="number" data-id="2">
+                    <label for="number">销售量奖励</label>
+                <%}%>
+            </div>
+            <div class="task-third">
+                <%if(list.amountType == 1){%>
+                <div id="saleVolume-box">
+                <%}else{%>
+                <div id="saleVolume-box" style="display: none">
+                <%}%>
+                    <input type="radio" name="salesNum" id="selectProduct1">
+                    <label for="selectProduct1">
+                        <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i>
+                        </button>
+                        <span>销售量达到</span>
+                        <%if(list.target){%>
+                        <input type="number" placeholder="数量" id="target1" value="<%=list.target%>">
+                        <%}else{%>
+                        <input type="number" placeholder="数量" id="target1">
+                        <%}%>
+                    </label>
+                </div>
+                <%if(list.amountType == 1){%>
+                <div id="saleroom-box" style="display: none">
+                <%}else{%>
+                <div id="saleroom-box">
+                <%}%>
+                    <%if(list.amountType == 2){%>
+                        <input type="radio" name="salesNum" id="allShop" data-id="1">
+                        <label for="allShop">
+                            <span>全店总销售额达到</span>
+                            <input type="number" placeholder="金额" id="target3">
+                            <span>元</span>
+                        </label>
+                        <input type="radio" name="salesNum" id="selectProduct" data-id="2" checked="checked">
+                        <label for="selectProduct">
+                            <button type="button" onclick="selectProduct()">选择任务产品 <i class="iconfont icon-ico_list"></i>
+                            </button>
+                            <span>销售额达到</span>
+                            <%if(list.target){%>
+                            <input type="number" placeholder="金额" id="target2" value="<%=list.target%>">
+                            <%}else{%>
+                            <input type="number" placeholder="金额" id="target2">
+                            <%}%>
+                            <span>元</span>
+                        </label>
+                    <%}else if(list.amountType == 3){%>
+                        <input type="radio" name="salesNum" id="allShop" data-id="1" checked="checked">
+                        <label for="allShop">
+                            <span>全店总销售额达到</span>
+                            <%if(list.target){%>
+                            <input type="number" placeholder="金额" id="target3" value="<%=list.target%>">
+                            <%}else{%>
+                            <input type="number" placeholder="金额" id="target3">
+                            <%}%>
+                            <span>元</span>
+                        </label>
+                        <input type="radio" name="salesNum" id="selectProduct" data-id="2">
+                        <label for="selectProduct">
+                            <button type="button" onclick="selectProduct()">选择任务产品<i class="iconfont icon-ico_list"></i>
+                            </button>
+                            <span>销售额达到</span>
+                            <input type="number" placeholder="金额" id="target2">
+                            <span>元</span>
+                        </label>
+                    <%}%>
+                </div>
+
+
+                <div class="award">
+                    <div class="award-text">奖励</div>
+                    <%if(list.amount){%>
+                       <input type="number" placeholder="输入金额" id="amount" value="<%=list.amount%>">
+                    <%}else{%>
+                        <input type="number" placeholder="输入金额" id="amount">
+                    <%}%>
+                </div>
+                <div class="mission-time clear">
+                    <div class="mission-text">任务时间</div>
+                    <div class="left">
+                        <div class="yj-demo2-time">
+                            <div class="yj-date">
+                                <%if(list.startTime&&list.endTime&&list.timeText){%>
+                                    <span class="sel-time"><%=list.timeText%></span><i class="iconfont icon-ico_calendar"></i>
+                                <%}else{%>
+                                    <span >开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</script>
 <script>
     var psid;                                             //企业ID
     var subid;                                            //门店ID
@@ -562,6 +624,7 @@
     var taskEndTime;
     var date1,date2;
     var selObject = {};
+    var taskLocData ={};
     /**初始化页面*/
     $(function () {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
@@ -569,8 +632,6 @@
         //日期范围插件开始
         date1 = new dateRange(".yj-demo-time", true);
         date1.init();
-        date2 = new dateRange(".yj-demo2-time", true);
-        date2.init();
         //日期范围插件结束
         manage();
         //获取一级类目
@@ -1245,12 +1306,6 @@
 
     /************************************</短信群发结束>******************************************/
 
-
-
-    /************************************<短信营销开始>******************************************/
-    /************************************</短信营销结束>******************************************/
-
-
     /************************************<任务奖励开始>******************************************/
     /**
      * 任务奖励列表table
@@ -1389,36 +1444,18 @@
                 whiteCircle();
                 blueCircle(value);
             }
-        };
+        }
     }
 
     /**
      * 弹窗——创建任务
      * */
-    var taskType = 2;//1=>团队任务；2=>个人任务
-    var amountType = 3;//1销售量-个 2销售额-元 3全店销售额
-    var target;//完成目标;
     function createTask(taskData) {
-        var btn=['取消', '确定']
+        taskLocData = {};
         if(taskData){
-            console.log(taskData);
-            var btn = ['取消','编辑'];
-            if(taskData.amountType == 1){
-                alert(1)
-                $('input:radio[name="sales"]').eq(0).prop('checked','false');
-                $('input:radio[name="sales"]').eq(1).prop('checked','true');
-                $('#target1').val(taskData.target);
-            }else if(taskData.amountType == 2){
-                alert(2)
-                $('input:radio[name="sales"]').eq(0).prop('checked','true');
-                $('input:radio[name="sales"]').eq(1).prop('checked','false');
-                $("#target2").val(taskData.target);
-            }else if(taskData.amountType = 3){
-                alert(3)
-                $('input:radio[name="sales"]').eq(0).prop('checked','true');
-                $('input:radio[name="sales"]').eq(1).prop('checked','false');
-                $("#target3").val(taskData.target);
-            }
+            taskLocData.btn = ['取消','编辑'];
+        }else{
+            taskLocData.btn = ['取消', '确定'];
         }
         skuIds =[];
         executor = [];
@@ -1428,13 +1465,13 @@
             shade: 0.01,
             shadeClose: true,
             skin: 'createTask', //样式类名
-            area: ['360px', 'auto'],
+            area: ["360px","450px"],
             closeBtn: 0,
             resize: false,
             title: false,
             move: ".move",
             content: $('.create-task'),
-            btn: btn,
+            btn: taskLocData.btn,
             yes:function (index,layero) {
                 layer.close(index);
             },
@@ -1448,137 +1485,79 @@
             },
             success: function (layero, index) {
                 if(taskData){
-                    if(taskData.type == 1){
-                        executor = taskData.executor;
-                        $(".create-task-header-tab li").eq(0).addClass("active").siblings().removeClass('active');
-                        $('#selObjects div.text').html('任务门店');
-                        $('#selObjects button.shop')[0].style.display = "block";
-                        $('#selObjects button.obj')[0].style.display = "none";
-                    }else if(taskData.type == 2){
-                        executor = taskData.executor;
-                        $(".create-task-header-tab li").eq(1).addClass("active").siblings().removeClass('active');
-                        $('#selObjects div.text').html('任务对象');
-                        $('#selObjects button.shop')[0].style.display = "none";
-                        $('#selObjects button.obj')[0].style.display = "block";
-                    }
-                    $('#taskName').val(taskData.name);
-                    if(quakooUtils.isNotBlack(taskData.skuIds)){
-                        skuIds = taskData.skuIds;
-                    }
-                    if(taskData.amountType == 1){
-                        $("#saleroom-box")[0].style.display = "none";
-                        $("#saleVolume-box")[0].style.display = "block";
-                        $('input:radio[name="sales"]').prop('checked','false');
-                        $('input:radio[name="sales"]').eq(1).prop('checked','true');
-                        $('#target1').val(taskData.target);
-                    }else if(taskData.amountType == 2){
-                        $("#saleroom-box")[0].style.display = "block";
-                        $("#saleVolume-box")[0].style.display = "none";
-                        $('input:radio[name="sales"]').prop('checked','false');
-                        $('input:radio[name="sales"]').eq(0).prop('checked','true');
-                        $("#target2").val(taskData.target);
-                    }else if(taskData.amountType = 3){
-                        $("#saleroom-box")[0].style.display = "block";
-                        $("#saleVolume-box")[0].style.display = "none";
-                        $('input:radio[name="sales"]').prop('checked','false');
-                        $('input:radio[name="sales"]').eq(0).prop('checked','true');
-                        $("#target3").val(taskData.target);
-                    }
-                    $('#amount').val(taskData.amount);
-                    $('#amount').attr("checked","checked");
-                    $('.create-task .send-time')[0].style.display = "none";
-                    $('.create-task .yj-demo2-time')[0].style.display = "block";
-                    var time = quakooUtils.formatTimeToDateDianLY(taskData.startTime)+"-"+quakooUtils.formatTimeToDateDianLY(taskData.endTime);
-                    $('.task-third .yj-date span').addClass('sel-time').html(time);
+                    renderTask(taskData)
                 }else{
-                    $(".create-task-header-tab li").eq(0).addClass("active").siblings().removeClass('active');
-                    $('#selObjects div.text').html('任务门店');
-                    $('#selObjects button.shop')[0].style.display = "block";
-                    $('#selObjects button.obj')[0].style.display = "none";
-                    $('#taskName').val('');
-                    $("#saleroom-box")[0].style.display = "block";
-                    $("#saleVolume-box")[0].style.display = "none";
-                    $('input:radio[name="sales"]').prop('checked','false');
-                    $('input:radio[name="sales"]').eq(0).prop('checked','ture');
-                    $('#target1').val();
-
-
-
-
+                    renderTask();
                 }
-                //销售额奖励&&销售量奖励单选
-                $("input:radio[name='sales']").click(function () {
-                    var salesSelect = $('input:radio[name="sales"]:checked').attr('data-id');
-                    if (salesSelect == 1) {//销售额奖励
-                        $("#saleroom-box")[0].style.display = "block";
-                        $("#saleVolume-box")[0].style.display = "none";
-                        $("input:radio[name='salesNum']").click(function(){
-                            var salesNumSelect = $("input:radio[name='salesNum']:checked").attr("data-id");
-                            if(salesNumSelect==1){//全店总销售额
-                                amountType = 3;
-                            }else if(salesNumSelect == 2){//销售额选
-                                amountType = 2;
-                            }
-                        })
-                    } else if (salesSelect == 2) {//销售量奖励
-                        amountType = 1;
-                        $("#saleroom-box")[0].style.display = "none";
-                        $("#saleVolume-box")[0].style.display = "block";
-                    }
-                });
-                $("#time-frame").click(function(){
-                    if(timeType){//时间节点
-                        $('.create-task .send-time')[0].style.display = "block";
-                        $('.create-task .yj-demo2-time')[0].style.display = "none";
-                    }else{//时间段
-                        $('.create-task .send-time')[0].style.display = "none";
-                        $('.create-task .yj-demo2-time')[0].style.display = "block";
-                    }
-                    timeType = !timeType;
 
-                })
-
-                //选择任务截止时间
-                $('#deadline').trigger('change');
-                //创建任务弹窗tab切换
-                $(".create-task-header-tab li").click(function () {
-                    $(this).addClass('active').siblings().removeClass('active');
-                    taskType = $(this).attr('data-type');
-                    if(taskType==1){
-                        $('#selObjects div.text').html('任务门店');
-                        $('#selObjects button.shop')[0].style.display = "block";
-                        $('#selObjects button.obj')[0].style.display = "none";
-                    }else if(taskType==2){
-                        $('#selObjects div.text').html('任务对象');
-                        $('#selObjects button.shop')[0].style.display = "none";
-                        $('#selObjects button.obj')[0].style.display = "block";
-                    }
-                });
             }
         });
     }
-
+    function renderTask(taskData) {
+        if(taskData){
+            for(var i in taskData){
+                taskLocData[i] = taskData[i];
+            }
+            taskLocData.timeText = quakooUtils.formatTimeToDateDianLY(taskLocData.startTime)+"-"+quakooUtils.formatTimeToDateDianLY(taskLocData.endTime);
+        }else{
+            taskLocData.type = 1;//1=>团队任务；2=>个人任务
+            taskLocData.amountType = 3;//1销售量-个 2销售额-元 3全店销售额
+        }
+        var data = {list:taskLocData};
+        var html = template("taskDialogTem",data);
+        $("#taskDialogHtml").html(html);
+        $(".create-task-header-tab li").click(function () {
+            $(this).addClass('active').siblings().removeClass('active');
+            taskLocData.type = $(this).attr('data-type');
+            if(taskLocData.type == 1){
+                $('#selObjects div.text').html('任务门店');
+                $('#selObjects button.shop')[0].style.display = "block";
+                $('#selObjects button.obj')[0].style.display = "none";
+            }else if(taskLocData.type == 2){
+                $('#selObjects div.text').html('任务对象');
+                $('#selObjects button.shop')[0].style.display = "none";
+                $('#selObjects button.obj')[0].style.display = "block";
+            }
+        });
+        $("input:radio[name='sales']").click(function () {
+            var salesSelect = $('input:radio[name="sales"]:checked').attr('data-id');
+            if (salesSelect == 1) {
+                //销售额奖励
+                taskLocData.amountType = 3;
+                $("#saleroom-box")[0].style.display = "block";
+                $("#saleVolume-box")[0].style.display = "none";
+                $("input:radio[name='salesNum']").click(function(){
+                    var salesNumSelect = $("input:radio[name='salesNum']:checked").attr("data-id");
+                    if(salesNumSelect==1){//全店总销售额
+                        taskLocData.amountType = 3;
+                    }else if(salesNumSelect == 2){//销售额选
+                        taskLocData.amountType = 2;
+                    }
+                })
+            } else if (salesSelect == 2) {//销售量奖励
+                taskLocData.amountType = 1;
+                $("#saleroom-box")[0].style.display = "none";
+                $("#saleVolume-box")[0].style.display = "block";
+            }
+        });
+        date2 = new dateRange(".yj-demo2-time", true);
+        date2.init();
+        $('.yj-date-btn .btn-primary').click(function () {
+            taskLocData.startTime = data2.getTime()[2];
+            taskLocData.endTime = data2.getTime()[3];
+        });
+    }
     /**接口——创建任务*/
     function addTask(index,id) {
         var param ={};
         var taskName = $('#taskName').val();
         var amount = $("#amount").val();
-        if(amountType==1){
+        if(taskLocData.amountType == 1){
             target = $("#target1").val();
-        }else if(amountType==2){
+        }else if(taskLocData.amountType == 2){
             target = $("#target2").val();
-        }else if(amountType==3){
+        }else if(taskLocData.amountType == 3){
             target = $("#target3").val();
-        }
-
-        if(!timeType){//时间节点
-            taskStartTime = new Date().getTime();
-            taskEndTime = $('#deadline-time').val();
-            taskEndTime = taskEndTime.replace(/-/g, ',').replace(/:/g, ',').replace(/\s/, ',').split(',');
-            taskEndTime = new Date(taskEndTime[0], taskEndTime[1] - 1, taskEndTime[2], taskEndTime[3], taskEndTime[4]).getTime();
-        }else{//时间段
-            taskStartTime = date2.getTime()[2];
-            taskEndTime = date2.getTime()[3];
         }
         if(quakooUtils.isBlack(taskName)){
             layer.msg("请输入任务名称");
@@ -1609,7 +1588,7 @@
             layer.msg("请输入奖励金额");
             return;
         }
-        if(quakooUtils.isBlack(taskEndTime)){
+        if(quakooUtils.isBlack(taskLocData.startTime)){
             laer.msg("请选择时间");
             return;
         }
@@ -1622,8 +1601,8 @@
         param.sid = psid;
         param.amoun= amount*1;
         param.amountType= amountType;
-        param.startTime = taskStartTime;
-        param.endTime = taskEndTime;
+        param.startTime = taskLocData.startTime;
+        param.endTime = taskLocData.endTime;
         param.type = taskType;
         param.target = target*1;
 
