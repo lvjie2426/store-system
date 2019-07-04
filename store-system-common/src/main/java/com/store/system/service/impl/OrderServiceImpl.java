@@ -135,6 +135,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Override
     public ResultClient handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo,
                                               String title, String desc, int price, Order orderInfo) throws Exception {
+        List<PayPassport> payPassports = payPassportDao.getAllList(passportId,PayPassport.status_on);
+        PayPassport payPassport = null;
+        if(payPassports.size()>0){
+            payPassport = payPassports.get(0);
+        }
+        if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
+        passportId=payPassport.getId();
         Order order = createAliOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
         Map<String, String> sParaTemp = this.aliOrderPayParam(order.getId(), Order.pay_mode_barcode, authCode);
         List<String> keys = new ArrayList<String>(sParaTemp.keySet());
@@ -401,10 +408,15 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Override
     public ResultClient handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type,
                                              String typeInfo, String title, String desc, int price, Order orderInfo) throws Exception {
+        List<PayPassport> payPassports = payPassportDao.getAllList(passportId,PayPassport.status_on);
+        PayPassport payPassport = null;
+        if(payPassports.size()>0){
+            payPassport = payPassports.get(0);
+        }
+        if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
+        passportId=payPassport.getId();
         Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
         if(StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
-        PayPassport payPassport = payPassportDao.load(passportId);
-        if(null == payPassport) throw new StoreSystemException("passport is null!");
         String wxAppid = payPassport.getWxAppid();
         String wxMerchantId = payPassport.getWxMerchantId();
         String wxApiKey = payPassport.getWxApiKey();

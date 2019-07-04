@@ -875,6 +875,7 @@
                     paginationLoop:false,
                     columns:columns,
                     queryParams:function (param) {
+                        console.log('param',param)
                         if(cid){param.cid = cid;}
                         if(bid){param.bid = bid;}
                         if(pid){param.pid = pid;}
@@ -1772,6 +1773,8 @@
                         if(saleStatus){param.saleStatus = saleStatus;}
                         param.subid = quakooUser.getUserInfo().psid;
                         param.token = quakooUser.getUserInfo().token;
+                        param.page = param.offset / param.limit + 1;
+                        param.size = param.limit;
                         return param
                     }
                 });

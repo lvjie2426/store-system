@@ -1,51 +1,853 @@
 /*公司管理页面公共css*/
-input::-webkit-input-placeholder{
-  color: #b3b3c0;
-  font-weight: normal;
+input::-webkit-input-placeholder {
+    color: #b3b3c0;
+    font-weight: normal;
 }
-input::-moz-placeholder{   /* Mozilla Firefox 19+ */
-  color:#b3b3c0;
-  font-weight: normal;
+
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #b3b3c0;
+    font-weight: normal;
 }
-input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
-  color:#b3b3c0;
-  font-weight: normal;
+
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #b3b3c0;
+    font-weight: normal;
 }
-input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
-  color:#b3b3c0;
-  font-weight: normal;
+
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #b3b3c0;
+    font-weight: normal;
 }
+
 /*定宽90%居中*/
 .wrap90 {
-  width: 90%;
-  margin: 0 auto;
+    width: 90%;
+    margin: 0 auto;
 }
-.txtOverflow{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.goods-body {
+    width: 100%;
+    padding: 12px 60px 28px;
+    box-sizing: border-box;
 }
+
+.txtOverflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /*弹窗样式覆盖*/
 .layui-layer-content p,
 .layui-layer-btn a.layui-layer-btn0,
-.layui-layer-btn a.layui-layer-btn1{
-  margin: 0;
+.layui-layer-btn a.layui-layer-btn1 {
+    margin: 0;
 }
+
 /*弹窗底部按钮样式1*/
-.content-view-submit .layui-layer-btn a{
-  height: 32px;
-  line-height: 32px;
-  border: 1px solid #ececf4;
-  font-size: 12px;
-  padding: 0 10px;
-  margin-left: 8px;
+.content-view-submit .layui-layer-btn a {
+    height: 32px;
+    line-height: 32px;
+    border: 1px solid #ececf4;
+    font-size: 12px;
+    padding: 0 10px;
+    margin-left: 8px;
 }
+
 .content-view-submit .layui-layer-btn a.canSave.layui-layer-btn1,
-.content-view-submit .layui-layer-btn a.layui-layer-btn1{
-  background: #f3f3f7;
-  color: #828297;
+.content-view-submit .layui-layer-btn a.layui-layer-btn1 {
+    background: #f3f3f7;
+    color: #828297;
 }
-.content-view-submit .layui-layer-btn a.layui-layer-btn0{
-  background: #f3f3f7;
-  color: #b0b0bf;
+
+.content-view-shopDes-tan .layui-layer-btn a.layui-layer-btn0 {
+    background: #f3f3f7;
+    color: #b0b0bf;
+}
+
+.iw_poi_title {
+    color: #CC5522;
+    font-size: 14px;
+    font-weight: bold;
+    overflow: hidden;
+    padding-right: 13px;
+    white-space: nowrap
+}
+
+.iw_poi_content {
+    font: 12px arial, sans-serif;
+    overflow: visible;
+    padding-top: 4px;
+    white-space: -moz-pre-wrap;
+    word-wrap: break-word
+}
+
+input:disabled {
+    background-color: #fff;
+}
+
+/*选择时间插件样式修改*/
+.dwcc div.mbsc-w-p:nth-child(2) .dwfl:nth-child(2) {
+    display: block;
+}
+
+.dwcc div.mbsc-w-p:first-child {
+    display: none !important;
+}
+
+.dwcc div.mbsc-w-p:last-child {
+    display: block !important;
+}
+
+.dwbc .dwbw.dwb-n {
+    display: none;
+}
+
+.mbsc-mobiscroll .dwfl {
+    border-right: none;
+    border-left: 1px solid #e2e2e2;
+}
+
+.mbsc-mobiscroll .dwwr {
+    min-width: 160px;
+}
+
+/*主要内容*/
+.companyManageCont {
+    position: relative;
+    min-height: 200px;
+    background: #ebebf3;
+    box-sizing: border-box;
+}
+
+/*主要内容头部*/
+.companyManageCont .contHeader {
+    width: 100%;
+    height: 53px;
+    border-bottom: 1px solid #dfdfe9;
+    background: #fff;
+    margin-bottom: 16px;
+}
+
+/*头部左边*/
+.companyManageCont .contHeader .tab-ul {
+    float: left;
+    width: 30%;
+}
+
+.companyManageCont .contHeader .tab-ul li {
+    color: #828297;
+}
+
+.companyManageCont .contHeader .tab-ul li.active {
+    color: #393953;
+    font-weight: bold;
+}
+
+/*头部右边*/
+.companyManageCont .contHeader .headRight {
+    width: 60%;
+    float: right;
+    height: 100%;
+}
+
+.companyManageCont .contHeader .headRight .child {
+    float: right;
+    margin: 12px 12px 12px 0;
+}
+
+.companyManageCont .contHeader .headRight .newShop {
+    width: 68px;
+    height: 28px;
+    line-height: 28px;
+    background: #4186DC;
+    color: #fff;
+    border-radius: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.companyManageCont .contHeader .headRight input {
+    width: 128px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 8px;
+    color: #000;
+    border-radius: 2px;
+    border: 1px solid #ececf4;
+}
+
+/*公司信息*/
+.companyManageCont .companyMsg {
+    position: relative;
+    min-height: 135px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 2px;
+    border: 1px solid #dfdfe9;
+    box-sizing: border-box;
+}
+
+/*公司信息头部*/
+.companyManageCont .companyMsg .head {
+    position: relative;
+    width: 100%;
+    height: 44px;
+    border-bottom: 1px solid #dfdfe9;
+}
+
+.companyManageCont .companyMsg .head span {
+    position: absolute;
+    display: inline-block;
+    font-weight: bold;
+    width: 68px;
+    height: 28px;
+    text-align: center;
+    line-height: 26px;
+    top: 7px;
+}
+
+.companyManageCont .companyMsg .head span.msg {
+    color: #393953;
+    font-size: 13px;
+    font-family: PingFangSC-Semibold;
+    left: 8px;
+}
+
+.companyManageCont .companyMsg .head span.editMsg {
+    color: #828297;
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+    border: 1px solid #dfdfe9;
+    border-radius: 2px;
+    right: 8px;
+    cursor: pointer;
+}
+
+/*公司信息内容*/
+.companyManageCont .companyMsg .cont {
+    position: relative;
+    width: 100%;
+    height: 92px;
+}
+
+.companyManageCont .companyMsg .cont div {
+    float: left;
+    height: 40px;
+    margin-top: 26px;
+}
+
+.companyManageCont .companyMsg .cont div .texUp {
+    font-size: 14px;
+    color: #393953;
+    font-weight: bold;
+}
+
+.companyManageCont .companyMsg .cont div .txtDown {
+    font-size: 12px;
+    color: #828297;
+}
+
+.companyManageCont .companyMsg .cont div span {
+    display: block;
+    line-height: 20px;
+}
+
+.companyManageCont .companyMsg .cont div.comImg {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 16px;
+}
+
+.companyManageCont .companyMsg .cont div.comName {
+    padding-right: 20px;
+    border-right: 1px solid #ECECF4;
+}
+
+.companyManageCont .companyMsg .cont div.perName,
+.companyManageCont .companyMsg .cont div.perTel {
+    margin-left: 40px;
+}
+
+/*店铺列表*/
+.companyManageCont .shopItems {
+    position: relative;
+    min-height: 100px;
+    margin-top: 12px;
+}
+
+.companyManageCont .shopItems .contUl {
+    width: 100%;
+}
+
+/*店铺列表li样式*/
+.companyManageCont .shopItems .contUl li.item {
+    position: relative;
+    width: 32%;
+    height: 280px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    border: 1px solid #dfdfe9;
+    background: #fff;
+    float: left;
+    margin-right: 2%;
+    box-sizing: border-box;
+}
+
+.companyManageCont .shopItems .contUl li.item > div {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/*店铺列表头部*/
+.companyManageCont .shopItems .contUl li.item .top {
+    background: #f3f3f7;
+    border-bottom: 1px solid #dfdfe9;
+    box-sizing: border-box;
+    padding-right: 16px;
+}
+
+.companyManageCont .shopItems .contUl li.item .top .shopName {
+    font-size: 13px;
+    color: #393953;
+    line-height: 40px;
+    font-weight: bold;
+    padding-left: 16px;
+    width: 70%;
+}
+
+.companyManageCont .shopItems .contUl li.item .middle {
+    /*店铺列表中间部分*/
+    height: 200px;
+}
+
+.companyManageCont .shopItems .contUl li.item .middle p {
+    height: 48px;
+    padding: 0 16px;
+    margin-bottom: 0;
+}
+
+.companyManageCont .shopItems .contUl li.item .middle p span {
+    display: block;
+    font-size: 12px;
+}
+
+.companyManageCont .shopItems .contUl li.item .middle p span.txt1 {
+    padding-top: 8px;
+    color: #828297;
+}
+
+.companyManageCont .shopItems .contUl li.item .middle p span.txt2 {
+    color: #393953;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.companyManageCont .shopItems .contUl li.item .bottom {
+    /*店铺列表底部*/
+    border-top: 1px solid #dfdfe9;
+    padding: 6px;
+}
+
+.companyManageCont .shopItems .contUl li.item .bottom button {
+    cursor: pointer;
+    float: right;
+    height: 26px;
+    font-size: 12px;
+    outline: none;
+    border-radius: 2px;
+    margin-left: 6px;
+    padding: 0 10px;
+}
+
+.companyManageCont .shopItems .contUl li.item .bottom button.edit {
+    border: 1px solid #d9e5f6;
+    color: #4186DC;
+    background: #eaf1fa;
+}
+
+.companyManageCont .shopItems .contUl li.item .bottom button.check {
+    color: #fff;
+    background: #4186DC;
+    border: 1px solid #4186DC;
+}
+
+.companyManageCont .shopItems .contUl li.item:nth-child(3n+3) {
+    margin-right: 0;
+}
+
+/*创建门店弹窗*/
+.content-view-creatShop-tan .layui-layer-title {
+    color: #4186DC;
+    font-size: 13px;
+    border: none;
+}
+
+.content-view-creatShop-tan p.txt01 {
+    font-size: 12px;
+    color: #393953;
+    padding: 12px 16px;
+    font-weight: 600;
+}
+
+.content-view-creatShop-tan .layui-layer-btn a {
+    width: 44px;
+    height: 32px;
+    font-size: 12px;
+    line-height: 32px;
+    border-radius: 2px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    margin-left: 8px;
+}
+
+.content-view-creatShop-tan .layui-layer-btn .layui-layer-btn0 {
+    background: #f3f3f7;
+    color: #828297;
+    border: 1px solid #ebebf3;
+}
+
+.content-view-creatShop-tan .layui-layer-btn .layui-layer-btn1 {
+    background: #4286da;
+    color: #fff;
+    border: none;
+}
+
+/*创建门店弹窗结束*/
+
+/*设置支付弹窗*/
+.content-view-setPay-tan .head {
+    background: #fefefe;
+    height: 44px;
+    padding: 0 16px;
+    position: relative;
+}
+
+.content-view-setPay-tan .head span {
+    display: block;
+    font-size: 13px;
+    color: #393953;
+    margin: 0 16px 0 0;
+    float: left;
+    font-weight: normal;
+    height: 44px;
+    line-height: 44px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.content-view-setPay-tan .head span.layui-layer-title {
+    position: absolute;
+    width: 160px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.content-view-setPay-tan .head span.active {
+    border-bottom: 2px solid #393953;
+}
+
+/*支付*/
+.content-view-setPay-tan .selectPayment {
+    background: #fff;
+    display: block;
+    width: 360px;
+    border-radius: 2px;
+    overflow: hidden;
+    color: #393953;
+}
+
+.content-view-setPay-tan .selectPayment .grWX.active {
+    display: block;
+}
+
+.content-view-setPay-tan .selectPayment .gyWX.active {
+    display: block;
+}
+
+.content-view-setPay-tan .selectPayment .gyWX .textDescribe {
+    display: none;
+}
+
+.content-view-setPay-tan .selectPayment .gyWX.active .textDescribe {
+    display: block;
+}
+
+.content-view-setPay-tan .selectPayment .public.active {
+    display: block;
+    border-top: 1px solid #ECECF4;
+}
+
+.content-view-setPay-tan .selectPayment .public.active h4 {
+    margin: 0 0 7px 16px;
+}
+
+.content-view-setPay-tan .selectPayment .grZFB.active {
+    display: block;
+}
+
+.content-view-setPay-tan .selectPayment .mainContent {
+    /*个人微信*/
+    display: none;
+    font-size: 12px;
+    padding: 10px 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.content-view-setPay-tan .selectPayment .mainContent .wxNum,
+.content-view-setPay-tan .selectPayment .mainContent .zfbNum {
+    display: inline-block;
+    width: 100%;
+    padding: 0 16px;
+    margin-bottom: 10px;
+}
+
+.content-view-setPay-tan .selectPayment .mainContent .wxNum input,
+.content-view-setPay-tan .selectPayment .mainContent .zfbNum input {
+    margin: 6px 0;
+    width: 100%;
+    padding-left: 10px;
+    line-height: 28px;
+    border-radius: 2px;
+    background-color: #ffffff;
+    border: 1px solid #ECECF4;
+}
+
+.content-view-setPay-tan .selectPayment .mainContent .wxNum input::placeholder,
+.content-view-setPay-tan .selectPayment .mainContent .zfbNum input::placeholder {
+    color: #828297;
+}
+
+.content-view-setPay-tan .selectPayment .mainContent .stateBox {
+    display: inline-block;
+}
+
+.content-view-setPay-tan .selectPayment .mainContent .stateBox .layui-form-label {
+    float: none;
+    width: 100%;
+    text-align: left;
+    margin: 0;
+    padding: 0 15px;
+}
+
+.content-view-setPay-tan .selectPayment .mainContent .textDescribe {
+    display: block;
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+    color: #828297;
+    font-size: 12px;
+    font-family: '粗体';
+    line-height: 20px;
+}
+
+.content-view-setPay-tan .selectPayment .footerBox {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    border-top: 1px solid #ECECF4;
+    overflow: hidden;
+}
+
+.content-view-setPay-tan .selectPayment .footerBox button {
+    float: right;
+    margin-left: 6px;
+    padding: 8px 10px;
+    border-radius: 3px;
+    background-color: #F4F4F8;
+    border: 1px solid #ececf4;
+    color: #828297;
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+}
+
+.content-view-setPay-tan .selectPayment .footerBox .btnDetermine {
+    color: #B0B0BE;
+}
+
+.content-view-setPay-tan .selectPayment .footerBox .btnDetermine.active {
+    background: #4186DC;
+    color: #fff;
+}
+
+/*覆盖layui样式*/
+.content-view-setPay-tan .layui-layer-title {
+    background: #fefefe;
+}
+
+.content-view-setPay-tan .layui-form-radio > i:hover,
+.content-view-setPay-tan .layui-form-radioed > i {
+    color: #4186DC;
+}
+
+.content-view-setPay-tan .layui-input-block {
+    margin-left: 16px;
+}
+
+.content-view-setPay-tan .layui-form-radio > i {
+    font-size: 16px;
+}
+
+.content-view-setPay-tan .layui-form-radio {
+    margin: 6px 6px 0 0;
+}
+
+.content-view-setPay-tan .layui-form-radio div {
+    font-size: 12px;
+}
+
+/*设置支付弹窗结束*/
+/*门店设置详细弹窗*/
+.content-view-shopDes-tan .layui-layer-title {
+    background: #fefefe !important;
+}
+
+.content-view-shopDes > div {
+    min-height: 30px;
+    padding: 0 10px;
+}
+
+.content-view-shopDes > div input {
+    border: 1px solid #ebebf3;
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    border-radius: 2px;
+    outline: none;
+    padding: 0 8px;
+}
+
+.content-view-shopDes div p.title {
+    color: #393953;
+    font-weight: 600;
+    padding: 8px 2px;
+    font-size: 12px;
+}
+
+.content-view-shopDes div p.title em {
+    color: #828297;
+    margin-left: 4px;
+}
+
+.content-view-shopDes div .cont {
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+}
+
+.content-view-shopDes div.shopMsg ul {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.content-view-shopDes div.shopMsg ul li {
+    width: 50%;
+    float: left;
+}
+
+.content-view-shopDes div.shopMsg ul li input {
+    width: 156px;
+    padding: 5px 8px;
+    border-radius: 2px;
+    color: #393953;
+    font-weight: 600;
+}
+
+.content-view-shopDes div.address .inputBox {
+    padding-top: 10px;
+}
+
+.content-view-shopDes div.address .mapDiv {
+    width: 328px;
+    height: 80px;
+}
+
+.content-view-shopDes div.address .inputBox .selectBox {
+    width: 30.5%;
+    height: 28px;
+    margin-right: 1%;
+}
+
+.content-view-shopDes div.address .inputBox .selectBox:last-child {
+    margin-right: 0;
+}
+
+.content-view-shopDes div.address > input {
+    width: 328px;
+    color: #393953;
+    padding: 5px 8px;
+    margin-top: 12px;
+}
+
+.content-view-shopDes div.uploadPic .cont {
+    width: 328px;
+    height: auto;
+}
+
+.content-view-shopDes div.uploadPic .cont span.layui-btn {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    background: #F4F4F8;
+    margin: 0 8px 8px 0;
+}
+
+.content-view-shopDes div.uploadPic .cont span.layui-btn i {
+    color: #828297;
+}
+
+.content-view-shopDes div.uploadPic .cont img {
+    /*width: 100px;*/
+    /*height: 100px;*/
+    /*border-radius: 2px;*/
+    /*margin: 0 8px 8px 0;*/
+}
+
+.content-view-shopDes div.openHours .cont > div {
+    width: 47%;
+    height: 28px;
+    float: left;
+    margin-right: 2%;
+    position: relative;
+}
+
+.content-view-shopDes div.openHours .cont > div:last-child {
+    margin-right: 0;
+}
+
+.content-view-shopDes div.openHours .cont > div i {
+    position: absolute;
+    right: 8px;
+    top: 0;
+}
+
+.content-view-shopDes div.openHours .cont > div input {
+    width: 100%;
+    line-height: 28px;
+    font-size: 12px;
+}
+
+.content-view-shopDes div.sanbao input {
+    width: 328px;
+}
+
+.content-view-shopDes div.payType .selectBox {
+    width: 156px;
+    height: 28px;
+}
+
+.content-view-shopDes div.payType .selectBox .text {
+    color: #393953;
+}
+
+.content-view-shopDes div.chuzhi .cont {
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+}
+
+.content-view-shopDes .layui-form,
+.content-view-shopDes .layui-form-item,
+.content-view-shopDes .layui-input-block {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 28px;
+}
+
+.content-view-shopDes .layui-unselect {
+    margin: 0 16px 0 0;
+    padding: 0;
+}
+
+.content-view-shopDes .layui-unselect div {
+    font-size: 12px !important;
+    color: #393953;
+}
+
+.content-view-shopDes .layui-unselect i {
+    font-size: 16px !important;
+    color: #4186DC;
+    border: none;
+}
+
+.content-view-shopDes div.jiazhong .selectBox {
+    margin: 12px 0;
+    visibility: hidden;
+}
+
+.content-view-shopDes div.jiazhong .selectBox.active {
+    visibility: visible;
+}
+
+/*门店设置详细弹窗结束*/
+/*radio圆点*/
+.content-view .layui-form i.layui-icon {
+    width: 16px !important;
+    height: 16px !important;
+    background: #fff !important;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    color: rgba(204, 204, 204, 0);
+}
+
+.content-view .layui-form i.layui-icon.layui-anim-scaleSpring,
+.content-view .layui-form .layui-form-radioed i.layui-icon {
+    width: 16px !important;
+    height: 16px !important;
+    background: #fff !important;
+    border-radius: 50%;
+    border: 5px solid #4186DC;
+    color: rgba(255, 255, 255, 0);
+}
+
+.shopOn {
+    height: 40px;
+    line-height: 40px;
+    color: rgba(65, 134, 220, 1);
+    font-size: 12px;
+    font-weight: bolder;
+    text-align: center;
+    vertical-align: middle;
+    font-family: PingFangSC-Semibold;
+}
+
+.shopOff {
+    height: 40px;
+    line-height: 40px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    font-family: PingFangSC-Medium;
+}
+
+.search-btn {
+    float: right;
+    margin: 12px 12px 12px 0;
+    margin-left: 0 !important;
+}
+
+.layui-upload .imgBox{
+    width: 100px;height: 100px;
+    float: left;
+    overflow: hidden;
+    border-radius: 2px;
+    margin: 0 8px 8px 0;
+}
+.layui-upload .imgBox img{
+    display: block;
 }

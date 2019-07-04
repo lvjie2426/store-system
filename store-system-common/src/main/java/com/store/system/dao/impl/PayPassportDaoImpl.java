@@ -1,8 +1,10 @@
 package com.store.system.dao.impl;
 
 import com.quakoo.space.CacheBaseDao;
+import com.quakoo.space.annotation.cache.CacheDaoMethod;
 import com.quakoo.space.annotation.dao.HyperspaceDao;
 import com.quakoo.space.enums.HyperspaceType;
+import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.store.system.dao.PayPassportDao;
 import com.store.system.model.PayPassport;
 
@@ -14,7 +16,19 @@ public class PayPassportDaoImpl extends CacheBaseDao<PayPassport> implements Pay
 
     @Override
     public Map<String, List<String>> getCacheMap() {
+        return super.cache_map();
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<PayPassport> getAllList(int status) {
         return null;
     }
 
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<PayPassport> getAllList(long subId, int status) {
+        return null;
+    }
 }

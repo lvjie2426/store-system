@@ -53,7 +53,7 @@
             <label class="col-sm-2 control-label">账户名</label>
 
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="userName" placeholder="请输入账户名">
+                <input type="text" class="form-control" id="userName" placeholder="请输入账户名(4到16位字母，数字，下划线，减号)">
                 <span class="help-block m-b-none validate">请输入账户名</span>
             </div>
         </div>
@@ -104,9 +104,9 @@
                     <div class="col-sm-12">
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
-                                <label class="col-sm-1 control-label text-right">姓名</label>
+                                <label class="col-sm-1 control-label text-right">昵称</label>
                                 <div class="col-sm-2">
-                                    <input type="text" id="searchName" class="form-control" placeholder="请输入姓名" />
+                                    <input type="text" id="searchName" class="form-control" placeholder="请输入昵称" />
                                 </div>
                                 <label class="col-sm-1 control-label text-right">账号</label>
                                 <div class="col-sm-2">
@@ -357,9 +357,10 @@
                         $('input[name=roleCheck]:checked').each(function() {
                             rids.push($(this).val());
                         });
-                        if(isBlank(userName)){
-                            showValidate('#userName');
-                            return  ;
+                        var res = /^[a-zA-Z0-9_-]{4,16}$/;
+                        if(!res.test(userName)){
+                            layer.msg('账户名输入不规范,请重新输入！', {icon: 2,time:1000, shade: 0.01});
+                            return;
                         }
                         if(isBlank(password)){
                             showValidate('#password');

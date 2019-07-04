@@ -412,7 +412,7 @@ var QuakooImg = (function () {
                 layer.load(1, {time: 500});
                 var formData = new FormData($(this).parent()[0]);
                 $.ajax({
-                    url: config.getUrl_web_img_uploadUrl(), //Server script to process data
+                    url: config.uploadImageUrl, //Server script to process data
                     type: 'POST',
                     data: formData,
                     sync: false,

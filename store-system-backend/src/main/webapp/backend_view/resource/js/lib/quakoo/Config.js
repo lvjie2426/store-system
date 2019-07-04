@@ -30,11 +30,11 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-         //this.serverUrl = "http://192.168.1.3:20005";
+         this.serverUrl = "http://192.168.1.6:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
-        this.uploadImageUrl = "http://39.107.247.82:19996/storage/handle";
+        this.uploadImageUrl = "http://39.107.247.82:20005/storage/handle";
         /**聊天地址*/
         this.chatServerUrl = '39.107.247.82';
         /**聊天端口*/
@@ -48,8 +48,6 @@ var Config = (function(_super){
 
     }
     var _proto = _super.prototype;
-    /**图片上传地址*/
-    _proto.getUrl_web_img_uploadUrl = function(){return this.serverUrl + '/storage/handle';};
     /**登陆*/
     _proto.getUrl_web_user_loginUrl = function(){return this.serverUrl + '/login/in';};
     /**登陆*/
@@ -167,6 +165,16 @@ var Config = (function(_super){
     /**获取当前公司信息*/
     _proto.getUrl_subordinate_getSubordinate = function(){return this.serverUrl + '/subordinate/getSubordinate';};
     //=======================公司管理 结束====================
+
+    //=======================支付设置 开始====================
+    /**添加门店支付方式*/
+    _proto.getUrl_pay_addPay = function(){return this.serverUrl + '/pay/addPay';};
+    /**门店获取支付方式*/
+    _proto.getUrl_pay_getAllListBySub = function(){return this.serverUrl + '/pay/getAllListBySub';};
+    /**修改支付方式*/
+    _proto.getUrl_pay_updatePay = function(){return this.serverUrl + '/pay/updatePay';};
+
+    //=======================支付设置 结束====================
 
     //=======================员工管理 开始====================
     /**员工信息修改*/

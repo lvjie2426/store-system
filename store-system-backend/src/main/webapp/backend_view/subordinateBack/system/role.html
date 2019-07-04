@@ -19,6 +19,9 @@
     <link href="../../resource/css/animate.css" rel="stylesheet">
     <link href="../../resource/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="../../resource/css/common.css" rel="stylesheet">
+    <style>
+        .fixed-table-toolbar{display: block}
+    </style>
 </head>
 
 
@@ -126,7 +129,7 @@
 <script src="../../resource/common/common.js?"+Math.random()></script>
 
 <script>
-    var sid=quakooUser.getUserInfo().sid;
+    var sid=quakooUser.getUserInfo().psid;
 
     var $table =  $('#tb_table');
     var TableInit = function (columns) {
@@ -279,7 +282,7 @@
             Url = serverUrl+'/role/add';
             result =  {succ:'添加成功！',fail:'添加失败！'};
         }
-        var user = getUserInfo();
+        var user = quakooUser.getUserInfo();
         params.token = user.token;
         var index = loading();
         $.ajax({
@@ -317,7 +320,7 @@
             ,yes: function(index){
                 layer.close(index);
                 myAjax(url,{id:id},handle);
-                function handle(data,param){
+                quakooData.ajaxGetData(url,{id:id}, function (data,param){
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg('删除成功', {icon: 1,shade: 0.01});
@@ -325,7 +328,7 @@
                     }else{
                         layer.msg('删除失败'+msg, {icon: 2,shade: 0.01});
                     }
-                }
+                })
             },btn2: function(index, layero){
             }
         });
@@ -388,7 +391,7 @@
             var obj = {};
             if(data[i].pid == 0){
                 obj.open = true;
-                obj.nocheck = true;
+                obj.nocheck = false;
             }
             obj.id = data[i].id;
             obj.sort = data[i].sort;
