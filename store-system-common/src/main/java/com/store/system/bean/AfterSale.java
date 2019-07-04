@@ -27,5 +27,9 @@ public class AfterSale implements Serializable{
 
     private long optId;//操作人ID
 
+    private int refund;//退款金额(分)
+
+    private int extra;//额外支付(分)
+
     public AfterSale(){}
 }

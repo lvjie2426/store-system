@@ -14,6 +14,8 @@ import java.io.Serializable;
 @Data
 public class ClientAfterSaleLog implements Serializable{
 
+    private long id;
+
     private String orderNo;//订单编号
 
     private String lastTime;//最后一次售后时间

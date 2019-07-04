@@ -4,13 +4,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientAfterSaleDetail;
-import com.store.system.client.ClientAfterSaleLog;
 import com.store.system.dao.AfterSaleDetailDao;
 import com.store.system.dao.OptometryInfoDao;
 import com.store.system.dao.OrderDao;
-import com.store.system.model.*;
+import com.store.system.model.AfterSaleDetail;
+import com.store.system.model.OptometryInfo;
+import com.store.system.model.Order;
+import com.store.system.model.User;
 import com.store.system.service.AfterSaleDetailService;
-import com.store.system.service.OptometryInfoService;
 import com.store.system.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -64,23 +65,29 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
                 oids.add(afterSaleDetail.getOid());
             }
         }
+        List<Order> orders = orderDao.load(Lists.newArrayList(oids));
+        Map<Long, Order> orderMap = orderMapUtils.listToMap(orders, "id");
+        for(Order order:orders){
+            uids.add(order.getUid());
+            uids.add(order.getMachiningid());
+        }
 
         List<User> users = userService.load(Lists.newArrayList(uids));
         Map<Long, User> userMap = userMapUtils.listToMap(users, "id");
-        List<Order> orders = orderDao.load(Lists.newArrayList(oids));
-        Map<Long, Order> orderMap = orderMapUtils.listToMap(orders, "id");
 
         for(AfterSaleDetail detail: afterSaleDetails){
             ClientAfterSaleDetail client = new ClientAfterSaleDetail();
             Order order = orderMap.get(detail.getOid());
             client.setUserName(userMap.get(order.getUid()).getName());
             client.setUserAge(userMap.get(order.getUid()).getAge());
+            client.setPhone(userMap.get(order.getUid()).getPhone());
             client.setPrice(String.valueOf(order.getPrice()*100));
             client.setDiscount(order.getDiscount());
             OptometryInfo optometryInfo = optometryInfoDao.load(order.getOiId());
             if(optometryInfo != null && optometryInfo.getOptUid()>0) {
-                if(userMap.get(optometryInfo.getOptUid())!=null){
-                    client.setOiName(userMap.get(optometryInfo.getOptUid()).getName());
+                User user = userService.load(optometryInfo.getOptUid());
+                if(user!=null){
+                    client.setOiName(user.getName());
                 }
             }
             List<OptometryInfo> optometryInfos = optometryInfoDao.getList(order.getUid(),10);
@@ -90,6 +97,9 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
             client.setSku(order.getSkuids());
             client.setReason(detail.getReason());
             client.setOptName(userMap.get(detail.getOptId()).getName());
+            client.setMachiningName(userMap.get(order.getMachiningid()).getName());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+            client.setSaleTime(sdf.format(detail.getCtime()));
             clientAfterSaleDetails.add(client);
         }
         return clientAfterSaleDetails;

@@ -80,6 +80,7 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
         afterSaleDetail.setOptId(afterSale.getOptId());
         afterSaleDetailDao.insert(afterSaleDetail);
 
+
         return afterSaleLog;
     }
 
@@ -144,6 +145,7 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm");
         for(AfterSaleLog afterSaleLog: afterSaleLogs){
             ClientAfterSaleLog client = new ClientAfterSaleLog();
+            client.setId(afterSaleLog.getId());
             client.setOrderNo(afterSaleLog.getOrderNo());
             client.setUserName(userMap.get(afterSaleLog.getUid()).getName());
             client.setUserPhone(userMap.get(afterSaleLog.getUid()).getPhone());

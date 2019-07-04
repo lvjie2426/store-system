@@ -145,11 +145,21 @@
 <script src="../resource/common/area/areadata.js"></script>
 
 
-<!--地区select-->
+<!-- 公司内部库 -->
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
 <script src="../resource/js/area.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+
+<!--地区select-->
 
 <script>
-    initSelectSubject("#roleInitTemplateId","/roleinittemplate/getAllRoleInitTemplatesByName?token="+encodeURIComponent(getUserInfo().token),false,true);
+    initSelectSubject("#roleInitTemplateId","/roleinittemplate/getAllRoleInitTemplatesByName?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
     //这条干嘛的 你i没用
     //initSelectSubject("#channelId","/channel/getAllListByName?token="+encodeURI(getUserInfo().token),false,true);
     function formatSubject(item) {

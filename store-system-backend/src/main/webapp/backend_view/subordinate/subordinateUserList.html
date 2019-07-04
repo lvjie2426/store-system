@@ -177,6 +177,14 @@
 
 <script src="../resource/js/plugins/laydate/laydate.js"></script>
 
+<!-- 公司内部库 -->
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
 <script src="../resource/common/common.js?"+Math.random()></script>
 <script>
     var sid=getQueryString("id");
@@ -293,8 +301,7 @@
 
 
     function getAllRole(callBack){
-        myAjax("/role/getAllRoles?sid="+sid,"",handle);
-        function handle(data,param){
+        quakooData.ajaxGetData(serverUrl + "/role/getAllRoles?sid=" + sid + "&token=" + encodeURIComponent(quakooUser.getUserInfo().token),"",function (data,param){
             if(data.success) {
                 var roles = data.data;
                 var ridCheckBoxHtml='';
@@ -318,7 +325,7 @@
             } else {
                 layer.msg("请求失败");
             }
-        }
+        })
     }
 
     function addUser(){
@@ -360,8 +367,7 @@
                 param.desc = desc;
                 param.userType=1;
                 param.sid=sid;
-                myAjax(Url,param,handle);
-                function handle(data, param){
+                quakooData.ajaxGetData(Url,param,function (data,param){
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg(result.succ, {icon: 1,shade: 0.01});
@@ -369,7 +375,7 @@
                     }else{
                         layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
                     }
-                }
+                })
             },
             btn2: function(){},
             success: function(layero, index){
@@ -414,8 +420,7 @@
                 param.desc = desc;
                 param.updateRids = updateRids;
                 param.sid=sid;
-                myAjax(Url,param,handle);
-                function handle(data, param){
+                quakooData.ajaxGetData(Url,param,function (data,param){
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg(result.succ, {icon: 1,shade: 0.01});
@@ -423,7 +428,7 @@
                     }else{
                         layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
                     }
-                }
+                })
             },
             btn2: function(){},
             success: function(layero, index){
@@ -459,8 +464,7 @@
             ,btn: ['确定','取消']
             ,yes: function(index){
                 layer.close(index);
-                myAjax(url,{id:id,status:status},handle);
-                function handle(data,param){
+                quakooData.ajaxGetData(url,{id:id,status:status},function (data,param){
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg(result.succ, {icon: 1,shade: 0.01});
@@ -468,7 +472,7 @@
                     }else{
                         layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
                     }
-                }
+                })
             },btn2: function(index, layero){
             }
         });
@@ -553,14 +557,13 @@
         result =  {succ:'更新成功！',fail:'更新失败！'};
         var index = loading();
         layer.close(index);
-        myAjax(url,params,handle);
-        function handle(data,param){
+        quakooData.ajaxGetData(url,params,function (data,param){
             if (data && data.success) {
                 layer.msg(result.succ, {icon: 1});
             }else{
                 layer.msg(result.fail, {icon: 2});
             }
-        }
+        })
 
     }
 
@@ -592,8 +595,7 @@
     };
     function initZtree(){
         var url = serverUrl+"/permission/getAll?sid="+sid;
-        myAjax(url,"",handle);
-        function handle(data,param){
+        quakooData.ajaxGetData(url,"",function (data,param){
             if(data.success) {
                 var treeData = transTreeData(data.data);
                 zNodes = treeData;
@@ -603,7 +605,7 @@
             }
             $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        }
+        })
 
     }
     function refreshTree(){
@@ -633,14 +635,13 @@
 
     function reInitTree(id) {
         var url =  serverUrl+"/user/getUserPermissions";
-        myAjax(url,{uid:id},handle);
-        function handle(data,param){
+        quakooData.ajaxGetData(url,{uid:id},function (data,param){
             if(data.success) {
                 reviewNodes(data.data);
             } else {
                 layer.msg("请求失败");
             }
-        }
+        })
     }
     //回显ztree数据
     function reviewNodes(data) {
