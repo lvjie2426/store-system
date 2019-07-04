@@ -1380,7 +1380,7 @@
                     valign: "middle",
                     formatter: function (value, row, index) {
                         var data = JSON.stringify(row);
-                        var html = "<button class='btn btn-primar' style='margin-right: 8px;' onclick='createTask("+data+")'>编辑</button><button class='btn btn-danger' style='margin-right: 8px;' data-id= \'"+ row.id + "\'>删除</button>";
+                        var html = "<button class='btn btn-primary' style='margin-right: 8px;' onclick='createTask("+data+")'>编辑</button><button class='btn btn-danger' style='margin-right: 8px;' data-id= \'"+ row.id + "\'>删除</button>";
                         return html;
                     }
                 }
@@ -1543,8 +1543,9 @@
         date2 = new dateRange(".yj-demo2-time", true);
         date2.init();
         $('.yj-date-btn .btn-primary').click(function () {
-            taskLocData.startTime = data2.getTime()[2];
-            taskLocData.endTime = data2.getTime()[3];
+            taskLocData.startTime = date2.getTime()[2];
+            taskLocData.endTime = date2.getTime()[3];
+            console.log(taskLocData)
         });
     }
     /**接口——创建任务*/
@@ -1589,7 +1590,7 @@
             return;
         }
         if(quakooUtils.isBlack(taskLocData.startTime)){
-            laer.msg("请选择时间");
+            layer.msg("请选择时间");
             return;
         }
         param.name = taskName;
@@ -1600,10 +1601,10 @@
         }
         param.sid = psid;
         param.amoun= amount*1;
-        param.amountType= amountType;
+        param.amountType= taskLocData.amountType;
         param.startTime = taskLocData.startTime;
         param.endTime = taskLocData.endTime;
-        param.type = taskType;
+        param.type = taskLocData.type;
         param.target = target*1;
 
         if(quakooUtils.isNotBlack(skuIds)){
@@ -1611,15 +1612,29 @@
         }
         if(id){
             param.id = id;
-            console.log(param);
             quakooData.ajaxGetData(config.getUrl_mission_update(),param,function(ret){
-                alert("bianji")
+                console.log('任务奖励编辑',ret);
+                if(ret&&ret.success&&ret.data){
+                    missionRewards();
+                    layer.msg('编辑成功',{icon:1});
+                    layer.close(index);
+                }else{
+                    layer.msg(ret.data);
+                }
 
             })
         }else{
-            console.log(param);
             quakooData.ajaxGetData(config.getUrl_mission_add(),param,function (ret) {
-                console.log("创建任务接口数据",ret)
+                console.log("创建任务接口数据",ret);
+                if(ret&&ret.success){
+                    if(quakooUtils.isNotBlack(ret.data)){
+                        missionRewards();
+                        layer.msg('成功创建任务',{icon:1});
+                        layer.close(index);
+                    }else{
+                        layer.msg('ret.data');
+                    }
+                }
             })
         }
     }
