@@ -1042,7 +1042,6 @@
         var preid = window.location.search.replace(/\?subid=/, ""); //前一个页面传参（门店ID）
         psid = quakooUser.getUserInfo().psid;                //企业ID(公司ID)
         subid = preid || quakooDb.getItem("sel_ShopId");       //门店ID
-        console.log(preid);
         initPage();                                          //初始化页面
     });
 
@@ -1177,8 +1176,6 @@
                 }
                 params.page = this.pageNumber;
                 params.size = this.pageSize;
-
-                console.log('params:::', params);
                 return params;
             },
             success: function () {
@@ -1402,8 +1399,6 @@
         });
     });
 
-    selectTag($("#selectBox"), function (ret) {/**/
-    })
 
     //上传工资单弹窗
     function updataSalary() {
@@ -1469,7 +1464,7 @@
                         }
                     });
                 } else {
-                    layer.msg('暂无数据', {icon: 2, shade: 0.01});
+                    layer.msg('暂无数据');
                 }
             }
         })
