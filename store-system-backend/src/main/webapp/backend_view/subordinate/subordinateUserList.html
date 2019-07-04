@@ -231,7 +231,7 @@
                     var endTime = $("#endTime").val();
 
                     return {
-                        token:getUserInfo().token,
+                        token:quakooUser.getUserInfo().token,
                         userType:1,
                         page:(params.offset / params.limit) + 1,
                         size: params.limit,
@@ -594,7 +594,7 @@
         console.log(treeNode)
     };
     function initZtree(){
-        var url = serverUrl+"/permission/getAll?sid="+sid;
+        var url = serverUrl+"/permission/getAll?sid="+sid + "&token=" + encodeURIComponent(quakooUser.getUserInfo().token);
         quakooData.ajaxGetData(url,"",function (data,param){
             if(data.success) {
                 var treeData = transTreeData(data.data);

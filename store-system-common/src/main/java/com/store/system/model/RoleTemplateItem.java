@@ -1,6 +1,7 @@
 package com.store.system.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.json.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
@@ -33,7 +34,7 @@ public class RoleTemplateItem implements Serializable {
     private String remark;
 
     @HyperspaceColumn(isJson = true)
-    private List<Long> pids;//权限
+    private List<Long> pids= Lists.newArrayList();//权限
 
     private long roleInitTemplateId;
 

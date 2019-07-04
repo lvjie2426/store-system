@@ -110,11 +110,15 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                                  int price, OrderExpireUnit expireUnit, int expireNum, Order order) throws Exception {
         if(price == 0) throw new StoreSystemException("price is zero!");
         if(payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0)) throw new StoreSystemException("expire is error!");
-        PayPassport payPassport = payPassportDao.load(passportId);
+        List<PayPassport> payPassports = payPassportDao.getAllList(passportId,PayPassport.status_on);
+        PayPassport payPassport = null;
+        if(payPassports.size()>0){
+            payPassport = payPassports.get(0);
+        }
         if(null == payPassport) throw new StoreSystemException("passport is null!");
         long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
         order.setGmt(gmt);
-        order.setPassportId(passportId);
+        order.setPassportId(payPassport.getId());
         order.setPayType(Order.pay_type_ali);
         order.setPayMode(payMode);
         order.setType(type);
@@ -403,7 +407,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                                              String typeInfo, String title, String desc, int price, Order orderInfo) throws Exception {
         Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
         if(StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
-        PayPassport payPassport = payPassportDao.load(passportId);
+        List<PayPassport> payPassports = payPassportDao.getAllList(passportId,PayPassport.status_on);
+        PayPassport payPassport = null;
+        if(payPassports.size()>0){
+            payPassport = payPassports.get(0);
+        }
         if(null == payPassport) throw new StoreSystemException("passport is null!");
         String wxAppid = payPassport.getWxAppid();
         String wxMerchantId = payPassport.getWxMerchantId();
