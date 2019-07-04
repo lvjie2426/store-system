@@ -53,7 +53,7 @@
             <label class="col-sm-2 control-label">账户名</label>
 
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="userName" placeholder="请输入账户名">
+                <input type="text" class="form-control" id="userName" placeholder="请输入账户名(4到16位字母，数字，下划线，减号)">
                 <span class="help-block m-b-none validate">请输入账户名</span>
             </div>
         </div>
@@ -194,6 +194,7 @@
 
 <script src="../../resource/common/common.js?"+Math.random()></script>
 <script>
+    var psid=quakooUser.getUserInfo().psid;
     var sid=quakooUser.getUserInfo().sid;
     var RoleList = [];
     var $table =  $('#tb_table');
@@ -203,7 +204,7 @@
         //初始化Table
         oTableInit.Init = function () {
             $table.bootstrapTable({
-                url: serverUrl+'/user/searchUser',         //请求后台的URL（*）
+                url: serverUrl+'/user/searchBackendUser',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
 //                    striped: true,                      //是否显示行间隔色
@@ -245,6 +246,7 @@
                         name:$("#searchName").val(),
                         userName:$("#searchAccount").val(),
                         sid:sid,//下属机构
+                        psid:psid,
                         rid:$("#searchRid").val(),
                         status:$("#searchStatus").val(),
                         startTime: isBlank(startTime) ? 0 : new Date(startTime).getTime(),
@@ -308,8 +310,7 @@
 
 
     function getAllRole(callBack){
-//        myAjax("/role/getAllRoles?sid="+sid,"",handle);
-        quakooData.ajaxGetData(serverUrl+"/role/getAllRoles",{sid:sid}, function handle(data,param){
+        quakooData.ajaxGetData(serverUrl+"/role/getAllRoles?token=" + encodeURIComponent(quakooUser.getUserInfo().token) + "&sid=" + psid,"", function handle(data,param){
             if(data.success) {
                 var roles = data.data;
                 var ridCheckBoxHtml='';
@@ -347,7 +348,7 @@
             btn: ['提交', '关闭'],
             yes: function(){
                 var param = {};
-                var Url = '/user/add';
+                var Url = serverUrl + '/user/add';
                 var result =  {succ:'添加成功！',fail:'添加失败！'};
                 var userName =  $("#userName").val();
                 var name =  $("#name").val();
@@ -358,10 +359,12 @@
                 $('input[name=roleCheck]:checked').each(function() {
                     rids.push($(this).val());
                 });
-                if(isBlank(userName)){
-                    showValidate('#userName');
-                    return  ;
+                var res = /^[a-zA-Z0-9_-]{4,16}$/;
+                if(!res.test(userName)){
+                    layer.msg('账户名输入不规范,请重新输入！', {icon: 2,time:1000, shade: 0.01});
+                    return;
                 }
+
                 if(isBlank(password)){
                     showValidate('#password');
                     return  ;
@@ -374,17 +377,17 @@
                 param.rids = rids;
                 param.desc = desc;
                 param.userType=1;
-                param.sid=sid;
-                myAjax(Url,param,handle);
-                function handle(data, param){
+                param.psid=psid;
+                param.sid=0;
+                quakooData.ajaxGetData(Url,param,function (data,param){
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg(result.succ, {icon: 1,shade: 0.01});
-                        handleTable("", 3, serverUrl+'/user/searchUser');
+                        handleTable("", 3, serverUrl+'/user/searchBackendUser');
                     }else{
                         layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
                     }
-                }
+                })
             },
             btn2: function(){},
             success: function(layero, index){
@@ -428,13 +431,12 @@
                 param.name = name;
                 param.desc = desc;
                 param.updateRids = updateRids;
-                param.sid=sid;
-//                myAjax(Url,param,handle);
+                param.psid=psid;
                 quakooData.ajaxGetData(Url,param, function handle(data,param){
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg(result.succ, {icon: 1,shade: 0.01});
-                        handleTable("", 3, serverUrl+'/user/searchUser');
+                        handleTable("", 3, serverUrl+'/user/searchBackendUser');
                     }else{
                         layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
                     }
@@ -466,7 +468,7 @@
 
 
     function updateUserStatus(id,status){
-        var url = "/user/updateStatus";
+        var url = serverUrl + "/user/updateStatus";
         var result = {succ:'成功！',fail:'失败！'};
         layer.msg('确认删除或恢复吗?', {
             shade: [0.1, '##f5f5f5'],
@@ -479,7 +481,7 @@
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg(result.succ, {icon: 1,shade: 0.01});
-                        handleTable("",3,serverUrl+'/user/searchUser');
+                        handleTable("",3,serverUrl+'/user/searchBackendUser');
                     }else{
                         layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
                     }
@@ -606,7 +608,7 @@
         console.log(treeNode)
     };
     function initZtree(){
-        var url = serverUrl+"/permission/getAll?sid="+sid;
+        var url = serverUrl+"/permission/getAll?sid="+psid;
 //        myAjax(url,"",handle);
         quakooData.ajaxGetData(url,{}, function handle(data,param){
             if(data.success) {
@@ -648,7 +650,6 @@
 
     function reInitTree(id) {
         var url =  serverUrl+"/user/getUserPermissions";
-//        myAjax(url,{uid:id},handle);
         quakooData.ajaxGetData(url,{uid:id}, function handle(data,param){
             if(data.success) {
                 reviewNodes(data.data);
