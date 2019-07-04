@@ -35,6 +35,10 @@ public class AfterSaleDetail implements Serializable{
 
     private String reason; //售后原因
 
+    private int refund;//退款金额(分)
+
+    private int extra;//额外支付(分)
+
     @HyperspaceColumn(isJson = true)
     private List<OrderSku> sku=new ArrayList<>();
 

@@ -431,15 +431,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         Map<String, String> resMap = PayUtils.xmlStrToMap(sendRes);
         String code = resMap.get("return_code");
         boolean res = false;
-        long time_end=0;
         if(code.equals("SUCCESS")) {
             String result_code = resMap.get("result_code");
             if("SUCCESS".equals(result_code)) {
                 order.setStatus(Order.status_pay);
-                order.setOrderNo(resMap.get("trade_no"));
                 order.setDetail(sendRes);
-                time_end = DateUtils.parseDate(resMap.get("time_end"), "yyyyMMddHHmmss").getTime();
-                order.setPayTime(time_end);
             } else {
                 String path = request.getServletContext().getRealPath("");
                 File file = new File(path);
@@ -633,7 +629,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         sParaTemp.put("transaction_id", transaction_id);
         String out_refund_no = PayUtils.getOutTradeNo(roid, refundOrder.getGmt());
         sParaTemp.put("out_refund_no", out_refund_no);
-        long total_fee = (long) (order.getPrice() * 100);
+        long total_fee = (long) (order.getPrice());
         sParaTemp.put("total_fee", String.valueOf(total_fee));
         sParaTemp.put("refund_fee", String.valueOf(total_fee));
         sParaTemp.put("op_user_id", wxMerchantId);
@@ -1314,6 +1310,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             Map<String, String> map = PayUtils.xmlStrToMap(queryRes);
             if(map.get("return_code").equals("SUCCESS") && map.get("result_code").equals("SUCCESS") && map.get("trade_state").equals("SUCCESS")) {
                 order.setStatus(Order.status_pay);
+                order.setOrderNo(map.get("transaction_id"));
+                long time_end = DateUtils.parseDate(map.get("time_end"), "yyyyMMddHHmmss").getTime();
+                order.setPayTime(time_end);
                 reverse = false;
                 break;
             }

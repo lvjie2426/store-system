@@ -197,11 +197,11 @@ public class UserServiceImpl implements UserService {
         String countSql = selectCount;
         if(sid>-1&&psid>-1){
             sql = sql + " and `psid` = " + psid + " and `sid` = " + sid;
-            countSql = countSql + " and `psid` = " + sid + " and `sid` = " + sid;
+            countSql = countSql + " and `psid` = " + psid + " and `sid` = " + sid;
         }
         if(psid>-1&&sid<=-1){
             sql = sql + " and `psid` = " + psid + " and `sid` = 0 ";
-            countSql = countSql + " and `psid` = " + sid + " and `sid` = 0 ";
+            countSql = countSql + " and `psid` = " + psid + " and `sid` = 0 ";
         }
         if(sid<=-1&&psid<=-1){
             sql = sql + " and `psid` != 0 ";
@@ -244,6 +244,7 @@ public class UserServiceImpl implements UserService {
 
         sql = sql + " order by ctime desc";
         System.err.println(sql);
+        System.err.println(countSql);
         sql = sql + String.format(limit,pager.getSize()*(pager.getPage()-1),pager.getSize());
         List<User> users =null;
         int count=0;

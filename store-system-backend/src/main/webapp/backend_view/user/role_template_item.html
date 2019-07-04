@@ -18,6 +18,9 @@
     <link href="../resource/css/animate.css" rel="stylesheet">
     <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="../resource/css/common.css" rel="stylesheet">
+    <style>
+        .fixed-table-toolbar{display: block}
+    </style>
 </head>
 
 
@@ -104,6 +107,13 @@
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
 <script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
+<!-- 公司内部库 -->
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/template-native.js"></script>
 
 <script src="../resource/common/common.js?"+Math.random()></script>
 
@@ -144,7 +154,7 @@
                 },
                 queryParams: function (params) {
                     return {
-                        token:getUserInfo().token,
+                        token:quakooUser.getUserInfo().token,
                         pageNumber: params.offset+1,
                         pageSize: params.limit,
                     };
@@ -254,7 +264,7 @@
             Url = serverUrl+'/roletemplateitem/add?roleInitTemplateId='+roleInitTemplateId;
             result =  {succ:'添加成功！',fail:'添加失败！'};
         }
-        var user = getUserInfo();
+        var user = quakooUser.getUserInfo();
         params.token = user.token;
         var index = loading();
         $.ajax({
@@ -292,8 +302,7 @@
             ,btn: ['确定','取消']
             ,yes: function(index){
                 layer.close(index);
-                myAjax(url,{id:id},handle);
-                function handle(data,param){
+                quakooData.ajaxGetData(url,{id:id},function (data,param){
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg('删除成功', {icon: 1,shade: 0.01});
@@ -301,7 +310,7 @@
                     }else{
                         layer.msg('删除失败'+msg, {icon: 2,shade: 0.01});
                     }
-                }
+                })
             },btn2: function(index, layero){
             }
         });
@@ -339,9 +348,8 @@
     };
 
     function initZtree(){
-        var url = serverUrl+"/permission/getAll?sid=1";
-        myAjax(url,"",handle);
-        function handle(data,param){
+        var url = serverUrl+"/permission/getAll?token=" + encodeURIComponent(quakooUser.getUserInfo().token);
+        quakooData.ajaxGetData(url,"",function (data,param){
             if(data.success) {
                 var treeData = transTreeData(data.data);
                 zNodes = treeData;
@@ -351,7 +359,7 @@
             }
             $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        }
+        })
 
     }
     function refreshTree(){
@@ -381,14 +389,13 @@
 
     function reInitTree(id) {
         var url =  serverUrl+"/roletemplateitem/getRolePermissions";
-        myAjax(url,{rid:id},handle);
-        function handle(data,param){
+        quakooData.ajaxGetData(url,{rid:id},function (data,param){
             if(data.success) {
                 reviewNodes(data.data);
             }else{
                 layer.msg("请求失败");
             }
-        }
+        })
     }
     //回显ztree数据
     function reviewNodes(data) {

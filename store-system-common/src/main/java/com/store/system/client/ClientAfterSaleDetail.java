@@ -20,6 +20,7 @@ public class ClientAfterSaleDetail implements Serializable{
 
     private String userName; //顾客姓名
     private int userAge; //顾客年龄
+    private String phone;//联系方式
     private String price; //订单金额
     private double discount; //折扣
     private String oiName; //验光师
@@ -30,5 +31,6 @@ public class ClientAfterSaleDetail implements Serializable{
     private List<OrderSku> sku; //订单信息
     private String reason; //售后原因
     private String optName; //操作人姓名
+    private String saleTime; //售后时间
 
 }
