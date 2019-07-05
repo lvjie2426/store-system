@@ -1080,7 +1080,7 @@
     function uploadImg(self) {
         quakooImg.open(function (data) {
             var obj = quakooImg.processImg(data.ok,100,100)
-            var str = '<div class="imgBox"><img src="'+obj.url+'" real-src="'+data.ok+'" style="'+obj.style+'" alt=""></div>'
+            var str = '<div class="imgBox"><img src="'+obj.url+'" real-src="'+data.ok+'" style="'+obj.style+'" alt=""><div class="del" onclick="delImg(this)"></div></div>'
             $(self).before(str)
             if($(self).prevAll('.imgBox').length>=3){
                 $(self).hide();
