@@ -119,14 +119,17 @@ public class SubordinateServiceImpl implements SubordinateService {
 		db.setStoreCode(subordinate.getStoreCode());
 		db.setStoreImg(subordinate.getStoreImg());
 		db.setThreePolicy(subordinate.getThreePolicy());
-		db.setProcessId(subordinate.getProcessId());
 		db.setStoredType(subordinate.getStoredType());
 		db.setPayType(subordinate.getPayType());
 		db.setStartTime(subordinate.getStartTime());
 		db.setEndTime(subordinate.getEndTime());
-
+		db.setProcessType(subordinate.getProcessType());
+		if(subordinate.getProcessType()==Subordinate.processType_per){
+			if(!subordinate.getProcess().contains(subordinate.getName())) {
+				subordinate.getProcess().add(subordinate.getName());
+			}
+		}
 		db.setAddress(subordinate.getAddress());
-
 		return subordinateDao.update(db);
 	}
 
@@ -257,6 +260,11 @@ public class SubordinateServiceImpl implements SubordinateService {
 	@Override
 	public Subordinate insertStore(Subordinate subordinate)throws Exception {
 		subordinate.setPid(subordinate.getId());
+		if(subordinate.getProcessType()==Subordinate.processType_per){
+			if(!subordinate.getProcess().contains(subordinate.getName())) {
+				subordinate.getProcess().add(subordinate.getName());
+			}
+		}
 		subordinate = subordinateDao.insert(subordinate);
 		return subordinate;
 	}

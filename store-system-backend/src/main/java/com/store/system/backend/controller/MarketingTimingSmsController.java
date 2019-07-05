@@ -45,8 +45,14 @@ public class MarketingTimingSmsController extends BaseController {
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(MarketingTimingSms marketingTimingSms, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView update(MarketingTimingSms marketingTimingSms, HttpServletRequest request, HttpServletResponse response, Model model,
+                               String tagsJson) throws Exception {
         try {
+            List<String> tags = Lists.newArrayList();
+            if(StringUtils.isNotBlank(tagsJson)) {
+                tags = JsonUtils.fromJson(tagsJson, new TypeReference<List<String>>() {});
+            }
+            marketingTimingSms.setTags(tags);
             boolean res = marketingTimingSmsService.update(marketingTimingSms);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {

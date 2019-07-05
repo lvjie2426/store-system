@@ -1,16 +1,21 @@
 package com.store.system.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.store.system.bean.InventoryCheckBillItem;
 import com.store.system.client.ClientSubordinate;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Payment;
 import com.store.system.model.Subordinate;
+import com.store.system.model.User;
 import com.store.system.service.PaymentService;
 import com.store.system.service.SubordinateService;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -104,9 +109,14 @@ public class SubordinateController extends BaseController {
     }
     @RequestMapping("/addSubordinateStore")
     public ModelAndView addSubordinateStore(HttpServletRequest request, HttpServletResponse response,
-                                              Subordinate subordinate,
+                                              Subordinate subordinate, @RequestParam(value = "storeImgJson") String storeImgJson,
                                               Model model) throws Exception {
         try {
+            List<String> images = Lists.newArrayList();
+            if(StringUtils.isNotBlank(storeImgJson)) {
+                images = JsonUtils.fromJson(storeImgJson, new TypeReference<List<String>>() {});
+            }
+            subordinate.setStoreImg(images);
             subordinate = subordinateService.insertStore(subordinate);
             return this.viewNegotiating(request,response, new ResultClient(subordinate));
         }catch (StoreSystemException e){
@@ -116,9 +126,14 @@ public class SubordinateController extends BaseController {
     }
     @RequestMapping("/updateSubordinateStore")
     public ModelAndView updateSubordinateStore(HttpServletRequest request, HttpServletResponse response,
-                                          Subordinate subordinate,
+                                          Subordinate subordinate, @RequestParam(value = "storeImgJson") String storeImgJson,
                                           Model model) throws Exception {
         try {
+            List<String> images = Lists.newArrayList();
+            if(StringUtils.isNotBlank(storeImgJson)) {
+                images = JsonUtils.fromJson(storeImgJson, new TypeReference<List<String>>() {});
+            }
+            subordinate.setStoreImg(images);
             ResultClient resultClient = new ResultClient(subordinateService.updateStore(subordinate));
             return this.viewNegotiating(request,response,resultClient);
         }catch (StoreSystemException e){
@@ -190,6 +205,29 @@ public class SubordinateController extends BaseController {
         try {
             List<ClientSubordinate> list= subordinateService.getTwoLevelAllList(sid);
             return this.viewNegotiating(request,response,list);
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+        }
+
+    }
+
+    /*** 
+    * 获取当前的加工中心
+    * @Param: [request, response, model]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/7/5
+    */ 
+    @RequestMapping("/getProcessList")
+    public ModelAndView getProcessList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            long psid=0;
+            if(user!=null){
+                psid=user.getPsid();
+            }
+            ClientSubordinate subordinate = subordinateService.load(psid);
+            return this.viewNegotiating(request,response,new ResultClient(subordinate.getProcess()));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }

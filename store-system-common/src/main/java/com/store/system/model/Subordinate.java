@@ -34,7 +34,7 @@ public class Subordinate implements Serializable {
     public static final int payType_ali_per = 4;//支付宝个人
 
     public static final int processType_per = 0;//本店加工
-    public static final int processType_pub = 1;//工厂加工
+    public static final int processType_pub = 1;//其他店加工
 
 
     @PrimaryKey
@@ -82,8 +82,9 @@ public class Subordinate implements Serializable {
     private int storedType;
     //加工方式
     private int processType;
-    //加工中心id
-    private int processId;
+    //加工中心
+    @HyperspaceColumn(isJson = true)
+    private List<String> process=new ArrayList<>();
     //三包政策
     private String threePolicy;
 
