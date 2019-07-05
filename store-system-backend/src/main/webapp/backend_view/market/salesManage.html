@@ -538,17 +538,33 @@
             <div class="title">短信内容</div>
             <div id="moveBox">
                 <div id="moveBar" ondragover="allowDrop(event)" ondrop="drop(event)">
-                    <div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">顾客姓名</div>
-                    <div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">门店名称</div>
+                    <%if(list.content.indexOf('@var(user_name)')<0){%>
+                    <div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">顾客姓名</div>
+                    <%}%>
+                    <%if(list.content.indexOf('@var(sub_name)')<0){%>
+                    <div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">门店名称</div>
+                    <%}%>
                 </div>
                 <div class="fill">
                     <div class="fill-tip">编辑输入框中的内容或拖动字段</div>
                     <div class="fill-box">
+                        <%if(list.content.indexOf('@var(sub_name)')>=0 || list.content.indexOf('@var(user_name)')>=0){%>
+                        <div class="fill-div" id="fill-div" onclick="changeArea()" ondragover="allowDrop(event)"
+                             ondrop="drop(event)"><%=changeContent(list.content)%>
+                        </div>
+                        <%}else{%>
                         <div class="fill-div" id="fill-div" onclick="changeArea()" ondragover="allowDrop(event)"
                              ondrop="drop(event)">尊敬的你好，你在消费了元，欢迎你下次再来。
                         </div>
+                        <%}%>
+                        <%if(list.content.indexOf('@var(sub_name)')>=0 || list.content.indexOf('@var(user_name)')>=0){%>
+                        <textarea name="" onclick="textareaClick()" onblur="textareaBlur()" class="fill-text"
+                                  id="fill-text"><%=changeContentText(list.content)%></textarea>
+                        <%}else{%>
                         <textarea name="" onclick="textareaClick()" onblur="textareaBlur()" class="fill-text"
                                   id="fill-text">尊敬的你好，你在消费了元，欢迎你下次再来。</textarea>
+                        <%}%>
+
                     </div>
                 </div>
             </div>
@@ -751,6 +767,16 @@
     </ul>
 </script>
 <script>
+    template.helper('changeContent',function (str) {
+        str = str.replace('@var(sub_name)','<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">门店名称</div>')
+        str = str.replace('@var(user_name)','<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">顾客姓名</div>')
+        return str
+    })
+    template.helper('changeContentText',function (str) {
+        str = str.replace('@var(sub_name)','&门店名称&')
+        str = str.replace('@var(user_name)','&顾客姓名&')
+        return str
+    })
     var psid;                                             //企业ID
     var subid;                                            //门店ID
     var cid = '';                                         //类目id
@@ -1208,6 +1234,8 @@
                 messageLocData[i] = upData[i];
             }
         }else {
+            messageLocData.tags = [];
+            messageLocData.content = "";
             title = "新增短信群发";
             btn = ['取消', '新增'];
         }
@@ -1243,6 +1271,15 @@
         console.log('data',data);
         var html = template("groupMessagingTem",data);
         $('#groupMessagingUl').html(html);
+        barArr = [];
+        if(messageLocData.content.indexOf('@var(sub_name)')>=0){
+            barArr.push({text:"门店名称",html:'<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">门店名称</div>'})
+        }
+        if(messageLocData.content.indexOf('@var(user_name)')>=0){
+            barArr.push({text:"顾客姓名",html:'<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">顾客姓名</div>'})
+        }
+
+        initDrag()
         /*时间开始*/
         // 时间插件JS开始(单个时间日期)
         var opt = {};
@@ -1276,11 +1313,12 @@
         selectTag($("#selectBox5"), function (ret) { //短信弹窗职业获取
             messageLocData.job = ret.value;
         });
-        messageLocData.tags = ["@var(sub_name)","@var(user_name)"];
-        messageLocData.content = "尊敬的@var(user_name)你好，你在@var(sub_name)消费了元，欢迎你下次再来。";
+
+
         $("#send-time").attr("placeholder", "发送时间");
         $("#send-time").val('');
         if(quakooUtils.isNotBlack(messageLocData.id)) {//编辑
+
             //短信内容
 
 /*
@@ -1319,6 +1357,19 @@
 
     /**接口——新增编辑短信群发*/
     function addmessage(index) {
+        messageLocData.tags = [];
+        messageLocData.content = $('#fill-div').text();
+        if(messageLocData.content.indexOf('门店名称')>=0){
+            messageLocData.tags.push('@var(sub_name)')
+            messageLocData.content =  messageLocData.content.replace('门店名称','@var(sub_name)');
+        }
+        if(messageLocData.content.indexOf('顾客姓名')>=0){
+            messageLocData.tags.push('@var(user_name)')
+            messageLocData.content =  messageLocData.content.replace('顾客姓名','@var(user_name)');
+        }
+        console.log('messageLocData.tags',messageLocData.tags)
+        console.log('messageLocData.content',messageLocData.content)
+        return
         var param = {};
         var sendTime;
         var strTime = $("#send-time").attr("placeholder");
