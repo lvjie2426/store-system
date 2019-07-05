@@ -1367,9 +1367,6 @@
             messageLocData.tags.push('@var(user_name)')
             messageLocData.content =  messageLocData.content.replace('顾客姓名','@var(user_name)');
         }
-        console.log('messageLocData.tags',messageLocData.tags)
-        console.log('messageLocData.content',messageLocData.content)
-        return
         var param = {};
         var sendTime;
         var strTime = $("#send-time").attr("placeholder");
