@@ -1544,26 +1544,10 @@
      * */
     function createTask(taskData) {
         console.log('tadafds',taskData);
-        taskLocData = {};
         skuIds =[];
-        executor = [];
-        personArr = [];
-        selObject = {};
         var btn;
         if(taskData){
             btn = ['取消','编辑'];
-            for(var i in taskData.skuIds){
-                skuIds[i] = taskData.skuIds[i];
-            }
-            if(taskData.type == 1){
-                for(var i in taskData.executor){
-                    executor[i] = taskData.executor[i];
-                }
-            }else if(taskData.type ==2){
-                for(var i in taskData.executor){
-                    personArr[i] = taskData.executor[i];
-                }
-            }
         }else{
             btn = ['取消', '确定'];
         }
@@ -1600,7 +1584,12 @@
         });
     }
     function renderTask(taskData) {
+        taskLocData = {};
+        taskLocData.executor = [];
         if(taskData){
+            for(var i in taskData.skuIds){
+                skuIds[i] = taskData.skuIds[i];
+            }
             for(var i in taskData){
                 taskLocData[i] = taskData[i];
             }
@@ -1609,7 +1598,6 @@
             taskLocData.type = 1;//1=>团队任务；2=>个人任务
             taskLocData.amountType = 3;//1销售量-个 2销售额-元 3全店销售额
         }
-        console.log(taskLocData)
         var data = {list:taskLocData};
         var html = template("taskDialogTem",data);
         $("#taskDialogHtml").html(html);
@@ -1679,22 +1667,13 @@
             layer.msg("请输入任务名称");
             return;
         }
-        if(taskLocData.type ==1){
-            if(quakooUtils.isBlack(executor)){
+        if(quakooUtils.isBlack(taskLocData.executor)){
+            if(taskLocData.type==1){
                 layer.msg("请选择门店");
-                return;
+            }else if(taskLocData.type==2){
+                layer.msg("请选择任务对象");
             }
-        }else if(taskLocData.type == 2){
-            personArr = [];
-            for(var i in selObject){
-                for(var j =0;j<selObject[i].length;j++){
-                    personArr.push(selObject[i][j]);
-                }
-            }
-            if(quakooUtils.isBlack(personArr)){
-                layer.msg('请选择任务对象');
-                return;
-            }
+            return;
         }
         if(quakooUtils.isBlack(target)){
             layer.msg("请输入目标数");
@@ -1709,11 +1688,7 @@
             return;
         }
         param.name = taskName;
-        if(taskLocData.type==1){
-            param.executorJson = JSON.stringify(executor);
-        }else if(taskLocData.type ==2){
-            param.executorJson = JSON.stringify(personArr);
-        }
+        param.executorJson = JSON.stringify(taskLocData.executor);
         param.sid = psid;
         param.amount= amount*1;
         param.amountType= taskLocData.amountType;
@@ -1721,7 +1696,6 @@
         param.endTime = taskLocData.endTime;
         param.type = taskLocData.type;
         param.target = target*1;
-
         if(quakooUtils.isNotBlack(skuIds)){
             param.skuIdsJson = JSON.stringify(skuIds);
         }
@@ -1736,7 +1710,6 @@
                 }else{
                     layer.msg(ret.data);
                 }
-
             })
         }else{
             quakooData.ajaxGetData(config.getUrl_mission_add(),param,function (ret) {
@@ -1747,7 +1720,7 @@
                         layer.msg('成功创建任务',{icon:1});
                         layer.close(index);
                     }else{
-                        layer.msg('ret.data');
+                        layer.msg(ret.data);
                     }
                 }
             })
@@ -1838,7 +1811,7 @@
                     clickToSelect: true,
                     columns: [
                         {checkbox: true, align: "center", valign: "middle",formatter: function (value, row, index) {
-                                if(executor.indexOf(row.id)>=0){
+                                if(taskLocData.executor.indexOf(row.id)>=0){
                                     return {
                                         checked:true
                                     }
@@ -1853,7 +1826,32 @@
                                 return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
                             }
                         }
-                    ]
+                    ],
+                    onCheck:function (row) {
+                        if(taskLocData.executor.indexOf(row.id) < 0){
+                            taskLocData.executor.push(row.id)
+                        }
+                    },
+                    onUncheck:function (row) {
+                        if(taskLocData.executor.indexOf(row.id)>=0){
+                            taskLocData.executor.splice(taskLocData.executor.indexOf(row.id),1)
+                        }
+                    },
+                    onCheckAll:function (row) {
+                        for(var i=0;i<row.length;i++){
+                            if(taskLocData.executor.indexOf(row[i].id) < 0){
+                                taskLocData.executor.push(row[i].id)
+                            }
+                        }
+                    },
+                    onUncheckAll:function (row) {
+                        for(var i=0;i<row.length;i++){
+                            if(taskLocData.executor.indexOf(row[i].id)>=0){
+                                taskLocData.executor.splice(taskLocData.executor.indexOf(row[i].id),1)
+                            }
+                        }
+                    }
+
                 });
             }
         });
@@ -1899,8 +1897,6 @@
             }
         }
     }
-
-
     /**
      * 弹窗选择任务对象
      * */
@@ -1966,12 +1962,6 @@
             content: $('.task-object2'),
             btn: ['关闭窗口'],
             yes: function (index) {
-                selObject[id]= [];
-                var data = $('#object-table2').bootstrapTable('getAllSelections');
-                for(var i=0;i<data.length;i++){
-                    selObject[id].push(data[i].id)
-                }
-                console.log(selObject)
                 layer.close(index);
             },
             success: function (layero, index) {
@@ -1992,7 +1982,7 @@
                             clickToSelect: true,
                             columns: [
                                 {checkbox: true, align: "center", valign: "middle",formatter:function(value, row, index){
-                                    if(personArr.indexOf(row.id)>=0){
+                                    if(taskLocData.executor.indexOf(row.id)>=0){
                                             return {
                                                 checked: true
                                             }
@@ -2007,7 +1997,31 @@
                                         return '<button class="btn btn-primary" style="margin-right: 8px;">选择</button>';
                                     }
                                 }
-                            ]
+                            ],
+                            onCheck:function (row) {
+                                if(taskLocData.executor.indexOf(row.id) < 0){
+                                    taskLocData.executor.push(row.id)
+                                }
+                            },
+                            onUncheck:function (row) {
+                                if(taskLocData.executor.indexOf(row.id)>=0){
+                                    taskLocData.executor.splice(taskLocData.executor.indexOf(row.id),1)
+                                }
+                            },
+                            onCheckAll:function (row) {
+                                for(var i=0;i<row.length;i++){
+                                    if(taskLocData.executor.indexOf(row[i].id) < 0){
+                                        taskLocData.executor.push(row[i].id)
+                                    }
+                                }
+                            },
+                            onUncheckAll:function (row) {
+                                for(var i=0;i<row.length;i++){
+                                    if(taskLocData.executor.indexOf(row[i].id)>=0){
+                                        taskLocData.executor.splice(taskLocData.executor.indexOf(row[i].id),1)
+                                    }
+                                }
+                            }
                         });
                     }
                 });
@@ -2023,7 +2037,7 @@
         var index = layer.open({
             type: 1,
             shade: 0.01,
-            shadeClose: false,
+            shadeClose: true,
             skin: 'dialog-shop', //样式类名
             area: ['360px', '308px'],
             anim: 0,
@@ -2034,12 +2048,6 @@
             content: $('.task-shop'),
             btn: ["关闭窗口"],
             yes: function (index) {
-                executor = [];
-                var selectData = $("#shop-table").bootstrapTable('getAllSelections');
-                for(var i=0;i<selectData.length;i++){
-                    executor.push(selectData[i].id);
-                }
-                console.log('已选门店',executor)
                 layer.close(index);
             },
             success: function (layero, index) {
@@ -2047,32 +2055,6 @@
             }
         });
 
-    }
-
-    /**
-     * 弹窗删除任务
-     */
-     function deleteTask() {
-        var index = layer.open({
-            type: 1,
-            shade: 0.01,
-            shadeClose: true,
-            skin: 'layui-layer-demo', //样式类名
-            area: ['360px', '308px'],
-            anim: 0,
-            closeBtn: 0,
-            resize: false,
-            title: "",
-            content: $('.delete-task'),
-            btn: ['关闭窗口'],
-            yes: function (index) {
-                layer.close(index);
-            },
-            btn2: function () {
-            },
-            success: function (layero, index) {
-            }
-        });
     }
 
     /************************************</任务奖励结束>******************************************/
