@@ -70,7 +70,7 @@ public class MissionServiceImpl  implements MissionService {
     }
     @Override
     public boolean update(Mission mission) throws Exception {
-        Mission dbMission = missionDao.load(mission);
+        Mission dbMission = missionDao.load(mission.getId());
         //修改执行任务对象
         if(!isLists(mission.getExecutor(),dbMission.getExecutor())&&mission.getExecutor().size()>0){
             dbMission.setExecutor(mission.getExecutor());
@@ -109,6 +109,7 @@ public class MissionServiceImpl  implements MissionService {
                    SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(dbMission.getId(),id);
                     if(subordinateMissionPool!=null){
                         executor.remove(id);
+                        break;
                     }
                 }
                if(executor.size()>0){
@@ -117,7 +118,10 @@ public class MissionServiceImpl  implements MissionService {
                        SubordinateMissionPool missionPool = new SubordinateMissionPool();
                        missionPool.setSid(id);
                        missionPool.setMid(dbMission.getId());
-                       subordinateMissionPoolDao.insert(missionPool);
+                       SubordinateMissionPool dbInfo = subordinateMissionPoolDao.load(missionPool);
+                       if(dbInfo==null) {
+                           subordinateMissionPoolDao.insert(missionPool);
+                       }
                    }
                }
             }else if(dbMission.getType()==Mission.type_user){
@@ -125,6 +129,7 @@ public class MissionServiceImpl  implements MissionService {
                     UserMissionPool userMissionPool = userMissionPoolService.load(dbMission.getId(),id);
                     if(userMissionPool!=null){
                         executor.remove(id);
+                        break;
                     }
                 }
                 if(executor.size()>0){
@@ -134,6 +139,10 @@ public class MissionServiceImpl  implements MissionService {
                         missionPool.setUid(id);
                         missionPool.setMid(dbMission.getId());
                         userMissionPoolDao.insert(missionPool);
+                        UserMissionPool dbInfo = userMissionPoolDao.load(missionPool);
+                        if(dbInfo==null) {
+                            userMissionPoolDao.insert(missionPool);
+                        }
                     }
                 }
             }
