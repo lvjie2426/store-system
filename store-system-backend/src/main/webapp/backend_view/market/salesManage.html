@@ -707,6 +707,21 @@
                             <input type="number" placeholder="金额" id="target2">
                             <span>元</span>
                         </label>
+                    <%}else{%>
+                        <input type="radio" name="salesNum" id="allShop" data-id="1" >
+                        <label for="allShop">
+                            <span>全店总销售额达到</span>
+                            <input type="number" placeholder="金额" id="target3">
+                            <span>元</span>
+                        </label>
+                        <input type="radio" name="salesNum" id="selectProduct" data-id="2">
+                        <label for="selectProduct">
+                            <button type="button" onclick="selectProduct()">选择任务产品<i class="iconfont icon-ico_list"></i>
+                            </button>
+                            <span>销售额达到</span>
+                            <input type="number" placeholder="金额" id="target2">
+                            <span>元</span>
+                        </label>
                     <%}%>
                 </div>
                 <div class="award">
@@ -1211,8 +1226,9 @@
             yes: function (index) {
                 layer.close(index);
             },
-            btn2: function () {
-                addmessage();
+            btn2: function (index) {
+                addmessage(index);
+                return false;
             },
             success: function (layero, index) {
                 renderMessage();
@@ -1302,14 +1318,14 @@
     }
 
     /**接口——新增编辑短信群发*/
-    function addmessage() {
+    function addmessage(index) {
         var param = {};
         var sendTime;
         var strTime = $("#send-time").attr("placeholder");
         if($("#send-time").val()){
             sendTime = $("#send-time").val();
         }else{
-            if(strTime.indexOf(":")){
+            if(strTime.indexOf(":")>=0){
                 sendTime = $("#send-time").attr("placeholder");
             }else{
                 layer.msg('请选择时间');
@@ -1368,6 +1384,7 @@
                     getSendList();
                     layer.msg("成功新增短信群发", {icon: 1});
                 }
+                layer.close(index)
             } else {
                 layer.msg(ret.data);
             }
@@ -1459,7 +1476,7 @@
                 //删除任务
                 $('.btn-danger').on('click', function () {
                     var id = parseFloat($(this).attr('data-id'));
-                    layer.confirm('确定删除?', {icon: 3, title:'提示'}, function(index){
+                    layer.confirm('确定删除?', {icon: 3, title:'提示',shadeClose:true}, function(index){
                         quakooData.ajaxGetData(config.getUrl_mission_del(), {id: id}, function (ret) {
                             if (ret && ret.success) {
                                 missionRewards();
@@ -1592,6 +1609,7 @@
             taskLocData.type = 1;//1=>团队任务；2=>个人任务
             taskLocData.amountType = 3;//1销售量-个 2销售额-元 3全店销售额
         }
+        console.log(taskLocData)
         var data = {list:taskLocData};
         var html = template("taskDialogTem",data);
         $("#taskDialogHtml").html(html);
