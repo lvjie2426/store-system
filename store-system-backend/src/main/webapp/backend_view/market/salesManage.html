@@ -1025,73 +1025,7 @@
 
 
     /************************************<短信群发开始>******************************************/
-    /**接口——新增短信群发*/
-    function addmessage(startAge, endAge, id) {
-        var param = {};
-        var content;
-        var sendTime = $("#send-time").val();
-        if (id) {
-            sendTime = $("#send-time").attr("edit-time");
-        } else {
-            sendTime = sendTime.replace(/-/g, ',').replace(/:/g, ',').replace(/\s/, ',').split(',');
-            sendTime = new Date(sendTime[0], sendTime[1] - 1, sendTime[2], sendTime[3], sendTime[4]).getTime();
-        }
-        param.subid = subid;                                                               //门店id
-        if (diaMsgJob) {
-            param.job = diaMsgJob;                                                         //职业
-        }
-        param.startAge = startAge;
-        param.endAge = endAge;
-        if(quakooUtils.isBlack(content)){
-            layer.msg("请编辑短信内容");
-            return;
-        }
-        if(quakooUtils.isBlack(sendTime)){
-            layer.msg('请选择短信的发送时间');
-            return;
-        }
-        if(!id){
-            var html = $('#fill-div').html();
-            var tags = [];
-            console.table(barArr);
-            for (var i = 0; i < barArr.length; i++) {
-                if (barArr[i].text == "顾客姓名") {
-                    html = html.replace(barArr[i].html, "@var(user_name)");
-                    tags.push("@var(user_name)");                                              //顾客姓名
-                } else if (barArr[i].text == "门店名称") {
-                    html = html.replace(barArr[i].html, "@var(sub_name)");
-                    tags.push("@var(sub_name)");                                               //门店名称
-                }
-            }
-            html = html.replace(/<span>/g,'').replace(/<\/span>/g,'');
-            content = html;
-        }
-        param.sendTime = sendTime;
-        param.content = content;                                                           //内容
-        param.tagsJson = JSON.stringify(tags);                                             //标签
-        param.range = $('#pro input:radio[name="property"]:checked').val();                //全部0，会员1，非会员2
-        param.sex = $('#sex input:radio[name="sex"]:checked').val();                       //全部0，男1，女2
-        if (id) {//编辑
-            param.id = id;
-            url = config.getUrl_marketingtimingsms_update();
-        } else {
-            url = config.getUrl_marketingtimingsms_add()
-        }
-        quakooData.ajaxGetData(url, param, function (ret) {
-            if (ret && ret.success) {
-                if (id) {
-                    getSendList();
-                    layer.msg("成功编辑短信群发", {icon: 1});
-                } else {
-                    getSendList();
-                    layer.msg("新增成功", {icon: 1});
-                }
-            } else {
-                layer.msg(ret.data, {icon: 2});
-            }
-        })
-    }
-    /**获取门店下顾客的所有职业(职业下拉框)*/
+    /**获取门店下顾客的所有职业(职业下拉框) ——短信群发使用*/
     function getAllUserJob() {
         quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {sid: subid, userType: 0}, function (ret) {
             if (ret && ret.success) {
@@ -1231,14 +1165,13 @@
         var startAge, endAge, btns;
         var starAgeNum = 30;//滑块的默认值
         var endAgeNum = 70;
-        if (quakooUtils.isNotBlack(data)) {
+        if (quakooUtils.isNotBlack(data)) {//编辑
             starAgeNum = data.startAge;
             endAgeNum = data.endAge;
-        }
-        if (quakooUtils.isBlack(data)) {
+            btns = ['取消', '编辑'];
+        }else {
             btns = ['取消', '新增']
-        } else {
-            btns = ['取消', '编辑']
+
         }
         var index = layer.open({
             type: 1,
@@ -1276,19 +1209,19 @@
                 if (quakooUtils.isNotBlack(data)) {//编辑
                     $(".content-view3 .top-name").html("编辑短信群发");//标题
                     //属性
-                    if (data.range === 1) {
+                    if (data.range == 1) {
                         $("#pro2")[0].click();
-                    } else if (data.range === 2) {
+                    } else if (data.range == 2) {
                         $("#pro3")[0].click();
                     } else {
                         $("#pro1")[0].click();
                     }
                     //性别
-                    if (data.sex === 1) {
+                    if (data.sex == 1) {
                         $("#sex2")[0].click();
-                    } else if (data.sex === 2) {
+                    } else if (data.sex == 2) {
                         $("#sex3")[0].click();
-                    } else if (data.sex === 0) {
+                    } else if (data.sex == 0) {
                         $("#sex1")[0].click();
                     }
                     //职业
@@ -1297,7 +1230,7 @@
                         diaMsgJob = data.job;
                     }
                     //短信内容
-                    /*if(quakooUtils.isNotBlack(data.tags)){
+                    if(quakooUtils.isNotBlack(data.tags)){
                         if(data.tags.indexOf("@var(sub_name)")>-1){
                             $("#moveBar2").css('display','none');
                         }
@@ -1307,7 +1240,7 @@
                         var html = data.content.replace(/@var\(user_name\)/g,'<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)" style="display: block;">门店名称</div>').replace(/@var\(user_name\)/g,'<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)" style="display: block;">顾客名称</div>');
                         $("#fill-div").html(html);
                         content = data.content;
-                    }*/
+                    }
                     //时间
                     var timeText = quakooUtils.formatTimeToDateDianLY(data.sendTime);
                     $("#send-time").attr("placeholder", timeText);
@@ -1331,6 +1264,72 @@
                 $('#demo').trigger('change');
             }
         });
+    }
+    /**接口——新增编辑短信群发*/
+    function addmessage(startAge, endAge, id) {
+        var param = {};
+        var content;
+        var sendTime = $("#send-time").val();
+        if (id) {
+            sendTime = $("#send-time").attr("edit-time");
+        } else {
+            sendTime = sendTime.replace(/-/g, ',').replace(/:/g, ',').replace(/\s/, ',').split(',');
+            sendTime = new Date(sendTime[0], sendTime[1] - 1, sendTime[2], sendTime[3], sendTime[4]).getTime();
+        }
+        param.subid = subid;                                                               //门店id
+        if (diaMsgJob) {
+            param.job = diaMsgJob;                                                         //职业
+        }
+        param.startAge = startAge;
+        param.endAge = endAge;
+        if(quakooUtils.isBlack(content)){
+            layer.msg("请编辑短信内容");
+            return;
+        }
+        if(quakooUtils.isBlack(sendTime)){
+            layer.msg('请选择短信的发送时间');
+            return;
+        }
+        if(!id){
+            var html = $('#fill-div').html();
+            var tags = [];
+            console.table(barArr);
+            for (var i = 0; i < barArr.length; i++) {
+                if (barArr[i].text == "顾客姓名") {
+                    html = html.replace(barArr[i].html, "@var(user_name)");
+                    tags.push("@var(user_name)");                                              //顾客姓名
+                } else if (barArr[i].text == "门店名称") {
+                    html = html.replace(barArr[i].html, "@var(sub_name)");
+                    tags.push("@var(sub_name)");                                               //门店名称
+                }
+            }
+            html = html.replace(/<span>/g,'').replace(/<\/span>/g,'');
+            content = html;
+        }
+        param.sendTime = sendTime;
+        param.content = content;                                                           //内容
+        param.tagsJson = JSON.stringify(tags);                                             //标签
+        param.range = $('#pro input:radio[name="property"]:checked').val();                //全部0，会员1，非会员2
+        param.sex = $('#sex input:radio[name="sex"]:checked').val();                       //全部0，男1，女2
+        if (id) {//编辑
+            param.id = id;
+            url = config.getUrl_marketingtimingsms_update();
+        } else {
+            url = config.getUrl_marketingtimingsms_add()
+        }
+        quakooData.ajaxGetData(url, param, function (ret) {
+            if (ret && ret.success) {
+                if (id) {
+                    getSendList();
+                    layer.msg("成功编辑短信群发", {icon: 1});
+                } else {
+                    getSendList();
+                    layer.msg("新增成功", {icon: 1});
+                }
+            } else {
+                layer.msg(ret.data, {icon: 2});
+            }
+        })
     }
 
     /************************************</短信群发结束>******************************************/
@@ -1577,7 +1576,6 @@
                 $("#saleVolume-box")[0].style.display = "none";
                 $("input:radio[name='salesNum']").click(function(){
                     var salesNumSelect = $("input:radio[name='salesNum']:checked").attr("data-id");
-                    alert(salesNumSelect)
                     if(salesNumSelect==1){//全店总销售额
                         taskLocData.amountType = 3;
                     }else if(salesNumSelect == 2){//销售额选
@@ -1592,7 +1590,6 @@
         });
         $("input:radio[name='salesNum']").click(function(){
             var salesNumSelect = $("input:radio[name='salesNum']:checked").attr("data-id");
-            alert(salesNumSelect)
             if(salesNumSelect==1){//全店总销售额
                 taskLocData.amountType = 3;
             }else if(salesNumSelect == 2){//销售额选
@@ -1659,7 +1656,7 @@
             param.executorJson = JSON.stringify(personArr);
         }
         param.sid = psid;
-        param.amoun= amount*1;
+        param.amount= amount*1;
         param.amountType= taskLocData.amountType;
         param.startTime = taskLocData.startTime;
         param.endTime = taskLocData.endTime;
