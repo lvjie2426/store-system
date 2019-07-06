@@ -36,6 +36,31 @@
         .dwcc div.mbsc-w-p:nth-child(2) .dwfl:nth-child(2){
             display: block;
         }
+        .goods-select-img .selectBox {
+            width: 60px;min-width: auto;
+            height: 60px;
+            border-radius: 100%;
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            font-size: 12px;
+            padding: 0;
+            line-height: 60px;
+            text-align: center;
+            color: rgba(130, 130, 151, 1);
+            position: relative;
+        }
+
+        .goods-select-img .selectBox i {
+            margin: 0;
+            float: none;
+        }
+        .goods-select-img .selectBox div{
+            width: 100%;height: 100%;position: absolute;
+            top: 0;left: 0;z-index: 9;
+            overflow: hidden;
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -46,6 +71,7 @@
             <li>支付方式</li>
         </ul>
         <div class="headRight">
+            <div class="child newShop" onclick="companyDes()">创建公司</div>
             <div class="child newShop" onclick="shopDes()">创建门店</div>
             <div class="btn btn-info search-btn" style="margin-left: 10px;" onclick="searchShop()">搜索</div>
             <input class="child" type="text" placeholder="搜索门店" id="searchShop">
@@ -68,7 +94,7 @@
         <div class="companyMsg wrap90">
             <div class="head">
                 <span class="msg">公司信息</span>
-                <span class="editMsg">编辑信息</span>
+                <span class="editMsg" onclick="companyDes(true)">编辑信息</span>
             </div>
             <div class="cont" id="comInfo">
             </div>
@@ -94,6 +120,10 @@
     </div>
     <!--门店详细弹窗-->
     <div class="content-view content-view-shopDes" id="shopDom">
+
+    </div>
+    <!--公司详细弹窗-->
+    <div class="content-view content-view-shopDes" id="companyDom">
 
     </div>
 </div>
@@ -143,6 +173,95 @@
     <div class="perTel">
         <span class="texUp"><%=list.adminPhone%></span>
         <span class="txtDown">手机号</span>
+    </div>
+</script>
+<script type="text/html" id="companyTmp">
+    <div class="uploadPic goods-select-img">
+        <p class="title">上传公司Logo</p>
+        <div class="selectBox"  onclick="uploadTsspIcon()">
+            <%if(list.icon){%>
+            <div style="display: block;border-radius: 100%">
+            <%}else{%>
+            <div>
+            <%}%>
+                <img src="<%=list.iconUrl%>" id="cover" alt="" style="<%=list.style%>" real-src="<%=list.icon%>">
+            </div>
+            <i class="iconfont icon-ico_plus"></i>
+        </div>
+    </div>
+    <div class="address">
+        <p class="title">公司名称</p>
+        <input type="text" value="<%=list.name%>" id="comName"  placeholder="名称" style="margin-top: 0">
+    </div>
+    <div class="address">
+        <p class="title">公司地址</p>
+        <div class="inputBox">
+            <div class="selectBox" id="com-province">
+                <div class="select-box-header">
+                    <%if(list.provinceName){%>
+                    <span class="text"><%=list.provinceName%></span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <%}else{%>
+                    <span class="text">选择省</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <%}%>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <%for(var i in oneArea){%>
+                        <li value="<%=oneArea[i].id%>"><%=oneArea[i].name%></li>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>
+            <div class="selectBox" id="com-city">
+                <div class="select-box-header">
+                    <%if(list.cityName){%>
+                    <span class="text"><%=list.cityName%></span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <%}else{%>
+                    <span class="text">选择市</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <%}%>
+                </div>
+                <%if(twoArea.length>0){%>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i in twoArea){%>
+                            <li value="<%=twoArea[i].id%>"><%=twoArea[i].name%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                <%}%>
+            </div>
+            <div class="selectBox" id="com-area" style="width: 32%">
+                <div class="select-box-header">
+                    <%if(list.areaName){%>
+                    <span class="text"><%=list.areaName%></span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <%}else{%>
+                    <span class="text">选择区/县</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <%}%>
+                </div>
+                <%if(threeArea.length>0){%>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i in threeArea){%>
+                            <li value="<%=threeArea[i].id%>"><%=threeArea[i].name%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                <%}%>
+            </div>
+        </div>
+        <input type="text" placeholder="详细地址" id="com-address" value="<%=list.address%>">
+    </div>
+    <div class="shopMsg">
+        <ul class="clearfix">
+            <li class="clearfix">
+                <p class="title">公司负责人</p>
+                <input type="text" value="<%=list.adminUserName%>" id="adminUserName" placeholder="姓名">
+            </li>
+            <li>
+                <p class="title">手机号</p>
+                <input type="number" value="<%=list.adminPhone%>" id="adminPhone" placeholder="手机号">
+            </li>
+        </ul>
     </div>
 </script>
 <!--模板——门店列表-->
@@ -245,6 +364,15 @@
                     <span class="text">选择市</span> <i class="iconfont icon-ico_arrow_down"></i>
                     <%}%>
                 </div>
+                <%if(twoArea.length>0){%>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <%for(var i in twoArea){%>
+                        <li value="<%=twoArea[i].id%>"><%=twoArea[i].name%></li>
+                        <%}%>
+                    </ul>
+                </div>
+                <%}%>
             </div>
             <div class="selectBox" id="area" style="width: 32%">
                 <div class="select-box-header">
@@ -254,6 +382,15 @@
                     <span class="text">选择区/县</span> <i class="iconfont icon-ico_arrow_down"></i>
                     <%}%>
                 </div>
+                <%if(threeArea.length>0){%>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i in threeArea){%>
+                            <li value="<%=threeArea[i].id%>"><%=threeArea[i].name%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                <%}%>
             </div>
         </div>
         <input type="text" placeholder="请输入具体门牌号" id="address" value="<%=list.address%>">
@@ -392,9 +529,6 @@
             <div class="optionBox">
                 <ul class="optionUL">
                     <li value="1">加工中心1</li>
-                    <li value="2">加工中心2</li>
-                    <li value="3">加工中心3</li>
-                    <li value="4">加工中心4</li>
                 </ul>
             </div>
         </div>
@@ -534,9 +668,9 @@
     var searchType = 1;//搜索门店类型
     var areaJson = new areaJson();
     var oneArea = areaJson.oneList;//省数据
-
     var shopInfo = {};//门店信息
     var allShopData = {};// 所有门店信息
+    var companyInfo = {};
 
     $(function () {
         initPage();
@@ -587,19 +721,24 @@
                 ],
             });
         })
-
     }
 
     /**接口——获取当前公司信息*/
     function getComInfo() {
         quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinate(), {sid: sid}, function (ret) {
+            console.log(ret)
             if (ret && ret.success) {
                 if (quakooUtils.isNotBlack(ret.data)) {
+                    companyInfo = {};
                     for (var i = 0; i < ret.data.length; i++) {
                         var obj = quakooImg.processImg(ret.data[i].icon, 60, 60);
                         ret.data[i].iconUrl = obj.url;
                         ret.data[i].style = obj.style;
                     }
+                    for(var j in ret.data[0]){
+                        companyInfo[j] =ret.data[0][j];
+                    }
+                    console.log("多少啊",companyInfo)
                     var data = {list: ret.data[0]};
                     var html = template("comInfoList", data);
                     document.getElementById("comInfo").innerHTML = html;
@@ -712,16 +851,17 @@
         if(id){
             param.pid = sid;
             param.id = id;
-            param.payType = shopInfo.payType;
-            param.processType = shopInfo.processType;
-            param.storedType = shopInfo.storedType;
-            param.province = shopInfo.province;
-            param.city = shopInfo.city;
-            param.area = shopInfo.area;
-            param.processId = shopInfo.processId;
+
         }else{
             param.id = sid;
         }
+        param.payType = shopInfo.payType;
+        param.processType = shopInfo.processType;
+        param.storedType = shopInfo.storedType;
+        param.province = shopInfo.province;
+        param.city = shopInfo.city;
+        param.area = shopInfo.area;
+        param.processId = shopInfo.processId;
         param.name = $("#name").val();
         param.storeCode = $("#storeCode").val();
         param.phone = $("#phone").val();
@@ -755,6 +895,53 @@
         }else{
             url = config.getUrl_subordinate_addSubordinateStore()
             str = '添加成功'
+        }
+        console.log(param);
+        if(quakooUtils.isBlack(param.name)){
+            layer.msg("请输入门店名称");
+            return;
+        }
+        if(quakooUtils.isBlack(param.storeCode)){
+            layer.msg("请输入门店简码");
+            return;
+        }
+        if(quakooUtils.isBlack(param.phone)){
+            layer.msg("请输入门店电话");
+            return;
+        }
+        if(!quakooUtils.isMobileNum(param.phone)){
+            layer.msg('请输入正确的手机号');
+            return;
+        }
+        if(quakooUtils.isBlack(param.province)||quakooUtils.isBlack(param.city)||quakooUtils.isBlack(param.area)){
+            layer.msg('请选择门店地址');
+            return;
+        }
+        if(quakooUtils.isBlack(param.address)){
+            layer.msg('请输入门店详细地址');
+            return;
+        }
+        if(quakooUtils.isBlack(param.storeImgJson)){
+            layer.msg('请上传门店照片');
+            return;
+        }
+        if(quakooUtils.isBlack(param.startTime)||quakooUtils.isBlack(param.startTime)){
+            layer.msg('请选择门店营业时间');
+            return;
+        }
+        if(quakooUtils.isBlack(param.threePolicy)){
+            layer.msg('请输入三包政策');
+            return;
+        }
+        if(quakooUtils.isBlack(param.payType)){
+            layer.msg('请选择支付方式');
+            return;
+        }
+        if(param.processType==1){
+            if(quakooUtils.isBlack(param.processId)){
+                layer.msg('请选择加工中心');
+                return;
+            }
         }
         quakooData.ajaxGetData(url, param, function (ret) {
             if(ret.success){
@@ -978,7 +1165,7 @@
             closeBtn: 0, //不显示关闭按钮
             resize: false,
             shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-shopDes'), //容器对象
+            content: $('#shopDom'), //容器对象
             btn: ['取消', '保存'],
             yes: function (index) {
                 layer.close(index);
@@ -988,6 +1175,16 @@
                 return false
             },
             success: function (layero, index) {
+                if(!id){
+                    quakooData.ajaxGetData(config.getUrl_subordinate_getProcessList(),{},function (ret) {
+                        console.log("加工中心",ret);
+                        if(ret.success){
+                            for(var i=0;i<ret.data.length;i++){
+                                shopInfo.process[i] = ret.data[i];
+                            }
+                        }
+                    });
+                }
                 if(areaJson.getAreaByAid(shopInfo.province)){
                     shopInfo.provinceName = areaJson.getAreaByAid(shopInfo.province).name
                 }
@@ -997,7 +1194,9 @@
                 if(areaJson.getAreaByAid(shopInfo.area)){
                     shopInfo.areaName = areaJson.getAreaByAid(shopInfo.area).name
                 }
-                $("#shopDom").html(template('shopTmp',{list:shopInfo,oneArea:oneArea}))
+                var twoArea = areaJson.getSubList(shopInfo.province);
+                var threeArea = areaJson.getSubList(shopInfo.city);
+                $("#shopDom").html(template('shopTmp',{list:shopInfo,oneArea:oneArea,twoArea:twoArea,threeArea:threeArea}));
                 // mapInit()
                 //选择省市区
                 selectTag($("#province"), function (ret) {
@@ -1005,7 +1204,7 @@
                     shopInfo.city = '';
                     shopInfo.area = '';
                     var areaInfo = areaJson.getSubList(ret.value);
-                    $("#city").html(template('selectTagTmp',{list:areaInfo,title:'选择市'}))
+                    $("#city").html(template('selectTagTmp',{list:areaInfo,title:'选择市'}));
                     $("#area").html('')
                     selectTag($("#city"), function (ret1) {
                         shopInfo.city = ret1.value;
@@ -1016,8 +1215,19 @@
                             shopInfo.area = ret2.value;
                         })
                     })
-                })
-                //
+                });
+                selectTag($("#city"), function (ret1) {
+                    shopInfo.city = ret1.value;
+                    shopInfo.area = '';
+                    var area = areaJson.getSubList(ret1.value);
+                    $("#area").html(template('selectTagTmp',{list:area,title:'选择区/县'}))
+                    selectTag($("#area"), function (ret2) {
+                        shopInfo.area = ret2.value;
+                    })
+                });
+                selectTag($("#area"), function (ret2) {
+                    shopInfo.area = ret2.value;
+                });
                 selectTag($("#payType"), function (ret) {/*console.log(ret)*/
                     shopInfo.payType = ret.value
                 })
@@ -1071,9 +1281,6 @@
             }
         });
     }
-
-
-
 
     //上传门店图片
     function uploadImg(self) {
@@ -1131,6 +1338,156 @@
             $("#test2").show();
         }
     }
+    /**********************************公司开始**********************************/
+    //创建公司
+    function companyDes(isUpdata) {
+        if(isUpdata){
+            var title = "编辑公司";
+        }else{
+            var title = "创建公司";
+            companyInfo = {};
+            companyInfo.payType = 1;
+            companyInfo.processType = 0;
+            companyInfo.storedType = 0;
+        }
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: title,
+            skin: 'content-view-shopDes-tan content-view-submit', //样式类名
+            anim: 0,
+            area: ['360px', '441px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('#companyDom'), //容器对象
+            btn: ['取消', '确定'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                createCompany(isUpdata,index);
+                return false
+            },
+            success: function (layero, index) {
+                if(areaJson.getAreaByAid(companyInfo.province)){
+                    companyInfo.provinceName = areaJson.getAreaByAid(companyInfo.province).name
+                }
+                if(areaJson.getAreaByAid(companyInfo.city)){
+                    companyInfo.cityName = areaJson.getAreaByAid(companyInfo.city).name
+                }
+                if(areaJson.getAreaByAid(companyInfo.area)){
+                    companyInfo.areaName = areaJson.getAreaByAid(companyInfo.area).name
+                }
+                var twoArea = areaJson.getSubList(companyInfo.province);
+                var threeArea = areaJson.getSubList(companyInfo.city);
+                $("#companyDom").html(template('companyTmp',{list:companyInfo,oneArea:oneArea,twoArea:twoArea,threeArea:threeArea}));
+                //选择省市区
+                selectTag($("#com-province"), function (ret) {
+                    companyInfo.province = ret.value;
+                    companyInfo.city = '';
+                    companyInfo.area = '';
+                    var areaInfo = areaJson.getSubList(ret.value);
+                    $("#com-city").html(template('selectTagTmp',{list:areaInfo,title:'选择市'}));
+                    $("#com-area").html('')
+                    selectTag($("#com-city"), function (ret1) {
+                        companyInfo.city = ret1.value;
+                        companyInfo.area = '';
+                        var area = areaJson.getSubList(ret1.value);
+                        $("#com-area").html(template('selectTagTmp',{list:area,title:'选择区/县'}))
+                        selectTag($("#com-area"), function (ret2) {
+                            companyInfo.area = ret2.value;
+                        })
+                    })
+                });
+                selectTag($("#com-city"), function (ret1) {
+                    companyInfo.city = ret1.value;
+                    companyInfo.area = '';
+                    var area = areaJson.getSubList(ret1.value);
+                    $("#com-area").html(template('selectTagTmp',{list:area,title:'选择区/县'}));
+                    selectTag($("#com-area"), function (ret2) {
+                        companyInfo.area = ret2.value;
+                    })
+                });
+                selectTag($("#com-area"), function (ret2) {
+                    companyInfo.area = ret2.value;
+                });
+            }
+        });
+    }
+    function createCompany(isUpdata,index) {
+        var param = {},url = '',str = '';
+        if(isUpdata){
+            url = config.getUrl_subordinate_updateSubordinate();
+            str = '编辑公司成功';
+            param.id = companyInfo.id;
+            if(quakooUtils.isBlack(param.id)){
+                layer.msg('请联系开发人员');
+                return;
+            }
+        }else{
+            url = config.getUrl_subordinate_addSubordinateStore();
+            str = '创建公司成功';
+        }
+        param.icon =$('#cover').attr('real-src');
+        param.name = $("#comName").val();
+        param.province=companyInfo.province*1;
+        param.city=companyInfo.city*1;
+        param.area=companyInfo.area*1;
+        param.address = $("#com-address").val();
+        param.adminUserName = $("#adminUserName").val();
+        param.adminPhone = $("#adminPhone").val()*1;
+        console.log(param);
+        if(quakooUtils.isBlack(param.icon)){
+            layer.msg("请选择公司头像");
+            return
+        }
+        if(quakooUtils.isBlack(param.name)){
+            layer.msg("请输入公司名称");
+            return;
+        }
+        if(quakooUtils.isBlack(param.province)||quakooUtils.isBlack(param.city)||quakooUtils.isBlack(param.area)){
+            layer.msg('请选择公司地址');
+            return;
+        }
+        if(quakooUtils.isBlack(param.address)){
+            layer.msg('请输入公司详细地址');
+            return;
+        }
+        if(quakooUtils.isBlack(param.adminUserName)){
+            layer.msg('请输入公司负责人姓名');
+            return;
+        }
+        if(quakooUtils.isBlack(param.adminPhone)){
+            layer.msg('请输入公司负责人电话');
+            return;
+        }
+        if(!quakooUtils.isMobileNum(param.adminPhone)){
+            layer.msg('请输入正确的手机号');
+            return;
+        }
+        quakooData.ajaxGetData(url,param,function (ret) {
+            if(ret.success){
+                layer.msg(str,{icon:1});
+                layer.close(index);
+            } else {
+               layer.msg(ret.data,{icon:2});
+            }
+        })
+    }
+    //上传公司Logo
+    function uploadTsspIcon() {
+        quakooImg.open(function (data) {
+            var obj = quakooImg.processImg(data[0],60,60);
+            $('#cover').attr('src',obj.url);
+            $('#cover').attr('real-src',data[0]);
+            $('#cover')[0].style.cssText = obj.style;
+            $('#cover').parent().show();
+        })
+    }
+
+    /**********************************公司结束**********************************/
+
 </script>
 </body>
 </html>

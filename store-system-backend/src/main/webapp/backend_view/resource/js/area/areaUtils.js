@@ -93,7 +93,6 @@ areaJson.prototype = {
         for (var index in  listJson) {
             list.push(listJson[index]);
         }
-
         return list;
     },
     //通过父级的id获取子集列表
