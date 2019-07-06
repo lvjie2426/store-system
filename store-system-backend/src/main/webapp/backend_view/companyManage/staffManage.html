@@ -274,12 +274,18 @@
         }
 
         /*内容头部*/
-        .importSalaryTanBox-tan .content .head {
+        .importSalaryTanBox-tan .head {
             height: 45px;
             border-bottom: 1px solid #ebebf3;
         }
+        .importSalaryTanBox-tan .layui-layer-title {
+            background: none;
+            height: 45px;
+            padding: 0 5px 0 0;
+            border-bottom: 1px solid #ebebf3;
+        }
 
-        .importSalaryTanBox-tan .content .head span {
+        .importSalaryTanBox-tan .head span {
             display: block;
             width: 108px;
             height: 28px;
@@ -288,7 +294,7 @@
             margin: 8px;
         }
 
-        .importSalaryTanBox-tan .content .head span.title.layui-layer-title {
+        .importSalaryTanBox-tan  .head span.title {
             float: left;
             color: #393953;
             font-size: 13px;
@@ -308,7 +314,7 @@
             text-align: left;
         }
 
-        .importSalaryTanBox-tan .content .head span.updataBtn {
+        .importSalaryTanBox-tan  .head span.updataBtn {
             float: right;
             border-radius: 2px;
             background: #57B8DB;
@@ -320,50 +326,53 @@
         /*内容体*/
         .importSalaryTanBox-tan .content .body {
             width: 568px;
-            height: 470px;
+            /*height: 470px;*/
             margin: 0 auto;
             padding-top: 15px;
             overflow-x: hidden;
-            overflow-y: scroll;
         }
 
-        .importSalaryTanBox-tan .content .body .cmMain-table2 thead {
+        .importSalaryTanBox-tan .content .body  thead {
             background: #f3f3f7;
             border-bottom: 1px solid #ebebf3;
         }
 
-        .importSalaryTanBox-tan .content .body .cmMain-table2 thead .th-inner {
+        .importSalaryTanBox-tan .content .body  thead .th-inner {
             color: #828297;
             font-size: 12px;
             font-weight: 600;
         }
 
-        .importSalaryTanBox-tan .content .body .cmMain-table2 tbody tr {
+        .importSalaryTanBox-tan .content .body  tbody tr {
             height: 36px;
             color: #393953;
             font-size: 12px;
             font-weight: 600;
+            background: #fff;
+        }
+        .importSalaryTanBox-tan .content .body  tbody tr.active {
+            background: #F4F4F8;
         }
 
-        .importSalaryTanBox-tan .content .body .cmMain-table2 tbody tr:hover {
-            background: #f3f3f7;
-        }
-
-        .importSalaryTanBox-tan .content .body .cmMain-table2 tbody td {
+        .importSalaryTanBox-tan .content .body  tbody td {
             border: 0px;
             padding: 0 8px;
         }
 
-        .importSalaryTanBox-tan .content .body .cmMain-table2 tbody i.icon-ico_check {
+        .importSalaryTanBox-tan .content .body  tbody i.icon-ico_check {
             color: #54B677;
         }
 
-        .importSalaryTanBox-tan .content .body .cmMain-table2 tbody i.icon-ico_exchange {
+        .importSalaryTanBox-tan .content .body  tbody i.icon-ico_exchange {
             font-weight: normal;
             color: #57B8DB;
         }
+        .importSalaryTanBox-tan .content .body  tbody i.icon-ico_cross {
+            font-weight: normal;
+            color: #db3527;
+        }
 
-        .importSalaryTanBox-tan .content .body .cmMain-table2 tbody .waiting {
+        .importSalaryTanBox-tan .content .body  tbody .waiting {
             color: #828297;
         }
 
@@ -803,10 +812,10 @@
 <!--导入工资弹窗-->
 <div class="content-view importSalaryTanBox" style="display:none">
     <div class="content">
-        <div class="head">
+        <!--<div class="head">
             <span class="title layui-layer-title">导入10月份工资单</span>
             <span class="updataBtn" onclick="Improt()">上传工资单Excel</span>
-        </div>
+        </div>-->
         <div class="body">
             <table id="putPayroll" data-toggle="table" class="table table-border"></table>
         </div>
@@ -971,9 +980,9 @@
                            style="display: inline-block;height: 30px;background: #eee;width: 100%;position: relative;">
                             <button type="button" class="btn btn-primary"
                                     style="float: right; height: 30px;width: 80px;line-height:16px;outline: none;">选择文件</button>
-                            <input id="file" multiple="multiple" type="file"
+                            <!--<input id="file" multiple="multiple" type="file"
                                    style="height: 30px;width: 80px; position: absolute;right:0;outline: none; cursor: pointer;opacity: 0;"
-                                   accept=".csv,*.zip,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                                   accept=".csv,*.zip,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>-->
                         </a>
                     </span>
                 </div>
@@ -984,6 +993,12 @@
         </div>
     </form>
 </div>
+
+<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+    <input id="file" multiple="multiple" type="file"
+           style="height: 30px;width: 80px; position: absolute;right:0;outline: none; cursor: pointer;opacity: 0;"
+           accept=".csv,*.zip,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+</form>
 
 <!--全局js-->
 <script src="../resource/js/jquery.min.js"></script>
@@ -1323,19 +1338,14 @@
     }
 
     /**接口——查询某公司工资单导入记录*/
-    function getPayrollList() {
-        /*
-                quakooData.ajaxGetData(config.getUrl_salaryrecord_getAllList(),{psid:psid},function (ret) {
-                    console.log("工资单：",ret);
-                });
-        */
+    function getPayrollList(data) {
         $("#putPayroll").bootstrapTable('destroy');
         $("#putPayroll").bootstrapTable({
-            url: config.getUrl_salaryrecord_getAllList(),
+            data: data,
             method: 'get',
             classes: "table",
             pagination: true,                     //是否显示分页
-            sidePagination: "server",             //分页方式：client客户端分页，server服务端分页（*）
+            sidePagination: "client",             //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,                        //初始化加载第一页，默认第一页
             pageSize: 10,
             pageList: [5, 10, 15, 20],
@@ -1347,38 +1357,23 @@
             paginationHAlign: "center",
             clickToSelect: true,
             columns: [
-                {field: "name", title: "门店名称", align: "left", valign: "middle"},
-                {field: "allMoney", title: "应发工资", align: "left", valign: "middle"},
-                {field: "allNumber", title: "实发工资人数", align: "left", valign: "middle"},
+                {field: "name", title: "名称", align: "left", valign: "middle"},
                 {
-                    field: "status", title: "状态", align: "left", valign: "middle",
+                    field: "", title: "状态", align: "left", valign: "middle",
                     formatter: function (value, row, index) {//循环自定义内容
                         //正在上传
-                        var icon = '<i class="icon iconfont icon-ico_check"></i>'
-                        var txt = '<span class="sunccess">上传成功</span>'
+                        // var icon = '<i class="icon iconfont icon-ico_check"></i><span class="sunccess">上传成功</span>'
+                        // var txt = ''
                         //上传中
-                        // var icon = '<i class="icon iconfont icon-ico_exchange"></i>'
-                        // var txt = '<span class="sunccess">上传中</span>'
+                        // var icon = '<i class="icon iconfont icon-ico_exchange"></i><span class="sunccess">上传中</span>'
+                        // var txt = ''
                         //等待中
-                        // var txt = '<span class="waiting">等待中</span>'
-                        // var icon = ''
+                        var txt = '<span class="waiting">等待中</span>'
+                        var icon = ''
                         return icon + txt
                     }
                 }
-            ],
-            queryParams: function (params) {
-                params.psid = psid;
-                params.page = this.pageNumber;
-                params.size = this.pageSize;
-                params.token = quakooUser.getUserInfo().token;
-                return params;
-            },
-            success: function () {
-                alert(2)
-            },
-            onLoadSuccess: function (data) {
-
-            }
+            ]
         });
 
     }
@@ -1402,14 +1397,15 @@
 
     //上传工资单弹窗
     function updataSalary() {
-        getPayrollList();
+        getPayrollList([]);
         layer.open({
             type: 1,
             shade: 0.01,
-            title: null,
+            title: '<div class="head"><span class="title mine-title">导入10月份工资单</span><span class="updataBtn" onclick="Improt()">上传工资单Excel</span></div>',
             skin: 'importSalaryTanBox-tan', //样式类名
             anim: 0,
-            area: ['606px', 'auto'],
+            move:".mine-title",
+            area: ['606px', '500px'],
             closeBtn: 0, //不显示关闭按钮
             resize: false,
             shadeClose: true, //开启遮罩关闭
@@ -1422,7 +1418,7 @@
                 return false;
             },
             success: function (index) {
-                $('.importSalaryTanBox-tan .layui-layer-content').height(515);
+
             }
         });
     }
@@ -1703,12 +1699,50 @@
     });
 
     //模板导入
-    $('#file').change(function () {
+    /*$('#file').change(function () {
         $('#fileName').val($('#file').val());
-    });
+    });*/
 
     //导入工资单
     function Improt() {
+        $("#uploadForm input").click();
+        document.querySelector("#uploadForm input").onchange = function () {
+            if(this.value){
+                var filesList = this.files; // js 获取文件对象
+                getPayrollList(filesList)
+                for(var i=0;i<filesList.length;i++){
+                    (function (i) {
+                        $('#putPayroll tbody tr').eq(i).find('td').last().html('<i class="icon iconfont icon-ico_exchange"></i><span class="sunccess">上传中</span>')
+                        $('#putPayroll tbody tr').eq(i).addClass('active').siblings().removeClass('active');
+                        var formData = new FormData();
+                        formData.append('file',filesList[i])
+                        $.ajax({
+                            url: config.serverUrl + "/salary/importUserSalary?token=" + encodeURIComponent(quakooUser.getUserInfo().token),
+                            type: "Post",
+                            sync: true,
+                            dataType: "json",
+                            cache: false,//上传文件无需缓存
+                            processData: false,//用于对data参数进行序列化处理 这里必须false
+                            contentType: false, //必须
+                            data: formData,
+                            success: function (res) {
+                                if (res.success) {
+                                    $('#putPayroll tbody tr').eq(i).find('td').last().html('<i class="icon iconfont icon-ico_check"></i><span class="sunccess">上传成功</span>')
+                                } else {
+                                    $('#putPayroll tbody tr').eq(i).find('td').last().html('<i class="icon iconfont icon-ico_cross"></i><span class="sunccess">上传失败</span>')
+                                }
+                            },
+                            error: function (err) {
+                                $('#putPayroll tbody tr').eq(i).find('td').last().html('<i class="icon iconfont icon-ico_cross"></i><span class="sunccess">上传失败</span>')
+
+                            }
+                        });
+                    })(i)
+                }
+
+            }
+        }
+        /*return
         var index = layer.open({
             type: 1,
             shade: 0,
@@ -1727,9 +1761,8 @@
                 }
                 var result = {succ: '导入成功！', fail: '导入失败！'};
                 var formFile = new FormData();
-                formFile.append("file", fileObj); //加入文件对象
+                formFile.append("file", fileObj[0]); //加入文件对象
                 var token = quakooUser.getUserInfo().token;
-                // alert(token)
                 $.ajax({
                     url: config.serverUrl + "/salary/importUserSalary?token=" + encodeURIComponent(token),
                     type: "Post",
@@ -1763,7 +1796,7 @@
             success: function (layero, index) {
 
             }
-        });
+        });*/
     }
 
     //下载模板
