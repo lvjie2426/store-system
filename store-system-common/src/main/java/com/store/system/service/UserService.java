@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 
+import com.store.system.bean.StatisticsOrderUser;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.model.ExportUser;
@@ -131,4 +132,6 @@ public interface UserService {
     public List<ExportUser> getExportUserInfo(long sid, String phone, int sex, String job)throws Exception;
 
     public Map<String,Object> taskReward(String date, long sid)throws Exception;
+
+    public StatisticsOrderUser statisticsOrderUser(long sid, int status,long startTime,long endTime)throws Exception;
 }
