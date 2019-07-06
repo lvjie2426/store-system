@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-         // this.serverUrl = "http://192.168.1.6:20005";
+         // this.serverUrl = "http://192.168.1.38:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -166,6 +166,8 @@ var Config = (function(_super){
     _proto.getUrl_subordinate_updateOpen = function(){return this.serverUrl + '/subordinate/updateOpen';};
     /**获取当前公司信息*/
     _proto.getUrl_subordinate_getSubordinate = function(){return this.serverUrl + '/subordinate/getSubordinate';};
+    /**获取当前公司信息*/
+    _proto.getUrl_subordinate_getProcessList = function(){return this.serverUrl + '/subordinate/getProcessList';};
     //=======================公司管理 结束====================
 
     //=======================支付设置 开始====================
