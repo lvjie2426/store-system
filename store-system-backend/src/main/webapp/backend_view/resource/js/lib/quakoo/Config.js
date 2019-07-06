@@ -127,6 +127,8 @@ var Config = (function(_super){
     _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
     /**获取门店下顾客的所有职业（公司下员工所有职位）*/
     _proto.getUrl_user_getAllUserJob = function(){return this.serverUrl + '/user/getAllUserJob';};
+    /**顾客人数统计*/
+    _proto.getUrl_user_statisticsOrderUser = function(){return this.serverUrl + '/user/statisticsOrderUser';};
     /**添加顾客*/
     _proto.getUrl_user_addCustomer = function(){return this.serverUrl + '/user/addCustomer';};
     /**获取所属公司的所有顾客*/
