@@ -105,13 +105,6 @@ public class MissionServiceImpl  implements MissionService {
             List<Long> executor = dbMission.getExecutor();
             //新添加的执行任务对象  添加中间表
             if(dbMission.getType()==Mission.type_tem){
-                for(Long id:executor){
-                   SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(dbMission.getId(),id);
-                    if(subordinateMissionPool!=null){
-                        executor.remove(id);
-                        break;
-                    }
-                }
                if(executor.size()>0){
                    //循环结束没有添加中间表的进行增加操作
                    for(Long id:executor){
@@ -125,13 +118,6 @@ public class MissionServiceImpl  implements MissionService {
                    }
                }
             }else if(dbMission.getType()==Mission.type_user){
-                for(Long id:executor){
-                    UserMissionPool userMissionPool = userMissionPoolService.load(dbMission.getId(),id);
-                    if(userMissionPool!=null){
-                        executor.remove(id);
-                        break;
-                    }
-                }
                 if(executor.size()>0){
                     //循环结束没有添加中间表的进行增加操作
                     for(Long id:executor){
@@ -206,9 +192,12 @@ public class MissionServiceImpl  implements MissionService {
 
         if(mission.getType()==Mission.type_tem){
             //团队任务 需要先查询门店下的所有sku 然后进行统计
-            List<ProductSKU> ids = productService.getSkuBySubid(mission.getSid(),ProductSPU.type_common);
-            for(ProductSKU sku:ids){
-                SubordinateMissionPool subordinateMissionPool = subordinateMissionPoolService.load(mission.getId(),sku.getId());
+//            List<ProductSKU> ids = productService.getSkuBySubid(mission.getSid(),ProductSPU.type_common);
+            for(Long id:mission.getExecutor()){
+                SubordinateMissionPool subordinateMissionPool = new SubordinateMissionPool();
+                subordinateMissionPool.setSid(id);
+                subordinateMissionPool.setMid(mission.getId());
+                subordinateMissionPool = subordinateMissionPoolDao.load(subordinateMissionPool);
                 if(subordinateMissionPool!=null){
                     if(mission.getAmountType()==Mission.amountType_number){
                         allAmount+=subordinateMissionPool.getNumber();//总数量
@@ -221,7 +210,10 @@ public class MissionServiceImpl  implements MissionService {
         }else{
             //个人任务
             for(Long id:clientMission.getExecutor()){
-                UserMissionPool userMissionPool = userMissionPoolService.load(mission.getId(),id);
+                UserMissionPool userMissionPool = new UserMissionPool();
+                userMissionPool.setMid(mission.getId());
+                userMissionPool.setUid(id);
+                userMissionPool = userMissionPoolDao.load(userMissionPool);
                 if(userMissionPool!=null){
                     if(mission.getAmountType()==Mission.amountType_number){
                         allAmount+=userMissionPool.getNumber();//总数量

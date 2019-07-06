@@ -16,16 +16,10 @@ public class SubordinateMissionPoolServiceImpl  implements SubordinateMissionPoo
 
     @Resource
     private SubordinateMissionPoolDao subordinateMissionPoolDao;
+
     @Resource
     private MissionDao missionDao;
-    @Override
-    public SubordinateMissionPool load(long mid,long sid) throws Exception {
-        List<SubordinateMissionPool> res = subordinateMissionPoolDao.getList(mid,sid);
-        if(res!=null&&res.size()>0){
-            return res.get(0);
-        }
-        return null;
-    }
+
 
     @Override
     public SubordinateMissionPool update(SubordinateMissionPool subordinateMissionPool,Mission mission) throws Exception {
