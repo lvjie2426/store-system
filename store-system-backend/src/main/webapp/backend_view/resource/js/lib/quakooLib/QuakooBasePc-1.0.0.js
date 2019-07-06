@@ -413,39 +413,43 @@ var QuakooImg = (function () {
                 var resultList = [];
                 var filesList = $(this)[0].files;
                 for(var i=0;i<filesList.length;i++){
-                    var formData = new FormData();
-                    formData.append('file',$(this)[0].files[i])
-                    $.ajax({
-                        url: config.uploadImageUrl, //Server script to process data
-                        type: 'POST',
-                        data: formData,
-                        sync: false,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function (result) {
-                            if (result.ok != undefined) {
-                                resultList.push(result.ok);
-                                if(i==filesList.length-1){
-                                    layer.close(loading1)
-                                    if(callBack){
-                                        callBack(resultList)
+                    (function (i) {
+                        var formData = new FormData();
+                        formData.append('file',filesList[i])
+                        $.ajax({
+                            url: config.uploadImageUrl, //Server script to process data
+                            type: 'POST',
+                            data: formData,
+                            sync: false,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function (result) {
+                                if (result.ok != undefined) {
+                                    resultList.push(result.ok);
+                                    if(i==filesList.length-1){
+                                        layer.close(loading1)
+                                        if(callBack){
+                                            callBack(resultList)
+                                        }
                                     }
+                                } else {
+                                    layer.close(loading1)
+                                    layer.msg('上传失败！', {
+                                        icon: 2
+                                    });
                                 }
-
-                            } else {
+                            },
+                            error: function () {
+                                layer.close(loading1)
                                 layer.msg('上传失败！', {
                                     icon: 2
                                 });
                             }
-                        },
-                        error: function () {
-                            layer.msg('上传失败！', {
-                                icon: 2
-                            });
-                        }
-                    });
+                        });
+                    })(i)
+
                 }
 
                 // return
