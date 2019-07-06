@@ -107,6 +107,8 @@ var Config = (function(_super){
     //=======================实时工作台 开始====================
     /**获取日常任务和奖励*/
     _proto.getUrl_user_taskReward = function(){return this.serverUrl + '/user/taskReward';};
+    /**任务奖励*/
+    _proto.getUrl_mission_getAllMission = function(){return this.serverUrl + ' /mission/getAllMission';};
     /**实时工作台 -- 销售奖励*/
     _proto.getUrl_product_saleReward = function(){return this.serverUrl + '/product/saleReward';};
     /**实时工作台 -- 昨日销售额统计*/
@@ -154,6 +156,8 @@ var Config = (function(_super){
     //=======================公司管理 开始====================
     /**根据名称搜索门店*/
     _proto.getUrl_subordinate_getSubordinateStoreByName = function(){return this.serverUrl + '/subordinate/getSubordinateStoreByName';};
+    /**创建企业*/
+    _proto.getUrl_subordinate_addSubordinate = function(){return this.serverUrl + '/subordinate/addSubordinate';};
     /**修改企业信息*/
     _proto.getUrl_subordinate_updateSubordinate = function(){return this.serverUrl + '/subordinate/updateSubordinate';};
     /**修改企业下门店信息*/
@@ -221,8 +225,6 @@ var Config = (function(_super){
     _proto.getUrl_mission_getAllList = function(){return this.serverUrl + '/mission/getAllList';};
     /**删除任务*/
     _proto.getUrl_mission_del = function(){return this.serverUrl + '/mission/del';};
-    /**获取抵用卷列表*/
-    _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
     /**获取抵用卷列表*/
     _proto.getUrl_marketingcoupon_getAllList = function(){return this.serverUrl + '/marketingcoupon/getAllList';};
     /**获取抵用卷列表*/
