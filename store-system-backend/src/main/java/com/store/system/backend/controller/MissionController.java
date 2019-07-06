@@ -110,6 +110,18 @@ public class MissionController extends BaseController {
         }
     }
 
+    @RequestMapping("/getAllMission")
+    public ModelAndView getAllMission(@RequestParam(value = "sid") long sid, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            Subordinate subordinate = subordinateService.load(sid);
+            long psid = subordinate.getPid();
+            if(psid==0){ throw new StoreSystemException("门店ID错误");}
+            return this.viewNegotiating(request,response, new ResultClient( missionService.getByPager(psid)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
 
 
 }

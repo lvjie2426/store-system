@@ -159,6 +159,14 @@ public class MissionServiceImpl  implements MissionService {
         pager.setTotalCount(count);
         return pager;
     }
+
+    @Override
+    public List<ClientMission> getByPager(long sid) throws Exception {
+        String sql = "SELECT * FROM `mission` where sid = " + sid  + " AND status = " + Mission.status_yes;
+        sql = sql + " order  by `ctime` desc";
+        List<Mission> missions = jdbcTemplate.query(sql,new RowMapperHelp<Mission>(Mission.class));
+        return transformClient(missions);
+    }
     //检查当前订单满足那些任务的完成条件并返回任务
     @Override
     public List<Mission> checkMission(long skuId,long sid,long subid,long uid) throws Exception {
