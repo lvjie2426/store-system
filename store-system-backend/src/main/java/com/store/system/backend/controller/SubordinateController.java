@@ -67,14 +67,10 @@ public class SubordinateController extends BaseController {
 
     @RequestMapping("/addSubordinate")
     public ModelAndView searchSubordinateCode(HttpServletRequest request, HttpServletResponse response,
-                                         Subordinate subordinate,Payment payment,
+                                         Subordinate subordinate,
                                          Model model) throws Exception {
         try {
             subordinate = subordinateService.insert(subordinate);
-            //设置支付方式
-            payment.setSubid(subordinate.getId());
-            payment.setPsid(subordinate.getPid());
-            paymentService.insert(payment);
             return this.viewNegotiating(request,response, new ResultClient(subordinate));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));

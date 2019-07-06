@@ -1158,7 +1158,7 @@ public class UserServiceImpl implements UserService {
         if(status>-1 && status!=Order.makestatus_no && status!=Order.status_no_pay && status!=Order.makestatus_qu_no){
             sql = sql + " AND makestatus = " + status;
         }else{
-            sql = sql + " and (`makeStatus` = " + Order.makestatus_no + "  OR `makeStatus` = " + Order.status_no_pay + "OR `makeStatus` = " + Order.makestatus_qu_no + " ) " ;
+            sql = sql + " and (`makeStatus` = " + Order.makestatus_no + " OR `makeStatus` = " + Order.status_no_pay + " OR `makeStatus` = " + Order.makestatus_qu_no + " ) " ;
         }
         List<Order> orders = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Order>(Order.class));
         List<Long> uids = Lists.newArrayList();

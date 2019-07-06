@@ -58,8 +58,8 @@ public class SubordinateServiceImpl implements SubordinateService {
 			if(StringUtils.isNoneBlank(subordinate.getAdminPassword())) {
 				user.setPassword(subordinate.getAdminPassword());
 			}
-			user.setUserName(subordinate.getAdminUserName());
-			user.setName(subordinate.getName() + "+admin");
+			user.setUserName(subordinate.getAdminUserName() + "+admin");
+			user.setName(subordinate.getName());
             ClientUserOnLogin clientUserOnLogin = userService.register(user);
 			if (null == clientUserOnLogin) {
                 throw new StoreSystemException("创建管理员账号错误");
@@ -124,13 +124,16 @@ public class SubordinateServiceImpl implements SubordinateService {
 		db.setStartTime(subordinate.getStartTime());
 		db.setEndTime(subordinate.getEndTime());
 		db.setProcessType(subordinate.getProcessType());
+		db.setAddress(subordinate.getAddress());
+		boolean res = subordinateDao.update(db);
+		Subordinate parentSub = subordinateDao.load(subordinate.getPid());
 		if(subordinate.getProcessType()==Subordinate.processType_per){
-			if(!subordinate.getProcess().contains(subordinate.getName())) {
-				subordinate.getProcess().add(subordinate.getName());
+			if(!parentSub.getProcess().contains(subordinate.getName())) {
+				parentSub.getProcess().add(subordinate.getName());
 			}
 		}
-		db.setAddress(subordinate.getAddress());
-		return subordinateDao.update(db);
+		subordinateDao.update(parentSub);
+		return res;
 	}
 
 	@Override
@@ -259,12 +262,13 @@ public class SubordinateServiceImpl implements SubordinateService {
 
 	@Override
 	public Subordinate insertStore(Subordinate subordinate)throws Exception {
-		subordinate.setPid(subordinate.getId());
+		Subordinate parentSub = subordinateDao.load(subordinate.getPid());
 		if(subordinate.getProcessType()==Subordinate.processType_per){
-			if(!subordinate.getProcess().contains(subordinate.getName())) {
-				subordinate.getProcess().add(subordinate.getName());
+			if(!parentSub.getProcess().contains(subordinate.getName())) {
+				parentSub.getProcess().add(subordinate.getName());
 			}
 		}
+		subordinateDao.update(parentSub);
 		subordinate = subordinateDao.insert(subordinate);
 		return subordinate;
 	}
