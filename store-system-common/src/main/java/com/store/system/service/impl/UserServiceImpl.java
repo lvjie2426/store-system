@@ -1158,7 +1158,7 @@ public class UserServiceImpl implements UserService {
         if(status>-1 && status!=Order.makestatus_no && status!=Order.status_no_pay && status!=Order.makestatus_qu_no){
             sql = sql + " AND makestatus = " + status;
         }else{
-            sql = sql + " and (`makeStatus` = " + Order.makestatus_no + "  OR `makeStatus` = " + Order.status_no_pay + "OR `makeStatus` = " + Order.makestatus_qu_no + " ) " ;
+            sql = sql + " and (`makeStatus` = " + Order.makestatus_no + " OR `makeStatus` = " + Order.status_no_pay + " OR `makeStatus` = " + Order.makestatus_qu_no + " ) " ;
         }
         List<Order> orders = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Order>(Order.class));
         List<Long> uids = Lists.newArrayList();
@@ -1201,9 +1201,9 @@ public class UserServiceImpl implements UserService {
         }
         StatisticsOrderUser statisticsOrderUser = new StatisticsOrderUser();
         statisticsOrderUser.setPNumber(man+woman);//总人数
-        statisticsOrderUser.setOldNumber(cale(pNumber,oldNumber));//老顾客占比
-        statisticsOrderUser.setMan(cale(pNumber,man));//男比例
-        statisticsOrderUser.setWoman(cale(pNumber,woman));//女比例
+        statisticsOrderUser.setOldNumber(cale(statisticsOrderUser.getPNumber(),oldNumber));//老顾客占比
+        statisticsOrderUser.setMan(cale(statisticsOrderUser.getPNumber(),man));//男比例
+        statisticsOrderUser.setWoman(cale(statisticsOrderUser.getPNumber(),woman));//女比例
         statisticsOrderUser.setVxNumber(vxNumber);//微信
         statisticsOrderUser.setPhoneNumber(phoneNumber);//手机号
         statisticsOrderUser.setMoneyNumber(moneyNumber);//储值
