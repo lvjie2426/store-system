@@ -1201,9 +1201,9 @@ public class UserServiceImpl implements UserService {
         }
         StatisticsOrderUser statisticsOrderUser = new StatisticsOrderUser();
         statisticsOrderUser.setPNumber(man+woman);//总人数
-        statisticsOrderUser.setOldNumber(cale(pNumber,oldNumber));//老顾客占比
-        statisticsOrderUser.setMan(cale(pNumber,man));//男比例
-        statisticsOrderUser.setWoman(cale(pNumber,woman));//女比例
+        statisticsOrderUser.setOldNumber(cale(statisticsOrderUser.getPNumber(),oldNumber));//老顾客占比
+        statisticsOrderUser.setMan(cale(statisticsOrderUser.getPNumber(),man));//男比例
+        statisticsOrderUser.setWoman(cale(statisticsOrderUser.getPNumber(),woman));//女比例
         statisticsOrderUser.setVxNumber(vxNumber);//微信
         statisticsOrderUser.setPhoneNumber(phoneNumber);//手机号
         statisticsOrderUser.setMoneyNumber(moneyNumber);//储值
