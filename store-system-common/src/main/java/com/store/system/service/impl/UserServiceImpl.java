@@ -9,6 +9,8 @@ import com.quakoo.baseFramework.secure.MD5Utils;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
+import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
+import com.store.system.bean.StatisticsOrderUser;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.*;
@@ -1148,6 +1150,63 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    @Override
+    public StatisticsOrderUser statisticsOrderUser(long sid, int status ,long startTime, long endTime) throws Exception {
+        //默认查询当月所有订单
+        String sql = " SELECT * FROM glass.order WHERE 1=1 AND order.subid = " + sid +" AND order.makestatus = " + status;
+        if(startTime > 0 ){ sql = sql + " AND ctime >= " + startTime; }
+        if(endTime > 0 ){ sql  = sql + " AND  ctim <= " + endTime; }
+        List<Order> orders = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Order>(Order.class));
+        List<Long> uids = Lists.newArrayList();
+        int pNumber = 0;//总顾客人数
+        if(orders.size()>0){
+            for(Order order: orders){
+                uids.add(order.getUid());
+                pNumber++;
+            }
+        }
+        int man = 0;//男人
+        int woman = 0;//女人
+        int oldNumber = 0;//老顾客人数
+        int vxNumber = 0; //微信人数
+        int phoneNumber = 0;//手机号认证人数
+        int moneyNumber = 0;//充值人数
+        List<Long> res = Lists.newArrayList();
+        for(Long id:uids){
+            User user = userDao.load(id);
+            if(user!=null){
+                //判断 性别
+                if(user.getSex()==User.sex_mai){
+                    man++;
+                }else if(user.getSex() == User.sex_woman){
+                    woman++;
+                }
+                //判断是否老顾客
+                res.add(id);
+                if(res.contains(id)){
+                    oldNumber++;
+                }
+                //判断是否认证微信
+                if(StringUtils.isNotBlank(user.getWeixinId())){
+                    vxNumber++;
+                }
+                //判断是否认证手机号
+                if(StringUtils.isNotBlank(user.getPhone())){
+                    phoneNumber++;
+                }
+            }
+        }
+        StatisticsOrderUser statisticsOrderUser = new StatisticsOrderUser();
+        statisticsOrderUser.setPNumber(pNumber);//总人数
+        statisticsOrderUser.setOldNumber(cale(pNumber,oldNumber));//老顾客占比
+        statisticsOrderUser.setMan(cale(pNumber,man));//男比例
+        statisticsOrderUser.setWoman(cale(pNumber,woman));//女比例
+        statisticsOrderUser.setVxNumber(vxNumber);//微信
+        statisticsOrderUser.setPhoneNumber(phoneNumber);//手机号
+        statisticsOrderUser.setMoneyNumber(moneyNumber);//储值
+        return statisticsOrderUser;
+    }
+
     //传入年月 判断是否当前月
     private boolean inExistence(String date,long time)throws Exception{
         Calendar calendar = Calendar.getInstance();
@@ -1160,4 +1219,12 @@ public class UserServiceImpl implements UserService {
         String res = year+mon;
         return res.equals(date);
     }
+
+    //计算比例
+    private int cale(int all,int count)throws Exception{
+        float aNum = all;
+        float cNum = count;
+        return (int) (cNum/aNum*100);
+    }
+
 }

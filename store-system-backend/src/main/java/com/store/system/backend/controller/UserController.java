@@ -398,5 +398,20 @@ public class UserController extends BaseController {
         }
     }
 
+
+    //顾客管理--人数统计
+    @RequestMapping("/statisticsOrderUser")
+    public ModelAndView statisticsOrderUser(HttpServletRequest request,HttpServletResponse response,long sid,int status,
+                                            @RequestParam(required = false,name = "startTime",defaultValue = "0") long startTime,
+                                            @RequestParam(required = false,name = "endTime",defaultValue = "0") long endTime)throws Exception{
+        try {
+            Subordinate subordinate = subordinateService.load(sid);
+            if(subordinate.getPid()==0){throw new StoreSystemException("门店ID错误！");}
+            return this.viewNegotiating(request,response,new ResultClient(userService.statisticsOrderUser(sid,status,startTime,endTime)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
+
 }
 
