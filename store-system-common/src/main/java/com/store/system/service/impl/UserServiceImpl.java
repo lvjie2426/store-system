@@ -1152,10 +1152,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public StatisticsOrderUser statisticsOrderUser(long sid, int status ,long startTime, long endTime) throws Exception {
-        //默认查询当月所有订单
-        String sql = " SELECT * FROM glass.order WHERE 1=1 AND order.subid = " + sid +" AND order.makestatus = " + status;
+        String sql = " SELECT * FROM `order` WHERE 1=1 AND subid = " + sid ;
         if(startTime > 0 ){ sql = sql + " AND ctime >= " + startTime; }
-        if(endTime > 0 ){ sql  = sql + " AND  ctim <= " + endTime; }
+        if(endTime > 0 ){ sql  = sql + " AND  ctime <= " + endTime; }
+        if(status>-1 && status!=Order.makestatus_no && status!=Order.status_no_pay && status!=Order.makestatus_qu_no){
+            sql = sql + " AND makestatus = " + status;
+        }else{
+            sql = sql + " and (`makeStatus` = " + Order.makestatus_no + "  OR `makeStatus` = " + Order.status_no_pay + "OR `makeStatus` = " + Order.makestatus_qu_no + " ) " ;
+        }
         List<Order> orders = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Order>(Order.class));
         List<Long> uids = Lists.newArrayList();
         int pNumber = 0;//总顾客人数
@@ -1182,10 +1186,10 @@ public class UserServiceImpl implements UserService {
                     woman++;
                 }
                 //判断是否老顾客
-                res.add(id);
                 if(res.contains(id)){
                     oldNumber++;
                 }
+                res.add(id);
                 //判断是否认证微信
                 if(StringUtils.isNotBlank(user.getWeixinId())){
                     vxNumber++;
