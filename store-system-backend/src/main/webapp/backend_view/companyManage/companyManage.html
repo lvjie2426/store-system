@@ -98,7 +98,7 @@
     </div>
 </div>
 <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
-    <input style="height: 0;width: 0;" type="file" name="file" accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" />
+    <input style="height: 0;width: 0;" type="file" name="file" accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" multiple="multiple" />
 </form>
 <!--全局js-->
 <script src="../resource/js/jquery.min.js"></script>
@@ -421,7 +421,6 @@
             <div class="wxNum">
                 <span>微信合作伙伴帐号</span>
                 <input type="text" id="wxAppid" value="<%=list.wxAppid%>" placeholder="输入微信合作伙伴帐号">
-                <!--<textarea class="form-control" ></textarea>-->
             </div>
             <div class="wxNum">
                 <span>微信合作伙伴应用ID</span>
@@ -429,7 +428,7 @@
             </div>
             <div class="wxNum">
                 <span>微信私钥</span>
-                <textarea type="text" id="wxApiKey" value="<%=list.wxApiKey%>" placeholder="输入微信私钥"></textarea>
+                <textarea type="text" id="wxApiKey"  placeholder="输入微信私钥"><%=list.wxApiKey%></textarea>
             </div>
             <div class="wxNum">
                 <span>微信公钥证书名</span>
@@ -471,11 +470,11 @@
             </div>
             <div class="zfbNum">
                 <span>阿里私钥</span>
-                <textarea type="text" id="aliPrivateKey" value="<%=list.aliPrivateKey%>" placeholder="输入阿里私钥"></textarea>
+                <textarea type="text" id="aliPrivateKey"  placeholder="输入阿里私钥"><%=list.aliPrivateKey%></textarea>
             </div>
             <div class="zfbNum">
                 <span>阿里公钥</span>
-                <textarea type="text" id="aliPublicKey" value="<%=list.aliPublicKey%>" placeholder="输入阿里私钥"></textarea>
+                <textarea type="text" id="aliPublicKey"  placeholder="输入阿里私钥"><%=list.aliPublicKey%></textarea>
             </div>
             <div class="zfbNum">
                 <span>阿里回调地址</span>
@@ -1079,10 +1078,14 @@
     //上传门店图片
     function uploadImg(self) {
         quakooImg.open(function (data) {
-            var obj = quakooImg.processImg(data.ok,100,100)
-            var str = '<div class="imgBox"><img src="'+obj.url+'" real-src="'+data.ok+'" style="'+obj.style+'" alt=""><div class="del" onclick="delImg(this)"></div></div>'
-            $(self).before(str)
-            if($(self).prevAll('.imgBox').length>=3){
+            for(var i=0;i<data.length;i++){
+                if($(self).prevAll('.imgBox').length<9){
+                    var obj = quakooImg.processImg(data[i],100,100)
+                    var str = '<div class="imgBox"><img src="'+obj.url+'" real-src="'+data[i]+'" style="'+obj.style+'" alt=""><div class="del" onclick="delImg(this)"></div></div>'
+                    $(self).before(str)
+                }
+            }
+            if($(self).prevAll('.imgBox').length>=9){
                 $(self).hide();
             }
         })
@@ -1124,6 +1127,9 @@
     }
     function delImg(self) {
         $(self).parent('.imgBox').remove()
+        if($('#imgBox .imgBox').length<9){
+            $("#test2").show();
+        }
     }
 </script>
 </body>

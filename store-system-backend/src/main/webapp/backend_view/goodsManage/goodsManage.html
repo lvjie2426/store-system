@@ -2007,9 +2007,9 @@
         //特殊商品添加主图
         function uploadTsspIcon() {
             quakooImg.open(function (data) {
-                var obj = quakooImg.processImg(data.ok,60,60)
+                var obj = quakooImg.processImg(data[0],60,60)
                 $('#cover').attr('src',obj.url)
-                $('#cover').attr('real-src',data.ok)
+                $('#cover').attr('real-src',data[0])
                 $('#cover')[0].style.cssText = obj.style;
                 $('#cover').parent().show();
             })
