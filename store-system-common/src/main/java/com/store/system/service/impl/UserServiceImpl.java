@@ -1166,7 +1166,6 @@ public class UserServiceImpl implements UserService {
         if(orders.size()>0){
             for(Order order: orders){
                 uids.add(order.getUid());
-                pNumber++;
             }
         }
         int man = 0;//男人
@@ -1201,7 +1200,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         StatisticsOrderUser statisticsOrderUser = new StatisticsOrderUser();
-        statisticsOrderUser.setPNumber(pNumber);//总人数
+        statisticsOrderUser.setPNumber(man+woman);//总人数
         statisticsOrderUser.setOldNumber(cale(pNumber,oldNumber));//老顾客占比
         statisticsOrderUser.setMan(cale(pNumber,man));//男比例
         statisticsOrderUser.setWoman(cale(pNumber,woman));//女比例
