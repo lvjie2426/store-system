@@ -6,6 +6,7 @@ import com.store.system.client.ClientMission;
 import com.store.system.model.Mission;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface MissionService {
@@ -18,7 +19,7 @@ public interface MissionService {
 
     public Pager getByPager(Pager pager,long sid)throws Exception;
 
-    public List<ClientMission> getByPager(long sid)throws Exception;
+    public Map<String,Object> getAllMission(long sid)throws Exception;
 
     //检查当前订单满足那些任务的完成条件并返回任务
     public List<Mission> checkMission(long skuId, long sid, long subid, long uid)throws Exception;

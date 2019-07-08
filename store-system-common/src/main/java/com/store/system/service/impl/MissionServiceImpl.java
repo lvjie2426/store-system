@@ -1,6 +1,7 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
@@ -10,6 +11,7 @@ import com.store.system.model.*;
 import com.store.system.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MissionServiceImpl  implements MissionService {
@@ -161,11 +164,18 @@ public class MissionServiceImpl  implements MissionService {
     }
 
     @Override
-    public List<ClientMission> getByPager(long sid) throws Exception {
+    public Map<String,Object> getAllMission(long sid) throws Exception {
+        Map<String,Object> map = Maps.newHashMap();
         String sql = "SELECT * FROM `mission` where sid = " + sid  + " AND status = " + Mission.status_yes;
         sql = sql + " order  by `ctime` desc";
         List<Mission> missions = jdbcTemplate.query(sql,new RowMapperHelp<Mission>(Mission.class));
-        return transformClient(missions);
+        int money = 0;//总奖励额
+        for(Mission mission: missions){
+            money+=money;
+        }
+        map.put("list",transformClient(missions));
+        map.put("money",money);
+        return map;
     }
     //检查当前订单满足那些任务的完成条件并返回任务
     @Override
