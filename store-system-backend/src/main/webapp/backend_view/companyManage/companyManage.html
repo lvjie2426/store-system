@@ -674,7 +674,7 @@
     var allShopData = {};// 所有门店信息
     var companyInfo = {};
     var processData = [];
-
+    var companyLocData = {};
     $(function () {
         initPage();
     });
@@ -747,6 +747,7 @@
                     }
                     for(var j in ret.data[0]){
                         companyInfo[j] =ret.data[0][j];
+                        companyLocData[j] = ret.data[0][j];
                     }
                     var data = {list: ret.data[0]};
                     var html = template("comInfoList", data);
@@ -1342,7 +1343,11 @@
     //创建公司
     function companyDes(isUpdata) {
         if(isUpdata){
+            companyInfo = {};
             var title = "编辑公司";
+            for(var i in companyLocData){
+                companyInfo[i] = companyLocData[i];
+            }
         }else{
             var title = "创建公司";
             companyInfo = {};

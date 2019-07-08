@@ -112,13 +112,13 @@
         </div>
         <div class="questRewardsContent">
             <div class="taskReward">
-                <h3>任务奖励&nbsp;&nbsp;￥13890</h3>
+                <h3>任务奖励&nbsp;&nbsp;￥<span id="taskTotal">0</span></h3>
                 <div class="content">
                     <table data-toggle="table" class="table table-border" id="taskReward"></table>
                 </div>
             </div>
             <div class="salesIncentives">
-                <h3>销售奖励&nbsp;&nbsp;¥<span id="salesBonus"></span></h3>
+                <h3>销售奖励&nbsp;&nbsp;¥<span id="salesBonus">0</span></h3>
                 <div class="content">
                     <table data-toggle="table" class="table table-border" id="salesIncentives">
                     </table>
@@ -626,15 +626,15 @@
     time=date.format("yyyyMM");
     //今日概览的时间选择
     var saleTime = new dateRange("#yj-sale-time");
-    saleTime.init()
+    saleTime.init();
     $('#yj-sale-time button').click(function () {
         chooseTime(5)
-    })
+    });
 
     //任务奖励
-    missionRewards()
+    missionRewards();
     //销售奖励
-    renderSaleIncentive()
+    renderSaleIncentive();
 
     //日常任务和奖励轮播
     questRewardsBanner();
@@ -790,56 +790,57 @@
     }
 
     //任务奖励
+
     function missionRewards() {
-        $("#taskReward").bootstrapTable('destroy');
-        $("#taskReward").bootstrapTable({
-            url: config.getUrl_mission_getAllMission(),
-            method: 'get',
-            classes: "table",
-            pagination: false,            //是否显示分页
-            pageNumber: 1,               //初始化加载第一页，默认第一页
-            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-            pageSize: 5,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                {
-                    field: "name", title: "任务名称", align: "left", valign: "middle"
-                },
-                {
-                    field: "startTime", title: "截止时间", align: "left", valign: "middle", formatter: function (val, obj) {
-                        return quakooUtils.formatTimeToDateDianLY(val) + '-' + quakooUtils.formatTimeToDateDianLY(obj.endTime);
-                    }
-                },
-                {field: "amount", title: "奖励", align: "left", valign: "middle"},
-                {
-                    field: "target", title: "任务量", align: "left", valign: "middle", formatter: function (item, obj) {
-                        var val = item + '元';
-                        if (obj.amountType == 1) {
-                            val = item + '个'
-                        }
-                        return val;
-                    }
-                },
-                {field: "allAmount", title: "已完成", align: "left", valign: "middle"},
-                {
-                    field: "allProgress", title: "进度", align: "left", valign: "middle", formatter: function (v, e) {
-                        return v >= 100 ? "<span class='end'><i class='iconfont icon-ico_check'></i></span>" : canvasFn(v, 14);
-                    }
+        quakooData.ajaxGetData(config.getUrl_mission_getAllMission(),{sid:shopId},function (ret) {
+            if(ret.success){
+                if(quakooUtils.isNotBlack(ret.data.money)){
+                    $("#taskTotal").html(ret.data.money)
+                }else {
+                    $('#taskTotal').html('0');
                 }
-            ],
-            queryParams: function (param) {
-                param.sid = shopId;
-                param.token = quakooUser.getUserInfo().token;
-                return param
+                console.log("money",ret.data.money)
+                $("#taskReward").bootstrapTable('destroy');
+                $("#taskReward").bootstrapTable({
+                    data: ret.data.list,
+                    classes: "table",
+                    pagination: false,//是否显示分页
+                    sortable: false,
+                    sortOrder: "asc",
+                    showColumns: true,
+                    strictSearch: true,
+                    locale: "zh-CN",
+                    paginationHAlign: "center",
+                    clickToSelect: true,
+                    columns: [
+                        {
+                            field: "name", title: "任务名称", align: "left", valign: "middle"
+                        },
+                        {
+                            field: "startTime", title: "截止时间", align: "left", valign: "middle", formatter: function (val, obj) {
+                                return quakooUtils.formatTimeToDateDianLY(val) + '-' + quakooUtils.formatTimeToDateDianLY(obj.endTime);
+                            }
+                        },
+                        {field: "amount", title: "奖励", align: "left", valign: "middle"},
+                        {
+                            field: "target", title: "任务量", align: "left", valign: "middle", formatter: function (item, obj) {
+                                var val = item + '元';
+                                if (obj.amountType == 1) {
+                                    val = item + '个'
+                                }
+                                return val;
+                            }
+                        },
+                        {field: "allAmount", title: "已完成", align: "left", valign: "middle"},
+                        {
+                            field: "allProgress", title: "进度", align: "left", valign: "middle", formatter: function (v, e) {
+                                return v >= 100 ? "<span class='end'><i class='iconfont icon-ico_check'></i></span>" : canvasFn(v, 14);
+                            }
+                        }
+                    ],
+                });
             }
-        });
+        })
     }
 
     function chooseType(self) {
@@ -1037,7 +1038,7 @@
 
         // 现金结算记录
         function settlementRecord(a) {
-            layer.closeAll()
+            layer.closeAll();
             var index = layer.open({
                 type: 1,
                 skin: 'layui-layer-demo', //样式类名
@@ -1059,35 +1060,32 @@
 
     //销售奖励
     function renderSaleIncentive(){
-        $("#salesIncentives").bootstrapTable('destroy');
-        $("#salesIncentives").bootstrapTable({
-            url: config.getUrl_product_saleReward(),
-            method: 'get',
-            classes: "table",
-            pagination: false,            //是否显示分页
-            pageNumber: 1,               //初始化加载第一页，默认第一页
-            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-            pageSize: 5,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
-                {field: "name", title: "商品名称", align: "left", valign: "middle", sortable: true},
-                {field: "rewardPersonal", title: "提成", align: "left", valign: "middle", sortable: true},
-                {field: "number", title: "完成量", align: "left", valign: "middle", sortable: true},
-                {field: "royaltyPersonal", title: "奖励", align: "left", valign: "middle", sortable: true},
-            ],
-            queryParams: function (param) {
-                param.subid = shopId;
-                param.token = quakooUser.getUserInfo().token;
-                return param
+        quakooData.ajaxGetData(config.getUrl_product_saleReward(),{subid:shopId},function (ret) {
+            if(quakooUtils.isNotBlack(ret.data.total)){
+                $("#salesBonus").html(ret.data.total);
+            }else{
+                $('#salesBonus').html('0')
             }
-        });
+            $("#salesIncentives").bootstrapTable('destroy');
+            $("#salesIncentives").bootstrapTable({
+                data: ret.data,
+                classes: "table",
+                pagination: false,//是否显示分页
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                columns: [
+                    {field: "name", title: "商品名称", align: "left", valign: "middle", sortable: true},
+                    {field: "rewardPersonal", title: "提成", align: "left", valign: "middle", sortable: true},
+                    {field: "number", title: "完成量", align: "left", valign: "middle", sortable: true},
+                    {field: "royaltyPersonal", title: "奖励", align: "left", valign: "middle", sortable: true},
+                ],
+            });
+        })
     }
 
 </script>
