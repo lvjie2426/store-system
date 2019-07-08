@@ -636,6 +636,10 @@ i {
     cursor: pointer;
 }
 
+.btn-recharge{
+    background:#DD5B4B;
+}
+
 .main .orderInfo .btnBox .addRoutineCommodity {
     background: #4186DC;
 }
@@ -2736,4 +2740,16 @@ input[type=checkbox]:checked:after {
     overflow: auto;
     position: relative;
 
+}
+
+.layer-recharge .layui-layer-title {
+    border:none;
+}
+
+.layer-recharge .layui-layer-btn.layui-layer-btn- {
+    border:none;
+}
+
+.layer-recharge .content{
+    padding:10px 0;
 }

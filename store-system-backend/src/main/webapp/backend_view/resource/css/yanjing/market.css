@@ -1356,6 +1356,15 @@ input[type="number"]::-webkit-input-placeholder{
     width:100%;
     height:auto;
     margin-top:16px;
+    clear: both;
+}
+.tishi{
+    font-size: 11px;
+    color: rgba(130, 130, 151, 1);
+}
+.award .award-left,.award .award-right{
+    width:50%;
+    float:left;
 }
 .create-task .task-third .award .award-text,.create-task .task-third .mission-time .mission-text{
     width:100%;

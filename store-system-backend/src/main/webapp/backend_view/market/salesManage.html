@@ -741,12 +741,23 @@
                     <%}%>
                 </div>
                 <div class="award">
-                    <div class="award-text">奖励</div>
-                    <%if(list.amount){%>
-                       <input type="number" placeholder="输入金额" id="amount" value="<%=list.amount%>">
-                    <%}else{%>
+                    <div class="award-left">
+                        <div class="award-text">奖励</div>
+                        <%if(list.amount){%>
+                        <input type="number" placeholder="输入金额" id="amount" value="<%=list.amount%>">
+                        <%}else{%>
                         <input type="number" placeholder="输入金额" id="amount">
-                    <%}%>
+                        <%}%>
+                    </div>
+                    <div class="award-right">
+                        <div class="award-text">处罚金额</div>
+                        <%if(list.amount){%>
+                        <input type="number" placeholder="输入金额" id="amount" value="<%=list.amount%>">
+                        <%}else{%>
+                        <input type="number" placeholder="输入金额" id="amount">
+                        <%}%>
+                        <div class="tishi">未完成任务扣除当月工资</div>
+                    </div>
                 </div>
                 <div class="mission-time clear">
                     <div class="mission-text">任务时间</div>
