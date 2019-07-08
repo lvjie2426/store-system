@@ -108,7 +108,7 @@ var Config = (function(_super){
     /**获取日常任务和奖励*/
     _proto.getUrl_user_taskReward = function(){return this.serverUrl + '/user/taskReward';};
     /**任务奖励*/
-    _proto.getUrl_mission_getAllMission = function(){return this.serverUrl + ' /mission/getAllMission';};
+    _proto.getUrl_mission_getAllMission = function(){return this.serverUrl + '/mission/getAllMission';};
     /**实时工作台 -- 销售奖励*/
     _proto.getUrl_product_saleReward = function(){return this.serverUrl + '/product/saleReward';};
     /**实时工作台 -- 昨日销售额统计*/
