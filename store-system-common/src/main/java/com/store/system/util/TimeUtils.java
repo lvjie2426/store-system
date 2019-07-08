@@ -294,4 +294,19 @@ public class TimeUtils {
         }
         return dates;
     }
+
+    /***
+    * 天数计算
+    * @Param: [num, time]
+    * @return: long
+    * @Author: LaoMa
+    * @Date: 2019/7/6
+    */
+    public static long calculateDays(int num, long time) throws ParseException {
+        Calendar ca = Calendar.getInstance();
+        ca.setTimeInMillis(time);
+        ca.add(Calendar.DATE, num);
+        Date res = ca.getTime();
+        return res.getTime();
+    }
 }

@@ -520,15 +520,17 @@
         <div class="selectBox active" id="jiagong">
         <%}%>
             <div class="select-box-header">
-                <%if(list.processId){%>
-                <span class="text">加工中心<%=list.processId%></span> <i class="iconfont icon-ico_arrow_down"></i>
+                <%if(list.process&&list.process.length>0){%>
+                <span class="text"><%=list.process[0]%></span> <i class="iconfont icon-ico_arrow_down"></i>
                 <%}else{%>
                 <span class="text">选择加工中心</span> <i class="iconfont icon-ico_arrow_down"></i>
                 <%}%>
             </div>
             <div class="optionBox">
                 <ul class="optionUL">
-                    <li value="1">加工中心1</li>
+                    <%for(var i =0;i< processData.length;i++){%>
+                        <li value="<%=processData[i]%>"><%=processData[i]%></li>
+                    <%}%>
                 </ul>
             </div>
         </div>
@@ -671,6 +673,7 @@
     var shopInfo = {};//门店信息
     var allShopData = {};// 所有门店信息
     var companyInfo = {};
+    var processData = [];
 
     $(function () {
         initPage();
@@ -683,6 +686,13 @@
         getComInfo();                                 //获取当前公司信息
         getShopList();                                //获取当前企业下门店列表
         getPayList();                                //获取支付方式列表
+        quakooData.ajaxGetData(config.getUrl_subordinate_getProcessList(),{},function (ret) {
+            if(ret.success){
+                for(var i=0;i<ret.data.length;i++){
+                    processData[i] = ret.data[i];
+                }
+            }
+        });
     }
     function getPayList() {
         quakooData.ajaxGetData(config.getUrl_pay_getAllListBySub(),{subId:shopId,token:quakooUser.getUserInfo().token},function (ret) {
@@ -738,7 +748,6 @@
                     for(var j in ret.data[0]){
                         companyInfo[j] =ret.data[0][j];
                     }
-                    console.log("多少啊",companyInfo)
                     var data = {list: ret.data[0]};
                     var html = template("comInfoList", data);
                     document.getElementById("comInfo").innerHTML = html;
@@ -861,7 +870,7 @@
         param.province = shopInfo.province;
         param.city = shopInfo.city;
         param.area = shopInfo.area;
-        param.processId = shopInfo.processId;
+        param.process = shopInfo.process;
         param.name = $("#name").val();
         param.storeCode = $("#storeCode").val();
         param.phone = $("#phone").val();
@@ -890,10 +899,10 @@
         var url = '';
         var str = '';
         if(id){
-            url = config.getUrl_subordinate_updateSubordinateStore()
+            url = config.getUrl_subordinate_updateSubordinateStore();
             str = '修改成功'
         }else{
-            url = config.getUrl_subordinate_addSubordinateStore()
+            url = config.getUrl_subordinate_addSubordinateStore();
             str = '添加成功'
         }
         console.log(param);
@@ -938,15 +947,15 @@
             return;
         }
         if(param.processType==1){
-            if(quakooUtils.isBlack(param.processId)){
+            if(quakooUtils.isBlack(param.process)){
                 layer.msg('请选择加工中心');
                 return;
             }
         }
         quakooData.ajaxGetData(url, param, function (ret) {
             if(ret.success){
-                layer.msg(str,{icon: 1})
-                layer.close(index)
+                layer.msg(str,{icon: 1});
+                layer.close(index);
                 getShopList()
             }else{
                 layer.msg(ret.data,{icon: 2})
@@ -1175,16 +1184,6 @@
                 return false
             },
             success: function (layero, index) {
-                if(!id){
-                    quakooData.ajaxGetData(config.getUrl_subordinate_getProcessList(),{},function (ret) {
-                        console.log("加工中心",ret);
-                        if(ret.success){
-                            for(var i=0;i<ret.data.length;i++){
-                                shopInfo.process[i] = ret.data[i];
-                            }
-                        }
-                    });
-                }
                 if(areaJson.getAreaByAid(shopInfo.province)){
                     shopInfo.provinceName = areaJson.getAreaByAid(shopInfo.province).name
                 }
@@ -1196,7 +1195,8 @@
                 }
                 var twoArea = areaJson.getSubList(shopInfo.province);
                 var threeArea = areaJson.getSubList(shopInfo.city);
-                $("#shopDom").html(template('shopTmp',{list:shopInfo,oneArea:oneArea,twoArea:twoArea,threeArea:threeArea}));
+                console.log("23414",processData)
+                $("#shopDom").html(template('shopTmp',{list:shopInfo,processData:processData,oneArea:oneArea,twoArea:twoArea,threeArea:threeArea}));
                 // mapInit()
                 //选择省市区
                 selectTag($("#province"), function (ret) {
@@ -1232,7 +1232,7 @@
                     shopInfo.payType = ret.value
                 })
                 selectTag($("#jiagong"), function (ret) {/*console.log(ret)*/
-                    shopInfo.processId = ret.value
+                    shopInfo.process = [ret.value];
                 })
                 layui.use('form', function () {
                     var form = layui.form;
@@ -1426,7 +1426,7 @@
                 return;
             }
         }else{
-            url = config.getUrl_subordinate_addSubordinateStore();
+            url = config.getUrl_subordinate_addSubordinate();
             str = '创建公司成功';
         }
         param.icon =$('#cover').attr('real-src');
@@ -1468,6 +1468,7 @@
         }
         quakooData.ajaxGetData(url,param,function (ret) {
             if(ret.success){
+                initPage();
                 layer.msg(str,{icon:1});
                 layer.close(index);
             } else {

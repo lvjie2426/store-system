@@ -26,6 +26,8 @@ public class Order implements Serializable {
 
     public static final int pay_type_ali = 1; //支付宝
     public static final int pay_type_wx = 2; //微信
+    public static final int pay_type_cash = 3; //现金
+    public static final int pay_type_stored = 4; //储值
 
     public static final int type_goods = 1; //商品购买
 

@@ -63,7 +63,7 @@ public class SalaryController extends BaseController {
     /////////////////////导入工资单////////////////////////
     @RequestMapping("/importUserSalary")
     public ModelAndView importUserSalary(HttpServletRequest request, HttpServletResponse response,
-                                       @RequestParam(required = false,value = "file") MultipartFile file)throws Exception{
+                                       @RequestParam(required = true,value = "file") MultipartFile file)throws Exception{
         try {
             User user = UserUtils.getUser(request);
             SalaryRecord salaryRecord = importFileService.importUserSalary(file,user);
