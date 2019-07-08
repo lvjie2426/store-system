@@ -1185,10 +1185,7 @@ public class UserServiceImpl implements UserService {
                     woman++;
                 }
                 //判断是否老顾客
-                if(res.contains(id)){
-                    oldNumber++;
-                }
-                res.add(id);
+
                 //判断是否认证微信
                 if(StringUtils.isNotBlank(user.getWeixinId())){
                     vxNumber++;
