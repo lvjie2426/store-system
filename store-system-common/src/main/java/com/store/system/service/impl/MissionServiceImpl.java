@@ -170,10 +170,11 @@ public class MissionServiceImpl  implements MissionService {
         sql = sql + " order  by `ctime` desc";
         List<Mission> missions = jdbcTemplate.query(sql,new RowMapperHelp<Mission>(Mission.class));
         int money = 0;//总奖励额
-        for(Mission mission: missions){
-            money+=money;
+        List<ClientMission> clientList = transformClient(missions);
+        for(ClientMission client: clientList){
+            money+=client.getAllAmount();
         }
-        map.put("list",transformClient(missions));
+        map.put("list",clientList);
         map.put("money",money);
         return map;
     }
