@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-         // this.serverUrl = "http://192.168.1.38:20005";
+         this.serverUrl = "http://192.168.1.30:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -288,6 +288,8 @@ var Config = (function(_super){
     _proto.getUrl_inventoryInBill_update = function(){return this.serverUrl + '/inventoryinbill/update';};
     /**审核通过入库单*/
     _proto.getUrl_inventoryInBill_pass = function(){return this.serverUrl + '/inventoryinbill/pass';};
+    /**审核通过入库单*/
+    _proto.getUrl_productprovider_add = function(){return this.serverUrl + '/productprovider/add';};
 
     //=======================商品管理 结束====================
 

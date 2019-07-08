@@ -802,12 +802,16 @@ body {
 }
 
 .goods-body .contUl .item>div.body .top ul li span:nth-child(1) {
-    width: 80%;
+    width: 70%;
 }
 
 .goods-body .contUl .item>div.body .top ul li span:nth-child(2) {
-    width: 10%;
+    width: 20%;
     float: right;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .goods-body .contUl .item>div.body .bottom {
@@ -1104,4 +1108,22 @@ body {
     border: none;
 }
 
+.content-view-gongyingshang{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width:100%;
+    padding:0 10px;
+}
 
+.content-view-gongyingshang .goods-box{
+    padding: 5px 8px 0;
+}
+
+.content-view-gongyingshang .goods-box input{
+    width: 95%;
+    color: #393953;
+    padding: 5px 8px;
+    margin-top: 12px;
+
+}

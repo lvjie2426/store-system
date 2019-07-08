@@ -57,6 +57,7 @@
                 </div>
             </div>-->
             <input type="text" placeholder="搜索商品" id="search" class="yj-input">
+            <div class="btn btn-info" style="margin-left: 10px;" onclick="search()">搜索</div>
             <button class="btn btn-primary" onclick="addGoods(false)">新增商品</button>
         </div>
     </div>
@@ -140,6 +141,9 @@
                 <td><input type="text" placeholder="0"></td>
             </tr>
         </table>
+    </div>
+    <div class="contact-view content-view-gongyingshang" id="supplierUl" style="display: none;">
+
     </div>
     <!--设置现货范围-->
     <div class="content-view content-view-range">
@@ -820,7 +824,34 @@
             </div>
         </form>
     </script>
-
+    <!--供应商-->
+    <script type="text/html" id="supplierTmp">
+        <div class="goods-select goods-select-img" style="width: 100%">
+            <div class="goods-select-title">供应商图片</div>
+            <div class="selectBox"  onclick="setSupIcon()">
+                <%if(list.icon){%>
+                <div style="display: block;">
+                    <%}else{%>
+                    <div>
+                        <%}%>
+                        <img src="<%=list.newIcon%>" id="cover1" alt="" style="<%=list.style%>">
+                    </div>
+                    <i class="iconfont icon-ico_plus"></i>
+                </div>
+        </div>
+        <div class="goods-box">
+            <p class="goods-select-title">供应商名称</p>
+            <input type="text" value="<%=list.name%>" id="supName"  placeholder="名称" style="margin-top: 0">
+        </div>
+        <div class="goods-box">
+            <p class="goods-select-title">供应商描述</p>
+            <input type="text" value="<%=list.name%>" id="supInfo"  placeholder="描述信息" style="margin-top: 0">
+        </div>
+        <div class="goods-box">
+            <p class="goods-select-title">供应商排序</p>
+            <input type="text" value="<%=list.name%>" id="supSort"  placeholder="序号" style="margin-top: 0">
+        </div>
+    </script>
     <script>
         var subid = quakooUser.getUserInfo().psid;//企业/公司id
         var shopId = quakooDb.getItem('sel_ShopId');//门店id
@@ -830,6 +861,7 @@
         var sid = '';//系列ID
         var name = '';//搜索关键字
         var saleStatus = '';//筛选条件的销售状态0开启1关闭
+        var supplierLocData = {};//供应商数据
 
 
         var ballData = '';//球数据
@@ -983,6 +1015,16 @@
                 chooseGoodsType()
             }
         }
+        //按钮搜索
+        function search(){
+            name = $('#search').val();
+            if(quakooUtils.isBlack(name)){
+                chooseGoodsType();
+                layer.msg("请输入搜索内容");
+                return;
+            }
+            chooseGoodsType()
+        }
 
         //获取一级类目
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
@@ -1118,6 +1160,66 @@
 
         //设置供应商
         function suppliers(){
+            layer.open({
+                type: 1,shade: 0.01,title:'设置供应商',
+                skin: 'layui-layer-yj', //样式类名
+                anim: 0,
+                area:['360px','380px'],
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-gongyingshang'),
+                btn: ['取消','确定'],
+                yes: function(index, layero){
+                    layer.close(index)
+                },
+                btn2: function(index){
+                    addSuppliers(index);
+                    return false;
+                },
+                success: function(layero, index){
+                    var data = {list:supplierLocData};
+                    var html = template("supplierTmp",data);
+                    $("#supplierUl").html(html);
+                }
+
+            })
+        }
+        function addSuppliers(index) {
+            var param ={};
+            var icon = $('#cover1').attr('real-src');
+            var name = $("#supName").val();
+            var desc = $("#supInfo").val();
+            var sort = $("#supSort").val();
+            if(quakooUtils.isBlack(icon)){
+                layer.msg("请上传供应商图标");
+                return;
+            }
+            if(quakooUtils.isBlack(name)){
+                layer.msg("请输入供应商名称");
+                return;
+            }
+            if(quakooUtils.isBlack(desc)){
+                layer.msg("请输入供应商描述信息");
+                return;
+            }
+            if(quakooUtils.isBlack(sort)){
+                layer.msg("请输入供应商序号");
+                return;
+            }
+            param.icon = icon;
+            param.name = name;
+            param.desc =desc;
+            param.sort =sort;
+            quakooData.ajaxGetData(config.getUrl_productprovider_add(),param,function (ret) {
+                console.log("设置供应商",ret)
+                if(ret.success){
+                    layer.msg("供应商设置成功",{icon:1});
+                    layer.close(index);
+                }else {
+                    layer.msg(ret.data);
+                }
+            })
 
         }
         //添加商品
@@ -2012,6 +2114,16 @@
                 $('#cover').attr('real-src',data[0])
                 $('#cover')[0].style.cssText = obj.style;
                 $('#cover').parent().show();
+            })
+        }
+        //设置供应商图片
+        function setSupIcon() {
+            quakooImg.open(function (data) {
+                var obj = quakooImg.processImg(data[0],60,60)
+                $('#cover1').attr('src',obj.url)
+                $('#cover1').attr('real-src',data[0])
+                $('#cover1')[0].style.cssText = obj.style;
+                $('#cover1').parent().show();
             })
         }
         //删除商品spu
