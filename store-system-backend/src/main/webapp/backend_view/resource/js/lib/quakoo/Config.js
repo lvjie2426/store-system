@@ -132,6 +132,8 @@ var Config = (function(_super){
     _proto.getUrl_settlement_add = function(){return this.serverUrl + '/settlement/add';};
     /**资金管理 -- 获取金额*/
     _proto.getUrl_order_calculateOrders = function(){return this.serverUrl + '/order/calculateOrders';};
+    /**资金管理 -- 获取金额*/
+    _proto.getUrl_settlement_getFinanceLogs = function(){return this.serverUrl + '/settlement/getFinanceLogs';};
 
     //=======================资金管理 结束====================
     //=======================顾客管理 开始====================

@@ -162,11 +162,11 @@
             </div>
             <div class="totalBox fl">
                 <div style="margin-bottom: 16px;">
-                    <h2>15600</h2>
+                    <h2 id="todayTotalAdd">0</h2>
                     <span class="fcHui">收入&nbsp;|&nbsp;元</span>
                 </div>
                 <div class=" ">
-                    <h2>2200</h2>
+                    <h2 id="todayTotalSub">0</h2>
                     <span class="fcHui">支出&nbsp;|&nbsp;元</span>
                 </div>
             </div>
@@ -408,6 +408,8 @@
     var subid = quakooUser.getUserInfo().psid;//企业/公司id
     var shopId = quakooDb.getItem('sel_ShopId');//门店id
     var locSettlement = {};//资金结算对象
+    var todayDataIn = [];
+    var todayDataOut = [];
     var optId;//结算人ID
     var date = new Date();
     time=date.format("yyyyMM");
@@ -434,6 +436,7 @@
     //获取最近一次资金结算记录
     getLastSettlement();
     getUser();//结算现金获取所有员工（结算人）
+
     function getUser() {
         quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:shopId,userType:1},function (ret) {
             if(ret.success){
@@ -651,8 +654,8 @@
         $(self).addClass('xuan').siblings().removeClass('xuan');
         $('.winBox').hide();
         $('.winBox').eq($(self).index()).show();
-        chart();
 
+        getFinanceLogs();//今日资金明细
     }
 
     //选择type   今日1 昨日2 本周3 ，本月4
@@ -732,7 +735,7 @@
 
 
     // 数据统计图
-    function chart() {
+    function chart(fundData) {
         var app = echarts.init(document.getElementById('echarts'));
         var option = {
             color: ['#DD5B4B', '#57B8DB'],
@@ -754,7 +757,7 @@
             },
             xAxis: {
                 type: 'category',
-                data: ['支付宝', '微信', '现金', '银行卡', '储值卡'],
+                data: ['支付宝', '微信', '现金', '储值卡'],
                 axisTick: {
                     show: false
                 }, axisLine: {
@@ -775,12 +778,12 @@
                     type: 'bar',
                     barWidth: 10,
                     barCategoryGap: 10,
-                    data: [32, 0, 54, 99, 28]
+                    data: todayDataIn
                 },
                 {
                     type: 'bar',
                     barWidth: 10,
-                    data: [94, 23, 12, 0, 12]
+                    data: todayDataOut
                 }
             ]
         };
@@ -1013,6 +1016,7 @@
             }
         })
     }
+    //计算差额
     function countCha() {
         var money= (locSettlement.total-$("#setyuliu").val()-$("#setjiao").val()).toFixed(2);
         if(money<0){
@@ -1022,6 +1026,27 @@
         }
         locSettlement.balanceMoney = money;
         $("#setcha").val(locSettlement.balanceMoney);
+    }
+    
+    //今日资金明细
+    function getFinanceLogs() {
+        quakooData.ajaxGetData(config.getUrl_settlement_getFinanceLogs(),{subId:shopId},function (ret) {
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    $("#todayTotalAdd").html(ret.data.totalIn);
+                    $("#todayTotalSub").html(ret.data.totalOut);
+                    todayDataIn.push((ret.data.aliIn/100).toFixed(1));
+                    todayDataIn.push((ret.data.wxIn/100).toFixed(1));
+                    todayDataIn.push((ret.data.cashIn/100).toFixed(1));
+                    todayDataIn.push((ret.data.storedIn/100).toFixed(1));
+                    todayDataOut.push((ret.data.aliOut/100).toFixed(1));
+                    todayDataOut.push((ret.data.wxOut/100).toFixed(1));
+                    todayDataOut.push((ret.data.cashOut/100).toFixed(1));
+                    todayDataOut.push((ret.data.storedOut/100).toFixed(1));
+                    chart();
+                }
+            }
+        })
     }
     //进行结算
     function settlement(index) {
