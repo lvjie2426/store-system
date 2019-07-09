@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-         this.serverUrl = "http://192.168.1.30:20005";
+         this.serverUrl = "http://192.168.1.17:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -123,7 +123,17 @@ var Config = (function(_super){
     _proto.getUrl_statisticsSale_searchSale = function(){return this.serverUrl + '/statisticsSale/searchSale';};
 
     //=======================实时工作台 结束====================
+    //=======================资金管理 开始====================
+    /**资金管理 -- 获取结算记录*/
+    _proto.getUrl_settlement_getPagerLog = function(){return this.serverUrl + '/settlement/getPagerLog';};
+    /**资金管理 -- 获取最新的一次结算*/
+    _proto.getUrl_settlement_loadClient = function(){return this.serverUrl + '/settlement/loadClient';};
+    /**资金管理 -- 进行结算*/
+    _proto.getUrl_settlement_add = function(){return this.serverUrl + '/settlement/add';};
+    /**资金管理 -- 获取金额*/
+    _proto.getUrl_order_calculateOrders = function(){return this.serverUrl + '/order/calculateOrders';};
 
+    //=======================资金管理 结束====================
     //=======================顾客管理 开始====================
     /**获取公司下门店列表*/
     _proto.getUrl_subordinate_getSubordinateStore = function(){return this.serverUrl + '/subordinate/getSubordinateStore';};
@@ -385,3 +395,16 @@ var Config = (function(_super){
     return Config;
 })(QuakooConfig);
 
+var Utils = (function(_super){
+    function Utils(){
+        Utils.__super.call(this);
+    }
+    var _proto = Utils.prototype;
+
+    Quakoo.class(Utils,'Utils',_super);
+    /***/
+    _super.prototype.formatTimeToMDHM = function(time){
+        return new Date(time).format("MM.dd hh:mm");
+    };
+    return Utils;
+})(QuakooUtils);

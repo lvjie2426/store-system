@@ -135,23 +135,23 @@
         <div class="cashBox br">
             <div class="cashTitle bomr">
                 <h3 class="dib">现金管理</h3>
-                <button class="btnCloseCash butn btnRemove fr">结算现金</button>
-                <button class="btnOrdinary fr btnSettlementRecord">结算记录</button>
+                <button class="btnCloseCash butn btnRemove fr" onclick="diaSettlement()">结算现金</button>
+                <button class="btnOrdinary fr btnSettlementRecord" onclick="settlementRecord()">结算记录</button>
             </div>
             <ul class="cashContent bomr">
                 <li>
-                    <h2>2780</h2><span class="fcHui">未结算金额&nbsp;|&nbsp;元</span>
+                    <h2 id="noSettlement">0</h2><span class="fcHui">未结算金额&nbsp;|&nbsp;元</span>
                 </li>
                 <li>
-                    <h2 class="womenC">5600</h2><span class="fcHui">现金部分&nbsp;|&nbsp;元</span>
+                    <h2 class="womenC" id="cashMoney">0</h2><span class="fcHui">现金部分&nbsp;|&nbsp;元</span>
                 </li>
                 <li>
-                    <h2 class="womenC">6510</h2><span class="fcHui">现金单数&nbsp;|&nbsp;笔</span>
+                    <h2 class="womenC" id="cashNum">0</h2><span class="fcHui">现金单数&nbsp;|&nbsp;笔</span>
                 </li>
             </ul>
             <div class="cashFooter">
                 <span class="fl fcHui">上次结算</span>
-                <span class="fr fcHui">01.04 21:52-01.05 22:02</span>
+                <span class="fr fcHui" id="lastTime"></span>
             </div>
         </div>
         <div class="detailedBox br">
@@ -187,42 +187,41 @@
         <div class="titleBox clearfix bomr">
             <h3 class="fl">现金结算</h3>
             <div class="selectBox fr" id="closeCashSele">
-                <div class="select-box-header">
-                    <span class="text">临时订单</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">1</li>
-                        <li value="02">2</li>
-                        <li value="03">3</li>
-                        <li value="04">4</li>
-                        <li value="05">5</li>
-                    </ul>
-                </div>
+
             </div>
             <span class="fcHui fr">结算人</span>
         </div>
+        <div class="sel-time-box">
+            <div class="time-text">请选择结算时间段</div>
+            <div class="yj-demo2-time" id="saletime">
+                <div class="yj-date">
+                    <span >开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                </div>
+            </div>
+        </div>
         <div class="titleBox clearfix bomr">
-            <span class="fcHui">销售额</span><em>￥12000</em>
-            <span class="fcHui">现金</span><em>￥4000</em>
-            <span class="fcHui">其他</span><em>￥8000</em>
+            <span class="fcHui">销售额</span><em id="timeSale">￥0</em>
+            <span class="fcHui">现金</span><em id="timeCash">￥0</em>
+            <span class="fcHui">支付宝</span><em id="timeAli">￥0</em>
+            <span class="fcHui">微信</span><em id="timeWx">￥0</em>
+            <span class="fcHui">其他</span><em id="timeOther">￥0</em>
         </div>
         <div class="inputContent">
             <div class="inpBox">
                 <h3>现金总金额</h3>
-                <input type="number" placeholder="金额" class="xjZje">
+                <input type="number" placeholder="金额" class="xjZje" id="setTotal" readonly="readonly">
             </div>
             <div class="inpBox">
                 <h3>预留金</h3>
-                <input type="number" placeholder="金额">
+                <input type="number" placeholder="金额" id="setyuliu">
             </div>
             <div class="inpBox">
                 <h3>上缴现金</h3>
-                <input type="number" placeholder="金额">
+                <input type="number" placeholder="金额" id="setjiao">
             </div>
             <div class="inpBox">
                 <h3>差额</h3>
-                <input type="number" placeholder="金额">
+                <input type="number" placeholder="金额" id="setcha" readonly="readonly">
             </div>
         </div>
     </div>
@@ -242,239 +241,7 @@
         </div>
     </div>
     <div class="settlementRecordPop" style="display:none">
-        <div style=" border:  1px solid #ECECF4;">
-            <div class="formSetRecord">
-                <div class="header">
-                    <ul class="clearfix">
-                        <li style="min-width: 160px;">结算时间</li>
-                        <li>销售额</li>
-                        <li>现金收款</li>
-                        <li>其他收款</li>
-                        <li>原预留金</li>
-                        <li>结算现金</li>
-                        <li>差额</li>
-                        <li>预留金</li>
-                        <li>结算人</li>
-                    </ul>
-                </div>
-                <div class="content">
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="bomr">2017年</div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">01.04 21:52-01.05 22:02</li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="bomr">2018年</div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="bomr">2018年</div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul>
-                            <li style="min-width: 160px;">
-                                01.04 21:52-01.05 22:02
-                            </li>
-                            <li>￥2010</li>
-                            <li>￥1000</li>
-                            <li>￥1010</li>
-                            <li>￥500</li>
-                            <li>￥1000</li>
-                            <li>-</li>
-                            <li>￥500</li>
-                            <li>乔立</li>
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="fixedBox">
-                <ul>
-                    <li>结算人</li>
-                    <li>1</li>
-                    <li class="bomr"></li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li class="bomr"></li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                    <li>8</li>
-                    <li class="bomr"></li>
-                    <li>9</li>
-                    <li>10</li>
-                    <li>11</li>
-                    <li>12</li>
-                </ul>
-            </div>
-        </div>
-        <table id="yj-page-table" data-toggle="table" class="table table-border"></table>
+        <table id="cashSettlementRecord" data-toggle="table" class="table table-border"></table>
     </div>
 </div>
 </body>
@@ -616,12 +383,32 @@
         </ul>
     </div>
 </script>
+<script type="text/html" id="closeCashSeleTmp">
+    <div class="select-box-header">
+        <%if(list.length>0){%>
+        <span class="text"><%=list[0].userName%></span>
+        <%}else{%>
+        <span class="text">暂无员工</span>
+        <%}%>
+        <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+    </div>
+    <div class="optionBox">
+        <ul class="optionUL">
+            <%if(list.length>0){%>
+                <%for(var i = 0;i< list.length;i++){%>
+                    <li value="<%=list[i].id%>"><%=list[i].name%></li>
+                <%}%>
+            <%}%>
+        </ul>
+    </div>
+</script>
 <!-- 当前页面逻辑 -->
 <script>
     var time;//任务奖励参数
     var subid = quakooUser.getUserInfo().psid;//企业/公司id
     var shopId = quakooDb.getItem('sel_ShopId');//门店id
-
+    var locSettlement = {};//资金结算对象
+    var optId;//结算人ID
     var date = new Date();
     time=date.format("yyyyMM");
     //今日概览的时间选择
@@ -643,7 +430,25 @@
     fromBox();
 
     //今日出入账明细
-    getTodayDetails()
+    getTodayDetails();
+    //获取最近一次资金结算记录
+    getLastSettlement();
+    getUser();//结算现金获取所有员工（结算人）
+    function getUser() {
+        quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:shopId,userType:1},function (ret) {
+            if(ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    optId = ret.data[0].id
+                    var data = {list:ret.data};
+                    var html = template("closeCashSeleTmp",data);
+                    $('#closeCashSele').html(html);
+                    selectTag($("#closeCashSele"), function (ret) {
+                        optId = ret.value;
+                    });
+                }
+            }
+        })
+    }
 
     // 数据表单初始化函数
     function fromBox() {
@@ -799,7 +604,6 @@
                 }else {
                     $('#taskTotal').html('0');
                 }
-                console.log("money",ret.data.money)
                 $("#taskReward").bootstrapTable('destroy');
                 $("#taskReward").bootstrapTable({
                     data: ret.data.list,
@@ -848,6 +652,7 @@
         $('.winBox').hide();
         $('.winBox').eq($(self).index()).show();
         chart();
+
     }
 
     //选择type   今日1 昨日2 本周3 ，本月4
@@ -1015,17 +820,6 @@
             });
         }
 
-        $('.btnCloseCash').bind('click', {
-            title: false,
-            popupBox: $('.closeCashPop'),
-            btn: ['确认结算', '取消'],
-            area: ['360px'],
-            move: $('.closeCashPop .titleBox h3'),
-            fn: function (layero) {
-                layero.find('.layui-layer-btn0').addClass('btnRemove');
-                console.log(layero.append('<div class="ov"><span class="fcHui">结算时间</span><span class="fcHui fr">06.17 22:11 - 06.19 21:59</span></div>'))
-            }
-        }, addAlert);
         $('.btnCmyRoyalty').bind('click', {
             title: "提成商品",
             popupBox: $('.cmyRoyaltyPop'),
@@ -1035,29 +829,233 @@
                 layero.find('.layui-layer-btn0').hide();
             }
         }, addAlert);
-
-        // 现金结算记录
-        function settlementRecord(a) {
-            layer.closeAll();
-            var index = layer.open({
-                type: 1,
-                skin: 'layui-layer-demo', //样式类名
-                area: ['720px', '560px'],
-                anim: 0,
-                closeBtn: 0,
-                title: '现金结算记录',
-                shade: 0.03,
-                shadeClose: true, //开启遮罩关闭
-                scrollbar: false,
-                content: $('.settlementRecordPop'),
-                resize: false,
-                btn: ['确认结算', '关闭窗口']
-            })
-        }
-
-        $('.btnSettlementRecord').on('click', settlementRecord);
     }
 
+    //现金结算记录
+    function settlementRecord(a) {
+        var index = layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['720px', '560px'],
+            anim: 0,
+            closeBtn: 0,
+            title: '现金结算记录',
+            shade: 0.01,
+            shadeClose: true, //开启遮罩关闭
+            scrollbar: false,
+            content: $('.settlementRecordPop'),
+            resize: false,
+            btn: ['关闭窗口'],
+            success:function () {
+                getPagerLog();
+            }
+        })
+    }
+    //获取结算记录
+    function getPagerLog() {
+        $("#cashSettlementRecord").bootstrapTable('destroy');
+        $("#cashSettlementRecord").bootstrapTable({
+            url: config.getUrl_settlement_getPagerLog(),
+            method: 'get',
+            classes: "table",
+            pagination: true,            //是否显示分页
+            pageNumber: 1,               //初始化加载第一页，默认第一页
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageSize: 5,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                {field: "", title: "结算时间", align: "left", valign: "middle",formatter:function (val, row, index) {
+                        var html = quakooUtils.formatTimeToMDHM(row.startTime)+'-'+quakooUtils.formatTimeToMDHM(row.endTime);
+                        return html;
+                    }},
+                {
+                    field: "sale",
+                    title: "销售额",
+                    align: "left",
+                    valign: "middle",
+                    formatter: function (val, row, index) {
+                        var html = '¥'+(val).toFixed(2);
+                        return html;
+                    }
+                },
+                {field: "cash", title: "现金收款", align: "left", valign: "middle",formatter:function (val,row,index) {
+                        var html = '¥'+(val).toFixed(2);
+                        return html;
+                    }},
+                {field: "other", title: "其他收款", align: "left", valign: "middle",formatter:function(val,row,index){
+                        var html = '¥'+(val).toFixed(2);
+                        return html;
+                    }},
+                {field: "obligate", title: "原预留金", align: "left", valign: "middle",formatter:function (val, row, index) {
+                        var html = '¥'+(val).toFixed(2);
+                        return html;
+                    }},
+                {field: "payMoney", title: "结算现金", align: "left", valign: "middle",formatter:function (val, row, index) {
+                        var html = '¥'+(val).toFixed(2);
+                        return html;
+                    }},
+                {field: "balanceMoney", title: "差额", align: "left", valign: "middle",formatter:function (val, row, index) {
+                        var html = '¥'+(val).toFixed(2);
+                        return html;
+                    }},
+                {field: "userName", title: "结算人", align: "left", valign: "middle"},
+            ],
+            queryParams: function (params) {
+                params.subId = shopId;
+                params.page = params.offset / params.limit + 1;
+                params.size = params.limit;
+                params.token = quakooUser.getUserInfo().token;
+                return params
+            },
+        });
+
+    }
+    //获取最近一次结算
+    function getLastSettlement() {
+        quakooData.ajaxGetData(config.getUrl_settlement_loadClient(),{subId:shopId},function (ret) {
+            if(ret&&ret.success){
+                var time = quakooUtils.formatTimeToMDHM(ret.data.startTime)+"-"+quakooUtils.formatTimeToMDHM(ret.data.endTime);
+                $("#noSettlement").html(ret.data.balanceMoney);
+                $("#cashMoney").html(ret.data.payMoney);
+                $("#cashNum").html(ret.data.num);
+                $("#lastTime").html(time)
+            }
+
+        })
+    }
+    //结算现金
+    function diaSettlement() {
+        var index = layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['410px','400px'],
+            anim: 0,
+            closeBtn: 0,
+            title: '',
+            shade: 0.03,
+            shadeClose: true, //开启遮罩关闭
+            scrollbar: false,
+            content: $('.closeCashPop'),
+            btn: ['确认结算', '取消'],
+            move: $('.closeCashPop .titleBox h3'),
+            resize: false,
+            yes: function (index) {
+                settlement(index);
+            },
+            btn2: function () {
+
+            },
+            success: function (layero, index) {
+                getUser();
+                $('#timeSale').html("¥0");
+                $('#timeCash').html("¥0");
+                $('#timeAli').html("¥0");
+                $('#timeWx').html("¥0");
+                $('#timeOther').html("¥0");
+                $("#setTotal").val('');
+                $("#setcha").val('');
+                $("#setyuliu").val('');
+                $("#setjiao").val('');
+                $(".sel-time-box .yj-date span").html('开始时间-结束时间');
+                locSettlement ={};
+                layero.find('.layui-layer-btn0').addClass('btnRemove');
+                var date = new dateRange("#saletime", true);
+                date.init();
+                $(".closeCashPop .yj-date-btn .btn.btn-primary").click(function () {
+                    var startTime = date.getTime()[2];
+                    var endTime = date.getTime()[3];
+                    locSettlement.startTime = startTime;
+                    locSettlement.endTime = endTime;
+                    getMoney(startTime,endTime);
+                })
+
+            }
+        });
+    }
+    function getMoney(startTime,endTime) {
+        quakooData.ajaxGetData(config.getUrl_order_calculateOrders(),{startTime:startTime,endTime:endTime,subId:shopId},function (ret) {
+            if(ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    for(var i in ret.data){
+                        locSettlement[i] = ret.data[i];
+                    }
+                    locSettlement.total = ret.data.cash;
+                    $('#timeSale').html("¥"+locSettlement.sale);
+                    $('#timeCash').html("¥"+locSettlement.cash);
+                    $('#timeAli').html("¥"+locSettlement.ali);
+                    $('#timeWx').html("¥"+locSettlement.wx);
+                    $('#timeOther').html("¥"+locSettlement.other);
+                    $("#setTotal").val(locSettlement.total);
+                    countCha()
+                    $("#setyuliu").on("input  propertychange",function(){
+                        countCha();
+                        locSettlement.obligate = $("#setyuliu").val();
+                    });
+                    $("#setjiao").on("input  propertychange",function(){
+                        countCha();
+                        locSettlement.payMoney = $("#setjiao").val();
+                    });
+                }else{
+                    locSettlement.sale = 0;
+                    locSettlement.cash = 0;
+                    locSettlement.ali = 0;
+                    locSettlement.wx = 0;
+                    locSettlement.other = 0;
+                    locSettlement.total = 0
+                }
+            }
+        })
+    }
+    function countCha() {
+        var money= (locSettlement.total-$("#setyuliu").val()-$("#setjiao").val()).toFixed(2);
+        if(money<0){
+            money = 0;
+        }else{
+            money =money
+        }
+        locSettlement.balanceMoney = money;
+        $("#setcha").val(locSettlement.balanceMoney);
+    }
+    //进行结算
+    function settlement(index) {
+        var param ={};
+        param.subId= shopId;
+        param.optId = optId;
+        param.sale = locSettlement.sale;
+        param.cash = locSettlement.cash;
+        param.ali = locSettlement.ali;
+        param.wx = locSettlement.wx;
+        param.other = locSettlement.other;
+        param.total = locSettlement.total;
+        param.obligate = locSettlement.obligate;
+        param.payMoney = locSettlement.payMoney;
+        param.balanceMoney = locSettlement.balanceMoney;
+        param.num = locSettlement.num;
+        param.startTime = locSettlement.startTime;
+        param.endTime = locSettlement.endTime;
+        if(quakooUtils.isBlack(param.startTime)||quakooUtils.isBlack(param.endTime)){
+            layer.msg("请选择时间");
+            return;
+        }
+        if(quakooUtils.isBlack(param.sale)){
+            layer.msg("此时间段内没有销售额");
+            return;
+        }
+        param.status = 0;
+        quakooData.ajaxGetData(config.getUrl_settlement_add(),param,function (ret) {
+            if(ret.success){
+                layer.msg('结算成功',{icon:1});
+                layer.close(index)
+            }
+        })
+    }
     //销售奖励
     function renderSaleIncentive(){
         quakooData.ajaxGetData(config.getUrl_product_saleReward(),{subid:shopId},function (ret) {

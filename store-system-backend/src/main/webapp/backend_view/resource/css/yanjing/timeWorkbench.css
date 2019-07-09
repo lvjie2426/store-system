@@ -515,6 +515,34 @@ header ul li {
 
 /* 弹窗样式 */
 /* 现金结算弹窗 */
+.closeCashPop .sel-time-box{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding:5px 16px;
+    width:100%;
+    height:40px;
+    clear: both;
+}
+.closeCashPop .time-text{
+    float: left;
+    width:100px;
+    height: 30px;
+    line-height: 30px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+
+.closeCashPop .sel-time-box .yj-date{
+    width: 164px;
+    float: left;
+    border: 1px solid rgba(236, 236, 244, 1);}
+.closeCashPop .sel-time-box .yj-demo2-time{
+    float:left;
+    margin:0;
+}
 .closeCashPop,
 .cmyRoyaltyPop {
     display: none;
@@ -537,7 +565,18 @@ header ul li {
     z-index: 997;
     background: #fff;
 }
+.closeCashPop .selectBox{
+    width:100px;
 
+}
+.closeCashPop .optionUL li{
+    width:100px;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
 .closeCashPop .titleBox h3,
 .closeCashPop .titleBox span.fcHui {
     display: inline-block;
@@ -546,7 +585,7 @@ header ul li {
     line-height: 44px;
 }
 .closeCashPop .titleBox h3{
-    width: 50%;
+    width: 25%;
 }
 
 .closeCashPop .selectBox {
