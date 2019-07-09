@@ -3627,6 +3627,7 @@
         submitInfo.desc = paymentNote;
         console.log("支付接口参数：", submitInfo);
         if (payType == 1) {
+            submitInfo.payTypesJson = "[1]";
             quakooData.ajaxGetData(config.getUrl_order_handleAliBarcodeOrder(), submitInfo, function (ret) {
                 console.log("支付宝付款返回值：", ret);
                 if (ret && ret.success) {
@@ -3695,7 +3696,7 @@
                 }
             });
         } else if (payType == 2) {
-            alert("微信");
+            submitInfo.payTypesJson = "[2]";
             quakooData.ajaxGetData(config.getUrl_order_handleWxBarcodeOrder(), submitInfo, function (ret) {
                 console.log("微信支付返回值：", ret);
                 if (ret && ret.success) {
