@@ -1077,9 +1077,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
     @Override
     public List<ClientOrder> getTemporaryOrder(long subid) throws Exception {
-        List<Order> list=   orderDao.getTemporaryOrder(subid,Order.makestatus_temporary);
-
-        return  transformClientTem(list);
+        List<Order> list = orderDao.getTemporaryOrder(subid, Order.makestatus_temporary);
+        return transformClientTem(list);
     }
 
     @Override
