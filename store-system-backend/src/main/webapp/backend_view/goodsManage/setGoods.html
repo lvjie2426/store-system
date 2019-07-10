@@ -546,7 +546,9 @@
         html.push('<div class="selectBox" id="out-shop"><div class="select-box-header"><span class="text">'+outSubName+'</span><i class="iconfont icon-ico_arrow_down" id="jt"></i>')
         html.push('</div><div class="optionBox"><ul class="optionUL">')
         for (var i = 0; i < shopData.length; i++) {
-            html.push('<li value="' + shopData[i].id + '">' + shopData[i].name + '</li>');
+            if(shopId!=shopData[i].id){
+                html.push('<li value="' + shopData[i].id + '">' + shopData[i].name + '</li>');
+            }
         }
         html.push('</ul></div></div><span class="person">选择门店</span>')
         html.push('</div></div>')

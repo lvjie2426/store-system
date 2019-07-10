@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-         // this.serverUrl = "http://192.168.1.17:20005";
+         this.serverUrl = "http://192.168.1.17:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -59,6 +59,8 @@ var Config = (function(_super){
     //=======================销售开单 开始====================
     /**获取临时订单*/
     _proto.getUrl_order_getTemporaryOrder = function(){return this.serverUrl + '/order/getTemporaryOrder';};
+    /**根据手机和姓名 查找门店下的推荐人*/
+    _proto.getUrl_user_getUserByNamePhone = function(){return this.serverUrl + '/user/getUserByNamePhone';};
     /**保存验光信息*/
     _proto.getUrl_optometryinfo_add = function(){return this.serverUrl + '/optometryinfo/add';};
     /**获取某个用户的验光记录*/

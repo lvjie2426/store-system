@@ -741,7 +741,7 @@
                 </div>
                 <div class="award">
                     <div class="award-left">
-                        <div class="award-text">奖励</div>
+                        <div class="award-text">奖励（个人）</div>
                         <%if(list.amount){%>
                         <input type="number" placeholder="输入金额" id="amount" value="<%=list.amount%>">
                         <%}else{%>
@@ -1677,28 +1677,35 @@
             if (salesSelect == 1) {
                 //销售额奖励
                 taskLocData.amountType = 3;
+                $("#target1").val("");
                 $("#saleroom-box")[0].style.display = "block";
                 $("#saleVolume-box")[0].style.display = "none";
                 $("input:radio[name='salesNum']").click(function(){
                     var salesNumSelect = $("input:radio[name='salesNum']:checked").attr("data-id");
                     if(salesNumSelect==1){//全店总销售额
                         taskLocData.amountType = 3;
+                        $("#target2").val("")
                     }else if(salesNumSelect == 2){//销售额选
                         taskLocData.amountType = 2;
+                        $("#target3").val("")
                     }
                 })
             } else if (salesSelect == 2) {//销售量奖励
                 taskLocData.amountType = 1;
                 $("#saleroom-box")[0].style.display = "none";
                 $("#saleVolume-box")[0].style.display = "block";
+                $("#target2").val("");
+                $("#target3").val("");
             }
         });
         $("input:radio[name='salesNum']").click(function(){
             var salesNumSelect = $("input:radio[name='salesNum']:checked").attr("data-id");
             if(salesNumSelect==1){//全店总销售额
                 taskLocData.amountType = 3;
+                $("#target2").val("")
             }else if(salesNumSelect == 2){//销售额选
                 taskLocData.amountType = 2;
+                $("#target3").val("")
             }
         });
         date2 = new dateRange(".yj-demo2-time", true);

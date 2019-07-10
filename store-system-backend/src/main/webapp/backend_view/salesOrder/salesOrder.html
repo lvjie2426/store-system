@@ -163,14 +163,14 @@
                     </div>
                     <div class="recommenderBox" id="cusInfoReferrer">
                         <span class="tuiJianRen">推荐人</span>
-                        <form action="">
-                            <input type="text" placeholder="搜索推荐人" class="layer-input">
-                            <div class="search-select" style="display: none;height:auto" id="">
+                        <div class="search-select">
+                            <input type="text" placeholder="搜索推荐人" class="layer-input" id="searchReferrer">
+                            <div class="search-content" style="display: none;height:auto" id="tuijianren">
                                 <ul>
-                                    <li><span></span></li>
+                                    <li></li>
                                 </ul>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -1209,10 +1209,15 @@
     <%}%>
 </script>
 <!--推荐人-->
-<script type="text/html" id="recommenderBoxUl">
-    <%for(var i=0;i< list.length;i++){%>
-    <li value="<%=list[i].id%>"><%=list[i].name%></li>
-    <%}%>
+<script type="text/html" id="cusInfoReferrerTmp">
+    <ul>
+        <%if(list.length>0){%>
+        <%for(var i =0;i< list.length;i++){%>
+        <li onclick="renderReffer(this)" data-id="<%=list[i].id%>"><%=list[i].name%></li>
+        <%}%>
+        <%}%>
+    </ul>
+
 </script>
 <!--验光信息表格-->
 <script type="text/html" id="ygTmp">
@@ -1727,7 +1732,7 @@
             cusJob = ret.value;
         });
         getTemporaryOrder();                                 //获取门店下临时订单
-        getShopStaff();                                      //获取门店下员工列表（推荐人==员工）
+        getReferrer();//推荐人搜索
         getUsersByJob("验光师", 1, 1);                         //获取门店下的验光师
         renderYgTable(LocYgInfo.yuanTable, "#tableContent", true);  //验光信息远用table
         renderYgTable(LocYgInfo.yinTable, "#tableContent");   //验光信息隐形table
@@ -1945,7 +1950,8 @@
         });
     }
 
-    /**获取门店下推荐人*/
+/*
+    /!**获取门店下推荐人*!/
     function getShopStaff() {
         quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {sid: subid, userType: 1}, function (ret) {
             if (ret && ret.success) {
@@ -1958,7 +1964,40 @@
             }
         })
     }
-
+*/
+    function getReferrer() {
+        $('#searchReferrer').bind('input propertychange', function(){
+            var keyword = $(this).val();
+            if(quakooUtils.isNotBlack(keyword)){
+                quakooData.ajaxGetData(config.getUrl_user_getUserByNamePhone(),{subId:subid,search:keyword},function(ret){
+                    console.log("souduo",ret);
+                    if(ret.success){
+                        if(quakooUtils.isNotBlack(ret.data)){
+                            var data = {list:ret.data};
+                            var html = template("cusInfoReferrerTmp",data);
+                            $("#tuijianren").html(html);
+                            $("#tuijianren").show();
+                            $("body").click(function () {
+                                $("#tuijianren")[0].style.display = "none";
+                            })
+                        }else{
+                            $("#tuijianren").hide();
+                        }
+                    }
+                })
+            }else{
+                $("#tuijianren").hide();
+            }
+        });
+    }
+    function renderReffer(self){
+        var info = {};
+        info.text= $(self).html();
+        info.id = $(self).attr("data-id");
+        $("#searchReferrer").val(info.text);
+        referrer = info.text;
+        $("#tuijianren").hide();
+    }
     /**接口——获取短信验证码*/
     function getSms() {
         if (!isRen) {
