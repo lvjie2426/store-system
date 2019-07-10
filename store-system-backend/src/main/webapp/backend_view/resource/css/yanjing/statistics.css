@@ -1081,7 +1081,7 @@ div .head{
   background: rgba(0,0,0,0.8);
   border-radius: 2px;
   padding: 0 6px;
-  top: 10%;
+  top: -28px;
   display: none;
   z-index: 999;
 }
