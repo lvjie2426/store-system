@@ -51,6 +51,8 @@ public class Mission implements Serializable{
 
     private int amount;//奖励金额(分)
 
+    private int fine;//处罚金额(分)
+
     private int amountType;//奖励类型
 
     private long startTime;
