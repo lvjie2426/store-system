@@ -58,7 +58,8 @@ public class Order implements Serializable {
 
     private String orderNo; // 支付系统订单编号
 
-    private int payType; //支付类型
+    @HyperspaceColumn(isJson = true)
+    private List<Integer> payTypes; //支付类型
 
     private int payMode; //支付方式
 
@@ -77,7 +78,14 @@ public class Order implements Serializable {
     private int totalPrice;//总金额(分)
     private double discount;//折扣
     private int dicountPrice;//折后金额(分)0
-    private int price;//实际支付金额(分)
+
+    private int aliPrice;//实际支付金额(分)
+    private int wxPrice;//实际支付金额(分)
+    private int cashPrice;//现金(分)
+    private int storedPrice;//储值卡(分)
+
+    private int arrears;//欠款金额(分)
+
     private long couponid;//营销券id
     private int marketingType;//促销类型
     private int makeStatus;//加工状态/取货状态
@@ -103,7 +111,6 @@ public class Order implements Serializable {
 
     private String detail; //返回详情
 
-    private int arrears;//欠款金额(分)
 
     @SortKey
     private long ctime;

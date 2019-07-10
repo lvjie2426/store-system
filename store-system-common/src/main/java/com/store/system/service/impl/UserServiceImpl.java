@@ -16,6 +16,7 @@ import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
+import com.store.system.service.OrderService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
@@ -59,6 +60,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     protected JdbcTemplate jdbcTemplate;
+
+    @Resource
+    private OrderService orderService;
 
     @Resource
     private OrderDao orderDao;
@@ -748,7 +752,8 @@ public class UserServiceImpl implements UserService {
         List<Order> orders = orderDao.getUserFinishOrders(user.getId(),Order.makestatus_qu_yes);
         if(orders.size()>0){
             clientUser.setPayCount(orders.size());
-            clientUser.setLastMoney(orders.get(0).getPrice());//上次消费金额
+            Map<String,Integer> map = orderService.calculateSale(Lists.newArrayList(orders.get(0)));
+            clientUser.setLastMoney(map.get("sale"));//上次消费金额
         }
         //推荐人
         if(user.getRecommender()>0){
@@ -1129,7 +1134,8 @@ public class UserServiceImpl implements UserService {
                 for(Order order:orders){
                     //判断订单是否当前月份
                     if(inExistence(date,order.getPayTime())){
-                        personal += order.getPrice()/100;
+                        Map<String,Integer> saleMap = orderService.calculateSale(Lists.newArrayList(order));
+                        personal += saleMap.get("sale")/100;
                     }
                 }
                 //判断是否有完成任务

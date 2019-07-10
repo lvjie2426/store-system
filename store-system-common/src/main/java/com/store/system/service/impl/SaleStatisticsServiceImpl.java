@@ -187,8 +187,10 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
             if (res.getSale() - last.getSale() >= 0) {
                 res.setSaleStatus(ClientSaleStatistics.saleStatus_increase);
                 double subSale = ArithUtils.sub(res.getSale(), last.getSale());
-                double rate = ArithUtils.div(subSale, last.getSale(), 2);
-                res.setSaleRate(rate);
+                if(last.getSale()>0) {
+                    double rate = ArithUtils.div(subSale, last.getSale(), 2);
+                    res.setSaleRate(rate);
+                }
             } else {
                 res.setSaleStatus(ClientSaleStatistics.saleStatus_decrement);
                 double subSale = ArithUtils.sub(last.getSale(), res.getSale());
@@ -199,13 +201,17 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
             if (res.getNum() - last.getNum() >= 0) {
                 res.setNumStatus(ClientSaleStatistics.numStatus_increase);
                 int subNum = res.getNum() - last.getNum();
-                double rate = ArithUtils.div((double) subNum, (double) last.getNum(), 2);
-                res.setNumRate(rate);
+                if(last.getNum()>0) {
+                    double rate = ArithUtils.div((double) subNum, (double) last.getNum(), 2);
+                    res.setNumRate(rate);
+                }
             } else {
                 res.setNumStatus(ClientSaleStatistics.saleStatus_decrement);
                 int subNum = res.getNum() - last.getNum();
-                double rate = ArithUtils.div((double) subNum, (double) last.getNum(), 2);
-                res.setNumRate(rate);
+                if(last.getNum()>0) {
+                    double rate = ArithUtils.div((double) subNum, (double) last.getNum(), 2);
+                    res.setNumRate(rate);
+                }
             }
         }
         return res;

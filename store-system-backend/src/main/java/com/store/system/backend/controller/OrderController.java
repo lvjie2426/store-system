@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.CalculateOrder;
 import com.store.system.bean.InventoryOutBillItem;
 import com.store.system.bean.OrderTypeInfo;
 import com.store.system.client.ClientOrder;
@@ -160,26 +161,25 @@ public class OrderController extends BaseController {
      */
     @RequestMapping("/saveOrder")
     public ModelAndView saveOrder(HttpServletRequest request, HttpServletResponse response,
-                                      Order order,
-                                  @RequestParam( value = "skuidsList")   String skuidsList,
-                                  @RequestParam( value = "surchargesJson",defaultValue = "")   String surchargesJson
-
-
-    ) throws Exception {
-
+                                  Order order,
+                                  @RequestParam(value = "skuidsList") String skuidsList,
+                                  @RequestParam(value = "surchargesJson", defaultValue = "") String surchargesJson) throws Exception {
         try {
             List<Surcharge> billItems = Lists.newArrayList();
             List<OrderSku> orderskuids = Lists.newArrayList();
-            if(StringUtils.isNotBlank(surchargesJson)) {
-                billItems = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
+            if (StringUtils.isNotBlank(surchargesJson)) {
+                billItems = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {
+                });
                 order.setSurcharges(billItems);
-            }if(StringUtils.isNotBlank(skuidsList)) {
-                orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
+            }
+            if (StringUtils.isNotBlank(skuidsList)) {
+                orderskuids = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {
+                });
                 order.setSkuids(orderskuids);
             }
             return this.viewNegotiating(request, response, new ResultClient(orderService.saveOrder(order)));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
 
     }
@@ -256,14 +256,15 @@ public class OrderController extends BaseController {
 
     //支付宝条形码支付
     @RequestMapping("/handleAliBarcodeOrder")
-    public ModelAndView handleAliBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
-                                              @RequestParam(name = "subid")long subid, String authCode, int type, String desc, int price,
-                                              Order order,
-                                              @RequestParam( value = "skuidsList") String skuidsList,
-                                              @RequestParam( value = "surchargesJson",defaultValue = "") String surchargesJson)throws Exception{
+    public ModelAndView handleAliBarcodeOrder(HttpServletRequest request, HttpServletResponse response,
+                                              long subid, String authCode, int type, String desc, int price,Order order,
+                                              @RequestParam(value = "skuidsList") String skuidsList,
+                                              @RequestParam(value = "surchargesJson", defaultValue = "") String surchargesJson,
+                                              @RequestParam(value = "payTypesJson") String payTypesJson) throws Exception {
         try {
             List<Surcharge> surcharges = Lists.newArrayList();
             List<OrderSku> skus = Lists.newArrayList();
+            List<Integer> types = Lists.newArrayList();
             if (StringUtils.isNotBlank(surchargesJson)) {
                 surcharges = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
                 order.setSurcharges(surcharges);
@@ -272,11 +273,15 @@ public class OrderController extends BaseController {
                 skus = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(skus);
             }
-            OrderTypeInfo typeInfo = new OrderTypeInfo(order.getUid(), 0, order.getPrice());
+            if (StringUtils.isNotBlank(payTypesJson)) {
+                types = JsonUtils.fromJson(payTypesJson, new TypeReference<List<Integer>>() {});
+                order.setPayTypes(types);
+            }
+            OrderTypeInfo typeInfo = new OrderTypeInfo(order.getUid(), 0, order.getAliPrice());
             ResultClient res = orderService.handleAliBarcodeOrder(subid, authCode, type, OrderTypeInfo.getJsonStr(typeInfo), "商品购买订单", desc, price, order);
-            return this.viewNegotiating(request,response,res);
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+            return this.viewNegotiating(request, response, res);
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
         }
     }
 
@@ -304,14 +309,15 @@ public class OrderController extends BaseController {
 
     ///////////////微信条形码支付//////////////////
     @RequestMapping("/handleWxBarcodeOrder")
-    public ModelAndView handleWxBarcodeOrder(HttpServletRequest request,HttpServletResponse response,
-                                             @RequestParam(name = "subid")long subid, String authCode, int type, String desc, int price,
-                                             Order order,
-                                             @RequestParam( value = "skuidsList") String skuidsList,
-                                             @RequestParam( value = "surchargesJson",defaultValue = "") String surchargesJson)throws Exception{
+    public ModelAndView handleWxBarcodeOrder(HttpServletRequest request, HttpServletResponse response,
+                                             long subid, String authCode, int type, String desc, int price, Order order,
+                                             @RequestParam(value = "skuidsList") String skuidsList,
+                                             @RequestParam(value = "surchargesJson", defaultValue = "") String surchargesJson,
+                                             @RequestParam(value = "payTypesJson") String payTypesJson) throws Exception {
         try {
             List<Surcharge> surcharges = Lists.newArrayList();
             List<OrderSku> skus = Lists.newArrayList();
+            List<Integer> types = Lists.newArrayList();
             if (StringUtils.isNotBlank(surchargesJson)) {
                 surcharges = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
                 order.setSurcharges(surcharges);
@@ -320,11 +326,15 @@ public class OrderController extends BaseController {
                 skus = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(skus);
             }
-            OrderTypeInfo typeInfo = new OrderTypeInfo(order.getUid(), 0, order.getPrice());
-            ResultClient res = orderService.handleWxBarcodeOrder(request,subid, authCode, type, OrderTypeInfo.getJsonStr(typeInfo), "商品购买订单", desc, price, order);
-            return this.viewNegotiating(request,response,res);
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+            if (StringUtils.isNotBlank(payTypesJson)) {
+                types = JsonUtils.fromJson(payTypesJson, new TypeReference<List<Integer>>() {});
+                order.setPayTypes(types);
+            }
+            OrderTypeInfo typeInfo = new OrderTypeInfo(order.getUid(), 0, order.getWxPrice());
+            ResultClient res = orderService.handleWxBarcodeOrder(request, subid, authCode, type, OrderTypeInfo.getJsonStr(typeInfo), "商品购买订单", desc, price, order);
+            return this.viewNegotiating(request, response, res);
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
         }
     }
 
@@ -350,6 +360,27 @@ public class OrderController extends BaseController {
         }
     }
 
+
+    /***
+     * 计算时间段内订单的收入
+     * @Param: [request, response, startTime, endTime, subId]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/7/8
+     */
+    @RequestMapping("/calculateOrders")
+    public ModelAndView calculateOrders(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(required = false, value = "startTime", defaultValue = "0") long startTime,
+                                        @RequestParam(required = false, value = "endTime", defaultValue = "0") long endTime,
+                                        long subId) throws Exception {
+        try {
+            CalculateOrder res = orderService.calculateOrders(subId, startTime, endTime);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
 
 
 }

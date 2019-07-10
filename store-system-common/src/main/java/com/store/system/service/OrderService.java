@@ -2,10 +2,13 @@ package com.store.system.service;
 
 
 import com.quakoo.baseFramework.model.pagination.Pager;
-import com.store.system.bean.SaleReward;
+import com.store.system.bean.CalculateOrder;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ResultClient;
-import com.store.system.model.*;
+import com.store.system.model.Order;
+import com.store.system.model.OrderSku;
+import com.store.system.model.RefundOrder;
+import com.store.system.model.Surcharge;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -55,4 +58,7 @@ public interface OrderService {
 
     public Map<String,Object> saleReward(long subid)throws Exception;
 
+    public CalculateOrder calculateOrders(long subId, long startTime, long endTime) throws Exception;
+
+    public Map<String,Integer> calculateSale(List<Order> orders) throws Exception;
 }

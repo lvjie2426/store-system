@@ -93,7 +93,7 @@ public class SaleStatisticsJob implements InitializingBean {
                 skuIds.add(sku.getSkuid());
             }
             ClientOrder client =  orderService.countPrice(order);
-            sale += client.getPrice();
+//            sale += client.getPrice();
         }
 
         perPrice = ArithUtils.div((double) sale,(double) orders.size(),2);
