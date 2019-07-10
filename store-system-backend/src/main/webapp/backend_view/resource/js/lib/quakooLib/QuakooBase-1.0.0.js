@@ -549,8 +549,8 @@ var QuakooUtils = (function(){
     _proto.formatTimeToDayDate = function (time){
         return new Date(time).format("MM月dd日 hh:mm");
     };
-    _proto.formatTimeToDayDate = function (time){
-        return new Date(time).format("MM月dd日 hh:mm");
+    _proto.formatTimeToMonthDian = function (time){
+        return new Date(time).format("MM.dd hh:mm");
     };
 
 

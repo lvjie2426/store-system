@@ -875,7 +875,7 @@
             clickToSelect: true,
             columns: [
                 {field: "", title: "结算时间", align: "left", valign: "middle",formatter:function (val, row, index) {
-                        var html = quakooUtils.formatTimeToMDHM(row.startTime)+'-'+quakooUtils.formatTimeToMDHM(row.endTime);
+                        var html = quakooUtils.formatTimeToMonthDian(row.startTime)+'-'+quakooUtils.formatTimeToMonthDian(row.endTime);
                         return html;
                     }},
                 {
@@ -924,7 +924,7 @@
     function getLastSettlement() {
         quakooData.ajaxGetData(config.getUrl_settlement_loadClient(),{subId:shopId},function (ret) {
             if(ret&&ret.success){
-                var time = quakooUtils.formatTimeToMDHM(ret.data.startTime)+"-"+quakooUtils.formatTimeToMDHM(ret.data.endTime);
+                var time = quakooUtils.formatTimeToMonthDian(ret.data.startTime)+"-"+quakooUtils.formatTimeToMonthDian(ret.data.endTime);
                 $("#noSettlement").html(ret.data.balanceMoney);
                 $("#cashMoney").html(ret.data.payMoney);
                 $("#cashNum").html(ret.data.num);
@@ -1018,12 +1018,12 @@
     }
     //计算差额
     function countCha() {
-        var money= (locSettlement.total-$("#setyuliu").val()-$("#setjiao").val()).toFixed(2);
-        if(money<0){
+        var money= (locSettlement.total+$("#setyuliu").val()*1-$("#setjiao").val()).toFixed(2);
+        /*if(money<0){
             money = 0;
         }else{
             money =money
-        }
+        }*/
         locSettlement.balanceMoney = money;
         $("#setcha").val(locSettlement.balanceMoney);
     }

@@ -30,7 +30,7 @@ var Config = (function(_super){
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-         this.serverUrl = "http://192.168.1.17:20005";
+         // this.serverUrl = "http://192.168.1.17:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -396,17 +396,3 @@ var Config = (function(_super){
 
     return Config;
 })(QuakooConfig);
-
-var Utils = (function(_super){
-    function Utils(){
-        Utils.__super.call(this);
-    }
-    var _proto = Utils.prototype;
-
-    Quakoo.class(Utils,'Utils',_super);
-    /***/
-    _super.prototype.formatTimeToMDHM = function(time){
-        return new Date(time).format("MM.dd hh:mm");
-    };
-    return Utils;
-})(QuakooUtils);
