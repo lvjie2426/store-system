@@ -103,6 +103,7 @@ input{
     color: #393953;
     font-size: 12px;
     margin: 0;width: 100%;
+    white-space: nowrap;
 }
 
 .optionBox .zi_dingyi {

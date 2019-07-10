@@ -1,6 +1,5 @@
 package com.store.system.service.ext.impl;
 
-import com.google.common.collect.Lists;
 import com.store.system.bean.OrderTypeInfo;
 import com.store.system.dao.ProductSPUDao;
 import com.store.system.model.FinanceLog;
@@ -13,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Service
 public class OrderPayServiceImpl implements OrderPayService {
@@ -37,8 +35,10 @@ public class OrderPayServiceImpl implements OrderPayService {
             OrderTypeInfo orderTypeInfo = OrderTypeInfo.getObject(order.getTypeInfo());
             long uid = orderTypeInfo.getUid();
             long money = orderTypeInfo.getMoney();
-            financeLogService.insertLog(FinanceLog.ownType_user, uid, order.getPayType(), FinanceLog.type_in, 0, money,
-                    "用户支付", true);
+            for(Integer type:order.getPayTypes()) {
+                financeLogService.insertLog(FinanceLog.ownType_user, order.getSubid(), uid, type, FinanceLog.type_in, 0, money,
+                        "用户支付", true);
+            }
         }
     }
 

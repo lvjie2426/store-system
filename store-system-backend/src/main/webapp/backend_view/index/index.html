@@ -84,7 +84,7 @@
                 <li class="nav-header">
                     <div class="selectBox" id="selectBox">
                         <div class="select-box-header">
-                            <span class="text" id="shopDefaultText">精益眼镜旗舰店</span> <i
+                            <span class="text" id="shopDefaultText"></span> <i
                                 class="iconfont icon-ico_arrow_down"></i>
                         </div>
                         <div class="optionBox">
@@ -94,9 +94,9 @@
                     </div>
                 </li>
                 <li class="nav-header nav-header-admin">
-                    <div class="selectBox selectBoxNoBorder" id="select-admin">
+                    <div class="selectBox selectBoxNoBorder" id="select-admin" style="width: auto">
                         <div class="select-box-header">
-                            <span class="">管理员账户</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            <span class="" id="name" style="margin-right: 10px;max-width: none">管理员账户</span> <i class="iconfont icon-ico_arrow_down"></i>
                         </div>
                         <div class="optionBox">
                             <ul class="optionUL">
@@ -243,6 +243,7 @@
     if (quakooUtils.isBlack(quakooDb.getItem('sel_ShopId'))) {
         quakooDb.setItem("sel_ShopId", quakooUser.getUserInfo().sid); //门店ID
     }
+    $("#name").html(quakooUser.getUserInfo().name)
     getSubordinateStore();//获取公司下门店
     /**获取公司下门店列表*/
     function getSubordinateStore() {
@@ -264,6 +265,7 @@
                         console.log(ret);
                         quakooDb.setItem("sel_ShopId", parseInt(ret.value)); //sava 门店ID
                         quakooDb.setItem("sel_ShopName", ret.text); //save 门店名字
+                        location.reload();
                     });
                 }
             }
@@ -312,6 +314,8 @@
 
     //退出
     function logout() {
+        quakooDb.removeItem('sel_ShopId')
+        quakooDb.removeItem('sel_ShopName')
         quakooUser.removeUserInfo()
         window.location.href = "../login/login.html";
     }

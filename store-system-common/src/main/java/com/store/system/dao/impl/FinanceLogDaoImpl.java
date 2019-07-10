@@ -21,10 +21,21 @@ public class FinanceLogDaoImpl implements FinanceLogDao {
 
     @Override
     public void insert(FinanceLog financeLog) throws DataAccessException {
-        String sql = "insert into finance_log (ownType, ownId, `mode`, `type`, subType, money, `desc`, `time`) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into finance_log (ownType, ownId, `mode`, `type`, subType, money, `desc`, `day`, `time`) values (?, ?, ?, ?, ?, ?, ?, ?. ?)";
         jdbcTemplate.update(sql, financeLog.getOwnType(), financeLog.getOwnId(), financeLog.getMode(), financeLog.getType(),
                 financeLog.getSubType(), financeLog.getMoney(), financeLog.getDesc(), financeLog.getTime());
     }
+
+    @Override
+    public List<FinanceLog> getDay(long subId, long day) throws DataAccessException {
+        String sql = "select * from finance_log where `day` = ? and `subId` = ? order by `time` asc";
+        List<Object> params = Lists.newArrayList();
+        params.add(day);
+        params.add(subId);
+        List<FinanceLog> logs = this.jdbcTemplate.query(sql, params.toArray(), rowMapper);
+        return logs;
+    }
+
 
     @Override
     public List<FinanceLog> getBetweenTimeLogs(int mode, long startTime, long endTime) throws DataAccessException {

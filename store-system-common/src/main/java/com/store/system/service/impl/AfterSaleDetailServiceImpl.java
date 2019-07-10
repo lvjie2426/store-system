@@ -81,7 +81,7 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
             client.setUserName(userMap.get(order.getUid()).getName());
             client.setUserAge(userMap.get(order.getUid()).getAge());
             client.setPhone(userMap.get(order.getUid()).getPhone());
-            client.setPrice(String.valueOf(order.getPrice()*100));
+//            client.setPrice(String.valueOf(order.getPrice()*100));
             client.setDiscount(order.getDiscount());
             OptometryInfo optometryInfo = optometryInfoDao.load(order.getOiId());
             if(optometryInfo != null && optometryInfo.getOptUid()>0) {
