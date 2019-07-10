@@ -73,6 +73,7 @@
                 </div>
             </div>
 
+            <div class="hr-line-dashed"></div>
             <div class="form-group" id="roleDiv">
                 <label class="col-sm-2 control-label">选择角色</label>
                 <div class="col-sm-4">
@@ -381,7 +382,7 @@
             $("#phoneDiv").hide();
             if(psid>0&&sid>0) {
                 getAllRole(sid);
-            }else{
+            }else if(psid>0){
                 getAllRole(psid);
             }
         }
@@ -389,7 +390,8 @@
 
     function getAllRole(sid,callBack){
         var url = serverUrl + '/role/getAllRoles?token=' + encodeURIComponent(quakooUser.getUserInfo().token);
-        quakooData.ajaxGetData(url,{sid:sid},function (data,param){
+        quakooData.ajaxGetData(url,{sid:sid},function (ret,param){
+            var data = ret.data;
             if(data.length>0){
                 var list = [];
                 for(var i = 0;i< data.length;i++){
@@ -455,11 +457,13 @@
                     var userType = $("#userType").val();    //用户类型
                     var name =  $("#name").val();           //用户名称
                     var password =  $("#password").val();   //密码
+                    var role = $("#role").val();
 
                     if(isBlank(psid)){
                         layer.msg('请选择所属公司', {icon: 2,time:1000, shade: 0.01});
                         return;
                     }
+
 
 //                    if(isBlank(sid)){
 //                        layer.msg('请选择所属门店', {icon: 2,time:1000, shade: 0.01});
@@ -497,6 +501,10 @@
                     if(userType==0){
                         param.phone = phone;
                     }else {
+                        if(isBlank(role)){
+                            layer.msg('请选择角色', {icon: 2,time:1000, shade: 0.01});
+                            return;
+                        }
                         param.userName = account;
                     }
                     param.name = name;
