@@ -21,6 +21,7 @@ import com.store.system.service.PermissionService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
 import com.store.system.util.FileDownload;
+import com.store.system.util.FilterStringUtil;
 import com.store.system.util.SmsUtils;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,10 +36,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -256,7 +255,7 @@ public class UserController extends BaseController {
     @RequestMapping("/getAllUser")
     public ModelAndView getAllUser(HttpServletRequest request,HttpServletResponse response,
                                   @RequestParam(value = "sid") long sid,
-                                  @RequestParam(value = "userType") int userType)throws Exception{
+                                  @RequestParam(value = "userType",required = false,defaultValue = "0") int userType)throws Exception{
         try {
             Subordinate subordiante = subordinateService.load(sid);
             long subid = subordiante.getPid();
@@ -413,6 +412,44 @@ public class UserController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
         }
     }
+
+    /***
+    * 根据手机和姓名 查找门店下的推荐人
+    * @Param: [request, response, subId, search]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/7/10
+    */
+    @RequestMapping("/getUserByNamePhone")
+    public ModelAndView getUserByNamePhone(HttpServletRequest request, HttpServletResponse response,
+                                           long subId, String search) throws Exception {
+        try {
+            Subordinate subordinate = subordinateService.load(subId);
+            long psid = subordinate.getPid();
+            if (psid == 0) throw new StoreSystemException("门店ID错误!");
+            boolean flag = FilterStringUtil.isNumeric(search);
+            List<ClientUser> result = new ArrayList<>();
+            if (flag) {
+                List<ClientUser> users = userService.getAllUser(subId, User.userType_user);
+                for (ClientUser user : users) {
+                    if (StringUtils.isBlank(search) || user.getPhone().contains(search)) {
+                        result.add(user);
+                    }
+                }
+            } else {
+                List<ClientUser> users = userService.getAllUser(subId, User.userType_backendUser);
+                for (ClientUser user : users) {
+                    if (StringUtils.isBlank(search) || user.getName().contains(search)) {
+                        result.add(user);
+                    }
+                }
+            }
+            return this.viewNegotiating(request, response, new ResultClient(result));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
+        }
+    }
+
 
 }
 

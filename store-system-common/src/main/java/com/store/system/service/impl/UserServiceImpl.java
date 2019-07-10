@@ -1008,7 +1008,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ClientUser> getAllUser(long sid, int userType) throws Exception {
-        String sql = " SELECT * FROM `user` WHERE status = "+ User.status_nomore + " AND `userType` = " + userType + " and sid = " + sid;
+        String sql = " SELECT * FROM `user` WHERE 1=1 ";
+
+        if(sid>0){
+            sql = sql + " AND sid =" + sid;
+        }
+        if(userType>0){
+            sql = sql + " AND userType =" + userType;
+        }
+        sql = sql + " order  by `ctime` desc";
         List<User> users = jdbcTemplate.query(sql,rowMapper);
         return transformClient(users);
     }

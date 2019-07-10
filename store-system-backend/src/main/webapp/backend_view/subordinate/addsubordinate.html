@@ -29,25 +29,52 @@
         <div class="ibox float-e-margins">
             <div class="step1">
                 <div class="ibox-title">
-                    <h5>添加单位</h5>
+                    <h5>添加公司</h5>
                 </div>
                 <div class="ibox-content">
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">单位名称</label>
+                        <label class="col-sm-3 control-label">公司名称</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="name" placeholder="请输入单位名称">
+                            <input type="text" class="form-control" id="name" placeholder="请输入公司名称">
                         </div>
-
                     </div>
 
-                    <!--手机号-->
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">手机号</label>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="phone" placeholder="请输入手机号">
+                        <label class="col-sm-3 control-label">省</label>
+                        <div class="col-sm-5" style="position: relative">
+                            <select id="province" name="province" class="form-control" onchange="proList()">
+                            </select>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">市</label>
+                        <div class="col-sm-5" style="position: relative">
+                            <select id="citys" name="citys" class="form-control" onchange="cityList()">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">区县</label>
+                        <div class="col-sm-5" style="position: relative">
+                            <select id="district" name="district" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <!--详细地址-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">详细地址</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="address" placeholder="请输入详细地址">
+                        </div>
+                    </div>
 
+                    <!--联系电话-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">联系电话</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="phone" placeholder="请输入联系电话">
+                        </div>
                     </div>
 
 
@@ -56,7 +83,6 @@
                         <div class="col-sm-5">
                             <input type="text" class="form-control" id="adminUserName" placeholder="请输入手机号">
                         </div>
-
                     </div>
 
 
@@ -67,17 +93,6 @@
                         </div>
 
                     </div>
-
-
-                    <!--<div class="form-group ">-->
-                        <!--<label class="col-sm-3 control-label">渠道</label>-->
-                        <!--<div class="col-sm-5">-->
-                            <!--<select id="channel" class="form-control" style="width: 100%">-->
-                                <!--&lt;!&ndash;<option value="">ddd</option>&ndash;&gt;-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
 
                     <div class="form-group ">
                         <label class="col-sm-3 control-label">角色模板</label>
@@ -98,7 +113,7 @@
 
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">上传头像</label>
+                        <label class="col-sm-3 control-label">上传公司Logo</label>
                         <div class="col-sm-5 control-label">
                             <div class="input-group">
                                 <input id="cover" type="hidden">
@@ -106,7 +121,7 @@
                                        placeholder="请选择图片">
                                 <span class="input-group-btn">
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="uploadIcon()">选择文件</button>
+                                                    onclick="uploadTsspIcon()">选择文件</button>
                                 </span>
                             </div>
                             <img src="" class="img-rounded" id="iconView" width="15%" height="100%"
@@ -154,11 +169,13 @@
 <script src="../resource/js/lib/quakoo/project.js"></script>
 <script src="../resource/js/template-native.js"></script>
 
-
+<script src="../resource/js/area/area.js"></script>
+<script src="../resource/js/area/areaUtils.js"></script>
 
 <script src="../resource/common/common.js?" +Math.random()></script>
 
 <script>
+    var areaJson = new areaJson(3);
     initSelectSubject("#roleInitTemplateId","/roleinittemplate/getAllRoleInitTemplatesByName?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
     //这条干嘛的 你i没用
     //initSelectSubject("#channelId","/channel/getAllListByName?token="+encodeURI(getUserInfo().token),false,true);
@@ -179,29 +196,39 @@
         var icon = $('#cover').val();
         var adminUserName = $('#adminUserName').val();
         var adminPassword = $('#adminPassword').val();
+        var province = $("#province").val();//省
+        var citys = $("#citys").val();//市
+        var district = $("#district").val();//区
+        var address = $("#address").val();//详细地址
+        var addressStr = sdsd(province,citys,district); //省+市+区 字符串
 
 
         var params  ={};       
         if(name == '' || name == undefined){
-            layer.msg("请输入单位名称", {icon: 2,time:500});
+            layer.msg("请输入公司名称", {icon: 2,time:500});
         }else if(phone == '' || phone == undefined){
             layer.msg("请选择手机号", {icon: 2,time:500});
         }else if( content == '' || content == undefined){
             layer.msg("请输入介绍", {icon: 2,time:500});
-        }/*else if( icon == '' || icon == undefined){
+        }else if( icon == '' || icon == undefined){
             layer.msg("请上传头像", {icon: 2,time:500});
-        }*/else if( adminUserName == '' || adminUserName == undefined){
+        }else if( adminUserName == '' || adminUserName == undefined){
             layer.msg("请输入管理员手机号", {icon: 2,time:500});
         }else if( adminPassword == '' || adminPassword == undefined){
             layer.msg("请输入管理员密码", {icon: 2,time:500});
         }else{
-            params.name=name;
-            params.phone=phone;
-            params.roleInitTemplateId =roleInitTemplateId;
+            params.name = name;
+            params.phone = phone;
+            params.roleInitTemplateId = roleInitTemplateId;
             params.content = content;
             params.icon = icon;
             params.adminUserName = adminUserName;
             params.adminPassword = adminPassword;
+            params.province = province;
+            params.city = citys;
+            params.area = district;
+            params.address = addressStr+address;
+
             console.log(params);
 //            myAjax(url,params,handle);
             quakooData.ajaxGetData(url,params, function (data,param){
@@ -228,6 +255,35 @@
 
          $("#btn_submit").click(submitSubordinateData);
     });
+
+    function sdsd(provinceId,cityId,districtId){
+        if(provinceId==0){
+        }else{
+            var er = areaJson.getAreaByAid(provinceId);
+            var area=  er.name
+            if(cityId==0){
+            }else{
+                var rf = areaJson.getAreaByAid(cityId);
+                var area = er.name+rf.name
+                if(     districtId==0){}else{
+                    var rfe = areaJson.getAreaByAid(districtId);
+                    var area =  er.name+rf.name+rfe.name
+                }
+            }
+        }
+        return area;
+    };
+
+    function uploadTsspIcon() {
+        quakooImg.open(function (data) {
+            var obj = quakooImg.processImg(data[0],60,60);
+            $('#cover').attr('src',obj.url);
+            $('#cover').attr('real-src',data[0]);
+            $("#iconView").attr('src', obj.url);
+            $("#iconView").show();
+            $("#cover").val(obj.url);
+        })
+    }
 </script>
 </body>
 
