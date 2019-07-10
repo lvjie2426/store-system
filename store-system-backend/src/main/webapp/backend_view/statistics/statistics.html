@@ -297,6 +297,7 @@
     })
     //获取当前企业下门店列表
     quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:subid},function (ret) {
+        console.log("企业下门店",ret);
         if(ret&&ret.success){
             if(quakooUtils.isNotBlack(ret.data)){
                 shopData = ret.data;

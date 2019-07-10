@@ -237,14 +237,9 @@ i {
     width: 14%;
     height: 28px;
     position: relative;
+    vertical-align: top;
 }
 
-.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox input {
-    width: 100%;
-    border-radius: 2px;
-    background-color: #f4f4f8;
-    border: 1px solid #ececf4;
-}
 
 .main .mainCustomerInfo .contentBox .fromInfo .recommenderBox span.tuiJianRen {
     position: absolute;

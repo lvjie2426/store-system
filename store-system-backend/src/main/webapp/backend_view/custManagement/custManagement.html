@@ -27,6 +27,7 @@
     <link href="../resource/css/common.css" rel="stylesheet">
     <!-- 当前页面样式 -->
     <link rel="stylesheet" href="../resource/css/yanjing/custManagement.css">
+    <link rel="stylesheet" href="../resource/css/yanjing/goodsManage.css">
     <style>
         /*.table {table-layout:fixed;}*/
     </style>
@@ -178,7 +179,8 @@
             <li class="m0">
                 <div class="topic">会员默认折扣</div>
                 <div class="inputContent">
-                    <input type="number" placeholder="数值" style="width: 100%;" id="discount">
+                    <div class="btn btn-info" style="padding: 0 10px" onclick="openSettingVip()">设置</div>
+                    <input type="text" placeholder="数值" style="width: 100%;opacity: 0"  id="discount">
                 </div>
             </li>
         </ul>
@@ -207,6 +209,14 @@
         </form>
     </div>
 </div>
+
+<!--设置会员默认折扣-->
+<div class="content-view content-view-yj">
+    <table class="table  table-self" id="vipDom">
+
+    </table>
+</div>
+
 <!--导入模板-->
 <div class="wrapper wrapper-content animated  fadeInDown improt-view" style="display: none">
     <form method="get" class="form-horizontal">
@@ -383,6 +393,24 @@
             <span class="fcHui">储值顾客&nbsp;|&nbsp;人</span>
         </li>
     </ul>
+</script>
+
+<!--一级类目-->
+<script type="text/html" id="vipTmp">
+    <tr>
+        <th>品类</th>
+        <th>折扣</th>
+    </tr>
+    <%for(var i=0;i< list.length;i++){%>
+    <tr>
+        <td><%=list[i].name%></td>
+        <%if(list[i].value){%>
+        <td><input type="number" value="<%=list[i].value%>" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
+        <%}else{%>
+        <td><input type="number" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
+        <%}%>
+    </tr>
+    <%}%>
 </script>
 
 <script>
@@ -601,7 +629,7 @@
             $("#fornow-max").val(data.substituteRate);
             $("#get-money").val(data.gainMoney);
             $("#get-num").val(data.gainScore);
-            $("#discount").val(data.discount);
+            $("#discount").val(JSON.stringify(data.discount));
             if (data.introducer) {
                 $('#jsrChecked').attr("checked", "checked");
                 $('.jsrForm')[0].className = "jsrForm";
@@ -680,7 +708,7 @@
             param.substituteRate = substituteRate;//最高抵现比例 %
             param.gainMoney = gainMoney * 100;//积分获取-金额
             param.gainScore = gainScore;//积分获取-积分
-            param.discount = discount;//会员折扣比例 %
+            param.discount = JSON.parse(discount);//会员折扣比例 %
             if (introducer1) {
                 param.introducer = {"1": introducer1};
             }
@@ -1078,6 +1106,62 @@
 
         layer.close(_StffEdit);
         layer.close(index);
+    }
+
+
+    //设置会员默认折扣
+    function openSettingVip() {
+        layer.open({
+            type: 1,shade: 0.01,title:'设置默认折扣',
+            skin: 'layui-layer-yj layui-layer-vip', //样式类名
+            anim: 0,
+            area:['360px','336px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize:false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-yj'),
+            btn: ['取消','确定'],
+            yes: function(index, layero){
+                layer.close(index)
+            },
+            btn2: function(){
+                var obj = {};
+                $('.vipInput').each(function (index,item) {
+                    if(quakooUtils.isNotBlack(item.value)){
+                        obj[item.getAttribute('data-id')] = item.value;
+                    }
+                })
+                for(var i in obj){
+                    if(parseFloat(obj[i])<=0 || parseFloat(obj[i])>10){
+                        layer.msg('请输入0~10之间的折扣')
+                        return false
+                        break ;
+                    }
+                }
+                $("#discount").val(JSON.stringify(obj))
+            },
+            success: function(layero, index){
+                quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
+                    var obj = $("#discount").val();
+                    if(obj){
+                        obj = JSON.parse(obj);
+                        if(quakooUtils.isJson(obj)){
+                            for(var i=0;i<ret.data.length;i++){
+                                for(var j in obj){
+                                    if(ret.data[i].id == j){
+                                        ret.data[i].value = obj[j]
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                    var html = template('vipTmp',{list:ret.data});
+                    $('#vipDom').html(html);
+                })
+            }
+        });
     }
 </script>
 

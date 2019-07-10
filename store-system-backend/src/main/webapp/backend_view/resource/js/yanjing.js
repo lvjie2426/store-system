@@ -32,7 +32,9 @@ function selectTag(ele, callback) {
 
     document.body.onclick = function(){
         $('.optionBox').hide(500);
+        $(window.parent.document).find('.optionBox').hide(500)
     }
+
     if($('.layui-layer').length){
         if($('.layui-layer').attr('addClickHandleFlag')!=1){
             $('.layui-layer').attr('addClickHandleFlag',1)
