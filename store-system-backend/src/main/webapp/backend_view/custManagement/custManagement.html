@@ -707,7 +707,7 @@
         layer.open({
             type: 1,
             skin: 'layui-layer-demo', //样式类名
-            area: '360px',
+            area: ['360px','536px'],
             anim: 0,
             closeBtn: 0,
             title: title,
@@ -724,18 +724,36 @@
             btn2: function () {
             },
             success: function (layero, index) {
-                renderLevel(data);
+                renderLevel(data,index);
             },
         });
     }
 
-    function renderLevel(levelData) {
+    function renderLevel(levelData,index) {
+        if(levelData.introducer){
+            layer.style(index,{
+                height:'536px'
+            });
+        }else{
+            layer.style(index,{
+                height:'400px'
+            });
+        }
         levelData.discountJson = JSON.stringify(levelData.discount);
         var data = {list:levelData};
         var html = template("levelSetTmp",data);
         $("#levelSetUl").html(html);
         $('#jsrChecked').change(function () {
             $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';
+            if($('.jsrForm').first().hasClass("hide")){
+                layer.style(index,{
+                    height:'400px'
+                });
+            }else{
+                layer.style(index,{
+                    height:'536px'
+                });
+            }
         });
 
     }
@@ -821,8 +839,9 @@
             btn: '关闭窗口',
             resize: false,
             move: '.sMove',
-            yes: function () {
-                add()
+            yes: function (index) {
+                layer.close(index);
+
             },
             btn2: function () {
             },

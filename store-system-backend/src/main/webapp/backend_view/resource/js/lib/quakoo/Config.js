@@ -45,7 +45,6 @@ var Config = (function(_super){
         this.pushPort  = '23333';
 
 
-
     }
     var _proto = _super.prototype;
     /**登陆*/
@@ -391,6 +390,23 @@ var Config = (function(_super){
     _proto.getUrl_statisticsInventory_saleSubordinates = function(){return this.serverUrl + '/statisticsInventory/saleSubordinates';};
     //=======================统计 结束====================
 
+
+
+
+    //=======================后台管理品牌系列 开始====================
+    /**品牌*/
+    _proto.getUrl_productbrand_add = function(){return this.serverUrl + '/productbrand/add';};
+    _proto.getUrl_productbrand_getAllList = function(){return this.serverUrl + '/productbrand/getAllList';};
+    _proto.getUrl_productbrand_update = function(){return this.serverUrl + '/productbrand/update';};
+    _proto.getUrl_productbrand_del = function(){return this.serverUrl + '/productbrand/del';};
+    /**系列*/
+    _proto.getUrl_productseries_add = function(){return this.serverUrl + '/productseries/add';};
+    _proto.getUrl_productseries_getAllList = function(){return this.serverUrl + '/productseries/getAllList';};
+    _proto.getUrl_productseries_update = function(){return this.serverUrl + '/productseries/update';};
+    _proto.getUrl_productseries_del = function(){return this.serverUrl + '/productseries/del';};
+
+
+    //=======================后台管理品牌系列 结束====================
 
 
     Quakoo.class(Config,'Config',_super);

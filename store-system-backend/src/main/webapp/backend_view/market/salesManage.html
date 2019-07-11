@@ -750,10 +750,10 @@
                     </div>
                     <div class="award-right">
                         <div class="award-text">处罚金额</div>
-                        <%if(list.amount){%>
-                        <input type="number" placeholder="输入金额" id="amount" value="<%=list.amount%>">
+                        <%if(list.fine){%>
+                        <input type="number" placeholder="输入金额" id="fine" value="<%=list.fine%>">
                         <%}else{%>
-                        <input type="number" placeholder="输入金额" id="amount">
+                        <input type="number" placeholder="输入金额" id="fine">
                         <%}%>
                         <div class="tishi">未完成任务扣除当月工资</div>
                     </div>
@@ -1721,6 +1721,7 @@
         var param ={};
         var taskName = $('#taskName').val();
         var amount = $("#amount").val();
+        var fine = $("#fine").val();
         if(taskLocData.amountType == 1){
             target = $("#target1").val();
         }else if(taskLocData.amountType == 2){
@@ -1748,6 +1749,10 @@
             layer.msg("请输入奖励金额");
             return;
         }
+        if(quakooUtils.isBlack(fine)){
+            layer.msg("请输入处罚金额");
+            return;
+        }
         if(quakooUtils.isBlack(taskLocData.startTime)){
             layer.msg("请选择时间");
             return;
@@ -1756,6 +1761,7 @@
         param.executorJson = JSON.stringify(taskLocData.executor);
         param.sid = psid;
         param.amount= amount*1;
+        param.fine= fine*1;
         param.amountType= taskLocData.amountType;
         param.startTime = taskLocData.startTime;
         param.endTime = taskLocData.endTime;

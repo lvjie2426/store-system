@@ -74,7 +74,6 @@
                     </ul>
                 </div>
             </div>
-
         </div>
         <button class="btn intention" onclick="intentionCustomers()">意向顾客</button>
     </div>
@@ -872,7 +871,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- 历史消费记录弹窗 -->
     <div class="historyRecord">
@@ -1024,7 +1022,6 @@
     </div>
     <!-- 订单竖向小票 -->
     <div class="wholeParagraph uncollectedFunds" id="payDiaVertical">
-
     </div>
     <!-- 支付/三种状态 -->
     <div class="paymentPopup">
@@ -1205,7 +1202,7 @@
 <!--临时订单列表-->
 <script type="text/html" id="proOrderData">
     <%for(var i=0; i < list.length;i++){%>
-    <li value="<%=list[i].uname%>"><%=list[i].uname%><i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
+    <li value="<%=list[i].id%>"><%=list[i].uname%><i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
     <%}%>
 </script>
 <!--推荐人-->
@@ -1217,7 +1214,6 @@
         <%}%>
         <%}%>
     </ul>
-
 </script>
 <!--验光信息表格-->
 <script type="text/html" id="ygTmp">
@@ -1273,16 +1269,15 @@
     </div>
     <div class="rightFormBox">
         <table width="100%" border="1">
-
             <thead>
-            <tr>
-                <th>商品名称</th>
-                <th>数量</th>
-                <th>零售价</th>
-                <th>会员折扣</th>
-                <th>小计</th>
-                <th>操作</th>
-            </tr>
+                <tr>
+                    <th>商品名称</th>
+                    <th>数量</th>
+                    <th>零售价</th>
+                    <th>会员折扣</th>
+                    <th>小计</th>
+                    <th>操作</th>
+                </tr>
             </thead>
             <tbody class="active">
             <!--type? 1=>金钱商品 1=>积分商品 3=>附加费用 4=>促销方式-->
@@ -1369,8 +1364,8 @@
         </div>
         <%}%>
     </div>
-
 </script>
+<!--提交订单模版-->
 <script type="text/html" id="payDiaVerticalList">
     <h3 class="title">付款结算</h3>
     <div class="ufHeader">
@@ -1457,6 +1452,7 @@
         <div class="smallTicket h" id="printTicketUl"></div>
     </div>
 </script>
+<!--小票模版-->
 <script type="text/html" id="printTicketTmp">
     <%if(list.returnData){%>
     <i id="smallTicketBg"></i>
@@ -1612,8 +1608,6 @@
     <%}else{%>
     <i id="smallTicketBg"></i>
     <%}%>
-
-
 </script>
 <script>
     var psid;                                             //企业id
@@ -1694,6 +1688,12 @@
             value: 'fpd'
         }, {name: '近瞳距', value: 'npd'}, {name: 'ADD', value: 'add'}, {name: '瞳高', value: 'ph'}]
     };
+    template.helper('getDateTimeDian', function (l, formatStr) {
+        if (!formatStr) {
+            formatStr = 'yyyy年MM月dd日 hh点';
+        }
+        return new Date(l).format(formatStr);
+    });
     $(function () {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
         subid = quakooDb.getItem("sel_ShopId");           //门店ID
@@ -1702,13 +1702,6 @@
         getListClass();                 //类目
         getListBrand();                 //品牌
     });
-    template.helper('getDateTimeDian', function (l, formatStr) {
-        if (!formatStr) {
-            formatStr = 'yyyy年MM月dd日 hh点';
-        }
-        return new Date(l).format(formatStr);
-    });
-
     function initPage() {
         //年龄计算
         $("#tests").on("change", function () {
@@ -1740,21 +1733,22 @@
         renderYgTable(LocYgInfo.jianTable, "#tableContent");  //验光信息渐进多焦点table
         getUsersByJob("销售员", 1, 2);                         //获取门店下的销售员
         getUsersByJob("加工师", 1, 3);                         //获取门店下的加工师
-        getListPromotions();                                 //获取促销方式
-        renderOrderForm();                                   //订单表格
+        getListPromotions();                                  //获取促销方式
+        renderOrderForm();                                    //订单表格
     }
 
     /**接口——获取门店下的临时订单*/
     function getTemporaryOrder() {
-        quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(), {subid: subid}, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(), {subid: subid,makeStatus:6}, function (ret) {
             console.log("临时订单", ret);
             if (ret && ret.data) {
                 document.querySelector("#selectBox .text").innerHTML = "临时订单";
                 var data = {list: ret.data};
                 var html = template("proOrderData", data);
-                document.getElementById("proOrderList").innerHTML = html;
+                $("#proOrderList").html(html);
                 selectTag($("#selectBox"), function (ret) {
                     //切换订单
+                    showCus(data.list)
                 })
             } else {
                 document.querySelector("#selectBox .text").innerHTML = "无临时订单";
