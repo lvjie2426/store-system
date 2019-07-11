@@ -55,10 +55,10 @@ public class CustomerStatisticsJob implements InitializingBean {
             while(true) {
                 Uninterruptibles.sleepUninterruptibly(1000, TimeUnit.MILLISECONDS);
                 try {
-                    List<Subordinate> subordinates = subordinateDao.getAllList(0);
+                    List<Subordinate> subordinates = subordinateDao.getAllList(0,Subordinate.status_online);
                     for(Subordinate subordinate:subordinates){
                         long subid = subordinate.getId();
-                        List<Subordinate> childrens = subordinateDao.getAllList(subid);
+                        List<Subordinate> childrens = subordinateDao.getAllList(subid,Subordinate.status_online);
                         for(Subordinate children: childrens){
                             //查询今天ctime大于 00:00的一条记录
                             String sqlSubordinate = " SELECT * from statistics_customer_job WHERE 1=1 AND ctime >"

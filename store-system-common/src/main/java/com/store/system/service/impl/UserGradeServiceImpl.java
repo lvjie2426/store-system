@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,8 +39,11 @@ public class UserGradeServiceImpl implements UserGradeService {
     private void check(UserGrade userGrade) throws StoreSystemException {
         String regex = "^[1-9]+(.[1-9]{1})?$";
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcherUser = pattern.matcher(String.valueOf(userGrade.getDiscount()));
-        if (!matcherUser.matches()) throw new StoreSystemException("会员等级折扣输入格式有误！");
+        Map<Long,Object> map = userGrade.getDiscount();
+        for (Map.Entry<Long, Object> entry : map.entrySet()) {
+            Matcher matcherUser = pattern.matcher(String.valueOf(entry.getValue()));
+            if (!matcherUser.matches()) throw new StoreSystemException("类目为" + entry.getKey() + "的会员等级折扣输入格式有误！");
+        }
         if (userGrade.getGainMoney() == 0) throw new StoreSystemException("积分获取金额不能为0");
         if (userGrade.getGainScore() == 0) throw new StoreSystemException("积分获取数值不能为0");
         if (userGrade.getSubstituteMoney() == 0) throw new StoreSystemException("积分抵现金额不能为0");

@@ -564,4 +564,22 @@
         </property>
     </bean>
 
+    <bean id="walletDao" class="com.store.system.dao.impl.WalletDaoImpl">
+        <property name="tableName" value="wallet" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="walletDetailDao" class="com.store.system.dao.impl.WalletDetailDaoImpl">
+        <property name="tableName" value="wallet_detail" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

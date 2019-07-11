@@ -10,6 +10,7 @@ import com.store.system.model.ProductCategory;
 import com.store.system.model.ProductCategoryPool;
 import com.store.system.service.ProductCategoryService;
 import com.store.system.service.SubordinateService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -66,6 +68,18 @@ public class ProductCategoryController extends BaseController {
     public ModelAndView getAllList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         List<ProductCategory> res = productCategoryService.getAllList();
         return this.viewNegotiating(request,response, new ResultClient(true, res));
+    }
+
+    @RequestMapping("/getAllListByName")
+    public ModelAndView getAllListByName(HttpServletRequest request, HttpServletResponse response, String name, Model model) throws Exception {
+        List<ProductCategory> productCategories = productCategoryService.getAllList();
+        List<ProductCategory> result=new ArrayList<>();
+        for (ProductCategory productCategory:productCategories){
+            if(StringUtils.isBlank(name)||productCategory.getName().contains(name)){
+                result.add(productCategory);
+            }
+        }
+        return this.viewNegotiating(request,response, new ResultClient(true, result));
     }
 
     @RequestMapping("/addPool")

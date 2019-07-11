@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>后台主题UI框架</title>
+    <title>商品属性管理</title>
     <meta name="keywords" >
     <meta name="description" >
     <link rel="shortcut icon" href="favicon.ico">
@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
     <link href="../resource/css/animate.css" rel="stylesheet">
     <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
     <link href="../resource/css/common.css" rel="stylesheet">
-
     <style>
         .fixed-table-toolbar{display: block}
     </style>
@@ -27,56 +27,52 @@
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content  animated fadeInDown tree-view"  style="display: none;">
-        <div class="col-sm-6">
-            <div class="ibox float-e-margins" id="ztree">
-                <div class="ibox-title">
-                    <h5>选择权限</h5>
-                </div>
-                <div class="ibox-content" >
-                    <ul id="treeDemo" class="ztree">
-                    </ul>
-                </div>
+
+    <div class="col-sm-10">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form class="form-horizontal">
+                    <div class="form-group ">
+                        <label class="col-sm-3 control-label">商品类目</label>
+                        <div class="col-sm-5">
+                            <select id="cid" class="form-control" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">属性类型</label>
+                        <select name="" id="type" class="col-sm-5">
+                            <option value="1">SPU属性</option>
+                            <option value="2">SKU属性</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" id="id" class="form-control">
+                        <label class="control-label" >属性内容：</label>
+                        <div >
+                            <input type="text" id="name" placeholder="请填写属性内容" class="form-control">
+                            <span class="help-block m-b-none validate">请填写属性内容</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">说明：</label>
+                        <div class="">
+                            <input type="text" id="remark" placeholder="请填写说明" class="form-control">
+                            <span class="help-block m-b-none validate">请填写说明</span>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>角色数据</h5>
-                </div>
-                <div class="ibox-content">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <input type="hidden" id="id" class="form-control">
-                            <label class=" control-label" >名称：</label>
-                            <div >
-                                <input type="text" id="name" placeholder="请填写角色名称" class="form-control">
-                                <span class="help-block m-b-none validate">请填写角色名称</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class=" control-label">说明：</label>
-                            <div class="">
-                                <input type="text" id="remark" placeholder="请填写说明" class="form-control">
-                                <span class="help-block m-b-none validate">请填写说明</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class=" control-label">排序：</label>
-                            <div class="">
-                                <input type="text" id="sort" placeholder="请填写排序" class="form-control">
-                                <span class="help-block m-b-none validate">请填写排序</span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>角色列表</h5>
+            <h5>角色模板列表</h5>
         </div>
         <div class="ibox-content">
             <div class="row row-lg">
@@ -103,7 +99,10 @@
 
 <script src="../resource/js/plugins/layer/layer.js"></script>
 
-<!-- ztree -->
+<!----select2----->
+<script src="../resource/js/plugins/select2/js/select2.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+<script src="../resource/common/newscontent.js"></script>
 
 <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
 <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
@@ -128,13 +127,24 @@
 <script src="../resource/common/common.js?"+Math.random()></script>
 
 <script>
+    initSelectSubject("#cid","/productcategory/getAllListByName?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
+    //这条干嘛的 你i没用
+    //initSelectSubject("#channelId","/channel/getAllListByName?token="+encodeURI(getUserInfo().token),false,true);
+    function formatSubject(item) {
+        if (item.loading) return item;
+        var markup = '<div> <p class="text-primary">名称:' + item.name + '</p>';
+        //markup += '这里可以添加其他选项...';
+        markup += ' </div>';
+        return markup;
+    }
+
     var $table =  $('#tb_table');
     var TableInit = function (columns) {
         var oTableInit = new Object();
         //初始化Table
         oTableInit.Init = function () {
             $table.bootstrapTable({
-                url: serverUrl+'/role/getAllRoles',         //请求后台的URL（*）
+                url: serverUrl+'/roleinittemplate/getAllRoleInitTemplates',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
 //                    striped: true,                      //是否显示行间隔色
@@ -149,7 +159,7 @@
 //                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
                 strictSearch: true,
                 showColumns: true,                  //是否显示所有的列
-				showRefresh: true,                  //是否显示刷新按钮
+                showRefresh: true,                  //是否显示刷新按钮
                 minimumCountColumns: 2,             //最少允许的列数
                 clickToSelect: true,                //是否启用点击选中行
 //				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
@@ -174,18 +184,17 @@
         return oTableInit;
     };
     var columns = [
-        {field: "id", title: "角色id"},
-        {field: "roleName", title: "角色名称"},
-        {field: "remark", title: "角色说明", formatter: function (value, row, index) {
+        {field: "id", title: "角色模板id"},
+        {field: "name", title: "角色模板名称"},
+        {field: "remark", title: "角色模板说明", formatter: function (value, row, index) {
             return value;
         }},
-        {field: "sort", title: "角色排序", formatter: function (value, row, index) {
-            return value;
-        }},
+
         {field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
             var html = '';
             var data = JSON.stringify(row);
-//                html += '<a class="btn btn-default  btn-outline" href="javascript:void(0);" onclick="addRole(' + row.id + ')" ><i class="fa fa-plus"></i></a>';
+            html += '<a class="btn btn-sm btn-info  btn-outline" href="javascript:void(0);" onclick=\'roleList('+data+')\'>模板角色列表</a>';
+            html +='&nbsp&nbsp';
             html += '<a class="btn btn-sm btn-info  btn-outline" href="javascript:void(0);" onclick=\'editRole('+data+')\'>编辑</a>';
             html +='&nbsp&nbsp';
             html += '<a class="btn btn-sm btn-danger  btn-outline" href="javascript:void(0);" onclick="deleteRole(' + row.id + ')" >删除</a>';
@@ -198,8 +207,6 @@
     var ButtonInit = function () {
         var oInit = new Object();
         oInit.Init = function () {
-//                $('#btnadd').click(addRolePermission)
-            $('.close-refresh').click(refreshTree);
             $('#btn_add').click(addRole);
         };
 
@@ -220,8 +227,6 @@
                 var param = {};
                 var name =  $("#name").val();
                 var remark =  $("#remark").val();
-                var sort = $("#sort").val();
-                var treeData =  filterNode();
                 if(isBlank(name)){
                     showValidate('#name');
                     return false ;
@@ -234,10 +239,8 @@
                 }
                 layer.close(index);
 
-                param.roleName = name;
+                param.name = name;
                 param.remark = remark;
-                param.sort = sort;
-                param.pids = treeData;
                 submitRoleData(param);
             },
             btn2: function(){},
@@ -247,35 +250,30 @@
     //添加权限
     function addRole(){
         popBox();
-        refreshTree();
     }
     //更新权限
     function editRole(row){
-        $("#name").val(row.roleName);
+        $("#name").val(row.name);
         $("#remark").val(row.remark);
-        $("#sort").val(row.sort);
         popBox(row.id);
-        reInitTree(row.id);
     }
 
-    //转换节点
-    function transferNode(){
-        var attr = [];
-        var nodes = zTree.getCheckedNodes(true);
-        for(var i = 1;l = nodes.length, i< l;i++){
-            attr.push(nodes[i].name);
-        }
-        return attr.toString();
+    function roleList(data) {
+        addMenuItem("../user/role_template_item.html?id=" + data.id, "模板角色列表");
     }
+
+
+
+
 
     function submitRoleData(params) {
         var Url = '';
         var result;
         if(params.type == 1){
-            Url = serverUrl+'/role/update';
+            Url = serverUrl+'/roleinittemplate/update';
             result =  {succ:'更新成功！',fail:'更新失败！'};
         }else{
-            Url = serverUrl+'/role/add';
+            Url = serverUrl+'/roleinittemplate/add';
             result =  {succ:'添加成功！',fail:'添加失败！'};
         }
         var user = quakooUser.getUserInfo();
@@ -289,7 +287,7 @@
             success:function(data){
                 layer.close(index);
                 if (data && data.success) {
-                    handleTable("",3,serverUrl+"/role/getAllRoles");
+                    handleTable("",3,serverUrl+"/roleinittemplate/getAllRoleInitTemplates");
                     layer.msg(result.succ, {
                         icon: 1
                     });
@@ -308,7 +306,7 @@
 
     //删除权限
     function deleteRole(id){
-        var url = serverUrl+"/role/del";
+        var url = serverUrl+"/roleinittemplate/del";
         layer.msg('确认删除吗?', {
             shade: [0.1, '##f5f5f5'],
             time: 0 //不自动关闭
@@ -319,7 +317,7 @@
                     var msg = (data.msg == undefined ? '':','+data.msg);
                     if(data.success) {
                         layer.msg('删除成功', {icon: 1,shade: 0.01});
-                        handleTable("",3,serverUrl+"/role/getAllRoles");
+                        handleTable("",3,serverUrl+"/roleinittemplate/getAllRoleInitTemplates");
                     }else{
                         layer.msg('删除失败'+msg, {icon: 2,shade: 0.01});
                     }
@@ -329,112 +327,10 @@
         });
     }
 
-    //回显节点
 
-    var zNodes =[];
-    var zTree;
-    var setting = {
-        view: {
-            selectedMulti: false
-        },
-//            edit: { //增删改图标
-//                enable: true,
-////                showRemoveBtn: false,
-////                showRenameBtn: false
-//            },
-        check: {
-            enable: true,
-            chkStyle: "checkbox",
-            chkboxType: { "Y" : "s", "N" : "s" }
-        },
-        data: {
-            simpleData: {
-                enable: true
-            }
-        },
-        callback: {
-            onClick: zTreeOnClick
-        },
-    };
 
-    function zTreeOnClick(event, treeId, treeNode) {
-    };
 
-    function initZtree(){
-        var url = serverUrl+"/permission/getAll";
-        quakooData.ajaxGetData(url,{}, function (data,param){
-            if(data.success) {
-                var treeData = transTreeData(data.data);
-                zNodes = treeData;
-            } else {
-                layer.msg("请求失败");
-                return;
-            }
-            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-            zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        })
 
-    }
-    function refreshTree(){
-        zTree.checkAllNodes(false);
-        zTree.refresh();
-    }
-
-    function transTreeData(data){
-        var temp = [];
-        for(var i = 0;i<data.length;i++){
-            var obj = {};
-            if(data[i].pid == 0){
-                obj.open = true;
-                obj.nocheck = false;
-            }
-            obj.id = data[i].id;
-            obj.sort = data[i].sort;
-            obj.cssName = data[i].cssName;
-            obj.name = data[i].text;
-            obj.pId = data[i].pid;
-            obj.href = data[i].href;
-            temp.push(obj)
-        }
-
-        return temp;
-    }
-
-    function reInitTree(id) {
-        var url =  serverUrl+"/role/getRolePermissions";
-        quakooData.ajaxGetData(url,{rid:id},function (data,param){
-            if(data.success) {
-                reviewNodes(data.data);
-            }else{
-                layer.msg("请求失败");
-            }
-        })
-    }
-    //回显ztree数据
-    function reviewNodes(data) {
-        var Nodes = cloneObj(zNodes);
-        for (var m = 0; m < Nodes.length; m++) {
-            for (var n = 0; n < data.length; n++) {
-                if (Nodes[m].id == data[n].id) {
-                    Nodes[m].checked = true;
-                }
-            }
-        }
-        zTree.destroy();
-        $.fn.zTree.init($("#treeDemo"), setting, Nodes);
-
-    }
-    //获取ztree选中数据
-    function filterNode(){
-        var attr = [];
-        if(zTree){
-            var nodes = zTree.getCheckedNodes(true);
-            for(var i = 0;l = nodes.length, i< l;i++){
-                attr.push(nodes[i].id);
-            }
-        }
-        return attr;
-    }
 
     $(function () {
         var Table = new TableInit(columns);
@@ -442,10 +338,7 @@
         //初始化Button的点击事件
         var oButtonInit = new ButtonInit();
         oButtonInit.Init();
-        initZtree();
-        $("#ztree").slimScroll({
-            height: '375px'
-        });
+
     });
 </script>
 </body>

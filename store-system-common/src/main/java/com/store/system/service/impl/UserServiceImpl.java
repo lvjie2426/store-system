@@ -745,7 +745,8 @@ public class UserServiceImpl implements UserService {
             UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
             if(userGrade!=null){
                 clientUser.setMember(userGrade.getTitle());
-                clientUser.setDiscount(userGrade.getDiscount());
+                // TODO: 2019/7/10
+//                clientUser.setDiscount(userGrade.getDiscount());
             }
         }
         //消费次数
