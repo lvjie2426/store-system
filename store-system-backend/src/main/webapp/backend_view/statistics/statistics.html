@@ -32,6 +32,11 @@
         <div class="box box01">
             <div class="head">
                 <div class="txt01">销售统计</div>
+                <div class="shopDivBox">
+                    <div class="shopDiv">
+
+                    </div>
+                </div>
                 <div>
                     <span class="_btn" onclick="selectShop('sales')">多店对比</span>
                 </div>
@@ -99,6 +104,11 @@
         <div class="box box03">
             <div class="head">
                 <div class="txt01">顾客统计</div>
+                <div class="shopDivBox">
+                    <div class="shopDiv">
+
+                    </div>
+                </div>
                 <div>
                     <span class="_btn" onclick="selectShop('people')">多店对比</span>
                 </div>
@@ -406,10 +416,10 @@
                     html+='<span><em class="_bgColor01"></em>'+ret.data[m][i][0].cname+'</span>';
                 }
                 if(salesShopArr.length==1){
-                    $('#salesPercentDom').css('marginBottom','60px')
+                    // $('#salesPercentDom').css('marginBottom','60px')
                     $('#salesPercentDom').append('<div id="salesNum'+m+'" class="percentCont percentCont01"></div>');
                 }else{
-                    $('#salesPercentDom').css('marginBottom','20px')
+                    // $('#salesPercentDom').css('marginBottom','20px')
                     $('#salesPercentDom').append('<p style="padding: 10px 6.5%;">'+ret.data[m][i][0].subName+'</p><div id="salesNum'+m+'" class="percentCont percentCont08"></div>');
                 }
                 if(type==1){
@@ -754,13 +764,16 @@
                     if(salesShopArr.length>0){
                         $('.box01 .txt01').hide();
                         $('.box01 .head ._btn').css({'border':'none','color':'#4186DC'}).text('重新选择');
+                        $('.box01 .head .shopDiv').css({'width':nameArr.length*100+'px'})
+                        $('.box01 .head .shopDivBox').show()
                         $('.box01 .head .shopName').remove()
                         for(var i=0;i<nameArr.length;i++){
-                            $('.box01 .head').prepend('<div class="shopName">'+nameArr[i]+'</div>')
+                            $('.box01 .shopDiv').append('<div class="shopName">'+nameArr[i]+'</div>')
                         }
                     }else{
                         $('.box01 .txt01').show();
                         $('.box01 .head ._btn').css({'border':'1px solid #ececf4','color':'#828297'}).text('选择门店');
+                        $('.box01 .head .shopDivBox').hide()
                         $('.box01 .head .shopName').remove()
                         salesShopArr = [shopId]
                     }
@@ -769,12 +782,15 @@
                     if(peopleShopArr.length>0){
                         $('.box03 .head ._btn').css({'border':'none','color':'#4186DC'}).text('重新选择');
                         $('.box03 .txt01').hide();
+                        $('.box03 .head .shopDiv').css({'width':nameArr.length*100+'px'})
+                        $('.box03 .head .shopDivBox').show()
                         $('.box03 .head .shopName').remove()
                         for(var i=0;i<nameArr.length;i++){
-                            $('.box03 .head').prepend('<div class="shopName">'+nameArr[i]+'</div>')
+                            $('.box03 .shopDiv').append('<div class="shopName">'+nameArr[i]+'</div>')
                         }
                     }else{
                         $('.box03 .head ._btn').css({'border':'1px solid #ececf4','color':'#828297'}).text('选择门店');
+                        $('.box03 .head .shopDivBox').hide()
                         $('.box03 .txt01').show();
                         $('.box03 .head .shopName').remove()
                         peopleShopArr = [shopId]
