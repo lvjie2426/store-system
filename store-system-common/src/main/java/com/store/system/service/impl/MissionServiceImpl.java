@@ -181,7 +181,7 @@ public class MissionServiceImpl  implements MissionService {
     //检查当前订单满足那些任务的完成条件并返回任务
     @Override
     public List<Mission> checkMission(long skuId,long sid,long subid,long uid) throws Exception {
-        String sql = "SELECT * FROM `mission` where sid = " + sid  + " AND status = " + Mission.status_yes;
+        String sql = "SELECT * FROM `mission` where sid = " + sid;
         sql = sql + " order  by `ctime` desc";
         List<Mission> missions = this.jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Mission>(Mission.class));
         List<Mission> res = Lists.newArrayList();
@@ -191,11 +191,11 @@ public class MissionServiceImpl  implements MissionService {
                 List<Long> skus = mission.getSkuIds();
                 if (mission.getType() == Mission.type_tem) {
                     //团队任务:当前任务包含店铺ID并且包含skuID，保存该任务。
-                    if (ids.contains(subid) && skus.contains(skuId)) {
+                    if (ids.contains(subid) || skus.contains(skuId)) {
                         res.add(mission);
                     }
                 } else if (mission.getType() == Mission.type_user) {
-                    if (ids.contains(uid) && skus.contains(skuId)) {
+                    if (ids.contains(uid) || skus.contains(skuId)) {
                         res.add(mission);
                     }
                 }
