@@ -39,7 +39,7 @@ public class UserGradeController extends BaseController {
     public ModelAndView update(UserGrade userGrade, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             boolean res = userGradeService.update(userGrade);
-            return this.viewNegotiating(request,response, new ResultClient(true, res));
+            return this.viewNegotiating(request,response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
@@ -50,7 +50,7 @@ public class UserGradeController extends BaseController {
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             boolean res = userGradeService.del(id);
-            return this.viewNegotiating(request,response, new ResultClient(true, res));
+            return this.viewNegotiating(request,response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }

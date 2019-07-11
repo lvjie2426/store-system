@@ -7,6 +7,8 @@ import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import java.io.Serializable;
@@ -45,10 +47,11 @@ public class UserGrade implements Serializable, Comparable<UserGrade> {
 
     private int gainScore; //积分获取-积分数值
 
-    private double discount; //会员折扣
+    @HyperspaceColumn(isJson = true)
+    private Map<Long,Object> discount=new HashMap<Long, Object>(); //类目折扣
 
     @HyperspaceColumn(isJson = true)
-    private Map<Long,Object> introducer; //介绍人
+    private Map<Long,Object> introducer=new HashMap<Long, Object>(); //介绍人
 
     @SortKey
     private long ctime;

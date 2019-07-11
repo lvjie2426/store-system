@@ -938,12 +938,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
         User user = userDao.load(uid);
 
-        //会员等级折扣
+        //会员等级类目折扣
         UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
-        double userDisCount = 0;
-        if (userGrade != null) {
-            userDisCount = userGrade.getDiscount();
-        }
 
         for(OrderSku orderSku:orderSkuList){
             skuIds.add(orderSku.getSkuid());
@@ -972,7 +968,12 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             long skuId=orderSku.getSkuid();
             long spuId=orderSku.getSpuid();
             double spuDiscount=0;//商品折扣
-
+            long cid = spuMap.get(spuId).getCid();//类目
+            double userDisCount = 0;//会员类目折扣
+            if (userGrade != null) {
+                Map<Long, Object> disMap = userGrade.getDiscount();
+                userDisCount = (double) disMap.get(cid);
+            }
             //常规商品
             if(spuMap.get(spuId).getType()==ProductSPU.type_common){
                 if(orderSku.getNum()>inventoryMap.get(skuId)) throw new StoreSystemException("当前常规商品库存数量不足！");
