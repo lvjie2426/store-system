@@ -141,72 +141,7 @@
         <table id="memberLevelPop" data-toggle="table" class="table table-border"></table>
     </div>
     <!-- 会员等级设置 -->
-    <div class="addLevelPop">
-        <ul class="settingBox">
-            <li>
-                <div class="topic">等级称号</div>
-                <div class="inputContent">
-                    <input type="text" placeholder="称号" style="width: 100%;" id="grade-title">
-                </div>
-            </li>
-            <li>
-                <div class="topic">等级条件</div>
-                <div class="inputContent">
-                    满&nbsp;<input type="number" placeholder="数值" id="grade-condition">&nbsp;积分获取此称号
-                </div>
-            </li>
-            <li>
-                <div class="topic">积分抵现</div>
-                <div class="inputContent">
-                    <input type="number" placeholder="数值" id="fornow-num">&nbsp;积分=&nbsp;<input type="number"
-                                                                                                placeholder="金额"
-                                                                                                id="fornow-money">&nbsp;元
-                </div>
-            </li>
-            <li>
-                <div class="topic">&nbsp;</div>
-                <div class="inputContent">
-                    最高可抵现百分之&nbsp;<input type="number" placeholder="数值" id="fornow-max">
-                </div>
-            </li>
-            <li>
-                <div class="topic">积分获取</div>
-                <div class="inputContent">
-                    <input type="number" placeholder="金额" id="get-money">&nbsp;元=&nbsp;<input type="number"
-                                                                                              id="get-num">&nbsp;积分
-                </div>
-            </li>
-            <li class="m0">
-                <div class="topic">会员默认折扣</div>
-                <div class="inputContent">
-                    <div class="btn btn-info" style="padding: 0 10px" onclick="openSettingVip()">设置</div>
-                    <input type="text" placeholder="数值" style="width: 100%;opacity: 0"  id="discount">
-                </div>
-            </li>
-        </ul>
-        <div class="pd10 mb16">
-            <input type="checkbox" id="jsrChecked">
-            <label for="jsrChecked" id="jsrCheckedLab">介绍人<i class="iconfont"></i></label>
-        </div>
-        <form action="" class="jsrForm hide">
-            <div class="jsrSet clearfix">
-                <input type="radio" name="condition" id="condition1" checked="checked">
-                <label for="condition1">
-                    <div class="textInput fl">
-                        被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer1">&nbsp;比例的积分
-                    </div>
-                </label>
-            </div>
-            <div class="jsrSet clearfix">
-                <input type="radio" name="condition" id="condition2">
-                <label for="condition2">
-                    <div class="textInput fl">
-                        被介绍人每次消费，介绍人可以获得&nbsp;<input type="number" placeholder="金额" id="introducer2">&nbsp;元的现储值
-                    </div>
-                </label>
-
-            </div>
-        </form>
+    <div class="addLevelPop" id="levelSetUl">
     </div>
 </div>
 
@@ -412,7 +347,144 @@
     </tr>
     <%}%>
 </script>
+<!--会员等级设置-->
+<script type="text/html" id="levelSetTmp">
+    <ul class="settingBox">
+        <li>
+            <div class="topic">等级称号</div>
+            <div class="inputContent">
+                <%if(list.title){%>
+                    <input type="text" placeholder="称号" style="width: 100%;" id="grade-title" value="<%=list.title%>">
+                <%}else{%>
+                    <input type="text" placeholder="称号" style="width: 100%;" id="grade-title">
+                <%}%>
+            </div>
+        </li>
+        <li>
+            <div class="topic">等级条件</div>
+            <div class="inputContent">
+                <%if(list.conditionScore){%>
+                满&nbsp;<input type="number" placeholder="数值" id="grade-condition" value="<%=list.conditionScore%>">&nbsp;积分获取此称号
+                <%}else{%>
+                满&nbsp;<input type="number" placeholder="数值" id="grade-condition">&nbsp;积分获取此称号
+                <%}%>
+            </div>
+        </li>
+        <li>
+            <div class="topic">积分抵现</div>
+            <div class="inputContent">
+                <%if(list.substituteScore){%>
+                <input type="number" placeholder="数值" value="<%=list.substituteScore%>" id="fornow-num">&nbsp;积分=&nbsp;<input type="number" value="<%=list.substituteMoney%>"
+                                                                                                                              placeholder="金额"
+                                                                                                                              id="fornow-money">&nbsp;元
+                <%}else{%>
+                <input type="number" placeholder="数值" id="fornow-num">&nbsp;积分=&nbsp;<input type="number" placeholder="金额" id="fornow-money">&nbsp;元
+                <%}%>
+            </div>
+        </li>
+        <li>
+            <div class="topic">&nbsp;</div>
+            <div class="inputContent">
+                <%if(list.substituteRate){%>
+                最高可抵现百分之&nbsp;<input type="number" placeholder="数值" id="fornow-max" value="<%=list.substituteRate%>">
+                <%}else{%>
+                最高可抵现百分之&nbsp;<input type="number" placeholder="数值" id="fornow-max">
+                <%}%>
+            </div>
+        </li>
+        <li>
+            <div class="topic">积分获取</div>
+            <div class="inputContent">
+                <%if(list.gainMoney){%>
+                <input type="number" placeholder="金额" id="get-money" value="<%=list.gainMoney%>">&nbsp;元=&nbsp;<input type="number" value="<%=list.gainScore%>"
+                                                                                                                      id="get-num">&nbsp;积分
+                <%}else{%>
+                <input type="number" placeholder="金额" id="get-money">&nbsp;元=&nbsp;<input type="number" id="get-num">&nbsp;积分
+                <%}%>
+            </div>
+        </li>
+        <li class="m0">
+            <div class="topic">会员默认折扣</div>
+            <div class="inputContent">
+                <div class="btn btn-info" style="padding: 0 10px" onclick="openSettingVip()">设置</div>
+                <%if(list.discount){%>
+                <input type="text" placeholder="数值" style="width: 100%;opacity: 0"  id="discount" value='<%=list.discountJson%>'>
+                <%}else{%>
+                <input type="text" placeholder="数值" style="width: 100%;opacity: 0"  id="discount">
+                <%}%>
+            </div>
+        </li>
+    </ul>
+    <%if(list.introducer){%>
+        <div class="pd10 mb16">
+            <input type="checkbox" id="jsrChecked" checked>
+            <label for="jsrChecked" id="jsrCheckedLab">介绍人<i class="iconfont"></i></label>
+        </div>
+        <form action="" class="jsrForm">
+            <%if(list.introducer[1]){%>
+                <div class="jsrSet clearfix">
+                    <input type="radio" name="condition" id="condition1" checked="checked">
+                    <label for="condition1">
+                        <div class="textInput fl">
+                            被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer1" value="<%=list.introducer[1]%>">&nbsp;比例的积分
+                        </div>
+                    </label>
+                </div>
+                <div class="jsrSet clearfix">
+                    <input type="radio" name="condition" id="condition2">
+                    <label for="condition2">
+                        <div class="textInput fl">
+                            被介绍人每次消费，介绍人可以获得&nbsp;<input type="number" placeholder="金额" id="introducer2">&nbsp;元的现储值
+                        </div>
+                    </label>
 
+                </div>
+            <%}else if(list.introducer[2]){%>
+                <div class="jsrSet clearfix">
+                    <input type="radio" name="condition" id="condition1">
+                    <label for="condition1">
+                        <div class="textInput fl">
+                            被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer1" >&nbsp;比例的积分
+                        </div>
+                    </label>
+                </div>
+                <div class="jsrSet clearfix">
+                    <input type="radio" name="condition" id="condition2" checked="checked">
+                    <label for="condition2">
+                        <div class="textInput fl">
+                            被介绍人每次消费，介绍人可以获得&nbsp;<input type="number" placeholder="金额" id="introducer2" value="<%=list.introducer[2]%>">&nbsp;元的现储值
+                        </div>
+                    </label>
+
+                </div>
+            <%}%>
+        </form>
+    <%}else{%>
+        <div class="pd10 mb16">
+            <input type="checkbox" id="jsrChecked">
+            <label for="jsrChecked" id="jsrCheckedLab">介绍人<i class="iconfont"></i></label>
+        </div>
+        <form action="" class="jsrForm hide">
+            <div class="jsrSet clearfix">
+                <input type="radio" name="condition" id="condition1" checked="checked">
+                <label for="condition1">
+                    <div class="textInput fl">
+                        被介绍人每次消费，介绍人可以获得百分之&nbsp;<input type="number" placeholder="数值" id="introducer1">&nbsp;比例的积分
+                    </div>
+                </label>
+            </div>
+            <div class="jsrSet clearfix">
+                <input type="radio" name="condition" id="condition2">
+                <label for="condition2">
+                    <div class="textInput fl">
+                        被介绍人每次消费，介绍人可以获得&nbsp;<input type="number" placeholder="金额" id="introducer2">&nbsp;元的现储值
+                    </div>
+                </label>
+
+            </div>
+        </form>
+    <%}%>
+</script>
 <script>
     var psid;                                            //企业ID
     var subid;                                           //门店ID
@@ -622,38 +694,13 @@
         var btnArr;
         /**回显信息*/
         if (data) {//编辑
-            $("#grade-title").val(data.title);
-            $("#grade-condition").val(data.conditionScore);
-            $("#fornow-num").val(data.substituteScore);
-            $("#fornow-money").val(data.substituteMoney);
-            $("#fornow-max").val(data.substituteRate);
-            $("#get-money").val(data.gainMoney);
-            $("#get-num").val(data.gainScore);
-            $("#discount").val(JSON.stringify(data.discount));
-            if (data.introducer) {
-                $('#jsrChecked').attr("checked", "checked");
-                $('.jsrForm')[0].className = "jsrForm";
-                if (data.introducer[1]) {
-                    $("#condition1").attr("checked", "false");
-                    $('#introducer1').val(data.introducer[1]);
-                } else if (data.introducer[2]) {
-                    $("#condition2").attr("checked", "checked");
-                    $('#introducer2').val(data.introducer[2]);
-                }
+            if(quakooUtils.isBlack(data.introducer)){
+                data.introducer = null;
             }
             title = '<div class="titleBox"><span class="sMove">编辑等级</span></div>';
             btnArr = ['编辑', '取消'];
         } else {//添加
-            $("#grade-title").val("");
-            $("#grade-condition").val("");
-            $("#fornow-num").val("");
-            $("#fornow-money").val("");
-            $("#fornow-max").val("");
-            $("#get-money").val("");
-            $("#get-num").val("");
-            $("#discount").val("");
-            $('#jsrChecked').attr("checked", false);
-            $('.jsrForm')[0].className = "jsrForm hide";
+            data = {};
             title = '<div class="titleBox"><span class="sMove">新增等级</span></div>';
             btnArr = ['新增', '取消'];
         }
@@ -671,19 +718,29 @@
             btn: btnArr,
             resize: false,
             move: '.sMove',
-            yes: function () {
-                data ? addAndEdit(config.getUrl_usergrade_update()) : addAndEdit(config.getUrl_usergrade_add());
+            yes: function (index) {
+                quakooUtils.isNotBlack(data) ? addAndEdit(config.getUrl_usergrade_update(),index) : addAndEdit(config.getUrl_usergrade_add(),index);
             },
             btn2: function () {
             },
             success: function (layero, index) {
-
+                renderLevel(data);
             },
         });
     }
 
+    function renderLevel(levelData) {
+        levelData.discountJson = JSON.stringify(levelData.discount);
+        var data = {list:levelData};
+        var html = template("levelSetTmp",data);
+        $("#levelSetUl").html(html);
+        $('#jsrChecked').change(function () {
+            $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';
+        });
+
+    }
     /**新增和编辑会员等级接口*/
-    function addAndEdit(url) {
+    function addAndEdit(url,index) {
         var title = $("#grade-title").val();
         var conditionScore = $("#grade-condition").val();
         var substituteScore = $("#fornow-num").val();
@@ -718,8 +775,12 @@
             console.log("新增会员等级的参数：", param);
             quakooData.ajaxGetData(url, param, function (ret) {
                 console.log("新增会员等级返回数据：", ret);
-                layer.close(layer.index);
-                getAllList(psid, config.getUrl_usergrade_getAllList());
+                if(ret.success){
+                    getAllList(psid, config.getUrl_usergrade_getAllList());
+                    layer.close(index);
+                }else{
+                    layer.msg(ret.data);
+                }
             });
         } else {
             alert("请填写完表格");
@@ -728,14 +789,13 @@
 
     }
 
-    /*删除弹窗*/
 
     /**删除会员等级*/
     function del(id) {
         layer.confirm('确认删除?', {icon: 2, title:'提示'}, function(index){
             quakooData.ajaxGetData(config.getUrl_usergrade_del(),{id:id},function (data) {
                 if(data.success){
-                    layer.msg('删除成功',{icon:1})
+                    layer.msg('删除成功',{icon:1});
                     getAllList(psid, config.getUrl_usergrade_getAllList());
                 }else{
                     layer.msg(data.msg,{icon:2})
@@ -855,9 +915,6 @@
         });
     }
 
-    $('#jsrChecked').change(function () {
-        $('.jsrForm')[0].className = ($(this).is(":checked")) ? 'jsrForm' : 'jsrForm hide';
-    });
     //模板导入
     $('#file').change(function () {
         $('#fileName').val($('#file').val());
