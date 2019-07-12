@@ -1222,6 +1222,28 @@ public class UserServiceImpl implements UserService {
         return statisticsOrderUser;
     }
 
+    @Override
+    public List<ClientUser> getUserListByPhone(long sid, int userType, String phone) throws Exception {
+        String sql = "SELECT * FROM `user` where sid = " + sid ;
+        if(userType>0){
+            sql = sql + " AND userType =" + userType;
+        }
+        if (StringUtils.isNotBlank(phone)) {
+            sql = sql + " and `phone` like ?";
+        }
+        List<User> users = null;
+        List<Object> objects = Lists.newArrayList();
+        if(StringUtils.isNotBlank(phone)){objects.add("%"+ phone +"%");}
+        if(objects.size()>0){
+            Object [] args = new Object[objects.size()];
+            objects.toArray(args);
+            users = jdbcTemplate.query(sql,rowMapper,args);
+        }else{
+            users = jdbcTemplate.query(sql,rowMapper);
+        }
+        return transformClient(users);
+    }
+
     //传入年月 判断是否当前月
     private boolean inExistence(String date,long time)throws Exception{
         Calendar calendar = Calendar.getInstance();
