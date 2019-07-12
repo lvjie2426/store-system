@@ -451,5 +451,19 @@ public class UserController extends BaseController {
     }
 
 
+    @RequestMapping("/getUserListByPhone")
+    public ModelAndView getUserListByPhone(HttpServletRequest request,HttpServletResponse response,long subid,
+                                           @RequestParam(required = false,name = "phone",defaultValue = "") String phone,
+                                           @RequestParam(required = false,name = "userType",defaultValue = "0") int userType)throws Exception{
+        try {
+            Subordinate subordinate = subordinateService.load(subid);
+            long psid = subordinate.getPid();
+            if (psid == 0) throw new StoreSystemException("门店ID错误!");
+            return this.viewNegotiating(request,response,new ResultClient(userService.getUserListByPhone(subid,userType,phone)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
+        }
+    }
+
 }
 

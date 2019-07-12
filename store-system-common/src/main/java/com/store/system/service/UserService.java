@@ -134,4 +134,6 @@ public interface UserService {
     public Map<String,Object> taskReward(String date, long sid)throws Exception;
 
     public StatisticsOrderUser statisticsOrderUser(long sid, int status,long startTime,long endTime)throws Exception;
+
+    public List<ClientUser> getUserListByPhone(long sid,int userType,String phone)throws Exception;
 }
