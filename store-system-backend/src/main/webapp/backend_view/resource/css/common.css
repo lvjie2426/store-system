@@ -870,7 +870,7 @@ input::-webkit-inner-spin-button{
 .search-select{
     display: inline-block;
     margin-right: 6px;
-    width: 80px;
+    width: 100px;
     height: 28px;
     position: relative;
     vertical-align: top;

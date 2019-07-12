@@ -539,6 +539,7 @@ i {
 
 .main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox {
     display: inline-block;
+    vertical-align: middle;
     width: 60%;
 }
 
@@ -560,7 +561,7 @@ i {
 }
 
 .main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox #eye {
-    width: 17%;
+    width: 60px;
     background: #EBF2FB;
     border-color: #E0EAF8;
 }
@@ -572,12 +573,13 @@ i {
 .main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox .companyBox {
     width: 24%;
     overflow: hidden;
-    vertical-align: bottom;
+    vertical-align: top;
 }
 
 .main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox .companyBox input {
     display: inline-block;
     width: 55%;
+    height:28px;
     box-sizing: border-box;
     float: left;
 }
@@ -680,13 +682,15 @@ i {
     width: 100%;
 }
 
-.main .orderInfo .leftBox .costAdditional .costAdditionalSelect,
+.main .orderInfo .leftBox .costAdditional .selectBox,
 .main .orderInfo .leftBox .costAdditional .moneyNum,
 .main .orderInfo .leftBox .costAdditional .addOrder {
     display: inline-block;
     margin-left: 3px;
 }
-
+.costAdditional .costAdditionalSelect{
+    width:100%;
+}
 .main .orderInfo .leftBox .costAdditional .addOrder {
     background: #4186DC;
     font-size: 12px;
@@ -700,15 +704,16 @@ i {
 
 .main .orderInfo .leftBox .costAdditional .moneyNum {
     width: 37%;
+    height:28px;
 }
 
-.main .orderInfo .leftBox .costAdditional .costAdditionalSelect {
+.main .orderInfo .leftBox .costAdditional .selectBox {
     width: 38%;
     margin: 0;
     vertical-align: bottom;
 }
 
-.main .orderInfo .leftBox .costAdditional .costAdditionalSelect i {
+.main .orderInfo .leftBox .costAdditional .selectBox i {
     margin-left: 0;
 }
 
@@ -2747,4 +2752,15 @@ input[type=checkbox]:checked:after {
 
 .layer-recharge .content{
     padding:10px 0;
+}
+
+.main-eye-text{
+    vertical-align: top;
+    display: inline-block;
+    padding:0 6px;
+    height:28px;
+    line-height:28px;
+    color: #393953;
+    font-size: 12px;
+    font-weight: 600;
 }

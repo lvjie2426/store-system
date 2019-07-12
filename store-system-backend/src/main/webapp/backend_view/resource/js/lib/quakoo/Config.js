@@ -154,6 +154,8 @@ var Config = (function(_super){
     _proto.getUrl_user_getSubCustomerPager = function(){return this.serverUrl + '/user/getSubCustomerPager';};
     /**修改顾客信息*/
     _proto.getUrl_user_updateCustomer = function(){return this.serverUrl + '/user/updateCustomer';};
+    /**手机号模糊查询*/
+    _proto.getUrl_user_getUserListByPhone = function(){return this.serverUrl + '/user/getUserListByPhone';};
 
     //=======================顾客管理 结束====================
 

@@ -1755,3 +1755,10 @@ input[type="number"]::-webkit-input-placeholder{
     color: rgba(255, 255, 255, 1);
 
 }
+
+
+.select-obj .layui-layer-btn .layui-layer-btn1,.dialog-shop .layui-layer-btn .layui-layer-btn1,.select-person .layui-layer-btn .layui-layer-btn1{
+    background-color: #DD5B4B!important;
+    color: #ffffff!important;
+    opacity: 1;
+}

@@ -106,11 +106,21 @@
             <h4>基本信息</h4>
             <div class="fromInfo">
                 <form class="layui-form" action="">
+<!--
                     <div class="layui-form-item phoneNum">
                         <div class="layui-input-block">
                             <input type="number" name="title" lay-verify="title" autocomplete="off" placeholder="手机号码"
                                    id="cusInfoPhone"
                                    class="layui-input">
+                        </div>
+                    </div>
+-->
+                    <div class="search-select">
+                        <input type="text" placeholder="顾客手机号" class="layer-input" id="searchCusPhone">
+                        <div class="search-content" style="display: none;height:auto" id="cusPhoneList">
+                            <ul>
+                                <li></li>
+                            </ul>
                         </div>
                     </div>
                     <div class="layui-form-item nameInput">
@@ -334,25 +344,15 @@
                             <input type="number" class="text" placeholder="远用瞳距">
                             <span class="Company">mm</span>
                         </div>
-                        <div class="selectBox" id="eye">
+                        <span class="main-eye-text">主视眼:</span>
+                        <div class="selectBox" id="maineye">
                             <div class="select-box-header">
-                                <span class="text">右眼</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                                <span class="text">左眼</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
                             </div>
                             <div class="optionBox">
                                 <ul class="optionUL" style="overflow: hidden;">
-                                    <li value="01">左眼</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="selectBox" id="glasses">
-                            <div class="select-box-header">
-                                <span class="text">近视眼镜</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL" style="overflow: hidden;">
-                                    <li value="1">近视眼镜</li>
-                                    <li value="2">远视眼镜</li>
-                                    <li value="3">隐形眼镜</li>
+                                    <li value="1">左眼</li>
+                                    <li value="2">右眼</li>
                                 </ul>
                             </div>
                         </div>
@@ -426,15 +426,15 @@
                 <div class="costAdditional mt15">
                     <div class="costAdditionalSelect">
                         <h4>附加费用</h4>
-                        <div class="selectBox" id="costAdditional">
-                            <div class="select-box-header">
-                                <span class="text">加工费</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-                            </div>
-                            <div class="optionBox">
-                                <ul class="optionUL" style="overflow: hidden;" id="listExtraCharge">
-                                    <li value="1">加工费</li>
-                                </ul>
-                            </div>
+                    </div>
+                    <div class="selectBox" id="costAdditional">
+                        <div class="select-box-header">
+                            <span class="text">加工费</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                        </div>
+                        <div class="optionBox">
+                            <ul class="optionUL" style="overflow: hidden;" id="listExtraCharge">
+                                <li value="1">加工费</li>
+                            </ul>
                         </div>
                     </div>
                     <input type="number" class="moneyNum" id="extraCharges" placeholder="金额">
@@ -514,7 +514,7 @@
         <div class="content">
             <ul class="input-list">
                 <li class="input-item">
-                    <input type="number" class="member-input" placeholder="充值金额">
+                    <input type="number" class="member-input" placeholder="充值金额" id="chuNum">
                 </li>
                 <li class="input-item">
                     <form class="layui-form cckXK">
@@ -1205,6 +1205,16 @@
     <li value="<%=list[i].id%>"><%=list[i].uname%><i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
     <%}%>
 </script>
+<!--顾客手机号模糊搜索列表-->
+<script type="text/html" id="cusPhone">
+    <ul>
+        <%if(list.length>0){%>
+        <%for(var i =0;i< list.length;i++){%>
+        <li onclick="renderCusPhone(this)" data-id="<%=list[i].phone%>"><%=list[i].phone%></li>
+        <%}%>
+        <%}%>
+    </ul>
+</script>
 <!--推荐人-->
 <script type="text/html" id="cusInfoReferrerTmp">
     <ul>
@@ -1350,6 +1360,7 @@
             <div>折后金额 <span id="dicountPrice">¥<%=price.dicountPriceYuan%></span></div>
         </div>
         <div class="actualMoney">
+            <div id="chuzhi" style="display: none;">储值卡金额<span> <b>¥</b> <input type="text" id="chuMoney" readonly="readonly"></span></div>
             <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney" value="<%=price.dicountPriceYuan%>"></span></div>
             <div>折扣<i id="userDiscount"><%=price.userDiscount%></i></div>
         </div>
@@ -1359,6 +1370,7 @@
             <div>折后金额 <span id="dicountPrice">¥0</span></div>
         </div>
         <div class="actualMoney">
+            <div id="chuzhi" >储值卡金额<span> <b>¥</b> <input type="text" id="chuMoney" readonly="readonly"></span></div>
             <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney"></span></div>
             <div>折扣<i id="userDiscount">10.0</i></div>
         </div>
@@ -1612,7 +1624,7 @@
 <script>
     var psid;                                             //企业id
     var subid;                                            //门店id
-    var cusId;                                            //用户id
+    var cusId = 0;                                        //用户id
     var cusPhone;                                         //用户手机号
     var cusJob;                                           //用户职业
     var proOrderId;                                       //临时订单ID
@@ -1624,7 +1636,7 @@
     var LocYgInfo = {};                                   //验光信息对象
     var optUid = 0;                                       //验光师ID
     var ygData = {};                                      //保存验光数据
-    var ygwearProp;                                       //验光佩戴属性
+    var mainEye = 1;                                      //主视眼
     var ygResults;                                        //验光结果
     var ygAdvise;                                         //验光建议
     var saleUid;                                          //销售员ID
@@ -1648,6 +1660,7 @@
     var printId;                                          //打印小票的ID
     var paymentNote;                                      //支付小票备注
     var printContent;                                     //打印内容
+    var rechargeAmount;//充值金额
     LocYgInfo.yuanTable = {
         class: 'yuan-table',
         data: [{name: '裸眼视力', value: 'nakedEyesight'}, {name: '球镜(S)', value: 's'}, {
@@ -1723,8 +1736,10 @@
         });
         selectTag($("#occupationTypeBox"),function (ret) {
             cusJob = ret.value;
+            alert(cusJob)
         });
         getTemporaryOrder();                                 //获取门店下临时订单
+        getCusPhone();//推荐人搜索
         getReferrer();//推荐人搜索
         getUsersByJob("验光师", 1, 1);                         //获取门店下的验光师
         renderYgTable(LocYgInfo.yuanTable, "#tableContent", true);  //验光信息远用table
@@ -1894,7 +1909,6 @@
         var strTime = $("#tests").val().split("-");
         var birthdate = new Date(strTime[0], strTime[1], strTime[2]).getTime();
         var autoAge = $("#autoAge").val();
-        var cusJob = cusJob;
         var recommender = referrer;
         if (quakooUtils.isBlack(name)) {
             layer.msg("请输入姓名");
@@ -1913,7 +1927,7 @@
             return;
         }
         if (quakooUtils.isBlack(cusJob)) {
-            layer.msg("请输入用户职业");
+            layer.msg("请选择顾客职业");
             return;
         }
         if (quakooUtils.isBlack(recommender)) {
@@ -1959,6 +1973,32 @@
         })
     }
 */
+    /**根据手机号模糊查询顾客*/
+    function getCusPhone() {
+        $('#searchCusPhone').bind('input propertychange', function(){
+            var keyword = $(this).val()*1;
+            if(quakooUtils.isNotBlack(keyword)){
+                quakooData.ajaxGetData(config.getUrl_user_getUserListByPhone(),{subid:subid,userType:0,phone:keyword},function(ret){
+                    if(ret.success){
+                        if(quakooUtils.isNotBlack(ret.data)){
+                            var data = {list:ret.data};
+                            var html = template("cusPhone",data);
+                            $("#cusPhoneList").html(html);
+                            $("#cusPhoneList").show();
+                            $("body").click(function () {
+                                $("#cusPhoneList")[0].style.display = "none";
+                            })
+                        }else{
+                            $("#cusPhoneList").hide();
+                        }
+                    }
+                })
+            }else{
+                $("#cusPhoneList").hide();
+            }
+        });
+    }
+
     function getReferrer() {
         $('#searchReferrer').bind('input propertychange', function(){
             var keyword = $(this).val();
@@ -2130,7 +2170,7 @@
         })
     }
 
-    //倒计时
+    /**倒计时*/
     function countDown(ele) {
         isRen = false;
         ele.addClass('active');
@@ -2183,7 +2223,7 @@
             layer.msg("请输入远用瞳距");
             return;
         }
-        param.wearProp = ygwearProp;
+        param.mainEye = mainEye;
         param.res = ygResults;
         param.support = ygAdvise;
         param.yuanYongResJson = {};
@@ -2386,6 +2426,7 @@
         } else {
             $(".rightFooterBox .companyBox input.text").val('');
         }
+/*
         //属性
         if (data.wearProp == 1) {
             $("#glasses .text").html("近视眼镜");
@@ -2394,6 +2435,7 @@
         } else if (data.wearProp == 3) {
             $("#glasses .text").html("隐形眼镜");
         }
+*/
         //结果和建议
         if (data.res) {
             $("#result .text").html(data.res);
@@ -2572,18 +2614,21 @@
         $(this).addClass('active').siblings().removeClass('active');
         $('#tableContent>table').eq($(this).index()).removeClass('hide').siblings().addClass('hide');
     });
+/*
     ygwearProp = 1;
     selectTag($("#glasses"), function (ret) {
         ygwearProp = ret.value;
     });
+*/
+    mainEye = 1;
+    selectTag($("#maineye"), function (ret){
+        mainEye = ret.value;
+    });
+
     /***************************************************验光模块结束*****************************************************/
     /***************************************************订单信息开始*****************************************************/
     /**附加费用*/
     function extraCharges() {
-        if (!cusId) {
-            layer.msg("请完善用户信息");
-            return;
-        }
         var hasProduct = false;
         for (var i in orderFormData) {
             orderFormData[i].type == 1;
@@ -2614,6 +2659,7 @@
     }
 
     selectTag($("#costAdditional"), function (ret) {
+
     });
 
     /**促销方式*/
@@ -3189,10 +3235,6 @@
 
     /**添加常规商品到订单*/
     function addConventionalProducts(type, spuid, skuid, code, price, i) {
-        if (!cusId) {
-            layer.msg("请完善用户信息");
-            return;
-        }
         var markup = "";
         if (type == 0) {
             markup = "changgui";
@@ -3455,7 +3497,7 @@
             return;
         } else {//保存订单
             quakooData.ajaxGetData(config.getUrl_order_saveOrder(), param, function (ret) {
-                console.log(ret);
+                console.log("保存订单接口返回值",ret);
                 if (ret && ret.success) {
                     layer.msg("订单已保存成功")
                     // layer.msg(ret.data)
@@ -3849,12 +3891,12 @@
             content: $('#recharge'),
             btn:['充值','取消'],
             yes: function (index,layero) {
-                laryer.close(index)
+                topUp(index);//充值
             },
             btn2: function (index,layero){
-
             },
             success: function(layero,index){
+                $("#chuNum").val("");
                 layui.use('form', function(){
                     var form = layui.form;
                     //监听提交
@@ -3866,7 +3908,17 @@
 
             }
 
-        })
+        });
+        function topUp(index) {
+            var num = $("#chuNum").val();
+            if(quakooUtils.isNotBlack(num)){
+                layer.msg("请输入充值金额")
+            }else{
+                $("#chuMoney").val(num);
+                rechargeAmount = num;
+                layer.close(index);
+            }
+        }
 
     }
 

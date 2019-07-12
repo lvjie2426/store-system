@@ -1976,7 +1976,7 @@
             type: 1,
             shade: 0.01,
             shadeClose: true,
-            skin: 'layui-layer-demo', //样式类名
+            skin: 'layui-layer-demo select-obj', //样式类名
             area: ['360px', '448px'],
             anim: 0,
             closeBtn: 0,
@@ -1985,6 +1985,9 @@
             content: $('.task-object'),
             btn: ['关闭窗口'],
             yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index){
                 layer.close(index);
             },
             success: function (layero, index) {
@@ -2024,15 +2027,18 @@
             type: 1,
             shade: 0.01,
             shadeClose: true,
-            skin: 'layui-layer-demo', //样式类名
+            skin: 'layui-layer-demo select-person', //样式类名
             area: ['360px', '448px'],
             anim: 0,
             closeBtn: 0,
             resize: false,
             title: "选择任务对象员工列表",
             content: $('.task-object2'),
-            btn: ['关闭窗口'],
+            btn: ['关闭窗口','确定'],
             yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index){
                 layer.close(index);
             },
             success: function (layero, index) {
@@ -2117,8 +2123,11 @@
             title: null,
             move: ".task-header",
             content: $('.task-shop'),
-            btn: ["关闭窗口"],
+            btn: ["关闭窗口","确定"],
             yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index){
                 layer.close(index);
             },
             success: function (layero, index) {
