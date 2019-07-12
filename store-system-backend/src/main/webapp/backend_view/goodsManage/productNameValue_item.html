@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <style>
+        .fixed-table-toolbar{display: block}
+    </style>
+</head>
+
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInDown tree-view"  style="display: none;">
+    <div class="col-sm-10">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <input type="hidden" id="id" class="form-control">
+                        <label class=" col-sm-3 control-label">属性内容：</label>
+                        <div class="col-sm-5">
+                            <input type="text" id="name" placeholder="请填写属性内容" class="form-control">
+                            <span class="help-block m-b-none validate">请填写属性内容</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label ">排序</label>
+                        <div class="col-sm-5">
+                            <input type="number" id="sort" class="form-control" min="0" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>属性值列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div id="toolbar" >
+                        <button class="btn btn-success  btn-outline" id="btn_add">
+                            <i class="fa fa-plus">添加</i>
+                        </button>
+                    </div>
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- ztree -->
+
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- 公司内部库 -->
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
+<script src="../resource/common/common.js?"+Math.random()></script>
+
+<script>
+    var pnid=getQueryString("id");
+    var $table =  $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl+'/productpropertyvalue/getAllList?pnid='+pnid,         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,50,100],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParams: function (params) {
+                    return {
+                        token:quakooUser.getUserInfo().token,
+                        pageNumber: params.offset+1,
+                        pageSize: params.limit,
+                    };
+                },
+            });
+        };
+
+        return oTableInit;
+    };
+    var columns = [
+        {field: "id", title: "id"},
+        {field: "pnName", title: "上级属性名"},
+        {field: "content", title: "显示内容", formatter: function (value, row, index) {
+            return value;
+        }},
+
+        {field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+            var html = '';
+            var data = JSON.stringify(row);
+//                html += '<a class="btn btn-default  btn-outline" href="javascript:void(0);" onclick="addRole(' + row.id + ')" ><i class="fa fa-plus"></i></a>';
+            html += '<a class="btn btn-info btn-sm  btn-success" href="javascript:void(0);" onclick=\'editRole('+data+')\'>编辑</a>';
+            html +='&nbsp&nbsp';
+            html += '<a class="btn btn-danger  btn-success" href="javascript:void(0);" onclick="deleteRole(' + row.id + ')" >删除</a>';
+            return html;
+        }}
+    ]
+
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+//                $('#btnadd').click(addRolePermission)
+            $('.close-refresh').click(refreshTree);
+            $('#btn_add').click(addRole);
+        };
+
+        return oInit;
+    };
+
+    function popBox(rid){
+        var index = layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['620px', '520px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.tree-view'),
+            btn: ['提交', '关闭'],
+            btnAlign: 'r',
+            yes: function(){
+                var param = {};
+                var content =  $("#name").val();
+                var sort =  $("#sort").val();
+                var treeData =  filterNode();
+                if(isBlank(name)){
+                    showValidate('#name');
+                    return false ;
+                }
+                layer.close(index);
+
+                param.content = content;
+                param.pnid = pnid;
+                param.sort = sort;
+                submitRoleData(param);
+            },
+            btn2: function(){},
+        });
+    }
+
+    //添加权限
+    function addRole(){
+        popBox();
+    }
+    //更新权限
+    function editRole(row){
+        popBox(row.id);
+    }
+
+    //转换节点
+    function transferNode(){
+        var attr = [];
+        var nodes = zTree.getCheckedNodes(true);
+        for(var i = 1;l = nodes.length, i< l;i++){
+            attr.push(nodes[i].name);
+        }
+        return attr.toString();
+    }
+
+    function submitRoleData(params) {
+        var Url = '';
+        var result;
+            Url = serverUrl+'/productpropertyvalue/add';
+            result =  {succ:'添加成功！',fail:'添加失败！'};
+        }
+        var user = quakooUser.getUserInfo();
+        params.token = user.token;
+        var index = loading();
+        $.ajax({
+            url:Url,
+            type:"post",
+            dataType:"json",
+            traditional: true,//这里设置为true
+            data: params,
+            success:function(data){
+                layer.close(index);
+                if (data && data.success) {
+                    handleTable("",3,serverUrl+"/goodsManage/productNameValue_item.html?id=" + pnid);
+                    layer.msg(result.succ, {
+                        icon: 1
+                    });
+                }else{
+                    layer.msg(result.fail, {
+                        icon: 2
+                    });
+                }
+            },
+            error: function () {
+                layer.close(index);
+            }
+
+        });
+    }
+
+    //删除权限
+    function deleteRole(id){
+        var url = serverUrl+"/productpropertyvalue/del";
+        layer.msg('确认删除吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+                quakooData.ajaxGetData(url,{id:id},function (data,param){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg('删除成功', {icon: 1,shade: 0.01});
+                        handleTable("",3,serverUrl+"/goodsManage/productNameValue_item.html?id=" + pnid);
+                    }else{
+                        layer.msg('删除失败'+msg, {icon: 2,shade: 0.01});
+                    }
+                })
+            },btn2: function(index, layero){
+            }
+        });
+    }
+
+    //回显节点
+
+    var zNodes =[];
+    var zTree;
+    var setting = {
+        view: {
+            selectedMulti: false
+        },
+//            edit: { //增删改图标
+//                enable: true,
+////                showRemoveBtn: false,
+////                showRenameBtn: false
+//            },
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: { "Y" : "s", "N" : "s" }
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        },
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+    };
+
+    function initZtree(){
+        var url = serverUrl+"/permission/getAll?token=" + encodeURIComponent(quakooUser.getUserInfo().token);
+        quakooData.ajaxGetData(url,"",function (data,param){
+            if(data.success) {
+                var treeData = transTreeData(data.data);
+                zNodes = treeData;
+            } else {
+                layer.msg("请求失败");
+                return;
+            }
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        })
+
+    }
+    function refreshTree(){
+        zTree.checkAllNodes(false);
+        zTree.refresh();
+    }
+
+    function transTreeData(data){
+        var temp = [];
+        for(var i = 0;i<data.length;i++){
+            var obj = {};
+            if(data[i].pid == 0){
+                obj.open = true;
+                obj.nocheck = false;
+            }
+            obj.id = data[i].id;
+            obj.sort = data[i].sort;
+            obj.cssName = data[i].cssName;
+            obj.name = data[i].text;
+            obj.pId = data[i].pid;
+            obj.href = data[i].href;
+            temp.push(obj)
+        }
+
+        return temp;
+    }
+
+    function reInitTree(id) {
+        var url =  serverUrl+"/roletemplateitem/getRolePermissions";
+        quakooData.ajaxGetData(url,{rid:id},function (data,param){
+            if(data.success) {
+                reviewNodes(data.data);
+            }else{
+                layer.msg("请求失败");
+            }
+        })
+    }
+    //回显ztree数据
+    function reviewNodes(data) {
+        var Nodes = cloneObj(zNodes);
+        for (var m = 0; m < Nodes.length; m++) {
+            for (var n = 0; n < data.length; n++) {
+                if (Nodes[m].id == data[n].id) {
+                    Nodes[m].checked = true;
+                }
+            }
+        }
+        zTree.destroy();
+        $.fn.zTree.init($("#treeDemo"), setting, Nodes);
+
+    }
+    //获取ztree选中数据
+    function filterNode(){
+        var attr = [];
+        if(zTree){
+            var nodes = zTree.getCheckedNodes(true);
+            for(var i = 0;l = nodes.length, i< l;i++){
+                attr.push(nodes[i].id);
+            }
+        }
+        return attr;
+    }
+
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        initZtree();
+        $("#ztree").slimScroll({
+            height: '375px'
+        });
+    });
+</script>
+</body>
+
+</html>

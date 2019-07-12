@@ -1,5 +1,6 @@
 package com.store.system.service;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.model.*;
 
 import java.util.List;
@@ -26,4 +27,5 @@ public interface ProductPropertyNameService {
 
     public List<ProductPropertyName> getSubAllList(long subid, long cid) throws Exception;
 
+    public  Pager search(Pager pager, long cid, int type, String content, int input, int defaul, int multiple,int status)throws Exception;
 }

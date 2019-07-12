@@ -1,7 +1,9 @@
 package com.store.system.backend.controller;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientSubordinate;
+import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.ProductPropertyName;
@@ -64,6 +66,19 @@ public class ProductPropertyNameController extends BaseController {
     public ModelAndView getAllList(@RequestParam(value = "cid") long cid, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         List<ProductPropertyName> res = productPropertyNameService.getAllList(cid);
         return this.viewNegotiating(request,response, new ResultClient(true, res));
+    }
+
+    @RequestMapping("/search")
+    public ModelAndView search(HttpServletRequest request, HttpServletResponse response,Pager pager,
+                               @RequestParam(value = "cid",defaultValue = "0") long cid,
+                               @RequestParam(name = "type",defaultValue = "0") int type,
+                               @RequestParam(name = "content",defaultValue = "") String content,
+                               @RequestParam(name = "input",defaultValue = "-1") int input,
+                               @RequestParam(name = "defaul",defaultValue = "-1") int defaul,
+                               @RequestParam(name = "multiple",defaultValue = "-1") int multiple,
+                               @RequestParam(name = "status",defaultValue = "0") int status,
+                               Model model) throws Exception {
+        return this.viewNegotiating(request,response, new PagerResult<>(productPropertyNameService.search( pager,cid,type,content,input,defaul,multiple,status)));
     }
 
     @RequestMapping("/addPool")

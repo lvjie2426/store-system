@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class ClientProductPropertyValue implements Serializable {
 
     private long id;
+    private String pnName;
 
     private String content; //显示内容
 

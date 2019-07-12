@@ -3,6 +3,7 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
+import com.store.system.client.ClientProductPropertyValue;
 import com.store.system.dao.ProductPropertyNameDao;
 import com.store.system.dao.ProductPropertyValueDao;
 import com.store.system.dao.ProductPropertyValuePoolDao;
@@ -78,8 +79,16 @@ public class ProductPropertyValueServiceImpl implements ProductPropertyValueServ
     }
 
     @Override
-    public List<ProductPropertyValue> getAllList(long pnid) throws Exception {
-        return productPropertyValueDao.getAllList(pnid, ProductPropertyValue.status_nomore);
+    public List<ClientProductPropertyValue> getAllList(long pnid) throws Exception {
+        List<ClientProductPropertyValue> list=Lists.newArrayList();
+        List<ProductPropertyValue> allList = productPropertyValueDao.getAllList(pnid, ProductPropertyValue.status_nomore);
+        for(ProductPropertyValue productPropertyValue:allList){
+            ClientProductPropertyValue clientProductPropertyValue=new ClientProductPropertyValue(productPropertyValue);
+            ProductPropertyName load = productPropertyNameDao.load(productPropertyValue.getPnid());
+            clientProductPropertyValue.setPnName(load.getContent());
+            list.add(clientProductPropertyValue);
+        }
+        return list;
     }
 
     @Override
