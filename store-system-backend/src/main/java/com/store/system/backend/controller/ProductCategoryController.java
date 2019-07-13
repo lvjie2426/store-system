@@ -79,7 +79,7 @@ public class ProductCategoryController extends BaseController {
                 result.add(productCategory);
             }
         }
-        return this.viewNegotiating(request,response, new ResultClient(true, result));
+        return this.viewNegotiating(request,response, result);
     }
 
     @RequestMapping("/addPool")

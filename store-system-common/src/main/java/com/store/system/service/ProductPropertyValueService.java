@@ -1,5 +1,6 @@
 package com.store.system.service;
 
+import com.store.system.client.ClientProductPropertyValue;
 import com.store.system.model.ProductPropertyValue;
 import com.store.system.model.ProductPropertyValuePool;
 
@@ -15,7 +16,7 @@ public interface ProductPropertyValueService {
 
     public ProductPropertyValue load(long id) throws Exception;
 
-    public List<ProductPropertyValue> getAllList(long pnid) throws Exception;
+    public List<ClientProductPropertyValue> getAllList(long pnid) throws Exception;
 
 
 

@@ -1,6 +1,7 @@
 package com.store.system.backend.controller;
 
 import com.quakoo.webframework.BaseController;
+import com.store.system.client.ClientProductPropertyValue;
 import com.store.system.client.ClientSubordinate;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
@@ -62,7 +63,7 @@ public class ProductPropertyValueController extends BaseController {
 
     @RequestMapping("/getAllList")
     public ModelAndView getAllList(@RequestParam(value = "pnid") long pnid, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        List<ProductPropertyValue> res = productPropertyValueService.getAllList(pnid);
+        List<ClientProductPropertyValue> res = productPropertyValueService.getAllList(pnid);
         return this.viewNegotiating(request,response, new ResultClient(true, res));
     }
 

@@ -8,8 +8,8 @@
 
 
     <title>商品属性管理</title>
-    <meta name="keywords" >
-    <meta name="description" >
+    <meta name="keywords">
+    <meta name="description">
     <link rel="shortcut icon" href="favicon.ico">
     <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
@@ -20,13 +20,15 @@
     <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
     <link href="../resource/css/common.css" rel="stylesheet">
     <style>
-        .fixed-table-toolbar{display: block}
+        .fixed-table-toolbar {
+            display: block
+        }
     </style>
 </head>
 
 
 <body class="gray-bg">
-<div class="wrapper wrapper-content  animated fadeInDown tree-view"  style="display: none;">
+<div class="wrapper wrapper-content  animated fadeInDown tree-view" style="display: none;">
 
     <div class="col-sm-10">
         <div class="ibox float-e-margins">
@@ -39,29 +41,58 @@
                             </select>
                         </div>
                     </div>
-
+                    <input type="hidden" id="mycid"/>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">属性类型</label>
-                        <select name="" id="type" class="col-sm-5">
-                            <option value="1">SPU属性</option>
-                            <option value="2">SKU属性</option>
-                        </select>
+                        <div class="col-sm-5">
+                            <select name="" id="type" class="form-control">
+                                <option value="1">SPU属性</option>
+                                <option value="2">SKU属性</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <input type="hidden" id="id" class="form-control">
-                        <label class="control-label" >属性内容：</label>
-                        <div >
+                        <label class=" col-sm-3 control-label">属性内容：</label>
+                        <div class="col-sm-5">
                             <input type="text" id="name" placeholder="请填写属性内容" class="form-control">
                             <span class="help-block m-b-none validate">请填写属性内容</span>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <label class=" control-label">说明：</label>
-                        <div class="">
-                            <input type="text" id="remark" placeholder="请填写说明" class="form-control">
-                            <span class="help-block m-b-none validate">请填写说明</span>
+                        <label class="col-sm-3 control-label ">输入属性</label>
+                        <div class="col-sm-5">
+                            <select name="" id="input" class="form-control">
+                                <option value="0">非输入属性</option>
+                                <option value="1">输入属性</option>
+                            </select></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label ">默认属性</label>
+                        <div class="col-sm-5">
+                            <select name="" id="defaul" class="form-control">
+                                <option value="1">默认</option>
+                                <option value="0">非默认</option>
+                            </select>
                         </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label ">多值属性</label>
+                        <div class="col-sm-5">
+                            <select name="" id="multiple" class="form-control">
+                                <option value="1">多值</option>
+                                <option value="0">非多值</option>
+                            </select></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label ">排序</label>
+                        <div class="col-sm-5">
+                            <input type="number" id="sort" class="form-control" min="0" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                         </div>
                     </div>
                 </form>
             </div>
@@ -72,12 +103,84 @@
     <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>角色模板列表</h5>
+            <h5>属性名列表</h5>
         </div>
         <div class="ibox-content">
             <div class="row row-lg">
                 <div class="col-sm-12">
-                    <div id="toolbar" >
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-right">类目</label>
+                            <div class="col-sm-2">
+                                <select id="cidsearch" class="form-control" style="width: 100%">
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label text-right">内容说明</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="content" class="form-control" placeholder="请输入内容描述关键字"
+                                       onkeyup="value=value.replace(/[^\d]/g,'')"/>
+                            </div>
+                            <label class="col-sm-1 control-label text-right">属性</label>
+                            <div class="col-sm-2">
+                                <select name="" id="typesearch" class="form-control">
+                                    <option value="0">所有</option>
+                                    <option value="2">SKU属性</option>
+                                    <option value="1">SPU属性</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label text-right">输入属性</label>
+                            <div class="col-sm-2">
+                                <select name="" id="inputsearch" class="form-control">
+                                    <option value="-1">所有</option>
+                                    <option value="0">非输入属性</option>
+                                    <option value="1">输入属性</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label text-right">默认属性</label>
+                            <div class="col-sm-2">
+                                <select name="" id="defaulsearch" class="form-control">
+                                    <option value="-1">所有</option>
+                                    <option value="1">默认</option>
+                                    <option value="0">非默认</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label text-right">多值属性</label>
+
+                            <div class="col-sm-2">
+                                <select name="" id="multiplesearch" class="form-control">
+                                    <option value="-1">所有</option>
+                                    <option value="1">多值</option>
+                                    <option value="0">非多值</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">开始时间</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="startTime" class="form-control" placeholder="请选择开始时间" readonly>
+                            </div>
+                            <label class="col-sm-1 control-label">结束时间</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="endTime" class="form-control" placeholder="请选择结束时间" readonly>
+                            </div>
+                            <label class="col-sm-1 control-label">状态筛选</label>
+                            <div class="col-sm-2">
+                                <select name="" id="searchStatus" class="form-control">
+                                    <option value="-1">所有</option>
+                                    <option value="0">正常</option>
+                                    <option value="1">失效</option>
+
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label"></label>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn  btn-info " id="btn_search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="toolbar">
                         <button class="btn btn-success  btn-outline" id="btn_add">
                             <i class="fa fa-plus">添加</i>
                         </button>
@@ -124,10 +227,11 @@
 <!-- 全局公共js -->
 <script src="../resource/js/yanjing.js"></script>
 
-<script src="../resource/common/common.js?"+Math.random()></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
 
 <script>
-    initSelectSubject("#cid","/productcategory/getAllListByName?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
+    initSelectSubject("#cid", serverUrl+"/productcategory/getAllListByName?token=" + encodeURIComponent(quakooUser.getUserInfo().token), false, true);
+    initSelectSubject("#cidsearch", serverUrl+"/productcategory/getAllListByName?token=" + encodeURIComponent(quakooUser.getUserInfo().token), false, true);
     //这条干嘛的 你i没用
     //initSelectSubject("#channelId","/channel/getAllListByName?token="+encodeURI(getUserInfo().token),false,true);
     function formatSubject(item) {
@@ -138,13 +242,13 @@
         return markup;
     }
 
-    var $table =  $('#tb_table');
+    var $table = $('#tb_table');
     var TableInit = function (columns) {
         var oTableInit = new Object();
         //初始化Table
         oTableInit.Init = function () {
             $table.bootstrapTable({
-                url: serverUrl+'/roleinittemplate/getAllRoleInitTemplates',         //请求后台的URL（*）
+                url: serverUrl + '/productpropertyname/search',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
 //                    striped: true,                      //是否显示行间隔色
@@ -152,10 +256,10 @@
                 pagination: true,                   //是否显示分页（*）
                 sortable: false,                     //是否启用排序
                 sortOrder: "asc",                   //排序方式
-                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
-                pageNumber:1,                       //初始化加载第一页，默认第一页
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
                 pageSize: 10,                       //每页的记录行数（*）
-                pageList: [10,20,50,100],        //可供选择的每页的行数（*）
+                pageList: [10, 20, 50, 100],        //可供选择的每页的行数（*）
 //                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
                 strictSearch: true,
                 showColumns: true,                  //是否显示所有的列
@@ -173,9 +277,26 @@
                 },
                 queryParams: function (params) {
                     return {
-                        token:quakooUser.getUserInfo().token,
-                        pageNumber: params.offset+1,
-                        pageSize: params.limit,
+                        token: quakooUser.getUserInfo().token,
+                        page: (params.offset / params.limit) + 1,
+                        size: params.limit,
+                        name: $("#searchName").val(),
+                        userName: $("#searchAccount").val(),
+                        cid: $("#cidsearch").val(),//类目
+                        type: $("#typesearch").val(),
+                        content: $("#content").val(),
+                        status: $("#searchStatus").val(),
+                        input: $("#inputsearch").val(),
+                        defaul: $("#defaulsearch").val(),
+                        multiple: $("#multiplesearch").val(),
+                        startTime: isBlank(startTime) ? 0 : new Date(startTime).getTime(),
+                        endTime: isBlank(endTime) ? 0 : new Date(endTime).getTime(),
+                        // cid:cid,
+                        // type:type,
+                        // content:"",
+                        // input:0,
+                        // defaul:0,
+                        // multiple:0
                     };
                 },
             });
@@ -184,36 +305,136 @@
         return oTableInit;
     };
     var columns = [
-        {field: "id", title: "角色模板id"},
-        {field: "name", title: "角色模板名称"},
-        {field: "remark", title: "角色模板说明", formatter: function (value, row, index) {
-            return value;
-        }},
-
-        {field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
-            var html = '';
-            var data = JSON.stringify(row);
-            html += '<a class="btn btn-sm btn-info  btn-outline" href="javascript:void(0);" onclick=\'roleList('+data+')\'>模板角色列表</a>';
-            html +='&nbsp&nbsp';
-            html += '<a class="btn btn-sm btn-info  btn-outline" href="javascript:void(0);" onclick=\'editRole('+data+')\'>编辑</a>';
-            html +='&nbsp&nbsp';
-            html += '<a class="btn btn-sm btn-danger  btn-outline" href="javascript:void(0);" onclick="deleteRole(' + row.id + ')" >删除</a>';
-            return html;
-        }}
+        {field: "sort", title: "排序"},
+        {field: "cname", title: "类目名称"},
+        {
+            field: "content", title: "内容说明", formatter: function (value, row, index) {
+                return value;
+            }
+        },
+        {
+            field: "ctime", title: "创建时间", formatter: function (value, row, index) {
+                return formatDateTime(value);
+            }
+        }, {
+            field: "input", title: "非/输入属性", formatter: function (value, row, index) {
+                var stau = {1: "输入属性", 0: "非输入属性"}
+                return stau[value];
+            }
+        }, {
+            field: "type", title: "属性", formatter: function (value, row, index) {
+                var stau = {1: "SPU属性", 2: "SKU属性"}
+                return stau[value];
+            }
+        }, {
+            field: "defaul", title: "非/默认", formatter: function (value, row, index) {
+                var stau = {1: "默认", 0: "非默认"}
+                return stau[value];
+            }
+        }, {
+            field: "multiple", title: "非/多值", formatter: function (value, row, index) {
+                var stau = {1: "多值", 0: "非多值"}
+                return stau[value];
+            }
+        }, {
+            field: "status", title: "状态", formatter: function (value, row, index) {
+                var html = '';
+                if (value == 0) {
+                    html += "<a  class='btn btn-info btn-sm  btn-success' disabled  href='javascript:void(0)' >正常</a>";
+                } else if (value == 1) {
+                    html += "<a  class='btn btn-info btn-sm btn-warning' disabled href='javascript:void(0)' >失效</a>";
+                }
+                return html;
+            }
+        },
+        {
+            field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+                var html = '';
+                var data = JSON.stringify(row);
+                html += '<a class="btn btn-info btn-sm  btn-success" href="javascript:void(0);" onclick=\'roleList(' + data + ')\'>属性值列表</a>';
+                html += '&nbsp&nbsp';
+                html += '<a class="btn btn-info btn-sm  btn-success" href="javascript:void(0);" onclick=\'editRole(' + data + ')\'>编辑</a>';
+                html += '&nbsp&nbsp';
+                html += '<a class="btn   btn-danger  btn-success" href="javascript:void(0);" onclick="deleteRole(' + row.id + ')" >删除</a>';
+                return html;
+            }
+        }
     ]
 
+    function searchUser() {
+        handleTable("", 5, "");
+    }
 
     //初始化页面上面的按钮事件
     var ButtonInit = function () {
         var oInit = new Object();
         oInit.Init = function () {
             $('#btn_add').click(addRole);
+            $('#btn_search').click(searchUser);
         };
 
         return oInit;
     };
 
-    function popBox(rid){
+    function popBox(rid) {
+        var index = layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['620px', '520px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.tree-view'),
+            btn: ['提交', '关闭'],
+            btnAlign: 'r',
+            yes: function () {
+                var params = {};
+                var url = "/productpropertyname/add";
+                var result = {succ: "添加成功!", fail: "添加失败"};
+                var cid = $("#cid").val();
+                var type = $("#type").val();
+                var content = $('#name').val();
+                var input = $('#input').val();
+                var defaul = $('#defaul').val();
+                var multiple = $('#multiple').val();
+                var sort = $('#sort').val();
+                // if(cid == '' || cid == undefined){
+                //     layer.msg('请选择渠道', {icon: 2, time:500});
+                // }else
+                {
+                    params.cid = cid;
+                    params.type = type;
+                    params.content = content;
+                    params.input = input;
+                    params.defaul = defaul;
+                    params.multiple = multiple;
+                    params.sort = sort;
+                    myAjax(url, params, handle);
+
+                    function handle(data, params) {
+                        var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                        if (data.success) {
+                            layer.msg(result.succ, {icon: 1,time:500, shade: 0.01},function(){
+                                layer.close(index)
+                            });
+
+                            handleTable("", 5, "");
+                        } else {
+                            layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
+                        }
+                    }
+                }
+            },
+            btn2: function () {
+            },
+        });
+    }
+
+    //添加权限
+    function addRole() {
+        popBox();
+    }
+
+    function editRole(row){
         var index = layer.open({
             type: 1,
             skin: 'layui-layer-demo', //样式类名
@@ -224,74 +445,98 @@
             btn: ['提交', '关闭'],
             btnAlign: 'r',
             yes: function(){
-                var param = {};
-                var name =  $("#name").val();
-                var remark =  $("#remark").val();
-                if(isBlank(name)){
-                    showValidate('#name');
-                    return false ;
-                }
-                if(isNotBlank(rid)){
-                    param.id = rid;
-                    param.type  = 1;
-                }else{
-                    param.type  = 0;
-                }
-                layer.close(index);
+                var params = {};
+                var url = "/productpropertyname/update";
+                var result = {succ: "更新成功!", fail: "更新失败"};
+                var cid = row.cid;
+                var type = $("#type").val();
+                var content = $('#name').val();
+                var input = $('#input').val();
+                var defaul = $('#defaul').val();
+                var multiple = $('#multiple').val();
+                var sort = $('#sort').val();
+                // if(cid == '' || cid == undefined){
+                //     layer.msg('请选择渠道', {icon: 2, time:500});
+                // }else
+                {
+                    params.cid = cid;
+                    params.type = type;
+                    params.content = content;
+                    params.input = input;
+                    params.defaul = defaul;
+                    params.multiple = multiple;
+                    params.sort = sort;
+                    params.id = row.id;
+                    myAjax(url, params, handle);
 
-                param.name = name;
-                param.remark = remark;
-                submitRoleData(param);
+                    function handle(data, params) {
+                        var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                        if (data.success) {
+                            layer.msg(result.succ, {icon: 1,time:500, shade: 0.01},function(){
+                                layer.close(index)
+                            });
+
+                            handleTable("", 5, "");
+                        } else {
+                            layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
+                        }
+                    }
+                }
             },
             btn2: function(){},
+            success: function(layero, index){
+                console.log(row)
+                $("#cid").val(row.cid);
+                $("#mycid").val(row.cid)
+                $('#select2-cid-container').html(' <span class="select2-selection__placeholder">'+row.cname+'</span>');
+                //动态添加一个option，从而获取val  id
+                //selectOption=''
+                //selectOption +='<option value="'+data.cid+'">'+data.channel+'</option>'
+                //$("#channelId").append(selectOption)
+                //$("#select2-channelId-container").text(data.channel)
+                $("#type").val(row.type);
+                $("#sort").val(row.sort);
+                $("#name").val(row.content);
+                $("#input").val(row.input);
+                $("#defaul").val(row.defaul);
+                $("#multiple").val(row.multiple);
+            }
         });
     }
 
-    //添加权限
-    function addRole(){
-        popBox();
-    }
-    //更新权限
-    function editRole(row){
-        $("#name").val(row.name);
-        $("#remark").val(row.remark);
-        popBox(row.id);
-    }
-
     function roleList(data) {
-        addMenuItem("../user/role_template_item.html?id=" + data.id, "模板角色列表");
+        addMenuItem("../goodsManage/productNameValue_item.html?id=" + data.id, "属性值列表");
     }
-
-
-
 
 
     function submitRoleData(params) {
         var Url = '';
         var result;
-        if(params.type == 1){
-            Url = serverUrl+'/roleinittemplate/update';
-            result =  {succ:'更新成功！',fail:'更新失败！'};
-        }else{
-            Url = serverUrl+'/roleinittemplate/add';
-            result =  {succ:'添加成功！',fail:'添加失败！'};
+        console.log(params)
+        return
+        if (params.type == 1) {
+            Url = serverUrl + '/roleinittemplate/update';
+            result = {succ: '更新成功！', fail: '更新失败！'};
+        } else {
+            Url = serverUrl + '/roleinittemplate/add';
+            result = {succ: '添加成功！', fail: '添加失败！'};
         }
         var user = quakooUser.getUserInfo();
         params.token = user.token;
         var index = loading();
         $.ajax({
-            url:Url,
-            type:"post",
-            dataType:"json",
+            url: Url,
+            type: "post",
+            dataType: "json",
             data: params,
-            success:function(data){
+            success: function (data) {
                 layer.close(index);
                 if (data && data.success) {
-                    handleTable("",3,serverUrl+"/roleinittemplate/getAllRoleInitTemplates");
+                    handleTable("", 3, serverUrl + "/roleinittemplate/getAllRoleInitTemplates");
                     layer.msg(result.succ, {
                         icon: 1
                     });
-                }else{
+                } else {
                     layer.msg(result.fail, {
                         icon: 2
                     });
@@ -305,31 +550,27 @@
     }
 
     //删除权限
-    function deleteRole(id){
-        var url = serverUrl+"/roleinittemplate/del";
+    function deleteRole(id) {
+        var url = serverUrl + "/productpropertyvalue/del";
         layer.msg('确认删除吗?', {
             shade: [0.1, '##f5f5f5'],
             time: 0 //不自动关闭
-            ,btn: ['确定','取消']
-            ,yes: function(index){
+            , btn: ['确定', '取消']
+            , yes: function (index) {
                 layer.close(index);
-                quakooData.ajaxGetData(url,{id:id},function (data,param){
-                    var msg = (data.msg == undefined ? '':','+data.msg);
-                    if(data.success) {
-                        layer.msg('删除成功', {icon: 1,shade: 0.01});
-                        handleTable("",3,serverUrl+"/roleinittemplate/getAllRoleInitTemplates");
-                    }else{
-                        layer.msg('删除失败'+msg, {icon: 2,shade: 0.01});
+                quakooData.ajaxGetData(url, {id: id}, function (data, param) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        layer.msg('删除成功', {icon: 1, shade: 0.01});
+                        handleTable("", 3, serverUrl + "/productpropertyname/search");
+                    } else {
+                        layer.msg('删除失败' + msg, {icon: 2, shade: 0.01});
                     }
                 })
-            },btn2: function(index, layero){
+            }, btn2: function (index, layero) {
             }
         });
     }
-
-
-
-
 
 
     $(function () {
