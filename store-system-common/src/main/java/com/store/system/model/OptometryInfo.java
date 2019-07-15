@@ -27,6 +27,9 @@ public class OptometryInfo implements Serializable {
     public static final int wear_prop_yuan_shi = 2; //远视眼镜
     public static final int wear_prop_yin_xing = 3; //隐形眼镜
 
+    public static final int mainEye_left = 1; //左眼
+    public static final int mainEye_right = 2; //右眼
+
     @PrimaryKey
     private long id;
 
@@ -58,6 +61,8 @@ public class OptometryInfo implements Serializable {
     private int farPd; //远用瞳距
 
     private int wearProp; //佩戴属性
+
+    private int mainEye; //主视眼
 
     private String res; //结果
 

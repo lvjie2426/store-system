@@ -38,13 +38,13 @@ public class OrderPayServiceImpl implements OrderPayService {
 
     @Override
     public void successHandleBusiness(Order order) throws Exception {
-        for(OrderSku sku:order.getSkuids()){
+/*        for(OrderSku sku:order.getSkuids()){
             ProductSPU spu = productSPUDao.load(sku.getSpuid());
             int days = (int) spu.getProperties().get(4L);
 
 
 
-        }
+        }*/
         /**
          * 任务进度修改
          */

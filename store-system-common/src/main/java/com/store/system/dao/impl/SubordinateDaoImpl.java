@@ -24,6 +24,12 @@ public class SubordinateDaoImpl extends CacheBaseDao<Subordinate> implements Sub
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<Subordinate> getAllList(int status) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
     public List<Subordinate> getAllList(long pid, int status) throws DataAccessException {
         return null;
     }

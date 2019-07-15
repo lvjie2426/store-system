@@ -32,5 +32,7 @@ public interface SubordinateService {
 
 	public List<Subordinate> getAllSubordinate()throws Exception;
 
+	public List<Subordinate> getAllParentSubordinate()throws Exception;
+
 	public List<Subordinate> getAllList()throws Exception;
 }

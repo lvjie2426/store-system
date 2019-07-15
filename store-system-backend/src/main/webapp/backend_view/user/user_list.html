@@ -45,11 +45,13 @@
         <!-- Panel Other -->
         <form method="get" class="form-horizontal" id="userForm">
             <div class="form-group">
-                <label class="col-sm-2 control-label">所属公司</label>
-                <div class="col-sm-8">
-                    <select id="psub"  class="form-control">
-                    </select>
-
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label">所属公司</label>
+                    <div class="col-sm-8">
+                        <select id="psub" class="js-data-example-ajax form-control" style="width: 100%">
+                        </select>
+                    </div>
+                    <span class="help-block m-b-none validate">所属公司</span>
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
@@ -243,9 +245,9 @@
         initSelectSubject("#subordinate",serverUrl+"/subordinate/getSubordinateStoreBySid?sid="+pid+"&token="+encodeURIComponent(quakooUser.getUserInfo().token) + "&sid=" + sid+ "&pid=" + pid ,false,true);
     })
 
-    initSelectSubject("#psub",serverUrl+"/subordinate/getAllSubordinate?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
+    initSelectSubject("#psub",serverUrl+"/subordinate/getSubListByName?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
     $("#psub").on("select2:select",function(e){
-        initSelectSubject("#psub",serverUrl+"/subordinate/getAllSubordinate?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
+        initSelectSubject("#psub",serverUrl+"/subordinate/getSubListByName?token="+encodeURIComponent(quakooUser.getUserInfo().token),false,true);
         var pid =  $("#psub").val();
         initSelectSubject("#sub",serverUrl+"/subordinate/getSubordinateStoreBySid?sid="+pid+"&token="+encodeURIComponent(quakooUser.getUserInfo().token) + "&sid=" + sid+ "&pid=" + pid ,false,true);
     })

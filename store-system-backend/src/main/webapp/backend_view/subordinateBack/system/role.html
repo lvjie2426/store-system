@@ -406,8 +406,7 @@
     }
 
     function reInitTree(id) {
-        var url =  serverUrl+"/role/getRolePermissions";
-        myAjax(url,{rid:id},handle);
+        var url = serverUrl+"/role/getRolePermissions";
         quakooData.ajaxGetData(url,{rid:id}, function handle(data,param){
             if(data.success) {
                 reviewNodes(data.data);

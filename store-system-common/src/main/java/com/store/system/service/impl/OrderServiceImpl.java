@@ -11,6 +11,7 @@ import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.CalculateOrder;
 import com.store.system.bean.OrderExpireUnit;
+import com.store.system.bean.OrderTypeInfo;
 import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientAfterSaleDetail;
 import com.store.system.client.ClientOrder;
@@ -20,6 +21,7 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.AfterSaleDetailService;
 import com.store.system.service.OrderService;
+import com.store.system.service.WalletService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.service.ext.OrderRefundService;
 import com.store.system.util.*;
@@ -85,7 +87,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private RefundOrderDao refundOrderDao;
     @Resource
     private OrderNotifyDao orderNotifyDao;
-
+    @Resource
+    private WalletService walletService;
 
     @Autowired(required = false)
     private OrderPayService orderPayService;
@@ -133,16 +136,31 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public ResultClient handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo,
-                                              String title, String desc, int price, Order orderInfo) throws Exception {
-        List<PayPassport> payPassports = payPassportDao.getAllList(passportId,PayPassport.status_on);
+    public ResultClient handleAliBarcodeOrder(String authCode, int type,
+                                              String title, int price, Order orderInfo) throws Exception {
+        Order order = orderDao.load(orderInfo.getId());
+        OrderTypeInfo orderTypeInfo = new OrderTypeInfo(order.getUid(), 0, price);
+        String typeInfo = OrderTypeInfo.getJsonStr(orderTypeInfo);
+        long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
+        order.setGmt(gmt);
+        order.setPayMode(Order.pay_mode_barcode);
+        order.getPayTypes().add(Order.pay_type_ali);
+        order.setAuthCode(authCode);
+        order.setType(type);
+        order.setTypeInfo(typeInfo);
+        order.setTitle(title);
+        order.setAliPrice(price);
+        order.setStatus(Order.status_no_pay);
+        if(null == order) return new ResultClient(false,null,"订单为空！");
+        List<PayPassport> payPassports = payPassportDao.getAllList(order.getSubid(),PayPassport.status_on);
         PayPassport payPassport = null;
         if(payPassports.size()>0){
             payPassport = payPassports.get(0);
         }
         if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
-        passportId=payPassport.getId();
-        Order order = createAliOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
+        orderDao.update(order);
+//        passportId=payPassport.getId();
+//        Order order = createAliOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
         Map<String, String> sParaTemp = this.aliOrderPayParam(order.getId(), Order.pay_mode_barcode, authCode);
         List<String> keys = new ArrayList<String>(sParaTemp.keySet());
         Collections.sort(keys);
@@ -413,8 +431,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             payPassport = payPassports.get(0);
         }
         if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
-        passportId=payPassport.getId();
-        Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
+//        passportId=payPassport.getId();
+//        Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
+        Order order = orderDao.load(orderInfo.getId());
+        order.getPayTypes().add(Order.pay_type_wx);
+        if(order == null) return new ResultClient(false,null,"订单为空！");
         if(StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
         String wxAppid = payPassport.getWxAppid();
         String wxMerchantId = payPassport.getWxMerchantId();
@@ -446,6 +467,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             String result_code = resMap.get("result_code");
             if("SUCCESS".equals(result_code)) {
                 order.setStatus(Order.status_pay);
+                order.setMakeStatus(Order.makestatus_qu_yes);
                 order.setDetail(sendRes);
             } else {
                 String path = request.getServletContext().getRealPath("");
@@ -764,7 +786,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public ClientOrder saveOrder(Order order) throws Exception {
+    public ResultClient saveOrder(Order order) throws Exception {
+        List<PayPassport> payPassports = payPassportDao.getAllList(order.getSubid(),PayPassport.status_on);
+        PayPassport payPassport = null;
+        if(payPassports.size()>0){
+            payPassport = payPassports.get(0);
+        }
+        if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
+        order.setPassportId(payPassport.getId());
         Order insertOrder = orderDao.insert(order);
         ClientOrder clientOrder = new ClientOrder(insertOrder);
         List<OptometryInfo> optometryInfos = new ArrayList<>();
@@ -794,7 +823,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 clientOrder.setDescSubtract(marketingCoupon.getDescSubtract());
             }
         }
-        return  clientOrder;
+        return new ResultClient(clientOrder);
     }
 
     @Override
@@ -810,7 +839,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         double totaoPriceyuan=0.0d;
         //小计单，通过从数据库取数据计算订单上的单sku的小计
         List<OrderSku> orderSkuList = order.getSkuids();
-        Map map = countSkuPrice(order.getUid(), orderSkuList, order.getCouponid(), order.getSurcharges());
+        Map map = countSkuPrice(order.getUid(), orderSkuList, order.getCouponid(), order.getSurcharges(),order.getSubid());
         dicountPriceYuan = (double) map.get("discountPriceYuan");
         totaoPriceyuan = (double) map.get("totalPriceYuan");
         clientOrder.setClientSkuids((List<OrderSku>) map.get("clientOrderSkus"));
@@ -930,16 +959,23 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 //    }
 
     @Override
-    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList) throws Exception {
+    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList, long sid) throws Exception {
         Map<Object, Object> map = Maps.newHashMap();
         List<Long> skuIds = Lists.newArrayList();
         List<Long> spuIds = Lists.newArrayList();
         Map<Long, Integer> inventoryMap = Maps.newHashMap();
-
-        User user = userDao.load(uid);
-
-        //会员等级类目折扣
-        UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
+        User user = null;
+        long userGid=0;
+        long score=0;
+        UserGrade userGrade = null;
+        if(uid>0) {
+            user = userDao.load(uid);
+            if(user!=null) {
+                userGrade = userGradeDao.load(user.getUserGradeId());//会员等级类目折扣
+                userGid = user.getUserGradeId();
+                score = user.getScore();
+            }
+        }
 
         for(OrderSku orderSku:orderSkuList){
             skuIds.add(orderSku.getSkuid());
@@ -948,7 +984,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             int inventoryNum = 0;//库存量
             List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(orderSku.getSkuid());
             for (InventoryDetail detail : allDetails) {
-                if (detail.getSubid() == user.getSid()) {
+                if (detail.getSubid() == sid) {
                     inventoryNum += detail.getNum();
                 }
             }
@@ -972,14 +1008,16 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             double userDisCount = 0;//会员类目折扣
             if (userGrade != null) {
                 Map<Long, Object> disMap = userGrade.getDiscount();
-                userDisCount = (double) disMap.get(cid);
+                if(disMap.size()>0) {
+                    userDisCount = (double) disMap.get(cid);
+                }
             }
             //常规商品
             if(spuMap.get(spuId).getType()==ProductSPU.type_common){
                 if(orderSku.getNum()>inventoryMap.get(skuId)) throw new StoreSystemException("当前常规商品库存数量不足！");
                 UserGradeCategoryDiscount ugcd = new UserGradeCategoryDiscount();
                 ugcd.setSpuid(spuId);
-                ugcd.setUgid(user.getUserGradeId());
+                ugcd.setUgid(userGid);
                 ugcd = userGradeCategoryDiscountDao.load(ugcd);
                 if(ugcd!=null){
                     spuDiscount = ugcd.getDiscount();
@@ -1023,7 +1061,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 if (spuMap.get(spuId).getIntegralNum() < orderSku.getNum()) {
                     throw new StoreSystemException("积分商品数量兑换上限！");
                 }
-                if (skuMap.get(skuId).getIntegralPrice() * orderSku.getNum() > user.getScore()) {
+                if (skuMap.get(skuId).getIntegralPrice() * orderSku.getNum() > score) {
                     throw new StoreSystemException("会员积分不足以兑换该积分商品！");
                 }
                 double integralPrice = 0;
@@ -1135,6 +1173,28 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         map.put("order",clientOrder);
         map.put("afterSaleDetails",details);
         return map;
+    }
+
+    @Override
+    public boolean updateOrder(Order order) throws Exception {
+        Order dbInfo = orderDao.load(order.getId());
+        if(order.getRechargePrice()>0){
+            dbInfo.setRechargePrice(order.getRechargePrice());
+            walletService.refresh(dbInfo.getUid(),order.getRechargePrice()/100.0);
+            dbInfo.setMakeStatus(Order.makestatus_recharge);
+        }
+        if(order.getCashPrice()>0){
+            dbInfo.setCashPrice(order.getCashPrice());
+            dbInfo.getPayTypes().add(Order.pay_type_cash);
+        }
+        if(order.getStoredPrice()>0){
+            dbInfo.setStoredPrice(order.getStoredPrice());
+            dbInfo.getPayTypes().add(Order.pay_type_stored);
+        }
+        if(StringUtils.isNotBlank(order.getReceiptDesc())){
+            dbInfo.setReceiptDesc(order.getReceiptDesc());
+        }
+        return orderDao.update(dbInfo);
     }
 
     @Override

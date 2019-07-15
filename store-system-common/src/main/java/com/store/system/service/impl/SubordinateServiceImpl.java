@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.google.common.collect.Lists;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientSubordinate;
@@ -49,6 +50,7 @@ public class SubordinateServiceImpl implements SubordinateService {
 	public Subordinate insert(Subordinate subordinate) throws Exception {
         subordinate.setAdminPassword(Subordinate.defaul_pwd);
 		subordinate = subordinateDao.insert(subordinate);
+		ClientUserOnLogin clientUserOnLogin=null;
 		//为每个所生成指定的系统内部账号
 		if(StringUtils.isNoneBlank(subordinate.getAdminPhone())||StringUtils.isNoneBlank(subordinate.getAdminUserName())) {
 			User user = new User();
@@ -60,7 +62,7 @@ public class SubordinateServiceImpl implements SubordinateService {
 			}
 			user.setUserName(subordinate.getAdminUserName() + "+admin");
 			user.setName(subordinate.getName());
-            ClientUserOnLogin clientUserOnLogin = userService.register(user);
+            clientUserOnLogin = userService.register(user);
 			if (null == clientUserOnLogin) {
                 throw new StoreSystemException("创建管理员账号错误");
 			}
@@ -87,7 +89,11 @@ public class SubordinateServiceImpl implements SubordinateService {
 				role.setRoleName(name);
 				role.setRemark(remark);
 				role=roleService.add(role);
+				if(clientUserOnLogin!=null) {
+					userService.update(clientUserOnLogin, Lists.newArrayList(role.getId()));
+				}
 				roleService.updateRolePermission(role.getId(),pids);
+
 			}
 		}
 		return subordinate;
@@ -169,18 +175,20 @@ public class SubordinateServiceImpl implements SubordinateService {
 
 	@Override
 	public List<Subordinate> getAllSubordinate() throws Exception {
-		String sql = "SELECT  *  FROM `subordinate`   where pid = 0" ;
+		String sql = "SELECT  *  FROM `subordinate` where pid = 0" ;
 		sql = sql + " order  by ctime desc";
 		List<Subordinate> subordinateList = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Subordinate>(Subordinate.class));
 		return subordinateList;
 	}
 
 	@Override
+	public List<Subordinate> getAllParentSubordinate() throws Exception {
+		return subordinateDao.getAllList(0,Subordinate.status_online);
+	}
+
+	@Override
 	public List<Subordinate> getAllList() throws Exception {
-		String sql = "SELECT  *  FROM `subordinate`   where pid > 0" ;
-		sql = sql + " order  by ctime desc";
-		List<Subordinate> subordinateList = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Subordinate>(Subordinate.class));
-		return subordinateList;
+		return subordinateDao.getAllList(Subordinate.status_online);
 	}
 
 	@Override
