@@ -19,7 +19,7 @@ var QuakooDb = (function () {
      * @returns {ret}
      */
     _proto.setItem = function (key, value) {
-        if(key!="user_admin" && key!='user_admin_time'){
+        if(key!=config.userInfoName && key!=config.userInfoTime){
             var user=quakooUser.getUserInfo();
             if (user) {
                 var uid = '' + user.id;
@@ -37,7 +37,7 @@ var QuakooDb = (function () {
      * 返回的值 string
      */
     _proto.getItem = function (key) {
-        if(key!="user_admin" && key!='user_admin_time'){
+        if(key!=config.userInfoName && key!=config.userInfoTime){
             var user=quakooUser.getUserInfo();
             if (user) {
                 var uid = '' + user.id;
@@ -61,7 +61,7 @@ var QuakooDb = (function () {
      * }
      */
     _proto.removeItem = function (key) {
-        if(key!="user_admin" && key!='user_admin_time'){
+        if(key!=config.userInfoName && key!=config.userInfoTime){
             var user=quakooUser.getUserInfo();
             if (user) {
                 var uid = '' + user.id;
@@ -160,9 +160,9 @@ var QuakooUser = (function () {
      */
     _proto.setUserInfo=function(user){
         if(user){
-            quakooDb.setItem("user_admin",user);
+            quakooDb.setItem(config.userInfoName,user);
             var timestamp = (new Date()).valueOf();
-            quakooDb.setItem('user_admin_time', timestamp);
+            quakooDb.setItem(config.userInfoTime, timestamp);
         }
     }
 
@@ -170,8 +170,8 @@ var QuakooUser = (function () {
      * 移除数据库中的用户信息
      */
     _proto.removeUserInfo=function(){
-        quakooDb.removeItem('user_admin');
-        quakooDb.removeItem('user_admin_time');
+        quakooDb.removeItem(config.userInfoName);
+        quakooDb.removeItem(config.userInfoTime);
     }
 
     /**
@@ -180,14 +180,14 @@ var QuakooUser = (function () {
      */
     _proto.getUserInfo=function() {
         var timestamp = (new Date()).valueOf();
-        var oldTimestamp = quakooDb.getItem('user_admin_time');
+        var oldTimestamp = quakooDb.getItem(config.userInfoTime);
         if (quakooUtils.isBlack(oldTimestamp)) {
             return null;
         }
         if (timestamp - oldTimestamp > (60 * 60 * 24 * 7 * 1000)) {
             return null;
         }
-        var user = quakooDb.getItem('user_admin');
+        var user = quakooDb.getItem(config.userInfoName);
         if (quakooUtils.isNotBlack(user)) {
             return user;
         } else {
@@ -199,11 +199,6 @@ var QuakooUser = (function () {
     return QuakooUser;
 })();
 
-/**
- * QuakooData
- * addDataToHtml(results,append)
- * @type {QuakooData}
- */
 var QuakooData = (function () {
     function QuakooData() {
 
