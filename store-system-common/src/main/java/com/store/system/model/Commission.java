@@ -1,14 +1,13 @@
 package com.store.system.model;
 
-import com.quakoo.space.annotation.domain.CombinationKey;
-import com.quakoo.space.annotation.domain.HyperspaceDomain;
-import com.quakoo.space.annotation.domain.ShardingKey;
-import com.quakoo.space.annotation.domain.SortKey;
+import com.quakoo.space.annotation.domain.*;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName Commission
@@ -34,6 +33,9 @@ public class Commission implements Serializable{
 
     @CombinationKey
     private int type;//个人或团体
+
+    @HyperspaceColumn(isJson = true)
+    private Map<Long, Object> users=new HashMap<Long, Object>(); //个人提成
 
     private int price; //(分) 每件商品10元提成
     @SortKey
