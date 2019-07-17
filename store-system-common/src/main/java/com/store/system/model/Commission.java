@@ -21,9 +21,6 @@ import java.util.Map;
 @Data
 public class Commission implements Serializable{
 
-    public static final int type_personal = 1; //个人
-    public static final int type_team = 2; //团体
-
     @ShardingKey
     @CombinationKey
     private long subId;//门店ID
@@ -31,13 +28,10 @@ public class Commission implements Serializable{
     @CombinationKey
     private long spuId;//SPUID
 
-    @CombinationKey
-    private int type;//个人或团体
-
     @HyperspaceColumn(isJson = true)
     private Map<Long, Object> users=new HashMap<Long, Object>(); //个人提成
 
-    private int price; //(分) 每件商品10元提成
+    private int price; //团队提成
     @SortKey
     private long ctime;
 

@@ -9,10 +9,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
-import com.store.system.bean.CalculateOrder;
-import com.store.system.bean.OrderExpireUnit;
-import com.store.system.bean.OrderTypeInfo;
-import com.store.system.bean.SaleReward;
+import com.store.system.bean.*;
 import com.store.system.client.ClientAfterSaleDetail;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ResultClient;
@@ -37,7 +34,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -1197,46 +1193,148 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         return orderDao.update(dbInfo);
     }
 
+//    @Override
+//    public Map<String,Object> saleReward(long subid) throws Exception {
+//        Map<String,Object> map = Maps.newLinkedHashMap();
+//        List<SaleReward> saleRewards = Lists.newArrayList();
+//        int total = 0;//总奖励
+//        List<Order> orders = orderDao.getAllBySubid(subid,Order.status_pay,Order.makestatus_qu_yes);
+//        if(orders.size()>0){
+//            for(Order order:orders){
+//                List<OrderSku> orderSkus = order.getSkuids();
+//                for (OrderSku orderSku:orderSkus){
+//                    Commission personal = null;
+//                    Commission team = null;
+//                    ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+//                    if(productSKU!=null){
+//                        long spuId = productSKU.getSpuid();
+//                        //获得商品的个人提成
+//                        List<Commission> commissionsP = commissionDao.getAllList(subid,spuId,Commission.type_personal);
+//                        if(commissionsP.size()>0){ personal=commissionsP.get(0); }
+//                        //获得商品的团队提成
+//                        List<Commission> commissionsT = commissionDao.getAllList(subid,spuId,Commission.type_team);
+//                        if(commissionsT.size()>0){ team = commissionsT.get(0); }
+//                        if(personal!=null&&team!=null){
+//                            SaleReward saleReward = new SaleReward();
+//                            saleReward.setNumber(orderSku.getNum());
+//                            saleReward.setProductName(orderSku.getName());
+//                            saleReward.setRewardPersonal(personal.getPrice()/100);//个人提成
+//                            saleReward.setRewardTeam(team.getPrice()/100);//团队提成
+//                            saleReward.setRoyaltyPersonal((team.getPrice()*orderSku.getNum())/100);//团队奖励 数量*提成
+//                            saleReward.setRoyaltyTeam((personal.getPrice()*orderSku.getNum())/100);//个人奖励
+//                            saleRewards.add(saleReward);
+//                            total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        map.put("saleRewards",saleRewards);
+//        map.put("total",total);
+//        return map;
+//    }
+
     @Override
-    public Map<String,Object> saleReward(long subid) throws Exception {
-        Map<String,Object> map = Maps.newLinkedHashMap();
+    public Map<String, Object> saleReward(long subid) throws Exception {
+        Map<String, Object> map = Maps.newLinkedHashMap();
         List<SaleReward> saleRewards = Lists.newArrayList();
-        int total = 0;//总奖励
-        List<Order> orders = orderDao.getAllBySubid(subid,Order.status_pay,Order.makestatus_qu_yes);
-        if(orders.size()>0){
-            for(Order order:orders){
-                List<OrderSku> orderSkus = order.getSkuids();
-                for (OrderSku orderSku:orderSkus){
-                    Commission personal = null;
-                    Commission team = null;
-                    ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
-                    if(productSKU!=null){
-                        long spuId = productSKU.getSpuid();
-                        //获得商品的个人提成
-                        List<Commission> commissionsP = commissionDao.getAllList(subid,spuId,Commission.type_personal);
-                        if(commissionsP.size()>0){ personal=commissionsP.get(0); }
-                        //获得商品的团队提成
-                        List<Commission> commissionsT = commissionDao.getAllList(subid,spuId,Commission.type_team);
-                        if(commissionsT.size()>0){ team = commissionsT.get(0); }
-                        if(personal!=null&&team!=null){
-                            SaleReward saleReward = new SaleReward();
-                            saleReward.setNumber(orderSku.getNum());
-                            saleReward.setProductNamw(orderSku.getName());
-                            saleReward.setRewardPersonal(personal.getPrice()/100);//个人提成
-                            saleReward.setRewardTeam(team.getPrice()/100);//团队提成
-                            saleReward.setRoyaltyPersonal((team.getPrice()*orderSku.getNum())/100);//团队奖励 数量*提成
-                            saleReward.setRoyaltyTeam((personal.getPrice()*orderSku.getNum())/100);//个人奖励
-                            saleRewards.add(saleReward);
-                            total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
+        int totalP = 0;
+        int totalT = 0;
+        /**获得门店下的商品提成集合**/
+        List<Commission> commissionList = commissionDao.getAllList(subid);
+        if (commissionList.size() > 0) {
+            for (Commission commission : commissionList) {
+                int number = 0;
+                int royaltyPersonal = 0;
+                int royaltyTeam = 0;
+                /**
+                 * 计算个人奖励
+                 */
+                Map<Long, Object> users = commission.getUsers();
+                for (Map.Entry<Long, Object> entry : users.entrySet()) {
+                    /**获得用户对应的提成**/
+                    int rewardUser = (int) entry.getValue();
+                    /**根据uid查询订单**/
+                    List<Order> orderList = orderDao.getUserFinishOrders(entry.getKey(), Order.makestatus_qu_yes);
+                    for (Order order : orderList) {
+                        /**有提成商品计算奖励**/
+                        List<OrderSku> orderSkuList = order.getSkuids();
+                        for (OrderSku sku : orderSkuList) {
+                            if (commission.getSpuId() == sku.getSpuid()) {
+                                number += sku.getNum();/**完成量增加**/
+                                royaltyPersonal += rewardUser * number; //奖励 = 提成 * 成交数量
+                            }
                         }
                     }
                 }
+                /**
+                 * 计算团队奖励
+                 */
+                royaltyTeam += number * commission.getPrice();
+
+                SaleReward saleReward = new SaleReward();
+                saleReward.setRoyaltyPersonal(royaltyPersonal);/**个人奖励**/
+                saleReward.setRoyaltyTeam(royaltyTeam);/**团队奖励**/
+                saleRewards.add(saleReward);
+                totalP += royaltyPersonal;
+                totalT += royaltyTeam;
             }
         }
-        map.put("saleRewards",saleRewards);
-        map.put("total",total);
+        map.put("saleRewards", saleRewards);
+        map.put("totalT", totalT);
+        map.put("totalP", totalP);
         return map;
     }
+
+//    /**以商品为单位进行遍历**/
+//    for(Commission commission:commissionList){
+//        List<SaleRewardInFo> saleRewardInFos = Lists.newArrayList();
+//
+//
+//        int number = 0;//完成量
+//        int royaltyPersonal = 0;//个人奖励
+//        int rewardUser = 0;//个人提成
+//        int rewardTeam = 0;//团队提成
+//        int royaltyTeam = 0;//团队奖励
+//
+//        /**获得提成用户ids**/
+//        Map<Long,Object> users = commission.getUsers();
+//        for(Map.Entry<Long,Object> entry : users.entrySet()){
+//
+//            SaleRewardInFo saleRewardInFo = new SaleRewardInFo();
+//
+//            /**个人提成**/
+//            if(commission.getType() == Commission.type_personal){
+//                rewardUser = (int) entry.getValue();
+//            }
+//            /**团队提成**/
+//            if(commission.getType() == Commission.type_team){
+//                rewardTeam = (int) entry.getValue();
+//            }
+//            User user = userDao.load(entry.getKey());
+//            if(user != null){
+//                saleRewardInFo.setName(user.getName());
+//                saleRewardInFo.setUid(user.getId());
+//            }
+//            /**根据uid查询订单**/
+//            List<Order> orderList = orderDao.getUserFinishOrders(entry.getKey(),Order.makestatus_qu_yes);
+//
+//
+//            for(Order order:orderList){
+//                /**有提成商品计算奖励**/
+//                List<OrderSku> orderSkuList = order.getSkuids();
+//                for(OrderSku sku:orderSkuList){
+//                    if(commission.getSpuId() == sku.getSpuid()){
+//
+//                        number += sku.getNum();/**完成量增加**/
+//
+//                    }
+//                }
+//            }
+//            /**计算奖励**/
+//            royaltyPersonal += sku.getNum() * rewardUser;
+//        }
+//    }
 
     @Override
     public CalculateOrder calculateOrders(long subId, long startTime, long endTime) throws Exception {
