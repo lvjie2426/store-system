@@ -31,4 +31,10 @@ public class CommissionDaoImpl extends CacheBaseDao<Commission> implements Commi
     public List<Commission> getAllList(long subId) throws Exception {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getListWithoutSharding)
+    public List<Commission> getCountBySpuId(long subId, long spuId) throws Exception {
+        return null;
+    }
 }
