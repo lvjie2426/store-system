@@ -1,5 +1,6 @@
 package com.store.system.service.ext.impl;
 
+import com.google.common.collect.Lists;
 import com.store.system.bean.OrderTypeInfo;
 import com.store.system.dao.*;
 import com.store.system.model.*;
@@ -139,7 +140,9 @@ public class OrderPayServiceImpl implements OrderPayService {
                 CommissionReward commissionReward = new CommissionReward();
                 commissionReward.setSid(subid);
                 commissionReward.setUid(userId);
-                commissionReward.setSkuList(order.getSkuids());
+                List<OrderSku> orderSkuList = Lists.newArrayList();
+                orderSkuList.add(orderSku);
+                commissionReward.setSkuList(orderSkuList);
                 commissionReward.setType(CommissionReward.type_reward);
                 /**算个人提成**/
                 Map<Long,Object> users = commission.getUsers();
