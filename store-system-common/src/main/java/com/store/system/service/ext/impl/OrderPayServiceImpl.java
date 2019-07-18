@@ -131,7 +131,7 @@ public class OrderPayServiceImpl implements OrderPayService {
         }
         for(OrderSku orderSku : order.getSkuids()){
 
-            List<Commission> list = commissionDao.getCountBySpuId(subid,orderSku.getSpuid());
+            List<Commission> list = commissionDao.getAllList(subid,orderSku.getSpuid());
             if(list.size()>0){
                 /**有提成的商品增加 提成的记录**/
                 CommissionReward commissionReward = new CommissionReward();
