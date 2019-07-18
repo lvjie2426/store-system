@@ -112,6 +112,15 @@
         </property>
     </bean>
 
+    <bean id="commissionRewardDao" class="com.store.system.dao.impl.CommissionRewardDaoImpl">
+        <property name="tableName" value="commission_reward" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
     <bean id="rolePermissionDao" class="com.store.system.dao.impl.RolePermissionPoolDaoImpl">
         <property name="tableName" value="role_permission_pool" />
         <property name="dataSources">
