@@ -31,4 +31,5 @@ public class CommissionDaoImpl extends CacheBaseDao<Commission> implements Commi
     public List<Commission> getAllList(long subId) throws Exception {
         return null;
     }
+
 }

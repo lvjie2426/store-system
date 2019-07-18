@@ -1,8 +1,10 @@
 package com.store.system.service.ext.impl;
 
+import com.google.common.collect.Lists;
 import com.store.system.bean.OrderTypeInfo;
 import com.store.system.dao.*;
 import com.store.system.model.*;
+import com.store.system.service.CommissionRewardService;
 import com.store.system.service.FinanceLogService;
 import com.store.system.service.MissionService;
 import com.store.system.service.ext.OrderPayService;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderPayServiceImpl implements OrderPayService {
@@ -36,6 +39,12 @@ public class OrderPayServiceImpl implements OrderPayService {
     @Resource
     private UserMissionPoolDao userMissionPoolDao;
 
+    @Resource
+    private CommissionDao commissionDao;
+
+    @Resource
+    private CommissionRewardService commissionRewardService;
+
     @Override
     public void successHandleBusiness(Order order) throws Exception {
 /*        for(OrderSku sku:order.getSkuids()){
@@ -59,6 +68,7 @@ public class OrderPayServiceImpl implements OrderPayService {
             List<Mission> missions = missionService.checkMission(skuId,sid,subid,userId);
             if(missions.size()>0){
                 for(Mission mission:missions){
+                    boolean missionStatus = false;
                     /**团队任务**/
                     if(mission.getType()==Mission.type_tem){
                         SubordinateMissionPool subordinateMissionPool = new SubordinateMissionPool();
@@ -80,7 +90,7 @@ public class OrderPayServiceImpl implements OrderPayService {
                         /**任务完成修改状态**/
                         if(flag && subordinateMissionPool.getNumber()>=mission.getTarget() || subordinateMissionPool.getPrice()>=mission.getTarget()){
                             mission.setStatus(Mission.status_yes);
-                            missionDao.update(mission);
+                            missionStatus = missionDao.update(mission);
                         }
                     }
                     /**个人任务**/
@@ -104,12 +114,47 @@ public class OrderPayServiceImpl implements OrderPayService {
                         /**任务完成修改状态**/
                         if(flag && userMissionPool.getNumber()>=mission.getTarget() || userMissionPool.getPrice()>=mission.getTarget()){
                             mission.setStatus(Mission.status_yes);
-                            missionDao.update(mission);
+                            missionStatus = missionDao.update(mission);
                         }
+                    }
+                    /**任务完成 记录表增加一条数据**/
+                    if(missionStatus){
+                        CommissionReward commissionReward = new CommissionReward();
+                        commissionReward.setMid(mission.getId());
+                        commissionReward.setSid(subid);
+                        commissionReward.setUid(userId);
+                        commissionReward.setPrice(mission.getAmount());
+                        commissionReward.setType(CommissionReward.type_mission);
+                        commissionRewardService.add(commissionReward);
                     }
                 }
             }
         }
+        for(OrderSku orderSku : order.getSkuids()){
+            Commission commission = new Commission();
+            commission.setSpuId(orderSku.getSpuid());
+            commission.setSubId(subid);
+            commission  = commissionDao.load(commission);
+            if(commission != null){
+                /**有提成的商品增加 提成的记录**/
+                CommissionReward commissionReward = new CommissionReward();
+                commissionReward.setSid(subid);
+                commissionReward.setUid(userId);
+                List<OrderSku> orderSkuList = Lists.newArrayList();
+                orderSkuList.add(orderSku);
+                commissionReward.setSkuList(orderSkuList);
+                commissionReward.setType(CommissionReward.type_reward);
+                /**算个人提成**/
+                Map<Long,Object> users = commission.getUsers();
+                for(Map.Entry<Long,Object> entity : users.entrySet()){
+                    if(entity.getKey() == userId){
+                        commissionReward.setPrice((int) (orderSku.getPrice()*(int)entity.getValue()));
+                        commissionRewardService.add(commissionReward);
+                    }
+                }
+            }
+        }
+
 
         if(StringUtils.isNotBlank(order.getTypeInfo())) {
             OrderTypeInfo orderTypeInfo = OrderTypeInfo.getObject(order.getTypeInfo());
