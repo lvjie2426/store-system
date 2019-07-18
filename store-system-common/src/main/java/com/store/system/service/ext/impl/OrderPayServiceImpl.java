@@ -130,9 +130,11 @@ public class OrderPayServiceImpl implements OrderPayService {
             }
         }
         for(OrderSku orderSku : order.getSkuids()){
-
-            List<Commission> list = commissionDao.getAllList(subid,orderSku.getSpuid());
-            if(list.size()>0){
+            Commission commission = new Commission();
+            commission.setSpuId(orderSku.getSpuid());
+            commission.setSubId(subid);
+            commission  = commissionDao.load(commission);
+            if(commission != null){
                 /**有提成的商品增加 提成的记录**/
                 CommissionReward commissionReward = new CommissionReward();
                 commissionReward.setSid(subid);
@@ -140,7 +142,6 @@ public class OrderPayServiceImpl implements OrderPayService {
                 commissionReward.setSkuList(order.getSkuids());
                 commissionReward.setType(CommissionReward.type_reward);
                 /**算个人提成**/
-                Commission commission = list.get(0);
                 Map<Long,Object> users = commission.getUsers();
                 for(Map.Entry<Long,Object> entity : users.entrySet()){
                     if(entity.getKey() == userId){
