@@ -14,9 +14,8 @@ import com.store.system.client.ClientUserGradeCategoryDiscount;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
-import com.store.system.service.ProductService;
-import com.store.system.service.UserGradeCategoryDiscountService;
-import com.store.system.service.UserService;
+import com.store.system.service.*;
+import com.store.system.util.CodeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -84,8 +83,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
+
     @Resource
     private UserGradeCategoryDiscountService userGradeCategoryDiscountService;
+
+    @Resource
+    private ProductBrandService productBrandService;
+
+    @Resource
+    private ProductSeriesService productSeriesService;
+
 
     private void checkSPU(ProductSPU productSPU) throws StoreSystemException {
         int type = productSPU.getType();
@@ -172,10 +179,36 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void change(ProductSPU productSPU, List<ProductSKU> addProductSKUList, List<ProductSKU> updateProductSKUList,
-                       List<Long> delSkuids, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception {
+                       List<Long> delSkuids, List<UserGradeCategoryDiscount> ugDiscountList, String brandName, String seriesName) throws Exception {
         List<ProductSKU> productSKUList = Lists.newArrayList(addProductSKUList);
         productSKUList.addAll(updateProductSKUList);
         check(productSPU, productSKUList, false);
+        if(StringUtils.isNotBlank(brandName)){
+            ProductBrand brand = new ProductBrand();
+            brand.setName(brandName);
+            brand = productBrandService.add(brand);
+            productSPU.setBid(brand.getId());
+        }
+
+        if(StringUtils.isNotBlank(seriesName)&&productSPU.getBid()>0){
+            ProductSeries series = new ProductSeries();
+            series.setName(seriesName);
+            series.setBid(productSPU.getBid());
+            series = productSeriesService.add(series);
+            productSPU.setSid(series.getId());
+        }
+
+        if(StringUtils.isNotBlank(brandName)&&StringUtils.isNotBlank(seriesName)){
+            ProductBrand brand = new ProductBrand();
+            brand.setName(brandName);
+            brand = productBrandService.add(brand);
+            ProductSeries series = new ProductSeries();
+            series.setName(seriesName);
+            series.setBid(brand.getId());
+            series = productSeriesService.add(series);
+            productSPU.setBid(brand.getId());
+            productSPU.setSid(series.getId());
+        }
         int count = productSPUDao.getCount(productSPU.getType(), productSPU.getSubid(), productSPU.getPid(),
                 productSPU.getCid(), productSPU.getBid(), productSPU.getSid());
         if(count==0) {
@@ -212,7 +245,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private void check(ProductSPU productSPU, List<ProductSKU> productSKUList, boolean isAdd) throws StoreSystemException {
+    private void check(ProductSPU productSPU, List<ProductSKU> productSKUList, boolean isAdd) throws Exception {
         Map<Long, Object> properties = productSPU.getProperties();
         if (productSPU.getSubid() == 0) throw new StoreSystemException("SPU店铺不能为空");
         if (productSPU.getCid() == 0) throw new StoreSystemException("SPU类目不能为空");
@@ -247,13 +280,40 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception {
+    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, List<UserGradeCategoryDiscount> ugDiscountList, String brandName, String seriesName) throws Exception {
         check(productSPU, productSKUList, true);
+        if(StringUtils.isNotBlank(brandName)){
+            ProductBrand brand = new ProductBrand();
+            brand.setName(brandName);
+            brand = productBrandService.add(brand);
+            productSPU.setBid(brand.getId());
+        }
+
+        if(StringUtils.isNotBlank(seriesName)&&productSPU.getBid()>0){
+            ProductSeries series = new ProductSeries();
+            series.setName(seriesName);
+            series.setBid(productSPU.getBid());
+            series = productSeriesService.add(series);
+            productSPU.setSid(series.getId());
+        }
+
+        if(StringUtils.isNotBlank(brandName)&&StringUtils.isNotBlank(seriesName)){
+            ProductBrand brand = new ProductBrand();
+            brand.setName(brandName);
+            brand = productBrandService.add(brand);
+            ProductSeries series = new ProductSeries();
+            series.setName(seriesName);
+            series.setBid(brand.getId());
+            series = productSeriesService.add(series);
+            productSPU.setBid(brand.getId());
+            productSPU.setSid(series.getId());
+        }
         productSPU = productSPUDao.insert(productSPU);
         if (null == productSPU) throw new StoreSystemException("SPU添加错误");
         long spuid = productSPU.getId();
         for (ProductSKU productSKU : productSKUList) {
             productSKU.setSpuid(spuid);
+            productSKU.setCode(String.valueOf(CodeUtil.getRandom(10)));
             productSKUDao.insert(productSKU);
         }
         if(ugDiscountList.size()>0) userGradeCategoryDiscountService.addDiscount(ugDiscountList,spuid);

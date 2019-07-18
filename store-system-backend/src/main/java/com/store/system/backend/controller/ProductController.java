@@ -6,6 +6,7 @@ import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.InventoryInBillItem;
 import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
@@ -76,10 +77,12 @@ public class ProductController extends BaseController {
      * creat_time: 14:49
      **/
     @RequestMapping("/add")
-    public ModelAndView add(ProductSPU productSPU,
-                            @RequestParam(required = true,value = "skuJson") String skuJson,
-                            @RequestParam(required = false,value = "ugDiscount") String ugDiscount,
-                            @RequestParam(required = false,value = "commissionJson") String commissionJson,
+    public ModelAndView add(ProductSPU productSPU, String brandName, String seriesName,
+                            @RequestParam(required = true, value = "skuJson") String skuJson,
+                            @RequestParam(required = false, value = "ugDiscount") String ugDiscount,
+                            @RequestParam(required = false, value = "commissionJson") String commissionJson,
+                            @RequestParam(required = false, value = "rangesJson") String rangesJson,
+                            @RequestParam(required = false, value = "nowRangesJson") String nowRangesJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ProductSKU> productSKUList = null;
@@ -90,10 +93,10 @@ public class ProductController extends BaseController {
             }
             List<UserGradeCategoryDiscount> ugDiscountList = Lists.newArrayList();
             try {
-                if(StringUtils.isNotBlank(ugDiscount)){
+                if (StringUtils.isNotBlank(ugDiscount)) {
                     ugDiscountList = JsonUtils.fromJson(ugDiscount, new TypeReference<List<UserGradeCategoryDiscount>>() {});
                 }
-                for(UserGradeCategoryDiscount info:ugDiscountList){
+                for (UserGradeCategoryDiscount info : ugDiscountList) {
                     String regex = "^[1-9]+(.[1-9]{1})?$";
                     Pattern pattern = Pattern.compile(regex);
                     Matcher matcherUser = pattern.matcher(String.valueOf(info.getDiscount()));
@@ -104,7 +107,7 @@ public class ProductController extends BaseController {
             }
             List<Commission> commissions = null;
             try {
-                if(StringUtils.isNotBlank(commissionJson)) {
+                if (StringUtils.isNotBlank(commissionJson)) {
                     commissions = JsonUtils.fromJson(commissionJson, new TypeReference<List<Commission>>() {});
                     for (Commission commission : commissions) {
                         commissionService.add(commission);
@@ -113,10 +116,20 @@ public class ProductController extends BaseController {
             } catch (Exception e) {
                 throw new StoreSystemException("commission提成格式错误");
             }
-            productService.add(productSPU, productSKUList,ugDiscountList);
-            return this.viewNegotiating(request,response, new ResultClient(true));
+            List<ProductCustomRange> ranges = Lists.newArrayList();
+            List<ProductCustomRange> nowRanges = Lists.newArrayList();
+            if (StringUtils.isNotBlank(rangesJson)) {
+                ranges = JsonUtils.fromJson(rangesJson, new TypeReference<List<ProductCustomRange>>() {});
+            }
+            if (StringUtils.isNotBlank(nowRangesJson)) {
+                nowRanges = JsonUtils.fromJson(nowRangesJson, new TypeReference<List<ProductCustomRange>>() {});
+            }
+            productSPU.setRanges(ranges);
+            productSPU.setNowRanges(nowRanges);
+            productService.add(productSPU, productSKUList, ugDiscountList, brandName, seriesName);
+            return this.viewNegotiating(request, response, new ResultClient(true));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
@@ -130,11 +143,13 @@ public class ProductController extends BaseController {
      * creat_time: 14:48
      **/
     @RequestMapping("/change")
-    public ModelAndView change(ProductSPU productSPU, @RequestParam(value = "addSkuJson") String addSkuJson,
+    public ModelAndView change(ProductSPU productSPU, String brandName, String seriesName, @RequestParam(value = "addSkuJson") String addSkuJson,
                                @RequestParam(value = "updateSkuJson") String updateSkuJson,
                                @RequestParam(value = "delSkuIdJson") String delSkuIdJson,
                                @RequestParam(required = false,value = "ugDiscount") String ugDiscount,
                                @RequestParam(required = false,value = "commissionJson") String commissionJson,
+                               @RequestParam(required = false,value = "rangesJson") String rangesJson,
+                               @RequestParam(required = false,value = "nowRangesJson") String nowRangesJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ProductSKU> addProductSKUList = null;
@@ -175,7 +190,18 @@ public class ProductController extends BaseController {
             } catch (Exception e) {
                 throw new StoreSystemException("修改的commission提成格式错误");
             }
-            productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds,ugDiscountList);
+
+            List<ProductCustomRange> ranges = Lists.newArrayList();
+            List<ProductCustomRange> nowRanges = Lists.newArrayList();
+            if(StringUtils.isNotBlank(rangesJson)) {
+                ranges = JsonUtils.fromJson(rangesJson, new TypeReference<List<ProductCustomRange>>() {});
+            }
+            if(StringUtils.isNotBlank(nowRangesJson)) {
+                nowRanges = JsonUtils.fromJson(nowRangesJson, new TypeReference<List<ProductCustomRange>>() {});
+            }
+            productSPU.setRanges(ranges);
+            productSPU.setNowRanges(nowRanges);
+            productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds,ugDiscountList, brandName, seriesName);
             return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

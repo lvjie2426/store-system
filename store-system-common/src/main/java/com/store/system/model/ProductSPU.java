@@ -70,10 +70,21 @@ public class ProductSPU implements Serializable {
     private String other; //附加属性
 
     private String ext; //扩展字段
+
     private int saleStatus;// 销售状态
+
     private long integralStartTime;// 积分商品兑换开始时间
+
     private long integralEndTime;//积分商品兑换结束时间
+
     private int integralNum; // 积分商品兑换数量上限
+
+    @HyperspaceColumn(isJson = true)
+    private List<ProductCustomRange> ranges= Lists.newArrayList();//定制范围
+
+    @HyperspaceColumn(isJson = true)
+    private List<ProductCustomRange> nowRanges= Lists.newArrayList();//现货范围
+
     @SortKey
     private long ctime;
 
