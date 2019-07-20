@@ -89,6 +89,8 @@ var Config = (function(_super){
     _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
     /**获取 验光结果建议*/
     _proto.getUrl_optometryinfo_getResult = function(){return this.serverUrl + '/optometryinfo/getResult';};
+    /**附加费用*/
+    _proto.getUrl_order_getSurcharge = function(){return this.serverUrl + '/order/getSurcharge';};
     /**促销方式*/
     _proto.getUrl_marketingcoupon_getCanUseList = function(){return this.serverUrl + '/marketingcoupon/getCanUseList';};
     /**添加商品的SPU列表*/
