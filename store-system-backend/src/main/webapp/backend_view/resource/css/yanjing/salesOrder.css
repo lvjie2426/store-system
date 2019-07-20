@@ -178,11 +178,11 @@ i {
     height: 28px;
 }
 
-.main .mainCustomerInfo .contentBox {
+.mainCustomerInfo .contentBox {
     padding: 8px 16px;
 }
 
-.main .mainCustomerInfo .contentBox h4 {
+.mainCustomerInfo .contentBox h4 {
     display: block;
     margin: 6px 0;
     color: #393953;
@@ -196,28 +196,36 @@ i {
     border-bottom: 1px solid #ECECF4;
     padding-bottom: 16px;
 }
-.main .mainCustomerInfo .contentBox .fromInfo .layui-form{
+
+.contentBox .fromInfo .layui-form {
     display: block;
     width: 100%;
-    height:28px;
+    height: 28px;
     line-height: 28px;
 }
 
 
-.main .mainCustomerInfo .contentBox .fromInfo .nameInput {
+.fromInfo .nameInput {
     vertical-align: top;
     margin-right: 6px;
-    width: 8.3%;
+    width: 9%;
+}
+.fromInfo .nameInput input{
+    width: 100%;
 }
 
 .main .mainCustomerInfo .contentBox .fromInfo .phoneNum,
 .main .mainCustomerInfo .contentBox .fromInfo .dateBox,
-.main .mainCustomerInfo .contentBox .fromInfo .ageNum,
-.main .mainCustomerInfo .contentBox .fromInfo .occupationTypeBox {
+.fromInfo .ageNum,
+.fromInfo .occupationTypeBox {
     display: inline-block;
     vertical-align: top;
     width: 12.4%;
     margin-right: 6px;
+}
+
+.fromInfo .ageNum {
+    width: 9%;
 }
 
 .main .mainCustomerInfo .contentBox .fromInfo .dateBox {
@@ -231,23 +239,33 @@ i {
     width: 100%;
 }
 
-.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox {
+.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox, .stu-card {
     display: inline-block;
     margin-right: 6px;
-    width: 14%;
     height: 28px;
     position: relative;
     vertical-align: top;
 }
 
+.stu-card {
+    width: 10%;
+}
 
-.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox span.tuiJianRen {
+.main .mainCustomerInfo .contentBox .fromInfo .recommenderBox span.tuiJianRen, .stu-card .text {
     position: absolute;
     left: 0;
     top: -25px;
     color: #393953;
     font-size: 12px;
     font-weight: 600;
+}
+
+.recommenderBox .search-select {
+    width: 120px;
+}
+
+.stu-card .search-select {
+    width: 100%;
 }
 
 .main .mainCustomerInfo .contentBox .fromInfo .recommenderBox .layui-edge {
@@ -268,7 +286,7 @@ i {
     text-align: center;
     display: inline-block;
     width: 50%;
-    background-color: #ffffff;
+    background-color: #F4F4F8;
     border: 1px solid #ececf4;
     box-sizing: border-box;
     float: left;
@@ -280,7 +298,7 @@ i {
 
 .main .mainCustomerInfo .contentBox .fromInfo .benderBox span.active {
     color: #828297;
-    background: #F4F4F8;
+    background: #ffffff;
 }
 
 .main .mainCustomerInfo .footerBox {
@@ -299,8 +317,9 @@ i {
     font-weight: 600;
     display: inline-block;
 }
+
 .main .mainCustomerInfo .weiyanzheng,
-.main .mainCustomerInfo .yiyanzheng{
+.main .mainCustomerInfo .yiyanzheng {
     display: inline-block;
 }
 
@@ -316,13 +335,17 @@ i {
     height: auto;
     line-height: normal;
 }
-.main .mainCustomerInfo .footerBox .memberInfo .registerMember.active{
-    color: #828297;background: #F4F4F8
+
+.main .mainCustomerInfo .footerBox .memberInfo .registerMember.active {
+    color: #828297;
+    background: #F4F4F8
 }
+
 .main .mainCustomerInfo .footerBox .memberInfo .wxNoBind {
     float: right;
     background-color: #54b677;
 }
+
 .main .mainCustomerInfo .footerBox .memberInfo .wxNoBind.active {
     color: #828297;
     background: #F4F4F8
@@ -338,7 +361,7 @@ i {
     margin-right: 16px;
 }
 
-.main .mainCustomerInfo .footerBox .memberInfo .textInfoBox .textInfo .mem-tag{
+.main .mainCustomerInfo .footerBox .memberInfo .textInfoBox .textInfo .mem-tag {
     display: inline-block;
     color: #828297;
     padding: 2px 6px;
@@ -346,12 +369,13 @@ i {
     background-color: #f4f4f8;
 }
 
-.textInfo .member-text{
+.textInfo .member-text {
     color: rgba(57, 57, 83, 1);
     font-size: 12px;
     text-align: left;
     font-family: Roboto-Medium;
 }
+
 .main .mainCustomerInfo .footerBox .memberInfo .textInfoBox .textInfo b {
     color: #4186DC;
     font-weight: normal;
@@ -579,7 +603,7 @@ i {
 .main .optometryInfo .contentBox .rightBox .rightFooterBox .degreesBox .companyBox input {
     display: inline-block;
     width: 55%;
-    height:28px;
+    height: 28px;
     box-sizing: border-box;
     float: left;
 }
@@ -633,8 +657,8 @@ i {
     cursor: pointer;
 }
 
-.btn-recharge{
-    background:#DD5B4B;
+.btn-recharge {
+    background: #DD5B4B;
 }
 
 .main .orderInfo .btnBox .addRoutineCommodity {
@@ -668,7 +692,7 @@ i {
     width: 100%;
 }
 
-.main .orderInfo .leftBox .saleMachiningPeople>div {
+.main .orderInfo .leftBox .saleMachiningPeople > div {
     display: inline-block;
     width: 48%;
 }
@@ -688,9 +712,11 @@ i {
     display: inline-block;
     margin-left: 3px;
 }
-.costAdditional .costAdditionalSelect{
-    width:100%;
+
+.costAdditional .costAdditionalSelect {
+    width: 100%;
 }
+
 .main .orderInfo .leftBox .costAdditional .addOrder {
     background: #4186DC;
     font-size: 12px;
@@ -704,7 +730,11 @@ i {
 
 .main .orderInfo .leftBox .costAdditional .moneyNum {
     width: 37%;
-    height:28px;
+    height: 28px;
+    background-color: #dddddd;
+}
+.main .orderInfo .leftBox .costAdditional .moneyNum.active {
+    background-color: #ffffff;
 }
 
 .main .orderInfo .leftBox .costAdditional .selectBox {
@@ -912,7 +942,7 @@ i {
     width: 100%;
     text-align: center;
     vertical-align: middle;
-    border:none;
+    border: none;
     opacity: 0.6;
     color: rgba(130, 130, 151, 1);
     font-size: 12px;
@@ -993,6 +1023,7 @@ i {
     -webkit-transition: all .3s;
     box-sizing: border-box;
 }
+
 .layui-layer-btn a {
     height: 32px !important;
     line-height: 30px !important;
@@ -1003,16 +1034,19 @@ i {
 .selectBox:hover {
     border-color: #D2D2D2 !important;
 }
-.btn.active, .btn:active{
+
+.btn.active, .btn:active {
     box-shadow: none !important;
 }
+
 .selectBox .optionBox {
     box-shadow: 0px 0px 0px 1px #e2e2e2;
 }
 
 
-.selectBox .optionBox li>i {
-    font-size: 16px;color: #828297;
+.selectBox .optionBox li > i {
+    font-size: 16px;
+    color: #828297;
     margin-right: 8px;
 }
 
@@ -1027,7 +1061,7 @@ i {
 }
 
 .main .layui-form-item {
-    margin: 0;
+    /*margin: 0;*/
     display: inline-block;
 }
 
@@ -1126,7 +1160,7 @@ b {
     text-align: center;
     padding: 8px 0;
     min-width: 72px;
-    
+
     border: 1px solid #E4E4EA;
 }
 
@@ -1301,7 +1335,7 @@ b {
     border: 1px solid rgba(236, 236, 244, 1);
 }
 
-.popMainContent .colorModel>div {
+.popMainContent .colorModel > div {
     width: 47%;
     display: inline-block;
     float: left;
@@ -1351,7 +1385,7 @@ b {
     box-sizing: border-box;
 }
 
-.popMainContent .eyeDegrees>div {
+.popMainContent .eyeDegrees > div {
     display: inline-block;
     margin-right: 12px;
 }
@@ -1383,7 +1417,8 @@ b {
     width: 100%;
     box-sizing: border-box;
 }
-.historyRecord{
+
+.historyRecord {
     padding: 0;
 }
 
@@ -1523,14 +1558,16 @@ b {
 
 .addRoutineCommodityPro {
     display: none;
-    width:100%;
+    width: 100%;
     border-top: 1px solid #ECECF4;
     border-bottom: 1px solid #ECECF4;
 }
-.addRoutineCommodityPro .content{
-    width:96%;
-    margin:5px auto;
+
+.addRoutineCommodityPro .content {
+    width: 96%;
+    margin: 5px auto;
 }
+
 /* 推荐列表 */
 
 .addRoutineCommodityPop .recommendList {
@@ -1546,7 +1583,7 @@ b {
     font-size: 12px;
 }
 
-.recommendList h4>i {
+.recommendList h4 > i {
     margin-right: 4px;
 }
 
@@ -1559,7 +1596,7 @@ b {
     margin-top: 10px;
 }
 
-.recommendUL li>input {
+.recommendUL li > input {
     max-width: 86%;
     text-align: left;
     vertical-align: middle;
@@ -1601,7 +1638,8 @@ b {
     box-sizing: border-box;
 }
 
-.dataListForm .tab-ul {}
+.dataListForm .tab-ul {
+}
 
 .dataListForm .tab-ul {
     width: 100%;
@@ -1683,6 +1721,7 @@ b {
     margin-right: 10px;
     color: #AFAFBE;
 }
+
 .winFooterBox button:hover {
     background-color: #4186dc;
     color: #fff;
@@ -1911,16 +1950,16 @@ b {
 
 .infoOptometry h3 {
     width: 100%;
-    height:17px;
+    height: 17px;
     line-height: 17px;
     text-align: center;
     font-size: 12px;
     margin-bottom: 10px;
 }
 
-.infoOptometry .name{
-    width:100%;
-    height:17px;
+.infoOptometry .name {
+    width: 100%;
+    height: 17px;
     line-height: 17px;
     font-size: 12px;
     text-align: left;
@@ -1936,8 +1975,8 @@ b {
 
 .infoOptometry .eye .eyeText {
     vertical-align: middle;
-    display:inline-block;
-    height:20px;
+    display: inline-block;
+    height: 20px;
     line-height: 18px;
     color: #393953;
     padding: 0 4px;
@@ -2031,7 +2070,7 @@ b {
 }
 
 #smallTicketBg {
-    background: url('../../images/huabian.png')no-repeat;
+    background: url('../../images/huabian.png') no-repeat;
     display: inline-block;
     width: 100%;
     position: absolute;
@@ -2040,8 +2079,6 @@ b {
     height: 12px;
     background-size: 120% 70%;
 }
-
-
 
 
 /* 支付弹窗 */
@@ -2128,10 +2165,12 @@ b {
     font-size: 48px;
     max-width: 160px;
 }
+
 .paymentPopup .moneyNum::placeholder {
     color: #ECECF4;
     font-weight: bold;
 }
+
 #testCode {
     border: none;
     border-bottom: 1px solid #ECECF4;
@@ -2140,10 +2179,12 @@ b {
     font-size: 20px;
     max-width: 160px;
 }
+
 #testCode::placeholder {
     color: #ECECF4;
     font-weight: bold;
 }
+
 .paymentPopup .sweepCodeImg,
 .paymentPopup .successBox {
     padding: 69px 0 109px;
@@ -2152,26 +2193,27 @@ b {
     display: block;
     text-align: center;
 }
+
 .paymentPopup .payContent {
 
 }
 
-.paymentPopup .payContent .content-item{
+.paymentPopup .payContent .content-item {
     display: none;
 }
 
-.paymentPopup .payContent .content-item.active{
+.paymentPopup .payContent .content-item.active {
     display: block;
 }
 
-.paymentPopup .payContent .btn-pay{
-    width:100%;
-    height:44px;
+.paymentPopup .payContent .btn-pay {
+    width: 100%;
+    height: 44px;
     line-height: 44px;
     border-top: 1px solid #EEEEF5;
 }
 
-.paymentPopup .payContent .btn-pay .cancel{
+.paymentPopup .payContent .btn-pay .cancel {
     float: right;
     margin-right: 6px;
     margin-top: 6px;
@@ -2187,7 +2229,8 @@ b {
     text-align: center;
     font-family: PingFangSC-Semibold;
 }
-.paymentPopup .payContent .btn-pay .first-next{
+
+.paymentPopup .payContent .btn-pay .first-next {
     float: right;
     margin-right: 8px;
     margin-top: 6px;
@@ -2204,12 +2247,14 @@ b {
     text-align: center;
     font-family: PingFangSC-Semibold;
 }
-.paymentPopup .payContent .btn-pay .first-next:hover{
+
+.paymentPopup .payContent .btn-pay .first-next:hover {
     background-color: rgba(244, 244, 248, 1);
     border: 1px solid rgba(236, 236, 244, 1);
     color: rgba(130, 130, 151, 1);
 }
-.paymentPopup .payContent .btn-pay .second-next{
+
+.paymentPopup .payContent .btn-pay .second-next {
     float: right;
     margin-right: 8px;
     margin-top: 6px;
@@ -2224,7 +2269,8 @@ b {
     text-align: center;
     font-family: PingFangSC-Semibold;
 }
-.paymentPopup .payContent .btn-pay .second-pre{
+
+.paymentPopup .payContent .btn-pay .second-pre {
     float: right;
     margin-right: 8px;
     margin-top: 6px;
@@ -2239,7 +2285,8 @@ b {
     text-align: center;
     font-family: PingFangSC-Semibold;
 }
-.paymentPopup .payContent .btn-pay .third-end{
+
+.paymentPopup .payContent .btn-pay .third-end {
     float: right;
     margin-right: 8px;
     margin-top: 6px;
@@ -2255,19 +2302,19 @@ b {
     font-family: PingFangSC-Semibold;
 }
 
-.paymentPopup .payContent{
+.paymentPopup .payContent {
 
 }
 
-.paymentPopup .payContent{
+.paymentPopup .payContent {
 
 }
 
-.paymentPopup .payContent{
+.paymentPopup .payContent {
 
 }
 
-.paymentPopup .payContent{
+.paymentPopup .payContent {
 
 }
 
@@ -2365,7 +2412,7 @@ b {
     overflow: hidden;
 }
 
-.infoContent .item>div {
+.infoContent .item > div {
     display: inline-block;
     vertical-align: top;
     padding-top: 12px;
@@ -2375,12 +2422,6 @@ b {
     display: block;
     margin-bottom: 6px;
 }
-
-
-
-
-
-
 
 
 /* 单选框样式 */
@@ -2417,9 +2458,6 @@ input[type=checkbox]:checked:after {
     background: #4186DC;
     border: 1px solid #ddd;
 }
-
-
-
 
 
 /*离职员工操作弹窗*/
@@ -2463,27 +2501,6 @@ input[type=checkbox]:checked:after {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* 滚动条公共样式 */
 
 .h::-webkit-scrollbar-track {
@@ -2522,11 +2539,10 @@ input[type=checkbox]:checked:after {
 
     transition: all 3s;
 }
-.fixed-table-container{
+
+.fixed-table-container {
     overflow: auto;
 }
-
-
 
 
 /* 验证弹出框 */
@@ -2535,9 +2551,11 @@ input[type=checkbox]:checked:after {
 #salesOrder .card-pay {
     background-color: #fff;
 }
-.layui-form-item{
+
+.layui-form-item {
     margin: 0;
 }
+
 #salesOrder .verify .content {
     padding: 0 5% !important;
 }
@@ -2654,45 +2672,49 @@ input[type=checkbox]:checked:after {
 
 
 /*顾客信息行对齐*/
-.searchTypeBox{
+.searchTypeBox {
     vertical-align: middle;
 }
-#searchPhoneUser{
+
+#searchPhoneUser {
     vertical-align: middle;
 }
 
 /*临时订单样式*/
 .optionBox .optionUL li {
     line-height: 28px;
-    height:28px;
+    height: 28px;
     padding-left: 8px;
     box-sizing: border-box;
     list-style: none;
     color: #393953;
     font-size: 12px;
-    margin: 0;width: 100%;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     padding-right: 12px;
-    position:relative;
+    position: relative;
 }
 
-.selectBox .optionBox li>i {
-    font-size: 16px;color: #828297;
+.selectBox .optionBox li > i {
+    font-size: 16px;
+    color: #828297;
     display: block;
     position: absolute;
-    right:-7px;
-    top:0px;
+    right: -7px;
+    top: 0px;
 }
+
 /*.selectBox i{*/
-    /*margin-left:0;*/
+/*margin-left:0;*/
 /*}*/
 .select-box-header span {
     max-width: 60%;
 }
 
-.unbound{
+.unbound {
     display: inline-block;
     width: 45px;
     height: 18px;
@@ -2705,7 +2727,8 @@ input[type=checkbox]:checked:after {
     text-align: center;
     font-family: PingFangSC-Semibold;
 }
-.bounding{
+
+.bounding {
     display: inline-block;
     width: 45px;
     height: 18px;
@@ -2719,20 +2742,25 @@ input[type=checkbox]:checked:after {
     text-align: center;
     font-family: PingFangSC-Semibold;
 }
-.layui-layer-title{
-    border-bottom: 1px solid #ECECF4;!important;
+
+.layui-layer-title {
+    border-bottom: 1px solid #ECECF4;
+!important;
 
 }
-.layui-layer-btn.layui-layer-btn-{
-    border-top:1px solid #ECECF4;
+
+.layui-layer-btn.layui-layer-btn- {
+    border-top: 1px solid #ECECF4;
 }
+
 /*注册会员弹窗*/
-.layui-register-member .layui-layer-title,.layui-register-member .layui-layer-btn.layui-layer-btn-{
-    border:none;
+.layui-register-member .layui-layer-title, .layui-register-member .layui-layer-btn.layui-layer-btn- {
+    border: none;
 }
-#printBox{
-    width:90%;
-    margin:0px auto;
+
+#printBox {
+    width: 90%;
+    margin: 0px auto;
     background: #fff;
     padding: 20px 6px;
     box-sizing: border-box;
@@ -2743,23 +2771,23 @@ input[type=checkbox]:checked:after {
 }
 
 .layer-recharge .layui-layer-title {
-    border:none;
+    border: none;
 }
 
 .layer-recharge .layui-layer-btn.layui-layer-btn- {
-    border:none;
+    border: none;
 }
 
-.layer-recharge .content{
-    padding:10px 0;
+.layer-recharge .content {
+    padding: 10px 0;
 }
 
-.main-eye-text{
+.main-eye-text {
     vertical-align: top;
     display: inline-block;
-    padding:0 6px;
-    height:28px;
-    line-height:28px;
+    padding: 0 6px;
+    height: 28px;
+    line-height: 28px;
     color: #393953;
     font-size: 12px;
     font-weight: 600;

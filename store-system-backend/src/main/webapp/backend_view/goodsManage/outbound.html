@@ -809,6 +809,17 @@
         }
         //添加出库单
         function addOutList(status,index,id) {
+            var closeFlag = true;
+            for(var i in allOutList){
+                if(allOutList[i].data.length>0){
+                    closeFlag = false;
+                    break ;
+                }
+            }
+            if(closeFlag){
+                layer.close(index)
+                return ;
+            }
             if(!peopleId){
                 layer.msg('选择出库人');
                 return

@@ -98,60 +98,23 @@
         </table>
     </div>
     <!--设置提成的弹出框-->
-    <div class="content-view content-view-ticheng">
-        <div class="ticheng-checkbox">
-            <form class="layui-form" action="">
-                <div class="layui-input-block" style="float:left;">
-                    <input type="checkbox" name="" lay-skin="primary"  title="团体统一提成" >
-                </div>
-                <div class="layui-input-block" style="float:left;">
-                    <input type="checkbox" name="" lay-skin="primary" title="个人统一提成" >
-                </div>
-            </form>
-        </div>
-        <table class="table  table-self table-ticheng">
-            <tr>
-                <th>门店名称</th>
-                <th>团体</th>
-                <th>个人</th>
-            </tr>
-            <tr>
-                <td>A门店</td>
-                <td><input type="text" placeholder="0"></td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td>A门店</td>
-                <td><input type="text" placeholder="0"></td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td>A门店</td>
-                <td><input type="text" placeholder="0"></td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td>A门店</td>
-                <td><input type="text" placeholder="0"></td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td>A门店</td>
-                <td><input type="text" placeholder="0"></td>
-                <td><input type="text" placeholder="0"></td>
-            </tr>
-        </table>
+    <div class="content-view content-view-ticheng" id="tiChengDom">
+
     </div>
-    <div class="contact-view content-view-gongyingshang" id="supplierUl" style="display: none;">
+    <!--设置提成的弹出框-->
+    <div class="content-view content-view-personal-ticheng" id="personalTiChengDom">
+
+    </div>
+    <div class="content-view content-view-gongyingshang" id="supplierUl" >
 
     </div>
     <!--设置现货范围-->
     <div class="content-view content-view-range">
         <div class="yj-content-body">
             <div class="range-header">
-               <!-- <div class="now-goods-range">
+                <div class="now-goods-range">
                     <em></em>现货范围
-                </div>-->
+                </div>
                 <div class="dingzhi-range">
                     <em></em>定制范围
                 </div>
@@ -161,13 +124,11 @@
     </div>
     <!--设定价格-->
     <div class="content-view content-view-price">
-
         <ul class="tab-ul" id="setPriceBtn">
-            <li class="active" onclick="setPrice(1)">产品编码</li>
-            <li onclick="setPrice(2)">零售价/元</li>
-            <li onclick="setPrice(3)">批发价/元</li>
-            <li onclick="setPrice(4)">备货量/片</li>
-            <li onclick="setPrice(5)">积分价/分</li>
+            <li onclick="setPrice(1)">零售价/元</li>
+            <li onclick="setPrice(2)">批发价/元</li>
+            <li onclick="setPrice(3)">备货量/片</li>
+            <li onclick="setPrice(4)">积分价/分</li>
         </ul>
         <div class="price-table-box">
             <table class="layui-hide yj-layui-table" id="priceEvent" lay-filter="priceEvent"></table>
@@ -262,7 +223,20 @@
     <!--下拉选择模板-->
     <script type="text/html" id="selectTagTmp">
         <div class="select-box-header">
-            <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+            <span class="text" ><%=title%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+        </div>
+        <div class="optionBox">
+            <ul class="optionUL">
+                <%for(var i=0;i< list.length;i++){%>
+                <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
+                <%}%>
+            </ul>
+        </div>
+    </script>
+    <!--下拉选择模板-->
+    <script type="text/html" id="selectTagInputTmp">
+        <div class="select-box-header">
+            <input type="text" id="seriesName"  value="<%=title%>" placeholder="系列"><i class="iconfont icon-ico_arrow_down" ></i>
         </div>
         <div class="optionBox">
             <ul class="optionUL">
@@ -312,7 +286,7 @@
                 <div class="goods-select-title">品牌</div>
                 <div class="selectBox" id="yj-add-brand">
                     <div class="select-box-header">
-                        <span class="text"><%if(list.brandName){%><%=list.brandName%><%}else{%>品牌<%}%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+                        <input type="text" id="brandName" onkeyup="changeBrand(this)" value="<%=list.brandName%>" placeholder="品牌"><i class="iconfont icon-ico_arrow_down" ></i>
                     </div>
                     <div class="optionBox">
                         <ul class="optionUL">
@@ -325,9 +299,9 @@
             </div>
             <div class="goods-select">
                 <div class="goods-select-title">系列</div>
-                <div class="selectBox" id="yj-add-series">
+                <div class="selectBox" onkeyup="changeSeries(this)" id="yj-add-series">
                     <div class="select-box-header">
-                        <span class="text"><%if(list.seriesName){%><%=list.seriesName%><%}else{%>系列<%}%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+                        <input type="text" id="seriesName" value="<%=list.seriesName%>" placeholder="系列"><i class="iconfont icon-ico_arrow_down" ></i>
                     </div>
                 </div>
             </div>
@@ -477,7 +451,9 @@
             <div class="goods-select">
                 <div class="goods-select-title">包装</div>
                 <div class="selectBox" id="yj-add-baozhuang">
-                    <div class="select-box-header">
+                    <input type="text"  value="<%=list.properties[7]%>" class="yj-input" id="yj-add-baozhuang" data-pnid="7" style="width: 75%">
+                    <span style="float: right">片裝</span>
+                    <!--<div class="select-box-header">
                         <span class="text">
                             <%if(list.properties && list.properties[5]){%>
                                 <%for(var i=0;i< baozhuangData.length;i++){%>
@@ -496,9 +472,10 @@
                             <li value="<%=baozhuangData[i].id%>" data-pnid="<%=baozhuangData[i].pnid%>"><%=baozhuangData[i].content%></li>
                             <%}%>
                         </ul>
-                    </div>
+                    </div>-->
                 </div>
             </div>
+            <div class="clearfix"></div>
             <%}%>
             <%if(list.categoryName=='镜架' || list.categoryName=='隐形眼镜' || list.categoryName=='太阳镜'|| list.categoryName=='护理产品' || list.categoryName=='其它商品'){%>
             <div class="goods-select">
@@ -617,7 +594,7 @@
                 </div>
             </div>
             <div style="clear: both"></div>
-            <div class="goods-select">
+            <!--<div class="goods-select">
                 <div class="goods-select-title">产品编码</div>
                 <div class="selectBox" >
                     <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].code){%>
@@ -626,7 +603,7 @@
                     <input type="text" placeholder="产品编码"  class="yj-input" id="yj-add-code">
                     <%}%>
                 </div>
-            </div>
+            </div>-->
             <div class="goods-select">
                 <div class="goods-select-title">库存</div>
                 <div class="selectBox" >
@@ -653,10 +630,10 @@
 
 
             <%if(list.categoryName=='镜片'){%>
-            <!--<div class="goods-select goods-range">
+            <div class="goods-select goods-range">
                 <div class="goods-select-title">现货范围</div>
-                <div class="goods-range-body" onclick="openGoodsRange('现货')">设定现货范围</div>
-            </div>-->
+                <div class="goods-range-body" onclick="openGoodsRange('现货',<%=isUpdate%>)">设定现货范围</div>
+            </div>
             <div class="goods-select goods-range">
                 <div class="goods-select-title">定制范围</div>
                 <div class="goods-range-body" onclick="openGoodsRange('定制',<%=isUpdate%>)">设定定制范围</div>
@@ -699,11 +676,11 @@
                     <%if(list.categoryName=='镜片' || list.categoryName=='隐形眼镜'){%>
                     <div class="goods-select goods-range">
                         <div class="goods-select-title">零售价</div>
-                        <div class="goods-range-body" onclick="openZeroPrice()">设定零售价</div>
+                        <div class="goods-range-body" onclick="openZeroPrice(1)">设定零售价</div>
                     </div>
                     <%}%>
                     <%if(list.categoryName=='镜架' || list.categoryName=='太阳镜' || list.categoryName=='其它商品'|| list.categoryName=='护理产品'){%>
-                    <div class="goods-select">
+                    <!--<div class="goods-select">
                         <div class="goods-select-title">产品编码</div>
                         <div class="selectBox" >
                             <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].code){%>
@@ -712,7 +689,7 @@
                             <input type="text" placeholder="产品编码" class="yj-input" id="yj-add-code">
                             <%}%>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="goods-select">
                         <div class="goods-select-title">零售价</div>
                         <div class="selectBox">
@@ -763,11 +740,11 @@
                 <%if(list.categoryName=='镜片' || list.categoryName=='隐形眼镜'){%>
                 <div class="goods-select goods-range">
                     <div class="goods-select-title">积分价</div>
-                    <div class="goods-range-body" onclick="openZeroPrice(1)">设定积分价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice(4)">设定积分价</div>
                 </div>
                 <%}else {%>
                     <%if(list.categoryName!='特殊商品'){%>
-                    <div class="goods-select">
+                    <!--<div class="goods-select">
                         <div class="goods-select-title">产品编码</div>
                         <div class="selectBox" >
                             <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].code){%>
@@ -776,7 +753,7 @@
                             <input type="text" placeholder="产品编码" class="yj-input" id="yj-add-code-1">
                             <%}%>
                         </div>
-                    </div>
+                    </div>-->
                     <%}%>
                     <div class="goods-select">
                         <div class="goods-select-title">积分价</div>
@@ -811,16 +788,22 @@
                         </div>
                     </div>
                 </div>
+                <div style="clear: both"></div>
+            </div>
+            <div class="goods-select-box">
                 <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
                     <form class="layui-form" action="">
                         <div class="layui-form-item" pane="">
                             <div class="layui-input-block yj-check-input">
-                                <input type="checkbox" name=""  lay-filter="kucun-jp" lay-skin="primary" title="当库存低于<input readonly='' class='yj-input' placeholder='数量'>触发警报" >
+                                <%if(list.nowRemind){%>
+                                <input type="checkbox" name="" checked="checked"  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input value='<%=list.nowRemind%>' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
+                                <%}else{%>
+                                <input type="checkbox" name=""  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input readonly='' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
+                                <%}%>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div style="clear: both"></div>
             </div>
         </form>
     </script>
@@ -852,7 +835,79 @@
             <input type="text" value="<%=list.name%>" id="supSort" class="yj-input" placeholder="序号" style="margin-top: 0">
         </div>
     </script>
+    <!--提成-->
+    <script type="text/html" id="tiChengTmp">
+        <div class="ticheng-checkbox">
+            <form class="layui-form" action="">
+                <div class="layui-input-block" style="float:left;">
+                    <%if(group){%>
+                    <input type="checkbox" value="group" lay-skin="primary"  title="团体统一提成" checked="checked">
+                    <%}else{%>
+                    <input type="checkbox" value="group" lay-skin="primary"  title="团体统一提成" >
+                    <%}%>
+                </div>
+                <div class="layui-input-block" style="float:left;">
+                    <%if(personal){%>
+                    <input type="checkbox" value="personal" lay-skin="primary" title="个人统一提成" checked="checked">
+                    <%}else{%>
+                    <input type="checkbox" value="personal" lay-skin="primary" title="个人统一提成" >
+                    <%}%>
+                </div>
+            </form>
+        </div>
+        <table class="table table-self table-ticheng" >
+            <tr>
+                <th>门店名称</th>
+                <%if(group){%>
+                <th class="group">团体</th>
+                <%}else{%>
+                <th class="group" style="display: none">团体</th>
+                <%}%>
+                <%if(personal){%>
+                <th class="personal">个人</th>
+                <%}else{%>
+                <th class="personal" style="display: none">个人</th>
+                <%}%>
+            </tr>
+            <%for(var i=0;i< shopData.length;i++){%>
+            <tr>
+                <td><%=shopData[i].name%></td>
+                <%if(group){%>
+                    <%if(commissionJson[shopData[i].id]){%>
+                    <td class="group"><input class="groupInput" data-id="<%=shopData[i].id%>" type="text" value="<%=commissionJson[shopData[i].id].price%>" placeholder="分"></td>
+                    <%}else{%>
+                    <td class="group"><input class="groupInput" data-id="<%=shopData[i].id%>" type="text" value="" placeholder="分"></td>
+                    <%}%>
+                <%}else{%>
+                <td class="group" style="display: none"><input class="groupInput" data-id="<%=shopData[i].id%>" type="text" placeholder="分"></td>
+                <%}%>
+                <%if(personal){%>
+                <td class="personal"><div class="btn btn-info" onclick="openSettingPersonalTicheng('<%=shopData[i].id%>')">设定个人提成</div></td>
+                <%}else{%>
+                <td class="personal" style="display: none"><div class="btn btn-info" onclick="openSettingPersonalTicheng('<%=shopData[i].id%>')">设定个人提成</div></td>
+                <%}%>
+            </tr>
+            <%}%>
+        </table>
+    </script>
+    <!--个人提成-->
+    <script type="text/html" id="personalTiChengTmp">
+        <div style="height: 15px;"></div>
+        <table class="table table-self table-ticheng">
+            <tr>
+                <th>门店人员</th>
+                <th>个人</th>
+            </tr>
+            <%for(var i=0;i< list.length;i++){%>
+            <tr>
+                <td><%=list[i].name%></td>
+                <td><input type="text" data-id="<%=list[i].id%>" value="<%=user[list[i].id]%>" placeholder="分" class="personal"></td>
+            </tr>
+            <%}%>
+        </table>
+    </script>
     <script>
+
         var subid = quakooUser.getUserInfo().psid;//企业/公司id
         var shopId = quakooDb.getItem('sel_ShopId');//门店id
         var cid = '';//类目id
@@ -862,6 +917,8 @@
         var name = '';//搜索关键字
         var saleStatus = '';//筛选条件的销售状态0开启1关闭
         var supplierLocData = {};//供应商数据
+
+        var priceCheck = [];//设定价格选中的单元格
 
 
         var ballData = '';//球数据
@@ -876,6 +933,7 @@
         var baozhuangData;//更换周期包装7数据
         var type10Data;//护理产品类型数据10
         var baozhuang11Data;//护理产品包装11数据
+        var shopData;       //门店数据
 
         var yjDate;//时间范围
         var params = {};//添加商品所需要的参数  key  类目id；value：所需参数
@@ -1036,6 +1094,12 @@
                 }
             }
         })
+        //获取门店
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(), {sid: subid}, function (ret) {
+            if (ret && ret.success) {
+                shopData = ret.data;
+            }
+        });
         //获取供应商
         quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
@@ -1083,7 +1147,7 @@
         })
 
         //获取属性-球
-        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:15},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:config.qiuId},function (ret) {
             if(ret && ret.success){
                 ballData = ret.data.sort(function (a,b) {
                     return b.content-a.content;
@@ -1091,7 +1155,7 @@
             }
         })
         //获取属性-柱
-        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:16},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:config.zhuId},function (ret) {
             if(ret && ret.success){
                 columnData = ret.data.sort(function (a,b) {
                     return b.content-a.content;
@@ -1185,6 +1249,7 @@
 
             })
         }
+        //添加供应商
         function addSuppliers(index) {
             var param ={};
             var icon = $('#cover1').attr('real-src');
@@ -1410,7 +1475,8 @@
             quakooUtils.stopEventBubble()
         }
         //设定现货范围
-        var momentRangeData = {};//暂时存储定位范围信息
+        var momentRangeData = {};//暂时存储定制范围信息
+        var momentNowRangeData = {};//暂时存储现货范围信息
         function openGoodsRange(title,isUpdate) {
             layer.open({
                 type: 1,shade: 0.01,title:'设定'+title+'范围<span>点击或框选单元格来设定</span>',
@@ -1426,27 +1492,170 @@
                     layer.close(index)
                 },
                 btn2: function(index, layero){
-                    params[cid].productCustomRangeList = [];
-                    for(var i in momentRangeData){
-                        if(momentRangeData[i]){
-                            params[cid].productCustomRangeList.push(momentRangeData[i])
+                    if(title=='现货'){
+                        params[cid].nowRangesJson = [];
+                        for(var i in momentNowRangeData){
+                            if(momentNowRangeData[i]){
+                                params[cid].nowRangesJson.push(momentNowRangeData[i])
+                            }
                         }
+                        momentNowRangeData = {};
+                    }else if(title=='定制'){
+                        params[cid].rangesJson = [];
+                        for(var i in momentRangeData){
+                            if(momentRangeData[i]){
+                                params[cid].rangesJson.push(momentRangeData[i])
+                            }
+                        }
+                        momentRangeData = {};
                     }
-                    momentRangeData = {};
+
                 },
                 success: function(layero, index){
                     setRange(title,isUpdate)
                 }
             });
         }
+        //初始化范围表格
+        function setRange(title,isUpdate) {
+            //现货数据
+            if(params[cid] && params[cid].nowRangesJson){
+                for(var i=0;i<params[cid].nowRangesJson.length;i++){
+                    momentNowRangeData[params[cid].nowRangesJson[i].ballId+''+params[cid].nowRangesJson[i].columnId] = params[cid].nowRangesJson[i];
+                }
+            }
+            //定制数据
+            if(params[cid] && params[cid].rangesJson){
+                for(var i=0;i<params[cid].rangesJson.length;i++){
+                    momentRangeData[params[cid].rangesJson[i].ballId+''+params[cid].rangesJson[i].columnId] = params[cid].rangesJson[i];
+                }
+            }
+            var cols = [];//球
+            var rangeData = [];//柱
+            cols.push({field:'num', minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+            for(var i=0;i<ballData.length;i++){
+                (function (i) {
+                    cols.push({field:'', minWidth:60,align:'center', title: ballData[i].content, id:ballData[i].id, unresize:true,templet:function (d) {
+                            if(momentRangeData[ballData[i].id+''+d.id] && momentNowRangeData[ballData[i].id+''+d.id]){
+                                return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="active activenow"></div>'
+                            }else if(momentRangeData[ballData[i].id+''+d.id]){
+                                return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="active"></div>'
+                            }else if(momentNowRangeData[ballData[i].id+''+d.id]){
+                                return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="activenow"></div>'
+                            }else{
+                                return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'"></div>'
+                            }
+                        }})
+                })(i)
+            }
+            for(var i=0;i<columnData.length;i++){
+                rangeData.push({num:columnData[i].content,id:columnData[i].id})
+            }
+            layui.use('table', function(){
+                var table = layui.table;
+                table.render({
+                    elem: '#rangeEvent'
+                    ,data:rangeData
+                    ,width: 688
+                    ,height: 416
+                    ,limit:40
+                    ,unresize:true
+                    ,cols: [cols]
+                });
+                initTableDrag(title)
+            });
+        }
+        function initTableDrag(title) {
+            var beginTrIndex;//开始选中的行的下标
+            var beginTdIndex;//开始选中的列的下标
+            var endTrIndex;//鼠标抬起时的行的下标
+            var endTdIndex;//鼠标抬起时列的下标
+            var x=0,y=0;//鼠标按下时的浏览器坐标
+            var offsetx=0,offsety=0;//鼠标按下时的相对父元素的坐标
+            $("#rangeEvent").next().find('.layui-table-body tbody').mousedown(function (e) {
+                beginTrIndex = $(e.target).parents('tr').attr('data-index');
+                beginTdIndex = $(e.target).parents('td').attr('data-field');
+                x = e.clientX;
+                y = e.clientY;
+                offsetx = e.offsetX;
+                offsety = e.offsetY;
+                $('#dragDiv').remove();
+                $("#rangeEvent").next().find('.layui-table-body tbody').append('<div id="dragDiv" style="position:fixed;z-index:99999999;background:rgba(0,0,0,0.3)"></div>')
+                return false;
+            }).mousemove(function (e) {
+                if($('#dragDiv').length){
+                    if(e.clientX-x>0){
+                        $('#dragDiv').css('left',x+'px')
+                    }else{
+                        $('#dragDiv').css('left',e.clientX+'px')
+                    }
+                    if(e.clientY-y>0){
+                        $('#dragDiv').css('top',y+'px')
+                    }else{
+                        $('#dragDiv').css('top',e.clientY+'px')
+                    }
+                    $('#dragDiv').css('width',Math.abs(e.clientX-x)+'px')
+                    $('#dragDiv').css('height',Math.abs(e.clientY-y)+'px')
+                }
+            }).mouseup(function (e) {
+                if(e.target.id=='dragDiv'){
+                    var w = document.getElementById('dragDiv').offsetWidth;
+                    var h = document.getElementById('dragDiv').offsetHeight;
+                    var trW = $("#rangeEvent").next().find('.layui-table-body tbody td')[0].offsetWidth;
+                    var trH = $("#rangeEvent").next().find('.layui-table-body tbody td')[0].offsetHeight;
+                    endTdIndex = beginTdIndex - Math.ceil((w-offsetx)/trW);
+                    endTrIndex = beginTrIndex - Math.ceil((h-offsety)/trH);
+                }else{
+                    endTrIndex = $(e.target).parents('tr').attr('data-index');
+                    endTdIndex = $(e.target).parents('td').attr('data-field');
+                }
+                $('#dragDiv').remove();
+                var startTr = Math.min(beginTrIndex,endTrIndex)
+                var startTd = Math.min(beginTdIndex,endTdIndex)
+                var endTr = Math.max(beginTrIndex,endTrIndex)
+                var endTd = Math.max(beginTdIndex,endTdIndex)
+                for(var i=startTr;i<=endTr;i++){
+                    for(var j=startTd;j<=endTd;j++){
+                        if(title=='现货'){
+                            var dom = $("#rangeEvent").next().find('.layui-table-body tbody tr').eq(i).find('td').eq(j).find('div div');
+                            if(dom.hasClass('activenow')){
+                                momentNowRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = '';
+                            }else{
+                                momentNowRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = {ballId:dom.attr('data-ballId'),columnId:dom.attr('data-columnId')};
+                            }
+                            dom.toggleClass('activenow')
+                        }else if(title=='定制'){
+                            var dom = $("#rangeEvent").next().find('.layui-table-body tbody tr').eq(i).find('td').eq(j).find('div div');
+                            if(dom.hasClass('active')){
+                                momentRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = '';
+                            }else{
+                                momentRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = {ballId:dom.attr('data-ballId'),columnId:dom.attr('data-columnId')};
+                            }
+                            dom.toggleClass('active')
+                        }
+                    }
+                }
+            });
+            $(document).mouseup(function () {
+                var time = setInterval(function () {
+                    if($('#dragDiv').length>0){
+                        $('#dragDiv').remove();
+                    }else{
+                        clearInterval(time)
+                    }
+                })
+                return false
+            })
+        }
+
 
         //设定零售价/积分价
         var momentPriceData = {};//暂时存储价格信息
         function openZeroPrice(type) {
             var html = [];
             html.push('<div class="layui-yj-header"> <div class="layui-layer-title mine-title"> <div>设定价格<span>规格: 片</span></div> </div>');
-            html.push('<div class="title-right" onclick="openRedTip()" > 设置预警库存 </div> </div>');
-            type = type?type:1;
+            // html.push('<div class="title-right" onclick="openRedTip()" > 设置预警库存 </div> </div>');
+            html.push('</div>');
             layer.open({
                 type: 1,shade: 0.01,title:html.join(''),
                 skin: 'layui-layer-yj layui-layer-add-goods layui-layer-view-price', //样式类名
@@ -1471,7 +1680,12 @@
                     momentPriceData = {};
                 },
                 success: function(layero, index){
-                    $('.layui-layer-view-price .layui-layer-btn').append('<div class="view-price-add"><input class="yj-input" placeholder="输入数量" type="number"><button class="btn btn-primary">键入</button></div>')
+                    if(params[cid] && params[cid].skuJson){
+                        for(var i=0;i<params[cid].skuJson.length;i++){
+                            momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]] = params[cid].skuJson[i];
+                        }
+                    }
+                    $('.layui-layer-view-price .layui-layer-btn').append('<div class="view-price-add"><input class="yj-input" placeholder="输入数量" type="number" id="numInput"><button class="btn btn-primary" onclick="numInputBtn('+type+')">键入</button></div>')
                     setPrice(type)
                 }
             });
@@ -1499,13 +1713,15 @@
                 }
             });
         }
+        var commissionJson = {};//本地提成
         //设定提成
         function openSettingTicheng() {
+            var groupFlag = false,personalFlag = false;
             layer.open({
                 type: 1,shade: 0.01,title:'设定提成',
                 skin: 'layui-layer-yj layui-layer-ticheng', //样式类名
                 anim: 0,
-                area:['360px','auto'],
+                area:['360px','420px'],
                 closeBtn: 0, //不显示关闭按钮
                 resize:false,
                 shadeClose: true, //开启遮罩关闭
@@ -1515,78 +1731,199 @@
                     layer.close(index)
                 },
                 btn2: function(){
-                    return false;
-                },
-                success: function(layero, index){
-
-                }
-            });
-        }
-        //初始化范围表格
-        function setRange(title,isUpdate) {
-            if(params[cid] && params[cid].productCustomRangeList){
-                for(var i=0;i<params[cid].productCustomRangeList.length;i++){
-                    momentRangeData[params[cid].productCustomRangeList[i].ballId+''+params[cid].productCustomRangeList[i].columnId] = params[cid].productCustomRangeList[i];
-                }
-            }
-            var cols = [];//球
-            var rangeData = [];//柱
-            cols.push({field:'num', minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
-            for(var i=0;i<ballData.length;i++){
-                (function (i) {
-                    cols.push({field:'', minWidth:60,align:'center', title: ballData[i].content, id:ballData[i].id, event: 'setSign',unresize:true,templet:function (d) {
-                            if(momentRangeData[ballData[i].id+''+d.id]){
-                                return '<div class="active"></div>'
+                    console.log($("#tiChengDom .groupInput"))
+                    $("#tiChengDom .groupInput").each(function (index,item) {
+                        if(item.value){
+                            if(commissionJson[item.getAttribute('data-id')]){
+                                commissionJson[item.getAttribute('data-id')].price = item.value;
                             }else{
-                                return '<div></div>'
+                                commissionJson[item.getAttribute('data-id')] = {subId:item.getAttribute('data-id'),price:item.value,users:[]}
                             }
-                        }})
-                })(i)
-            }
-            for(var i=0;i<columnData.length;i++){
-                rangeData.push({num:columnData[i].content,id:columnData[i].id})
-            }
-            layui.use('table', function(){
-                var table = layui.table;
-                table.render({
-                    elem: '#rangeEvent'
-                    ,data:rangeData
-                    ,width: 688
-                    ,height: 416
-                    ,unresize:true
-                    ,cols: [cols]
-                });
-                //监听单元格事件
-                table.on('tool(rangeEvent)', function(obj){
-                    if(title=='现货'){
-                        $(this).find('div').toggleClass('active')
-                    }else if(title=='定制'){
-                        if(obj.event === 'setSign'){
-                            if($(this).find('div').hasClass('active')){
-                                momentRangeData[ballData[$(this).index()-1].id+''+obj.data.id] = '';
-                            }else{
-                                momentRangeData[ballData[$(this).index()-1].id+''+obj.data.id] = {ballId:ballData[$(this).index()-1].id,columnId:obj.data.id}
+                        }
+                    })
+                    params[cid].commissionJson = [];
+                    if(!groupFlag){
+                        for(var i in commissionJson){
+                            if(commissionJson[i]){
+                                commissionJson[i].price = '';
                             }
-                            $(this).find('div').toggleClass('active')
                         }
                     }
-                });
+                    if(!personalFlag){
+                        for(var i in commissionJson){
+                            if(commissionJson[i]){
+                                commissionJson[i].users = [];
+                            }
+                        }
+                    }
+                    for(var i in commissionJson){
+                        if(commissionJson[i] && (commissionJson[i].users || commissionJson[i].price)){
+                            params[cid].commissionJson.push(commissionJson[i])
+                        }
+                    }
+                    commissionJson = {};
+                },
+                success: function(layero, index){
+                    if(params[cid] && params[cid].commissionJson){
+                        for(var i=0;i<params[cid].commissionJson.length;i++){
+                            if(params[cid].commissionJson[i].price){
+                                groupFlag = true;
+                            }
+                            if(params[cid].commissionJson[i].users.length>0){
+                                personalFlag = true;
+                            }
+                            commissionJson[params[cid].commissionJson[i].subId] = params[cid].commissionJson[i];
+                        }
+                    }
+                    $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,group:groupFlag,personal:personalFlag,commissionJson:commissionJson}))
+                    layui.use('form', function(){
+                        var form = layui.form;
+                        form.render()
+                        form.on('checkbox()', function(data){
+                            if(data.elem.checked){
+                                if(data.value=='group'){
+                                    groupFlag = true;
+                                    $("#tiChengDom .group").show();
+                                }else if(data.value=='personal'){
+                                    personalFlag = true;
+                                    $("#tiChengDom .personal").show();
+                                }
+                            }else{
+                                if(data.value=='group'){
+                                    groupFlag = false;
+                                    $("#tiChengDom .group").hide();
+                                }else if(data.value=='personal'){
+                                    personalFlag = false;
+                                    $("#tiChengDom .personal").hide();
+                                }
+                            }
+                        });
+                    });
+                }
             });
         }
-        //初始化价格表格 type  1产品编码   2零售价  3批发价  4备货量   5积分价
+        //设定个人提成
+        function openSettingPersonalTicheng(id) {
+            if(!commissionJson[id]){
+                commissionJson[id] = {subId:id,users:[]}
+            }
+            layer.open({
+                type: 1,shade: 0.01,title:'设定个人提成',
+                skin: 'layui-layer-yj layui-layer-ticheng', //样式类名
+                anim: 0,
+                area:['360px','420px'],
+                closeBtn: 0, //不显示关闭按钮
+                resize:false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-personal-ticheng'),
+                btn: ['取消','确定'],
+                yes: function(index, layero){
+                    layer.close(index)
+                },
+                btn2: function(){
+                    commissionJson[id].users = [];
+                    $("#personalTiChengDom .personal").each(function (index,item) {
+                        if(item.value){
+                            var obj = {};
+                            obj[item.getAttribute('data-id')] = item.value;
+                            commissionJson[id].users.push(obj);
+                        }
+                    })
+                },
+                success: function(layero, index){
+                    quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:id,userType:1},function (ret) {
+                        var user = {};
+                        for(var i=0;i<commissionJson[id].users.length;i++){
+                            for(var j in commissionJson[id].users[i]){
+                                user[j] = commissionJson[id].users[i][j]
+                            }
+                        }
+                        $("#personalTiChengDom").html(template('personalTiChengTmp',{list:ret.data,user:user}))
+                    })
+                }
+            });
+        }
+
+        //初始化价格表格 type  1零售价  2批发价  3备货量   4积分价
         function setPrice(type) {
+            var range = {};  //定制
+            var nowRange = {};  //现货
+
+            //现货数据
+            if(params[cid] && params[cid].nowRangesJson){
+                for(var i=0;i<params[cid].nowRangesJson.length;i++){
+                    nowRange[params[cid].nowRangesJson[i].ballId+''+params[cid].nowRangesJson[i].columnId] = params[cid].nowRangesJson[i];
+                }
+            }
+            //定制数据
+            if(params[cid] && params[cid].rangesJson){
+                for(var i=0;i<params[cid].rangesJson.length;i++){
+                    range[params[cid].rangesJson[i].ballId+''+params[cid].rangesJson[i].columnId] = params[cid].rangesJson[i];
+                }
+            }
+
             if(params[cid].type==0){
-                $('#setPriceBtn li').eq(4).hide().siblings().show();
+                $('#setPriceBtn li').eq(3).hide().siblings().show();
             }else{
-                $('#setPriceBtn li').hide()
-                $('#setPriceBtn li').eq(0).show();
-                $('#setPriceBtn li').eq(4).show();
+                $('#setPriceBtn li').hide().eq(3).show();
             }
             var cols = [];//球
             var rangeData = [];//柱
             var codeArr = [];//所有的产品编码
             cols.push({field:'num', minWidth:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
-            if(type==1){
+
+            $('#setPriceBtn li').eq(type-1).addClass('active').siblings().removeClass('active');
+
+            for(var i=0;i<ballData.length;i++){
+                (function (i) {
+                    cols.push({field: '', minWidth: 60, title: ballData[i].content, unresize: true,
+                        templet: function (d) {
+                            var str = '';
+                            if(range[ballData[i].id+''+d.id] && nowRange[ballData[i].id+''+d.id]){
+                                str = "active activenow";
+                            }else if(range[ballData[i].id+''+d.id]){
+                                str = "active";
+                            }else if(nowRange[ballData[i].id+''+d.id]){
+                                str = "activenow";
+                            }
+                            if(range[ballData[i].id+''+d.id] || nowRange[ballData[i].id+''+d.id]){
+                                if(type==1) {
+                                    if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].retailPrice!=undefined) {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value="'+momentPriceData[ballData[i].id + '' + d.id].retailPrice+'"></div>'
+                                    } else {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value=""></div>'
+                                    }
+                                }else if(type==2){
+                                    if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].costPrice!=undefined) {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value="'+momentPriceData[ballData[i].id + '' + d.id].costPrice+'"></div>'
+                                    } else {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value=""></div>'
+                                    }
+                                }else if(type==3){
+                                    if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].num) {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value="'+momentPriceData[ballData[i].id + '' + d.id].num+'"></div>'
+                                    } else {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value=""></div>'
+                                    }
+                                }else if(type==4){
+                                    if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].integralPrice) {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value="'+momentPriceData[ballData[i].id + '' + d.id].integralPrice+'"></div>'
+                                    } else {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value=""></div>'
+                                    }
+                                }
+                            }else{
+                                return '-'
+                            }
+
+                        }
+                    })
+                })(i)
+            }
+
+
+
+            /*if(type==1){
                 if(quakooUtils.isNullJson(momentPriceData)){
                     if(params[cid] && params[cid].skuJson.length){
                         for(var i=0;i<params[cid].skuJson.length;i++){
@@ -1595,10 +1932,10 @@
                         }
                     }
                 }
-                for(var i=0;i<ballData.length;i++){
+                   for(var i=0;i<ballData.length;i++){
                     (function (i) {
                         cols.push({field:'', minWidth:60, title: ballData[i].content, edit:'text',unresize:true,templet:function (d) {
-                            if(momentPriceData[ballData[i].content+''+d.num] && momentPriceData[ballData[i].content+''+d.num].code){
+                                if(momentPriceData[ballData[i].content+''+d.num] && momentPriceData[ballData[i].content+''+d.num].code){
                                     return momentPriceData[ballData[i].content+''+d.num].code
                                 }else{
                                     return ''
@@ -1609,46 +1946,13 @@
                 $('#setPriceBtn li').eq(type-1).addClass('active').siblings().removeClass('active');
             }else{
                 if(quakooUtils.isNotBlack(momentPriceData)){
-                    $('#setPriceBtn li').eq(type-1).addClass('active').siblings().removeClass('active');
-                    for(var i=0;i<ballData.length;i++){
-                        (function (i) {
-                            cols.push({field: '', minWidth: 60, title: ballData[i].content, edit: 'text', unresize: true,
-                                templet: function (d) {
-                                    if(type==2) {
-                                        if (momentPriceData[ballData[i].content + '' + d.num] && momentPriceData[ballData[i].content + '' + d.num].retailPrice!=undefined) {
-                                            return momentPriceData[ballData[i].content + '' + d.num].retailPrice
-                                        } else {
-                                            return ''
-                                        }
-                                    }else if(type==3){
-                                        if (momentPriceData[ballData[i].content + '' + d.num] && momentPriceData[ballData[i].content + '' + d.num].costPrice!=undefined) {
-                                            return momentPriceData[ballData[i].content + '' + d.num].costPrice
-                                        } else {
-                                            return ''
-                                        }
-                                    }else if(type==4){
-                                        if (momentPriceData[ballData[i].content + '' + d.num] && momentPriceData[ballData[i].content + '' + d.num].num) {
-                                            return momentPriceData[ballData[i].content + '' + d.num].num
-                                        } else {
-                                            return ''
-                                        }
-                                    }else if(type==5){
-                                        if (momentPriceData[ballData[i].content + '' + d.num] && momentPriceData[ballData[i].content + '' + d.num].integralPrice) {
-                                            return momentPriceData[ballData[i].content + '' + d.num].integralPrice
-                                        } else {
-                                            return ''
-                                        }
-                                    }
-                                }
-                            })
-                        })(i)
-                    }
+
                 }else{
                     layer.msg('请先设置产品编码');
                     setPrice(1)
                     return
                 }
-            }
+             }*/
             for(var i=0;i<columnData.length;i++){
                 rangeData.push({num:columnData[i].content,id:columnData[i].id})
             }
@@ -1664,7 +1968,7 @@
                     ,cols: [cols]
                 });
                 //监听单元格事件
-                table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                /*table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
                     console.log(obj)
                     console.log(this)
                     if(type==1){
@@ -1769,10 +2073,90 @@
                     // console.log(obj.value); //得到修改后的值
                     // console.log(obj.field); //当前编辑的字段名
                     // console.log(obj.data); //所在行的所有相关数据
-                });
+                });*/
+                initTableDragInput()
             });
-
         }
+        function initTableDragInput() {
+            var beginTrIndex;//开始选中的行的下标
+            var beginTdIndex;//开始选中的列的下标
+            var endTrIndex;//鼠标抬起时的行的下标
+            var endTdIndex;//鼠标抬起时列的下标
+            var x=0,y=0;//鼠标按下时的浏览器坐标
+            var offsetx=0,offsety=0;//鼠标按下时的相对父元素的坐标
+            $("#priceEvent").next().find('.layui-table-body tbody').mousedown(function (e) {
+                $('.dragBorder').removeClass('dragBorder')
+                beginTrIndex = $(e.target).parents('tr').attr('data-index');
+                beginTdIndex = $(e.target).parents('td').attr('data-field');
+                x = e.clientX;
+                y = e.clientY;
+                offsetx = e.offsetX;
+                offsety = e.offsetY;
+                $('#dragDiv').remove();
+                $("#priceEvent").next().find('.layui-table-body tbody').append('<div id="dragDiv" style="position:fixed;z-index:99999999;background:rgba(0,0,0,0.3)"></div>')
+                return false;
+            }).mousemove(function (e) {
+                if($('#dragDiv').length){
+                    if(e.clientX-x>0){
+                        $('#dragDiv').css('left',x+'px')
+                    }else{
+                        $('#dragDiv').css('left',e.clientX+'px')
+                    }
+                    if(e.clientY-y>0){
+                        $('#dragDiv').css('top',y+'px')
+                    }else{
+                        $('#dragDiv').css('top',e.clientY+'px')
+                    }
+                    $('#dragDiv').css('width',Math.abs(e.clientX-x)+'px')
+                    $('#dragDiv').css('height',Math.abs(e.clientY-y)+'px')
+                }
+            }).mouseup(function (e) {
+                if(e.target.id=='dragDiv'){
+                    var w = document.getElementById('dragDiv').offsetWidth;
+                    var h = document.getElementById('dragDiv').offsetHeight;
+                    var trW = $("#priceEvent").next().find('.layui-table-body tbody td')[0].offsetWidth;
+                    var trH = $("#priceEvent").next().find('.layui-table-body tbody td')[0].offsetHeight;
+                    endTdIndex = beginTdIndex - Math.ceil((w-offsetx)/trW);
+                    endTrIndex = beginTrIndex - Math.ceil((h-offsety)/trH);
+                }else{
+                    endTrIndex = $(e.target).parents('tr').attr('data-index');
+                    endTdIndex = $(e.target).parents('td').attr('data-field');
+                }
+                $('#dragDiv').remove();
+                var startTr = Math.min(beginTrIndex,endTrIndex)
+                var startTd = Math.min(beginTdIndex,endTdIndex)
+                var endTr = Math.max(beginTrIndex,endTrIndex)
+                var endTd = Math.max(beginTdIndex,endTdIndex)
+                priceCheck = [];
+                for(var i=startTr;i<=endTr;i++){
+                    for(var j=startTd;j<=endTd;j++){
+                        var dom = $("#priceEvent").next().find('.layui-table-body tbody tr').eq(i).find('td').eq(j).find('div div');
+                        if(startTr==endTr && startTd==endTd){
+                            $("#priceEvent").next().find('.layui-table-body tbody tr').eq(startTr).find('td').eq(startTd).find('input').focus();
+                        }else{
+                            dom.addClass('dragBorder')
+                        }
+                        var obj = {dom:dom};
+                        if(dom.length>0){
+                            priceCheck.push(obj);
+                        }
+                    }
+                }
+            });
+            $(document).mouseup(function () {
+                // $('.dragBorder').removeClass('dragBorder')
+                var time = setInterval(function () {
+                    if($('#dragDiv').length>0){
+                        $('#dragDiv').remove();
+                    }else{
+                        clearInterval(time)
+                    }
+                })
+                return false
+            })
+        }
+
+
         //打开库存详情弹窗
         function openNumInfo() {
             layer.open({
@@ -1896,7 +2280,6 @@
                 typeData:typeData,zhouqiData:zhouqiData,baozhuangData:baozhuangData,
                 type10Data:type10Data,baozhuang11Data:baozhuang11Data
             }
-            console.log(data)
             var html = template('addGoodsTmp',data);
             document.getElementById('addGoodsDom').innerHTML = html;
             layui.use('form', function(){
@@ -1912,7 +2295,7 @@
                     params[cid].type = data.value;
                 });
                 //库存
-                form.on('checkbox(kucun-jj)', function(data){
+                form.on('checkbox(kucun-yj)', function(data){
                     if(data.elem.checked){
                         //是否被选中，true或者false
                         $(data.othis).find('input').attr('readonly',false)
@@ -1929,13 +2312,11 @@
                 //获取品牌下的系列列表
                 quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
                     if(ret1 && ret1.success){
-                        if(ret1.data.length>0){
-                            var html = template('selectTagTmp',{title:'系列',list:ret1.data});
-                            $('#yj-add-series').html(html);
-                            selectTag($("#yj-add-series"),function (series) {
-                                params[cid].sid = series.value;
-                            })
-                        }
+                        var html = template('selectTagInputTmp',{title:'',list:ret1.data});
+                        $('#yj-add-series').html(html);
+                        selectTag($("#yj-add-series"),function (series) {
+                            params[cid].sid = series.value;
+                        })
                     }
                 })
             })
@@ -1966,9 +2347,9 @@
                     params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
                 })
                 //包装
-                selectTag($("#yj-add-baozhuang"),function (ret) {
-                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
-                })
+                // selectTag($("#yj-add-baozhuang"),function (ret) {
+                //     params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                // })
             }else if($('#category'+cid).text()=='护理产品'){
                 //类型10
                 selectTag($("#yj-add-type-10"),function (ret) {
@@ -1993,6 +2374,15 @@
             for(var i in params[cid]){
                 nowParam[i] = params[cid][i]
             }
+            if(!nowParam.bid){
+                nowParam.brandName = $("#brandName").val();
+                nowParam.seriesName = $("#seriesName").val();
+            }else{
+                if(!nowParam.sid){
+                    nowParam.seriesName = $("#seriesName").val();
+                }
+            }
+            nowParam.nowRemind = $("#yj-add-kucun").val();
             //销售状态  0开启  1关闭
             if($('#yj-add-status').hasClass('active')){
                 nowParam.saleStatus = 0;
@@ -2004,7 +2394,7 @@
             }else if($('#category'+cid).text()=='特殊商品'){
                 nowParam.skuJson = [{}];
                 nowParam.skuJson[0].num = $('#yj-add-num').val();
-                nowParam.skuJson[0].code = $('#yj-add-code').val();
+                // nowParam.skuJson[0].code = $('#yj-add-code').val();
                 nowParam.skuJson[0].costPrice = $('#yj-add-costPrice').val();
                 nowParam.icon = $('#cover').attr('real-src');
                 nowParam.name = $('#yj-add-name').val();
@@ -2019,13 +2409,15 @@
                 if($('#category'+cid).text()!='隐形眼镜'){
                     nowParam.skuJson = [{}];
                     if(nowParam.type==1){
-                        nowParam.skuJson[0].code = $('#yj-add-code-1').val();
+                        // nowParam.skuJson[0].code = $('#yj-add-code-1').val();
                         nowParam.skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
                     }else{
                         nowParam.skuJson[0].retailPrice = $('#yj-add-retailPrice').val();
                         nowParam.skuJson[0].costPrice = $('#yj-add-costPrice').val();
-                        nowParam.skuJson[0].code = $('#yj-add-code').val();
+                        // nowParam.skuJson[0].code = $('#yj-add-code').val();
                     }
+                }else{
+                    nowParam.properties[config.yinxingBaozhuangId] = $('#yj-add-baozhuang').val();
                 }
             }
             if(nowParam.type==1){
@@ -2061,7 +2453,6 @@
                 delete nowParam.integralStartTimeNew;
 
                 var skuJson = nowParam.skuJson;
-                console.log(skuJson)
                 nowParam.addSkuJson = [];
                 nowParam.updateSkuJson = [];
                 nowParam.delSkuIdJson = [];
@@ -2093,6 +2484,8 @@
                 })
             }else{
                 nowParam.skuJson = JSON.stringify(nowParam.skuJson);
+                nowParam.nowRangesJson = JSON.stringify(nowParam.nowRangesJson);
+                nowParam.rangesJson = JSON.stringify(nowParam.rangesJson);
                 console.log(nowParam)
                 quakooData.ajaxGetData(config.getUrl_product_add(),nowParam,function (ret) {
                     if(ret.success){
@@ -2142,6 +2535,65 @@
             });
         }
 
+        //输入品牌
+        function changeBrand() {
+            params[cid].bid = '';
+            params[cid].sid = '';
+        }
+        //输入系列
+        function changeSeries() {
+            params[cid].sid = '';
+        }
+        //设定价格  键入
+        function numInputBtn(t) {
+            var type;
+            if(t==4){
+                type=4;
+            }else{
+                type = $('#setPriceBtn li.active').index()+1
+            }
+            var val = $("#numInput").val();
+            if(!quakooUtils.isNum(val)){
+                layer.msg('请输入数字');
+                $("#numInput").val('');
+                return
+            }
+            for(var i=0;i<priceCheck.length;i++){
+                priceCheck[i].dom.find('input').val(val);
+                priceInputChange(priceCheck[i].dom.find('input')[0],type)
+                priceCheck[i].dom.removeClass('dragBorder')
+            }
+        }
+        //价格改变
+        function priceInputChange(self,type) {
+            if(!quakooUtils.isNum(self.value)){
+                layer.msg('请输入数字');
+                self.value = '';
+                return
+            }
+            var str;
+            if(type==1){
+                str = 'retailPrice'
+            }else if(type==2){
+                str = 'costPrice'
+            }else if(type==3){
+                str = 'num'
+            }else if(type==4){
+                str = 'integralPrice'
+            }
+            var ballId = $(self).parent().attr('data-ballId');
+            var columnId = $(self).parent().attr('data-columnId');
+            if(momentPriceData[ballId+''+columnId]){
+                momentPriceData[ballId+''+columnId][str] = self.value;
+            }else{
+                var param = {};
+                param.properties = {};
+                param.properties[config.qiuId] = ballId;
+                param.properties[config.zhuId] = columnId;
+                param[str] = self.value;
+                momentPriceData[ballId+''+columnId] = param;
+            }
+        }
     </script>
 </body>
 </html>

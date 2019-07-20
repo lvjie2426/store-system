@@ -43,10 +43,45 @@ var Config = (function(_super){
         this.pushServerUrl = '39.107.247.82';
         /**推送端口*/
         this.pushPort  = '23333';
-
+        /**用户信息存储的本地变量名*/
         this.userInfoName = 'user_info';
+        /**用户信息存储时间的本地变量名*/
         this.userInfoTime = 'user_info_time';
 
+        //=======================商品的属性的值列表 开始====================
+        /**镜片-焦点*/
+        this.jiaodianId = 1;
+        /**镜片-折射率*/
+        this.zheshelvId = 2;
+        /**镜片-功能*/
+        this.gongnengId = 3;
+        /**镜架-质保时长*/
+        this.jingjiaTimeId = 4;
+        /**隐形眼镜-类型*/
+        this.yinxingLeixingId = 5;
+        /**更换周期*/
+        this.zhoouqiId = 6;
+        /**隐形眼镜-包装*/
+        this.yinxingBaozhuangId = 7;
+        /**隐形眼镜-质保时长*/
+        this.yinxingTimeId = 8;
+        /**太阳镜-质保时长*/
+        this.taiyangTimeId = 9;
+        /**护理产品-类型*/
+        this.huliLeixingId = 10;
+        /**护理产品-包装*/
+        this.huliBaozhuang = 11;
+        /**护理产品-开瓶寿命/天*/
+        this.shoumingId = 12;
+        /**护理产品-质保时长*/
+        this.huliTimeId = 13;
+        /**其他商品-质保时长*/
+        this.qitaTimeId = 14;
+        /**球*/
+        this.qiuId = 15;
+        /**柱*/
+        this.zhuId = 16;
+        //=======================商品的属性的值列表 结束====================
 
     }
     var _proto = _super.prototype;
@@ -89,6 +124,8 @@ var Config = (function(_super){
     _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
     /**获取 验光结果建议*/
     _proto.getUrl_optometryinfo_getResult = function(){return this.serverUrl + '/optometryinfo/getResult';};
+    /**附加费用*/
+    _proto.getUrl_order_getSurcharge = function(){return this.serverUrl + '/order/getSurcharge';};
     /**促销方式*/
     _proto.getUrl_marketingcoupon_getCanUseList = function(){return this.serverUrl + '/marketingcoupon/getCanUseList';};
     /**添加商品的SPU列表*/

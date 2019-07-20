@@ -387,7 +387,7 @@
             <%if(showShop){%>
             <div class="selectShop">
                 <div id="box001">门店(多选)<i class="icon iconfont icon-ico_arrow_down"></i></div>
-                <div id="selectBox001">
+                <div id="selectBox001" class="optionBox">
                     <ul>
                         <%for(var i=0;i< shopData.length;i++){%>
                         <li>
@@ -402,6 +402,13 @@
                         </li>
                         <%}%>
                     </ul>
+                    <div class="zi_dingyi">
+                        <span class="zdy_pingpai">自定义品牌</span>
+                        <div class="zi_dingyi_input_Box">
+                            <input type="text" placeholder="品牌" class="zi_dingyi_input">
+                            <div class="btn_conten">确定</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <%}%>
@@ -1020,6 +1027,17 @@
     }
     //添加盘点
     function addOutList(status,index,id) {
+        var closeFlag = true;
+        for(var i in allOutList){
+            if(allOutList[i].data.length>0){
+                closeFlag = false;
+                break ;
+            }
+        }
+        if(closeFlag){
+            layer.close(index)
+            return ;
+        }
         if(!id){
             if(subidsArr.length<=0){
                 layer.msg('选择门店');

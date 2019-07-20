@@ -51,6 +51,7 @@ function selectTag(ele, callback) {
         }).text();
         opDN(false, event);
         ele.find('.text').text(content).css('color','#393953');
+        ele.find('input').val(content);
         if (callback) {
             if ($(this).attr('value')) {
                 callback({el:ele, value: $(this).attr('value'), text: content })
@@ -59,9 +60,14 @@ function selectTag(ele, callback) {
             }
         }
     });
+    ele.find('.select-box-header input').on('click',function(e){
+        if(ele.find('.optionBox')[0].style.display == 'block'){
+            quakooUtils.stopEventBubble(e)
+        }
+    })
     ele.find('.optionUL>li>i').on('click',function(e){
         if($(this).parents(".optionUL").find('li').length==1){
-           opDN(false); 
+           opDN(false);
         }
         $(this).parent().remove();
         quakooUtils.stopEventBubble(e)
