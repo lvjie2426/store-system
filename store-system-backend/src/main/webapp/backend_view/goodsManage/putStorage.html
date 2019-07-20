@@ -524,16 +524,22 @@
                     <input class="jj-box" placeholder="色号" type="text" id="out-sehao">
                     <input class="yxyj-box jj-box hlcp-box qtsp-box jp-box" id="out-num" style="width: 62px;" placeholder="数量" type="number">
                 </div>
-                <div class="addBtn _btn canAdd" onclick="addToList()">添加至入库单</div>
-                <div class="check_box">
-                    <input type="checkbox" name="condition" id="condition1" checked="checked">
-                    <label for="condition1">简易入库</label>
+                <div class="btn-wrap">
+                    <div class="check_box">
+                        <input type="checkbox" name="condition" id="condition1" checked="checked">
+                        <label for="condition1">简易入库</label>
+                    </div>
+                    <ul class="orsoitems">
+                        <li class="active">无</li>
+                        <li>左</li>
+                        <li>右</li>
+                    </ul>
+                    <div class="addBtn _btn canAdd" onclick="addToList()">添加至入库单</div>
                 </div>
             </div>
             <div class="in-table">
                 <table class="table table-self" id="in-table" lay-filter="in-table"></table>
             </div>
-
         </div>
     </div>
     <!--右边-->
@@ -859,6 +865,7 @@
                     '                </form>\n' +
                     '            </div>\n' +
                     '        </div></div>')
+                console.log(html.join(''))
                 $('.content-view-enter-tan .layui-layer-btn').html(html.join(''))
                 addRepertorySuccess(index,id)
 
