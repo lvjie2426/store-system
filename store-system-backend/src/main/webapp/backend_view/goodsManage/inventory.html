@@ -388,6 +388,7 @@
             <div class="selectShop">
                 <div id="box001">门店(多选)<i class="icon iconfont icon-ico_arrow_down"></i></div>
                 <div id="selectBox001" class="optionBox">
+                    <div class="btn-fixed" onclick="listHide()">确定</div>
                     <ul>
                         <%for(var i=0;i< shopData.length;i++){%>
                         <li>
@@ -402,13 +403,7 @@
                         </li>
                         <%}%>
                     </ul>
-                    <div class="zi_dingyi">
-                        <span class="zdy_pingpai">自定义品牌</span>
-                        <div class="zi_dingyi_input_Box">
-                            <input type="text" placeholder="品牌" class="zi_dingyi_input">
-                            <div class="btn_conten">确定</div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <%}%>
@@ -1361,6 +1356,9 @@
         if(self.value>=0){
             allPdDidObj[id] = {did:id,currentNum:currentNum,realNum:self.value};
         }
+    }
+    function listHide() {
+        $("#selectBox001").hide();
     }
 </script>
 </body>

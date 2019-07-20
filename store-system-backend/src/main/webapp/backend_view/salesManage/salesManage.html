@@ -231,7 +231,7 @@
                     <div class="text-bot">消费满<%=list[i].descFull%>元减<%=list[i].descSubtract%>%</div>
                     <%}else if(list[i].descFullType == 2&&list[i].descSubtractType ==1){%>
                     <div class="text-bot">消费满<%=list[i].descFull%>个减<%=list[i].descSubtract%>元</div>
-                    <%}else if(list[i].descFullType == 1&&list[i].descSubtractType ==1){%>
+                    <%}else if(list[i].descFullType == 2&&list[i].descSubtractType ==2){%>
                     <div class="text-bot">消费满<%=list[i].descFull%>个减<%=list[i].descSubtract%>%</div>
                     <%}%>
                 </div>
@@ -356,7 +356,6 @@
                                 <label for="condition2">
                                     <span>消费满</span>
                                     <input type="number" placeholder="数值" id="conditionFull"/>
-                                    <span class="condition-type">元</span>
                                     <div class="selectBox" id="selectBox4">
                                         <div class="select-box-header">
                                             <span class="text">元</span><i class="iconfont icon-ico_arrow_down"></i>
@@ -395,7 +394,6 @@
                                     <%}else{%>
                                         <input type="number" placeholder="数值" id="conditionFull"/>
                                     <%}%>
-                                    <span class="condition-type">元</span>
                                     <div class="selectBox" id="selectBox4">
                                         <div class="select-box-header">
                                             <%if(list.conditionType == 2){%>
@@ -800,6 +798,7 @@
     var classIds;                                         //所有的类目ID
     var skuIds = [];
     var date1,date2;
+    var mediation = [];//选择门店的中间数据
     var selObject = {};
     var personArr;
     var taskLocData ={};
@@ -819,7 +818,6 @@
         });
         //获取一级类目
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
-            console.log("类目ID",ret);
             classIds = [];
             if(ret && ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
@@ -875,13 +873,23 @@
                 return param
             },
             onPreBody: function (data) {
-                console.log("抵用券数据",this);
                 vouchertableData = [];
                 for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
                     if(this.data[i]){
                         this.data[i].startTimeText = quakooUtils.formatTimeToDateDianLY(this.data[i].startTime);
                         this.data[i].endTimeText = quakooUtils.formatTimeToDateDianLY(this.data[i].endTime);
                         vouchertableData.push(this.data[i])
+                    }
+                }
+                for(var j=0;j<vouchertableData.length;j++){
+                    if(vouchertableData[j].descFullType == 1){
+                        vouchertableData[j].descFull = (vouchertableData[j].descFull/100).toFixed(0);
+                    }
+                    if(vouchertableData[j].descSubtractType == 1){
+                        vouchertableData[j].descSubtract = (vouchertableData[j].descSubtract/100).toFixed(0);
+                    }
+                    if(vouchertableData[j].conditionType == 2){
+                        vouchertableData[j].conditionFull = (vouchertableData[j].conditionFull/100).toFixed(0);
                     }
                 }
                 var html = template("voucherList", {list: vouchertableData});
@@ -970,10 +978,8 @@
             } else if (type == 2) {
                 voucherDiaData.conditionType = 2;
                 selectTag($("#selectBox4"), function (ret) {        //抵用券减类型
-                    if(ret.value == 1){
-                        voucherDiaData.conditionType = 2;
-                    }else if(ret.value == 2){
-                        voucherDiaData.conditionType = 3;
+                    if(ret.value == 2){
+                        voucherDiaData.mediationType = 3;
                     }
                 });
             }
@@ -992,9 +998,17 @@
             voucherDiaData.open = 2;
         }
         var title = $("#voucherTitle").val();              //抵用券名字
-        var descFull = $("#describefull").val();           //抵用券满
-        var descSubtract = $("#describeSubtract").val();   //描述-消费减
-        if (voucherDiaData.conditionType == 2 || voucherDiaData.conditionType == 3) {           //获取条件消费满
+        if(voucherDiaData.descFullType==1){
+            var descFull = ($("#describefull").val())*100;           //抵用券满
+        }else{
+            var descFull = $("#describefull").val();                 //抵用券满
+        }
+        if(voucherDiaData.descSubtractType==1){
+            var descSubtract = ($("#describeSubtract").val())*100;   //描述-消费减
+        }else{
+            var descSubtract = $("#describeSubtract").val();         //描述-消费减
+        }
+        if (voucherDiaData.conditionType == 2) {           //获取条件消费满shuzhi(元&&个)
             var conditionFull = $("#conditionFull").val();
         }
         var sort = $("#voucherSort").val();                //排序
@@ -1029,10 +1043,17 @@
         var param = {};
         param.subid = psid;                          //公司id
         param.title = title;                         //标题
-        if (conditionFull) {
-            param.conditionFull = conditionFull;     //获取条件-消费满
-        }
         param.conditionType = voucherDiaData.conditionType;         //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+        if(voucherDiaData.mediationType){
+            param.conditionType = voucherDiaData.mediationType;         //获取条件类型(1-全场通用 2-消费金额 3-消费个数)
+        }
+        if (conditionFull) {
+            if(param.conditionType == 2){
+                param.conditionFull = conditionFull*100;     //获取条件-消费满元数（分）
+            }else{
+                param.conditionFull = conditionFull;     //获取条件-消费满个数
+            }
+        }
         param.descSubtract = descSubtract;           //描述-消费减
         param.descSubtractType = voucherDiaData.descSubtractType;   //描述-消费减 类型(1-金额 2-百分比)
         param.descFull = descFull;                   //描述-消费满
@@ -1276,9 +1297,7 @@
 
     /**弹窗成功之后*/
     function renderMessage() {
-        console.log('messageLocData',messageLocData);
         var data = {list:messageLocData,jobList:jobList};
-        console.log('data',data);
         var html = template("groupMessagingTem",data);
         $('#groupMessagingUl').html(html);
         barArr = [];
@@ -1601,7 +1620,6 @@
      * 弹窗——创建任务
      * */
     function createTask(taskData) {
-        console.log('tadafds',taskData);
         skuIds =[];
         var btn;
         if(taskData){
@@ -1644,12 +1662,18 @@
     function renderTask(taskData) {
         taskLocData = {};
         taskLocData.executor = [];
+        taskLocData.executor1 = [];
         if(taskData){
             for(var i in taskData.skuIds){
                 skuIds[i] = taskData.skuIds[i];
             }
             for(var i in taskData){
                 taskLocData[i] = taskData[i];
+            }
+            if(taskData.type==1){
+                taskLocData.executor= taskData.executor;
+            }else{
+                taskLocData.executor1= taskData.executor;
             }
             taskLocData.timeText = quakooUtils.formatTimeToDateDianLY(taskLocData.startTime)+"-"+quakooUtils.formatTimeToDateDianLY(taskLocData.endTime);
         }else{
@@ -1713,7 +1737,6 @@
         $('.yj-date-btn .btn-primary').click(function () {
             taskLocData.startTime = date2.getTime()[2];
             taskLocData.endTime = date2.getTime()[3];
-            console.log('taskLocData',taskLocData);
         });
     }
     /**接口——创建任务*/
@@ -1758,7 +1781,11 @@
             return;
         }
         param.name = taskName;
-        param.executorJson = JSON.stringify(taskLocData.executor);
+        if(taskLocData.type==1){
+            param.executorJson = JSON.stringify(taskLocData.executor);
+        }else{
+            param.executorJson = JSON.stringify(taskLocData.executor1);
+        }
         param.sid = psid;
         param.amount= amount*1;
         param.fine= fine*1;
@@ -1773,7 +1800,6 @@
         if(id){
             param.id = id;
             quakooData.ajaxGetData(config.getUrl_mission_update(),param,function(ret){
-                console.log('任务奖励编辑',ret);
                 if(ret&&ret.success&&ret.data){
                     missionRewards();
                     layer.msg('编辑成功',{icon:1});
@@ -1784,7 +1810,6 @@
             })
         }else{
             quakooData.ajaxGetData(config.getUrl_mission_add(),param,function (ret) {
-                console.log("创建任务接口数据",ret);
                 if(ret&&ret.success){
                     if(quakooUtils.isNotBlack(ret.data)){
                         missionRewards();
@@ -1865,8 +1890,11 @@
      * 选择任务门店(渲染)
      * */
     function renderTaskShop() {
+        mediation=[];//先初始化，然后重新赋值
+        for(var i=0;i<taskLocData.executor.length;i++){
+            mediation[i] = taskLocData.executor[i];
+        }
         quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:psid},function (ret) {
-            console.log("任务门店",ret);
             if(ret&&ret.success){
                 $("#shop-table").bootstrapTable('destroy');
                 $("#shop-table").bootstrapTable({
@@ -1882,7 +1910,7 @@
                     clickToSelect: true,
                     columns: [
                         {checkbox: true, align: "center", valign: "middle",formatter: function (value, row, index) {
-                                if(taskLocData.executor.indexOf(row.id)>=0){
+                                if(mediation.indexOf(row.id)>=0){
                                     return {
                                         checked:true
                                     }
@@ -1899,26 +1927,26 @@
                         }
                     ],
                     onCheck:function (row) {
-                        if(taskLocData.executor.indexOf(row.id) < 0){
-                            taskLocData.executor.push(row.id)
+                        if(mediation.indexOf(row.id) < 0){
+                            mediation.push(row.id)
                         }
                     },
                     onUncheck:function (row) {
-                        if(taskLocData.executor.indexOf(row.id)>=0){
-                            taskLocData.executor.splice(taskLocData.executor.indexOf(row.id),1)
+                        if(mediation.indexOf(row.id)>=0){
+                            mediation.splice(mediation.indexOf(row.id),1)
                         }
                     },
                     onCheckAll:function (row) {
                         for(var i=0;i<row.length;i++){
-                            if(taskLocData.executor.indexOf(row[i].id) < 0){
-                                taskLocData.executor.push(row[i].id)
+                            if(mediation.indexOf(row[i].id) < 0){
+                                mediation.push(row[i].id)
                             }
                         }
                     },
                     onUncheckAll:function (row) {
                         for(var i=0;i<row.length;i++){
-                            if(taskLocData.executor.indexOf(row[i].id)>=0){
-                                taskLocData.executor.splice(taskLocData.executor.indexOf(row[i].id),1)
+                            if(mediation.indexOf(row[i].id)>=0){
+                                mediation.splice(mediation.indexOf(row[i].id),1)
                             }
                         }
                     }
@@ -1947,7 +1975,6 @@
             btn: ['关闭窗口'],
             yes: function (index) {
                 saveSkuids();
-                console.log("选择任务产品选择的数据",skuIds);
                 layer.close(index);
             },
             success: function (layero, index) {
@@ -1987,12 +2014,8 @@
             yes: function (index) {
                 layer.close(index);
             },
-            btn2: function (index){
-                layer.close(index);
-            },
             success: function (layero, index) {
                 quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:psid},function (ret) {
-                    console.log("任务门店",ret);
                     if(ret&&ret.success){
                         $("#object-table").bootstrapTable('destroy');
                         $("#object-table").bootstrapTable({
@@ -2039,11 +2062,18 @@
                 layer.close(index);
             },
             btn2: function (index){
+                for(var i =0;i<mediation.length;i++){
+                    taskLocData.executor1[i] = mediation[i];
+                }
+                mediation = [];
                 layer.close(index);
             },
             success: function (layero, index) {
+                mediation = [];
+                for(var i=0;i<taskLocData.executor1.length;i++){
+                    mediation[i] = taskLocData.executor1[i];
+                }
                 quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid: id,userType: 1},function (ret) {
-                    console.log("任务门店",ret);
                     if(ret&&ret.success){
                         $("#object-table2").bootstrapTable('destroy');
                         $("#object-table2").bootstrapTable({
@@ -2059,7 +2089,7 @@
                             clickToSelect: true,
                             columns: [
                                 {checkbox: true, align: "center", valign: "middle",formatter:function(value, row, index){
-                                    if(taskLocData.executor.indexOf(row.id)>=0){
+                                    if(mediation.indexOf(row.id)>=0){
                                             return {
                                                 checked: true
                                             }
@@ -2076,26 +2106,26 @@
                                 }
                             ],
                             onCheck:function (row) {
-                                if(taskLocData.executor.indexOf(row.id) < 0){
-                                    taskLocData.executor.push(row.id)
+                                if(mediation.indexOf(row.id) < 0){
+                                    mediation.push(row.id)
                                 }
                             },
                             onUncheck:function (row) {
-                                if(taskLocData.executor.indexOf(row.id)>=0){
-                                    taskLocData.executor.splice(taskLocData.executor.indexOf(row.id),1)
+                                if(mediation.indexOf(row.id)>=0){
+                                    mediation.splice(mediation.indexOf(row.id),1)
                                 }
                             },
                             onCheckAll:function (row) {
                                 for(var i=0;i<row.length;i++){
-                                    if(taskLocData.executor.indexOf(row[i].id) < 0){
-                                        taskLocData.executor.push(row[i].id)
+                                    if(mediation.indexOf(row[i].id) < 0){
+                                        mediation.push(row[i].id)
                                     }
                                 }
                             },
                             onUncheckAll:function (row) {
                                 for(var i=0;i<row.length;i++){
-                                    if(taskLocData.executor.indexOf(row[i].id)>=0){
-                                        taskLocData.executor.splice(taskLocData.executor.indexOf(row[i].id),1)
+                                    if(mediation.indexOf(row[i].id)>=0){
+                                        mediation.splice(mediation.indexOf(row[i].id),1)
                                     }
                                 }
                             }
@@ -2128,6 +2158,10 @@
                 layer.close(index);
             },
             btn2: function (index){
+                for(var i =0;i<mediation.length;i++){
+                    taskLocData.executor[i] = mediation[i];
+                }
+                mediation = [];
                 layer.close(index);
             },
             success: function (layero, index) {
