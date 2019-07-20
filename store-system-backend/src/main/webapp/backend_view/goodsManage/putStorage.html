@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>统计数据</title>
+    <title>入库</title>
     <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
     <link href="../resource/layui/css/layui.css" rel="stylesheet">
     <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
@@ -1165,6 +1165,17 @@
     }
     //确认入库
     function addInList(status,index,id) {
+        var closeFlag = true;
+        for(var i in allOutList){
+            if(allOutList[i].data.length>0){
+                closeFlag = false;
+                break ;
+            }
+        }
+        if(closeFlag){
+            layer.close(index)
+            return ;
+        }
         if(!peopleId){
             layer.msg('选择入库人');
             return

@@ -2,6 +2,8 @@ package com.store.system.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @program: store-system
  * @description: 定制范围
@@ -10,12 +12,11 @@ import lombok.Data;
  **/
 
 @Data
-public class ProductCustomRange {
+public class ProductCustomRange implements Serializable{
 
     private long ballId; //球
+
     private long columnId;//柱
-
-
 
 }
 

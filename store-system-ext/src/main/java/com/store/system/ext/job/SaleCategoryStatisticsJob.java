@@ -98,7 +98,7 @@ public class SaleCategoryStatisticsJob implements InitializingBean {
                 ProductSPU productSPU = productSPUDao.load(sku.getSpuid());
                 if(productSPU.getCid()==cid){
                     Map<Object,Object> map = orderService.countSkuPrice(order.getUid(),
-                            Lists.newArrayList(sku),0,new ArrayList<Surcharge>());
+                            Lists.newArrayList(sku),0,new ArrayList<Surcharge>(),subId);
                     List<OrderSku> clientOrderSkus = (List<OrderSku>) map.get("clientOrderSkus");
                     skus.addAll(clientOrderSkus);
                     skuList.addAll(clientOrderSkus);

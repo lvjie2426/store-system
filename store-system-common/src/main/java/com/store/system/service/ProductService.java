@@ -15,7 +15,7 @@ public interface ProductService {
 
     public ProductSKU addSKU(ProductSKU productSKU) throws Exception;
 
-    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception;
+    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, List<UserGradeCategoryDiscount> ugDiscountList, String brandName, String seriesName) throws Exception;
 
     public ClientProductSPU loadSPU(long id) throws Exception;
 
@@ -24,7 +24,7 @@ public interface ProductService {
     public boolean updateSKU(ProductSKU productSKU) throws Exception;
 
     public void change(ProductSPU productSPU, List<ProductSKU> addProductSKUList, List<ProductSKU> updateProductSKUList,
-                       List<Long> delSkuids, List<UserGradeCategoryDiscount> ugDiscountList) throws Exception;
+                       List<Long> delSkuids, List<UserGradeCategoryDiscount> ugDiscountList, String brandName, String seriesName) throws Exception;
 
     public boolean delSKU(long id) throws Exception;
 

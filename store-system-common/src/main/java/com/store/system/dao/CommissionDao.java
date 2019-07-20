@@ -15,5 +15,6 @@ import java.util.List;
  **/
 public interface CommissionDao extends HDao<Commission> {
 
-    public List<Commission> getAllList(long subId,long spuId,int type)throws DataAccessException;
+    public List<Commission> getAllList(long subId)throws Exception;
+
 }

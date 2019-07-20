@@ -45,6 +45,7 @@ public class Order implements Serializable {
     public static final int makestatus_qu_yes = 4; //已完成
     public static final int makestatus_invalid = 5; //已作废
     public static final int makestatus_temporary = 6; //临时订单
+    public static final int makestatus_recharge = 7; //充值赠送订单
 
 
     @PrimaryKey
@@ -59,7 +60,7 @@ public class Order implements Serializable {
     private String orderNo; // 支付系统订单编号
 
     @HyperspaceColumn(isJson = true)
-    private List<Integer> payTypes; //支付类型
+    private List<Integer> payTypes=new ArrayList<>(); //支付类型
 
     private int payMode; //支付方式
 
@@ -77,14 +78,15 @@ public class Order implements Serializable {
 
     private int totalPrice;//总金额(分)
     private double discount;//折扣
-    private int dicountPrice;//折后金额(分)0
+    private int dicountPrice;//折后金额(分)
 
     private int aliPrice;//实际支付金额(分)
     private int wxPrice;//实际支付金额(分)
-    private int cashPrice;//现金(分)
-    private int storedPrice;//储值卡(分)
+    private int cashPrice;//实际支付现金(分)
+    private int storedPrice;//实际支付储值卡(分)
 
     private int arrears;//欠款金额(分)
+    private int rechargePrice;//充值金额(分)
 
     private long couponid;//营销券id
     private int marketingType;//促销类型

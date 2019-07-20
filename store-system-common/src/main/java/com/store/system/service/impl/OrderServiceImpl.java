@@ -9,9 +9,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
-import com.store.system.bean.CalculateOrder;
-import com.store.system.bean.OrderExpireUnit;
-import com.store.system.bean.SaleReward;
+import com.store.system.bean.*;
 import com.store.system.client.ClientAfterSaleDetail;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ResultClient;
@@ -20,6 +18,7 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.AfterSaleDetailService;
 import com.store.system.service.OrderService;
+import com.store.system.service.WalletService;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.service.ext.OrderRefundService;
 import com.store.system.util.*;
@@ -35,7 +34,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -85,7 +83,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private RefundOrderDao refundOrderDao;
     @Resource
     private OrderNotifyDao orderNotifyDao;
-
+    @Resource
+    private WalletService walletService;
 
     @Autowired(required = false)
     private OrderPayService orderPayService;
@@ -133,16 +132,31 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public ResultClient handleAliBarcodeOrder(long passportId, String authCode, int type, String typeInfo,
-                                              String title, String desc, int price, Order orderInfo) throws Exception {
-        List<PayPassport> payPassports = payPassportDao.getAllList(passportId,PayPassport.status_on);
+    public ResultClient handleAliBarcodeOrder(String authCode, int type,
+                                              String title, int price, Order orderInfo) throws Exception {
+        Order order = orderDao.load(orderInfo.getId());
+        OrderTypeInfo orderTypeInfo = new OrderTypeInfo(order.getUid(), 0, price);
+        String typeInfo = OrderTypeInfo.getJsonStr(orderTypeInfo);
+        long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
+        order.setGmt(gmt);
+        order.setPayMode(Order.pay_mode_barcode);
+        order.getPayTypes().add(Order.pay_type_ali);
+        order.setAuthCode(authCode);
+        order.setType(type);
+        order.setTypeInfo(typeInfo);
+        order.setTitle(title);
+        order.setAliPrice(price);
+        order.setStatus(Order.status_no_pay);
+        if(null == order) return new ResultClient(false,null,"订单为空！");
+        List<PayPassport> payPassports = payPassportDao.getAllList(order.getSubid(),PayPassport.status_on);
         PayPassport payPassport = null;
         if(payPassports.size()>0){
             payPassport = payPassports.get(0);
         }
         if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
-        passportId=payPassport.getId();
-        Order order = createAliOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
+        orderDao.update(order);
+//        passportId=payPassport.getId();
+//        Order order = createAliOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
         Map<String, String> sParaTemp = this.aliOrderPayParam(order.getId(), Order.pay_mode_barcode, authCode);
         List<String> keys = new ArrayList<String>(sParaTemp.keySet());
         Collections.sort(keys);
@@ -413,8 +427,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             payPassport = payPassports.get(0);
         }
         if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
-        passportId=payPassport.getId();
-        Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
+//        passportId=payPassport.getId();
+//        Order order = createWxOrder(passportId, Order.pay_mode_barcode, type, typeInfo, title, desc, price, OrderExpireUnit.nvl, 0,orderInfo);
+        Order order = orderDao.load(orderInfo.getId());
+        order.getPayTypes().add(Order.pay_type_wx);
+        if(order == null) return new ResultClient(false,null,"订单为空！");
         if(StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
         String wxAppid = payPassport.getWxAppid();
         String wxMerchantId = payPassport.getWxMerchantId();
@@ -446,6 +463,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             String result_code = resMap.get("result_code");
             if("SUCCESS".equals(result_code)) {
                 order.setStatus(Order.status_pay);
+                order.setMakeStatus(Order.makestatus_qu_yes);
                 order.setDetail(sendRes);
             } else {
                 String path = request.getServletContext().getRealPath("");
@@ -764,7 +782,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public ClientOrder saveOrder(Order order) throws Exception {
+    public ResultClient saveOrder(Order order) throws Exception {
+        List<PayPassport> payPassports = payPassportDao.getAllList(order.getSubid(),PayPassport.status_on);
+        PayPassport payPassport = null;
+        if(payPassports.size()>0){
+            payPassport = payPassports.get(0);
+        }
+        if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
+        order.setPassportId(payPassport.getId());
         Order insertOrder = orderDao.insert(order);
         ClientOrder clientOrder = new ClientOrder(insertOrder);
         List<OptometryInfo> optometryInfos = new ArrayList<>();
@@ -794,7 +819,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 clientOrder.setDescSubtract(marketingCoupon.getDescSubtract());
             }
         }
-        return  clientOrder;
+        return new ResultClient(clientOrder);
     }
 
     @Override
@@ -810,7 +835,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         double totaoPriceyuan=0.0d;
         //小计单，通过从数据库取数据计算订单上的单sku的小计
         List<OrderSku> orderSkuList = order.getSkuids();
-        Map map = countSkuPrice(order.getUid(), orderSkuList, order.getCouponid(), order.getSurcharges());
+        Map map = countSkuPrice(order.getUid(), orderSkuList, order.getCouponid(), order.getSurcharges(),order.getSubid());
         dicountPriceYuan = (double) map.get("discountPriceYuan");
         totaoPriceyuan = (double) map.get("totalPriceYuan");
         clientOrder.setClientSkuids((List<OrderSku>) map.get("clientOrderSkus"));
@@ -930,16 +955,23 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 //    }
 
     @Override
-    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList) throws Exception {
+    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList, long sid) throws Exception {
         Map<Object, Object> map = Maps.newHashMap();
         List<Long> skuIds = Lists.newArrayList();
         List<Long> spuIds = Lists.newArrayList();
         Map<Long, Integer> inventoryMap = Maps.newHashMap();
-
-        User user = userDao.load(uid);
-
-        //会员等级类目折扣
-        UserGrade userGrade = userGradeDao.load(user.getUserGradeId());
+        User user = null;
+        long userGid=0;
+        long score=0;
+        UserGrade userGrade = null;
+        if(uid>0) {
+            user = userDao.load(uid);
+            if(user!=null) {
+                userGrade = userGradeDao.load(user.getUserGradeId());//会员等级类目折扣
+                userGid = user.getUserGradeId();
+                score = user.getScore();
+            }
+        }
 
         for(OrderSku orderSku:orderSkuList){
             skuIds.add(orderSku.getSkuid());
@@ -948,7 +980,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             int inventoryNum = 0;//库存量
             List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(orderSku.getSkuid());
             for (InventoryDetail detail : allDetails) {
-                if (detail.getSubid() == user.getSid()) {
+                if (detail.getSubid() == sid) {
                     inventoryNum += detail.getNum();
                 }
             }
@@ -972,14 +1004,16 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             double userDisCount = 0;//会员类目折扣
             if (userGrade != null) {
                 Map<Long, Object> disMap = userGrade.getDiscount();
-                userDisCount = (double) disMap.get(cid);
+                if(disMap.size()>0) {
+                    userDisCount = (double) disMap.get(cid);
+                }
             }
             //常规商品
             if(spuMap.get(spuId).getType()==ProductSPU.type_common){
                 if(orderSku.getNum()>inventoryMap.get(skuId)) throw new StoreSystemException("当前常规商品库存数量不足！");
                 UserGradeCategoryDiscount ugcd = new UserGradeCategoryDiscount();
                 ugcd.setSpuid(spuId);
-                ugcd.setUgid(user.getUserGradeId());
+                ugcd.setUgid(userGid);
                 ugcd = userGradeCategoryDiscountDao.load(ugcd);
                 if(ugcd!=null){
                     spuDiscount = ugcd.getDiscount();
@@ -1023,7 +1057,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 if (spuMap.get(spuId).getIntegralNum() < orderSku.getNum()) {
                     throw new StoreSystemException("积分商品数量兑换上限！");
                 }
-                if (skuMap.get(skuId).getIntegralPrice() * orderSku.getNum() > user.getScore()) {
+                if (skuMap.get(skuId).getIntegralPrice() * orderSku.getNum() > score) {
                     throw new StoreSystemException("会员积分不足以兑换该积分商品！");
                 }
                 double integralPrice = 0;
@@ -1138,45 +1172,169 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public Map<String,Object> saleReward(long subid) throws Exception {
-        Map<String,Object> map = Maps.newLinkedHashMap();
+    public boolean updateOrder(Order order) throws Exception {
+        Order dbInfo = orderDao.load(order.getId());
+        if(order.getRechargePrice()>0){
+            dbInfo.setRechargePrice(order.getRechargePrice());
+            walletService.refresh(dbInfo.getUid(),order.getRechargePrice()/100.0);
+            dbInfo.setMakeStatus(Order.makestatus_recharge);
+        }
+        if(order.getCashPrice()>0){
+            dbInfo.setCashPrice(order.getCashPrice());
+            dbInfo.getPayTypes().add(Order.pay_type_cash);
+        }
+        if(order.getStoredPrice()>0){
+            dbInfo.setStoredPrice(order.getStoredPrice());
+            dbInfo.getPayTypes().add(Order.pay_type_stored);
+        }
+        if(StringUtils.isNotBlank(order.getReceiptDesc())){
+            dbInfo.setReceiptDesc(order.getReceiptDesc());
+        }
+        return orderDao.update(dbInfo);
+    }
+
+//    @Override
+//    public Map<String,Object> saleReward(long subid) throws Exception {
+//        Map<String,Object> map = Maps.newLinkedHashMap();
+//        List<SaleReward> saleRewards = Lists.newArrayList();
+//        int total = 0;//总奖励
+//        List<Order> orders = orderDao.getAllBySubid(subid,Order.status_pay,Order.makestatus_qu_yes);
+//        if(orders.size()>0){
+//            for(Order order:orders){
+//                List<OrderSku> orderSkus = order.getSkuids();
+//                for (OrderSku orderSku:orderSkus){
+//                    Commission personal = null;
+//                    Commission team = null;
+//                    ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
+//                    if(productSKU!=null){
+//                        long spuId = productSKU.getSpuid();
+//                        //获得商品的个人提成
+//                        List<Commission> commissionsP = commissionDao.getAllList(subid,spuId,Commission.type_personal);
+//                        if(commissionsP.size()>0){ personal=commissionsP.get(0); }
+//                        //获得商品的团队提成
+//                        List<Commission> commissionsT = commissionDao.getAllList(subid,spuId,Commission.type_team);
+//                        if(commissionsT.size()>0){ team = commissionsT.get(0); }
+//                        if(personal!=null&&team!=null){
+//                            SaleReward saleReward = new SaleReward();
+//                            saleReward.setNumber(orderSku.getNum());
+//                            saleReward.setProductName(orderSku.getName());
+//                            saleReward.setRewardPersonal(personal.getPrice()/100);//个人提成
+//                            saleReward.setRewardTeam(team.getPrice()/100);//团队提成
+//                            saleReward.setRoyaltyPersonal((team.getPrice()*orderSku.getNum())/100);//团队奖励 数量*提成
+//                            saleReward.setRoyaltyTeam((personal.getPrice()*orderSku.getNum())/100);//个人奖励
+//                            saleRewards.add(saleReward);
+//                            total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        map.put("saleRewards",saleRewards);
+//        map.put("total",total);
+//        return map;
+//    }
+
+    @Override
+    public Map<String, Object> saleReward(long subid) throws Exception {
+        Map<String, Object> map = Maps.newLinkedHashMap();
         List<SaleReward> saleRewards = Lists.newArrayList();
-        int total = 0;//总奖励
-        List<Order> orders = orderDao.getAllBySubid(subid,Order.status_pay,Order.makestatus_qu_yes);
-        if(orders.size()>0){
-            for(Order order:orders){
-                List<OrderSku> orderSkus = order.getSkuids();
-                for (OrderSku orderSku:orderSkus){
-                    Commission personal = null;
-                    Commission team = null;
-                    ProductSKU productSKU = productSKUDao.load(orderSku.getSkuid());
-                    if(productSKU!=null){
-                        long spuId = productSKU.getSpuid();
-                        //获得商品的个人提成
-                        List<Commission> commissionsP = commissionDao.getAllList(subid,spuId,Commission.type_personal);
-                        if(commissionsP.size()>0){ personal=commissionsP.get(0); }
-                        //获得商品的团队提成
-                        List<Commission> commissionsT = commissionDao.getAllList(subid,spuId,Commission.type_team);
-                        if(commissionsT.size()>0){ team = commissionsT.get(0); }
-                        if(personal!=null&&team!=null){
-                            SaleReward saleReward = new SaleReward();
-                            saleReward.setNumber(orderSku.getNum());
-                            saleReward.setProductNamw(orderSku.getName());
-                            saleReward.setRewardPersonal(personal.getPrice()/100);//个人提成
-                            saleReward.setRewardTeam(team.getPrice()/100);//团队提成
-                            saleReward.setRoyaltyPersonal((team.getPrice()*orderSku.getNum())/100);//团队奖励 数量*提成
-                            saleReward.setRoyaltyTeam((personal.getPrice()*orderSku.getNum())/100);//个人奖励
-                            saleRewards.add(saleReward);
-                            total+=saleReward.getRoyaltyPersonal()+saleReward.getRoyaltyTeam();
+        int totalP = 0;
+        int totalT = 0;
+        /**获得门店下的商品提成集合**/
+        List<Commission> commissionList = commissionDao.getAllList(subid);
+        if (commissionList.size() > 0) {
+            for (Commission commission : commissionList) {
+                int number = 0;
+                int royaltyPersonal = 0;
+                int royaltyTeam = 0;
+                /**
+                 * 计算个人奖励
+                 */
+                Map<Long, Object> users = commission.getUsers();
+                for (Map.Entry<Long, Object> entry : users.entrySet()) {
+                    /**获得用户对应的提成**/
+                    int rewardUser = (int) entry.getValue();
+                    /**根据uid查询订单**/
+                    List<Order> orderList = orderDao.getUserFinishOrders(entry.getKey(), Order.makestatus_qu_yes);
+                    for (Order order : orderList) {
+                        /**有提成商品计算奖励**/
+                        List<OrderSku> orderSkuList = order.getSkuids();
+                        for (OrderSku sku : orderSkuList) {
+                            if (commission.getSpuId() == sku.getSpuid()) {
+                                number += sku.getNum();/**完成量增加**/
+                                royaltyPersonal += rewardUser * number; //奖励 = 提成 * 成交数量
+                            }
                         }
                     }
                 }
+                /**
+                 * 计算团队奖励
+                 */
+                royaltyTeam += number * commission.getPrice();
+
+                SaleReward saleReward = new SaleReward();
+                saleReward.setRoyaltyPersonal(royaltyPersonal);/**个人奖励**/
+                saleReward.setRoyaltyTeam(royaltyTeam);/**团队奖励**/
+                saleRewards.add(saleReward);
+                totalP += royaltyPersonal;
+                totalT += royaltyTeam;
             }
         }
-        map.put("saleRewards",saleRewards);
-        map.put("total",total);
+        map.put("saleRewards", saleRewards);
+        map.put("totalT", totalT);
+        map.put("totalP", totalP);
         return map;
     }
+
+//    /**以商品为单位进行遍历**/
+//    for(Commission commission:commissionList){
+//        List<SaleRewardInFo> saleRewardInFos = Lists.newArrayList();
+//
+//
+//        int number = 0;//完成量
+//        int royaltyPersonal = 0;//个人奖励
+//        int rewardUser = 0;//个人提成
+//        int rewardTeam = 0;//团队提成
+//        int royaltyTeam = 0;//团队奖励
+//
+//        /**获得提成用户ids**/
+//        Map<Long,Object> users = commission.getUsers();
+//        for(Map.Entry<Long,Object> entry : users.entrySet()){
+//
+//            SaleRewardInFo saleRewardInFo = new SaleRewardInFo();
+//
+//            /**个人提成**/
+//            if(commission.getType() == Commission.type_personal){
+//                rewardUser = (int) entry.getValue();
+//            }
+//            /**团队提成**/
+//            if(commission.getType() == Commission.type_team){
+//                rewardTeam = (int) entry.getValue();
+//            }
+//            User user = userDao.load(entry.getKey());
+//            if(user != null){
+//                saleRewardInFo.setName(user.getName());
+//                saleRewardInFo.setUid(user.getId());
+//            }
+//            /**根据uid查询订单**/
+//            List<Order> orderList = orderDao.getUserFinishOrders(entry.getKey(),Order.makestatus_qu_yes);
+//
+//
+//            for(Order order:orderList){
+//                /**有提成商品计算奖励**/
+//                List<OrderSku> orderSkuList = order.getSkuids();
+//                for(OrderSku sku:orderSkuList){
+//                    if(commission.getSpuId() == sku.getSpuid()){
+//
+//                        number += sku.getNum();/**完成量增加**/
+//
+//                    }
+//                }
+//            }
+//            /**计算奖励**/
+//            royaltyPersonal += sku.getNum() * rewardUser;
+//        }
+//    }
 
     @Override
     public CalculateOrder calculateOrders(long subId, long startTime, long endTime) throws Exception {

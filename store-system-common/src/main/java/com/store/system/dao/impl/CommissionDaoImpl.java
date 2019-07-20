@@ -27,8 +27,9 @@ public class CommissionDaoImpl extends CacheBaseDao<Commission> implements Commi
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<Commission> getAllList(long subId, long spuId, int type) throws DataAccessException {
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
+    public List<Commission> getAllList(long subId) throws Exception {
         return null;
     }
+
 }

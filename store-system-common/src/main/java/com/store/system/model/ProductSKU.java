@@ -42,9 +42,6 @@ public class ProductSKU implements Serializable {
     @HyperspaceColumn(isJson = true)
     private Map<Long, Object> properties=new HashMap<Long,Object>(); //属性json
 
-    @HyperspaceColumn(isJson = true)
-    private List<ProductCustomRange> productCustomRangeList= Lists.newArrayList();//定制范围
-
     private int retailPrice; //零售价(分)
 
     private int costPrice; //成本价(分)
@@ -72,11 +69,4 @@ public class ProductSKU implements Serializable {
         this.properties = properties;
     }
 
-    public List<ProductCustomRange> getProductCustomRangeList() {
-        return productCustomRangeList;
-    }
-
-    public void setProductCustomRangeList(List<ProductCustomRange> productCustomRangeList) {
-        this.productCustomRangeList = productCustomRangeList;
-    }
 }

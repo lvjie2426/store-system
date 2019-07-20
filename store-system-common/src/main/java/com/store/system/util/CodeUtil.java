@@ -26,7 +26,7 @@ public class CodeUtil {
         return String.valueOf(System.currentTimeMillis());
     }
 
-    private static long getRandom(long len) {
+    public static long getRandom(long len) {
         long min = 1,max = 9;
         for (int i = 1; i < len; i++) {
             min *= 10;
@@ -36,7 +36,7 @@ public class CodeUtil {
         return rangeLong;
     }
 
-    private static String getCode(){
+    public static String getCode(){
         //id = id == null ? 1000 : id;
         int count = 0;
         String result = "";
@@ -44,7 +44,6 @@ public class CodeUtil {
             Random random = new Random();
             for(int i = 0; i < 100; i++) {
                 count = random.nextInt(51) + 10;
-                System.out.println(count);
             }
             result = getDateTime() + toCode(Long.valueOf(count));
         } catch (Exception e) {

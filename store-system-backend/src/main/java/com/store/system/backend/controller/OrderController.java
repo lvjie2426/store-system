@@ -177,7 +177,8 @@ public class OrderController extends BaseController {
                 });
                 order.setSkuids(orderskuids);
             }
-            return this.viewNegotiating(request, response, new ResultClient(orderService.saveOrder(order)));
+            ResultClient res = orderService.saveOrder(order);
+            return this.viewNegotiating(request, response, res);
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
@@ -254,17 +255,26 @@ public class OrderController extends BaseController {
         }
     }
 
+    @RequestMapping("/updateOrder")
+    public ModelAndView updateOrder(HttpServletRequest request, HttpServletResponse response,
+                                    Order order) throws Exception {
+        try {
+            boolean res = orderService.updateOrder(order);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
     //支付宝条形码支付
     @RequestMapping("/handleAliBarcodeOrder")
     public ModelAndView handleAliBarcodeOrder(HttpServletRequest request, HttpServletResponse response,
-                                              long subid, String authCode, int type, String desc, int price,Order order,
-                                              @RequestParam(value = "skuidsList") String skuidsList,
-                                              @RequestParam(value = "surchargesJson", defaultValue = "") String surchargesJson,
-                                              @RequestParam(value = "payTypesJson") String payTypesJson) throws Exception {
+                                              String authCode, int type, int price,Order order,
+                                              @RequestParam(value = "skuidsList",required = false) String skuidsList,
+                                              @RequestParam(value = "surchargesJson", required = false) String surchargesJson) throws Exception {
         try {
             List<Surcharge> surcharges = Lists.newArrayList();
             List<OrderSku> skus = Lists.newArrayList();
-            List<Integer> types = Lists.newArrayList();
             if (StringUtils.isNotBlank(surchargesJson)) {
                 surcharges = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
                 order.setSurcharges(surcharges);
@@ -273,12 +283,7 @@ public class OrderController extends BaseController {
                 skus = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(skus);
             }
-            if (StringUtils.isNotBlank(payTypesJson)) {
-                types = JsonUtils.fromJson(payTypesJson, new TypeReference<List<Integer>>() {});
-                order.setPayTypes(types);
-            }
-            OrderTypeInfo typeInfo = new OrderTypeInfo(order.getUid(), 0, order.getAliPrice());
-            ResultClient res = orderService.handleAliBarcodeOrder(subid, authCode, type, OrderTypeInfo.getJsonStr(typeInfo), "商品购买订单", desc, price, order);
+            ResultClient res = orderService.handleAliBarcodeOrder(authCode, type, "商品购买订单",price, order);
             return this.viewNegotiating(request, response, res);
         } catch (StoreSystemException s) {
             return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
@@ -311,13 +316,11 @@ public class OrderController extends BaseController {
     @RequestMapping("/handleWxBarcodeOrder")
     public ModelAndView handleWxBarcodeOrder(HttpServletRequest request, HttpServletResponse response,
                                              long subid, String authCode, int type, String desc, int price, Order order,
-                                             @RequestParam(value = "skuidsList") String skuidsList,
-                                             @RequestParam(value = "surchargesJson", defaultValue = "") String surchargesJson,
-                                             @RequestParam(value = "payTypesJson") String payTypesJson) throws Exception {
+                                             @RequestParam(value = "skuidsList",required = false) String skuidsList,
+                                             @RequestParam(value = "surchargesJson", required = false) String surchargesJson) throws Exception {
         try {
             List<Surcharge> surcharges = Lists.newArrayList();
             List<OrderSku> skus = Lists.newArrayList();
-            List<Integer> types = Lists.newArrayList();
             if (StringUtils.isNotBlank(surchargesJson)) {
                 surcharges = JsonUtils.fromJson(surchargesJson, new TypeReference<List<Surcharge>>() {});
                 order.setSurcharges(surcharges);
@@ -325,10 +328,6 @@ public class OrderController extends BaseController {
             if (StringUtils.isNotBlank(skuidsList)) {
                 skus = JsonUtils.fromJson(skuidsList, new TypeReference<List<OrderSku>>() {});
                 order.setSkuids(skus);
-            }
-            if (StringUtils.isNotBlank(payTypesJson)) {
-                types = JsonUtils.fromJson(payTypesJson, new TypeReference<List<Integer>>() {});
-                order.setPayTypes(types);
             }
             OrderTypeInfo typeInfo = new OrderTypeInfo(order.getUid(), 0, order.getWxPrice());
             ResultClient res = orderService.handleWxBarcodeOrder(request, subid, authCode, type, OrderTypeInfo.getJsonStr(typeInfo), "商品购买订单", desc, price, order);
