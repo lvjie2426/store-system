@@ -14,7 +14,9 @@ import com.store.system.client.ResultClient;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
+import com.store.system.service.DictionaryService;
 import com.store.system.service.OrderService;
+import com.store.system.util.DictionaryUtils;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,8 @@ public class OrderController extends BaseController {
     private OrderService orderService;
     @Resource
     private SubordinateDao subordinateDao;
+    @Resource
+    private DictionaryService dictionaryService;
 
     /**
      * create by: zhangmeng
@@ -379,6 +383,23 @@ public class OrderController extends BaseController {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
 
+    }
+
+    /***
+    * 获取附加费
+    * @Param: [request, response]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/7/18
+    */
+    @RequestMapping("/getSurcharge")
+    public ModelAndView getSurcharge(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            String[] res = dictionaryService.getStrings(DictionaryUtils.surcharge,null);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
 

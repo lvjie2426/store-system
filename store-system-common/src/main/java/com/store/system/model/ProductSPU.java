@@ -85,6 +85,11 @@ public class ProductSPU implements Serializable {
     @HyperspaceColumn(isJson = true)
     private List<ProductCustomRange> nowRanges= Lists.newArrayList();//现货范围
 
+    private int nowRemind; //现货库存提醒
+
+    private int totalRemind; //总库存提醒
+
+
     @SortKey
     private long ctime;
 

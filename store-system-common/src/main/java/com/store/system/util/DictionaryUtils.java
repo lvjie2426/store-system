@@ -18,4 +18,5 @@ public class DictionaryUtils implements Serializable{
 
     public static final String optometry_support = "验光建议_optometry_support";
 
+    public static final String surcharge = "附加费_surcharge";
 }

@@ -2,6 +2,7 @@ package com.store.system.service.impl;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
+import com.store.system.client.ResultClient;
 import com.store.system.dao.MarketingCouponDao;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.exception.StoreSystemException;
@@ -186,14 +187,27 @@ public class MarketingCouponServiceImpl implements MarketingCouponService {
             }
             if(sign) {
                 if(descSubtractType == MarketingCoupon.desc_subtract_type_money) {
-                    res = money - (int)descSubtract;
+                    res = (int)descSubtract;
                 } else if(descSubtractType == MarketingCoupon.desc_subtract_type_rate) {
-                    BigDecimal bigDecimal = new BigDecimal(res * descSubtract);
+                    BigDecimal bigDecimal = new BigDecimal(res * descSubtract/100.0);
                     res = bigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
                 }
+            }else {
+                res = 0;
             }
         }
         return res;
+    }
+
+    @Override
+    public ResultClient checkMarketing(long mcId, long uid) throws Exception {
+        MarketingCoupon marketingCoupon = marketingCouponDao.load(mcId);
+        if(marketingCoupon.getConditionType()==MarketingCoupon.condition_type_common){
+            return new ResultClient(true);
+        }
+
+
+        return new ResultClient();
     }
 
 }
