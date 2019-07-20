@@ -105,4 +105,24 @@ public class MarketingCouponController extends BaseController {
         }
     }
 
+    /***
+    * 计算优惠金额
+    * @Param: [request, response, model, mcId, money, num]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/7/20
+    */
+    @RequestMapping("/calculateMoney")
+    public ModelAndView calculateMoney(HttpServletRequest request, HttpServletResponse response, Model model,
+                                       @RequestParam(value = "mcId") long mcId,
+                                       @RequestParam(value = "money", defaultValue = "0") int money,
+                                       @RequestParam(value = "num", defaultValue = "0") int num) throws Exception {
+        try {
+            int res = marketingCouponService.calculateMoney(mcId, num, money);
+            return this.viewNegotiating(request,response,  new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
 }

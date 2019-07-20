@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.store.system.client.ResultClient;
 import com.store.system.model.MarketingCoupon;
 
 import java.util.List;
@@ -24,5 +25,7 @@ public interface MarketingCouponService {
     public boolean updateMarketing(MarketingCoupon marketingCoupon)throws Exception;
 
     public int calculateMoney(long mcid, int num, int money) throws Exception; //计算优惠券优惠的金额
+
+    public ResultClient checkMarketing(long mcId, long uid) throws Exception;
 
 }
