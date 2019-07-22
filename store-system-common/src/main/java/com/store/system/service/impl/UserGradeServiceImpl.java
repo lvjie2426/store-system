@@ -79,6 +79,11 @@ public class UserGradeServiceImpl implements UserGradeService {
     }
 
     @Override
+    public UserGrade load(long id) throws Exception {
+        return userGradeDao.load(id);
+    }
+
+    @Override
     public List<UserGrade> getAllList(long subid) throws Exception {
         List<UserGrade> list = userGradeDao.getAllList(subid);
         Collections.sort(list);

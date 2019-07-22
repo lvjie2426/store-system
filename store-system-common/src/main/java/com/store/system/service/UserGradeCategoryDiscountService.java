@@ -13,4 +13,6 @@ public interface UserGradeCategoryDiscountService {
   public   void addDiscount(List<UserGradeCategoryDiscount> list,long spuid) throws Exception;
 
   public List<UserGradeCategoryDiscount> getAllBySPUId(long id)throws Exception;
+
+  public UserGradeCategoryDiscount load(long ugId, long spuId) throws Exception;
 }

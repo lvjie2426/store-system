@@ -15,6 +15,8 @@ public interface UserGradeService {
 
     public boolean del(long id) throws Exception;
 
+    public UserGrade load(long id) throws Exception;
+
 
     public List<UserGrade> getAllList(long subid) throws Exception;
 

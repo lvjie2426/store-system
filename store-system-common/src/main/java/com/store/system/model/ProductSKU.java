@@ -30,6 +30,9 @@ public class ProductSKU implements Serializable {
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
 
+    public static final int eyeType_left=1;//左眼
+    public static final int eyeType_right=2;//右眼
+
     @PrimaryKey
     private long id;
 
@@ -49,6 +52,8 @@ public class ProductSKU implements Serializable {
     private int integralPrice; //积分价
 
     private int num; //备货量
+
+    private int eyeType;
 
     private String other; //附加属性
 
