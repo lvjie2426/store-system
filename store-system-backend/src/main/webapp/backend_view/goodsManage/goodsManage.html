@@ -129,6 +129,8 @@
             <li onclick="setPrice(2)">批发价/元</li>
             <li onclick="setPrice(3)">备货量/片</li>
             <li onclick="setPrice(4)">积分价/分</li>
+            <li onclick="setPrice(5)">左眼选择</li>
+            <li onclick="setPrice(6)">右眼选择</li>
         </ul>
         <div class="price-table-box">
             <table class="layui-hide yj-layui-table" id="priceEvent" lay-filter="priceEvent"></table>
@@ -1672,19 +1674,39 @@
                 },
                 btn2: function(){
                     params[cid].skuJson = [];
+                    console.log(momentPriceData)
                     for(var i in momentPriceData){
                         if(momentPriceData[i]){
-                            params[cid].skuJson.push(momentPriceData[i])
+                            for(var j=0;j<momentPriceData[i].eyeTypeArr.length;j++){
+                                var obj = {};
+                                for(var k in momentPriceData[i]){
+                                    if(k!='eyeTypeArr'){
+                                        obj[k] = momentPriceData[i][k];
+                                    }
+                                }
+                                obj.eyeType =momentPriceData[i].eyeTypeArr[j];
+                                params[cid].skuJson.push(obj)
+                            }
                         }
                     }
+                    console.log(params[cid].skuJson)
                     momentPriceData = {};
                 },
                 success: function(layero, index){
+                    console.log(111,params[cid].skuJson)
                     if(params[cid] && params[cid].skuJson){
                         for(var i=0;i<params[cid].skuJson.length;i++){
-                            momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]] = params[cid].skuJson[i];
+                            console.log(params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId])
+                            console.log(momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]])
+                            if(momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]]){
+                                momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]].eyeTypeArr.push(params[cid].skuJson[i].eyeType);
+                            }else{
+                                params[cid].skuJson[i].eyeTypeArr = [params[cid].skuJson[i].eyeType];
+                                momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]] = params[cid].skuJson[i];
+                            }
                         }
                     }
+                    console.log(momentPriceData)
                     $('.layui-layer-view-price .layui-layer-btn').append('<div class="view-price-add"><input class="yj-input" placeholder="输入数量" type="number" id="numInput"><button class="btn btn-primary" onclick="numInputBtn('+type+')">键入</button></div>')
                     setPrice(type)
                 }
@@ -1865,7 +1887,10 @@
             if(params[cid].type==0){
                 $('#setPriceBtn li').eq(3).hide().siblings().show();
             }else{
-                $('#setPriceBtn li').hide().eq(3).show();
+                $('#setPriceBtn li').hide();
+                $('#setPriceBtn li').eq(3).show();
+                $('#setPriceBtn li').eq(4).show();
+                $('#setPriceBtn li').eq(5).show();
             }
             var cols = [];//球
             var rangeData = [];//柱
@@ -1910,6 +1935,18 @@
                                         return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value="'+momentPriceData[ballData[i].id + '' + d.id].integralPrice+'"></div>'
                                     } else {
                                         return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="'+str+'"><input oninput="priceInputChange(this,'+type+')" type="number" value=""></div>'
+                                    }
+                                }else if(type==5){
+                                    if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].eyeTypeArr.indexOf(1)>=0) {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="iconfont ico_check icon-ico_check '+str+'" ></div>'
+                                    } else {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="iconfont '+str+'" ></div>'
+                                    }
+                                }else if(type==6){
+                                    if (momentPriceData[ballData[i].id + '' + d.id] && momentPriceData[ballData[i].id + '' + d.id].eyeTypeArr.indexOf(2)>=0) {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="iconfont ico_check icon-ico_check '+str+'" ></div>'
+                                    } else {
+                                        return '<div data-ballId="'+ballData[i].id+'" data-columnId="'+d.id+'" class="iconfont '+str+'" ></div>'
                                     }
                                 }
                             }else{
@@ -2074,10 +2111,10 @@
                     // console.log(obj.field); //当前编辑的字段名
                     // console.log(obj.data); //所在行的所有相关数据
                 });*/
-                initTableDragInput()
+                initTableDragInput(type)
             });
         }
-        function initTableDragInput() {
+        function initTableDragInput(type) {
             var beginTrIndex;//开始选中的行的下标
             var beginTdIndex;//开始选中的列的下标
             var endTrIndex;//鼠标抬起时的行的下标
@@ -2131,11 +2168,35 @@
                 for(var i=startTr;i<=endTr;i++){
                     for(var j=startTd;j<=endTd;j++){
                         var dom = $("#priceEvent").next().find('.layui-table-body tbody tr').eq(i).find('td').eq(j).find('div div');
-                        if(startTr==endTr && startTd==endTd){
-                            $("#priceEvent").next().find('.layui-table-body tbody tr').eq(startTr).find('td').eq(startTd).find('input').focus();
+                        if(type==5 || type==6){
+                            var ballId = $(dom).attr('data-ballId');
+                            console.log(11,$(dom).attr('data-ballId'))
+                            console.log(22,$(dom).attr('data-columnId'))
+                            var columnId = $(dom).attr('data-columnId');
+                            if(dom.hasClass('ico_check')){
+                                momentPriceData[ballId+''+columnId].eyeTypeArr.remove(type-4);
+                            }else{
+                                if(momentPriceData[ballId+''+columnId]){
+                                    momentPriceData[ballId+''+columnId].eyeTypeArr.push(type-4);
+                                }else{
+                                    var param = {};
+                                    param.properties = {};
+                                    param.properties[config.qiuId] = ballId;
+                                    param.properties[config.zhuId] = columnId;
+                                    param.eyeTypeArr = [type-4];
+                                    momentPriceData[ballId+''+columnId] = param;
+                                }
+                            }
+                            dom.toggleClass('ico_check')
+                            dom.toggleClass('icon-ico_check')
                         }else{
-                            dom.addClass('dragBorder')
+                            if(startTr==endTr && startTd==endTd){
+                                $("#priceEvent").next().find('.layui-table-body tbody tr').eq(startTr).find('td').eq(startTd).find('input').focus();
+                            }else{
+                                dom.addClass('dragBorder')
+                            }
                         }
+
                         var obj = {dom:dom};
                         if(dom.length>0){
                             priceCheck.push(obj);
@@ -2144,7 +2205,6 @@
                 }
             });
             $(document).mouseup(function () {
-                // $('.dragBorder').removeClass('dragBorder')
                 var time = setInterval(function () {
                     if($('#dragDiv').length>0){
                         $('#dragDiv').remove();
