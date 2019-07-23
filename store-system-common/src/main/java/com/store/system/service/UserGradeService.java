@@ -17,7 +17,6 @@ public interface UserGradeService {
 
     public UserGrade load(long id) throws Exception;
 
-
     public List<UserGrade> getAllList(long subid) throws Exception;
 
     public Pager getByPager(Pager pager, long subid) throws Exception;

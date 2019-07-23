@@ -79,7 +79,6 @@ public class ProductController extends BaseController {
     @RequestMapping("/add")
     public ModelAndView add(ProductSPU productSPU, String brandName, String seriesName,
                             @RequestParam(required = true, value = "skuJson") String skuJson,
-                            @RequestParam(required = false, value = "ugDiscount") String ugDiscount,
                             @RequestParam(required = false, value = "commissionJson") String commissionJson,
                             @RequestParam(required = false, value = "rangesJson") String rangesJson,
                             @RequestParam(required = false, value = "nowRangesJson") String nowRangesJson,
@@ -91,20 +90,20 @@ public class ProductController extends BaseController {
             } catch (Exception e) {
                 throw new StoreSystemException("sku格式错误");
             }
-            List<UserGradeCategoryDiscount> ugDiscountList = Lists.newArrayList();
-            try {
-                if (StringUtils.isNotBlank(ugDiscount)) {
-                    ugDiscountList = JsonUtils.fromJson(ugDiscount, new TypeReference<List<UserGradeCategoryDiscount>>() {});
-                }
-                for (UserGradeCategoryDiscount info : ugDiscountList) {
-                    String regex = "^[1-9]+(.[1-9]{1})?$";
-                    Pattern pattern = Pattern.compile(regex);
-                    Matcher matcherUser = pattern.matcher(String.valueOf(info.getDiscount()));
-                    if (!matcherUser.matches()) throw new StoreSystemException("会员折扣输入格式有误！");
-                }
-            } catch (Exception e) {
-                throw new StoreSystemException("会员折扣格式错误");
-            }
+//            List<UserGradeCategoryDiscount> ugDiscountList = Lists.newArrayList();
+//            try {
+//                if (StringUtils.isNotBlank(ugDiscount)) {
+//                    ugDiscountList = JsonUtils.fromJson(ugDiscount, new TypeReference<List<UserGradeCategoryDiscount>>() {});
+//                }
+//                for (UserGradeCategoryDiscount info : ugDiscountList) {
+//                    String regex = "^[1-9]+(.[1-9]{1})?$";
+//                    Pattern pattern = Pattern.compile(regex);
+//                    Matcher matcherUser = pattern.matcher(String.valueOf(info.getDiscount()));
+//                    if (!matcherUser.matches()) throw new StoreSystemException("会员折扣输入格式有误！");
+//                }
+//            } catch (Exception e) {
+//                throw new StoreSystemException("会员折扣格式错误");
+//            }
             List<Commission> commissions = null;
             try {
                 if (StringUtils.isNotBlank(commissionJson)) {
@@ -126,7 +125,7 @@ public class ProductController extends BaseController {
             }
             productSPU.setRanges(ranges);
             productSPU.setNowRanges(nowRanges);
-            productService.add(productSPU, productSKUList, ugDiscountList, brandName, seriesName);
+            productService.add(productSPU, productSKUList, brandName, seriesName);
             return this.viewNegotiating(request, response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -146,7 +145,6 @@ public class ProductController extends BaseController {
     public ModelAndView change(ProductSPU productSPU, String brandName, String seriesName, @RequestParam(value = "addSkuJson") String addSkuJson,
                                @RequestParam(value = "updateSkuJson") String updateSkuJson,
                                @RequestParam(value = "delSkuIdJson") String delSkuIdJson,
-                               @RequestParam(required = false,value = "ugDiscount") String ugDiscount,
                                @RequestParam(required = false,value = "commissionJson") String commissionJson,
                                @RequestParam(required = false,value = "rangesJson") String rangesJson,
                                @RequestParam(required = false,value = "nowRangesJson") String nowRangesJson,
@@ -170,15 +168,6 @@ public class ProductController extends BaseController {
             } catch (Exception e) {
                 throw new StoreSystemException("删除的sku格式错误");
             }
-            List<UserGradeCategoryDiscount> ugDiscountList = Lists.newArrayList();
-            try {
-                if(StringUtils.isNotBlank(ugDiscount)){
-                    ugDiscountList = JsonUtils.fromJson(ugDiscount, new TypeReference<List<UserGradeCategoryDiscount>>() {});
-                }
-
-            } catch (Exception e) {
-                throw new StoreSystemException("会员折扣格式错误");
-            }
             List<Commission> commissions = null;
             try {
                 if(StringUtils.isNotBlank(commissionJson)) {
@@ -201,7 +190,7 @@ public class ProductController extends BaseController {
             }
             productSPU.setRanges(ranges);
             productSPU.setNowRanges(nowRanges);
-            productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds,ugDiscountList, brandName, seriesName);
+            productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds, brandName, seriesName);
             return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

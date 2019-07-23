@@ -60,7 +60,7 @@ public class UserGradeController extends BaseController {
     public ModelAndView load(@RequestParam(value = "id") long id,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            boolean res = userGradeService.del(id);
+            UserGrade res = userGradeService.load(id);
             return this.viewNegotiating(request,response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
