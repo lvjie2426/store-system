@@ -132,6 +132,12 @@ var Config = (function(_super){
     _proto.getUrl_product_getSaleSPUBackPager = function(){return this.serverUrl + '/product/getSaleSPUBackPager';};
     /**添加商品的SKU列表*/
     _proto.getUrl_product_getSaleSKUAllList = function(){return this.serverUrl + '/product/getSaleSKUAllList';};
+    /**计算优惠金额*/
+    _proto.getUrl_marketingcoupon_calculateMoney = function(){return this.serverUrl + '/marketingcoupon/calculateMoney';};
+    /**获取商品会员折扣*/
+    _proto.getUrl_gradeDiscount_load = function(){return this.serverUrl + '/gradeDiscount/load';};
+    /**获取会员详情*/
+    _proto.getUrl_usergrade_load = function(){return this.serverUrl + '/usergrade/load';};
     /**创建微信退款订单*/
     _proto.getUrl_order_createWxRefundOrder = function(){return this.serverUrl + '/order/createWxRefundOrder';};
     /**微信退款*/

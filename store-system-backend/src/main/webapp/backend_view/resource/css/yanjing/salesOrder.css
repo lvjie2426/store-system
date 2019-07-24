@@ -790,14 +790,14 @@ i {
     cursor: pointer;
 }
 
-.main .orderInfo .rightBox .rightFormBox {
+.rightFormBox {
     width: 100%;
     height: auto;
     position: relative;
     margin-bottom: 14px;
 }
 
-.main .orderInfo .rightBox .rightFormBox table {
+.rightFormBox table {
     width: 100%;
     border-right: 1px solid #ECECF4;
     border-left: 1px solid #ECECF4;
@@ -807,37 +807,37 @@ i {
     text-align: left;
 }
 
-.main .orderInfo .rightBox .rightFormBox table td,
-.main .orderInfo .rightBox .rightFormBox table th {
+.rightFormBox table td,
+.rightFormBox table th {
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.main .orderInfo .rightBox .rightFormBox table td {
+.rightFormBox table td {
     border-right: 0px;
     border-left: 1px solid #ECECF4;
     border-top: 0px;
     border-bottom: 1px solid #ECECF4;
 }
 
-.main .orderInfo .rightBox .rightFormBox table td:nth-child(1) {
+.rightFormBox table td:nth-child(1) {
     border-left: 0px;
 }
 
-.main .orderInfo .rightBox .rightFormBox table thead {
+.rightFormBox table thead {
     width: 100%;
     background: #F4F4F8;
     color: #828297;
 }
 
-.main .orderInfo .rightBox .rightFormBox table thead tr {
+.rightFormBox table thead tr {
     display: inline-block;
     width: 100%;
 }
 
-.main .orderInfo .rightBox .rightFormBox table thead tr th {
+.rightFormBox table thead tr th {
     box-sizing: border-box;
     border: none;
     padding: 7px 0 7px 8px;
@@ -845,15 +845,15 @@ i {
     float: left;
 }
 
-.main .orderInfo .rightBox .rightFormBox table thead tr th:nth-child(1) {
-    width: 40%;
+.rightFormBox table thead tr th:nth-child(1) {
+    width: 35%;
 }
 
-.main .orderInfo .rightBox .rightFormBox table thead tr th:nth-last-child(1) {
+.rightFormBox table thead tr th:nth-last-child(1) {
     width: 20%;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody {
+.rightFormBox table tbody {
     display: inline-block;
     width: 100%;
     max-height: 216px;
@@ -863,35 +863,35 @@ i {
     position: relative;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody::-webkit-scrollbar-track {
+.rightFormBox table tbody::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0);
     border-radius: 10px;
     opacity: 0;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody::-webkit-scrollbar {
+.rightFormBox table tbody::-webkit-scrollbar {
     width: 3px;
     background-color: rgba(245, 245, 245, 0);
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody::-webkit-scrollbar-thumb {
+.rightFormBox table tbody::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0);
     transition: all 3s;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody.active::-webkit-scrollbar-thumb {
+.rightFormBox table tbody.active::-webkit-scrollbar-thumb {
     border-radius: .1rem;
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody tr {
+.rightFormBox table tbody tr {
     float: left;
     display: inline-block;
     width: 100%;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody tr td {
+.rightFormBox table tbody tr td {
     padding: 0 8px;
     box-sizing: border-box;
     min-height: 31px;
@@ -900,45 +900,45 @@ i {
     width: 10%;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody tr td input {
+.rightFormBox table tbody tr td input {
     width: 100%;
     background: #F4F4F8;
     padding: 0 0 0 6px;
     height: 20px;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody tr td input::placeholder {
+.rightFormBox table tbody tr td input::placeholder {
     color: #B7B7C5;
     font-weight: bold;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody tr td u {
+.rightFormBox table tbody tr td u {
     color: #9595A7;
     cursor: pointer;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody tr td:nth-child(1) {
-    width: 40%;
+.rightFormBox table tbody tr td:nth-child(1) {
+    width: 35%;
 }
 
-.main .orderInfo .rightBox .rightFormBox table tbody tr td:nth-last-child(1) {
+.rightFormBox table tbody tr td:nth-last-child(1) {
     width: 20%;
 }
 
-.main .orderInfo .rightBox .rightFormBox table .discount {
+.rightFormBox table .discount {
     background: #FDF2F1;
     color: #DD5B4B;
 }
 
-.main .orderInfo .rightBox .rightFormBox table .discount td:nth-child(1) {
+.rightFormBox table .discount td:nth-child(1) {
     width: 70% !important;
 }
 
-.main .orderInfo .rightBox .rightFormBox table .discount u {
+.rightFormBox table .discount u {
     color: #DD5B4B;
 }
 
-.main .orderInfo .rightBox .rightFormBox .nullInfo {
+.rightFormBox .nullInfo {
     width: 100%;
     text-align: center;
     vertical-align: middle;
@@ -2791,4 +2791,41 @@ input[type=checkbox]:checked:after {
     color: #393953;
     font-size: 12px;
     font-weight: 600;
+}
+
+.goods-item{
+    padding: 0!important;
+    width: 100px !important;
+    font-size: 0;
+}
+
+.jian,.jia{
+    display: inline-block;
+    width:25%;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    color:#333333;
+    font-weight: bolder;
+    text-align: center;
+    vertical-align: middle;
+}
+.jian:hover,.jia:hover{
+    background-color: #f4f4f8;
+}
+
+.goods-number{
+    font-size: 12px;
+    width: 50% !important;
+    height:32px !important;
+    padding: 0 !important;
+    background-color: transparent!important;
+    -webkit-box-sizing: border-box!important;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border:none !important;
+    border-left: 1px solid #ECECF4!important;
+    border-right: 1px solid #ECECF4!important;
+    vertical-align: middle;
+    text-align: center;
 }
