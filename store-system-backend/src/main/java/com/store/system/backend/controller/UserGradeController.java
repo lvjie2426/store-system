@@ -56,6 +56,17 @@ public class UserGradeController extends BaseController {
         }
     }
 
+    @RequestMapping("/load")
+    public ModelAndView load(@RequestParam(value = "id") long id,
+                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            UserGrade res = userGradeService.load(id);
+            return this.viewNegotiating(request,response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
     @RequestMapping("/getAllList")
     public ModelAndView getAllList(@RequestParam(value = "subid") long subid,
                                    HttpServletRequest request, HttpServletResponse response, Model model, Pager pager) throws Exception {

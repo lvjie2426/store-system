@@ -179,7 +179,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void change(ProductSPU productSPU, List<ProductSKU> addProductSKUList, List<ProductSKU> updateProductSKUList,
-                       List<Long> delSkuids, List<UserGradeCategoryDiscount> ugDiscountList, String brandName, String seriesName) throws Exception {
+                       List<Long> delSkuids, String brandName, String seriesName) throws Exception {
         List<ProductSKU> productSKUList = Lists.newArrayList(addProductSKUList);
         productSKUList.addAll(updateProductSKUList);
         check(productSPU, productSKUList, false);
@@ -238,11 +238,6 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
         }
-        if (ugDiscountList.size() > 0) {
-            for (UserGradeCategoryDiscount categoryDiscount : ugDiscountList) {
-                userGradeCategoryDiscountDao.update(categoryDiscount);
-            }
-        }
     }
 
     private void check(ProductSPU productSPU, List<ProductSKU> productSKUList, boolean isAdd) throws Exception {
@@ -280,7 +275,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, List<UserGradeCategoryDiscount> ugDiscountList, String brandName, String seriesName) throws Exception {
+    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName) throws Exception {
         check(productSPU, productSKUList, true);
         if(StringUtils.isNotBlank(brandName)){
             ProductBrand brand = new ProductBrand();
@@ -316,7 +311,6 @@ public class ProductServiceImpl implements ProductService {
             productSKU.setCode(String.valueOf(CodeUtil.getRandom(10)));
             productSKUDao.insert(productSKU);
         }
-        if(ugDiscountList.size()>0) userGradeCategoryDiscountService.addDiscount(ugDiscountList,spuid);
 
     }
 

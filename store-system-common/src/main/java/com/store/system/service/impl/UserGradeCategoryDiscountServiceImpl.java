@@ -39,4 +39,12 @@ public class UserGradeCategoryDiscountServiceImpl implements UserGradeCategoryDi
     public List<UserGradeCategoryDiscount> getAllBySPUId(long id) throws Exception {
         return   userGradeCategoryDiscountDao.getAllBySPUId(id);
     }
+
+    @Override
+    public UserGradeCategoryDiscount load(long ugId, long spuId) throws Exception {
+        UserGradeCategoryDiscount discount = new UserGradeCategoryDiscount();
+        discount.setUgid(ugId);
+        discount.setSpuid(spuId);
+        return userGradeCategoryDiscountDao.load(discount);
+    }
 }
