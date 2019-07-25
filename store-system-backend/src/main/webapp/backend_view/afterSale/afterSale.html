@@ -553,7 +553,7 @@
             clickToSelect: true,
             // paginationLoop:false,        //分页是否可以循环
             queryParams: function (param) {
-                param.subid = shopId;
+                param.subId = shopId;
                 param.token = quakooUser.getUserInfo().token;
                 if(selectType==1){
                     param.name = $('#yj-value').val();

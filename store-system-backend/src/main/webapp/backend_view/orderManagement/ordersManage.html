@@ -559,8 +559,8 @@
                 if (makeStatusType) param.makeStatus = makeStatusType;
                 if (customerName && customerName != '') param.name = customerName;
                 if (customerId && customerId != '') param.uid = customerId;
-                if (personnelId && personnelId != '') param.personnelid = personnelId;
-                param.subid = subid;
+                if (personnelId && personnelId != '') param.staffId = personnelId;
+                param.subId = subid;
                 param.page = param.offset / param.limit + 1;
                 param.size = param.limit;
                 param.token = quakooUser.getUserInfo().token;
