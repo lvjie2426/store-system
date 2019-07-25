@@ -27,6 +27,29 @@
     <!-- 当前页面样式 -->
     <link rel="stylesheet" href="../resource/css/yanjing/salesOrder.css">
     <style>
+
+        .dwhl:nth-child(2) {
+            display: none;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .dw-bubble-bottom,
+        .dw-bubble-top {
+            border-right: 1px solid #e2e2e2;
+            margin-left: -45px;
+            box-shadow: 1px 3px 10px #e2e2e2;
+        }
+
+        .dw-bubble-top {
+            margin-top: 255px !important;
+        }
+
+        .dwbw.dwb-n {
+            display: none;
+        }
         .orderProvisional .select-box-header span {
             max-width: 94%;
         }
@@ -36,7 +59,7 @@
 <body>
 <!-- 当前页面头部 -->
 <div class="headerBox clearfix">
-    <i class="ruku" style="background: url(../resource/img/ruku.jpg)no-repeat;background-size: 100% 100%;"></i>
+    <i class="ruku" style=""></i>
     <h3>销售开单</h3>
     <span class="text">*为选填信息</span>
     <div class="rightBox">
@@ -275,6 +298,13 @@
 <!-- 弹窗结构 -->
 <div id="printBox" style="display: none"></div>
 <div id="salesOrder">
+    <!--手机号搜索顾客-->
+    <div class="customerInfo">
+        <div class="content">
+            <table border="0" cellpadding="0" cellspacing="0" data-toggle="table"
+                   class="cmMain-table4 table table-border" id="customerInfoTable"></table>
+        </div>
+    </div>
     <!-- 注册成为会员弹窗 -->
     <div class="register-member">
         <div class="content">
@@ -983,6 +1013,7 @@
         </div>
     </div>
 </div>
+
 <!--全局js-->
 <!-- jq库 -->
 <script src="../resource/js/jquery.min.js"></script>
@@ -1038,12 +1069,7 @@
     <div class="fromInfo">
         <form class="layui-form" action="">
             <div class="search-select">
-                <input value="<%=list.phone%>" type="text" placeholder="顾客手机号" id="searchCusPhone" autocomplete="off">
-                <div class="search-content" style="display: none;height:auto" id="cusPhoneList">
-                    <ul>
-                        <li></li>
-                    </ul>
-                </div>
+                <input value="<%=list.phone%>" type="number" placeholder="顾客手机号" id="searchCusPhone" maxlength="11" autocomplete="off">
             </div>
             <div class="layui-form-item nameInput">
                 <div>
@@ -1067,7 +1093,7 @@
                 </div>
                 <%if(list.birthdate){%>
                 <input name="test" id="tests" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                       placeholder="<%=list.birthdate%>" data-type="day"/>
+                       placeholder="<%=getDateToYMD(list.birthdate)%>" data-type="day"/>
                 <%}else{%>
                 <input name="test" id="tests" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
                        placeholder="出生日期" data-type="day"/>
@@ -1186,7 +1212,7 @@
             <tr>
                 <th></th>
                 <%for(var i=0; i < list.length;i++){%>
-                <th><%=list[i].name%></th>
+                    <th><%=list[i].name%></th>
                 <%}%>
             </tr>
             </thead>
@@ -1737,6 +1763,12 @@
         }
         return new Date(l).format(formatStr);
     });
+    template.helper('getDateToYMD', function (l, formatStr) {
+        if (!formatStr) {
+            formatStr = 'yyyy-MM-dd';
+        }
+        return new Date(l).format(formatStr);
+    });
     template.helper('initobj',function (obj) {
         return JSON.stringify(obj)
     });
@@ -1801,7 +1833,8 @@
         var memHtml = template("memberTmp",data);
         $("#cusBasicUl").html(html);
         $('#memberUl').html(memHtml);
-        getCusPhone();//顾客手机号查询
+        //顾客手机号查询选择
+        getCusPhone();
         //年龄计算
         $("#tests").on("change", function () {
             var brithYear = $(this).val().slice(0, 4);
@@ -1872,8 +1905,6 @@
             }
         });
     }
-
-
     /**接口——获取意向顾客*/
     function intentionCustomers() {
         layer.open({
@@ -1980,7 +2011,6 @@
             }
             renderCusInfo();
     }
-
     /**注册成为会员*/
     function regMember() {
         var phone = $("#searchCusPhone").val();
@@ -2067,25 +2097,82 @@
     /**根据手机号模糊查询顾客*/
     function getCusPhone() {
         $('#searchCusPhone').bind('input propertychange', function(){
-            var keyword = $(this).val()*1;
-            if(quakooUtils.isNotBlack(keyword)){
-                quakooData.ajaxGetData(config.getUrl_user_getUserListByPhone(),{subid:subid,userType:0,phone:keyword},function(ret){
+            var keyword = $(this).val();
+            if(keyword.length == 11){
+                quakooData.ajaxGetData(config.getUrl_user_getUserListByPhone(),{subid:subid,userType:0,phone:keyword*1},function(ret){
                     if(ret.success){
                         if(quakooUtils.isNotBlack(ret.data)){
-                            var data = {list:ret.data};
-                            var html = template("cusPhone",data);
-                            $("#cusPhoneList").html(html);
-                            $("#cusPhoneList").show();
-                            $("body").click(function () {
-                                $("#cusPhoneList")[0].style.display = "none";
-                            })
-                        }else{
-                            $("#cusPhoneList").hide();
+                            layer.open({
+                                type: 1,
+                                skin: 'layui-layer-demo', //样式类名
+                                area: ['720px', '625px'],
+                                anim: 0,
+                                closeBtn: 0,
+                                title: '顾客信息',
+                                shade: 0.1,
+                                shadeClose: true, //开启遮罩关闭
+                                scrollbar: false,
+                                content: $('.customerInfo'),
+                                resize: false,
+                                btn: '关闭窗口',
+                                move: '.layui-layer-title',
+                                yes: function (index, layero) {
+                                    layer.close(index);
+                                },
+                                success: function (layero, index) {
+                                    var column =[
+                                        {field: "name", title: "姓名", align: "left", valign: "middle"},
+                                        {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
+                                            if (value === 0) {
+                                                return "-"
+                                            } else if (value === 1) {
+                                                return "男"
+                                            } else if (value === 2) {
+                                                return "女"
+                                            }
+                                        }},
+                                        {field: "age", title: "年龄", align: "left", valign: "middle"},
+                                        {
+                                            field: "phone",
+                                            title: "手机号",
+                                            align: "left",
+                                            valign: "middle",
+                                            formatter: function (value, row, index) {
+                                                var html = value;
+                                                if (row.weixinId == null) {
+                                                    html = html + ' <span class="unbound">未绑定</span>';
+                                                } else {
+                                                    html = html + ' <span class="bounding">已绑定</span>';
+                                                }
+                                                return html;
+                                            }
+                                        },
+                                        {field: "subName", title: "来源", align: "left", valign: "middle"},
+                                        {
+                                            field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
+                                                var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+")'>选择</div>";
+                                                return html;
+                                            }
+                                        }];
+                                    $("#customerInfoTable").bootstrapTable('destroy');
+                                    $("#customerInfoTable").bootstrapTable({
+                                        data: ret.data,                 //被加载的数据。
+                                        classes: "table",
+                                        sortable: false,
+                                        sortOrder: "asc",
+                                        showColumns: true,
+                                        strictSearch: true,
+                                        locale: "zh-CN",
+                                        paginationHAlign: "center",
+                                        clickToSelect: true,
+                                        columns: column
+                                    });
+
+                                }
+                            });
                         }
                     }
                 })
-            }else{
-                $("#cusPhoneList").hide();
             }
         });
     }
@@ -2786,10 +2873,12 @@
     /**计算价格*/
     function count(paidInType){
         locShopCart.orginalPrice = 0;
+        locShopCart.goodsNumber = 0;
         locShopCart.discountPrice = 0;
         locShopCart.bossDiscount = locShopCart.bossDiscount||10.0;
         //常规商品
         for(var i=0; i < locShopCart.skuidsList.length;i++){
+            locShopCart.goodsNumber += locShopCart.skuidsList[i].num*1;
             if(locShopCart.bossDiscount == 10){
                 locShopCart.skuidsList[i].subtotal = (locShopCart.skuidsList[i].num * locShopCart.skuidsList[i].retailPrice*locShopCart.skuidsList[i].discount/10).toFixed(2);//常规商品小计
             }else{
@@ -3490,9 +3579,7 @@
 
     /**促销方式*/
     function getListPromotions() {
-        var param = {};
-        param.subid = psid;//公司ID
-        quakooData.ajaxGetData(config.getUrl_marketingcoupon_getCanUseList(), param, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_marketingcoupon_getCanUseList(), {subid:psid}, function (ret) {
             if (ret && ret.success) {
                 if (quakooUtils.isNotBlack(ret.data)) {
                     var html = '';
@@ -3502,12 +3589,8 @@
                     }
                     $("#ListPromotions").html(html);
                     selectTag($("#promotion"), function (ret) {
-                        if (!hasProduct) {
-                            layer.msg("请先选择商品", {icon: 7});
-                            return;
-                        }
-                        quakooData.ajaxGetData(config.getUrl_marketingcoupon_calculateMoney(),{mcId:ret.value,num:locShopCart.goodsNum,money:locShopCart.dicountPrice},function(ret){
-
+                        quakooData.ajaxGetData(config.getUrl_marketingcoupon_calculateMoney(),{mcId:ret.value,num:locShopCart.goodsNumber,money:locShopCart.dicountPrice},function(ret){
+                            console.log("cuxiaojianmian",ret)
                         })
                     });
                 } else {

@@ -3,6 +3,7 @@
  *
  * */
 var locShopCart= {
+    goodsNumber:12,//商品总个数
     orginalPrice:100,//订单原价共计
     discountPrice:80,//折后金额
     collectPrice:60,//实收金额
