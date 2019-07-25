@@ -178,7 +178,7 @@
                     <div class="degreesBox">
                         <div class="companyBox">
                             <input type="number" class="text" placeholder="远用瞳距" id="farDistance">
-                            <span class="Company">mm</span>
+                            <span class="com.spring.Company">mm</span>
                         </div>
                         <span class="main-eye-text">主视眼:</span>
                         <div class="selectBox" id="maineye">
@@ -1809,7 +1809,7 @@
 
     /**接口——获取门店下的临时订单*/
     function getTemporaryOrder() {
-        quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(), {subid: subid,makeStatus:6}, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(), {subId: subid,makeStatus:6}, function (ret) {
             if (ret && ret.data) {
                 document.querySelector("#selectBox .text").innerHTML = "临时订单";
                 var data = {list: ret.data};
@@ -3763,7 +3763,7 @@
                     params.size = this.pageSize;
                     params.token = quakooUser.getUserInfo().token;
                     params.uid = cusId;
-                    params.subid = subid;
+                    params.subId = subid;
                     return params;
                 },
                 success: function () {

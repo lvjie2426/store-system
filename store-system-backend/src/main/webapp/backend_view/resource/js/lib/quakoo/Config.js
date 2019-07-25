@@ -24,13 +24,13 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-        this.serverUrl = "http://39.107.247.82:20005";
+        // this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-         // this.serverUrl = "http://192.168.1.11:20005";
+         this.serverUrl = "http://127.0.0.1:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -95,7 +95,7 @@ var Config = (function(_super){
 
     //=======================销售开单 开始====================
     /**获取临时订单*/
-    _proto.getUrl_order_getTemporaryOrder = function(){return this.serverUrl + '/order/getTemporaryOrder';};
+    _proto.getUrl_order_getTemporaryOrder = function(){return this.serverUrl + '/businessOrder/getTemporaryOrder';};
     /**根据手机和姓名 查找门店下的推荐人*/
     _proto.getUrl_user_getUserByNamePhone = function(){return this.serverUrl + '/user/getUserByNamePhone';};
     /**保存验光信息*/
@@ -107,7 +107,7 @@ var Config = (function(_super){
     /**计算订单金额*/
     _proto.getUrl_order_countPrice = function(){return this.serverUrl + '/order/countPrice';};
     /**保存订单*/
-    _proto.getUrl_order_saveOrder = function(){return this.serverUrl + '/order/saveOrder';};
+    _proto.getUrl_order_saveOrder = function(){return this.serverUrl + '/businessOrder/saveOrder';};
     /**修改验光信息*/
     _proto.getUrl_optometryinfo_update = function(){return this.serverUrl + '/optometryinfo/update';};
     /**更多验光记录*/
@@ -125,7 +125,7 @@ var Config = (function(_super){
     /**获取 验光结果建议*/
     _proto.getUrl_optometryinfo_getResult = function(){return this.serverUrl + '/optometryinfo/getResult';};
     /**附加费用*/
-    _proto.getUrl_order_getSurcharge = function(){return this.serverUrl + '/order/getSurcharge';};
+    _proto.getUrl_order_getSurcharge = function(){return this.serverUrl + '/businessOrder/getSurcharge';};
     /**促销方式*/
     _proto.getUrl_marketingcoupon_getCanUseList = function(){return this.serverUrl + '/marketingcoupon/getCanUseList';};
     /**添加商品的SPU列表*/
@@ -395,13 +395,13 @@ var Config = (function(_super){
 
     //=======================订单管理 开始====================
     //获取全部||作废订单
-    _proto.getUrl_order_getAllOrder = function(){return this.serverUrl + '/order/getAllOrder';};
+    _proto.getUrl_order_getAllOrder = function(){return this.serverUrl + '/businessOrder/getAllList';};
     //获取未完成订单
-    _proto.getUrl_order_getIncomplete = function(){return this.serverUrl + '/order/getIncomplete';};
+    _proto.getUrl_order_getIncomplete = function(){return this.serverUrl + '/businessOrder/getIncomplete';};
     //根据职位获取用户列表
     _proto.getUrl_user_getUsersByJob = function(){return this.serverUrl + '/user/getUsersByJob';};
     //获取订单详情
-    _proto.getUrl_order_loadOrder = function(){return this.serverUrl + '/order/loadOrder';};
+    _proto.getUrl_order_loadOrder = function(){return this.serverUrl + '/businessOrder/loadOrder';};
     //=======================订单管理 结束====================
 
     //=======================售后 开始====================
