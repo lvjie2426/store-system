@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.store.system.bean.OrderTypeInfo;
 import com.store.system.dao.*;
 import com.store.system.model.*;
+import com.store.system.service.BusinessOrderService;
 import com.store.system.service.CommissionRewardService;
 import com.store.system.service.FinanceLogService;
 import com.store.system.service.MissionService;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,40 +22,41 @@ public class OrderPayServiceImpl implements OrderPayService {
 
     @Resource
     private FinanceLogService financeLogService;
-
     @Resource
     private ProductSPUDao productSPUDao;
-
     @Resource
     private UserDao userDao;
-
     @Resource
     private MissionService missionService;
-
     @Resource
     private SubordinateMissionPoolDao subordinateMissionPoolDao;
-
     @Resource
     private MissionDao missionDao;
-
     @Resource
     private UserMissionPoolDao userMissionPoolDao;
-
     @Resource
     private CommissionDao commissionDao;
-
     @Resource
     private CommissionRewardService commissionRewardService;
+    @Resource
+    private PayInfoDao payInfoDao;
+    @Resource
+    private BusinessOrderService businessOrderService;
 
     @Override
-    public void successHandleBusiness(Order order) throws Exception {
-/*        for(OrderSku sku:order.getSkuids()){
-            ProductSPU spu = productSPUDao.load(sku.getSpuid());
-            int days = (int) spu.getProperties().get(4L);
+    public void successHandleBusiness(Order order,long boId) throws Exception {
 
+        PayInfo payInfo = new PayInfo();
+        payInfo.setBoId(boId);
+        payInfo.setPayType(order.getPayType());
+        payInfo.setPrice(order.getPrice());
+        payInfoDao.insert(payInfo);
 
+        BusinessOrder businessOrder = businessOrderService.load(boId);
+        businessOrder.setStatus(BusinessOrder.status_pay);
+        businessOrder.setMakeStatus(BusinessOrder.makeStatus_qu_yes);
+        businessOrderService.update(businessOrder);
 
-        }*/
         /**
          * 任务进度修改
          */
@@ -61,9 +64,11 @@ public class OrderPayServiceImpl implements OrderPayService {
         long userId = user.getId();
         long subid = user.getSid();
         long sid = user.getPsid();
-        List<OrderSku> skuList= order.getSkuids();
+        // TODO: 2019/7/24
+        List<OrderSku> skuList= Lists.newArrayList();
+//        List<OrderSku> skuList= order.getSkuList();
         for(OrderSku orderSku : skuList){
-            long skuId = orderSku.getSkuid();
+            long skuId = orderSku.getSkuId();
             /**查找任务**/
             List<Mission> missions = missionService.checkMission(skuId,sid,subid,userId);
             if(missions.size()>0){
@@ -130,9 +135,10 @@ public class OrderPayServiceImpl implements OrderPayService {
                 }
             }
         }
-        for(OrderSku orderSku : order.getSkuids()){
+        // TODO: 2019/7/24  
+        for(OrderSku orderSku : skuList){
             Commission commission = new Commission();
-            commission.setSpuId(orderSku.getSpuid());
+            commission.setSpuId(orderSku.getSpuId());
             commission.setSubId(subid);
             commission  = commissionDao.load(commission);
             if(commission != null){
@@ -156,7 +162,8 @@ public class OrderPayServiceImpl implements OrderPayService {
         }
 
 
-        if(StringUtils.isNotBlank(order.getTypeInfo())) {
+        // TODO: 2019/7/24
+/*        if(StringUtils.isNotBlank(order.getTypeInfo())) {
             OrderTypeInfo orderTypeInfo = OrderTypeInfo.getObject(order.getTypeInfo());
             long uid = orderTypeInfo.getUid();
             long money = orderTypeInfo.getMoney();
@@ -164,7 +171,7 @@ public class OrderPayServiceImpl implements OrderPayService {
                 financeLogService.insertLog(FinanceLog.ownType_user, order.getSubid(), uid, type, FinanceLog.type_in, 0, money,
                         "用户支付", true);
             }
-        }
+        }*/
     }
 
     private int getProgress(int now,int target)throws Exception{

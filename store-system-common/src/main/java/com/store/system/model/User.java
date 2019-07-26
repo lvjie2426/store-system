@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -159,9 +160,9 @@ public class User implements Serializable {
     }
     public static void main(String[] agrs) throws Exception {
         Map<String, Long> map = new HashMap<>();
-        map.put("id", 2L);
-        map.put("rand", 25232323L);
-        System.out.println(Base64Util.encode(AESUtils.encrypt(JsonUtils.objectMapper.writeValueAsBytes(map), key)));
+        map.put("id", 7L);
+        map.put("rand", 25232322L);
+        System.out.println(URLEncoder.encode(Base64Util.encode(AESUtils.encrypt(JsonUtils.objectMapper.writeValueAsBytes(map), key))));
 
     }
 }

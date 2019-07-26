@@ -5,6 +5,6 @@ import com.store.system.model.Order;
 
 public interface OrderPayService {
 
-    public void successHandleBusiness(Order order) throws Exception;
+    public void successHandleBusiness(Order order,long boId) throws Exception;
 
 }
