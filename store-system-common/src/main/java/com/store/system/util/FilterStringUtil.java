@@ -2,6 +2,7 @@ package com.store.system.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FilterStringUtil {
@@ -24,6 +25,18 @@ public class FilterStringUtil {
         boolean res = true;
         if (StringUtils.isNotBlank(str)) {
             res = pattern.matcher(str).matches();
+        }
+        return res;
+    }
+
+    public static boolean checkDiscount(String discount) {
+        boolean res = false;
+        if(StringUtils.isNotBlank(discount)) {
+            String regex = "^(\\d(\\.\\d)?|10)$";
+            if(discount.equals("10")){
+                return true;
+            }
+            res = Pattern.matches(regex,discount);
         }
         return res;
     }

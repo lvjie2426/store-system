@@ -407,6 +407,7 @@ var QuakooImg = (function () {
                 var loading1 = layer.load();
                 var resultList = [];
                 var filesList = $(this)[0].files;
+                var num = 0;
                 for(var i=0;i<filesList.length;i++){
                     (function (i) {
                         var formData = new FormData();
@@ -421,9 +422,10 @@ var QuakooImg = (function () {
                             processData: false,
                             dataType: "json",
                             success: function (result) {
+                                num++;
                                 if (result.ok != undefined) {
                                     resultList.push(result.ok);
-                                    if(i==filesList.length-1){
+                                    if(num==filesList.length){
                                         layer.close(loading1)
                                         if(callBack){
                                             callBack(resultList)
@@ -437,6 +439,7 @@ var QuakooImg = (function () {
                                 }
                             },
                             error: function () {
+                                num++;
                                 layer.close(loading1)
                                 layer.msg('上传失败！', {
                                     icon: 2

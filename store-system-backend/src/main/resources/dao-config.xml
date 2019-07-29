@@ -591,4 +591,23 @@
         </property>
     </bean>
 
+
+    <bean id="businessOrderDao" class="com.store.system.dao.impl.BusinessDaoImpl">
+        <property name="tableName" value="business_order" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="payInfoDao" class="com.store.system.dao.impl.PayInfoDaoImpl">
+        <property name="tableName" value="payInfo" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

@@ -5,11 +5,12 @@ import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientAfterSaleDetail;
 import com.store.system.dao.AfterSaleDetailDao;
+import com.store.system.dao.BusinessOrderDao;
 import com.store.system.dao.OptometryInfoDao;
 import com.store.system.dao.OrderDao;
 import com.store.system.model.AfterSaleDetail;
+import com.store.system.model.BusinessOrder;
 import com.store.system.model.OptometryInfo;
-import com.store.system.model.Order;
 import com.store.system.model.User;
 import com.store.system.service.AfterSaleDetailService;
 import com.store.system.service.UserService;
@@ -36,13 +37,13 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
     @Resource
     private UserService userService;
     @Resource
-    private OrderDao orderDao;
+    private BusinessOrderDao businessOrderDao;
     @Resource
     private OptometryInfoDao optometryInfoDao;
 
 
     private TransformMapUtils userMapUtils = new TransformMapUtils(User.class);
-    private TransformMapUtils orderMapUtils = new TransformMapUtils(Order.class);
+    private TransformMapUtils orderMapUtils = new TransformMapUtils(BusinessOrder.class);
 
 
     @Override
@@ -65,11 +66,11 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
                 oids.add(afterSaleDetail.getOid());
             }
         }
-        List<Order> orders = orderDao.load(Lists.newArrayList(oids));
-        Map<Long, Order> orderMap = orderMapUtils.listToMap(orders, "id");
-        for(Order order:orders){
+        List<BusinessOrder> orders = businessOrderDao.load(Lists.newArrayList(oids));
+        Map<Long, BusinessOrder> orderMap = orderMapUtils.listToMap(orders, "id");
+        for(BusinessOrder order:orders){
             uids.add(order.getUid());
-            uids.add(order.getMachiningid());
+            uids.add(order.getMachinistId());
         }
 
         List<User> users = userService.load(Lists.newArrayList(uids));
@@ -77,12 +78,12 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
 
         for(AfterSaleDetail detail: afterSaleDetails){
             ClientAfterSaleDetail client = new ClientAfterSaleDetail();
-            Order order = orderMap.get(detail.getOid());
+            BusinessOrder order = orderMap.get(detail.getOid());
             client.setUserName(userMap.get(order.getUid()).getName());
             client.setUserAge(userMap.get(order.getUid()).getAge());
             client.setPhone(userMap.get(order.getUid()).getPhone());
 //            client.setPrice(String.valueOf(order.getPrice()*100));
-            client.setDiscount(order.getDiscount());
+            client.setDiscount(Double.parseDouble(order.getDiscount()));
             OptometryInfo optometryInfo = optometryInfoDao.load(order.getOiId());
             if(optometryInfo != null && optometryInfo.getOptUid()>0) {
                 User user = userService.load(optometryInfo.getOptUid());
@@ -94,10 +95,10 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
             client.setOptometryInfos(optometryInfos);
             client.setSurcharges(order.getSurcharges());
             client.setTotalPrice(String.valueOf(order.getTotalPrice()*100));
-            client.setSku(order.getSkuids());
+            client.setSku(order.getSkuList());
             client.setReason(detail.getReason());
             client.setOptName(userMap.get(detail.getOptId()).getName());
-            client.setMachiningName(userMap.get(order.getMachiningid()).getName());
+            client.setMachiningName(userMap.get(order.getMachinistId()).getName());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
             client.setSaleTime(sdf.format(detail.getCtime()));
             clientAfterSaleDetails.add(client);

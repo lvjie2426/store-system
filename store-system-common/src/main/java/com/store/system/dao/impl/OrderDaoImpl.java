@@ -21,22 +21,22 @@ public class OrderDaoImpl extends CacheBaseDao<Order> implements OrderDao {
         return super.cache_map();
     }
 
-    @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<Order> getAllBySubid(long subid,int status,int makeStatus) {
-        return null;
-    }
-
-    @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<Order> getTemporaryOrder(long subid, int makeStatus) {
-        return null;
-    }
-
-    @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    @CacheSort(order = CacheSortOrder.desc)
-    public List<Order> getUserFinishOrders(long uid, int makeStatus) throws Exception {
-        return null;
-    }
+//    @Override
+//    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+//    public List<Order> getAllBySubid(long subid, int status, int makeStatus) {
+//        return null;
+//    }
+//
+//    @Override
+//    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+//    public List<Order> getTemporaryOrder(long subid, int makeStatus) {
+//        return null;
+//    }
+//
+//    @Override
+//    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+//    @CacheSort(order = CacheSortOrder.desc)
+//    public List<Order> getUserFinishOrders(long uid, int makeStatus) throws Exception {
+//        return null;
+//    }
 }

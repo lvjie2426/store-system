@@ -1,21 +1,21 @@
 package com.store.system.client;
 
+import com.store.system.model.BusinessOrder;
 import com.store.system.model.OptometryInfo;
-import com.store.system.model.Order;
-import com.store.system.model.OrderSku;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
 
 /**
- * @program: qianyi
- * @description:
- * @author: zhangmeng
- * @create: 2019-04-03 16:50
+ * @ClassName ClientBusinessOrder
+ * @Description TODO
+ * @Author LaoMa
+ * @Date 2019/7/24 11:40
+ * @Version 1.0
  **/
 @Data
-public class ClientOrder extends Order {
+public class ClientBusinessOrder extends BusinessOrder{
 
     private String subName; //门店名称
     private String threePolicy;//三包
@@ -28,24 +28,29 @@ public class ClientOrder extends Order {
     private String uName; //顾客
     private String uPhone;
     private String personnelName; //员工姓名
-    private double descSubtract;// 促销券折扣（代表打掉的折扣）、减掉的金额
-    private double priceYuan;// 实际支付金额 元 折后金额*会员自身等级折扣
-    private double dicountPriceYuan;// 折后金额 元
-    private double totalPriceYuan;// 总金额 元
-    private int descSubtractType;// 类型(1-金额 2-百分比)
+
     private int asCount;//售后次数
-    private List<OrderSku> clientSkuids;//小计单
     private List<OptometryInfo> optometryInfos;//顾客的验光信息历史记录
 
-    public ClientOrder(){};
-    public ClientOrder(Order order){
+
+
+
+
+
+
+
+
+
+
+
+
+    public ClientBusinessOrder(){}
+    public ClientBusinessOrder(BusinessOrder businessOrder){
         try {
-            BeanUtils.copyProperties(this, order);
+            BeanUtils.copyProperties(this, businessOrder);
         } catch (Exception e) {
-            throw new IllegalStateException("ClientOrder construction error!");
+            throw new IllegalStateException("ClientBusinessOrder construction error!");
         }
 
-    };
-
-
+    }
 }

@@ -17,8 +17,7 @@ import java.util.Map;
 public interface OrderService {
 
     //阿里
-    public ResultClient handleAliBarcodeOrder(String authCode, int type,
-                                              String title, int price, Order order) throws Exception;
+    public ResultClient handleAliBarcodeOrder(String authCode, int type, String title, String desc, int price, long subId, long boId) throws Exception;
 
     public boolean aliOrderNotify(Map<String, String> params) throws Exception;
 
@@ -28,8 +27,8 @@ public interface OrderService {
 
 
     //微信
-    public ResultClient handleWxBarcodeOrder(HttpServletRequest request, long passportId, String authCode, int type, String typeInfo,
-                                        String title, String desc, int price,  Order order) throws Exception;
+    public ResultClient handleWxBarcodeOrder(HttpServletRequest request, String authCode, int type, String title, String desc,
+                                             int price, long subId, long boId) throws Exception;
 
     public boolean wxOrderNotify(String xmlStr) throws Exception;
 
@@ -44,13 +43,13 @@ public interface OrderService {
 
     public ResultClient saveOrder(Order order)throws Exception;
 
-    public List<ClientOrder> getAllBySubid(long subid)throws Exception;
+//    public List<ClientOrder> getAllBySubid(long subid)throws Exception;
 
     public ClientOrder countPrice(Order order)throws Exception;
 
     public Map<Object,Object> countSkuPrice(long uid, List<OrderSku> orderSkuList, long couponid, List<Surcharge> surchargeList, long sid) throws Exception;
 
-    public List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
+//    public List<ClientOrder> getTemporaryOrder(long subid)throws Exception;
 
     public Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid,int makeStatus)throws Exception;
 

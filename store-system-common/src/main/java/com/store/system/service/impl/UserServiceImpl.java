@@ -16,6 +16,7 @@ import com.store.system.client.ClientUserOnLogin;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
+import com.store.system.service.BusinessOrderService;
 import com.store.system.service.OrderService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
@@ -66,6 +67,12 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private OrderDao orderDao;
+
+    @Resource
+    private BusinessOrderDao businessOrderDao;
+
+    @Resource
+    private BusinessOrderService businessOrderService;
 
     @Resource
     private UserMissionPoolDao userMissionPoolDao;
@@ -750,11 +757,12 @@ public class UserServiceImpl implements UserService {
             }
         }
         //消费次数
-        List<Order> orders = orderDao.getUserFinishOrders(user.getId(),Order.makestatus_qu_yes);
+        List<BusinessOrder> orders = businessOrderDao.getUserList(user.getId(), BusinessOrder.makeStatus_qu_yes);
         if(orders.size()>0){
             clientUser.setPayCount(orders.size());
-            Map<String,Integer> map = orderService.calculateSale(Lists.newArrayList(orders.get(0)));
-            clientUser.setLastMoney(map.get("sale"));//上次消费金额
+            // TODO: 2019/7/24
+//            Map<String,Integer> map = businessOrderService.calculateSale(Lists.newArrayList(orders.get(0)));
+//            clientUser.setLastMoney(map.get("sale"));//上次消费金额
         }
         //推荐人
         if(user.getRecommender()>0){
@@ -1135,17 +1143,19 @@ public class UserServiceImpl implements UserService {
             List<UserMissionPool> userMissionPools = userMissionPoolDao.getAllList(user.getId());
             for(UserMissionPool userMissionPool:userMissionPools){
                 List<Long> oids = userMissionPool.getOids();
-                List<Order> orders = Lists.newArrayList();
+                List<BusinessOrder> orders = Lists.newArrayList();
                 for(Long id:oids){
-                    Order order = orderDao.load(id);
-                    if(order!=null){ orders.add(order); }
+                    // TODO: 2019/7/24
+//                    BusinessOrder order = orderDao.load(id);
+//                    if(order!=null){ orders.add(order); }
                 }
-                for(Order order:orders){
+                for(BusinessOrder order:orders){
                     //判断订单是否当前月份
-                    if(inExistence(date,order.getPayTime())){
-                        Map<String,Integer> saleMap = orderService.calculateSale(Lists.newArrayList(order));
-                        personal += saleMap.get("sale")/100;
-                    }
+                    // TODO: 2019/7/24
+//                    if(inExistence(date,order.getPayTime())){
+//                        Map<String,Integer> saleMap = orderService.calculateSale(Lists.newArrayList(order));
+//                        personal += saleMap.get("sale")/100;
+//                    }
                 }
                 //判断是否有完成任务
                 if(userMissionPool.getUid()==user.getId()&&userMissionPool.getProgress()>=100){
@@ -1170,16 +1180,16 @@ public class UserServiceImpl implements UserService {
         String sql = " SELECT * FROM `order` WHERE 1=1 AND subid = " + sid ;
         if(startTime > 0 ){ sql = sql + " AND ctime >= " + startTime; }
         if(endTime > 0 ){ sql  = sql + " AND  ctime <= " + endTime; }
-        if(status>-1 && status!=Order.makestatus_no && status!=Order.status_no_pay && status!=Order.makestatus_qu_no){
+        if(status>-1 && status!= BusinessOrder.makeStatus_no && status!= BusinessOrder.status_no_pay && status!= BusinessOrder.makeStatus_qu_no){
             sql = sql + " AND makestatus = " + status;
         }else{
-            sql = sql + " and (`makeStatus` = " + Order.makestatus_no + " OR `makeStatus` = " + Order.status_no_pay + " OR `makeStatus` = " + Order.makestatus_qu_no + " ) " ;
+            sql = sql + " and (`makeStatus` = " + BusinessOrder.makeStatus_no + " OR `makeStatus` = " + BusinessOrder.status_no_pay + " OR `makeStatus` = " + BusinessOrder.makeStatus_qu_no + " ) " ;
         }
-        List<Order> orders = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<Order>(Order.class));
+        List<BusinessOrder> orders = jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<BusinessOrder>(BusinessOrder.class));
         List<Long> uids = Lists.newArrayList();
         int pNumber = 0;//总顾客人数
         if(orders.size()>0){
-            for(Order order: orders){
+            for(BusinessOrder order: orders){
                 uids.add(order.getUid());
             }
         }

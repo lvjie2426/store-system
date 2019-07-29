@@ -4,13 +4,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
-import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.AfterSale;
 import com.store.system.client.ClientAfterSaleLog;
-import com.store.system.client.ClientMission;
 import com.store.system.dao.AfterSaleDetailDao;
 import com.store.system.dao.AfterSaleLogDao;
+import com.store.system.dao.BusinessOrderDao;
 import com.store.system.dao.OrderDao;
 import com.store.system.model.*;
 import com.store.system.service.AfterSaleLogService;
@@ -42,30 +41,30 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
     @Resource
     private JdbcTemplate jdbcTemplate;
     @Resource
-    private OrderDao orderDao;
+    private BusinessOrderDao businessOrderDao;
     @Resource
     private AfterSaleDetailDao afterSaleDetailDao;
     @Resource
     private UserService userService;
 
     private TransformMapUtils userMapUtils = new TransformMapUtils(User.class);
-    private TransformMapUtils orderMapUtils = new TransformMapUtils(Order.class);
+    private TransformMapUtils orderMapUtils = new TransformMapUtils(BusinessOrder.class);
 
     @Override
     @Transactional
     public AfterSaleLog add(AfterSale afterSale) throws Exception {
-        Order order = orderDao.load(afterSale.getOid());
+        BusinessOrder order = businessOrderDao.load(afterSale.getOid());
         AfterSaleLog afterSaleLog = new AfterSaleLog();
         afterSaleLog.setOid(order.getId());
         afterSaleLog.setOrderNo(order.getOrderNo());
         afterSaleLog.setUid(order.getUid());
-        afterSaleLog.setSalesUid(order.getPersonnelid());
+        afterSaleLog.setSalesUid(order.getStaffId());
         afterSaleLog.setSubId(afterSale.getSubId());
 
         //增加一条售后Detail
         AfterSaleDetail afterSaleDetail = new AfterSaleDetail();
 
-        List<AfterSaleLog> logs = afterSaleLogDao.getList(order.getSubid(),order.getId());
+        List<AfterSaleLog> logs = afterSaleLogDao.getList(order.getSubId(),order.getId());
         if(logs.size()==0){
             //第一次进行售后时 增加Log
             afterSaleLog =  afterSaleLogDao.insert(afterSaleLog);
@@ -139,8 +138,9 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
 
         List<User> users = userService.load(Lists.newArrayList(uids));
         Map<Long, User> userMap = userMapUtils.listToMap(users, "id");
-        List<Order> orders = orderDao.load(Lists.newArrayList(oids));
-        Map<Long, Order> orderMap = orderMapUtils.listToMap(orders, "id");
+        // TODO: 2019/7/24
+        List<BusinessOrder> orders = businessOrderDao.load(Lists.newArrayList(oids));
+        Map<Long, BusinessOrder> orderMap = orderMapUtils.listToMap(orders, "id");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm");
         for(AfterSaleLog afterSaleLog: afterSaleLogs){
@@ -162,14 +162,4 @@ public class AfterSaleLogServiceImpl implements AfterSaleLogService{
         return clientAfterSaleLogs;
     }
 
-//    private ClientAfterSaleLog transformClient(AfterSaleLog afterSaleLog) throws Exception{
-//        ClientAfterSaleLog client = new ClientAfterSaleLog();
-//        client.setOrderNo(afterSaleLog.getOrderNo());
-//
-//
-//
-//
-//
-//        return client;
-//    }
 }
