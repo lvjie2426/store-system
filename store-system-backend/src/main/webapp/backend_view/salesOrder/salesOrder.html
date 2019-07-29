@@ -281,7 +281,7 @@
                     </div>
                 </div>
                 <h4 class="mt15">订单备注</h4>
-                <textarea name="备注" id="optometryRemarks2" cols="30" rows="10" style="resize:none">神秘顾客</textarea>
+                <textarea name="备注" id="optometryRemarks2" cols="30" rows="10" style="resize:none"></textarea>
             </div>
             <div class="rightBox" id="orderForm">
             </div>
@@ -1124,7 +1124,7 @@
                     </div>
                 </div>
             </div>
-            <div class="stu-card">
+            <div class="stu-card" id="studentCard" style="display: none;">
                 <span class="text">学生卡</span>
                 <div class="search-select">
                     <input value="<%=list.card%>" type="text" placeholder="学生卡" class="layer-input" id="stuCard">
@@ -1375,17 +1375,12 @@
                         <a class="jia" onclick="addSub(1,<%=i%>)">+</a>
                     </td>
                     <td>¥<%=(list.skuidsList[i].retailPrice/100).toFixed(2)%></td>
-                    <%if(list.bossDiscount == 10){%>
-                        <%if(list.skuidsList[i].discount > 0 && list.skuidsList[i].discount<10){%>
-                        <td><input type="text" placeholder="<%=list.skuidsList[i].discount%>" value="<%=list.skuidsList[i].discount%>"
-                                   readonly="readonly"></td>
-                        <%}else{%>
-                        <td><input type="text" placeholder="10.0" value="10.0" readonly="readonly"></td>
-                        <%}%>
+                    <%if(list.skuidsList[i].discount > 0 && list.skuidsList[i].discount<10){%>
+                    <td><input type="number" placeholder="<%=list.skuidsList[i].discount%>" value="<%=list.skuidsList[i].discount%>" class="goods-discount" onchange="goodsDiscountChange(<%=i%>)"></td>
                     <%}else{%>
-                        <td><input type="text" placeholder="折扣" value="<%=list.bossDiscount%>" readonly="readonly"></td>
+                    <td><input type="number" placeholder="10.0" value="10.0" class="goods-discount" onchange="goodsDiscountChange(<%=i%>)"></td>
                     <%}%>
-                    <td>¥<%=(list.skuidsList[i].subtotal/100).toFixed(2)%></td>
+                    <td>¥ <%=(list.skuidsList[i].subtotal/100).toFixed(2)%></td>
                     <td><u onclick="removeItem(3,<%=i%>)">移除</u></td>
                 </tr>
             <%}%>
@@ -1394,27 +1389,34 @@
                 <td>
                     <div><%=list.valueCard[i].name%></div>
                 </td>
-                <td>¥<%=(list.valueCard[i].price/100).toFixed(2)%></td>
+                <td>¥ <%=(list.valueCard[i].price/100).toFixed(2)%></td>
                 <td><u onclick="removeItem(5,<%=i%>)">移除</u></td>
             </tr>
             <%}%>
             <%for(var i=0;i< list.surchargesJson.length;i++){%>
-                <%for(var j in list.surchargesJson[i]){%>
                 <tr class="discount">
                     <td>
-                        <div><%=j%></div>
+                        <div><%=list.surchargesJson[i].name%></div>
                     </td>
-                    <td>¥<%=(list.surchargesJson[i][j]/100).toFixed(2)%></td>
+                    <td>¥ <%=(list.surchargesJson[i].price/100).toFixed(2)%></td>
                     <td><u onclick="removeItem(1,<%=i%>)">移除</u></td>
                 </tr>
-                <%}%>
             <%}%>
-            <%if(list.reductionPrice){%>
+            <%if(list.couponArr.length>0){%>
+                <tr class="discount">
+                    <td>
+                        <div><%=list.couponArr[0].name%></div>
+                    </td>
+                    <td>¥ <%=-(list.couponArr[0].price/100).toFixed(2)%></td>
+                    <td><u onclick="removeItem(2,<%=i%>)">移除</u></td>
+                </tr>
+            <%}%>
+            <%if(list.reductionPrice>0){%>
             <tr class="discount">
                 <td>
                     <div>特惠减免</div>
                 </td>
-                <td>¥<%=(list.reductionPrice/100).toFixed(2)%></td>
+                <td>¥ -<%=(list.reductionPrice/100).toFixed(2)%></td>
             </tr>
             <%}%>
             </tbody>
@@ -1422,12 +1424,12 @@
     </div>
     <div class="rightFooterBox clearfix">
         <div class="amountMoney">
-            <div>原价共计 <span id="totalPrice">¥<%=(list.orginalPrice/100).toFixed(2)%></span></div>
-            <div>折后金额 <span id="dicountPrice">¥<%=(list.discountPrice/100).toFixed(2)%></span></div>
+            <div>原价共计 <span id="totalPrice">¥ <%=(list.orginalPrice/100).toFixed(2)%></span></div>
+            <div>折后金额 <span id="dicountPrice">¥ <%=(list.discountPrice/100).toFixed(2)%></span></div>
         </div>
         <div class="actualMoney">
-            <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney" onchange="paidInChange()" value="<%=(list.collectPrice/100).toFixed(2)%>"></span></div>
-            <div>折扣<input id="bossDiscount" type="number" onchange="discountChange()" value="<%=list.bossDiscount%>"></div>
+            <div>实收金额 <span> <b>¥</b> <input type="text" id="PaidMoney" onchange="paidInChange()" value="<%=(list.collectPrice/100).toFixed(2)%>"></span></div>
+            <div>折扣 <input id="bossDiscount" type="number" onchange="discountChange()" value="<%=list.bossDiscount%>"></div>
         </div>
     </div>
 </script>
@@ -1738,6 +1740,11 @@
     locShopCart.surchargesJson = [];
     locShopCart.promotionList = [];
     locShopCart.valueCard = [];
+    locShopCart.couponArr = [];
+    locShopCart.orginalPrice = 0;
+    locShopCart.discountPrice = 0;
+    locShopCart.collectPrice = 0;
+    locShopCart.bossDiscount = Number(10).toFixed(1);
     var locMember={};//会员信息
     var saleUid;                                          //销售员ID
     var processUid;                                       //加工师ID
@@ -1848,6 +1855,11 @@
         //职业
         selectTag($("#occupationTypeBox"),function (ret) {
             cusLocInfo.job = ret.value;
+            if(ret.value=='学生'){
+                $('#studentCard')[0].style.display = "inline-block";
+            }else{
+                $('#studentCard')[0].style.display = "none";
+            }
         });
         getReferrer();//推荐人查询
         //时间插件
@@ -2856,6 +2868,11 @@
     $("#ygType li").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
         $('#tableContent>table').eq($(this).index()).removeClass('hide').siblings().addClass('hide');
+        if($(this).index()===1){
+            $(".companyBox")[0].style.display='none';
+        }else{
+            $(".companyBox")[0].style.display='inline-block';
+        }
     });
 /*
     ygwearProp = 1;
@@ -2894,7 +2911,7 @@
                 locShopCart.discountPrice += locShopCart.surchargesJson[i][key];
             }
         }
-        //促销减元
+        //促销减免
         for(var k = 0; k < locShopCart.promotionList.length;k++){
             locShopCart.orginalPrice += locShopCart.promotionList[i].price;
         }
@@ -2915,12 +2932,7 @@
      * */
     function addSub(type,index) {
         if(type==1){
-            if(locShopCart.skuidsList[index].num<locShopCart.skuidsList[index].canUseNum){
-                locShopCart.skuidsList[index].num++;
-            }else{
-                layer.msg("库存不足");
-                return;
-            }
+            locShopCart.skuidsList[index].num++;
         }else if(type == 2){
             if(locShopCart.skuidsList[index].num < 2){
                 layer.msg("数量不能小于1");
@@ -2929,33 +2941,43 @@
                 locShopCart.skuidsList[index].num--;
             }
         }
-        renderList();
+        countOrder()
     }
     /**商品数量加减*/
     function goodsNumChange(index) {
         var num = $('.goods-item .goods-number').eq(index).val();
         if(num<1){
             layer.msg('非法输入');
-            $('.goods-item .goods-number').eq(index).val(locShopCart.skuidsList[index].num)
-        }else if(num > locShopCart.skuidsList[index].canUseNum){
-            layer.msg("库存不足");
-            $('.goods-item .goods-number').eq(index).val(locShopCart.skuidsList[index].num)
+            $('.goods-item .goods-number').eq(index).val(locShopCart.skuidsList[index].num);
         }else{
             locShopCart.skuidsList[index].num = num;
         }
-        renderList();
+        countOrder();
+    }
+    /**商品折扣改变*/
+    function goodsDiscountChange(index){
+        var discount = $(".goods-discount").eq(index).val();
+        if(0<discount<=10){
+            locShopCart.skuidsList[index].discount = discount;
+        }else{
+            layer.msg("非法输入");
+            $(".goods-item .goods-discount").eq(index).val(locShopCart.skuidsList[index].discount);
+        }
+        countOrder();
     }
     /**最终折扣编辑*/
     function discountChange() {
         var discount = $("#bossDiscount").val()*1;
-        if(discount<=0||discount>10){
+        if(0<discount<=10){
+            locShopCart.bossDiscount = discount.toFixed(1);
+            for(var i=0;i<locShopCart.skuidsList.length;i++){
+                locShopCart.skuidsList[i].discount = discount;
+            }
+        }else{
             layer.msg("非法输入");
             $("#bossDiscount").val(locShopCart.bossDiscount);
-        }else{
-            locShopCart.bossDiscount = discount.toFixed(1);
-            $("#bossDiscount").val(locShopCart.bossDiscount);
         }
-        renderList()
+        countOrder()
     }
     /**获取附加费用*/
     function getExtraCharges(){
@@ -2983,25 +3005,12 @@
             layer.msg("请填写价格");
             return;
         }
-        var obj ={};
-        var name = $('#costAdditional .text').html();
-        var price = $extra.val()*100;
-        $extra.val("");
-/*
-//同一种加工费累加
-        for(var i=0; i<locShopCart.surchargesJson.length; i++){
-            for(var j in locShopCart.surchargesJson[i]){
-                if(name === j){
-                    locShopCart.surchargesJson[i][j] = Number(locShopCart.surchargesJson[i][j]) + Number(price);
-                    renderList();
-                    return;
-                }
-            }
-        }
-*/
-        obj[name] = price;
+        var obj = {};
+        obj.name = $('#costAdditional .text').html();
+        obj.price = $extra.val()*100;
         locShopCart.surchargesJson.push(obj);
-        renderList();
+        $extra.val("");
+        countOrder();
     }
 
     /**储值卡充值*/
@@ -3038,16 +3047,23 @@
 
         });
         function topUp(index) {
-            var num = $("#chuNum").val()*100;
+            var $chuNum = $("#chuNum");
+            var num = $chuNum.val()*100;
+            if(num<=0){
+                layer.msg("输入非法");
+                $chuNum.val("");
+                return;
+            }
             if(quakooUtils.isBlack(num)){
                 layer.msg("请输入充值金额");
-                return
+                return;
             }
             var obj = {};
             obj.name = "储值卡";
             obj.price = num;
+            locShopCart.valueCard = [];
             locShopCart.valueCard.push(obj);
-            renderList();
+            countOrder();
             layer.close(index);
         }
 
@@ -3065,9 +3081,8 @@
             return;
         }else{
             locShopCart.collectPrice = collectPrice;
-            locShopCart.reductionPrice = locShopCart.discountPrice - locShopCart.collectPrice;
         }
-        renderList(true);
+        countOrder();
     }
 
 
@@ -3079,17 +3094,18 @@
         if(type == 1){
             locShopCart.surchargesJson.splice(index,1);
         }else if(type == 2){
+            locShopCart.couponArr.splice(index,1);
         }else if(type == 3){
             locShopCart.skuidsList.splice(index,1);
         }else if(type == 4){
+
         }else if(type == 5){
             locShopCart.valueCard.splice(index,1);
         }
-        renderList();
+        countOrder()
     }
     /**渲染表格数据*/
     function renderList(paidInType){
-        count(paidInType);//计算价格
         console.log("本地订单数据",locShopCart);
         var data = {list:locShopCart};
         var html = template("orderFormList",data);
@@ -3123,11 +3139,13 @@
                 }
                 locOrder.type = type;
                 getSPU();                       //获取类目和品牌下的SPU
+/*
                 if(quakooUtils.isNotBlack(cusLocInfo.userGradeId)){
                     getMemberInfo();            //获取会员信息
                 }else{
                     layer.msg("非会员无折扣");
                 }
+*/
             },
         });
     }
@@ -3220,10 +3238,7 @@
 
     /**渲染SKU*/
     function renderSku(spuid, categoryName, integralNum) {
-        quakooData.ajaxGetData(config.getUrl_product_getSaleSKUAllList(), {
-            subid: subid,
-            spuid: spuid
-        }, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_product_getSaleSKUAllList(), {subid: subid,spuid: spuid}, function (ret) {
             if (ret && ret.success) {
                 var column;
                 if (ret.data) {
@@ -3312,7 +3327,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3365,7 +3380,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3408,7 +3423,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3447,7 +3462,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3486,7 +3501,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3530,7 +3545,7 @@
                             },
                             {
                                 field: '', title: '操作', formatter: function (value, row, index) {
-                                    return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ')\'>添加</div>';
+                                    return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
                                     /*
                                                                         if (type == 0) {
                                                                             return '<div class="btnSeeHistory" onclick="addConventionalProducts(' + spuid + ',' + row.id + ',' + row.code + ',' + row.retailPrice + ',' + index + ')">添加</div>';
@@ -3589,9 +3604,13 @@
                     }
                     $("#ListPromotions").html(html);
                     selectTag($("#promotion"), function (ret) {
+                        locShopCart.couponId = ret.value;
+                        countOrder();
+/*
                         quakooData.ajaxGetData(config.getUrl_marketingcoupon_calculateMoney(),{mcId:ret.value,num:locShopCart.goodsNumber,money:locShopCart.dicountPrice},function(ret){
                             console.log("cuxiaojianmian",ret)
                         })
+*/
                     });
                 } else {
                     $("#ListPromotions").html("暂无促销方式");
@@ -3665,31 +3684,131 @@
         if (quakooUtils.isBlack(quantity)) {
             layer.msg("请输入添加数量");
             return
-        } else {
-            if (quantity > skuData.canUseNum) {
-                layer.msg("没有这么多库存");
-                return;
-            }
         }
         var obj = {};
+        obj.spuid = spuid;
         obj.id = skuData.id;
         obj.code = skuData.code;
         obj.num = quantity;
         obj.retailPrice = skuData.retailPrice;
-        if(locMember.discount){
-            obj.discount = locMember.discount[locOrder.class];
-        }else{
-            obj.discount = 10;
-        }
         obj.canUseNum = skuData.canUseNum;
         if(checkList(locShopCart.skuidsList,obj.id).flag){
             locShopCart.skuidsList[checkList(locShopCart.skuidsList,obj.id).index].num += obj.num;
         }else{
             locShopCart.skuidsList.push(obj);
         }
-        renderList();
+        countOrder()
     }
 
+    /**计算金额接口*/
+    function countOrder(){
+        var params = {};
+        params.desc = locShopCart.desc;
+        if(quakooUtils.isNotBlack(cusLocInfo.id)){
+            params.uid = cusLocInfo.id;
+        }
+        if(quakooUtils.isNotBlack(locShopCart.staffId)){
+            params.staffId = locShopCart.staffId;
+        }
+        if(quakooUtils.isNotBlack(locShopCart.machinistId)){
+            params.machiningId = locShopCart.machinistId;
+        }
+        if(quakooUtils.isNotBlack(ygInfo.now.id)){
+            params.oiId = ygInfo.now.id;
+        }
+        if(locShopCart.collectPrice>=0){
+            params.realPrice = locShopCart.collectPrice;
+        }
+        if(quakooUtils.isNotBlack(locShopCart.bossDiscount)){
+            params.discount = String(Number(locShopCart.bossDiscount));
+        }else{
+            params.discount = String(10);
+        }
+        if(quakooUtils.isNotBlack(locShopCart.couponId)){
+            params.couponId = locShopCart.couponId;
+        }
+        if(locShopCart.valueCard.length>0){
+            params.rechargePrice = locShopCart.valueCard[0].price;
+        }
+        if(locShopCart.skuidsList.length>0){
+            params.skuJson = [];
+            for(var i=0;i<locShopCart.skuidsList.length;i++){
+                var skuobj = {};
+                skuobj.skuId = locShopCart.skuidsList[i].id;
+                skuobj.spuId = locShopCart.skuidsList[i].spuid;
+                skuobj.num = locShopCart.skuidsList[i].num;
+                if(quakooUtils.isNotBlack(locShopCart.skuidsList[i].discount)){
+                    skuobj.discount = String(Number(locShopCart.skuidsList[i].discount));
+                }
+                params.skuJson.push(skuobj);
+            }
+        }
+        if(locShopCart.surchargesJson.length>0){
+            params.surchargesJson = [];
+            for(var i=0;i<locShopCart.surchargesJson.length;i++){
+                params.surchargesJson.push(locShopCart.surchargesJson[i]);
+            }
+        }
+        params.skuJson = JSON.stringify(params.skuJson);
+        params.surchargesJson = JSON.stringify(params.surchargesJson);
+        quakooData.ajaxGetData(config.getUrl_businessOrder_currentCalculate(),params,function (ret) {
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    locShopCart = {};
+                    locShopCart.skuidsList = []; //常规商品
+                    locShopCart.valueCard = []; //储值卡
+                    locShopCart.couponArr = []; //优惠券
+                    locShopCart.surchargesJson = [];//附加费用
+                    if(ret.data.staffId){
+                        locShopCart.staffId = ret.data.staffId;
+                    }
+                    if(ret.data.machinistId){
+                        locShopCart.machinistId = ret.data.machinistId;
+                    }
+                    if(ret.data.desc){
+                        locShopCart.desc = ret.data.desc;
+                    }
+                    locShopCart.bossDiscount = ret.data.discount;
+                    locShopCart.orginalPrice = ret.data.originalPrice;
+                    locShopCart.discountPrice = ret.data.discountPrice;
+                    locShopCart.collectPrice = ret.data.realPrice;
+                    if(ret.data.rechargePrice > 0){
+                        locShopCart.valueCard[0] = {};
+                        locShopCart.valueCard[0].name = "储值卡";
+                        locShopCart.valueCard[0].price = ret.data.rechargePrice;
+                    }
+                    if(ret.data.oddsPrice){
+                        locShopCart.reductionPrice = ret.data.oddsPrice;
+                    }
+                    //附加费用
+                    for(var i = 0;i < ret.data.surcharges.length;i++){
+                        locShopCart.surchargesJson.push(ret.data.surcharges[i]);
+                    }
+                    if(quakooUtils.isNotBlack(ret.data.coupon)){
+                        locShopCart.couponArr[0] = {};
+                        locShopCart.couponArr[0].id = ret.data.coupon.id;
+                        locShopCart.couponArr[0].name = ret.data.coupon.title;
+                        locShopCart.couponArr[0].price = ret.data.coupon.descSubtract;
+                    }
+                    for(var i = 0;i < ret.data.skuList.length;i++){
+                        locShopCart.skuidsList[i] = {};
+                        locShopCart.skuidsList[i].spuid = ret.data.skuList[i].spuId;
+                        locShopCart.skuidsList[i].id = ret.data.skuList[i].skuId;
+                        locShopCart.skuidsList[i].code = ret.data.skuList[i].code;
+                        locShopCart.skuidsList[i].subtotal = ret.data.skuList[i].subtotal;
+                        locShopCart.skuidsList[i].num = ret.data.skuList[i].num;
+                        locShopCart.skuidsList[i].retailPrice = ret.data.skuList[i].price;
+                        locShopCart.skuidsList[i].discount = ret.data.skuList[i].discount;
+                        locShopCart.skuidsList[i].canUseNum = ret.data.skuList[i].canUseNum;
+                    }
+                    renderList();
+                }
+            }else{
+                layer.msg(ret.data);
+                renderList()
+            }
+        })
+    }
     /**检查list是否包含某一项*/
     function checkList(arr,id) {
         var obj={};
@@ -3784,7 +3903,7 @@
             param.personnelid = saleUid;
         }
         if (quakooUtils.isNotBlack(processUid)) {
-            param.machiningid = processUid;
+            param.machiningId = processUid;
         }
         param.oiId = ygInfo['now'].id || 0;
         if (quakooUtils.isBlack(subid)) {

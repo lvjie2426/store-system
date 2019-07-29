@@ -9,7 +9,7 @@ var loginCodeUrl = serverUrl + "/login/verifyCode"; //登录验证码
 // var functionPortAllList = serverUrl + '/functionPort/getAllList';
 
 //获取集团管理员的轮播图列表
-var getAllBannerLists = serverUrl + '/banner/getAllBannerLists';mvn
+var getAllBannerLists = serverUrl + '/banner/getAllBannerLists';
 //获取某学校的轮播图列表
 var getAllListBySchool = serverUrl + '/banner/getAllListBySchool';
 //搜索轮播图
