@@ -5,10 +5,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.bean.CalculateOrder;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ResultClient;
-import com.store.system.model.Order;
-import com.store.system.model.OrderSku;
-import com.store.system.model.RefundOrder;
-import com.store.system.model.Surcharge;
+import com.store.system.model.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -35,6 +32,9 @@ public interface OrderService {
     public RefundOrder createWxRefundOrder(long oid) throws Exception;
 
     public boolean handleWxRefundOrder(HttpServletRequest request, long roid) throws Exception;
+
+
+    public PayInfo handleOtherPay(int type, int price, long boId) throws Exception;
 
 
     public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus,long subid) throws Exception;

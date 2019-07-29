@@ -1,11 +1,13 @@
 package com.store.system.service;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.store.system.bean.CalculateOrder;
 import com.store.system.client.ClientBusinessOrder;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ResultClient;
 import com.store.system.model.BusinessOrder;
 import com.store.system.model.Order;
+import com.store.system.model.PayInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,12 @@ public interface BusinessOrderService {
     public boolean update(BusinessOrder businessOrder) throws Exception;
 
     public ResultClient currentCalculate(BusinessOrder businessOrder) throws Exception;
+
+    public CalculateOrder calculateBusinessOrder(long subId, long endTime) throws Exception;
+
+    public Map<String,Integer> calculateSale(List<PayInfo> payInfos) throws Exception;
+
+
 
 
 

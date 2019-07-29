@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.CalculateOrder;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
@@ -273,19 +274,18 @@ public class BusinessOrderController extends BaseController{
      * @Author: LaoMa
      * @Date: 2019/7/8
      */
-/*    @RequestMapping("/calculateOrders")
+    @RequestMapping("/calculateOrders")
     public ModelAndView calculateOrders(HttpServletRequest request, HttpServletResponse response,
-                                        @RequestParam(required = false, value = "startTime", defaultValue = "0") long startTime,
                                         @RequestParam(required = false, value = "endTime", defaultValue = "0") long endTime,
                                         long subId) throws Exception {
         try {
-            CalculateOrder res = orderService.calculateOrders(subId, startTime, endTime);
+            CalculateOrder res = businessOrderService.calculateBusinessOrder(subId, endTime);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
 
-    }*/
+    }
 
 
 

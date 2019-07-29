@@ -3,12 +3,14 @@ package com.store.system.backend.controller;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.Order;
 import com.store.system.model.RefundOrder;
 import com.store.system.model.User;
 import com.store.system.service.OrderService;
 import com.store.system.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -28,7 +30,13 @@ public class OrderController extends BaseController {
                                               String authCode, int type, int price, long boId) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            ResultClient res = orderService.handleAliBarcodeOrder(authCode, type, "商品购买订单","",price,user.getSid(),boId);
+            String title = "";
+            if (type == Order.type_goods) {
+                title = "商品购买支付";
+            } else if (type == Order.type_other) {
+                title = "其他支付";
+            }
+            ResultClient res = orderService.handleAliBarcodeOrder(authCode, type, title,"",price,user.getSid(),boId);
             return this.viewNegotiating(request, response, res);
         } catch (StoreSystemException s) {
             return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
@@ -64,7 +72,13 @@ public class OrderController extends BaseController {
                                              String authCode, int type, int price, long boId) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            ResultClient res = orderService.handleWxBarcodeOrder(request, authCode, type, "商品购买订单", "", price, user.getSid(), boId);
+            String title = "";
+            if (type == Order.type_goods) {
+                title = "商品购买支付";
+            } else if (type == Order.type_other) {
+                title = "其他支付";
+            }
+            ResultClient res = orderService.handleWxBarcodeOrder(request, authCode, type, title, "", price, user.getSid(), boId);
             return this.viewNegotiating(request, response, res);
         } catch (StoreSystemException s) {
             return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
@@ -93,6 +107,22 @@ public class OrderController extends BaseController {
         }
     }
 
-
+    /***
+    * 其他支付方式支付
+    * @Param: [request, response, type, price, boId]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/7/27
+    */
+    @RequestMapping("/handleOtherPay")
+    public ModelAndView handleOtherPay(HttpServletRequest request,HttpServletResponse response,
+                                       int type, int price, long boId) throws Exception {
+        try {
+            orderService.handleOtherPay(type, price, boId);
+            return this.viewNegotiating(request, response, new ResultClient());
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
+        }
+    }
 
 }

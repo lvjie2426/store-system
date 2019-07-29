@@ -30,6 +30,10 @@ public class PayInfo implements Serializable{
     @PrimaryKey
     private long id;
 
+    private long subId;
+
+    private long uid;
+
     private long boId;  //业务订单ID
 
     private int payType; //支付类型

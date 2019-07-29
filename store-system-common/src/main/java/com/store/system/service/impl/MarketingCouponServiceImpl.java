@@ -55,6 +55,11 @@ public class MarketingCouponServiceImpl implements MarketingCouponService {
     }
 
     @Override
+    public MarketingCoupon load(long id) throws Exception {
+        return marketingCouponDao.load(id);
+    }
+
+    @Override
     public boolean updateOpen(long id, int open) throws Exception {
         MarketingCoupon marketingCoupon = marketingCouponDao.load(id);
         if(marketingCoupon != null) {
@@ -171,9 +176,9 @@ public class MarketingCouponServiceImpl implements MarketingCouponService {
     }
 
     @Override
-    public int calculateMoney(long mcid, int num, int money) throws Exception {
+    public int calculateMoney(long mcId, int num, int money) throws Exception {
         int res = money;
-        MarketingCoupon marketingCoupon = marketingCouponDao.load(mcid);
+        MarketingCoupon marketingCoupon = marketingCouponDao.load(mcId);
         if(marketingCoupon != null) {
             int descFullType = marketingCoupon.getDescFullType();
             int descSubtractType = marketingCoupon.getDescSubtractType();
@@ -199,15 +204,5 @@ public class MarketingCouponServiceImpl implements MarketingCouponService {
         return res;
     }
 
-    @Override
-    public ResultClient checkMarketing(long mcId, long uid) throws Exception {
-        MarketingCoupon marketingCoupon = marketingCouponDao.load(mcId);
-        if(marketingCoupon.getConditionType()==MarketingCoupon.condition_type_common){
-            return new ResultClient(true);
-        }
-
-
-        return new ResultClient();
-    }
 
 }

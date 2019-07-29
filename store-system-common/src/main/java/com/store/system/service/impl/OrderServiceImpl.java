@@ -1,6 +1,5 @@
 package com.store.system.service.impl;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
@@ -17,9 +16,7 @@ import com.store.system.client.ResultClient;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
-import com.store.system.service.AfterSaleDetailService;
-import com.store.system.service.OrderService;
-import com.store.system.service.WalletService;
+import com.store.system.service.*;
 import com.store.system.service.ext.OrderPayService;
 import com.store.system.service.ext.OrderRefundService;
 import com.store.system.util.*;
@@ -86,9 +83,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private OrderNotifyDao orderNotifyDao;
     @Resource
     private WalletService walletService;
+    @Resource
+    private PayInfoService payInfoService;
+    @Resource
+    private BusinessOrderService businessOrderService;
 
     @Autowired(required = false)
     private OrderPayService orderPayService;
+
 
     private String lockZkAddress;
     private String projectName;
@@ -139,8 +141,17 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public ResultClient handleAliBarcodeOrder(String authCode, int type, String title, String desc, int price, long subId, long boId) throws Exception {
-        ResultClient resultClient = createAliOrder(Order.pay_mode_barcode, type, "", title, desc, price, OrderExpireUnit.nvl, 0, subId);
+    public ResultClient handleAliBarcodeOrder(String authCode, int type, String title, String desc,
+                                              int price, long subId, long boId) throws Exception {
+        BusinessOrder businessOrder = businessOrderService.load(boId);
+        Map<String, Object> info = Maps.newHashMap();
+        info.put("uid", String.valueOf(businessOrder.getUid()));
+        info.put("payType", type);
+        info.put("money", price);
+        info.put("boId", businessOrder.getId());
+        info.put("payModel", Order.pay_mode_barcode);
+        ResultClient resultClient = createAliOrder(Order.pay_mode_barcode, type, JsonUtils.toJson(info), title,
+                desc, price, OrderExpireUnit.nvl, 0, subId);
         Order order = (Order) resultClient.getData();
         Map<String, String> sParaTemp = this.aliOrderPayParam(order.getId(), Order.pay_mode_barcode, authCode);
         List<String> keys = new ArrayList<String>(sParaTemp.keySet());
@@ -411,7 +422,15 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Override
     public ResultClient handleWxBarcodeOrder(HttpServletRequest request, String authCode, int type, String title, String desc,
                                              int price, long subId, long boId) throws Exception {
-        ResultClient resultClient = createWxOrder(Order.pay_mode_barcode, type, "", title, desc, price, OrderExpireUnit.nvl, 0,subId);
+        BusinessOrder businessOrder = businessOrderService.load(boId);
+        Map<String, Object> info = Maps.newHashMap();
+        info.put("uid", String.valueOf(businessOrder.getUid()));
+        info.put("payType", type);
+        info.put("money", price);
+        info.put("boId", businessOrder.getId());
+        info.put("payModel", Order.pay_mode_barcode);
+        ResultClient resultClient = createWxOrder(Order.pay_mode_barcode, type, JsonUtils.toJson(info), title, desc,
+                price, OrderExpireUnit.nvl, 0,subId);
         Order order = (Order) resultClient.getData();
         if(order == null) throw new StoreSystemException("order is null!");
         if(StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
@@ -669,6 +688,18 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         }
         refundOrderDao.update(refundOrder);
         return res;
+    }
+
+    @Override
+    public PayInfo handleOtherPay(int type, int price, long boId) throws Exception {
+        BusinessOrder businessOrder = businessOrderService.load(boId);
+        PayInfo payInfo = new PayInfo();
+        payInfo.setSubId(businessOrder.getSubId());
+        payInfo.setUid(businessOrder.getUid());
+        payInfo.setPrice(price);
+        payInfo.setPayType(type);
+        payInfo.setBoId(boId);
+        return payInfoService.insert(payInfo);
     }
 
     @Override
