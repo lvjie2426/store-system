@@ -2,7 +2,7 @@
  * 金额存储全部是分（传给后台全部是分），展示时做元的计算
  * */
 var locShopCart= {
-    staffId:1,//验光师ID
+    saleUid:1,//销售员ID
     machinistId:1,//加工师id
     desc:"神秘法师地方",//订单备注
     goodsNumber:12,//商品总个数
@@ -11,6 +11,7 @@ var locShopCart= {
     collectPrice:60,//实收金额
     bossDiscount:7.0,//最终折扣
     reductionPrice:100,//特惠减免
+    totalPrice:2341234,//老马用
     couponId:2,//抵用券ID
     couponArr:[{ //促销方式（目前只能选择一个）
         id:23,
