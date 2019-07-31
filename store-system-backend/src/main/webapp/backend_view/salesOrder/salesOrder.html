@@ -3644,8 +3644,12 @@
                     }
                     $("#ListPromotions").html(html);
                     selectTag($("#promotion"), function (ret) {
-                        locShopCart.couponId = ret.value;
-                        countOrder();
+                        if(quakooUtils.isNotBlack(locShopCart.skuidsList)){
+                            locShopCart.couponId = ret.value;
+                            countOrder();
+                        }else{
+                            layer.msg('请选择常规商品')
+                        }
 /*
                         quakooData.ajaxGetData(config.getUrl_marketingcoupon_calculateMoney(),{mcId:ret.value,num:locShopCart.goodsNumber,money:locShopCart.dicountPrice},function(ret){
                             console.log("cuxiaojianmian",ret)
