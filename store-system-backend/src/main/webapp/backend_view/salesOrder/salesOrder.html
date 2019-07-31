@@ -1108,7 +1108,11 @@
             <div class="occupationTypeBox">
                 <div class="selectBox" id="occupationTypeBox">
                     <div class="select-box-header">
+                        <%if(list.job){%>
+                        <span class="text"><%=list.job%></span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                        <%}else{%>
                         <span class="text">职业</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                        <%}%>
                     </div>
                     <div class="optionBox">
                         <ul class="optionUL" id="shopOccupationList">
@@ -1124,7 +1128,11 @@
                     </div>
                 </div>
             </div>
+            <%if(list.card){%>
+            <div class="stu-card" id="studentCard">
+            <%}else{%>
             <div class="stu-card" id="studentCard" style="display: none;">
+            <%}%>
                 <span class="text">学生卡</span>
                 <div class="search-select">
                     <input value="<%=list.card%>" type="text" placeholder="学生卡" class="layer-input" id="stuCard">
@@ -1736,18 +1744,21 @@
     };
     /********************************订单********************************/
     var locShopCart = {}; //本地订单信息
-    locShopCart.skuidsList = [];
-    locShopCart.surchargesJson = [];
-    locShopCart.promotionList = [];
-    locShopCart.valueCard = [];
-    locShopCart.couponArr = [];
-    locShopCart.orginalPrice = 0;
-    locShopCart.discountPrice = 0;
-    locShopCart.collectPrice = 0;
-    locShopCart.bossDiscount = Number(10).toFixed(1);
+    initOrderInfo();
+    /**初始化订单数据*/
+    function initOrderInfo(){
+        locShopCart={};
+        locShopCart.skuidsList = [];
+        locShopCart.surchargesJson = [];
+        locShopCart.valueCard = [];
+        locShopCart.couponArr = [];
+        locShopCart.orginalPrice = 0;
+        locShopCart.discountPrice = 0;
+        locShopCart.collectPrice = 0;
+        locShopCart.bossDiscount = Number(10).toFixed(1);
+    }
+    var realpriceChange;//实收金额改变的时候反给后台的参数
     var locMember={};//会员信息
-    var saleUid;                                          //销售员ID
-    var processUid;                                       //加工师ID
     var couponData = {};                                  //订单抵用券数据
     var locOrder = {};                                    //订单的属性存储
     var orderFormData = {};                               //订单表格数据
@@ -1836,6 +1847,7 @@
     /**渲染顾客信息*/
     function renderCusInfo(){
         var data = {list:cusLocInfo};
+        console.log("顾客模版数据",data)
         var html = template("cusBasicTmp",data);
         var memHtml = template("memberTmp",data);
         $("#cusBasicUl").html(html);
@@ -1893,7 +1905,7 @@
             return curr;
         });
     }
-    /**顾客搜索*/
+    /**顾客信息顾客搜索*/
     function searchCus() {
         var content = $('#searchPhoneUser').val();
         if (quakooUtils.isBlack(content)) {
@@ -1903,15 +1915,93 @@
         var param = {};
         param.subid = subid;
         param.userType = 0;
-
         if (cusInfoType == 1) {
             param.phone1 = content;
         } else if (cusInfoType == 2) {
             param.cardNumber = content;
         }
+        /**打开顾客搜索结果的弹窗*/
         quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(), param, function (ret) {
+            if(quakooUtils.isNotBlack(ret.rows)){
+                $('#searchPhoneUser').val("");
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-demo', //样式类名
+                    area: ['720px', '625px'],
+                    anim: 0,
+                    closeBtn: 0,
+                    title: '顾客信息',
+                    shade: 0.1,
+                    shadeClose: true, //开启遮罩关闭
+                    scrollbar: false,
+                    content: $('.customerInfo'),
+                    resize: false,
+                    btn: '关闭窗口',
+                    move: '.layui-layer-title',
+                    yes: function (index, layero) {
+                        layer.close(index);
+                    },
+                    success: function (layero, index) {
+                        var diaIndex = index;
+                        var column =[
+                            {field: "name", title: "姓名", align: "left", valign: "middle"},
+                            {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
+                                    if (value === 0) {
+                                        return "-"
+                                    } else if (value === 1) {
+                                        return "男"
+                                    } else if (value === 2) {
+                                        return "女"
+                                    }
+                                }},
+                            {field: "age", title: "年龄", align: "left", valign: "middle"},
+                            {
+                                field: "phone",
+                                title: "手机号",
+                                align: "left",
+                                valign: "middle",
+                                formatter: function (value, row, index) {
+                                    var html = value;
+                                    if (row.weixinId == null) {
+                                        html = html + ' <span class="unbound">未绑定</span>';
+                                    } else {
+                                        html = html + ' <span class="bounding">已绑定</span>';
+                                    }
+                                    return html;
+                                }
+                            },
+                            {field: "subName", title: "来源", align: "left", valign: "middle"},
+                            {
+                                field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
+                                    var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+diaIndex+")'>选择</div>";
+                                    return html;
+                                }
+                            }];
+                        $("#customerInfoTable").bootstrapTable('destroy');
+                        $("#customerInfoTable").bootstrapTable({
+                            data: ret.rows,                 //被加载的数据。
+                            classes: "table",
+                            sortable: false,
+                            sortOrder: "asc",
+                            showColumns: true,
+                            strictSearch: true,
+                            locale: "zh-CN",
+                            paginationHAlign: "center",
+                            clickToSelect: true,
+                            columns: column
+                        });
+
+                    }
+                });
+            }else{
+                cusLocInfo = {};
+                renderCusInfo();
+                layer.msg("未查询到顾客信息")
+            }
+
             if (quakooUtils.isNotBlack(ret.rows[0])) {
-                showCus(ret.rows[0]);
+                // showCus(ret.rows[0]);
+                renderCusInfo();
             } else {
                 showCus()
             }
@@ -2014,14 +2104,14 @@
                 return param
             }
         });
-
     }
-    function selIntentionCus(data) {
+    function selIntentionCus(data,diaIndex) {
             cusLocInfo = {};
             for(var i in data){
                 cusLocInfo[i] = data[i];
             }
             renderCusInfo();
+            layer.close(diaIndex);
     }
     /**注册成为会员*/
     function regMember() {
@@ -2030,8 +2120,6 @@
         var sex = $("#cusInfoSex span.active").attr("data-value");
         var strTime = $("#tests").val().split("-");
         var birthdate = new Date(strTime[0], strTime[1], strTime[2]).getTime();
-        console.log("shijian",strTime)
-        console.log("birthdate",birthdate)
         var age = $("#autoAge").val().slice(0,-1);
         var card = $("#stuCard").val();
         if (quakooUtils.isBlack(name)) {
@@ -2091,21 +2179,6 @@
         });
     }
 
-/*
-    /!**获取门店下推荐人*!/
-    function getShopStaff() {
-        quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {sid: subid, userType: 1}, function (ret) {
-            if (ret && ret.success) {
-                var data = {list: ret.data};
-                var html = template("recommenderBoxUl", data);
-                document.getElementById("referer").innerHTML = html;
-                selectTag($("#recommenderBox"), function (ret) {
-                    referrer = ret.value;
-                })
-            }
-        })
-    }
-*/
     /**根据手机号模糊查询顾客*/
     function getCusPhone() {
         $('#searchCusPhone').bind('input propertychange', function(){
@@ -2132,6 +2205,7 @@
                                     layer.close(index);
                                 },
                                 success: function (layero, index) {
+                                    var diaIndex = index;
                                     var column =[
                                         {field: "name", title: "姓名", align: "left", valign: "middle"},
                                         {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
@@ -2162,7 +2236,7 @@
                                         {field: "subName", title: "来源", align: "left", valign: "middle"},
                                         {
                                             field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
-                                                var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+")'>选择</div>";
+                                                var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+diaIndex+")'>选择</div>";
                                                 return html;
                                             }
                                         }];
@@ -2182,13 +2256,21 @@
 
                                 }
                             });
+                        }else{
+                            cusLocInfo = {};
+                            cusLocInfo.phone = keyword;
+                            renderCusInfo();
+                            layer.msg("未查询到顾客信息")
                         }
+                    }else{
+                        layer.msg(ret.data);
                     }
                 })
             }
         });
     }
 
+    /**获取推荐人*/
     function getReferrer() {
         $('#searchReferrer').bind('input propertychange', function(){
             var keyword = $(this).val();
@@ -2259,17 +2341,17 @@
         params.age = cusLocInfo.age;
         params.job = cusLocInfo.job;
         params.recommender = cusLocInfo.recommender;
-        params.card =cusLocInfo.card;
+        if(cusLocInfo.card){
+            params.card =cusLocInfo.card;
+        }
         quakooData.ajaxGetData(config.getUrl_user_becomeVip(),params, function (ret) {
             if (ret && ret.success) {
                 if (ret.data) {
-                    cusId = ret.data.id;
                     layer.msg("注册成功", {icon: 1});
                     for(var i in ret.data){
                         cusLocInfo[i] = ret.data[i];
                     }
                     renderCusInfo();
-                    showCus(ret.data);
                     getYgInfo(ret.data.id);
                     setTimeout(function () {
                         $(".register-member input").val('');
@@ -2285,7 +2367,7 @@
 
     /**回显顾客信息*/
     function showCus(data) {
-        console.log(data);
+        console.log("顾客信息",data);
         if (quakooUtils.isNotBlack(data)) {//渲染
             cusId = data.id;
             cusPhone = data.phone;
@@ -2779,14 +2861,14 @@
                     //销售员下拉框
                     if (quakooUtils.isNotBlack(ret.data)) {
                         document.querySelector("#salePeople .text").innerHTML = ret.data[0].name;
-                        saleUid = ret.data[0].id;
+                        locShopCart.saleUid = ret.data[0].id;
                         var html = "";
                         for (var i = 0; i < ret.data.length; i++) {
                             html += '<li value="' + ret.data[i].id + '">' + ret.data[i].name + '</li>'
                         }
                         document.querySelector("#saleUl").innerHTML = html;
                         selectTag($("#salePeople"), function (ret) {
-                            saleUid = ret.value;
+                            locShopCart.saleUid = ret.value;
                         })
                     } else {
                         document.querySelector("#salePeople .text").innerHTML = "销售员";
@@ -2796,14 +2878,14 @@
                     //加工师下拉框
                     if (quakooUtils.isNotBlack(ret.data)) {
                         document.querySelector("#machiningPeople .text").innerHTML = ret.data[0].name;
-                        processUid = ret.data[0].id;
+                        locShopCart.machinistId = ret.data[0].id;
                         var html = "";
                         for (var i = 0; i < ret.data.length; i++) {
                             html += '<li value="' + ret.data[i].id + '">' + ret.data[i].name + '</li>'
                         }
                         document.querySelector("#processUl").innerHTML = html;
                         selectTag($("#machiningPeople"), function (ret) {
-                            processUid = ret.value;
+                            locShopCart.machinistId = ret.value;
                         })
                     } else {
                         document.querySelector("#machiningPeople .text").innerHTML = "加工师";
@@ -2887,46 +2969,6 @@
 
     /***************************************************验光模块结束*****************************************************/
     /***************************************************订单信息开始*****************************************************/
-    /**计算价格*/
-    function count(paidInType){
-        locShopCart.orginalPrice = 0;
-        locShopCart.goodsNumber = 0;
-        locShopCart.discountPrice = 0;
-        locShopCart.bossDiscount = locShopCart.bossDiscount||10.0;
-        //常规商品
-        for(var i=0; i < locShopCart.skuidsList.length;i++){
-            locShopCart.goodsNumber += locShopCart.skuidsList[i].num*1;
-            if(locShopCart.bossDiscount == 10){
-                locShopCart.skuidsList[i].subtotal = (locShopCart.skuidsList[i].num * locShopCart.skuidsList[i].retailPrice*locShopCart.skuidsList[i].discount/10).toFixed(2);//常规商品小计
-            }else{
-                locShopCart.skuidsList[i].subtotal = (locShopCart.skuidsList[i].num * locShopCart.skuidsList[i].retailPrice*locShopCart.bossDiscount/10).toFixed(2);//常规商品小计
-            }
-            locShopCart.orginalPrice += locShopCart.skuidsList[i].num * locShopCart.skuidsList[i].retailPrice;
-            locShopCart.discountPrice += locShopCart.skuidsList[i].subtotal*1;
-        }
-        //附加费用
-        for(var i = 0; i < locShopCart.surchargesJson.length;i++){
-            for(var key in locShopCart.surchargesJson[i]){
-                locShopCart.orginalPrice += locShopCart.surchargesJson[i][key];
-                locShopCart.discountPrice += locShopCart.surchargesJson[i][key];
-            }
-        }
-        //促销减免
-        for(var k = 0; k < locShopCart.promotionList.length;k++){
-            locShopCart.orginalPrice += locShopCart.promotionList[i].price;
-        }
-        //储值卡
-        if(quakooUtils.isNotBlack(locShopCart.valueCard)){
-            for(var i =0;i<locShopCart.valueCard.length;i++){
-                locShopCart.orginalPrice += locShopCart.valueCard[i].price*1;
-                locShopCart.discountPrice += locShopCart.valueCard[i].price*1;
-            }
-        }
-        if(!paidInType){
-            locShopCart.collectPrice = locShopCart.discountPrice||0;
-        }
-        locShopCart.reductionPrice = locShopCart.discountPrice-locShopCart.collectPrice;
-    }
     /**加减
      * type 1(加) 2（减）
      * */
@@ -3012,7 +3054,6 @@
         $extra.val("");
         countOrder();
     }
-
     /**储值卡充值*/
     function rechargeCard(){
         layer.open({
@@ -3075,17 +3116,15 @@
             layer.msg("不能小于0");
             $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
             return;
-        }else if(collectPrice>locShopCart.discountPrice){
-            layer.msg("实收金额不能大于折后金额");
+        }else if(collectPrice>locShopCart.orginalPrice){
+            layer.msg("实收金额不能大于原价");
             $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
             return;
         }else{
-            locShopCart.collectPrice = collectPrice;
+            realpriceChange = collectPrice;
         }
         countOrder();
     }
-
-
     /**删除订单信息
      * type:1(附加费用)，2(促销方式),3(常规商品),4(积分商品),5(储值卡充值)
      * index 对应的list的索引
@@ -3102,7 +3141,12 @@
         }else if(type == 5){
             locShopCart.valueCard.splice(index,1);
         }
-        countOrder()
+        if(quakooUtils.isBlack(locShopCart.skuidsList)&&quakooUtils.isBlack(locShopCart.valueCard)&&quakooUtils.isBlack(locShopCart.surchargesJson)){
+            initOrderInfo();
+            renderList()
+        }else{
+            countOrder()
+        }
     }
     /**渲染表格数据*/
     function renderList(paidInType){
@@ -3111,7 +3155,6 @@
         var html = template("orderFormList",data);
         $("#orderForm").html(html);
     }
-
     /**添加常规商品*/
     function addPro(type) {
         var index = layer.open({
@@ -3235,7 +3278,6 @@
             },
         });
     }
-
     /**渲染SKU*/
     function renderSku(spuid, categoryName, integralNum) {
         quakooData.ajaxGetData(config.getUrl_product_getSaleSKUAllList(), {subid: subid,spuid: spuid}, function (ret) {
@@ -3576,7 +3618,6 @@
             }
         })
     }
-
     /**获取会员信息*/
     function getMemberInfo() {
         locMember = {};//initialize 会员信息
@@ -3591,7 +3632,6 @@
             }
         })
     }
-
     /**促销方式*/
     function getListPromotions() {
         quakooData.ajaxGetData(config.getUrl_marketingcoupon_getCanUseList(), {subid:psid}, function (ret) {
@@ -3618,7 +3658,6 @@
             }
         })
     }
-
     /**接口——获取企业类目列表*/
     function getListClass() {
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(), {subid: psid}, function (ret) {
@@ -3638,7 +3677,6 @@
             }
         })
     }
-
     /**接口——获取企业品牌列表*/
     function getListBrand() {
         quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(), {subid: psid}, function (ret) {
@@ -3658,26 +3696,20 @@
             }
         })
     }
-
-    //选择商品类目
+    /**选择商品类目*/
     function selClass(_self, id, name) {
         $(_self).addClass("active").siblings().removeClass("active");
         locOrder.class = id;
         locOrder.className = name;
         getSPU();
     }
-
-    //选择商品品牌
+    /**选择商品品牌*/
     function selBrand(_self, id, name) {
         $(_self).addClass("active").siblings().removeClass("active");
         locOrder.brand = id;
         locOrder.brandName = name;
         getSPU();
     }
-
-
-
-
     /**添加常规商品到订单*/
     function addConventionalProducts(spuid,skuData,index) {
         var quantity = $("#skuTable tr[data-index='" + index + "'] input").val() * 1; //数量
@@ -3699,25 +3731,25 @@
         }
         countOrder()
     }
-
     /**计算金额接口*/
     function countOrder(){
         var params = {};
+        if(quakooUtils.isNotBlack(realpriceChange)){
+            params.realPrice = realpriceChange;
+            realpriceChange = "";
+        }
         params.desc = locShopCart.desc;
         if(quakooUtils.isNotBlack(cusLocInfo.id)){
             params.uid = cusLocInfo.id;
         }
-        if(quakooUtils.isNotBlack(locShopCart.staffId)){
-            params.staffId = locShopCart.staffId;
+        if(quakooUtils.isNotBlack(locShopCart.saleUid)){
+            params.staffId = locShopCart.saleUid;
         }
         if(quakooUtils.isNotBlack(locShopCart.machinistId)){
             params.machiningId = locShopCart.machinistId;
         }
         if(quakooUtils.isNotBlack(ygInfo.now.id)){
             params.oiId = ygInfo.now.id;
-        }
-        if(locShopCart.collectPrice>=0){
-            params.realPrice = locShopCart.collectPrice;
         }
         if(quakooUtils.isNotBlack(locShopCart.bossDiscount)){
             params.discount = String(Number(locShopCart.bossDiscount));
@@ -3760,7 +3792,7 @@
                     locShopCart.couponArr = []; //优惠券
                     locShopCart.surchargesJson = [];//附加费用
                     if(ret.data.staffId){
-                        locShopCart.staffId = ret.data.staffId;
+                        locShopCart.saleUid = ret.data.staffId;
                     }
                     if(ret.data.machinistId){
                         locShopCart.machinistId = ret.data.machinistId;
@@ -3772,6 +3804,7 @@
                     locShopCart.orginalPrice = ret.data.originalPrice;
                     locShopCart.discountPrice = ret.data.discountPrice;
                     locShopCart.collectPrice = ret.data.realPrice;
+                    locShopCart.totalPrice = ret.data.totalPrice;
                     if(ret.data.rechargePrice > 0){
                         locShopCart.valueCard[0] = {};
                         locShopCart.valueCard[0].name = "储值卡";
@@ -3804,8 +3837,9 @@
                     renderList();
                 }
             }else{
+                initOrderInfo();
+                renderList();
                 layer.msg(ret.data);
-                renderList()
             }
         })
     }
@@ -3894,102 +3928,64 @@
 
         }
     }
-
     /**保存订单*/
     function saveOrder(type) {
-        var param = {};
-        param.uid = cusId;
-        if(quakooUtils.isNotBlack(saleUid)){
-            param.personnelid = saleUid;
-        }
-        if (quakooUtils.isNotBlack(processUid)) {
-            param.machiningId = processUid;
-        }
-        param.oiId = ygInfo['now'].id || 0;
-        if (quakooUtils.isBlack(subid)) {
-            layer.msg('请选择门店', {icon: 4});
+        var params = {};
+        if(quakooUtils.isBlack(locShopCart.machinistId)){
+            layer.msg("请选择加工师");
             return;
         }
-        param.subid = subid;
-        param.desc = $('#optometryRemarks2').html();
-        param.marketingType = 1;//促销类型
-        if (couponid) {
-            param.couponid = couponid;
+        if(quakooUtils.isBlack(locShopCart.surchargesJson)&&quakooUtils.isBlack(locShopCart.skuidsList)&&quakooUtils.isBlack(locShopCart.valueCard)){
+            layer.msg("订单不能为空");
+            return
         }
-        authCode = $('#authCode').val();
-        /*if(quakooUtils.isBlack(authCode)){
-                layer.msg("请键入条形码",{icon:4});
-                return;
-            }*/
-
-        param.authCode = authCode;
-        param.price = parseInt($('#PaidMoney').val() * 100);
-        if (quakooUtils.isBlack($('#dicountPrice').html())) {
-            layer.msg("请选择商品", {icon: 4});
-            return;
+        params.subId = subid;
+        if(ygInfo.now.id){
+            params.oiId = ygInfo.now.id;
         }
-        param.dicountPrice = parseInt(($('#dicountPrice').html().substring(1, $('#dicountPrice').html().length)) * 100);
-        if (quakooUtils.isBlack($('#totalPrice').html())) {
-            layer.msg("请选择商品", {icon: 4});
-            return;
+        params.staffId = locShopCart.saleUid;
+        params.machinistId = locShopCart.machinistId;
+        params.desc = locShopCart.desc;
+        params.originalPrice = locShopCart.orginalPrice;
+        params.discountPrice = locShopCart.discountPrice;
+        params.realPrice = locShopCart.collectPrice;
+        params.totalPrice = locShopCart.totalPrice;
+        params.oddsPrice = locShopCart.reductionPrice;
+        params.discount = locShopCart.bossDiscount;
+        params.rechargePrice = locShopCart.valueCard[0].price;
+        params.makeStatus = 6;
+        if(quakooUtils.isNotBlack(locShopCart.couponId)&&quakooUtils.isNotBlack(locShopCart.couponArr)){
+            params.couponId = locShopCart.couponArr[0].id;
+            params.couponFee = locShopCart.couponArr[0].price;
         }
-        param.totalPrice = parseInt(($('#totalPrice').html().substring(1, $('#totalPrice').html().length)) * 100);
-        param.makeStatus = 6;
-        if (quakooUtils.isBlack(orderFormData)) {
-            layer.msg('请选择商品', {icon: 4});
-            return;
-        }
-        if (quakooUtils.isBlack($('#PaidMoney').val())) {
-            layer.msg('请输入实收金额', {icon: 4});
-            return;
-        }
-
-        param.skuidsList = [];
-        for (var i in orderFormData) {
-            if (i.indexOf('changgui') >= 0 || i.indexOf('jifen') >= 0) {
-                var obj = {};
-                obj.skuid = orderFormData[i].skuid;
-                obj.spuid = orderFormData[i].spuid;
-                obj.num = orderFormData[i].number;
-                obj.price = parseInt(orderFormData[i].price * 100);
-                obj.subtotal = orderFormData[i].subtotal;
-                param.skuidsList.push(obj);
-            }
-            if (i.indexOf('extra') >= 0) {
-                param.surchargesJson = [];
-                param.surchargesJson[0] = {};
-                param.surchargesJson[0].name = orderFormData[i].name;
-                param.surchargesJson[0].price = parseInt(orderFormData[i].money * 100);
+        if(locShopCart.skuidsList.length>0){
+            params.skuJson = [];
+            for(var i=0;i<locShopCart.skuidsList.length;i++){
+                params.skuJson[i] = {};
+                params.skuJson[i].skuId = locShopCart.skuidsList[i].id;
+                params.skuJson[i].spuId = locShopCart.skuidsList[i].spuid;
+                params.skuJson[i].num = locShopCart.skuidsList[i].num;
+                params.skuJson[i].price = locShopCart.skuidsList[i].retailPrice;
+                params.skuJson[i].code = locShopCart.skuidsList[i].code;
+                params.skuJson[i].subtotal = locShopCart.skuidsList[i].code;
             }
         }
-//            param.skuidsList = JSON.stringify(param.skuidsList);
-        param.skuidsList = JSON.stringify(countSkuList);
-        param.surchargesJson = JSON.stringify(param.surchargesJson);
-        console.log("保存订单传参：", param);
-        if (type) {//提交订单（暂时走保存订单的接口）
-            submitInfo = {};
-            quakooData.ajaxGetData(config.getUrl_order_saveOrder(), param, function (ret) {
-                console.log("提交订单——保存订单接口返回值",ret);
-                if (ret && ret.success) {
-                    for(var i in ret.data){
-                        submitInfo[i] = ret.data[i];
-                        locOrderData[i] = ret.data[i];
-                    }
-                    submitOrder();//提交订单弹窗
-                    return;
-                }
-            })
-
-        } else {//保存订单
-            quakooData.ajaxGetData(config.getUrl_order_saveOrder(), param, function (ret) {
-                if (ret && ret.success) {
-                    layer.msg("订单已保存成功")
-                    // layer.msg(ret.data)
-                }
-            })
+        if(locShopCart.surchargesJson.length>0){
+            params.surchargesJson=[];
+            for(var i=0;i<locShopCart.surchargesJson.length;i++){
+                params.surchargesJson[i] = {};
+                params.surchargesJson[i].name = locShopCart.surchargesJson[i].name;
+                params.surchargesJson[i].price = locShopCart.surchargesJson[i].price;
+            }
         }
+        console.log("saveOrder",params);
+        params.skuJson = JSON.stringify(params.skuJson);
+        params.surchargesJson = JSON.stringify(params.surchargesJson);
+        quakooData.ajaxGetData(config.getUrl_businessOrder_saveOrder(),params,function (ret) {
+            console.log("保存订单返回值",ret)
+        })
+
     }
-
     /**提交订单*/
     function submitOrder() {
         printId = 0;
@@ -4025,7 +4021,6 @@
 
         });
     }
-
     /**渲染提交订单信息*/
     function renderSubmit() {
         locOrderData.Outstanding = locOrderData.totalPriceYuan-locOrderData.priceYuan;
@@ -4036,7 +4031,6 @@
         $('#payDiaVertical').html(html);
         $('#printTicketUl').html(printHtml);
     }
-
     /**线上付款*/
     function payDialog(type) {//前端定type：1=>支付宝，2=>微信
         var paymentNote = $('#paymentNote').val();
@@ -4071,11 +4065,9 @@
             }
         });
     }
-
     function closePay() {
         layer.close(payDialogIndex);
     }
-
     //重绘
     function redraw() {
         $('.paymentPopup .speedProgress li').removeClass("active").eq(0).addClass("active");
@@ -4083,7 +4075,6 @@
         $('.paymentPopup .payContent .content-item.first').addClass('active');
         $('.paymentPopup .payContent input').val('');
     }
-
     //btn——输入金额下一步
     function firstNext() {
         onlinePayMoney = $('#payNum').val();
