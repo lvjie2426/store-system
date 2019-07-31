@@ -1108,7 +1108,11 @@
             <div class="occupationTypeBox">
                 <div class="selectBox" id="occupationTypeBox">
                     <div class="select-box-header">
+                        <%if(list.job){%>
+                        <span class="text"><%=list.job%></span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                        <%}else{%>
                         <span class="text">职业</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                        <%}%>
                     </div>
                     <div class="optionBox">
                         <ul class="optionUL" id="shopOccupationList">
@@ -1124,7 +1128,11 @@
                     </div>
                 </div>
             </div>
+            <%if(list.card){%>
+            <div class="stu-card" id="studentCard">
+            <%}else{%>
             <div class="stu-card" id="studentCard" style="display: none;">
+            <%}%>
                 <span class="text">学生卡</span>
                 <div class="search-select">
                     <input value="<%=list.card%>" type="text" placeholder="学生卡" class="layer-input" id="stuCard">
@@ -1736,15 +1744,20 @@
     };
     /********************************订单********************************/
     var locShopCart = {}; //本地订单信息
-    locShopCart.skuidsList = [];
-    locShopCart.surchargesJson = [];
-    locShopCart.promotionList = [];
-    locShopCart.valueCard = [];
-    locShopCart.couponArr = [];
-    locShopCart.orginalPrice = 0;
-    locShopCart.discountPrice = 0;
-    locShopCart.collectPrice = 0;
-    locShopCart.bossDiscount = Number(10).toFixed(1);
+    initOrderInfo();
+    /**初始化订单数据*/
+    function initOrderInfo(){
+        locShopCart={};
+        locShopCart.skuidsList = [];
+        locShopCart.surchargesJson = [];
+        locShopCart.valueCard = [];
+        locShopCart.couponArr = [];
+        locShopCart.orginalPrice = 0;
+        locShopCart.discountPrice = 0;
+        locShopCart.collectPrice = 0;
+        locShopCart.bossDiscount = Number(10).toFixed(1);
+    }
+    var realpriceChange;//实收金额改变的时候反给后台的参数
     var locMember={};//会员信息
     var saleUid;                                          //销售员ID
     var processUid;                                       //加工师ID
@@ -1836,6 +1849,7 @@
     /**渲染顾客信息*/
     function renderCusInfo(){
         var data = {list:cusLocInfo};
+        console.log("顾客模版数据",data)
         var html = template("cusBasicTmp",data);
         var memHtml = template("memberTmp",data);
         $("#cusBasicUl").html(html);
@@ -1893,7 +1907,7 @@
             return curr;
         });
     }
-    /**顾客搜索*/
+    /**顾客信息顾客搜索*/
     function searchCus() {
         var content = $('#searchPhoneUser').val();
         if (quakooUtils.isBlack(content)) {
@@ -1903,15 +1917,93 @@
         var param = {};
         param.subid = subid;
         param.userType = 0;
-
         if (cusInfoType == 1) {
             param.phone1 = content;
         } else if (cusInfoType == 2) {
             param.cardNumber = content;
         }
+        /**打开顾客搜索结果的弹窗*/
         quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(), param, function (ret) {
+            if(quakooUtils.isNotBlack(ret.rows)){
+                $('#searchPhoneUser').val("");
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-demo', //样式类名
+                    area: ['720px', '625px'],
+                    anim: 0,
+                    closeBtn: 0,
+                    title: '顾客信息',
+                    shade: 0.1,
+                    shadeClose: true, //开启遮罩关闭
+                    scrollbar: false,
+                    content: $('.customerInfo'),
+                    resize: false,
+                    btn: '关闭窗口',
+                    move: '.layui-layer-title',
+                    yes: function (index, layero) {
+                        layer.close(index);
+                    },
+                    success: function (layero, index) {
+                        var diaIndex = index;
+                        var column =[
+                            {field: "name", title: "姓名", align: "left", valign: "middle"},
+                            {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
+                                    if (value === 0) {
+                                        return "-"
+                                    } else if (value === 1) {
+                                        return "男"
+                                    } else if (value === 2) {
+                                        return "女"
+                                    }
+                                }},
+                            {field: "age", title: "年龄", align: "left", valign: "middle"},
+                            {
+                                field: "phone",
+                                title: "手机号",
+                                align: "left",
+                                valign: "middle",
+                                formatter: function (value, row, index) {
+                                    var html = value;
+                                    if (row.weixinId == null) {
+                                        html = html + ' <span class="unbound">未绑定</span>';
+                                    } else {
+                                        html = html + ' <span class="bounding">已绑定</span>';
+                                    }
+                                    return html;
+                                }
+                            },
+                            {field: "subName", title: "来源", align: "left", valign: "middle"},
+                            {
+                                field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
+                                    var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+diaIndex+")'>选择</div>";
+                                    return html;
+                                }
+                            }];
+                        $("#customerInfoTable").bootstrapTable('destroy');
+                        $("#customerInfoTable").bootstrapTable({
+                            data: ret.rows,                 //被加载的数据。
+                            classes: "table",
+                            sortable: false,
+                            sortOrder: "asc",
+                            showColumns: true,
+                            strictSearch: true,
+                            locale: "zh-CN",
+                            paginationHAlign: "center",
+                            clickToSelect: true,
+                            columns: column
+                        });
+
+                    }
+                });
+            }else{
+                cusLocInfo = {};
+                renderCusInfo();
+                layer.msg("未查询到顾客信息")
+            }
+
             if (quakooUtils.isNotBlack(ret.rows[0])) {
-                showCus(ret.rows[0]);
+                // showCus(ret.rows[0]);
+                renderCusInfo();
             } else {
                 showCus()
             }
@@ -2014,14 +2106,14 @@
                 return param
             }
         });
-
     }
-    function selIntentionCus(data) {
+    function selIntentionCus(data,diaIndex) {
             cusLocInfo = {};
             for(var i in data){
                 cusLocInfo[i] = data[i];
             }
             renderCusInfo();
+            layer.close(diaIndex);
     }
     /**注册成为会员*/
     function regMember() {
@@ -2030,8 +2122,6 @@
         var sex = $("#cusInfoSex span.active").attr("data-value");
         var strTime = $("#tests").val().split("-");
         var birthdate = new Date(strTime[0], strTime[1], strTime[2]).getTime();
-        console.log("shijian",strTime)
-        console.log("birthdate",birthdate)
         var age = $("#autoAge").val().slice(0,-1);
         var card = $("#stuCard").val();
         if (quakooUtils.isBlack(name)) {
@@ -2091,21 +2181,6 @@
         });
     }
 
-/*
-    /!**获取门店下推荐人*!/
-    function getShopStaff() {
-        quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {sid: subid, userType: 1}, function (ret) {
-            if (ret && ret.success) {
-                var data = {list: ret.data};
-                var html = template("recommenderBoxUl", data);
-                document.getElementById("referer").innerHTML = html;
-                selectTag($("#recommenderBox"), function (ret) {
-                    referrer = ret.value;
-                })
-            }
-        })
-    }
-*/
     /**根据手机号模糊查询顾客*/
     function getCusPhone() {
         $('#searchCusPhone').bind('input propertychange', function(){
@@ -2132,6 +2207,7 @@
                                     layer.close(index);
                                 },
                                 success: function (layero, index) {
+                                    var diaIndex = index;
                                     var column =[
                                         {field: "name", title: "姓名", align: "left", valign: "middle"},
                                         {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
@@ -2162,7 +2238,7 @@
                                         {field: "subName", title: "来源", align: "left", valign: "middle"},
                                         {
                                             field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
-                                                var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+")'>选择</div>";
+                                                var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+diaIndex+")'>选择</div>";
                                                 return html;
                                             }
                                         }];
@@ -2182,13 +2258,21 @@
 
                                 }
                             });
+                        }else{
+                            cusLocInfo = {};
+                            cusLocInfo.phone = keyword;
+                            renderCusInfo();
+                            layer.msg("未查询到顾客信息")
                         }
+                    }else{
+                        layer.msg(ret.data);
                     }
                 })
             }
         });
     }
 
+    /**获取推荐人*/
     function getReferrer() {
         $('#searchReferrer').bind('input propertychange', function(){
             var keyword = $(this).val();
@@ -2259,17 +2343,17 @@
         params.age = cusLocInfo.age;
         params.job = cusLocInfo.job;
         params.recommender = cusLocInfo.recommender;
-        params.card =cusLocInfo.card;
+        if(cusLocInfo.card){
+            params.card =cusLocInfo.card;
+        }
         quakooData.ajaxGetData(config.getUrl_user_becomeVip(),params, function (ret) {
             if (ret && ret.success) {
                 if (ret.data) {
-                    cusId = ret.data.id;
                     layer.msg("注册成功", {icon: 1});
                     for(var i in ret.data){
                         cusLocInfo[i] = ret.data[i];
                     }
                     renderCusInfo();
-                    showCus(ret.data);
                     getYgInfo(ret.data.id);
                     setTimeout(function () {
                         $(".register-member input").val('');
@@ -2285,7 +2369,7 @@
 
     /**回显顾客信息*/
     function showCus(data) {
-        console.log(data);
+        console.log("顾客信息",data);
         if (quakooUtils.isNotBlack(data)) {//渲染
             cusId = data.id;
             cusPhone = data.phone;
@@ -3075,12 +3159,12 @@
             layer.msg("不能小于0");
             $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
             return;
-        }else if(collectPrice>locShopCart.discountPrice){
-            layer.msg("实收金额不能大于折后金额");
+        }else if(collectPrice>locShopCart.orginalPrice){
+            layer.msg("实收金额不能大于原价");
             $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
             return;
         }else{
-            locShopCart.collectPrice = collectPrice;
+            realpriceChange = collectPrice;
         }
         countOrder();
     }
@@ -3102,7 +3186,12 @@
         }else if(type == 5){
             locShopCart.valueCard.splice(index,1);
         }
-        countOrder()
+        if(quakooUtils.isBlack(locShopCart.skuidsList)&&quakooUtils.isBlack(locShopCart.valueCard)&&quakooUtils.isBlack(locShopCart.surchargesJson)){
+            initOrderInfo();
+            renderList()
+        }else{
+            countOrder()
+        }
     }
     /**渲染表格数据*/
     function renderList(paidInType){
@@ -3703,6 +3792,10 @@
     /**计算金额接口*/
     function countOrder(){
         var params = {};
+        if(quakooUtils.isNotBlack(realpriceChange)){
+            params.realPrice = realpriceChange;
+            realpriceChange = "";
+        }
         params.desc = locShopCart.desc;
         if(quakooUtils.isNotBlack(cusLocInfo.id)){
             params.uid = cusLocInfo.id;
@@ -3715,9 +3808,6 @@
         }
         if(quakooUtils.isNotBlack(ygInfo.now.id)){
             params.oiId = ygInfo.now.id;
-        }
-        if(locShopCart.collectPrice>=0){
-            params.realPrice = locShopCart.collectPrice;
         }
         if(quakooUtils.isNotBlack(locShopCart.bossDiscount)){
             params.discount = String(Number(locShopCart.bossDiscount));
@@ -3751,6 +3841,7 @@
         }
         params.skuJson = JSON.stringify(params.skuJson);
         params.surchargesJson = JSON.stringify(params.surchargesJson);
+        console.log("点点滴滴",locShopCart);
         quakooData.ajaxGetData(config.getUrl_businessOrder_currentCalculate(),params,function (ret) {
             if(ret&&ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
@@ -3804,8 +3895,9 @@
                     renderList();
                 }
             }else{
+                initOrderInfo();
+                renderList();
                 layer.msg(ret.data);
-                renderList()
             }
         })
     }
