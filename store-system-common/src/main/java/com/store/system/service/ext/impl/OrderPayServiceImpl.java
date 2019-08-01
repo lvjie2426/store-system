@@ -6,6 +6,7 @@ import com.store.system.dao.*;
 import com.store.system.model.*;
 import com.store.system.service.*;
 import com.store.system.service.ext.OrderPayService;
+import com.store.system.util.CodeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,7 @@ public class OrderPayServiceImpl implements OrderPayService {
         payInfo.setBoId(boId);
         payInfoService.insert(payInfo);
 
+//        businessOrder.setOrderNo(CodeUtil.getCode());
         businessOrder.setStatus(BusinessOrder.status_pay);
         businessOrder.setMakeStatus(BusinessOrder.makeStatus_qu_yes);
         businessOrderService.update(businessOrder);

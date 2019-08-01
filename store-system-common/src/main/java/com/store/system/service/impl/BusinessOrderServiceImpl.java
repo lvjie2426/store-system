@@ -110,7 +110,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         List<BusinessOrder> list = this.jdbcTemplate.query(sql, rowMapper);
         count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
 
-        pager.setData(list);
+        pager.setData(transformClient(list));
         pager.setTotalCount(count);
         return pager;
     }
@@ -118,8 +118,8 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     @Override
     public Pager getUnfinishedList(Pager pager, long startTime, long endTime, long staffId, int status,
                                    long uid, String name, long subId, int makeStatus) throws Exception {
-        String sql = "SELECT  *  FROM `order`   where  1=1  ";
-        String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1  ";
+        String sql = "SELECT  *  FROM `business_order`   where  1=1  ";
+        String sqlCount = "SELECT  COUNT(*)  FROM `business_order` where 1=1  ";
         String limit = "  limit %d , %d ";
 
         if (subId > 0) {
@@ -251,7 +251,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             boolean flag = FilterStringUtil.checkDiscount(businessOrder.getDiscount());
             if (!flag) throw new StoreSystemException("折扣输入有误！");
         }
-        if(businessOrder.getSkuList().size()<=0 && businessOrder.getSurcharges().size()<=0) {
+        if(businessOrder.getSkuList().size()<=0 && businessOrder.getSurcharges().size()<=0 && businessOrder.getRechargePrice()<=0) {
             throw new StoreSystemException("请选择需要购买的商品或单独收取的附加费用！");
         }
         for(OrderSku sku:businessOrder.getSkuList()){
@@ -372,7 +372,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
                 client.setCoupon(marketingCoupon);
             }
             discountPrice = discountPrice - coupon;
-            originalPrice = originalPrice - coupon;
+//            originalPrice = originalPrice - coupon;
         }
 
         if (businessOrder.getSurcharges().size() > 0) {
@@ -391,7 +391,10 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         client.setOriginalPrice(originalPrice);
         client.setRechargePrice(businessOrder.getRechargePrice());
         //特惠减免
-        if (businessOrder.getRealPrice() < discountPrice) {
+        if(businessOrder.getRealPrice()==0){
+            client.setOddsPrice(oddsPrice);
+            client.setRealPrice(discountPrice);
+        } else if (businessOrder.getRealPrice() < discountPrice) {
             oddsPrice = discountPrice - businessOrder.getRealPrice();
             client.setOddsPrice(oddsPrice);
             if (businessOrder.getRealPrice() != 0) {

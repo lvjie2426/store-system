@@ -145,6 +145,8 @@ public class User implements Serializable {
 
     private int cardNumber;//会员卡
 
+    private String card;//学生卡
+
     @SortKey
     private long ctime;
 

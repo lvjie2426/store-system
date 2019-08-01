@@ -13,6 +13,7 @@ import com.store.system.model.*;
 import com.store.system.service.BusinessOrderService;
 import com.store.system.service.DictionaryService;
 import com.store.system.service.SubordinateService;
+import com.store.system.util.CodeUtil;
 import com.store.system.util.DictionaryUtils;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -126,6 +127,7 @@ public class BusinessOrderController extends BaseController{
                 skuList = JsonUtils.fromJson(skuJson, new TypeReference<List<OrderSku>>() {});
                 businessOrder.setSkuList(skuList);
             }
+            businessOrder.setOrderNo(CodeUtil.getCode());
             businessOrder = businessOrderService.add(businessOrder);
             return this.viewNegotiating(request, response, new ResultClient(businessOrder));
         } catch (StoreSystemException e) {
