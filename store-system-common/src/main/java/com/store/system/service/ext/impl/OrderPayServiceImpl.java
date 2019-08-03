@@ -4,11 +4,9 @@ import com.google.common.collect.Lists;
 import com.store.system.bean.OrderTypeInfo;
 import com.store.system.dao.*;
 import com.store.system.model.*;
-import com.store.system.service.BusinessOrderService;
-import com.store.system.service.CommissionRewardService;
-import com.store.system.service.FinanceLogService;
-import com.store.system.service.MissionService;
+import com.store.system.service.*;
 import com.store.system.service.ext.OrderPayService;
+import com.store.system.util.CodeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -39,20 +37,23 @@ public class OrderPayServiceImpl implements OrderPayService {
     @Resource
     private CommissionRewardService commissionRewardService;
     @Resource
-    private PayInfoDao payInfoDao;
+    private PayInfoService payInfoService;
     @Resource
     private BusinessOrderService businessOrderService;
 
     @Override
     public void successHandleBusiness(Order order,long boId) throws Exception {
 
-        PayInfo payInfo = new PayInfo();
-        payInfo.setBoId(boId);
-        payInfo.setPayType(order.getPayType());
-        payInfo.setPrice(order.getPrice());
-        payInfoDao.insert(payInfo);
-
         BusinessOrder businessOrder = businessOrderService.load(boId);
+        PayInfo payInfo = new PayInfo();
+        payInfo.setSubId(businessOrder.getSubId());
+        payInfo.setUid(businessOrder.getUid());
+        payInfo.setPrice(order.getPrice());
+        payInfo.setPayType(order.getPayType());
+        payInfo.setBoId(boId);
+        payInfoService.insert(payInfo);
+
+//        businessOrder.setOrderNo(CodeUtil.getCode());
         businessOrder.setStatus(BusinessOrder.status_pay);
         businessOrder.setMakeStatus(BusinessOrder.makeStatus_qu_yes);
         businessOrderService.update(businessOrder);

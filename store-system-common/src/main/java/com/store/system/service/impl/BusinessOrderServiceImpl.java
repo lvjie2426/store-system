@@ -6,6 +6,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
+import com.store.system.bean.CalculateOrder;
 import com.store.system.client.ClientAfterSaleDetail;
 import com.store.system.client.ClientBusinessOrder;
 import com.store.system.client.ClientOrder;
@@ -13,10 +14,7 @@ import com.store.system.client.ResultClient;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
-import com.store.system.service.AfterSaleDetailService;
-import com.store.system.service.BusinessOrderService;
-import com.store.system.service.MarketingCouponService;
-import com.store.system.service.UserGradeService;
+import com.store.system.service.*;
 import com.store.system.util.ArithUtils;
 import com.store.system.util.FilterStringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +22,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +43,8 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     private JdbcTemplate jdbcTemplate;
     @Resource
     private BusinessOrderDao businessOrderDao;
+    @Resource
+    private PayInfoService payInfoService;
     @Resource
     private UserDao userDao;
     @Resource
@@ -109,7 +110,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         List<BusinessOrder> list = this.jdbcTemplate.query(sql, rowMapper);
         count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
 
-        pager.setData(list);
+        pager.setData(transformClient(list));
         pager.setTotalCount(count);
         return pager;
     }
@@ -117,8 +118,8 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     @Override
     public Pager getUnfinishedList(Pager pager, long startTime, long endTime, long staffId, int status,
                                    long uid, String name, long subId, int makeStatus) throws Exception {
-        String sql = "SELECT  *  FROM `order`   where  1=1  ";
-        String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1  ";
+        String sql = "SELECT  *  FROM `business_order`   where  1=1  ";
+        String sqlCount = "SELECT  COUNT(*)  FROM `business_order` where 1=1  ";
         String limit = "  limit %d , %d ";
 
         if (subId > 0) {
@@ -244,32 +245,44 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         return businessOrderDao.update(businessOrder);
     }
 
-    @Override
-    public ResultClient currentCalculate(BusinessOrder businessOrder) throws Exception {
-        List<Long> skuIds = Lists.newArrayList();
-        List<Long> spuIds = Lists.newArrayList();
-        Map<Long, Integer> inventoryMap = Maps.newHashMap();
-
-        if(businessOrder.getSkuList().size()<=0) throw new StoreSystemException("请选择购买的商品！");
-        boolean flag = FilterStringUtil.checkDiscount(businessOrder.getDiscount());
-        if (!flag) throw new StoreSystemException("折扣输入有误！");
-
-        for (OrderSku sku : businessOrder.getSkuList()) {
+    private void check(BusinessOrder businessOrder) throws Exception {
+        //折扣=10 意为不打折
+        if(businessOrder.getDiscount()!=null) {
+            boolean flag = FilterStringUtil.checkDiscount(businessOrder.getDiscount());
+            if (!flag) throw new StoreSystemException("折扣输入有误！");
+        }
+        if(businessOrder.getSkuList().size()<=0 && businessOrder.getSurcharges().size()<=0 && businessOrder.getRechargePrice()<=0) {
+            throw new StoreSystemException("请选择需要购买的商品或单独收取的附加费用！");
+        }
+        for(OrderSku sku:businessOrder.getSkuList()){
+            if(sku.getSkuId()<=0) throw new StoreSystemException("缺少关键属性SKU！");
+            if(sku.getSpuId()<=0) throw new StoreSystemException("缺少关键属性SPU！");
+            if(sku.getNum()<=0) throw new StoreSystemException("购买数量输入有误！");
             if(sku.getDiscount()!=null) {
                 boolean b = FilterStringUtil.checkDiscount(sku.getDiscount());
                 if (!b) throw new StoreSystemException("折扣输入有误！");
             }
+        }
+    }
+
+    @Override
+    public ResultClient currentCalculate(BusinessOrder businessOrder) throws Exception {
+        check(businessOrder);
+        List<Long> skuIds = Lists.newArrayList();
+        List<Long> spuIds = Lists.newArrayList();
+//        Map<Long, Integer> inventoryMap = Maps.newHashMap();
+        for (OrderSku sku : businessOrder.getSkuList()) {
             skuIds.add(sku.getSkuId());
             spuIds.add(sku.getSpuId());
 
-            int inventoryNum = 0;//库存量
+/*            int inventoryNum = 0;//库存量
             List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(sku.getSkuId());
             for (InventoryDetail detail : allDetails) {
                 if (detail.getSubid() == businessOrder.getSubId()) {
                     inventoryNum += detail.getNum();
                 }
             }
-            inventoryMap.put(sku.getSkuId(), inventoryNum);
+            inventoryMap.put(sku.getSkuId(), inventoryNum);*/
         }
 
         List<ProductSKU> skuList = productSKUDao.load(skuIds);
@@ -303,41 +316,42 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             long cid=spuMap.get(spuId).getCid();
             int num=sku.getNum();
             int retailPrice=skuMap.get(skuId).getRetailPrice();
-            double discount=1;
+            double discount=10;
             double subtotal=0;
-            if(StringUtils.isNotBlank(sku.getDiscount())) {
-                discount = Double.parseDouble(sku.getDiscount())/10.0;
-            }
-            if(discount==10.0){
-                discount=1;
-            }else if(StringUtils.isBlank(sku.getDiscount())&&disMap.size()>0){
-                discount = (double) disMap.get(cid)/10.0;
+            if (StringUtils.isNotBlank(sku.getDiscount())) {
+                discount = Double.parseDouble(sku.getDiscount());
+            } else if (StringUtils.isNotBlank(sku.getDiscount()) &&
+                    StringUtils.isNotBlank(businessOrder.getDiscount())) {
+                discount = Double.parseDouble(sku.getDiscount());
+            } else if (StringUtils.isBlank(sku.getDiscount()) && disMap.size() > 0) {
+                discount = Double.parseDouble((String) disMap.get(cid));
+            } else if (StringUtils.isNotBlank(businessOrder.getDiscount())){
+                discount = Double.parseDouble(businessOrder.getDiscount());
             }
 
             //常规商品
-            if(spuMap.get(spuId).getType()==ProductSPU.type_common){
-                if(num>inventoryMap.get(skuId)) {
+            if (spuMap.get(spuId).getType() == ProductSPU.type_common) {
+/*                if(num>inventoryMap.get(skuId)) {
                     throw new StoreSystemException("当前购买的商品库存数量不足！");
-                }
-                if(discount>0) {
-                    subtotal = num * retailPrice * discount;
+                }*/
+                if (discount > 0) {
+                    subtotal = num * retailPrice * (ArithUtils.div(discount, 10.0, 1));
                     sku.setSubtotal(subtotal);
                 }
-                sku.setDiscount(String.valueOf(discount==1?10:discount));
+                sku.setDiscount(String.valueOf(discount==0?10:discount));
                 sku.setPrice(retailPrice);
                 sku.setCode(skuMap.get(skuId).getCode());
-                sku.setCode(skuMap.get(skuId).getName());
+                sku.setName(skuMap.get(skuId).getName());
                 totalNum += num;
                 originalPrice += num * retailPrice;
                 discountPrice += subtotal;
-
             }
 
             //积分商品
             if(spuMap.get(spuId).getType()==ProductSPU.type_integral){
-                if(num>inventoryMap.get(skuId)) {
+/*                if(num>inventoryMap.get(skuId)) {
                     throw new StoreSystemException("当前购买的商品库存数量不足！");
-                }
+                }*/
                 if (spuMap.get(spuId).getIntegralNum() < sku.getNum()) {
                     throw new StoreSystemException("积分商品数量兑换上限！");
                 }
@@ -353,25 +367,41 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             coupon = marketingCouponService.calculateMoney(businessOrder.getCouponId(), totalNum, originalPrice);
             client.setCouponId(businessOrder.getCouponId());
             client.setCouponFee(coupon);
+            MarketingCoupon marketingCoupon = marketingCouponService.load(businessOrder.getCouponId());
+            if(marketingCoupon!=null){
+                client.setCoupon(marketingCoupon);
+            }
             discountPrice = discountPrice - coupon;
+//            originalPrice = originalPrice - coupon;
         }
 
         if (businessOrder.getSurcharges().size() > 0) {
             for (Surcharge surcharge : businessOrder.getSurcharges()) {
                 surchargesPrice += surcharge.getPrice();
             }
-            discountPrice = discountPrice - surchargesPrice;
+            discountPrice += surchargesPrice;
+            originalPrice += surchargesPrice;
+        }
+
+        if(businessOrder.getRechargePrice()>0){
+            discountPrice += businessOrder.getRechargePrice();
+            originalPrice += businessOrder.getRechargePrice();
         }
 
         client.setOriginalPrice(originalPrice);
         client.setRechargePrice(businessOrder.getRechargePrice());
         //特惠减免
-        if(businessOrder.getRealPrice()<businessOrder.getDiscountPrice()){
-            oddsPrice = businessOrder.getDiscountPrice()-businessOrder.getRealPrice();
-            businessOrder.setOddsPrice(oddsPrice);
-            discountPrice = discountPrice - oddsPrice;
-        }else {
-            client.setRealPrice(businessOrder.getRealPrice());
+        if(businessOrder.getRealPrice()==0){
+            client.setOddsPrice(oddsPrice);
+            client.setRealPrice(discountPrice);
+        } else if (businessOrder.getRealPrice() < discountPrice) {
+            oddsPrice = discountPrice - businessOrder.getRealPrice();
+            client.setOddsPrice(oddsPrice);
+            if (businessOrder.getRealPrice() != 0) {
+                discountPrice = discountPrice - oddsPrice;
+            }
+        } else {
+            client.setRealPrice(discountPrice);
         }
 
         client.setDiscountPrice(discountPrice);
@@ -416,6 +446,70 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         }
         return client;
     }
+
+    @Override
+    public  CalculateOrder calculateBusinessOrder(long subId, long endTime) throws Exception {
+        String sql = "SELECT  *  FROM `business_order`   where  1=1  ";
+
+        {
+            sql = sql + " and `status` = " + Order.status_pay;
+        }
+        if (subId > 0) {
+            sql = sql + " and `subid` = " + subId;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `ctime` <" + endTime;
+        }
+        sql = sql + " order  by ctime desc";
+        List<BusinessOrder> orderList = this.jdbcTemplate.query(sql, rowMapper);
+        List<PayInfo> payInfoList=Lists.newArrayList();
+        for(BusinessOrder businessOrder:orderList){
+            List<PayInfo> payInfos = payInfoService.getAllList(businessOrder.getId());
+            payInfoList.addAll(payInfos);
+        }
+
+        Map<String,Integer> map = calculateSale(payInfoList);
+        CalculateOrder order = new CalculateOrder();
+        order.setSale(map.get("sale")/100.0);
+        order.setAli(map.get("ali")/100.0);
+        order.setWx(map.get("wx")/100.0);
+        order.setCash(map.get("cash")/100.0);
+        order.setOther(map.get("other")/100.0);
+        order.setNum(orderList.size());
+        return order;
+    }
+
+    @Override
+    public Map<String,Integer> calculateSale(List<PayInfo> payInfos) {
+        Map<String,Integer> map = Maps.newHashMap();
+        int sale=0;
+        int ali=0;
+        int wx=0;
+        int cash=0;
+        int other=0;
+        for(PayInfo payInfo:payInfos) {
+                if (payInfo.getPayType() == PayInfo.pay_type_ali) {
+                    ali += payInfo.getPrice();
+                }
+                if (payInfo.getPayType() == PayInfo.pay_type_wx) {
+                    wx += payInfo.getPrice();
+                }
+                if (payInfo.getPayType() == PayInfo.pay_type_cash) {
+                    cash += payInfo.getPrice();
+                }
+                if (payInfo.getPayType() == PayInfo.pay_type_stored) {
+                    other += payInfo.getPrice();
+                }
+        }
+        sale = ali + wx + cash + other;
+        map.put("ali",ali);
+        map.put("wx",wx);
+        map.put("cash",cash);
+        map.put("other",other);
+        map.put("sale",sale);
+        return map;
+    }
+
 
 
     private List<ClientBusinessOrder> transformClient(List<BusinessOrder> businessOrders) throws Exception {

@@ -92,10 +92,10 @@ public class SaleCategoryStatisticsJob implements InitializingBean {
         double perPrice=0;
         List<OrderSku> skus = Lists.newArrayList();
         List<OrderSku> skuList = Lists.newArrayList();
-        List<ClientOrder> orders = orderService.getAllBySubid(subId);
+/*        List<ClientOrder> orders = orderService.getAllBySubid(subId);
         for(ClientOrder order:orders){
-            for(OrderSku sku:order.getSkuids()){
-                ProductSPU productSPU = productSPUDao.load(sku.getSpuid());
+            for(OrderSku sku:order.getClientSkuids()){
+                ProductSPU productSPU = productSPUDao.load(sku.getSpuId());
                 if(productSPU.getCid()==cid){
                     Map<Object,Object> map = orderService.countSkuPrice(order.getUid(),
                             Lists.newArrayList(sku),0,new ArrayList<Surcharge>(),subId);
@@ -104,7 +104,7 @@ public class SaleCategoryStatisticsJob implements InitializingBean {
                     skuList.addAll(clientOrderSkus);
                 }
             }
-        }
+        }*/
         for(OrderSku sku:skus){
             sale = ArithUtils.add(sale,sku.getLastSubtotal());
         }

@@ -53,7 +53,7 @@ public class AfterSaleDetailServiceImpl implements AfterSaleDetailService{
 
     @Override
     public List<ClientAfterSaleDetail> getAllListByOid(long oid) throws Exception {
-        return transformClient(afterSaleDetailDao.getAllList(oid));
+        return transformClient(afterSaleDetailDao.getAllListByOid(oid));
     }
 
     private List<ClientAfterSaleDetail> transformClient(List<AfterSaleDetail> afterSaleDetails) throws Exception{

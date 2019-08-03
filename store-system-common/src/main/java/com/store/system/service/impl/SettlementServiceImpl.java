@@ -59,14 +59,18 @@ public class SettlementServiceImpl implements SettlementService {
         if (settlement.getObligate() < 0) throw new StoreSystemException("预留金不能为空");
         if (settlement.getPayMoney() < 0) throw new StoreSystemException("上缴现金不能为空");
         if (settlement.getNum() <= 0) throw new StoreSystemException("现金单数不能为空");
-        if (settlement.getStartTime() <= 0) throw new StoreSystemException("开始时间不能为空");
-        if (settlement.getEndTime() <= 0) throw new StoreSystemException("结束时间不能为空");
+        if (settlement.getEndTime() <= 0) throw new StoreSystemException("结算截至时间不能为空");
     }
 
     @Override
     public Settlement insert(Settlement settlement) throws Exception {
         check(settlement);
-        return settlementDao.insert(settlement);
+        ClientSettlement client = this.loadClient(settlement.getSubId());
+        if(settlement.getEndTime()<=client.getEndTime()){
+           throw new StoreSystemException("请注意:上次结算时间为"+client.getLastTime()+",请重新选择结算时间！");
+        }
+        settlement = settlementDao.insert(settlement);
+        return settlement;
     }
 
     @Override
@@ -137,9 +141,8 @@ public class SettlementServiceImpl implements SettlementService {
             if (null != last) {
                 client.setLast(last);
                 SimpleDateFormat sdf = new SimpleDateFormat("MMdd HH:mm");
-                String startTime = sdf.format(last.getStartTime());
                 String endTime = sdf.format(last.getEndTime());
-                client.setLastTime(startTime + "-" + endTime);
+                client.setLastTime(endTime);
             }
         }
         return client;

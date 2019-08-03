@@ -1177,7 +1177,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public StatisticsOrderUser statisticsOrderUser(long sid, int status ,long startTime, long endTime) throws Exception {
-        String sql = " SELECT * FROM `order` WHERE 1=1 AND subid = " + sid ;
+        String sql = " SELECT * FROM `business_order` WHERE 1=1 AND subId = " + sid ;
         if(startTime > 0 ){ sql = sql + " AND ctime >= " + startTime; }
         if(endTime > 0 ){ sql  = sql + " AND  ctime <= " + endTime; }
         if(status>-1 && status!= BusinessOrder.makeStatus_no && status!= BusinessOrder.status_no_pay && status!= BusinessOrder.makeStatus_qu_no){

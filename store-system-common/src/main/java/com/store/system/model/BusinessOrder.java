@@ -29,6 +29,7 @@ public class BusinessOrder implements Serializable {
     public static final int status_refund = 2; //已退款
 
     public static final int type_goods = 1; //商品购买
+    public static final int type_other = 2; //其他购买
 
     public static final int makeStatus_no = 1; //未加工
     public static final int makeStatus_no_pay = 2; //欠款

@@ -87,7 +87,7 @@ public class SaleStatisticsJob implements InitializingBean {
         double perPrice=0;
         long profits=0;
         Set<Long> skuIds = Sets.newHashSet();
-        List<ClientOrder> orders = orderService.getAllBySubid(subId);
+/*        List<ClientOrder> orders = orderService.getAllBySubid(subId);
         for(ClientOrder order:orders){
             for(OrderSku sku:order.getSkuids()){
                 skuIds.add(sku.getSkuid());
@@ -105,7 +105,7 @@ public class SaleStatisticsJob implements InitializingBean {
         dbInfo.setSale(sale/100d);
         dbInfo.setNum(orders.size());
         dbInfo.setPerPrice(perPrice);
-        dbInfo.setProfits(profits/100d);
+        dbInfo.setProfits(profits/100d);*/
 
         if (update) {
             saleStatisticsDao.update(dbInfo);
