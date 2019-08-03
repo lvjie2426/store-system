@@ -1292,7 +1292,7 @@
         //添加商品
         function addGoods(isUpdate) {
             var btn = ['取消','新增'];
-            var title = '新增'
+            var title = '新增';
             if(isUpdate){
                 btn = ['取消','编辑'];
                 title = '编辑';
@@ -1650,7 +1650,6 @@
             })
         }
 
-
         //设定零售价/积分价
         var momentPriceData = {};//暂时存储价格信息
         function openZeroPrice(type) {
@@ -1677,6 +1676,7 @@
                     console.log(momentPriceData)
                     for(var i in momentPriceData){
                         if(momentPriceData[i]){
+                            console.log("test content",momentPriceData[i]);
                             for(var j=0;j<momentPriceData[i].eyeTypeArr.length;j++){
                                 var obj = {};
                                 for(var k in momentPriceData[i]){
@@ -1689,9 +1689,10 @@
                             }
                         }
                     }
-                    console.log(params[cid].skuJson)
+                    console.log(params[cid].skuJson);
                     momentPriceData = {};
                 },
+
                 success: function(layero, index){
                     console.log(111,params[cid].skuJson)
                     if(params[cid] && params[cid].skuJson){
@@ -1950,7 +1951,7 @@
                                     }
                                 }
                             }else{
-                                return '-'
+                                return '-';
                             }
 
                         }

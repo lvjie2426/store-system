@@ -74,7 +74,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn intention" onclick="intentionCustomers()">意向顾客</button>
+        <button class="btn intention" onclick="activeCus()">意向顾客</button>
     </div>
 </div>
 <!-- 页面内容外层盒子 -->
@@ -1040,7 +1040,7 @@
 <!--临时订单列表-->
 <script type="text/html" id="proOrderData">
     <%for(var i=0; i < list.length;i++){%>
-    <li value="<%=list[i].id%>"><%=list[i].uname%><i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
+        <li value='<%=list[i].id%>'><%=list[i].orderNo%><i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
     <%}%>
 </script>
 <!--顾客手机号模糊搜索列表-->
@@ -1073,7 +1073,7 @@
             </div>
             <div class="layui-form-item nameInput">
                 <div>
-                    <input value="<%=list.name%>" type="text" name="title" autocomplete="off" placeholder="姓名" id="cusInfoName">
+                    <input value="<%=list.name%>" type="text" name="title" oninput="alert(1)" onchange="alert(2)" autocomplete="off" placeholder="姓名" id="cusInfoName">
                 </div>
             </div>
             <div class="benderBox" id="cusInfoSex">
@@ -1213,46 +1213,46 @@
 <script type="text/html" id="ygTmp">
     <%if(list.defShow){%>
     <table border="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;" class="<%=className%>">
-        <%}else{%>
-        <table border="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;" class="<%=className%> hide">
+    <%}else{%>
+    <table border="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;" class="<%=className%> hide">
+    <%}%>
+        <thead>
+        <tr>
+            <th></th>
+            <%for(var i=0; i < list.length;i++){%>
+                <th><%=list[i].name%></th>
             <%}%>
-            <thead>
-            <tr>
-                <th></th>
-                <%for(var i=0; i < list.length;i++){%>
-                    <th><%=list[i].name%></th>
-                <%}%>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th>R</th>
-                <%for(var i=0;i< list.length;i++){%>
-                <td><input data-attr1="rightResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入">
-                </td>
-                <%}%>
-            </tr>
-            <tr>
-                <th>L</th>
-                <%for(var i=0;i< list.length;i++){%>
-                <td><input data-attr1="leftResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入">
-                </td>
-                <%}%>
-            </tr>
-            </tbody>
-        </table>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>R</th>
+            <%for(var i=0;i< list.length;i++){%>
+            <td><input data-attr1="rightResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入">
+            </td>
+            <%}%>
+        </tr>
+        <tr>
+            <th>L</th>
+            <%for(var i=0;i< list.length;i++){%>
+            <td><input data-attr1="leftResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入">
+            </td>
+            <%}%>
+        </tr>
+        </tbody>
+    </table>
 </script>
-<!--验光记录列表-->
+<!--验光记录tab-->
 <script type="text/html" id="tagDateList">
     <li onclick="renderYgInfo(1,'now',this)" class="active">本次</li>
     <%for(var i=0; i < list.length;i++){%>
-    <li onclick="renderYgInfo(2,'<%=list[i].showTime%>',this)"><%=list[i].showTime%><%=list[i].span%></li>
+    <li onclick="renderYgInfo(2,'<%=list[i].optTime%>',this)"><%=list[i].showTime%><%=list[i].span%></li>
     <%}%>
 </script>
 <!--验光记录下拉框-->
 <script type="text/html" id="ygRecord">
     <%for(var i=0;i < list.length;i++){%>
-    <li onclick="renderYgInfo(2,'<%=list[i].showTime%>','select')"><%=list[i].showTime%><%=list[i].span%></li>
+    <li onclick="renderYgInfo(2,'<%=list[i].optTime%>','select')"><%=list[i].showTime%><%=list[i].span%></li>
     <%}%>
 </script>
 <!--附加费用-->
@@ -1436,7 +1436,7 @@
             <div>折后金额 <span id="dicountPrice">¥ <%=(list.discountPrice/100).toFixed(2)%></span></div>
         </div>
         <div class="actualMoney">
-            <div>实收金额 <span> <b>¥</b> <input type="text" id="PaidMoney" onchange="paidInChange()" value="<%=(list.collectPrice/100).toFixed(2)%>"></span></div>
+            <div>实收金额 <span> <b>¥</b> <input type="text" onchange="paidInChange()" id="PaidMoney" value="<%=(list.collectPrice/100).toFixed(2)%>"></span></div>
             <div>折扣 <input id="bossDiscount" type="number" onchange="discountChange()" value="<%=list.bossDiscount%>"></div>
         </div>
     </div>
@@ -1684,12 +1684,10 @@
     /********************************总体********************************/
     var psid;                                             //企业id
     var subid;                                            //门店id
-    var proOrderId;                                       //临时订单ID
+    var provisionalOrder = {};                            //临时订单
     /********************************顾客********************************/
     var cusLocInfo = {};                                  //本地顾客信息
-    var cusId = 0;                                        //用户id
-    var cusPhone;                                         //用户手机号
-    var cusInfoType = 1;                                  //顾客信息选择框类型1=>手机号搜索；2=>会员卡号搜索
+    var cusSeachType = 1;                                 //顾客信息选择框类型1=>手机号搜索；2=>会员卡号搜索
     var countdown = 30, isRen = true;                     //倒计时
     /********************************验光********************************/
     var ygInfo = {now: {}};                               //验光信息数据
@@ -1697,11 +1695,10 @@
     var ygNowStatus = true;                               //本次验光记录状态true:保存，false:修改
     var presubTime = 'now';                               //验光信息时间下标
     var optUid = 0;                                       //验光师ID
-    var ygData = {};                                      //保存验光数据
     var mainEye = 1;                                      //主视眼
     var ygResults;                                        //验光结果
     var ygAdvise;                                         //验光建议
-    var LocYgInfo = {};                                   //验光信息对象
+    var LocYgInfo = {};                                   //验光表格对象
     LocYgInfo.yuanTable = {
         class: 'yuan-table',
         data: [{name: '裸眼视力', value: 'nakedEyesight'}, {name: '球镜(S)', value: 's'}, {
@@ -1744,28 +1741,13 @@
     };
     /********************************订单********************************/
     var locShopCart = {}; //本地订单信息
-    initOrderInfo();
-    /**初始化订单数据*/
-    function initOrderInfo(){
-        locShopCart={};
-        locShopCart.skuidsList = [];
-        locShopCart.surchargesJson = [];
-        locShopCart.valueCard = [];
-        locShopCart.couponArr = [];
-        locShopCart.orginalPrice = 0;
-        locShopCart.discountPrice = 0;
-        locShopCart.collectPrice = 0;
-        locShopCart.bossDiscount = Number(10).toFixed(1);
-    }
-    var realpriceChange;//实收金额改变的时候反给后台的参数
-    var locMember={};//会员信息
+    initOrderData();
+    var realpriceChange;                                  //实收金额改变的时候反给后台的参数
+    var locMember={};                                     //会员信息
     var couponData = {};                                  //订单抵用券数据
     var locOrder = {};                                    //订单的属性存储
-    var orderFormData = {};                               //订单表格数据
-    var priceData = false;                                //计算金额
     var userScore = 0;                                    //会员积分
     var userDiscount = 10.0;                              //会员折扣
-    var couponid;                                         //促销方式（优惠券id）
     var submitInfo={};                                    //提交订单信息
     var locOrderData = {};                                //订单信息
     var onlinePayMoney;                                   //支付金额
@@ -1790,52 +1772,92 @@
     template.helper('initobj',function (obj) {
         return JSON.stringify(obj)
     });
-
     $(function () {
         psid = quakooUser.getUserInfo().psid;             //企业ID(公司ID)
         subid = quakooDb.getItem("sel_ShopId");           //门店ID
-        initPage();                                       //页面初始化
-        getListClass();                 //类目
-        getListBrand();                 //品牌
+        initPage(true);                                       //页面初始化
+        getListClass();                                   //类目
+        getListBrand();                                   //品牌
     });
-    function initPage() {
+    /**初始化页面*/
+    function initPage(isfirst) {
+        getTemporaryOrder(); //获取门店下临时订单
+        /**************顾客****************/
         renderCusInfo();
         selectTag($("#searchTypeBox"), function (ret) {
-            cusInfoType = ret.value;
-            if (cusInfoType == 1) {
+            cusSeachType = ret.value;
+            if (cusSeachType == 1) {
                 $('#searchPhoneUser').attr('placeholder', '搜索手机号')
-            } else if (cusInfoType == 2) {
+            } else if (cusSeachType == 2) {
                 $('#searchPhoneUser').attr('placeholder', '搜索会员卡号')
             }
         });
+        /**************验光****************/
         var time = quakooUtils.formatTimeToDate(Date.now());
         $("#tests2").val(time);
         $("#tests2").attr('placeholder',time);
-        getUsersByJob("验光师", 1, 1);                         //获取门店下的验光师
-        renderYgTable(LocYgInfo.yuanTable, "#tableContent", true);  //验光信息远用table
-        renderYgTable(LocYgInfo.yinTable, "#tableContent");   //验光信息隐形table
-        renderYgTable(LocYgInfo.jinTable, "#tableContent");   //验光信息近用table
-        renderYgTable(LocYgInfo.jianTable, "#tableContent");  //验光信息渐进多焦点table
+        if(isfirst){
+            renderYgTable(LocYgInfo.yuanTable, "#tableContent", true); //验光信息远用table
+            renderYgTable(LocYgInfo.yinTable, "#tableContent");        //验光信息隐形table
+            renderYgTable(LocYgInfo.jinTable, "#tableContent");        //验光信息近用table
+            renderYgTable(LocYgInfo.jianTable, "#tableContent");       //验光信息渐进多焦点table
+        }
+        getUsersByJob("验光师", 1, 1);                              //获取门店下的验光师
+        getResult();//渲染结果和建议
+        getYgInfo(cusLocInfo.id);
         /**************订单****************/
         getUsersByJob("销售员", 1, 2);                         //获取门店下的销售员
         getUsersByJob("加工师", 1, 3);                         //获取门店下的加工师
         getExtraCharges();                                    //获取附加费用
         getListPromotions();                                  //获取促销方式
-        getTemporaryOrder();                                  //获取门店下临时订单
         renderList();
+    }
+    /**初始化数据*/
+    function initPageData(){
+        cusLocInfo = {};
+        ygInfo = {now: {}};
+        initOrderData();
+    }
+
+    /**初始化订单数据*/
+    function initOrderData(){
+        locShopCart={};
+        locShopCart.skuidsList = [];
+        locShopCart.surchargesJson = [];
+        locShopCart.valueCard = [];
+        locShopCart.couponArr = [];
+        locShopCart.orginalPrice = 0;
+        locShopCart.discountPrice = 0;
+        locShopCart.collectPrice = 0;
+        locShopCart.bossDiscount = Number(10).toFixed(1);
     }
 
     /**接口——获取门店下的临时订单*/
     function getTemporaryOrder() {
         quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(), {subId: subid,makeStatus:6}, function (ret) {
-            if (ret && ret.data) {
+            if (ret && quakooUtils.isNotBlack(ret.data)) {
                 document.querySelector("#selectBox .text").innerHTML = "临时订单";
+                for(var i=0;i<ret.data.length;i++){
+                    provisionalOrder[ret.data[i].id] = ret.data[i];
+                }
                 var data = {list: ret.data};
                 var html = template("proOrderData", data);
                 $("#proOrderList").html(html);
                 selectTag($("#selectBox"), function (ret) {
+                    initPageData();//初始化页面数据
                     //切换订单
-                    showCus(data.list)
+                    if(quakooUtils.isNotBlack(provisionalOrder[ret.value].userInfo)){
+                        for(var i in provisionalOrder[ret.value].userInfo){
+                            cusLocInfo[i] = provisionalOrder[ret.value].userInfo[i];
+                        }
+                    }
+                    if(quakooUtils.isNotBlack(provisionalOrder[ret.value].oiId)){
+
+                    }
+                    if(quakooUtils.isNotBlack(ret.value)){
+                        getOrderInfoToLoc(provisionalOrder[ret.value]);
+                    }
+                    initPage();//根据数据初始化整个页面
                 })
             } else {
                 document.querySelector("#selectBox .text").innerHTML = "无临时订单";
@@ -1847,7 +1869,7 @@
     /**渲染顾客信息*/
     function renderCusInfo(){
         var data = {list:cusLocInfo};
-        console.log("顾客模版数据",data)
+        console.log("顾客模版数据",data);
         var html = template("cusBasicTmp",data);
         var memHtml = template("memberTmp",data);
         $("#cusBasicUl").html(html);
@@ -1915,9 +1937,9 @@
         var param = {};
         param.subid = subid;
         param.userType = 0;
-        if (cusInfoType == 1) {
+        if (cusSeachType == 1) {
             param.phone1 = content;
-        } else if (cusInfoType == 2) {
+        } else if (cusSeachType == 2) {
             param.cardNumber = content;
         }
         /**打开顾客搜索结果的弹窗*/
@@ -2008,7 +2030,7 @@
         });
     }
     /**接口——获取意向顾客*/
-    function intentionCustomers() {
+    function activeCus() {
         layer.open({
             type: 1,
             skin: 'layui-layer-demo', //样式类名
@@ -2106,11 +2128,11 @@
         });
     }
     function selIntentionCus(data,diaIndex) {
-            cusLocInfo = {};
+            initPageData();
             for(var i in data){
                 cusLocInfo[i] = data[i];
             }
-            renderCusInfo();
+            initPage();
             layer.close(diaIndex);
     }
     /**注册成为会员*/
@@ -2472,7 +2494,6 @@
     /***************************************************顾客信息结束*****************************************************/
 
     /***************************************************验光模块开始*****************************************************/
-    getResult();//渲染结果和建议
     /**关联瞳距*/
     function relevancePd(){
         $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').change(function () {
@@ -2481,7 +2502,6 @@
             $('#farDistance').val(yuanLPd*1+yuanRPd*1);
             $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(Number(yuanRPd));
             $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').val(Number(yuanRPd));
-
         });
         $('.yuan-table input[data-attr1="leftResItem"][data-attr2="pd"]').change(function () {
             var yuanRPd = $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').val();
@@ -2496,7 +2516,6 @@
             $('#farDistance').val(yuanLPd*1+yuanRPd*1);
             $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(Number(yuanRPd));
             $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').val(Number(yuanRPd));
-
         });
         $('.jin-table input[data-attr1="leftResItem"][data-attr2="pd"]').change(function () {
             var yuanRPd = $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').val();
@@ -2511,7 +2530,6 @@
             $('#farDistance').val(yuanLPd*1+yuanRPd*1);
             $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(Number(yuanRPd));
             $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(Number(yuanRPd));
-
         });
         $('.jian-table input[data-attr1="leftResItem"][data-attr2="fpd"]').change(function () {
             var yuanRPd = $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').val();
@@ -2529,7 +2547,6 @@
             $('.jin-table input[data-attr1="leftResItem"][data-attr2="pd"]').val(average);
             $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').val(average);
             $('.jian-table input[data-attr1="leftResItem"][data-attr2="fpd"]').val(average);
-
         });
     }
 
@@ -2632,46 +2649,52 @@
         clearYgInfo(true);
         var param = {};
         if (quakooUtils.isBlack(cusId)) {
-            layer.msg("请完善用户信息");
+            // layer.msg("请完善用户信息");
             return;
         }
         param.uid = cusId;
-        param.size = 10;
         quakooData.ajaxGetData(config.getUrl_optometryinfo_getList(), param, function (ret) {
             if (ret && ret.success) {
-                var html = "";
-                var data = [];
-                var selHtml = "";
-                var selData = [];
-                for (var i = 0; i < ret.data.length; i++) {
-                    ret.data[i].showTime = quakooUtils.formatTimeToDateDianLY(ret.data[i].optTime);
-                    ygInfo[ret.data[i].showTime] = ret.data[i];
-                    var str = [];
-                    if (quakooUtils.isNotBlack(ret.data[i].yuanYongRes) && (quakooUtils.isNotBlack(ret.data[i].yuanYongRes.leftResItem) || quakooUtils.isNotBlack(ret.data[i].yuanYongRes.rightResItem))) {
-                        str.push('<span>远用</span>')
+                if(quakooUtils.isNotBlack(ret.data)){
+                    console.log("获取验光信息",ret.data);
+                    //tab切换
+                    var html = "";
+                    var data = [];
+                    //两条以上右侧下拉框
+                    var selHtml = "";
+                    var selData = [];
+                    for (var i = 0; i < ret.data.length; i++) {
+                        ret.data[i].showTime = quakooUtils.formatTimeToDateDianLY(ret.data[i].optTime);
+                        ygInfo[ret.data[i].optTime] = ret.data[i];
+                        var str = [];
+                        if (quakooUtils.isNotBlack(ret.data[i].yuanYongRes) && (quakooUtils.isNotBlack(ret.data[i].yuanYongRes.leftResItem) || quakooUtils.isNotBlack(ret.data[i].yuanYongRes.rightResItem))) {
+                            str.push('<span>远用</span>')
+                        }
+                        if (quakooUtils.isNotBlack(ret.data[i].jinYongRes) && (quakooUtils.isNotBlack(ret.data[i].jinYongRes.leftResItem) || quakooUtils.isNotBlack(ret.data[i].jinYongRes.rightResItem))) {
+                            str.push('<span>近用</span>')
+                        }
+                        if (quakooUtils.isNotBlack(ret.data[i].yinXingRes) && (quakooUtils.isNotBlack(ret.data[i].yinXingRes.leftResItem) || quakooUtils.isNotBlack(ret.data[i].yinXingRes.rightResItem))) {
+                            str.push('<span>隐形</span>')
+                        }
+                        if (quakooUtils.isNotBlack(ret.data[i].jianJinDuoJiaoDianRes) && (quakooUtils.isNotBlack(ret.data[i].jianJinDuoJiaoDianRes.leftResItem) || quakooUtils.isNotBlack(ret.data[i].jianJinDuoJiaoDianRes.rightResItem))) {
+                            str.push('<span>渐进多焦点</span>')
+                        }
+                        ret.data[i].span = str.join('');
+                        if (i < 2) {
+                            data.push(ret.data[i]);
+                        }
+                        if (i >= 2) {
+                            selData.push(ret.data[i]);
+                        }
                     }
-                    if (quakooUtils.isNotBlack(ret.data[i].jinYongRes) && (quakooUtils.isNotBlack(ret.data[i].jinYongRes.leftResItem) || quakooUtils.isNotBlack(ret.data[i].jinYongRes.rightResItem))) {
-                        str.push('<span>近用</span>')
+                    html = template("tagDateList", {list: data});
+                    $("#tagDataBox").html(html);
+                    if (quakooUtils.isNotBlack(selData)) {
+                        selHtml = template("ygRecord", {list: selData});
+                        $("#moreYgList").html(selHtml);
+                        selectTag($("#optometrySelect"),function (ret) {
+                        })
                     }
-                    if (quakooUtils.isNotBlack(ret.data[i].yinXingRes) && (quakooUtils.isNotBlack(ret.data[i].yinXingRes.leftResItem) || quakooUtils.isNotBlack(ret.data[i].yinXingRes.rightResItem))) {
-                        str.push('<span>隐形</span>')
-                    }
-                    if (quakooUtils.isNotBlack(ret.data[i].jianJinDuoJiaoDianRes) && (quakooUtils.isNotBlack(ret.data[i].jianJinDuoJiaoDianRes.leftResItem) || quakooUtils.isNotBlack(ret.data[i].jianJinDuoJiaoDianRes.rightResItem))) {
-                        str.push('<span>渐进多焦点</span>')
-                    }
-                    ret.data[i].span = str.join('');
-                    if (i < 2) {
-                        data.push(ret.data[i]);
-                    }
-                    if (i >= 2) {
-                        selData.push(ret.data[i]);
-                    }
-                }
-                html = template("tagDateList", {list: data});
-                $("#tagDataBox").html(html);
-                if (quakooUtils.isBlack(selData)) {
-                    selHtml = template("ygRecord", {list: selData});
-                    $("#moreYgList").html(selHtml);
                 }
             }
         })
@@ -2690,7 +2713,6 @@
         }
         ygInfo[time].desc = $("#optometryRemarks").val();
         ygInfo[time].farPd = $(".rightFooterBox .companyBox input.text").val();
-        ygInfo[time].wearProp = ygwearProp;
         ygInfo[time].res = ygResults;
         ygInfo[time].support = ygAdvise;
         ygInfo[time].yuanYongRes = {};
@@ -2729,7 +2751,7 @@
 
     /**根据本地时间下标对象回显验光数据*/
     function renderYgInfo(type, time, _self) {
-        savaTableToObj(presubTime);//保存上一个时间下标的数据到本地
+        savaTableToObj(presubTime); //保存上一个时间下标的数据到本地
         presubTime = time;
         if (type === 1 && ygNowStatus) {
             ygSaveBtn = true;
@@ -2746,7 +2768,6 @@
         //验光师
         if (data.optUserName) {
             $("#optometristName .text").html(data.optUserName);
-        } else {
         }
         //验光时间
         if (data.optTime) {
@@ -2766,16 +2787,6 @@
         } else {
             $(".rightFooterBox .companyBox input.text").val('');
         }
-/*
-        //属性
-        if (data.wearProp == 1) {
-            $("#glasses .text").html("近视眼镜");
-        } else if (data.wearProp == 2) {
-            $("#glasses .text").html("远视眼镜");
-        } else if (data.wearProp == 3) {
-            $("#glasses .text").html("隐形眼镜");
-        }
-*/
         //结果和建议
         if (data.res) {
             $("#result .text").html(data.res);
@@ -2938,7 +2949,7 @@
         });
     }
 
-    //表单滚动条
+    /**表单滚动条*/
     var type = true;
     $('#tableContent').hover(function () {
         $(this).addClass('active');
@@ -2946,7 +2957,7 @@
     }, function () {
         $(this).removeClass('active');
     });
-    //验光Tag
+    /**验光Tag*/
     $("#ygType li").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
         $('#tableContent>table').eq($(this).index()).removeClass('hide').siblings().addClass('hide');
@@ -2956,12 +2967,6 @@
             $(".companyBox")[0].style.display='inline-block';
         }
     });
-/*
-    ygwearProp = 1;
-    selectTag($("#glasses"), function (ret) {
-        ygwearProp = ret.value;
-    });
-*/
     mainEye = 1;
     selectTag($("#maineye"), function (ret){
         mainEye = ret.value;
@@ -3010,16 +3015,16 @@
     /**最终折扣编辑*/
     function discountChange() {
         var discount = $("#bossDiscount").val()*1;
-        if(0<discount<=10){
+        if(discount > 0 && discount <= 10){
             locShopCart.bossDiscount = discount.toFixed(1);
             for(var i=0;i<locShopCart.skuidsList.length;i++){
                 locShopCart.skuidsList[i].discount = discount;
             }
+            countOrder()
         }else{
             layer.msg("非法输入");
             $("#bossDiscount").val(locShopCart.bossDiscount);
         }
-        countOrder()
     }
     /**获取附加费用*/
     function getExtraCharges(){
@@ -3142,18 +3147,65 @@
             locShopCart.valueCard.splice(index,1);
         }
         if(quakooUtils.isBlack(locShopCart.skuidsList)&&quakooUtils.isBlack(locShopCart.valueCard)&&quakooUtils.isBlack(locShopCart.surchargesJson)){
-            initOrderInfo();
+            initOrderData();
             renderList()
         }else{
             countOrder()
         }
     }
     /**渲染表格数据*/
-    function renderList(paidInType){
+    function renderList(){
         console.log("本地订单数据",locShopCart);
         var data = {list:locShopCart};
         var html = template("orderFormList",data);
         $("#orderForm").html(html);
+        /**折扣*/
+/*
+        if(quakooUtils.isNotBlack(locShopCart.skuidsList)){
+            $("#bossDiscount").bind("input propertychange",function(){
+                var timer = null;
+                var discount = $(this).val()*1;
+                if(!timer){
+                    timer = setTimeout(function(){
+                        if(discount > 0 && discount <= 10){
+                            locShopCart.bossDiscount = discount.toFixed(1);
+                            for(var i=0;i<locShopCart.skuidsList.length;i++){
+                                locShopCart.skuidsList[i].discount = discount;
+                            }
+                            countOrder()
+                        }else if(discount<0||discount>10){
+                            layer.msg("非法输入");
+                        }
+                    },800);
+                }
+            })
+        }else{
+            $("#bossDiscount").attr("readonly","readonly")
+        }
+*/
+        /**实收金额*/
+/*
+        $("#PaidMoney").bind("input propertychange",function(){
+            var timer = null;
+            var collectPrice = $(this).val()*100;
+            if(!timer){
+                timer = setTimeout(function(){
+                    if(collectPrice<0){
+                        layer.msg("不能小于0");
+                        $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
+                        return;
+                    }else if(collectPrice>locShopCart.orginalPrice){
+                        layer.msg("实收金额不能大于原价");
+                        $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
+                        return;
+                    }else{
+                        realpriceChange = collectPrice;
+                        countOrder();
+                    }
+                },1000)
+            }
+        })
+*/
     }
     /**添加常规商品*/
     function addPro(type) {
@@ -3790,63 +3842,71 @@
         quakooData.ajaxGetData(config.getUrl_businessOrder_currentCalculate(),params,function (ret) {
             if(ret&&ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
-                    locShopCart = {};
-                    locShopCart.skuidsList = []; //常规商品
-                    locShopCart.valueCard = []; //储值卡
-                    locShopCart.couponArr = []; //优惠券
-                    locShopCart.surchargesJson = [];//附加费用
-                    if(ret.data.staffId){
-                        locShopCart.saleUid = ret.data.staffId;
-                    }
-                    if(ret.data.machinistId){
-                        locShopCart.machinistId = ret.data.machinistId;
-                    }
-                    if(ret.data.desc){
-                        locShopCart.desc = ret.data.desc;
-                    }
-                    locShopCart.bossDiscount = ret.data.discount;
-                    locShopCart.orginalPrice = ret.data.originalPrice;
-                    locShopCart.discountPrice = ret.data.discountPrice;
-                    locShopCart.collectPrice = ret.data.realPrice;
-                    locShopCart.totalPrice = ret.data.totalPrice;
-                    if(ret.data.rechargePrice > 0){
-                        locShopCart.valueCard[0] = {};
-                        locShopCart.valueCard[0].name = "储值卡";
-                        locShopCart.valueCard[0].price = ret.data.rechargePrice;
-                    }
-                    if(ret.data.oddsPrice){
-                        locShopCart.reductionPrice = ret.data.oddsPrice;
-                    }
-                    //附加费用
-                    for(var i = 0;i < ret.data.surcharges.length;i++){
-                        locShopCart.surchargesJson.push(ret.data.surcharges[i]);
-                    }
-                    if(quakooUtils.isNotBlack(ret.data.coupon)){
-                        locShopCart.couponArr[0] = {};
-                        locShopCart.couponArr[0].id = ret.data.coupon.id;
-                        locShopCart.couponArr[0].name = ret.data.coupon.title;
-                        locShopCart.couponArr[0].price = ret.data.coupon.descSubtract;
-                    }
-                    for(var i = 0;i < ret.data.skuList.length;i++){
-                        locShopCart.skuidsList[i] = {};
-                        locShopCart.skuidsList[i].spuid = ret.data.skuList[i].spuId;
-                        locShopCart.skuidsList[i].id = ret.data.skuList[i].skuId;
-                        locShopCart.skuidsList[i].code = ret.data.skuList[i].code;
-                        locShopCart.skuidsList[i].subtotal = ret.data.skuList[i].subtotal;
-                        locShopCart.skuidsList[i].num = ret.data.skuList[i].num;
-                        locShopCart.skuidsList[i].retailPrice = ret.data.skuList[i].price;
-                        locShopCart.skuidsList[i].discount = ret.data.skuList[i].discount;
-                        locShopCart.skuidsList[i].canUseNum = ret.data.skuList[i].canUseNum;
-                    }
+                    getOrderInfoToLoc(ret.data);
                     renderList();
                 }
             }else{
-                initOrderInfo();
+                initOrderData();
                 renderList();
                 layer.msg(ret.data);
             }
         })
     }
+    /**获取订单数据保存为本地对象*/
+    function getOrderInfoToLoc(orderData){
+        locShopCart = {};
+        locShopCart.skuidsList = []; //常规商品
+        locShopCart.valueCard = []; //储值卡
+        locShopCart.couponArr = []; //优惠券
+        locShopCart.surchargesJson = [];//附加费用
+        if(orderData.staffId){
+            locShopCart.saleUid = orderData.staffId;
+        }
+        if(orderData.machinistId){
+            locShopCart.machinistId = orderData.machinistId;
+        }
+        if(orderData.desc){
+            locShopCart.desc = orderData.desc;
+        }
+        locShopCart.bossDiscount = orderData.discount;
+        locShopCart.orginalPrice = orderData.originalPrice;
+        locShopCart.discountPrice = orderData.discountPrice;
+        locShopCart.collectPrice = orderData.realPrice;
+        locShopCart.totalPrice = orderData.totalPrice;
+        if(orderData.rechargePrice > 0){
+            locShopCart.valueCard[0] = {};
+            locShopCart.valueCard[0].name = "储值卡";
+            locShopCart.valueCard[0].price = orderData.rechargePrice;
+        }
+        if(orderData.oddsPrice){
+            locShopCart.reductionPrice = orderData.oddsPrice;
+        }
+        //附加费用
+        for(var i = 0;i < orderData.surcharges.length;i++){
+            locShopCart.surchargesJson.push(orderData.surcharges[i]);
+        }
+        if(quakooUtils.isNotBlack(orderData.couponId)){
+            locShopCart.couponId = orderData.couponId;
+        }
+        if(quakooUtils.isNotBlack(orderData.coupon)){
+            locShopCart.couponArr[0] = {};
+            locShopCart.couponArr[0].id = orderData.coupon.id;
+            locShopCart.couponArr[0].name = orderData.coupon.title;
+            locShopCart.couponArr[0].price = orderData.coupon.descSubtract;
+        }
+        for(var i = 0;i < orderData.skuList.length;i++){
+            locShopCart.skuidsList[i] = {};
+            locShopCart.skuidsList[i].spuid = orderData.skuList[i].spuId;
+            locShopCart.skuidsList[i].id = orderData.skuList[i].skuId;
+            locShopCart.skuidsList[i].code = orderData.skuList[i].code;
+            locShopCart.skuidsList[i].subtotal = orderData.skuList[i].subtotal;
+            locShopCart.skuidsList[i].num = orderData.skuList[i].num;
+            locShopCart.skuidsList[i].retailPrice = orderData.skuList[i].price;
+            locShopCart.skuidsList[i].discount = orderData.skuList[i].discount;
+            locShopCart.skuidsList[i].canUseNum = orderData.skuList[i].canUseNum;
+        }
+    }
+
     /**检查list是否包含某一项*/
     function checkList(arr,id) {
         var obj={};
@@ -3919,7 +3979,7 @@
                       params.page = this.pageNumber;
                     params.size = this.pageSize;
                     params.token = quakooUser.getUserInfo().token;
-                    params.uid = cusId;
+                    params.uid = cusLocInfo.id;
                     params.subId = subid;
                     return params;
                 },
@@ -3935,6 +3995,9 @@
     /**保存订单*/
     function saveOrder(type) {
         var params = {};
+        if(quakooUtils.isNotBlack(cusLocInfo.id)){
+            params.uid = cusLocInfo.id;
+        }
         if(quakooUtils.isBlack(locShopCart.machinistId)){
             layer.msg("请选择加工师");
             return;
@@ -3956,7 +4019,9 @@
         params.totalPrice = locShopCart.totalPrice;
         params.oddsPrice = locShopCart.reductionPrice;
         params.discount = locShopCart.bossDiscount;
-        params.rechargePrice = locShopCart.valueCard[0].price;
+        if(locShopCart.valueCard.length>0){
+            params.rechargePrice = locShopCart.valueCard[0].price;
+        }
         params.makeStatus = 6;
         if(quakooUtils.isNotBlack(locShopCart.couponId)&&quakooUtils.isNotBlack(locShopCart.couponArr)){
             params.couponId = locShopCart.couponArr[0].id;
