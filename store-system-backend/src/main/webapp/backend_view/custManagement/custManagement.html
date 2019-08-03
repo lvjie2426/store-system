@@ -715,7 +715,7 @@
             resize: false,
             move: '.sMove',
             yes: function (index) {
-                quakooUtils.isNotBlack(data.id) ? addAndEdit(config.getUrl_usergrade_update(),index) : addAndEdit(config.getUrl_usergrade_add(),index);
+                quakooUtils.isNotBlack(data.id) ? addAndEdit(config.getUrl_usergrade_update(),index,data.id) : addAndEdit(config.getUrl_usergrade_add(),index);
             },
             btn2: function () {
             },
@@ -764,7 +764,7 @@
 
     }
     /**新增和编辑会员等级接口*/
-    function addAndEdit(url,index) {
+    function addAndEdit(url,index,memberId) {
         var title = $("#grade-title").val();
         var conditionScore = $("#grade-condition").val();
         var substituteScore = $("#fornow-num").val();
@@ -792,6 +792,9 @@
         }
         if (quakooUtils.isNotBlack(title) && quakooUtils.isNotBlack(conditionScore) && quakooUtils.isNotBlack(substituteScore) && quakooUtils.isNotBlack(substituteMoney) && quakooUtils.isNotBlack(substituteRate) && quakooUtils.isNotBlack(gainMoney) && quakooUtils.isNotBlack(gainScore) && quakooUtils.isNotBlack(discount)) {
             var param = {};
+            if(memberId){
+                param.id = memberId
+            }
             param.subid = psid;//公司ID
             param.title = title;//名称
             param.conditionScore = conditionScore;//达到等级条件
@@ -807,9 +810,7 @@
             if (introducer2) {
                 param.introducer = {"2": introducer2 * 100};
             }
-            console.log("新增会员等级的参数：", param);
             quakooData.ajaxGetData(url, param, function (ret) {
-                console.log("新增会员等级返回数据：", ret);
                 if(ret.success){
                     getAllList(psid, config.getUrl_usergrade_getAllList());
                     layer.close(index);
@@ -821,10 +822,7 @@
             alert("请填写完表格");
             return
         }
-
     }
-
-
     /**删除会员等级*/
     function del(id) {
         layer.confirm('确认删除?', {icon: 2, title:'提示'}, function(index){
@@ -1200,60 +1198,7 @@
         layer.close(_StffEdit);
         layer.close(index);
     }
-
-
-    //设置会员默认折扣
-    function openSettingVip() {
-        layer.open({
-            type: 1,shade: 0.01,title:'设置默认折扣',
-            skin: 'layui-layer-yj layui-layer-vip', //样式类名
-            anim: 0,
-            area:['360px','336px'],
-            closeBtn: 0, //不显示关闭按钮
-            resize:false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-yj'),
-            btn: ['取消','确定'],
-            yes: function(index, layero){
-                layer.close(index)
-            },
-            btn2: function(){
-                var obj = {};
-                $('.vipInput').each(function (index,item) {
-                    if(quakooUtils.isNotBlack(item.value)){
-                        obj[item.getAttribute('data-id')] = item.value;
-                    }
-                })
-                for(var i in obj){
-                    if(parseFloat(obj[i])<=0 || parseFloat(obj[i])>10){
-                        layer.msg('请输入0~10之间的折扣')
-                        return false
-                        break ;
-                    }
-                }
-                $("#discount").val(JSON.stringify(obj))
-            },
-            success: function(layero, index){
-                quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
-                    var obj = $("#discount").val();
-                    if(obj){
-                        obj = JSON.parse(obj);
-                        if(quakooUtils.isJson(obj)){
-                            for(var i=0;i<ret.data.length;i++){
-                                for(var j in obj){
-                                    if(ret.data[i].id == j){
-                                        ret.data[i].value = obj[j]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    var html = template('vipTmp',{list:ret.data});
-                    $('#vipDom').html(html);
-                })
-            }
-        });
-    }
+    /**获取一级类目*/
     function getClass(){
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
             console.log("获取一级类目",ret)
