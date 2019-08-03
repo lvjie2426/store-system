@@ -670,7 +670,7 @@
                     <%}%>
                         <div class="yj-radio"></div>
                         <span>参与会员折扣</span>
-                        <em onclick="openSettingVip(this)">设置</em>
+                        <!--<em onclick="openSettingVip(this)">设置</em>-->
                     </div>
                 </div>
 
@@ -792,21 +792,23 @@
                 </div>
                 <div style="clear: both"></div>
             </div>
-            <div class="goods-select-box">
-                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
-                    <form class="layui-form" action="">
-                        <div class="layui-form-item" pane="">
-                            <div class="layui-input-block yj-check-input">
-                                <%if(list.nowRemind){%>
-                                <input type="checkbox" name="" checked="checked"  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input value='<%=list.nowRemind%>' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
-                                <%}else{%>
-                                <input type="checkbox" name=""  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input readonly='' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
-                                <%}%>
+            <%if(list.categoryName!='镜片'){%>
+                <div class="goods-select-box">
+                    <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item" pane="">
+                                <div class="layui-input-block yj-check-input">
+                                    <%if(list.nowRemind){%>
+                                    <input type="checkbox" name="" checked="checked"  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input value='<%=list.nowRemind%>' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
+                                    <%}else{%>
+                                    <input type="checkbox" name=""  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input readonly='' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
+                                    <%}%>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            <%}%>
         </form>
     </script>
     <!--供应商-->
