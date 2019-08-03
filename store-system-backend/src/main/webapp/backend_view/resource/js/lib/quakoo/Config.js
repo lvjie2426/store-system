@@ -178,7 +178,7 @@ var Config = (function(_super){
     /**资金管理 -- 进行结算*/
     _proto.getUrl_settlement_add = function(){return this.serverUrl + '/settlement/add';};
     /**资金管理 -- 获取金额*/
-    _proto.getUrl_order_calculateOrders = function(){return this.serverUrl + '/order/calculateOrders';};
+    _proto.getUrl_businessOrder_calculateOrders = function(){return this.serverUrl + '/businessOrder/calculateOrders';};
     /**资金管理 -- 获取金额*/
     _proto.getUrl_settlement_getFinanceLogs = function(){return this.serverUrl + '/settlement/getFinanceLogs';};
 

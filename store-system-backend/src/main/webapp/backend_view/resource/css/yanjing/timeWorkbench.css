@@ -663,16 +663,6 @@ header ul li {
 
 
 
-
-
-
-
-
-
-
-
-
-
 /* 当前页面公用样式 */
 .ov {
     padding: 8px 16px;
@@ -682,7 +672,7 @@ header ul li {
     background: #F4F4F8;
 }
 .layui-layer-btn a{
-    line-height: 26px !important;
+    line-height: 26px
 }
 .btnSetOrder{
     padding: 4px 10px;
@@ -965,4 +955,28 @@ color: #393953;
     background: #F4F4F8;
     border-right: 1px solid #ECECF4;
     height: 36px;
+}
+
+.layui-layer-demo .layui-layer-btn .layui-layer-btn0{
+    height: 32px;
+    line-height: 32px;
+    margin:0;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: center;
+}
+
+.layui-layer-demo .layui-layer-btn .layui-layer-btn1{
+    height: 32px;
+    line-height: 32px;
+    margin:0;
+    margin-left:6px;
+    border-radius: 2px;
+    background-color: rgba(221, 91, 75, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    text-align: center;
 }

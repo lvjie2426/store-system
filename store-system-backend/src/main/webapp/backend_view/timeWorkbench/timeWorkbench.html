@@ -191,14 +191,6 @@
             </div>
             <span class="fcHui fr">结算人</span>
         </div>
-        <div class="sel-time-box">
-            <div class="time-text">请选择结算时间段</div>
-            <div class="yj-demo2-time" id="saletime">
-                <div class="yj-date">
-                    <span >开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                </div>
-            </div>
-        </div>
         <div class="titleBox clearfix bomr">
             <span class="fcHui">销售额</span><em id="timeSale">￥0</em>
             <span class="fcHui">现金</span><em id="timeCash">￥0</em>
@@ -386,7 +378,7 @@
 <script type="text/html" id="closeCashSeleTmp">
     <div class="select-box-header">
         <%if(list.length>0){%>
-        <span class="text"><%=list[0].userName%></span>
+        <span class="text"><%=list[0].name%></span>
         <%}else{%>
         <span class="text">暂无员工</span>
         <%}%>
@@ -411,6 +403,7 @@
     var todayDataIn = [];
     var todayDataOut = [];
     var optId;//结算人ID
+    var lastEndtime = 0;
     var date = new Date();
     time=date.format("yyyyMM");
     //今日概览的时间选择
@@ -441,7 +434,7 @@
         quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:shopId,userType:1},function (ret) {
             if(ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
-                    optId = ret.data[0].id
+                    optId = ret.data[0].id;
                     var data = {list:ret.data};
                     var html = template("closeCashSeleTmp",data);
                     $('#closeCashSele').html(html);
@@ -922,14 +915,22 @@
     //获取最近一次结算
     function getLastSettlement() {
         quakooData.ajaxGetData(config.getUrl_settlement_loadClient(),{subId:shopId},function (ret) {
+            var time;
             if(ret&&ret.success){
-                var time = quakooUtils.formatTimeToMonthDian(ret.data.startTime)+"-"+quakooUtils.formatTimeToMonthDian(ret.data.endTime);
+                console.log("上一次的结算记录",ret.data);
+                lastEndtime = ret.data.endTime;
+                if(ret.data.startTime != 0 && ret.data.endTime != 0){
+                    time = quakooUtils.formatTimeToMonthDian(ret.data.startTime)+"-"+quakooUtils.formatTimeToMonthDian(ret.data.endTime);
+                }else if(ret.data.startTime == 0 && ret.data.endTime != 0){
+                    time = "开业"+"-"+quakooUtils.formatTimeToMonthDian(ret.data.endTime);
+                }else{
+                    time = "暂无结算记录";
+                }
                 $("#noSettlement").html(ret.data.balanceMoney);
                 $("#cashMoney").html(ret.data.payMoney);
                 $("#cashNum").html(ret.data.num);
                 $("#lastTime").html(time)
             }
-
         })
     }
     //结算现金
@@ -937,52 +938,49 @@
         var index = layer.open({
             type: 1,
             skin: 'layui-layer-demo', //样式类名
-            area: ['410px','400px'],
-            anim: 0,
+            anim:1,
+            area: ['410px','280px'],
             closeBtn: 0,
             title: '',
             shade: 0.03,
             shadeClose: true, //开启遮罩关闭
             scrollbar: false,
             content: $('.closeCashPop'),
-            btn: ['确认结算', '取消'],
+            btn: ['取消','确认结算'],
             move: $('.closeCashPop .titleBox h3'),
             resize: false,
             yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
                 settlement(index);
             },
-            btn2: function () {
-
-            },
             success: function (layero, index) {
+                var endTime = Date.now();
+                if(lastEndtime!=0){
+                    layero.append('<div class="ov"><span class="fcHui">结算时间</span><span class="fcHui fr">'+quakooUtils.formatTimeToMonthDian(lastEndtime)+' - '+quakooUtils.formatTimeToMonthDian(endTime)+'</span></div>');
+                }else{
+                    layero.append('<div class="ov"><span class="fcHui">结算时间</span><span class="fcHui fr">'+'开业'+' - '+quakooUtils.formatTimeToMonthDian(endTime)+'</span></div>');
+                }
                 getUser();
-                $('#timeSale').html("¥0");
-                $('#timeCash').html("¥0");
-                $('#timeAli').html("¥0");
-                $('#timeWx').html("¥0");
-                $('#timeOther').html("¥0");
-                $("#setTotal").val('');
-                $("#setcha").val('');
-                $("#setyuliu").val('');
-                $("#setjiao").val('');
-                $(".sel-time-box .yj-date span").html('开始时间-结束时间');
-                locSettlement ={};
-                layero.find('.layui-layer-btn0').addClass('btnRemove');
-                var date = new dateRange("#saletime", true);
-                date.init();
-                $(".closeCashPop .yj-date-btn .btn.btn-primary").click(function () {
-                    var startTime = date.getTime()[2];
-                    var endTime = date.getTime()[3];
-                    locSettlement.startTime = startTime;
-                    locSettlement.endTime = endTime;
-                    getMoney(startTime,endTime);
-                })
-
+                getMoney(lastEndtime,endTime);
             }
         });
     }
     function getMoney(startTime,endTime) {
-        quakooData.ajaxGetData(config.getUrl_order_calculateOrders(),{startTime:startTime,endTime:endTime,subId:shopId},function (ret) {
+        $('#timeSale').html("¥0");
+        $('#timeCash').html("¥0");
+        $('#timeAli').html("¥0");
+        $('#timeWx').html("¥0");
+        $('#timeOther').html("¥0");
+        $("#setTotal").val('');
+        $("#setcha").val('');
+        $("#setyuliu").val('');
+        $("#setjiao").val('');
+        locSettlement = {};
+        locSettlement.startTime = startTime;
+        locSettlement.endTime = endTime;
+        quakooData.ajaxGetData(config.getUrl_businessOrder_calculateOrders(),{startTime:startTime,endTime:endTime,subId:shopId},function (ret) {
             if(ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
                     for(var i in ret.data){
@@ -995,7 +993,7 @@
                     $('#timeWx').html("¥"+locSettlement.wx);
                     $('#timeOther').html("¥"+locSettlement.other);
                     $("#setTotal").val(locSettlement.total);
-                    countCha()
+                    // countCha()
                     $("#setyuliu").on("input  propertychange",function(){
                         countCha();
                         locSettlement.obligate = $("#setyuliu").val();
@@ -1058,16 +1056,13 @@
         param.wx = locSettlement.wx;
         param.other = locSettlement.other;
         param.total = locSettlement.total;
-        param.obligate = locSettlement.obligate;
-        param.payMoney = locSettlement.payMoney;
-        param.balanceMoney = locSettlement.balanceMoney;
+        param.obligate = locSettlement.obligate||0;
+        param.payMoney = locSettlement.payMoney||0;
+        param.balanceMoney = locSettlement.balanceMoney||0;
         param.num = locSettlement.num;
         param.startTime = locSettlement.startTime;
         param.endTime = locSettlement.endTime;
-        if(quakooUtils.isBlack(param.startTime)||quakooUtils.isBlack(param.endTime)){
-            layer.msg("请选择时间");
-            return;
-        }
+        console.log("销售额",param);
         if(quakooUtils.isBlack(param.sale)){
             layer.msg("此时间段内没有销售额");
             return;
@@ -1077,6 +1072,8 @@
             if(ret.success){
                 layer.msg('结算成功',{icon:1});
                 layer.close(index)
+            }else{
+                layer.msg(ret.data);
             }
         })
     }
