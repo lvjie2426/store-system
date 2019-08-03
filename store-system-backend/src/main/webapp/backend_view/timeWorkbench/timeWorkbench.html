@@ -378,7 +378,7 @@
 <script type="text/html" id="closeCashSeleTmp">
     <div class="select-box-header">
         <%if(list.length>0){%>
-        <span class="text"><%=list[0].name%></span>
+        <span class="text">选择结算人</span>
         <%}else{%>
         <span class="text">暂无员工</span>
         <%}%>
@@ -434,7 +434,6 @@
         quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:shopId,userType:1},function (ret) {
             if(ret.success){
                 if(quakooUtils.isNotBlack(ret.data)){
-                    optId = ret.data[0].id;
                     var data = {list:ret.data};
                     var html = template("closeCashSeleTmp",data);
                     $('#closeCashSele').html(html);
@@ -867,7 +866,12 @@
             clickToSelect: true,
             columns: [
                 {field: "", title: "结算时间", align: "left", valign: "middle",formatter:function (val, row, index) {
-                        var html = quakooUtils.formatTimeToMonthDian(row.startTime)+'-'+quakooUtils.formatTimeToMonthDian(row.endTime);
+                    var html;
+                    if(row.startTime==0){
+                        html = "开业 - "+quakooUtils.formatTimeToMonthDian(row.endTime)
+                    }else{
+                        html = quakooUtils.formatTimeToMonthDian(row.startTime)+'-'+quakooUtils.formatTimeToMonthDian(row.endTime);
+                    }
                         return html;
                     }},
                 {
@@ -954,6 +958,7 @@
             },
             btn2: function (index) {
                 settlement(index);
+                return false;
             },
             success: function (layero, index) {
                 var endTime = Date.now();
@@ -1063,6 +1068,10 @@
         param.startTime = locSettlement.startTime;
         param.endTime = locSettlement.endTime;
         console.log("销售额",param);
+        if(quakooUtils.isBlack(param.optId)){
+            layer.msg("请选择结算人");
+            return;
+        }
         if(quakooUtils.isBlack(param.sale)){
             layer.msg("此时间段内没有销售额");
             return;
@@ -1070,6 +1079,7 @@
         param.status = 0;
         quakooData.ajaxGetData(config.getUrl_settlement_add(),param,function (ret) {
             if(ret.success){
+                getLastSettlement();
                 layer.msg('结算成功',{icon:1});
                 layer.close(index)
             }else{
