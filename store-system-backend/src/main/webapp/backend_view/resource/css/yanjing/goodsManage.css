@@ -438,7 +438,7 @@ body {
     box-sizing: border-box;
 }
 
-.table-self th {
+.memNumContent .table-self th {
     background-color: rgba(244, 244, 248, 1);
     color: rgba(130, 130, 151, 1);
     font-size: 12px;
@@ -448,7 +448,7 @@ body {
     line-height: 18px;
 }
 
-.table-self td {
+.memNumContent .table-self td {
     height: 36px;
     background-color: rgba(244, 244, 248, 0);
     box-shadow: 1px 0px 0px 0px rgba(236, 236, 244, 1), 0px 1px 0px 0px rgba(236, 236, 244, 1);
@@ -460,26 +460,26 @@ body {
     font-family: Roboto-Medium;
 }
 
-.table-self {
+.memNumContent .table-self {
     border: 1px solid rgba(236, 236, 244, 1);
 }
 
-.table-self>tbody>tr>td,
-.table-self>tbody>tr>th,
-.table-self>tfoot>tr>td,
-.table-self>tfoot>tr>th,
-.table-self>thead>tr>td,
-.table-self>thead>tr>th {
+.memNumContent .table-self>tbody>tr>td,
+.memNumContent .table-self>tbody>tr>th,
+.memNumContent .table-self>tfoot>tr>td,
+.memNumContent .table-self>tfoot>tr>th,
+.memNumContent .table-self>thead>tr>td,
+.memNumContent .table-self>thead>tr>th {
     height: 36px;
     border-top: none;
 }
 
-.table-self>tbody>tr>td input,
-.table-self>tbody>tr>th input,
-.table-self>tfoot>tr>td input,
-.table-self>tfoot>tr>th input,
-.table-self>thead>tr>td input,
-.table-self>thead>tr>th input {
+.memNumContent .table-self>tbody>tr>td input,
+.memNumContent .table-self>tbody>tr>th input,
+.memNumContent .table-self>tfoot>tr>td input,
+.memNumContent .table-self>tfoot>tr>th input,
+.memNumContent .table-self>thead>tr>td input,
+.memNumContent .table-self>thead>tr>th input {
     width: 100%;
     height: 100%;
     border: none;

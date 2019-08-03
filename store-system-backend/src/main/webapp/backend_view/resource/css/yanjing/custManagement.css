@@ -262,6 +262,12 @@ header>div button:nth-child(3) {
     color: #828297;
     height: 100%;
 }
+
+.addLevelPop .memNumContent{
+    width:90%;
+    margin:0 auto;
+}
+
 .settingBox li .inputContent{
     width: 75%;
     float: left;

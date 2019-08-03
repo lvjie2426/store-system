@@ -147,9 +147,6 @@
 
 <!--设置会员默认折扣-->
 <div class="content-view content-view-yj">
-    <table class="table  table-self" id="vipDom">
-
-    </table>
 </div>
 
 <!--导入模板-->
@@ -332,20 +329,6 @@
 
 <!--一级类目-->
 <script type="text/html" id="vipTmp">
-    <tr>
-        <th>品类</th>
-        <th>折扣</th>
-    </tr>
-    <%for(var i=0;i< list.length;i++){%>
-    <tr>
-        <td><%=list[i].name%></td>
-        <%if(list[i].value){%>
-        <td><input type="number" value="<%=list[i].value%>" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
-        <%}else{%>
-        <td><input type="number" data-id="<%=list[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
-        <%}%>
-    </tr>
-    <%}%>
 </script>
 <!--会员等级设置-->
 <script type="text/html" id="levelSetTmp">
@@ -405,16 +388,27 @@
         </li>
         <li class="m0">
             <div class="topic">会员默认折扣</div>
-            <div class="inputContent">
-                <div class="btn btn-info" style="padding: 0 10px" onclick="openSettingVip()">设置</div>
-                <%if(list.discount){%>
-                <input type="text" placeholder="数值" style="width: 100%;opacity: 0"  id="discount" value='<%=list.discountJson%>'>
-                <%}else{%>
-                <input type="text" placeholder="数值" style="width: 100%;opacity: 0"  id="discount">
-                <%}%>
-            </div>
         </li>
     </ul>
+    <div class="memNumContent">
+        <table class="table  table-self" id="vipDom">
+            <tr>
+                <th>品类</th>
+                <th>折扣</th>
+            </tr>
+            <%for(var i=0;i< list.discountObj.length;i++){%>
+            <tr>
+                <td><%=list.discountObj[i].name%></td>
+                <%if(list.discountObj[i].discount){%>
+                <td><input type="number" value="<%=list.discountObj[i].discount%>" data-id="<%=list.discountObj[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
+                <%}else{%>
+                <td><input type="number" data-id="<%=list.discountObj[i].id%>" class="vipInput" placeholder="请输入0~10之间的数"></td>
+                <%}%>
+            </tr>
+            <%}%>
+        </table>
+    </div>
+
     <%if(list.introducer){%>
         <div class="pd10 mb16">
             <input type="checkbox" id="jsrChecked" checked>
@@ -493,6 +487,7 @@
     var orderStatus = -1;//订单状态    不传：全部订单    1/2/3：未完成订单   5：作废订单
     var orderStartTime = 0;//订单开始时间
     var orderEndTime = 0;//订单结束时间
+    var classObj = [];
     /**初始化页面*/
     $(function () {
         initPage();
@@ -521,6 +516,7 @@
         getAllUserJob(subid);                              //获取公司下所有职业
         getCustomerPager(subid, config.getUrl_user_getSubCustomerPager());//门店下顾客
         peopleNumStatistics()   //全部订单
+        getClass();//获取一级类目
     }
 
     /**手机号搜索*/
@@ -719,11 +715,22 @@
             resize: false,
             move: '.sMove',
             yes: function (index) {
-                quakooUtils.isNotBlack(data) ? addAndEdit(config.getUrl_usergrade_update(),index) : addAndEdit(config.getUrl_usergrade_add(),index);
+                quakooUtils.isNotBlack(data.id) ? addAndEdit(config.getUrl_usergrade_update(),index) : addAndEdit(config.getUrl_usergrade_add(),index);
             },
             btn2: function () {
             },
             success: function (layero, index) {
+                data.discountObj = [];
+                for(var i=0;i<classObj.length;i++){
+                    data.discountObj[i] = {};
+                    data.discountObj[i].id = classObj[i].id;
+                    data.discountObj[i].name = classObj[i].name;
+                    for(var j in data.discount){
+                        if(j == data.discountObj[i].id){
+                            data.discountObj[i].discount = data.discount[j];
+                        }
+                    }
+                }
                 renderLevel(data,index);
             },
         });
@@ -739,7 +746,6 @@
                 height:'400px'
             });
         }
-        levelData.discountJson = JSON.stringify(levelData.discount);
         var data = {list:levelData};
         var html = template("levelSetTmp",data);
         $("#levelSetUl").html(html);
@@ -766,7 +772,18 @@
         var substituteRate = $("#fornow-max").val();
         var gainMoney = $("#get-money").val();
         var gainScore = $("#get-num").val();
-        var discount = $("#discount").val();
+        var discount = {};
+        $('.vipInput').each(function (index,item) {
+            if(quakooUtils.isNotBlack(item.value)){
+                discount[item.getAttribute('data-id')] = item.value;
+            }
+        });
+        for(var i in discount){
+            if(parseFloat(discount[i])<=0 || parseFloat(discount[i])>10){
+                layer.msg('请输入0~10之间的折扣');
+                return;
+            }
+        }
         if ($("#introducer1")) {
             var introducer1 = $("#introducer1").val();
         }
@@ -783,7 +800,7 @@
             param.substituteRate = substituteRate;//最高抵现比例 %
             param.gainMoney = gainMoney * 100;//积分获取-金额
             param.gainScore = gainScore;//积分获取-积分
-            param.discount = JSON.parse(discount);//会员折扣比例 %
+            param.discount = discount;//会员折扣比例 %
             if (introducer1) {
                 param.introducer = {"1": introducer1};
             }
@@ -1230,14 +1247,30 @@
                                 }
                             }
                         }
-
                     }
-
                     var html = template('vipTmp',{list:ret.data});
                     $('#vipDom').html(html);
                 })
             }
         });
+    }
+    function getClass(){
+        quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
+            console.log("获取一级类目",ret)
+            if(ret&&ret.success){
+                if(quakooUtils.isNotBlack(ret.data)){
+                    classObj = [];
+                    for(var i=0;i<ret.data.length;i++){
+                        classObj[i]= {};
+                        classObj[i].id = ret.data[i].id;
+                        classObj[i].name = ret.data[i].name;
+                        classObj[i].pid = ret.data[i].pid;
+                        classObj[i].status = ret.data[i].status;
+                    }
+                }
+            }
+
+        })
     }
 </script>
 
