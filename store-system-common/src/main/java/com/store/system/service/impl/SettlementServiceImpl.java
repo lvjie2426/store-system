@@ -59,23 +59,27 @@ public class SettlementServiceImpl implements SettlementService {
         if (settlement.getObligate() < 0) throw new StoreSystemException("预留金不能为空");
         if (settlement.getPayMoney() < 0) throw new StoreSystemException("上缴现金不能为空");
         if (settlement.getNum() <= 0) throw new StoreSystemException("现金单数不能为空");
-        if (settlement.getEndTime() <= 0) throw new StoreSystemException("结算截至时间不能为空");
+        if (settlement.getEndTime() <= 0) throw new StoreSystemException("结算截止时间不能为空");
     }
 
     @Override
     public Settlement insert(Settlement settlement) throws Exception {
         check(settlement);
-        ClientSettlement client = this.loadClient(settlement.getSubId());
-        if(settlement.getEndTime()<=client.getEndTime()){
-           throw new StoreSystemException("请注意:上次结算时间为"+client.getLastTime()+",请重新选择结算时间！");
-        }
+//        if(settlement.getEndTime()-settlement.getStartTime()<=3600000){
+//            throw new StoreSystemException("请注意:距离上次结算时间还不到1小时！");
+//        }
         settlement = settlementDao.insert(settlement);
         return settlement;
     }
 
     @Override
     public ClientSettlement loadClient(long subId) throws Exception {
-        return transformClient(settlementDao.getAllList(subId).get(0));
+        List<Settlement> settlements = settlementDao.getAllList(subId);
+        Settlement settlement=new Settlement();
+        if(settlements.size()>0){
+            settlement = settlements.get(0);
+        }
+        return transformClient(settlement);
     }
 
     @Override
@@ -135,14 +139,21 @@ public class SettlementServiceImpl implements SettlementService {
         if (null != user) {
             client.setUserName(user.getName());
         }
+        Settlement last = null;
         List<Settlement> lists = settlementDao.getAllList(settlement.getSubId());
         if (lists.size() > 0) {
-            Settlement last = lists.get(1);
+            if (lists.size() == 1) {
+                last = lists.get(0);
+            } else {
+                last = lists.get(1);
+            }
             if (null != last) {
                 client.setLast(last);
                 SimpleDateFormat sdf = new SimpleDateFormat("MMdd HH:mm");
+                String startTime = sdf.format(last.getStartTime());
                 String endTime = sdf.format(last.getEndTime());
-                client.setLastTime(endTime);
+                client.setLastStartTime(startTime);
+                client.setLastEndTime(endTime);
             }
         }
         return client;

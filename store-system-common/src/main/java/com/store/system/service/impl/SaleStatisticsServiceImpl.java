@@ -2,10 +2,8 @@ package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
-import com.store.system.client.ClientCategoryStatistics;
 import com.store.system.client.ClientSaleStatistics;
 import com.store.system.dao.SaleStatisticsDao;
-import com.store.system.model.SaleCategoryStatistics;
 import com.store.system.model.SaleStatistics;
 import com.store.system.model.Subordinate;
 import com.store.system.service.SaleStatisticsService;
@@ -16,7 +14,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * @ClassName SaleStatisticsServiceImpl

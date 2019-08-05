@@ -33,7 +33,9 @@ public interface BusinessOrderService {
 
     public ClientBusinessOrder load(long id) throws Exception;
 
-    public List<BusinessOrder> getAllList(long subId) throws Exception;
+    public List<ClientBusinessOrder> getAllList(long subId) throws Exception;
+
+    public List<ClientBusinessOrder> getAllList(long subId, int status, int makeStatus) throws Exception;
 
     public Map<String,Object> loadOrder(long id) throws Exception;
 
@@ -41,7 +43,7 @@ public interface BusinessOrderService {
 
     public ResultClient currentCalculate(BusinessOrder businessOrder) throws Exception;
 
-    public CalculateOrder calculateBusinessOrder(long subId, long endTime) throws Exception;
+    public CalculateOrder calculateBusinessOrder(long subId, long startTime, long endTime) throws Exception;
 
     public Map<String,Integer> calculateSale(List<PayInfo> payInfos) throws Exception;
 

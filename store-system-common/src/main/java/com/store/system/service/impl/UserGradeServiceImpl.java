@@ -36,7 +36,7 @@ public class UserGradeServiceImpl implements UserGradeService {
     @Resource
     private SubordinateDao subordinateDao;
 
-    private void check(UserGrade userGrade) throws StoreSystemException {
+    private void check(UserGrade userGrade, boolean isUpdate) throws StoreSystemException {
         String regex = "^[1-9]+(.[1-9]{1})?$";
         Pattern pattern = Pattern.compile(regex);
         Map<Long,Object> map = userGrade.getDiscount();
@@ -52,23 +52,26 @@ public class UserGradeServiceImpl implements UserGradeService {
 
         long subid = userGrade.getSubid();
 
-        List<UserGrade> list = userGradeDao.getAllList(subid);
-        long conditionScore = userGrade.getConditionScore();
-        for (UserGrade one : list) {
-            if (one.getConditionScore() == conditionScore) throw new StoreSystemException("等级条件重复");
+        if(!isUpdate) {
+            if (userGrade.getId() == 0) throw new StoreSystemException("主键ID不能为空！");
+            List<UserGrade> list = userGradeDao.getAllList(subid);
+            long conditionScore = userGrade.getConditionScore();
+            for (UserGrade one : list) {
+                if (one.getConditionScore() == conditionScore) throw new StoreSystemException("等级条件重复");
+            }
         }
     }
 
     @Override
     public UserGrade add(UserGrade userGrade) throws Exception {
-        check(userGrade);
+        check(userGrade, false);
         userGrade = userGradeDao.insert(userGrade);
         return userGrade;
     }
 
     @Override
     public boolean update(UserGrade userGrade) throws Exception {
-        check(userGrade);
+        check(userGrade, true);
         boolean res = userGradeDao.update(userGrade);
         return res;
     }

@@ -49,6 +49,8 @@ public class Settlement implements Serializable {
     private double balanceMoney;
     //现金单数
     private int num;
+    //结算开始时间
+    private long startTime;
     //结算截至时间
     private long endTime;
     //0正常 1删除

@@ -3,13 +3,12 @@ package com.store.system.ext.job;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Uninterruptibles;
-import com.store.system.client.ClientOrder;
+import com.store.system.client.ClientBusinessOrder;
+import com.store.system.client.ResultClient;
 import com.store.system.dao.ProductSKUDao;
-import com.store.system.dao.ProductSPUDao;
 import com.store.system.dao.SaleStatisticsDao;
 import com.store.system.model.*;
-import com.store.system.service.OrderService;
-import com.store.system.service.ProductCategoryService;
+import com.store.system.service.BusinessOrderService;
 import com.store.system.service.SubordinateService;
 import com.store.system.util.ArithUtils;
 import com.store.system.util.TimeUtils;
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +37,7 @@ public class SaleStatisticsJob implements InitializingBean {
     @Resource
     private SaleStatisticsDao saleStatisticsDao;
     @Resource
-    private OrderService orderService;
+    private BusinessOrderService businessOrderService;
     @Resource
     private ProductSKUDao productSKUDao;
 
@@ -70,7 +68,7 @@ public class SaleStatisticsJob implements InitializingBean {
         }
     }
 
-    public void createSaleStatisticsJobs(long subId, long day, long month) throws Exception {
+    private void createSaleStatisticsJobs(long subId, long day, long month) throws Exception {
         SaleStatistics saleStatistics = new SaleStatistics();
         saleStatistics.setSubId(subId);
         saleStatistics.setDay(day);
@@ -87,25 +85,26 @@ public class SaleStatisticsJob implements InitializingBean {
         double perPrice=0;
         long profits=0;
         Set<Long> skuIds = Sets.newHashSet();
-/*        List<ClientOrder> orders = orderService.getAllBySubid(subId);
-        for(ClientOrder order:orders){
-            for(OrderSku sku:order.getSkuids()){
-                skuIds.add(sku.getSkuid());
+        List<ClientBusinessOrder> businessOrders = businessOrderService.getAllList(subId, BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
+        for(ClientBusinessOrder order:businessOrders){
+            for(OrderSku sku:order.getSkuList()){
+                skuIds.add(sku.getSkuId());
             }
-            ClientOrder client =  orderService.countPrice(order);
-//            sale += client.getPrice();
+            ResultClient client =  businessOrderService.currentCalculate(order);
+            BusinessOrder info = (BusinessOrder) client.getData();
+            sale += info.getTotalPrice();
         }
 
-        perPrice = ArithUtils.div((double) sale,(double) orders.size(),2);
+        perPrice = ArithUtils.div((double) sale,(double) businessOrders.size(),2);
 
         List<ProductSKU> skus = productSKUDao.load(Lists.newArrayList(skuIds));
         for(ProductSKU sku:skus){
             profits += sku.getCostPrice();
         }
         dbInfo.setSale(sale/100d);
-        dbInfo.setNum(orders.size());
+        dbInfo.setNum(businessOrders.size());
         dbInfo.setPerPrice(perPrice);
-        dbInfo.setProfits(profits/100d);*/
+        dbInfo.setProfits(profits/100d);
 
         if (update) {
             saleStatisticsDao.update(dbInfo);

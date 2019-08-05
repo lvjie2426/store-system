@@ -6,6 +6,7 @@ import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.bean.CalculateOrder;
+import com.store.system.client.ClientBusinessOrder;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
@@ -148,7 +149,7 @@ public class BusinessOrderController extends BaseController{
                                           long subId) throws Exception {
 
         try {
-            List<BusinessOrder> orderList = businessOrderService.getAllList(subId);
+            List<ClientBusinessOrder> orderList = businessOrderService.getAllList(subId);
             return this.viewNegotiating(request, response, new ResultClient(orderList));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -171,7 +172,7 @@ public class BusinessOrderController extends BaseController{
         try {
             Subordinate subordinate = subordinateService.load(subid);
             if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
-            List<BusinessOrder> orderList = businessOrderService.getAllList(subid);
+            List<ClientBusinessOrder> orderList = businessOrderService.getAllList(subid);
             return this.viewNegotiating(request, response, new ResultClient(orderList));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -278,10 +279,11 @@ public class BusinessOrderController extends BaseController{
      */
     @RequestMapping("/calculateOrders")
     public ModelAndView calculateOrders(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(required = false, value = "startTime", defaultValue = "0") long startTime,
                                         @RequestParam(required = false, value = "endTime", defaultValue = "0") long endTime,
                                         long subId) throws Exception {
         try {
-            CalculateOrder res = businessOrderService.calculateBusinessOrder(subId, endTime);
+            CalculateOrder res = businessOrderService.calculateBusinessOrder(subId, startTime, endTime);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
