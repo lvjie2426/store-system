@@ -298,8 +298,15 @@
 <!-- 弹窗结构 -->
 <div id="printBox" style="display: none"></div>
 <div id="salesOrder">
+    <div id="search-customer-box">
+
+    </div>
     <!--手机号搜索顾客-->
     <div class="customerInfo">
+        <div class="addMember">
+            <span>在该手机号下新增会员：</span>
+            <span class="btn btn-blue" id="addCusByPhone">新增</span>
+        </div>
         <div class="content">
             <table border="0" cellpadding="0" cellspacing="0" data-toggle="table"
                    class="cmMain-table4 table table-border" id="customerInfoTable"></table>
@@ -1073,7 +1080,7 @@
             </div>
             <div class="layui-form-item nameInput">
                 <div>
-                    <input value="<%=list.name%>" type="text" name="title" oninput="alert(1)" onchange="alert(2)" autocomplete="off" placeholder="姓名" id="cusInfoName">
+                    <input value="<%=list.name%>" type="text" name="title" autocomplete="off" placeholder="姓名" id="cusInfoName">
                 </div>
             </div>
             <div class="benderBox" id="cusInfoSex">
@@ -1938,6 +1945,10 @@
         param.subid = subid;
         param.userType = 0;
         if (cusSeachType == 1) {
+            if(!quakooUtils.isMobileNum(content)){
+                layer.msg("请输入正确的手机号");
+                return;
+            }
             param.phone1 = content;
         } else if (cusSeachType == 2) {
             param.cardNumber = content;
@@ -2204,33 +2215,47 @@
     /**根据手机号模糊查询顾客*/
     function getCusPhone() {
         $('#searchCusPhone').bind('input propertychange', function(){
+            var thisPhone;
             var keyword = $(this).val();
             if(keyword.length == 11){
+                thisPhone = keyword;
+                if(!quakooUtils.isMobileNum(keyword)){
+                    layer.msg('请输入正确的手机号');
+                    return;
+                }
+                $(this).blur();
                 quakooData.ajaxGetData(config.getUrl_user_getUserListByPhone(),{subid:subid,userType:0,phone:keyword*1},function(ret){
                     if(ret.success){
                         if(quakooUtils.isNotBlack(ret.data)){
-                            layer.open({
-                                type: 1,
-                                skin: 'layui-layer-demo', //样式类名
-                                area: ['720px', '625px'],
-                                anim: 0,
-                                closeBtn: 0,
-                                title: '顾客信息',
-                                shade: 0.1,
-                                shadeClose: true, //开启遮罩关闭
-                                scrollbar: false,
-                                content: $('.customerInfo'),
-                                resize: false,
-                                btn: '关闭窗口',
-                                move: '.layui-layer-title',
-                                yes: function (index, layero) {
-                                    layer.close(index);
-                                },
-                                success: function (layero, index) {
-                                    var diaIndex = index;
-                                    var column =[
-                                        {field: "name", title: "姓名", align: "left", valign: "middle"},
-                                        {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
+                            thisPhone = ret.data[0].phone;
+                        }else{
+                            cusLocInfo = {};
+                            cusLocInfo.phone = keyword;
+                            renderCusInfo();
+                            layer.msg("未查询到顾客信息")
+                        }
+                        layer.open({
+                            type: 1,
+                            skin: 'layui-layer-demo', //样式类名
+                            area: ['720px', '625px'],
+                            anim: 0,
+                            closeBtn: 0,
+                            title: '顾客信息',
+                            shade: 0.1,
+                            shadeClose: true, //开启遮罩关闭
+                            scrollbar: false,
+                            content: $('.customerInfo'),
+                            resize: false,
+                            btn: '关闭窗口',
+                            move: false,
+                            yes: function (index, layero) {
+                                layer.close(index);
+                            },
+                            success: function (layero, index) {
+                                var diaIndex = index;
+                                var column =[
+                                    {field: "name", title: "姓名", align: "left", valign: "middle"},
+                                    {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
                                             if (value === 0) {
                                                 return "-"
                                             } else if (value === 1) {
@@ -2239,51 +2264,115 @@
                                                 return "女"
                                             }
                                         }},
-                                        {field: "age", title: "年龄", align: "left", valign: "middle"},
-                                        {
-                                            field: "phone",
-                                            title: "手机号",
-                                            align: "left",
-                                            valign: "middle",
-                                            formatter: function (value, row, index) {
-                                                var html = value;
-                                                if (row.weixinId == null) {
-                                                    html = html + ' <span class="unbound">未绑定</span>';
-                                                } else {
-                                                    html = html + ' <span class="bounding">已绑定</span>';
-                                                }
-                                                return html;
+                                    {field: "age", title: "年龄", align: "left", valign: "middle"},
+                                    {
+                                        field: "phone",
+                                        title: "手机号",
+                                        align: "left",
+                                        valign: "middle",
+                                        formatter: function (value, row, index) {
+                                            var html = value;
+                                            if (row.weixinId == null) {
+                                                html = html + ' <span class="unbound">未绑定</span>';
+                                            } else {
+                                                html = html + ' <span class="bounding">已绑定</span>';
                                             }
-                                        },
-                                        {field: "subName", title: "来源", align: "left", valign: "middle"},
-                                        {
-                                            field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
-                                                var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+diaIndex+")'>选择</div>";
-                                                return html;
+                                            return html;
+                                        }
+                                    },
+                                    {field: "subName", title: "来源", align: "left", valign: "middle"},
+                                    {
+                                        field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
+                                            var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+diaIndex+")'>选择</div>";
+                                            return html;
+                                        }
+                                    }];
+                                $("#customerInfoTable").bootstrapTable('destroy');
+                                $("#customerInfoTable").bootstrapTable({
+                                    data: ret.data,                 //被加载的数据。
+                                    classes: "table",
+                                    sortable: false,
+                                    sortOrder: "asc",
+                                    showColumns: true,
+                                    strictSearch: true,
+                                    locale: "zh-CN",
+                                    paginationHAlign: "center",
+                                    clickToSelect: true,
+                                    columns: column
+                                });
+                                /**搜索内容*/
+                                var searchType = 1;
+                                $(".layui-layer-title").append('<div class="search-customer-box">\n' +
+                                '            <div class="searchTypeBox">\n' +
+                                '                <div class="selectBox" id="select-customer">\n' +
+                                '                    <div class="select-box-header">\n' +
+                                '                        <span class="text">手机号</span> <i class="iconfont icon-ico_arrow_down"></i>\n' +
+                                '                    </div>\n' +
+                                '                    <div class="optionBox">\n' +
+                                '                        <ul class="optionUL" id="type-list">\n' +
+                                '                            <li value="1">手机号</li>\n' +
+                                '                            <li value="2">姓名</li>\n' +
+                                '                        </ul>\n' +
+                                '                    </div>\n' +
+                                '                </div>\n' +
+                                '            </div>\n' +
+                                '            <input id="search-input" type="text" placeholder="搜索手机号" autocomplete="off">\n' +
+                                '            <div class="btn btn-info" style="margin-left: 10px;" id="searchButton">搜索</div>\n' +
+                                '        </div>');
+                                selectTag($("#select-customer"), function (ret) {
+                                    $("#search-input").val("");
+                                    searchType = ret.value;
+                                    if (searchType == 1) {
+                                        $('#search-input').attr('placeholder', '搜索手机号')
+                                    } else if (searchType == 2) {
+                                        $('#search-input').attr('placeholder', '搜索姓名')
+                                    }
+                                });
+                                $("#searchButton").click(function(){
+                                    var searchWord = $("#search-input").val();
+                                    var param = {};
+                                    param.subid = subid;
+                                    param.userType = 0;
+                                    if(searchType == 1){
+                                        if(!quakooUtils.isMobileNum(searchWord)){
+                                            layer.msg("请输入正确手机号");
+                                            return;
+                                        }
+                                        param.phone = searchWord;
+                                    }else if(searchType == 2){
+                                        param.name = searchWord;
+                                    }
+                                    quakooData.ajaxGetData(config.getUrl_user_searchUserList(),param,function(ret){
+                                        console.log("马总",ret);
+                                        if(ret&&ret.success){
+                                            if(quakooUtils.isNotBlack(ret.data)){
+                                                thisPhone = ret.data[0].phone
+                                                $("#customerInfoTable").bootstrapTable('destroy');
+                                                $("#customerInfoTable").bootstrapTable({
+                                                    data: ret.data,                 //被加载的数据。
+                                                    classes: "table",
+                                                    sortable: false,
+                                                    sortOrder: "asc",
+                                                    showColumns: true,
+                                                    strictSearch: true,
+                                                    locale: "zh-CN",
+                                                    paginationHAlign: "center",
+                                                    clickToSelect: true,
+                                                    columns: column
+                                                });
                                             }
-                                        }];
-                                    $("#customerInfoTable").bootstrapTable('destroy');
-                                    $("#customerInfoTable").bootstrapTable({
-                                        data: ret.data,                 //被加载的数据。
-                                        classes: "table",
-                                        sortable: false,
-                                        sortOrder: "asc",
-                                        showColumns: true,
-                                        strictSearch: true,
-                                        locale: "zh-CN",
-                                        paginationHAlign: "center",
-                                        clickToSelect: true,
-                                        columns: column
-                                    });
-
-                                }
-                            });
-                        }else{
-                            cusLocInfo = {};
-                            cusLocInfo.phone = keyword;
-                            renderCusInfo();
-                            layer.msg("未查询到顾客信息")
-                        }
+                                        }else{
+                                            layer.msg(ret.data);
+                                        }
+                                    })
+                                });
+                                $("#addCusByPhone").click(function(){
+                                    $("#searchCusPhone").val(thisPhone);
+                                    layer.close(index);
+                                    layer.msg("请填写其它信息并验证");
+                                });
+                            }
+                        });
                     }else{
                         layer.msg(ret.data);
                     }
