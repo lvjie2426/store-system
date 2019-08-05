@@ -20,7 +20,9 @@ public class ClientSettlement extends Settlement {
 
     private Settlement last; //上次结算
 
-    private String lastTime; //上次结算时间
+    private String lastStartTime; //上次结算开始时间
+
+    private String lastEndTime; //上次结算结束时间
 
     public ClientSettlement(Settlement settlement) {
         try {

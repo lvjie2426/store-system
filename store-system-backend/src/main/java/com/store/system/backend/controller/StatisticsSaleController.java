@@ -2,7 +2,6 @@ package com.store.system.backend.controller;
 
 import com.google.common.collect.Lists;
 import com.quakoo.webframework.BaseController;
-import com.store.system.client.ClientCategoryStatistics;
 import com.store.system.client.ClientSaleStatistics;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName StatisticsSaleController

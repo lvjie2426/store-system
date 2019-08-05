@@ -34,6 +34,8 @@ public class OrderSku implements Serializable {
 
     private int price;//零售价
 
+    private int integralPrice; //积分价
+
     private String discount;//折扣
 
     private double subtotal;//小计 price*num*spu折扣

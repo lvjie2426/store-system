@@ -7,10 +7,7 @@ import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.CalculateOrder;
-import com.store.system.client.ClientAfterSaleDetail;
-import com.store.system.client.ClientBusinessOrder;
-import com.store.system.client.ClientOrder;
-import com.store.system.client.ResultClient;
+import com.store.system.client.*;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
@@ -118,7 +115,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     @Override
     public Pager getUnfinishedList(Pager pager, long startTime, long endTime, long staffId, int status,
                                    long uid, String name, long subId, int makeStatus) throws Exception {
-        String sql = "SELECT  *  FROM `business_order`   where  1=1  ";
+        String sql = "SELECT  *  FROM `business_order` where  1=1  ";
         String sqlCount = "SELECT  COUNT(*)  FROM `business_order` where 1=1  ";
         String limit = "  limit %d , %d ";
 
@@ -159,7 +156,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         List<BusinessOrder> list = this.jdbcTemplate.query(sql, rowMapper);
         count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
 
-        pager.setData(list);
+        pager.setData(transformClient(list));
         pager.setTotalCount(count);
         return pager;
     }
@@ -225,9 +222,15 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     }
 
     @Override
-    public List<BusinessOrder> getAllList(long subId) throws Exception {
+    public List<ClientBusinessOrder> getAllList(long subId) throws Exception {
         List<BusinessOrder> list = businessOrderDao.getAllList(subId, BusinessOrder.makeStatus_temporary);
-        return list;
+        return transformClient(list);
+    }
+
+    @Override
+    public List<ClientBusinessOrder> getAllList(long subId, int status, int makeStatus) throws Exception {
+        List<BusinessOrder> list = businessOrderDao.getAllList(subId, status, makeStatus);
+        return transformClient(list);
     }
 
     @Override
@@ -313,7 +316,8 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         for(OrderSku sku:businessOrder.getSkuList()){
             long skuId=sku.getSkuId();
             long spuId=sku.getSpuId();
-            long cid=spuMap.get(spuId).getCid();
+            ProductSPU spu = spuMap.get(spuId);
+            long cid=spu.getCid();
             int num=sku.getNum();
             int retailPrice=skuMap.get(skuId).getRetailPrice();
             double discount=10;
@@ -330,7 +334,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             }
 
             //常规商品
-            if (spuMap.get(spuId).getType() == ProductSPU.type_common) {
+            if (spu.getType() == ProductSPU.type_common) {
 /*                if(num>inventoryMap.get(skuId)) {
                     throw new StoreSystemException("当前购买的商品库存数量不足！");
                 }*/
@@ -348,17 +352,28 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             }
 
             //积分商品
-            if(spuMap.get(spuId).getType()==ProductSPU.type_integral){
+            if(spu.getType()==ProductSPU.type_integral){
+                int integralPrice=skuMap.get(skuId).getIntegralPrice();
+                long currentTime = System.currentTimeMillis();
 /*                if(num>inventoryMap.get(skuId)) {
                     throw new StoreSystemException("当前购买的商品库存数量不足！");
                 }*/
-                if (spuMap.get(spuId).getIntegralNum() < sku.getNum()) {
-                    throw new StoreSystemException("积分商品数量兑换上限！");
-                }
-                if(userScore>0) {
-                    if (skuMap.get(skuId).getIntegralPrice() * sku.getNum() > userScore) {
-                        throw new StoreSystemException("会员积分不足以兑换该积分商品！");
+                if(currentTime>spu.getIntegralStartTime()&&currentTime<spu.getIntegralEndTime()) {
+                    if (spu.getIntegralNum() < sku.getNum()) {
+                        throw new StoreSystemException("积分商品数量兑换上限！");
                     }
+                    if (userScore > 0) {
+                        if (skuMap.get(skuId).getIntegralPrice() * sku.getNum() > userScore) {
+                            throw new StoreSystemException("此顾客会员积分不足以兑换该积分商品！");
+                        }
+                    }
+
+                    subtotal = num * integralPrice;
+                    sku.setSubtotal(subtotal);
+                    sku.setIntegralPrice(integralPrice);
+                    sku.setCode(skuMap.get(skuId).getCode());
+                    totalNum += num;
+
                 }
             }
         }
@@ -426,12 +441,26 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         if(user != null) {
             client.setUName(user.getName());
             client.setUPhone(user.getPhone());
+            ClientUser clientUser = new ClientUser(user);
+            if(user.getRecommender()>0){
+                long uid = user.getRecommender();
+                User recommender = userDao.load(uid);
+                if(recommender!=null){
+                    clientUser.setTname(recommender.getName());
+                    clientUser.setTphone(recommender.getPhone());
+                }
+            }
+            client.setUserInfo(clientUser);
         }
         User machiningUser = userDao.load(businessOrder.getMachinistId());
         if(machiningUser!=null) client.setMachiningName(machiningUser.getName());
         if (optometryInfo != null) {
             User oiUser = userDao.load(optometryInfo.getOptUid());
             if (oiUser != null) client.setOiName(oiUser.getName());
+        }
+        User staff = userDao.load(businessOrder.getStaffId());
+        if(staff != null){
+            client.setStaffName(staff.getName());
         }
         List<OptometryInfo> optometryInfos = optometryInfoDao.getList(businessOrder.getUid(),10);
         client.setOptometryInfos(optometryInfos);
@@ -444,21 +473,28 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
                 client.setInfo(load);
             }
         }
+        MarketingCoupon marketingCoupon = marketingCouponService.load(businessOrder.getCouponId());
+        if(marketingCoupon!=null){
+            client.setCoupon(marketingCoupon);
+        }
         return client;
     }
 
     @Override
-    public  CalculateOrder calculateBusinessOrder(long subId, long endTime) throws Exception {
+    public  CalculateOrder calculateBusinessOrder(long subId, long startTime, long endTime) throws Exception {
         String sql = "SELECT  *  FROM `business_order`   where  1=1  ";
 
         {
-            sql = sql + " and `status` = " + Order.status_pay;
+            sql = sql + " and `status` = " + BusinessOrder.status_pay;
         }
         if (subId > 0) {
             sql = sql + " and `subid` = " + subId;
         }
         if (endTime > 0) {
-            sql = sql + " and `ctime` <" + endTime;
+            sql = sql + " and `ctime` >=" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `ctime` <=" + endTime;
         }
         sql = sql + " order  by ctime desc";
         List<BusinessOrder> orderList = this.jdbcTemplate.query(sql, rowMapper);
