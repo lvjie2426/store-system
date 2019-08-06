@@ -1,9 +1,6 @@
 package com.store.system.client;
 
-import com.store.system.model.BusinessOrder;
-import com.store.system.model.MarketingCoupon;
-import com.store.system.model.OptometryInfo;
-import com.store.system.model.User;
+import com.store.system.model.*;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -29,12 +26,14 @@ public class ClientBusinessOrder extends BusinessOrder{
     private String couponName; //优惠券名称
     private String uName; //顾客
     private String uPhone;
+    private int score;//顾客可用积分
     private ClientUser userInfo;//顾客信息
     private String staffName; //员工姓名
 
     private MarketingCoupon coupon;//优惠券
     private int asCount;//售后次数
     private List<OptometryInfo> optometryInfos;//顾客的验光信息历史记录
+    private List<PayInfo> payInfos;  //支付记录
 
 
 

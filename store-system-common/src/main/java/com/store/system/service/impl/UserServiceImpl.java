@@ -848,7 +848,10 @@ public class UserServiceImpl implements UserService {
         loginUserPool.setLoginType(LoginUserPool.loginType_phone);
         loginUserPool.setAccount(user.getPhone());
         loginUserPool.setUid(user.getId());
-        loginUserPoolDao.insert(loginUserPool);
+        LoginUserPool dbInfo = loginUserPoolDao.load(loginUserPool);
+        if(dbInfo==null) {
+            loginUserPoolDao.insert(loginUserPool);
+        }
         return user;
     }
 
@@ -1039,7 +1042,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ClientUser checkUserGradeInfo(User user) throws Exception {
         //根据手机号查询user
-        List<User> users = userDao.getAllLists(User.userType_user,User.status_nomore,user.getPhone());
+        List<User> users = userDao.getAllLists(User.userType_user,User.status_nomore,user.getContactPhone());
         if(users.size()<=0){
             //生成会员卡号
             user.setCardNumber(new Random().nextInt(1000000));
@@ -1058,6 +1061,7 @@ public class UserServiceImpl implements UserService {
             user.setPsid(pSubid);
             user.setRand(new Random().nextInt(100000000));
             user.setPassword(MD5Utils.md5ReStr("123456".getBytes()));
+            user.setContactPhone(user.getPhone());
             user = userDao.insert(user);
             return transformClient(user);
         }
@@ -1233,22 +1237,53 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ClientUser> getUserListByPhone(long sid, int userType, String phone) throws Exception {
+    public List<ClientUser> getUserListByPhone(long sid, int userType, String phone, String name) throws Exception {
         String sql = "SELECT * FROM `user` where sid = " + sid ;
         if(userType>0){
             sql = sql + " AND userType =" + userType;
         }
         if (StringUtils.isNotBlank(phone)) {
-            sql = sql + " and `phone` like ?";
+            sql = sql + " and `contactPhone` like ?";
+        }
+        if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and `name` like ?";
         }
         List<User> users = null;
         List<Object> objects = Lists.newArrayList();
         if(StringUtils.isNotBlank(phone)){objects.add("%"+ phone +"%");}
+        if(StringUtils.isNotBlank(name)){objects.add("%"+ name +"%");}
         if(objects.size()>0){
             Object [] args = new Object[objects.size()];
             objects.toArray(args);
             users = jdbcTemplate.query(sql,rowMapper,args);
         }else{
+            users = jdbcTemplate.query(sql,rowMapper);
+        }
+        return transformClient(users);
+    }
+
+    @Override
+    public List<ClientUser> searchUserList(long sid, int userType, String phone, String name) throws Exception {
+        String sql = "SELECT * FROM `user` where sid = " + sid ;
+        if(userType>-1){
+            sql = sql + " AND userType =" + userType;
+        }
+        if (StringUtils.isNotBlank(phone)) {
+            sql = sql + " AND `contactPhone` = '" + phone +"'";
+        }
+        if (StringUtils.isNotBlank(name)) {
+            sql = sql + " AND `name` = '" + name + "'";
+        }
+
+        List<User> users = null;
+        List<Object> objects = Lists.newArrayList();
+        if(objects.size()>0){
+            Object [] args = new Object[objects.size()];
+            objects.toArray(args);
+            System.err.println(sql);
+            users = jdbcTemplate.query(sql,rowMapper,args);
+        }else{
+            System.err.println(sql);
             users = jdbcTemplate.query(sql,rowMapper);
         }
         return transformClient(users);

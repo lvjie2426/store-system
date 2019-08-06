@@ -57,6 +57,7 @@ public class User implements Serializable {
 
     private String phone;//手机号，手机号+验证码登录时候用
 
+    private String contactPhone;//联系人
 
     private String userName;//账号名 账号名+密码登录时候用
 

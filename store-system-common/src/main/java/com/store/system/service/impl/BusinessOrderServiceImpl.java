@@ -212,8 +212,8 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
 
 
     @Override
-    public BusinessOrder add(BusinessOrder businessOrder) throws Exception {
-        return businessOrderDao.insert(businessOrder);
+    public ClientBusinessOrder add(BusinessOrder businessOrder) throws Exception {
+        return transformClient(businessOrderDao.insert(businessOrder));
     }
 
     @Override
@@ -245,6 +245,13 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
 
     @Override
     public boolean update(BusinessOrder businessOrder) throws Exception {
+        return businessOrderDao.update(businessOrder);
+    }
+
+    @Override
+    public boolean updateMakeStatus(long id, int makeStatus)  throws Exception {
+        BusinessOrder businessOrder = businessOrderDao.load(id);
+        businessOrder.setMakeStatus(makeStatus);
         return businessOrderDao.update(businessOrder);
     }
 
@@ -441,6 +448,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         if(user != null) {
             client.setUName(user.getName());
             client.setUPhone(user.getPhone());
+            client.setScore(user.getScore());
             ClientUser clientUser = new ClientUser(user);
             if(user.getRecommender()>0){
                 long uid = user.getRecommender();
@@ -477,6 +485,9 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         if(marketingCoupon!=null){
             client.setCoupon(marketingCoupon);
         }
+
+        List<PayInfo> payInfos = payInfoService.getAllList(businessOrder.getId());
+        client.setPayInfos(payInfos);
         return client;
     }
 

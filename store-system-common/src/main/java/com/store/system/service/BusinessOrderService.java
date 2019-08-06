@@ -29,7 +29,7 @@ public interface BusinessOrderService {
 
     public Pager getBackPager(Pager pager, long subId, String name, String phone, String orderNo) throws Exception;
 
-    public BusinessOrder add(BusinessOrder businessOrder) throws Exception;
+    public ClientBusinessOrder add(BusinessOrder businessOrder) throws Exception;
 
     public ClientBusinessOrder load(long id) throws Exception;
 
@@ -40,6 +40,8 @@ public interface BusinessOrderService {
     public Map<String,Object> loadOrder(long id) throws Exception;
 
     public boolean update(BusinessOrder businessOrder) throws Exception;
+
+    public boolean updateMakeStatus(long id, int makeStatus) throws Exception;
 
     public ResultClient currentCalculate(BusinessOrder businessOrder) throws Exception;
 

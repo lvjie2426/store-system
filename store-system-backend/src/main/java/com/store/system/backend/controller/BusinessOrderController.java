@@ -129,8 +129,8 @@ public class BusinessOrderController extends BaseController{
                 businessOrder.setSkuList(skuList);
             }
             businessOrder.setOrderNo(CodeUtil.getCode());
-            businessOrder = businessOrderService.add(businessOrder);
-            return this.viewNegotiating(request, response, new ResultClient(businessOrder));
+            ClientBusinessOrder res = businessOrderService.add(businessOrder);
+            return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
@@ -216,6 +216,17 @@ public class BusinessOrderController extends BaseController{
                                     BusinessOrder businessOrder) throws Exception {
         try {
             boolean res = businessOrderService.update(businessOrder);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/updateMakeStatus")
+    public ModelAndView updateMakeStatus(HttpServletRequest request, HttpServletResponse response,
+                                    long id, int makeStatus) throws Exception {
+        try {
+            boolean res = businessOrderService.updateMakeStatus(id,makeStatus);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

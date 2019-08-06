@@ -80,15 +80,15 @@ public class UserDaoImpl extends CacheBaseDao<User> implements UserDao {
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<User> getAllLists(int userType, int status,String phone) throws DataAccessException {
+    public List<User> getAllLists(int userType, int status,String contactPhone) throws DataAccessException {
         return null;
     }
 
     @Override
-    public User getUserByPhone(int userType, int status,String phone) throws Exception {
+    public User getUserByPhone(int userType, int status,String contactPhone) throws Exception {
         long startTime=System.currentTimeMillis();
-        String sql="SELECT id FROM "+this.getTable(0)+" where userType = ? and status = ? and phone = ?";
-        List<Long> result = this.getJdbcTemplate(0, true).getJdbcTemplate().query(sql,new LongRowMapper("id"),userType,status,phone);
+        String sql="SELECT id FROM "+this.getTable(0)+" where userType = ? and status = ? and contactPhone = ?";
+        List<Long> result = this.getJdbcTemplate(0, true).getJdbcTemplate().query(sql,new LongRowMapper("id"),userType,status,contactPhone);
         logger.info(daoClassName + "getlist sql:{},time:{}", new Object[]{sql,(System.currentTimeMillis()-startTime)});
         if (null != result&&result.size()>0) {
             return (User) load(result);

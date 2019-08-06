@@ -135,5 +135,7 @@ public interface UserService {
 
     public StatisticsOrderUser statisticsOrderUser(long sid, int status,long startTime,long endTime)throws Exception;
 
-    public List<ClientUser> getUserListByPhone(long sid,int userType,String phone)throws Exception;
+    public List<ClientUser> getUserListByPhone(long sid,int userType,String phone,String name)throws Exception;
+
+    public List<ClientUser> searchUserList(long sid,int userType,String phone,String name)throws Exception;
 }

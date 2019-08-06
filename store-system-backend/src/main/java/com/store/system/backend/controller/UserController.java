@@ -140,6 +140,7 @@ public class UserController extends BaseController {
     public ModelAndView add(User user, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             user.setPassword("123456");
+            user.setContactPhone(user.getPhone());
             ClientUserOnLogin clientUserOnLogin = userService.register(user);
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
         }catch (StoreSystemException e){
@@ -170,6 +171,7 @@ public class UserController extends BaseController {
     @RequestMapping("/addCustomer")
     public ModelAndView addCustomer(User user, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            user.setContactPhone(user.getPhone());
             user = userService.addCustomer(user);
             return this.viewNegotiating(request,response, new ResultClient(user));
         } catch (StoreSystemException e) {
@@ -432,7 +434,7 @@ public class UserController extends BaseController {
             if (flag) {
                 List<ClientUser> users = userService.getAllUser(subId, User.userType_user);
                 for (ClientUser user : users) {
-                    if (StringUtils.isBlank(search) || user.getPhone().contains(search)) {
+                    if (StringUtils.isBlank(search) || user.getContactPhone().contains(search)) {
                         result.add(user);
                     }
                 }
@@ -454,12 +456,28 @@ public class UserController extends BaseController {
     @RequestMapping("/getUserListByPhone")
     public ModelAndView getUserListByPhone(HttpServletRequest request,HttpServletResponse response,long subid,
                                            @RequestParam(required = false,name = "phone",defaultValue = "") String phone,
+                                           @RequestParam(required = false,name = "name",defaultValue = "") String name,
                                            @RequestParam(required = false,name = "userType",defaultValue = "0") int userType)throws Exception{
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long psid = subordinate.getPid();
             if (psid == 0) throw new StoreSystemException("门店ID错误!");
-            return this.viewNegotiating(request,response,new ResultClient(userService.getUserListByPhone(subid,userType,phone)));
+            return this.viewNegotiating(request,response,new ResultClient(userService.getUserListByPhone(subid,userType,phone,name)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
+        }
+    }
+
+    @RequestMapping("/searchUserList")
+    public ModelAndView searchUserList(HttpServletRequest request,HttpServletResponse response,long subid,
+                                           @RequestParam(required = false,name = "phone",defaultValue = "") String phone,
+                                           @RequestParam(required = false,name = "name",defaultValue = "") String name,
+                                           @RequestParam(required = false,name = "userType",defaultValue = "-1") int userType)throws Exception{
+        try {
+            Subordinate subordinate = subordinateService.load(subid);
+            long psid = subordinate.getPid();
+            if (psid == 0) throw new StoreSystemException("门店ID错误!");
+            return this.viewNegotiating(request,response,new ResultClient(userService.searchUserList(subid,userType,phone,name)));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
         }
