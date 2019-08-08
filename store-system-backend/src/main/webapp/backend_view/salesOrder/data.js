@@ -2,11 +2,12 @@
  * 金额存储全部是分（传给后台全部是分），展示时做元的计算
  * */
 var locShopCart= {
+    id:2,
     saleUid:1,//销售员ID
     machinistId:1,//加工师id
     desc:"神秘法师地方",//订单备注
     goodsNumber:12,//商品总个数
-    orginalPrice:100,//订单原价共计
+    originalPrice:100,//订单原价共计
     discountPrice:80,//折后金额
     collectPrice:60,//实收金额
     bossDiscount:7.0,//最终折扣
@@ -36,6 +37,36 @@ var locShopCart= {
         name:"加工费",
         price:13
     }],
+
+};
+/**结算清单*/
+var settlementList = {
+    noPayNum:23,//未支付
+    ali: {//支付宝支付
+        money:2,
+        id:23,
+        status:1//1已支付&2已退款3未支付
+    },
+    weixin: {//微信支付
+        money:34,
+        id:23,
+        status: 1//1已支付&2已退款3未支付
+    },
+    cash:0,//现金
+    bankCard:2342,//银行卡
+    integral:{hasNum:23,usedNum:23},//积分
+    valueCard:{hasNum:23,usedNum:23},//储值卡
+    otherValue:{//他人储值卡
+        type:1,//1是未验证，2是已验证
+        hasNum:32,
+        usedNum:23
+    },
+    giftVouchers:34,//礼品券
+    total:1000000,//总计
+    desc:"小票备注"//小票备注
+};
+/**小票数据(目前是提交订单的所有数据)*/
+var receiptInfo = {
 
 };
 /**添加商品数据*/

@@ -1443,7 +1443,7 @@
                         for(var i=0;i<arr.length;i++){
                             if(parseFloat(arr[i].discount)<=0 || parseFloat(arr[i].discount)>10){
                                 layer.msg('请输入0~10之间的折扣')
-                                return false
+                                return false;
                                 break ;
                             }
                         }
@@ -1598,7 +1598,7 @@
                     }else{
                         $('#dragDiv').css('top',e.clientY+'px')
                     }
-                    $('#dragDiv').css('width',Math.abs(e.clientX-x)+'px')
+                    $('#dragDiv').css('width',Math.abs(e.clientX-x)+'px');
                     $('#dragDiv').css('height',Math.abs(e.clientY-y)+'px')
                 }
             }).mouseup(function (e) {
@@ -1647,7 +1647,7 @@
                     }else{
                         clearInterval(time)
                     }
-                })
+                });
                 return false
             })
         }
@@ -1657,7 +1657,7 @@
         function openZeroPrice(type) {
             var html = [];
             html.push('<div class="layui-yj-header"> <div class="layui-layer-title mine-title"> <div>设定价格<span>规格: 片</span></div> </div>');
-            // html.push('<div class="title-right" onclick="openRedTip()" > 设置预警库存 </div> </div>');
+            html.push('<div class="title-right" onclick="openRedTip()" > 设置预警库存 </div> </div>');
             html.push('</div>');
             layer.open({
                 type: 1,shade: 0.01,title:html.join(''),

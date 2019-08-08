@@ -73,9 +73,19 @@ i {
     cursor: pointer;
 }
 
+.payed{
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+}
+
 .btnRed {
     color: #DD5B4B;
     cursor: pointer;
+}
+
+.center-text{
+    width:100%;
+    text-align: center;
 }
 
 .br {
@@ -2200,6 +2210,12 @@ b {
 
 }
 
+.paymentPopup .payContent .content-item .tuikuan{
+    color: rgba(221, 91, 75, 1);
+    font-size: 12px;
+    text-decoration: underline;
+}
+
 .paymentPopup .payContent .content-item {
     display: none;
 }
@@ -2850,6 +2866,7 @@ input[type=checkbox]:checked:after {
     height: 28px;
     display: inline-block;
 }
+
 #search-input {
     width:120px;
     height: 28px;
