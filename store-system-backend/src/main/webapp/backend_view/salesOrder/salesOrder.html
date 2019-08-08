@@ -218,7 +218,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- 订单信息 -->
     <div class="orderInfo">
@@ -1505,7 +1504,11 @@
                     </li>
                     <li>
                         <div class="topic">现金</div>
-                        <div class="valueBox"><input type="text" placeholder="输入" value="<%=settlement.cash%>" onchange="countOffline(this,1)"></div>
+                        <%if(settlement.cash){%>
+                        <div class="valueBox"><input type="text" placeholder="输入" value="<%=(settlement.cash/100).toFixed(2)%>" id="countCash"></div>
+                        <%}else{%>
+                        <div class="valueBox"><input type="text" placeholder="输入" id="countCash"></div>
+                        <%}%>
                     </li>
                     <li>
                         <div class="topic">银行卡</div>
@@ -1527,12 +1530,12 @@
                         <div class="topic">储存卡</div>
                         <%if(settlement.valueCard){%>
                             <%if(settlement.valueCard.hasNum){%>
-                                <div class="valueBox"><input type="text" placeholder="<%=settlement.valueCard.hasNum%>" value="<%=settlement.valueCard.usedNum%>"  onchange="countOffline(this,2)"></div>
+                                <div class="valueBox"><input type="text" placeholder="<%=settlement.valueCard.hasNum%>" value="<%=(settlement.valueCard.usedNum/100).toFixed(2)%>" id="countValue"></div>
                             <%}else{%>
-                                <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly"></div>
+                                <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly" id="countValue"></div>
                             <%}%>
                         <%}else{%>
-                            <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly"></div>
+                            <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly" id="countValue"></div>
                         <%}%>
 
                     </li>
@@ -1541,12 +1544,12 @@
                         <%if(settlement.otherValue){%>
                             <%if(settlement.otherValue.type==1){%>
                                 <%if(settlement.otherValue.hasNum){%>
-                                    <div class="valueBox"><input type="text" placeholder="<%=settlement.otherValue.hasNum%>" value="<%=settlement.otherValue.usedNum%>" onchange="countOffline(this,3)"></div>
+                                    <div class="valueBox"><input type="text" placeholder="<%=settlement.otherValue.hasNum%>" value="<%=(settlement.otherValue.usedNum/100).toFixed(2)%>" id="countOtherValue"></div>
                                 <%}else{%>
-                                    <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly"></div>
+                                    <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly"  id="countOtherValue"></div>
                                 <%}%>
                             <%}else{%>
-                                <div class="valueBox"><input type="text" placeholder="输入" readonly="readonly"></div>
+                                <div class="valueBox"><input type="text" placeholder="输入" readonly="readonly"  id="countOtherValue"></div>
                             <%}%>
                         <%}%>
                     </li>
@@ -4201,6 +4204,7 @@
                     settlementList.valueCard.hasNum = ret.data.money;
                     settlementList.otherValue = {};
                     settlementList.otherValue.type = 1;
+                    settlementList.pickupStatus = 1;
                     for(var i in ret.data){
                         receiptInfo[i] = ret.data[i];
                     }
@@ -4232,10 +4236,18 @@
             btn: ['结算并打印小票', '取消'],
             move: $('.title'),
             yes: function (index, layero) {
-                if (printId) {
+                /*if (printId) {
                     printReceipts();
                 } else {
                     layer.msg("请先完成支付");
+                }*/
+                if(settlementList.noPayNum > 0){
+                    layer.confirm('支付未完成，是否去结算', {icon: 3, title:'提示'}, function(index){
+                        printReceipts();
+                        layer.close(index);
+                    });
+                }else{
+                    printReceipts();
                 }
             },
             btn2: function (index, layero) {
@@ -4256,6 +4268,10 @@
        //printContent = printHtml;
         $('#payDiaVertical').html(html);
         //$('#printTicketUl').html(printHtml);
+        inputPress('countCash',countOffline,1);       //现金
+        inputPress('countValue',countOffline,2);      //储值卡
+        inputPress('countOtherValue',countOffline,3); //他人储值卡
+
     }
     /**获取订单详情*/
     function getOrderInfo(orderId){
@@ -4395,21 +4411,24 @@
      * 线下支付
      * @param type:1（现金）；2（储值卡）；3（他人储值卡）
      */
-    function countOffline(_self,type){
-        console.log(23);
-        var price = _self.value * 100;
+    function countOffline(value,type){
+        var params = {};
+        params.boId = receiptInfo.id;
+        var price = value * 100;
         if(price<0){
             layer.msg("非法输入");
             return;
         }
         if(type == 1){
-            settlementList.cash = price;
+            // settlementList.cash = price;
+            params.cash = price;
         }else if(type == 2){
             if(price>settlementList.valueCard.hasNum){
                 layer.msg("储值卡余额不足");
                 return;
             }
-            settlementList.valueCard.usedNum = price;
+            // settlementList.valueCard.usedNum = price;
+            params.stored = price;
         }else if(type == 3){
             if(settlementList.otherValue.type==1){
                 layer.msg("未验证");
@@ -4419,12 +4438,43 @@
                 layer.msg("储值卡余额不足");
                 return;
             }
-            settlementList.otherValue.usedNum = price;
+            // settlementList.otherValue.usedNum = price;
+            params.otherStored = price;
         }
-        settlementList.noPayNum = Number(settlementList.noPayNum) - price;
-        settlementList.total = Number(settlementList.total) + price;
-        renderSubmit()
-     }
+        quakooData.ajaxGetData(config.getUrl_businessOrder_settlementPay(),params,function (ret){
+            console.log("金额计算",ret);
+            if(ret&&ret.success){
+                if(ret.data.ali){
+                    settlementList.ali.money = ret.data.ali;
+                }
+                if(ret.data.wx){
+                    settlementList.ali.wx = ret.data.wx;
+                }
+                settlementList.cash = ret.data.cash;
+                settlementList.valueCard.usedNum = ret.data.stored;
+                settlementList.otherValue.usedNum = ret.data.otherStored;
+                settlementList.noPayNum = ret.data.amount;
+                settlementList.total = ret.data.total;
+                renderSubmit()
+            }else{
+                layer.msg(ret.data);
+            }
+        });
+    }
+    function inputPress(id,callback,type){
+        console.log(document.getElementById(id));
+        document.getElementById(id).onkeypress = function (e) {
+            // debugger
+            var value;
+            var keycode = e.keyCode;
+            if(keycode == 13){
+                document.getElementById(id).blur();
+                e.preventDefault();
+                value = document.getElementById(id).value;
+                callback(value,type);
+            }
+        }
+    }
 
     /**退款弹窗*/
     function reimburse(type) {
@@ -4503,6 +4553,41 @@
 
     /**结算并打印小票*/
     function printReceipts() {
+        var params = {};
+        if(quakooUtils.isBlack(settlementList.desc)){
+            layer.msg("请输入小票备注");
+            return
+        }
+        params.boId = receiptInfo.id;
+        if(settlementList.cash){
+            params.cash = settlementList.cash;
+        }
+        if(settlementList.integral&&settlementList.integral.usedNum){
+            params.score = settlementList.integral.usedNum;
+        }
+        if(settlementList.valueCard&&settlementList.valueCard.usedNum){
+            params.stored = settlementList.valueCard.usedNum;
+        }
+        if(settlementList.otherValue&&settlementList.otherValue.type==2&&settlementList.otherValue.usedNum){
+            params.otherStored = settlementList.otherValue.usedNum;
+        }
+        if(settlementList.pickupStatus==2){
+            params.makeStatus = 3;
+        }
+        quakooData.ajaxGetData(config.getUrl_businessOrder_settlementOrder(),params,function (ret) {
+            console.log("结算并打印小票",ret);
+            return;
+            if(ret && ret.success){
+                if(ret.data){
+                   for(var i in ret.data){
+                       receiptInfo[i] = ret.data[i];
+                       renderSubmit();
+                   }
+                }
+            }
+        });
+
+
         var index = layer.open({
             type: 1,
             shade: 0.01,

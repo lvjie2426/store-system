@@ -45,7 +45,6 @@
                 <div class="select-box-header">
                     <span class="text">系列</span> <i class="iconfont icon-ico_arrow_down" ></i>
                 </div>
-
                 <div class="optionBox">
                     <ul class="optionUL">
                         <li value="01">系列1</li>
@@ -950,7 +949,7 @@
             var oTableInit = new Object();
             //初始化Table
             oTableInit.Init = function () {
-                $table.bootstrapTable('destroy')
+                $table.bootstrapTable('destroy');
                 $table.bootstrapTable({
                     url:config.getUrl_product_getSPUPager(),
                     classes:"table",
@@ -1026,7 +1025,6 @@
                 }
             }
         ];
-
         columnsTeshu = [
             {checkbox: true,valign:"middle"},
             {field: "icon", title: "主图", valign:"middle",formatter: function (value, row, index) {
@@ -1066,7 +1064,6 @@
                 }
             }
         ];
-
         //搜索
         document.getElementById('search').onkeypress = function(e){
             var keycode = e.keyCode;
@@ -1213,14 +1210,15 @@
 
         //选择一级类目
         function chooseGoodsType(value){
+            var Table;
             if(value){
                 cid = value;
             }
             if($('#category'+cid).text()=='特殊商品'){
-                var Table = new TableInit(columnsTeshu);
+                Table = new TableInit(columnsTeshu);
                 Table.Init();
             }else{
-                var Table = new TableInit(columns);
+                Table = new TableInit(columns);
                 Table.Init();
             }
             $('#category'+cid).addClass('active').siblings().removeClass('active');
@@ -1442,7 +1440,7 @@
                         })
                         for(var i=0;i<arr.length;i++){
                             if(parseFloat(arr[i].discount)<=0 || parseFloat(arr[i].discount)>10){
-                                layer.msg('请输入0~10之间的折扣')
+                                layer.msg('请输入0~10之间的折扣');
                                 return false;
                                 break ;
                             }

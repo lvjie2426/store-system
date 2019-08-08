@@ -152,6 +152,10 @@ var Config = (function(_super){
     _proto.getUrl_order_handleAliRefundOrder = function(){return this.serverUrl + '/order/handleAliRefundOrder';};
     /**支付宝条形码*/
     _proto.getUrl_order_handleAliBarcodeOrder = function(){return this.serverUrl + '/order/handleAliBarcodeOrder';};
+    /**支付结算*/
+    _proto.getUrl_businessOrder_settlementPay = function(){return this.serverUrl + '/businessOrder/settlementPay';};
+    /**订单结算*/
+    _proto.getUrl_businessOrder_settlementOrder = function(){return this.serverUrl + '/businessOrder/settlementOrder';};
     //=======================销售开单 结束====================
     //=======================实时工作台 开始====================
     /**获取日常任务和奖励*/

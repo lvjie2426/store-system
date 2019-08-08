@@ -63,10 +63,12 @@ var settlementList = {
     },
     giftVouchers:34,//礼品券
     total:1000000,//总计
-    desc:"小票备注"//小票备注
+    desc:"小票备注",//小票备注
+    pickupStatus:1,//取货状态（是否勾选未取货）（1=>没有勾选，2=>勾选未取货）
 };
 /**小票数据(目前是提交订单的所有数据)*/
 var receiptInfo = {
+    id:23,//订单ID
 
 };
 /**添加商品数据*/
@@ -86,3 +88,67 @@ var ygInfo = {
         id:1,
     }
 };
+
+/**
+ *
+ * @type {{}}
+ */
+var goodsManageData = {
+    cid : 2,//类目ID；
+    pid : 2,//供应商ID
+    bid : 23,//品牌iID
+    sid : 23,//系列ID
+    name : "",//搜索关键字
+    saleStatus : 0,//筛选条件的销售状态，（0=>开启）（1=>关闭）
+    supplierLocData : {},//供应商数据
+    priceCheck : [],//设定加个选中的单元格
+    ballData : '',//球数据
+    columnData : '',//柱数据
+    brandData : '',//品牌数据
+    providerData : '',//供应商数据
+    jiaodianData : '',//焦点数据
+    zheshelvData : '',//
+    gongnengData : '',//
+    typeData : '',//
+    zhouqiData : '',//
+    baozhuangData : '',//
+    type10Data : '',//
+    baozhuang11Data : '',//
+    shopData : '',//
+    yjDate : '',//
+    params : '',//
+    updateParams : '',//
+    columns : '',//
+    columnsTeshu : '',//
+    $table : '',//
+    TableInit : '',//
+};
+
+
+
+function Yj(id) {
+    this.name = "yanjing";
+    this.elem = document.getElementById(id)
+}
+
+Yj.prototype.enterSearch = function (id,callback){
+    document.getElementById(id).onkeypress = function (e) {
+        var keycode = e.keyCode;
+        if(keycode == 13){
+            document.getElementById(id).blur();
+            e.preventDefault();
+            name = document.getElementById(id).value;
+            callback();
+        }
+    }
+
+
+    var key = $(id).val();
+    if(quakooUtils.isBlack(key)){
+        layer.msg("请输入搜索内容");
+        return;
+    }
+
+    callback(key);
+};
+
