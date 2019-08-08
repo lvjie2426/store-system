@@ -15,7 +15,9 @@ public interface PayInfoService {
 
     public PayInfo insert(PayInfo payInfo) throws Exception;
 
-    public List<PayInfo> getAllList(long boId) throws Exception;
+    public List<PayInfo> getAllList(long boId, int status) throws Exception;
 
     public PayInfo load(long id) throws Exception;
+
+    public boolean update(PayInfo payInfo) throws Exception;
 }

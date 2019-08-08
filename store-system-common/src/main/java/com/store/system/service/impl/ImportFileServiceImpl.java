@@ -184,7 +184,7 @@ public class ImportFileServiceImpl implements ImportFileService {
 
         /**储值金额**/
         if(StringUtils.isNotBlank(importUser.getMoney())){
-            long money = Long.valueOf(importUser.getMoney());
+            int money = Integer.valueOf(importUser.getMoney());
             user.setMoney(money);
         }
 

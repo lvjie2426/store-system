@@ -22,19 +22,19 @@ public class ProductSPUDaoImpl extends CacheBaseDao<ProductSPU> implements Produ
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
-    public int getCount(int type, long subid, long pid, long cid, long bid, long sid) throws DataAccessException {
+    public int getCount(long subid, long pid, long cid, long bid, long sid) throws DataAccessException {
         return 0;
     }
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<ProductSPU> getAllList(int type, long subid, long pid, long cid, long bid, long sid) throws DataAccessException {
+    public List<ProductSPU> getAllList(long subid, long pid, long cid, long bid, long sid) throws DataAccessException {
         return null;
     }
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<ProductSPU> getAllList(int type, long subid, long cid, long bid) throws DataAccessException {
+    public List<ProductSPU> getAllList(long subid, long cid, long bid) throws DataAccessException {
         return null;
     }
 }

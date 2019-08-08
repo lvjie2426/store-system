@@ -15,5 +15,5 @@ import java.util.List;
  **/
 public interface PayInfoDao extends HDao<PayInfo>{
 
-    public List<PayInfo> getAllList(long boId) throws DataAccessException;
+    public List<PayInfo> getAllList(long boId, int status) throws DataAccessException;
 }

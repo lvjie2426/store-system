@@ -29,7 +29,7 @@ public class PayInfoDaoImpl extends CacheBaseDao<PayInfo> implements PayInfoDao{
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<PayInfo> getAllList(long boId)  throws DataAccessException {
+    public List<PayInfo> getAllList(long boId, int status)  throws DataAccessException {
         return null;
     }
 }

@@ -44,8 +44,7 @@ public class InventoryOutBillController extends BaseController {
     private InventoryWarehouseService inventoryWarehouseService;
 
     @RequestMapping("/select")
-    public ModelAndView select(@RequestParam(value = "type") int type,
-                               @RequestParam(value = "subid") long subid,
+    public ModelAndView select(@RequestParam(value = "subid") long subid,
                                @RequestParam(value = "pid") long pid,
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
@@ -53,7 +52,7 @@ public class InventoryOutBillController extends BaseController {
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             List<ClientInventoryDetail> details = Lists.newArrayList();
-            ClientProductSPU productSPU = productService.selectSPU(type, subid, pid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(subid, pid, cid, bid, sid);
             if(null != productSPU) {
                 List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
                 if(warehouses.size()>0){

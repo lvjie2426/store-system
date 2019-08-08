@@ -95,7 +95,6 @@ public class ProductServiceImpl implements ProductService {
 
 
     private void checkSPU(ProductSPU productSPU) throws StoreSystemException {
-        int type = productSPU.getType();
         long subid = productSPU.getSubid();
         long pid = productSPU.getPid();
         long cid = productSPU.getCid();
@@ -106,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
         if (cid == 0) throw new StoreSystemException("SPU类目不能为空");
         if (bid == 0) throw new StoreSystemException("SPU品牌不能为空");
 
-        int count = productSPUDao.getCount(type, subid, pid, cid, bid, sid);
+        int count = productSPUDao.getCount(subid, pid, cid, bid, sid);
         if (count > 0) throw new StoreSystemException("已添加此产品的SPU");
 
 
@@ -209,7 +208,7 @@ public class ProductServiceImpl implements ProductService {
             productSPU.setBid(brand.getId());
             productSPU.setSid(series.getId());
         }
-        int count = productSPUDao.getCount(productSPU.getType(), productSPU.getSubid(), productSPU.getPid(),
+        int count = productSPUDao.getCount(productSPU.getSubid(), productSPU.getPid(),
                 productSPU.getCid(), productSPU.getBid(), productSPU.getSid());
         if(count==0) {
             productSPUDao.update(productSPU);
@@ -247,7 +246,7 @@ public class ProductServiceImpl implements ProductService {
         if (productSPU.getBid() == 0) throw new StoreSystemException("SPU品牌不能为空");
 
         if(isAdd) {
-            int count = productSPUDao.getCount(productSPU.getType(), productSPU.getSubid(), productSPU.getPid(),
+            int count = productSPUDao.getCount(productSPU.getSubid(), productSPU.getPid(),
                     productSPU.getCid(), productSPU.getBid(), productSPU.getSid());
             if (count > 0) throw new StoreSystemException("已存在此产品的SPU,请重新添加");
         }
@@ -461,10 +460,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ClientProductSPU selectSPU(int type, long subid, long pid, long cid, long bid, long sid) throws Exception {
-        int count = productSPUDao.getCount(type, subid, pid, cid, bid, sid);
+    public ClientProductSPU selectSPU(long subid, long pid, long cid, long bid, long sid) throws Exception {
+        int count = productSPUDao.getCount(subid, pid, cid, bid, sid);
         if (count == 0) throw new StoreSystemException("没有此类产品");
-        List<ProductSPU> productSPUList = productSPUDao.getAllList(type, subid, pid, cid, bid, sid);
+        List<ProductSPU> productSPUList = productSPUDao.getAllList(subid, pid, cid, bid, sid);
         ProductSPU productSPU = productSPUList.get(0);
         ClientProductSPU clientProductSPU = transformClient(productSPU);
         return clientProductSPU;
@@ -482,10 +481,6 @@ public class ProductServiceImpl implements ProductService {
         if (bid > 0) {
             sql += " and bid = " + bid;
             sqlCount += " and bid = " + bid;
-        }
-        if (type > -1) {
-            sql += " and type = " + type;
-            sqlCount += " and type = " + type;
         }
         sql = sql + " order  by `sort` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());

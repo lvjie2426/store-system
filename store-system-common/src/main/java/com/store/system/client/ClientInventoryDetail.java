@@ -15,8 +15,6 @@ public class ClientInventoryDetail extends InventoryDetail {
 
     private String warehouseName; //仓库名称
 
-    private int p_type;
-
     private long p_pid;
 
     private String providerName;

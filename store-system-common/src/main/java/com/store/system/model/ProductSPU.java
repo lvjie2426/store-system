@@ -30,16 +30,11 @@ public class ProductSPU implements Serializable {
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
 
-    public static final int type_common = 0; //常规产品
-    public static final int type_integral = 1; //积分产品
-
     public static final int sale_status_open=0;//开启
     public static final int sale_status_close=1;//关闭
 
     @PrimaryKey
     private long id;
-
-    private int type; //SPU类型 0-常规 1-积分
 
     private long subid; //店铺ID (一级：公司)
 
