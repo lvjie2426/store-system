@@ -132,7 +132,7 @@ public class User implements Serializable {
 
     private int score; //积分
 
-    private long money; //储值金额
+    private int money; //储值金额
 
     private String plat;
 

@@ -26,6 +26,9 @@ public class PayInfo implements Serializable{
     public static final int pay_type_cash = 3; //现金
     public static final int pay_type_stored = 4; //储值
 
+    public static final int status_pay = 1; //已缴费
+    public static final int status_refund = 2; //已退款
+
 
     @PrimaryKey
     private long id;
@@ -39,6 +42,8 @@ public class PayInfo implements Serializable{
     private int payType; //支付类型
 
     private int price;  //支付金额
+
+    private int status;
 
     @SortKey
     private long ctime;

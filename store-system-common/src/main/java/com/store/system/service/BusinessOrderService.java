@@ -4,6 +4,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.bean.CalculateOrder;
 import com.store.system.client.ClientBusinessOrder;
 import com.store.system.client.ClientOrder;
+import com.store.system.client.ClientSettlementOrder;
 import com.store.system.client.ResultClient;
 import com.store.system.model.BusinessOrder;
 import com.store.system.model.Order;
@@ -48,6 +49,10 @@ public interface BusinessOrderService {
     public CalculateOrder calculateBusinessOrder(long subId, long startTime, long endTime) throws Exception;
 
     public Map<String,Integer> calculateSale(List<PayInfo> payInfos) throws Exception;
+
+    public ClientSettlementOrder settlementPay(long boId, int cash, int stored, int otherStored) throws Exception;
+
+    public ClientBusinessOrder settlementOrder(long boId, int cash, int stored, int otherStored, int score, int makeStatus) throws Exception;
 
 
 

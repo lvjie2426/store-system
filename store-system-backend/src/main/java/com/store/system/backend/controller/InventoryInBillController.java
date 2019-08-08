@@ -56,8 +56,7 @@ public class InventoryInBillController extends BaseController {
      * creat_time: 14:54
      **/
     @RequestMapping("/select")
-    public ModelAndView select(@RequestParam(value = "type") int type,
-                               @RequestParam(value = "subid") long subid,
+    public ModelAndView select(@RequestParam(value = "subid") long subid,
                                @RequestParam(value = "pid") long pid,
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
@@ -68,7 +67,7 @@ public class InventoryInBillController extends BaseController {
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("店铺为空");
             ClientInventoryInBillSelect res = new ClientInventoryInBillSelect();
-            ClientProductSPU productSPU = productService.selectSPU(type, pSubid, pid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(pSubid, pid, cid, bid, sid);
             List<ClientProductSKU> skuList =  productService.getSaleSKUAllList(subid,productSPU.getId(),0);
             if(skuList.size()>0) res.setSkuList(skuList);
 //            if(null != productSPU) {

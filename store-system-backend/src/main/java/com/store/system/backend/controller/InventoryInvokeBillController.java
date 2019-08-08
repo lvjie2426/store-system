@@ -75,7 +75,7 @@ public class InventoryInvokeBillController extends BaseController{
             Subordinate subotdinate = subordinateService.load(subid);
             long psid = subotdinate.getPid();
             if(psid==0){ throw new StoreSystemException("门店ID错误!"); }
-            ClientProductSPU productSPU = productService.selectSPU(type, psid, pid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(psid, pid, cid, bid, sid);
             if(null != productSPU) {
                 List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
                 if(warehouses.size()>0){

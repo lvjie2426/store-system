@@ -57,11 +57,11 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     @Resource
     private ProductSPUDao productSPUDao;
     @Resource
-    private InventoryDetailDao inventoryDetailDao;
-    @Resource
     private UserGradeService userGradeService;
     @Resource
     private MarketingCouponService marketingCouponService;
+    @Resource
+    private FinanceLogService financeLogService;
 
     private RowMapperHelp<BusinessOrder> rowMapper = new RowMapperHelp<>(BusinessOrder.class);
     private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
@@ -341,7 +341,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             }
 
             //常规商品
-            if (spu.getType() == ProductSPU.type_common) {
+//            if (spu.getType() == ProductSPU.type_common) {
 /*                if(num>inventoryMap.get(skuId)) {
                     throw new StoreSystemException("当前购买的商品库存数量不足！");
                 }*/
@@ -356,10 +356,10 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
                 totalNum += num;
                 originalPrice += num * retailPrice;
                 discountPrice += subtotal;
-            }
+//            }
 
             //积分商品
-            if(spu.getType()==ProductSPU.type_integral){
+//            if(spu.getType()==ProductSPU.type_integral){
                 int integralPrice=skuMap.get(skuId).getIntegralPrice();
                 long currentTime = System.currentTimeMillis();
 /*                if(num>inventoryMap.get(skuId)) {
@@ -382,7 +382,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
                     totalNum += num;
 
                 }
-            }
+//            }
         }
 
         if(businessOrder.getCouponId()>0){
@@ -449,6 +449,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             client.setUName(user.getName());
             client.setUPhone(user.getPhone());
             client.setScore(user.getScore());
+            client.setMoney(user.getMoney());
             ClientUser clientUser = new ClientUser(user);
             if(user.getRecommender()>0){
                 long uid = user.getRecommender();
@@ -486,7 +487,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             client.setCoupon(marketingCoupon);
         }
 
-        List<PayInfo> payInfos = payInfoService.getAllList(businessOrder.getId());
+        List<PayInfo> payInfos = payInfoService.getAllList(businessOrder.getId(),PayInfo.status_pay);
         client.setPayInfos(payInfos);
         return client;
     }
@@ -511,7 +512,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         List<BusinessOrder> orderList = this.jdbcTemplate.query(sql, rowMapper);
         List<PayInfo> payInfoList=Lists.newArrayList();
         for(BusinessOrder businessOrder:orderList){
-            List<PayInfo> payInfos = payInfoService.getAllList(businessOrder.getId());
+            List<PayInfo> payInfos = payInfoService.getAllList(businessOrder.getId(),PayInfo.status_pay);
             payInfoList.addAll(payInfos);
         }
 
@@ -557,6 +558,107 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         return map;
     }
 
+    @Override
+    public ClientSettlementOrder settlementPay(long boId, int cash, int stored, int otherStored) throws Exception {
+        BusinessOrder businessOrder = businessOrderDao.load(boId);
+        ClientSettlementOrder client = new ClientSettlementOrder();
+        List<PayInfo> payInfos = payInfoService.getAllList(boId,PayInfo.status_pay);
+        int totalPrice=0;
+        for(PayInfo info:payInfos){
+            if(info.getPayType()==PayInfo.pay_type_ali){
+                client.setAli(info.getPrice());
+                totalPrice += info.getPrice();
+            }
+            if(info.getPayType()==PayInfo.pay_type_wx){
+                client.setWx(info.getPrice());
+                totalPrice += info.getPrice();
+            }
+            if(info.getPayType()==PayInfo.pay_type_cash){
+                client.setCash(info.getPrice());
+                totalPrice += info.getPrice();
+            }
+            if(info.getPayType()==PayInfo.pay_type_stored){
+                client.setStored(info.getPrice());
+                totalPrice += info.getPrice();
+            }
+        }
+        if (otherStored > 0) {
+            totalPrice += otherStored;
+            client.setOtherStored(otherStored);
+        }
+        if (cash > 0) {
+            totalPrice += cash;
+            client.setCash(cash);
+        }
+        if (stored > 0) {
+            totalPrice += stored;
+            client.setStored(stored);
+        }
+        client.setTotal(totalPrice);
+        client.setAmount(businessOrder.getRealPrice()-totalPrice);
+        return client;
+    }
+
+    @Override
+    public ClientBusinessOrder settlementOrder(long boId, int cash, int stored, int otherStored, int score, int makeStatus) throws Exception {
+        BusinessOrder businessOrder = businessOrderDao.load(boId);
+
+        PayInfo payInfo = new PayInfo();
+        payInfo.setSubId(businessOrder.getSubId());
+        payInfo.setUid(businessOrder.getUid());
+        payInfo.setStatus(PayInfo.status_pay);
+        payInfo.setBoId(boId);
+        if (cash > 0) {
+            payInfo.setPrice(cash);
+            payInfo.setPayType(PayInfo.pay_type_cash);
+            payInfoService.insert(payInfo);
+            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash , FinanceLog.type_in, 0, cash,
+                    "用户支付", true);
+        }
+
+        if (otherStored > 0) {
+            payInfo.setPrice(otherStored);
+            payInfo.setPayType(PayInfo.pay_type_stored);
+            payInfoService.insert(payInfo);
+            // TODO: 2019/8/8 他人储值需要选择对应的某个人uid，目前一个手机号可查出多个人
+
+        }
+
+        if (stored > 0) {
+            payInfo.setPrice(stored);
+            payInfo.setPayType(PayInfo.pay_type_stored);
+            payInfoService.insert(payInfo);
+            User user = userDao.load(businessOrder.getUid());
+            if(user!=null){
+                user.setMoney(user.getMoney()-stored);
+                userDao.update(user);
+            }
+            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash , FinanceLog.type_in, 0, stored,
+                    "用户支付", true);
+        }
+
+        if(score > 0){
+            User user = userDao.load(businessOrder.getUid());
+            if(user!=null){
+                user.setScore(user.getScore()-score);
+                userDao.update(user);
+            }
+        }
+        businessOrder.setMakeStatus(makeStatus);
+        //若所有不同支付方式的支付总金额等于订单应付金额
+        // 则认为此订单已缴费 否则未缴费
+        List<PayInfo> payInfos = payInfoService.getAllList(boId,PayInfo.status_pay);
+        long total = 0;
+        for (PayInfo info : payInfos) {
+            total += info.getPrice();
+        }
+        if (total == businessOrder.getRealPrice()) {
+            businessOrder.setStatus(BusinessOrder.status_pay);
+        }
+        businessOrderDao.update(businessOrder);
+
+        return transformClient(businessOrderDao.load(boId));
+    }
 
 
     private List<ClientBusinessOrder> transformClient(List<BusinessOrder> businessOrders) throws Exception {

@@ -31,18 +31,27 @@ public class OrderRefundServiceImpl implements OrderRefundService{
 
     @Override
     @Transactional
-    public void successHandleBusiness(int type, String typeInfo) throws Exception {
+    public void successHandleBusiness(int payType, String typeInfo) throws Exception {
         Map<String, Object> info = JsonUtils.fromJson(typeInfo, new TypeReference<Map<String, Object>>() {});
-        long boId = (long) info.get("boId");
+        Object object = info.get("boId");
+        String id = String.valueOf(object);
+        long boId = Long.valueOf(id);
 
-        List<PayInfo> payInfoList = payInfoService.getAllList(boId);
+        List<PayInfo> payInfoList = payInfoService.getAllList(boId,PayInfo.status_pay);
         for(PayInfo payInfo:payInfoList){
-            if(type== PayInfo.pay_type_ali){
-
-
-
+            if(payType== PayInfo.pay_type_ali){
+                payInfo.setStatus(PayInfo.status_refund);
             }
-
+            if(payType== PayInfo.pay_type_wx){
+                payInfo.setStatus(PayInfo.status_refund);
+            }
+            if(payType== PayInfo.pay_type_cash){
+                payInfo.setStatus(PayInfo.status_refund);
+            }
+            if(payType== PayInfo.pay_type_stored){
+                payInfo.setStatus(PayInfo.status_refund);
+            }
+            payInfoService.update(payInfo);
         }
 
 
@@ -50,7 +59,7 @@ public class OrderRefundServiceImpl implements OrderRefundService{
     }
 
     @Override
-    public void failHandleBusiness(int type, String typeInfo) {
+    public void failHandleBusiness(int payType, String typeInfo) {
 
 
     }

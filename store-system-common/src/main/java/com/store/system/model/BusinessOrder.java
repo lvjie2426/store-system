@@ -70,6 +70,8 @@ public class BusinessOrder implements Serializable {
 
     private int totalPrice;//总金额(分)
 
+    private int outPrice;//未收金额(分)
+
     private String discount;//折扣
 
     private long couponId;//营销券id

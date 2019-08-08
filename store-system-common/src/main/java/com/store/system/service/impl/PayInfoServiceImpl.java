@@ -28,8 +28,8 @@ public class PayInfoServiceImpl implements PayInfoService {
     }
 
     @Override
-    public List<PayInfo> getAllList(long boId) throws Exception {
-        return payInfoDao.getAllList(boId);
+    public List<PayInfo> getAllList(long boId, int status) throws Exception {
+        return payInfoDao.getAllList(boId,PayInfo.status_pay);
     }
 
     @Override
@@ -37,4 +37,8 @@ public class PayInfoServiceImpl implements PayInfoService {
         return payInfoDao.load(id);
     }
 
+    @Override
+    public boolean update(PayInfo payInfo) throws Exception {
+        return payInfoDao.update(payInfo);
+    }
 }

@@ -57,7 +57,7 @@ public class InventoryCheckBillController extends BaseController {
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("店铺为空");
             ClientInventoryCheckBillSelect res = null;
-            ClientProductSPU productSPU = productService.selectSPU(type, pSubid, pid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(pSubid, pid, cid, bid, sid);
             if(null != productSPU) {
                 res = new ClientInventoryCheckBillSelect();
                 res.setProductSPU(productSPU);

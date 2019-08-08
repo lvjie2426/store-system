@@ -126,6 +126,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         order.setPassportId(payPassport.getId());
         order.setPayMode(payMode);
         order.setType(type);
+        order.setPayType(Order.pay_type_ali);
         order.setTypeInfo(typeInfo);
         order.setTitle(title);
         order.setDesc(desc);
@@ -338,6 +339,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         order.setPrice(price);
         order.setType(type);
         order.setStatus(Order.status_no_pay);
+        order.setPayType(Order.pay_type_wx);
         order.setTypeInfo(typeInfo);
         order.setTitle(title);
         order.setDesc(desc);
@@ -616,14 +618,16 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         if (code.equals("10000")) {
             res = true;
             refundOrder.setStatus(RefundOrder.status_refund_success);
-        } else refundOrder.setStatus(RefundOrder.status_refund_fail);
+        } else {
+            refundOrder.setStatus(RefundOrder.status_refund_fail);
+        }
 
         if (refundOrder.getStatus() == RefundOrder.status_refund_success) {
             order.setStatus(Order.status_refund);
             orderRefundService.successHandleBusiness(order.getType(), order.getTypeInfo());
             orderDao.update(order);
-        } else {
-            orderRefundService.failHandleBusiness(order.getType(), order.getTypeInfo());
+        } else if(refundOrder.getStatus() == RefundOrder.status_refund_fail){
+            orderRefundService.failHandleBusiness(order.getPayType(), order.getTypeInfo());
         }
         refundOrderDao.update(refundOrder);
         return res;
@@ -698,6 +702,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         payInfo.setUid(businessOrder.getUid());
         payInfo.setPrice(price);
         payInfo.setPayType(type);
+        payInfo.setStatus(PayInfo.status_refund);
         payInfo.setBoId(boId);
         return payInfoService.insert(payInfo);
     }

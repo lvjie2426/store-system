@@ -7,6 +7,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.bean.CalculateOrder;
 import com.store.system.client.ClientBusinessOrder;
+import com.store.system.client.ClientSettlementOrder;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
@@ -300,6 +301,50 @@ public class BusinessOrderController extends BaseController{
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
 
+    }
+
+    /***
+    * 支付结算
+    * @Param: [request, response, boId, cash, stored, otherStored, score]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/8/8
+    */
+    @RequestMapping("/settlementPay")
+    public ModelAndView settlementPay(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(required = true) long boId,
+                                        @RequestParam(required = false, value = "cash", defaultValue = "0") int cash,
+                                        @RequestParam(required = false, value = "stored", defaultValue = "0") int stored,
+                                        @RequestParam(required = false, value = "otherStored", defaultValue = "0") int otherStored) throws Exception {
+        try {
+            ClientSettlementOrder res = businessOrderService.settlementPay(boId,cash,stored,otherStored);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /***
+    * 订单结算
+    * @Param: [request, response, boId, cash, stored, otherStored, score, makeStatus]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/8/8
+    */
+    @RequestMapping("/settlementOrder")
+    public ModelAndView settlementOrder(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(required = true) long boId,
+                                        @RequestParam(required = false, value = "cash", defaultValue = "0") int cash,
+                                        @RequestParam(required = false, value = "stored", defaultValue = "0") int stored,
+                                        @RequestParam(required = false, value = "otherStored", defaultValue = "0") int otherStored,
+                                        @RequestParam(required = false, value = "score", defaultValue = "0") int score,
+                                        @RequestParam(required = false, value = "makeStatus", defaultValue = "6") int makeStatus) throws Exception {
+        try {
+            ClientBusinessOrder res = businessOrderService.settlementOrder(boId,cash,stored,otherStored,score,makeStatus);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
 

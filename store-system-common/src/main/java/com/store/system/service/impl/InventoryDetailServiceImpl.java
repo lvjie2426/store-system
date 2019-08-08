@@ -103,7 +103,6 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
             if(null != warehouse) client.setWarehouseName(warehouse.getName());
             ProductSPU spu = spuMap.get(one.getP_spuid());
             if(null != spu) {
-                client.setP_type(spu.getType());
                 client.setP_pid(spu.getPid());
                 ProductProvider provider = providerMap.get(spu.getPid());
                 if(null != provider) client.setProviderName(provider.getName());
