@@ -2883,3 +2883,18 @@ input[type=checkbox]:checked:after {
     padding-left: 16px;
     border-top: 1px solid #ECECF4;
 }
+
+.YZBtn{
+    display: inline-block;
+    width: 34px;
+    height: 18px;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 1);
+    line-height: 18px;
+    color: rgba(255, 255, 255, 1);
+    font-size: 11px;
+    text-align: center;
+}
+.YZBtn:hover{
+    cursor: pointer;
+}

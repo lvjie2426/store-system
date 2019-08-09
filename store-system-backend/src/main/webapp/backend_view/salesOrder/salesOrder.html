@@ -846,7 +846,10 @@
                             <div class="valueBox">400元可用</div>
                         </li>
                         <li>
-                            <div class="topic">他人储存值<span>验证</span></div>
+                            <div class="topic">
+                                他人储存值
+                                <span class="YZBtn">验证</span>
+                            </div>
                             <div class="valueBox">输入</div>
                         </li>
                         <li>
@@ -1135,14 +1138,10 @@
                     </div>
                 </div>
             </div>
-            <%if(list.card){%>
             <div class="stu-card" id="studentCard">
-            <%}else{%>
-            <div class="stu-card" id="studentCard" style="display: none;">
-            <%}%>
-                <span class="text">学生卡</span>
+                <span class="text">会员卡</span>
                 <div class="search-select">
-                    <input value="<%=list.card%>" type="text" placeholder="学生卡" class="layer-input" id="stuCard">
+                    <input value="<%=list.card%>" type="text" placeholder="会员卡" class="layer-input" id="stuCard">
                 </div>
             </div>
             <div class="recommenderBox" id="cusInfoReferrer">
@@ -1491,11 +1490,11 @@
                         <div class="topic">微信</div>
                         <%if(settlement.weixin){%>
                         <div class="valueBox btnBlack">
-                            <%if(settlement.ali.status==1){%>
+                            <%if(settlement.weixin.status==1){%>
                                 <span class="payed"><%=settlement.weixin.money%></span>
                                 <span class="btnRed fr mr10" onclick="reimburse(2)">退款</span>
-                            <%}else{%>
-                                <span class="btnRed center-text" id="weirefunded" style="display: none;">已退款</span>
+                            <%}else if(settlement.weixin.status==2){%>
+                                <span class="btnRed center-text" id="weirefunded">已退款</span>
                             <%}%>
                         </div>
                         <%}else{%>
@@ -1540,9 +1539,9 @@
 
                     </li>
                     <li>
-                        <div class="topic">他人储存值<span onclick="alert(23)">验证</span></div>
+                        <div class="topic">他人储存值<span onclick="alert(23)" class="YZBtn">验证</span></div>
                         <%if(settlement.otherValue){%>
-                            <%if(settlement.otherValue.type==1){%>
+                            <%if(settlement.otherValue.type==2){%>
                                 <%if(settlement.otherValue.hasNum){%>
                                     <div class="valueBox"><input type="text" placeholder="<%=settlement.otherValue.hasNum%>" value="<%=(settlement.otherValue.usedNum/100).toFixed(2)%>" id="countOtherValue"></div>
                                 <%}else{%>
@@ -1573,149 +1572,185 @@
     <i id="smallTicketBg"></i>
     <div class="stHeader">
         <div class="stTitle"><span></span>
-                <h3><%=receipt.subName%></h3><span></span>
+                <h3><%=orderInfo.subName%></h3><span></span>
         </div>
         <ul>
-            <li><span class="fl">下单时间</span><span class="fr"><%=getDateTimeDian(receipt.cTime)%></span></li>
-            <li><span class="fl">订单号</span><span class="fr"><%=receipt.orderNo%></span></li>
-            <li><span class="fl">销售员</span><span class="fr"><%=receipt.staffName%></span></li>
-            <%if(receipt.status==0){%>
+            <li><span class="fl">下单时间</span><span class="fr"><%=getDateTimeDian(orderInfo.ctime)%></span></li>
+            <li><span class="fl">订单号</span><span class="fr"><%=orderInfo.orderNo%></span></li>
+            <li><span class="fl">销售员</span><span class="fr"><%=orderInfo.staffName%></span></li>
+            <%if(orderInfo.status==0){%>
                 <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">未交费</span></li>
-            <%}else if(receipt.status==1){%>
+            <%}else if(orderInfo.status==1){%>
                 <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">已缴费</span></li>
-            <%}else if(receipt.status==2){%>
+            <%}else if(orderInfo.status==2){%>
                 <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">已退款</span></li>
             <%}%>
         </ul>
     </div>
-    <%if(receipt.info){%>
+    <%if(orderInfo.info){%>
     <div class="infoOptometry">
         <h3>验光信息</h3>
-        <%if(receipt.info&&receipt.info.yuanYongRes){%>
+        <%if(orderInfo.info&&orderInfo.info.yuanYongRes){%>
         <div class="name">远用</div>
-        <%if(receipt.info.yuanYongRes.rightResItem){%>
+        <%if(orderInfo.info.yuanYongRes.rightResItem){%>
         <div class="eye">
             <span class="eyeText">右眼</span>
-            <span class="eyeContent"><%=receipt.info.yuanYongRes.rightResItemHtml%></span>
+            <span class="eyeContent"><%=orderInfo.info.yuanYongRes.rightResItemHtml%></span>
         </div>
         <%}%>
-        <%if(receipt.info.yuanYongRes.leftResItem){%>
+        <%if(orderInfo.info.yuanYongRes.leftResItem){%>
         <div class="eye">
             <span class="eyeText">左眼</span>
-            <span class="eyeContent"><%=receipt.info.yuanYongRes.leftResItemHtml%></span>
+            <span class="eyeContent"><%=orderInfo.info.yuanYongRes.leftResItemHtml%></span>
         </div>
         <%}%>
         <%}%>
-        <%if(receipt.info&&receipt.info.jinYongRes){%>
+        <%if(orderInfo.info&&orderInfo.info.jinYongRes){%>
         <div class="name">近用</div>
-        <%if(receipt.info.jinYongRes.rightResItem){%>
+        <%if(orderInfo.info.jinYongRes.rightResItem){%>
         <div class="eye">
             <span class="eyeText">右眼</span>
-            <span class="eyeContent"><%=receipt.info.jinYongRes.rightResItemHtml%></span>
+            <span class="eyeContent"><%=orderInfo.info.jinYongRes.rightResItemHtml%></span>
         </div>
         <%}%>
-        <%if(receipt.info.jinYongRes.leftResItem){%>
+        <%if(orderInfo.info.jinYongRes.leftResItem){%>
         <div class="eye">
             <span class="eyeText">左眼</span>
-            <span class="eyeContent"><%=receipt.info.jinYongRes.leftResItemHtml%></span>
+            <span class="eyeContent"><%=orderInfo.info.jinYongRes.leftResItemHtml%></span>
         </div>
         <%}%>
         <%}%>
-        <%if(receipt.info&&receipt.info.yinXingRes){%>
+        <%if(orderInfo.info&&orderInfo.info.yinXingRes){%>
         <div class="name">隐形</div>
-        <%if(receipt.info.yinXingRes.rightResItem){%>
+        <%if(orderInfo.info.yinXingRes.rightResItem){%>
         <div class="eye">
             <span class="eyeText">右眼</span>
-            <span class="eyeContent"><%=receipt.info.yinXingRes.rightResItemHtml%></span>
+            <span class="eyeContent"><%=orderInfo.info.yinXingRes.rightResItemHtml%></span>
         </div>
         <%}%>
-        <%if(receipt.info.yinXingRes.leftResItem){%>
+        <%if(orderInfo.info.yinXingRes.leftResItem){%>
         <div class="eye">
             <span class="eyeText">左眼</span>
-            <span class="eyeContent"><%=receipt.info.yinXingRes.leftResItemHtml%></span>
+            <span class="eyeContent"><%=orderInfo.info.yinXingRes.leftResItemHtml%></span>
         </div>
         <%}%>
         <%}%>
-        <%if(receipt.info&&receipt.info.jianJinDuoJiaoDianRes){%>
+        <%if(orderInfo.info&&orderInfo.info.jianJinDuoJiaoDianRes){%>
         <div class="name">渐进多焦点</div>
-        <%if(receipt.info.jianJinDuoJiaoDianRes.rightResItem){%>
+        <%if(orderInfo.info.jianJinDuoJiaoDianRes.rightResItem){%>
         <div class="eye">
             <span class="eyeText">右眼</span>
-            <span class="eyeContent"><%=receipt.info.jianJinDuoJiaoDianRes.rightResItemHtml%></span>
+            <span class="eyeContent"><%=orderInfo.info.jianJinDuoJiaoDianRes.rightResItemHtml%></span>
         </div>
         <%}%>
-        <%if(receipt.info.jianJinDuoJiaoDianRes.leftResItem){%>
+        <%if(orderInfo.info.jianJinDuoJiaoDianRes.leftResItem){%>
         <div class="eye">
             <span class="eyeText">左眼</span>
-            <span class="eyeContent"><%=receipt.info.jianJinDuoJiaoDianRes.leftResItemHtml%></span>
+            <span class="eyeContent"><%=orderInfo.info.jianJinDuoJiaoDianRes.leftResItemHtml%></span>
         </div>
         <%}%>
         <%}%>
         <div class="tongju">
             <span class="eyeText">瞳距</span>
-            <span class="eyeContent"><%=receipt.info.farPd%></span>
+            <span class="eyeContent"><%=orderInfo.info.farPd%></span>
         </div>
     </div>
     <%}%>
     <div class="purchaseItems">
-        <ul>
-            <%for(var i = 0;i < receipt.skuids.length;i++){%>
-            <li>
-                <span class="text"><%=receipt.skuids[i].code%></span>
-                <span class="num">X<%=receipt.skuids[i].num%></span>
-                <span class="price">¥<%=receipt.skuids[i].price%></span>
-            </li>
-            <%}%>
-        </ul>
+        <%if(orderInfo.skuList.length>0){%>
+            <ul>
+                <%for(var i = 0;i < orderInfo.skuList.length;i++){%>
+                <li>
+                    <span class="text"><%=orderInfo.skuList[i].code%></span>
+                    <span class="num">X<%=orderInfo.skuList[i].num%></span>
+                    <span class="price">¥<%=orderInfo.skuList[i].price%></span>
+                </li>
+                <%}%>
+            </ul>
+        <%}%>
     </div>
-
     <div class="reduction">
         <ul>
-            <%if(receipt.surcharges&&receipt.surcharges.name){%>
-            <li><span class="fl"><%=receipt.surcharges.name%></span><span class="fr">-¥<%=receipt.surcharges.price%></span>
+            <%if(orderInfo.rechargePrice){%>
+            <li><span class="fl">储值卡充值</span><span class="fr">¥<%=(orderInfo.rechargePrice/100).toFixed(2)%></span>
             </li>
             <%}%>
-            <%if(receipt.descSubtract){%>
-            <li><span class="fl">促销减免</span><span class="fr">-¥<%=receipt.descSubtract%></span></li>
+            <%if(orderInfo.surcharges.length > 0){%>
+                <%for(var i=0;i < orderInfo.surcharges.length;i++){%>
+                    <li><span class="fl"><%=orderInfo.surcharges[i].name%></span><span class="fr">¥<%=(orderInfo.surcharges[i].price/100).toFixed(2)%></span>
+                    </li>
+                <%}%>
+            <%}%>
+            <%if(orderInfo.surcharges&&orderInfo.surcharges.price){%>
+                <li><span class="fl">促销减免</span><span class="fr">-¥<%=(orderInfo.surcharges.price/100).toFixed(2)%></span>
+                </li>
+            <%}%>
+            <%if(orderInfo.oddsPrice){%>
+                <li><span class="fl">特惠减免</span><span class="fr">-¥<%=(orderInfo.oddsPrice/100).toFixed(2)%></span></li>
             <%}%>
         </ul>
     </div>
     <div style="width: 100%;overflow: hidden;padding: 16px 0;">
         <span class="fl btnRed" style="font-size:14px;font-weight: 600;">总计</span>
-        <span class="fr btnRed" style="font-size:14px;font-weight: 600;">¥<%=receipt.price%></span>
+        <span class="fr btnRed" style="font-size:14px;font-weight: 600;">¥<%=(settlement.total/100).toFixed(2)%></span>
     </div>
     <div class="payment">
-        <%if(){%>
+        <%if(settlement.ali){%>
+            <%if(settlement.ali.status==1 && settlement.ali.money>0){%>
+                <li>
+                    <span class="fl">支付宝支付</span>
+                    <span class="fr">¥<%=(settlement.ali.money/100).toFixed(2)%></span>
+                </li>
+            <%}%>
         <%}%>
-        <%if(receipt.payType==1){%>
-        <li>
-            <span class="fl">支付宝支付</span>
-            <span class="fr">¥<%=receipt.price%></span>
-        </li>
-        <%}else if(receipt.payType==2){%>
-        <li>
-            <span class="fl">微信支付</span>
-            <span class="fr">¥<%=receipt.price%></span>
-        </li>
+        <%if(settlement.weixin){%>
+            <%if(settlement.weixin.status==1 && settlement.weixin.money>0){%>
+                <li>
+                    <span class="fl">微信支付</span>
+                    <span class="fr">¥<%=(settlement.weixin.money/100).toFixed(2)%></span>
+                </li>
+            <%}%>
+        <%}%>
+        <%if(settlement.cash){%>
+            <li>
+                <span class="fl">现金支付</span>
+                <span class="fr">¥<%=(settlement.cash/100).toFixed(2)%></span>
+            </li>
+        <%}%>
+        <%if(settlement.valueCard){%>
+            <%if(settlement.valueCard.usedNum>0){%>
+                <li>
+                    <span class="fl">储值卡支付</span>
+                    <span class="fr">¥<%=(settlement.valueCard.usedNum/100).toFixed(2)%></span>
+                </li>
+            <%}%>
+        <%}%>
+        <%if(settlement.otherValue){%>
+            <%if(settlement.otherValue.type==2 && settlement.otherValue.usedNum>0){%>
+                <li>
+                    <span class="fl">他人储值卡支付</span>
+                    <span class="fr">¥<%=(settlement.otherValue.usedNum/100).toFixed(2)%></span>
+                </li>
+            <%}%>
         <%}%>
     </div>
     <div class="noteText">
         <h6>小票备注</h6>
-        <%=list.desc%>
+        <%=settlement.desc%>
     </div>
     <div class="threePacks">
         <h6>三包政策</h6>
-        <%=list.threePolicy%>
+        <%=orderInfo.threePolicy%>
     </div>
     <div class="address">
         <ul>
             <li>
                 <span class="fl">地址</span>
-                <span class="fr "><%=list.address%></span>
+                <span class="fr "><%=orderInfo.address%></span>
             </li>
             <li>
                 <span class="fl">电话</span>
-                <span class="fr"><%=list.phone%></span>
+                <span class="fr"><%=orderInfo.phone%></span>
             </li>
         </ul>
     </div>
@@ -1790,13 +1825,9 @@
     var locOrder = {};                                    //订单的属性存储
     var userScore = 0;                                    //会员积分
     var userDiscount = 10.0;                              //会员折扣
-    var locOrderData = {};                                //订单信息
     var onlinePayMoney;                                   //支付金额
     var payType;                                          //当前支付类型
-    var payOrderData = {};                                //支付返回值
-    var refundType;                                       //退款类型
     var printId;                                          //打印小票的ID
-    var paymentNote;                                      //支付小票备注
     var printContent;                                     //打印内容
     template.helper('getDateTimeDian', function (l, formatStr) {
         if (!formatStr) {
@@ -1836,6 +1867,7 @@
         /**************验光****************/
         var time = quakooUtils.formatTimeToDate(Date.now());
         $("#tests2").val(time);
+
         $("#tests2").attr('placeholder',time);
         if(isfirst){
             renderYgTable(LocYgInfo.yuanTable, "#tableContent", true); //验光信息远用table
@@ -1930,11 +1962,6 @@
         //职业
         selectTag($("#occupationTypeBox"),function (ret) {
             cusLocInfo.job = ret.value;
-            if(ret.value=='学生'){
-                $('#studentCard')[0].style.display = "inline-block";
-            }else{
-                $('#studentCard')[0].style.display = "none";
-            }
         });
         getReferrer();//推荐人查询
         //时间插件
@@ -2208,6 +2235,10 @@
         }
         if (quakooUtils.isBlack(cusLocInfo.job)) {
             layer.msg("请选择顾客职业");
+            return;
+        }
+        if (!quakooUtils.isBlack(card)) {
+            layer.msg("请输入会员卡号");
             return;
         }
         if (quakooUtils.isBlack(cusLocInfo.recommender)) {
@@ -2694,6 +2725,8 @@
         var day = time.substring(8, 10);
         var hour = time.substring(time.length - 5, time.length - 3);
         param.optTime = new Date(year, month, day, hour).getTime();
+        console.log(time,"&&",param.optTime);
+        return;
         if (param.optTime < 0 || quakooUtils.isBlack(param.optTime)) {
             layer.msg("请选择验光时间");
             return;
@@ -4076,7 +4109,6 @@
                 renderHistory()
             },
         });
-
         function renderHistory() {
             //历史消费记录
             $("#cmMain-table1").bootstrapTable('destroy');
@@ -4234,7 +4266,7 @@
             content: $('.wholeParagraph '),
             resize: false,
             btn: ['结算并打印小票', '取消'],
-            move: $('.title'),
+            move: $('#payDiaVertical .title'),
             yes: function (index, layero) {
                 /*if (printId) {
                     printReceipts();
@@ -4264,10 +4296,10 @@
     /**渲染提交订单信息*/
     function renderSubmit() {
         var html = template('payDiaVerticalList', {orderInfo: locShopCart,settlement:settlementList});
-        //var printHtml = template('printTicketTmp', {orderInfo: locOrderData});
+        var printHtml = template('printTicketTmp', {orderInfo: receiptInfo,settlement:settlementList});
        //printContent = printHtml;
         $('#payDiaVertical').html(html);
-        //$('#printTicketUl').html(printHtml);
+        $('#printTicketUl').html(printHtml);
         inputPress('countCash',countOffline,1);       //现金
         inputPress('countValue',countOffline,2);      //储值卡
         inputPress('countOtherValue',countOffline,3); //他人储值卡
@@ -4420,14 +4452,12 @@
             return;
         }
         if(type == 1){
-            // settlementList.cash = price;
             params.cash = price;
         }else if(type == 2){
             if(price>settlementList.valueCard.hasNum){
                 layer.msg("储值卡余额不足");
                 return;
             }
-            // settlementList.valueCard.usedNum = price;
             params.stored = price;
         }else if(type == 3){
             if(settlementList.otherValue.type==1){
@@ -4438,7 +4468,6 @@
                 layer.msg("储值卡余额不足");
                 return;
             }
-            // settlementList.otherValue.usedNum = price;
             params.otherStored = price;
         }
         quakooData.ajaxGetData(config.getUrl_businessOrder_settlementPay(),params,function (ret){
@@ -4519,7 +4548,7 @@
                         }
                     })
                 } else if (type == 2) {
-                    quakooData.ajaxGetData(config.getUrl_order_createWxRefundOrder(), {oid: oid}, function (ret) {
+                    quakooData.ajaxGetData(config.getUrl_order_createWxRefundOrder(), {oid: settlementList.weixin.id}, function (ret) {
                         if (ret && ret.data) {
                             quakooData.ajaxGetData(config.getUrl_order_handleWxRefundOrder(), {roid: ret.data.id}, function (ret) {
                                 if (ret && ret.success && ret.data) {

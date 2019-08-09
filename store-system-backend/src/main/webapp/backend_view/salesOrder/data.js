@@ -69,6 +69,13 @@ var settlementList = {
 /**小票数据(目前是提交订单的所有数据)*/
 var receiptInfo = {
     id:23,//订单ID
+    subName:"青稞眼镜责任有限公司",
+    cTime:324,//下单时间
+    orderNo:123234532,//订单号
+    staffName:"麝隳笊",//销售员
+    status:0,//0未缴费，1已交费，2已退款
+
+
 
 };
 /**添加商品数据*/
@@ -90,7 +97,7 @@ var ygInfo = {
 };
 
 /**
- *
+ * 商品管理
  * @type {{}}
  */
 var goodsManageData = {
