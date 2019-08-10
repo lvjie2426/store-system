@@ -29,7 +29,7 @@ public class Commission implements Serializable{
     private long spuId;//SPUID
 
     @HyperspaceColumn(isJson = true)
-    private Map<Long, Object> users=new HashMap<Long, Object>(); //个人提成
+    private int users; //个人提成
 
     private int price; //团队提成
     @SortKey

@@ -167,13 +167,9 @@ public class OrderPayServiceImpl implements OrderPayService {
                     commissionReward.setSkuList(orderSkuList);
                     commissionReward.setType(CommissionReward.type_reward);
                     /**算个人提成**/
-                    Map<Long, Object> users = commission.getUsers();
-                    for (Map.Entry<Long, Object> entity : users.entrySet()) {
-                        if (entity.getKey() == userId) {
-                            commissionReward.setPrice((int) (orderSku.getPrice() * (int) entity.getValue()));
+                int users = commission.getUsers();
+                            commissionReward.setPrice((int) (orderSku.getPrice() * users));
                             commissionRewardService.add(commissionReward);
-                        }
-                    }
                 }
             }
         }
