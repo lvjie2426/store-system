@@ -2,11 +2,12 @@ package com.store.system.client;
 
 import com.store.system.model.ProductPropertyValue;
 import lombok.Data;
+import org.apache.commons.beanutils.BeanUtils;
 
 import java.io.Serializable;
 
 @Data
-public class ClientProductPropertyValue implements Serializable {
+public class ClientProductPropertyValue extends ProductPropertyValue implements Serializable {
 
     private long id;
     private String pnName;
@@ -17,8 +18,11 @@ public class ClientProductPropertyValue implements Serializable {
     }
 
     public ClientProductPropertyValue(ProductPropertyValue productPropertyValue) {
-        this.id = productPropertyValue.getId();
-        this.content = productPropertyValue.getContent();
+        try {
+            BeanUtils.copyProperties(this, productPropertyValue);
+        } catch (Exception e) {
+            throw new IllegalStateException("ClientProductPropertyValue construction error!");
+        }
     }
 
 }

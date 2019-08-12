@@ -36,7 +36,7 @@
                 <form class="form-horizontal">
                     <div class="form-group ">
                         <label class="col-sm-3 control-label">商品类目</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-8">
                             <select id="cid" class="form-control" style="width: 100%">
                             </select>
                         </div>
@@ -44,7 +44,7 @@
                     <input type="hidden" id="mycid"/>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">属性类型</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-8">
                             <select name="" id="type" class="form-control">
                                 <option value="1">SPU属性</option>
                                 <option value="2">SKU属性</option>
@@ -54,8 +54,8 @@
 
                     <div class="form-group">
                         <input type="hidden" id="id" class="form-control">
-                        <label class=" col-sm-3 control-label">属性内容：</label>
-                        <div class="col-sm-5">
+                        <label class=" col-sm-3 control-label">属性内容</label>
+                        <div class="col-sm-8">
                             <input type="text" id="name" placeholder="请填写属性内容" class="form-control">
                             <span class="help-block m-b-none validate">请填写属性内容</span>
                         </div>
@@ -63,7 +63,7 @@
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label ">输入属性</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-8">
                             <select name="" id="input" class="form-control">
                                 <option value="0">非输入属性</option>
                                 <option value="1">输入属性</option>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label ">默认属性</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-8">
                             <select name="" id="defaul" class="form-control">
                                 <option value="1">默认</option>
                                 <option value="0">非默认</option>
@@ -82,7 +82,7 @@
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label ">多值属性</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-8">
                             <select name="" id="multiple" class="form-control">
                                 <option value="1">多值</option>
                                 <option value="0">非多值</option>
@@ -90,9 +90,11 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label ">排序</label>
-                        <div class="col-sm-5">
-                            <input type="number" id="sort" class="form-control" min="0" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-                         </div>
+                        <div class="col-sm-8">
+                            <input type="number" id="sort" class="form-control" min="0"
+                                   onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                   onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -136,6 +138,9 @@
                                     <option value="1">输入属性</option>
                                 </select>
                             </div>
+
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-1 control-label text-right">默认属性</label>
                             <div class="col-sm-2">
                                 <select name="" id="defaulsearch" class="form-control">
@@ -230,8 +235,8 @@
 <script src="../resource/common/common.js?" +Math.random()></script>
 
 <script>
-    initSelectSubject("#cid", serverUrl+"/productcategory/getAllListByName?token=" + encodeURIComponent(quakooUser.getUserInfo().token), false, true);
-    initSelectSubject("#cidsearch", serverUrl+"/productcategory/getAllListByName?token=" + encodeURIComponent(quakooUser.getUserInfo().token), false, true);
+    initSelectSubject("#cid", serverUrl + "/productcategory/getAllListByName?token=" + encodeURIComponent(quakooUser.getUserInfo().token), false, true);
+    initSelectSubject("#cidsearch", serverUrl + "/productcategory/getAllListByName?token=" + encodeURIComponent(quakooUser.getUserInfo().token), false, true);
     //这条干嘛的 你i没用
     //initSelectSubject("#channelId","/channel/getAllListByName?token="+encodeURI(getUserInfo().token),false,true);
     function formatSubject(item) {
@@ -380,7 +385,7 @@
         var index = layer.open({
             type: 1,
             skin: 'layui-layer-demo', //样式类名
-            area: ['620px', '520px'],
+            area: ['480px', '520px'],
             anim: 0,
             shadeClose: true, //开启遮罩关闭
             content: $('.tree-view'),
@@ -413,7 +418,7 @@
                     function handle(data, params) {
                         var msg = (data.msg == undefined ? '' : ',' + data.msg);
                         if (data.success) {
-                            layer.msg(result.succ, {icon: 1,time:500, shade: 0.01},function(){
+                            layer.msg(result.succ, {icon: 1, time: 500, shade: 0.01}, function () {
                                 layer.close(index)
                             });
 
@@ -434,17 +439,17 @@
         popBox();
     }
 
-    function editRole(row){
+    function editRole(row) {
         var index = layer.open({
             type: 1,
             skin: 'layui-layer-demo', //样式类名
-            area: ['620px', '520px'],
+            area: ['480px', '520px'],
             anim: 0,
             shadeClose: true, //开启遮罩关闭
             content: $('.tree-view'),
             btn: ['提交', '关闭'],
             btnAlign: 'r',
-            yes: function(){
+            yes: function () {
                 var params = {};
                 var url = "/productpropertyname/update";
                 var result = {succ: "更新成功!", fail: "更新失败"};
@@ -472,7 +477,7 @@
                     function handle(data, params) {
                         var msg = (data.msg == undefined ? '' : ',' + data.msg);
                         if (data.success) {
-                            layer.msg(result.succ, {icon: 1,time:500, shade: 0.01},function(){
+                            layer.msg(result.succ, {icon: 1, time: 500, shade: 0.01}, function () {
                                 layer.close(index)
                             });
 
@@ -483,12 +488,13 @@
                     }
                 }
             },
-            btn2: function(){},
-            success: function(layero, index){
+            btn2: function () {
+            },
+            success: function (layero, index) {
                 console.log(row)
                 $("#cid").val(row.cid);
                 $("#mycid").val(row.cid)
-                $('#select2-cid-container').html(' <span class="select2-selection__placeholder">'+row.cname+'</span>');
+                $('#select2-cid-container').html(' <span class="select2-selection__placeholder">' + row.cname + '</span>');
                 //动态添加一个option，从而获取val  id
                 //selectOption=''
                 //selectOption +='<option value="'+data.cid+'">'+data.channel+'</option>'
