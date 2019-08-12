@@ -197,7 +197,7 @@
     <script src="../resource/js/lib/quakoo/project.js"></script>
     <script src="../resource/common/common.js?" +Math.random()></script>
     <script src="../resource/js/template-native.js"></script>
-    <script src="../resource/js/yanjing.js"></script>
+    <script src="../resource/js/yanjing/yanjing.js"></script>
     <script src="../resource/js/yanjing/daterange.js"></script>
     <!--一级类别-->
     <script type="text/html" id="categoryTmp">
@@ -282,7 +282,6 @@
                 </div>
             </div>
             <%}%>
-
             <div class="goods-select">
                 <div class="goods-select-title">品牌</div>
                 <div class="selectBox" id="yj-add-brand">
@@ -580,7 +579,6 @@
                 </div>
                 <span>*设定后会短信自动提醒顾客</span>
             </div>
-
             <%}%>
 
             <%if(list.categoryName=='特殊商品'){%>
@@ -627,9 +625,6 @@
             </div>
             <%}%>
 
-
-
-
             <%if(list.categoryName=='镜片'){%>
             <div class="goods-select goods-range">
                 <div class="goods-select-title">现货范围</div>
@@ -646,11 +641,7 @@
             <div class="goods-type">
                 <div class="layui-form-item" pane="">
                     <div class="layui-input-block">
-                        <%if(list.type==0){%>
-                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked >
-                        <%}else{%>
-                        <input type="radio" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" >
-                        <%}%>
+                        <input type="checkbox" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked>
                     </div>
                 </div>
             </div>
@@ -726,9 +717,9 @@
                 <div class="layui-form-item" pane="">
                     <div class="layui-input-block">
                         <%if(list.type==0){%>
-                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
+                        <input type="checkbox" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
                         <%}else{%>
-                        <input type="radio" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" checked >
+                        <input type="checkbox" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" checked >
                         <%}%>
                     </div>
                 </div>
@@ -858,54 +849,18 @@
                 </div>
             </form>
         </div>
-        <table class="table table-self table-ticheng" >
+        <table class="table  table-self table-ticheng">
             <tr>
                 <th>门店名称</th>
-                <%if(group){%>
-                <th class="group">团体</th>
-                <%}else{%>
-                <th class="group" style="display: none">团体</th>
-                <%}%>
-                <%if(personal){%>
-                <th class="personal">个人</th>
-                <%}else{%>
-                <th class="personal" style="display: none">个人</th>
-                <%}%>
-            </tr>
-            <%for(var i=0;i< shopData.length;i++){%>
-            <tr>
-                <td><%=shopData[i].name%></td>
-                <%if(group){%>
-                    <%if(commissionJson[shopData[i].id]){%>
-                    <td class="group"><input class="groupInput" data-id="<%=shopData[i].id%>" type="text" value="<%=commissionJson[shopData[i].id].price%>" placeholder="分"></td>
-                    <%}else{%>
-                    <td class="group"><input class="groupInput" data-id="<%=shopData[i].id%>" type="text" value="" placeholder="分"></td>
-                    <%}%>
-                <%}else{%>
-                <td class="group" style="display: none"><input class="groupInput" data-id="<%=shopData[i].id%>" type="text" placeholder="分"></td>
-                <%}%>
-                <%if(personal){%>
-                <td class="personal"><div class="btn btn-info" onclick="openSettingPersonalTicheng('<%=shopData[i].id%>')">设定个人提成</div></td>
-                <%}else{%>
-                <td class="personal" style="display: none"><div class="btn btn-info" onclick="openSettingPersonalTicheng('<%=shopData[i].id%>')">设定个人提成</div></td>
-                <%}%>
-            </tr>
-            <%}%>
-        </table>
-    </script>
-    <!--个人提成-->
-    <script type="text/html" id="personalTiChengTmp">
-        <div style="height: 15px;"></div>
-        <table class="table table-self table-ticheng">
-            <tr>
-                <th>门店人员</th>
+                <th>团体</th>
                 <th>个人</th>
             </tr>
-            <%for(var i=0;i< list.length;i++){%>
-            <tr>
-                <td><%=list[i].name%></td>
-                <td><input type="text" data-id="<%=list[i].id%>" value="<%=user[list[i].id]%>" placeholder="分" class="personal"></td>
-            </tr>
+            <%for(var i=0;i< shopData.length;i++){%>
+                <tr>
+                    <td><%=shopData[i].name%></td>
+                    <td><input type="text" data-id="<%=shopData[i].id%>" placeholder="0"></td>
+                    <td><input type="text" placeholder="0"></td>
+                </tr>
             <%}%>
         </table>
     </script>
@@ -1333,7 +1288,7 @@
                 params[cid].skuJson = [];
                 params[cid].productCustomRangeList = [];
                 params[cid].ugDiscount = [];
-                params[cid].type = params[cid].type? params[cid].type:0;
+                params[cid].type = params[cid].type||0;
             }
             params[cid].categoryName = $('#category'+cid).text();
             momentPriceData = {}
@@ -1739,12 +1694,12 @@
         var commissionJson = {};//本地提成
         //设定提成
         function openSettingTicheng() {
-            var groupFlag = false,personalFlag = false;
+            var selGroup
             layer.open({
                 type: 1,shade: 0.01,title:'设定提成',
                 skin: 'layui-layer-yj layui-layer-ticheng', //样式类名
                 anim: 0,
-                area:['360px','420px'],
+                area:['360px','560px'],
                 closeBtn: 0, //不显示关闭按钮
                 resize:false,
                 shadeClose: true, //开启遮罩关闭
@@ -1754,7 +1709,6 @@
                     layer.close(index)
                 },
                 btn2: function(){
-                    console.log($("#tiChengDom .groupInput"))
                     $("#tiChengDom .groupInput").each(function (index,item) {
                         if(item.value){
                             if(commissionJson[item.getAttribute('data-id')]){
@@ -1763,7 +1717,7 @@
                                 commissionJson[item.getAttribute('data-id')] = {subId:item.getAttribute('data-id'),price:item.value,users:[]}
                             }
                         }
-                    })
+                    });
                     params[cid].commissionJson = [];
                     if(!groupFlag){
                         for(var i in commissionJson){
@@ -1789,19 +1743,14 @@
                 success: function(layero, index){
                     if(params[cid] && params[cid].commissionJson){
                         for(var i=0;i<params[cid].commissionJson.length;i++){
-                            if(params[cid].commissionJson[i].price){
-                                groupFlag = true;
-                            }
-                            if(params[cid].commissionJson[i].users.length>0){
-                                personalFlag = true;
-                            }
                             commissionJson[params[cid].commissionJson[i].subId] = params[cid].commissionJson[i];
                         }
                     }
-                    $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,group:groupFlag,personal:personalFlag,commissionJson:commissionJson}))
+                    console.log("shopData",shopData);
+                    $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,commissionJson:commissionJson,group:selGroup,personal:selPerson}));
                     layui.use('form', function(){
                         var form = layui.form;
-                        form.render()
+                        form.render();
                         form.on('checkbox()', function(data){
                             if(data.elem.checked){
                                 if(data.value=='group'){
@@ -1825,6 +1774,98 @@
                 }
             });
         }
+
+        /*
+                //设定提成
+                function openSettingTicheng() {
+                    var groupFlag = false,personalFlag = false;
+                    layer.open({
+                        type: 1,shade: 0.01,title:'设定提成',
+                        skin: 'layui-layer-yj layui-layer-ticheng', //样式类名
+                        anim: 0,
+                        area:['360px','420px'],
+                        closeBtn: 0, //不显示关闭按钮
+                        resize:false,
+                        shadeClose: true, //开启遮罩关闭
+                        content: $('.content-view-ticheng'),
+                        btn: ['取消','确定'],
+                        yes: function(index, layero){
+                            layer.close(index)
+                        },
+                        btn2: function(){
+                            console.log($("#tiChengDom .groupInput"))
+                            $("#tiChengDom .groupInput").each(function (index,item) {
+                                if(item.value){
+                                    if(commissionJson[item.getAttribute('data-id')]){
+                                        commissionJson[item.getAttribute('data-id')].price = item.value;
+                                    }else{
+                                        commissionJson[item.getAttribute('data-id')] = {subId:item.getAttribute('data-id'),price:item.value,users:[]}
+                                    }
+                                }
+                            })
+                            params[cid].commissionJson = [];
+                            if(!groupFlag){
+                                for(var i in commissionJson){
+                                    if(commissionJson[i]){
+                                        commissionJson[i].price = '';
+                                    }
+                                }
+                            }
+                            if(!personalFlag){
+                                for(var i in commissionJson){
+                                    if(commissionJson[i]){
+                                        commissionJson[i].users = [];
+                                    }
+                                }
+                            }
+                            for(var i in commissionJson){
+                                if(commissionJson[i] && (commissionJson[i].users || commissionJson[i].price)){
+                                    params[cid].commissionJson.push(commissionJson[i])
+                                }
+                            }
+                            commissionJson = {};
+                        },
+                        success: function(layero, index){
+                            if(params[cid] && params[cid].commissionJson){
+                                for(var i=0;i<params[cid].commissionJson.length;i++){
+                                    if(params[cid].commissionJson[i].price){
+                                        groupFlag = true;
+                                    }
+                                    if(params[cid].commissionJson[i].users.length>0){
+                                        personalFlag = true;
+                                    }
+                                    commissionJson[params[cid].commissionJson[i].subId] = params[cid].commissionJson[i];
+                                }
+                            }
+                            $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,group:groupFlag,personal:personalFlag,commissionJson:commissionJson}))
+                            layui.use('form', function(){
+                                var form = layui.form;
+                                form.render();
+                                form.on('checkbox()', function(data){
+                                    if(data.elem.checked){
+                                        if(data.value=='group'){
+                                            groupFlag = true;
+                                            $("#tiChengDom .group").show();
+                                        }else if(data.value=='personal'){
+                                            personalFlag = true;
+                                            $("#tiChengDom .personal").show();
+                                        }
+                                    }else{
+                                        if(data.value=='group'){
+                                            groupFlag = false;
+                                            $("#tiChengDom .group").hide();
+                                        }else if(data.value=='personal'){
+                                            personalFlag = false;
+                                            $("#tiChengDom .personal").hide();
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
+        */
+/*
         //设定个人提成
         function openSettingPersonalTicheng(id) {
             if(!commissionJson[id]){
@@ -1866,10 +1907,11 @@
                 }
             });
         }
+*/
 
         //初始化价格表格 type  1零售价  2批发价  3备货量   4积分价
         function setPrice(type) {
-            var range = {};  //定制
+            var range = {};     //定制
             var nowRange = {};  //现货
 
             //现货数据
@@ -1888,10 +1930,7 @@
             if(params[cid].type==0){
                 $('#setPriceBtn li').eq(3).hide().siblings().show();
             }else{
-                $('#setPriceBtn li').hide();
-                $('#setPriceBtn li').eq(3).show();
-                $('#setPriceBtn li').eq(4).show();
-                $('#setPriceBtn li').eq(5).show();
+                $('#setPriceBtn li').show();
             }
             var cols = [];//球
             var rangeData = [];//柱
@@ -2333,27 +2372,38 @@
         function openYjGoods(isUpdate) {
             $('.yj-check-input input').click(function (e) {
                 quakooUtils.stopEventBubble(e)
-            })
+            });
             var data = {
                 list:params[cid],isUpdate:isUpdate,
                 brandData:brandData,providerData:providerData,jiaodianData:jiaodianData,
                 gongnengData:gongnengData,zheshelvData:zheshelvData,
                 typeData:typeData,zhouqiData:zhouqiData,baozhuangData:baozhuangData,
                 type10Data:type10Data,baozhuang11Data:baozhuang11Data
-            }
+            };
+            console.log("paramsData",params);
+            console.log("新增商品弹窗数据",data);
             var html = template('addGoodsTmp',data);
             document.getElementById('addGoodsDom').innerHTML = html;
             layui.use('form', function(){
                 var form = layui.form;
                 form.render();
                 //选择积分还是常规
-                form.on('radio()', function(data){
-                    if(params[cid].type == data.value){
-                        return
+                form.on('checkbox(defaultGoods)',function(data){
+                    if(data.elem.checked){
+                        $('.yj-from').eq(0).slideDown();
+                    }else{
+                        $('.yj-from').eq(0).slideUp();
                     }
-                    $('.yj-from').slideUp();
-                    $('.yj-from').eq(data.value).slideDown();
-                    params[cid].type = data.value;
+                });
+                form.on('checkbox(scoreGoods)',function(data){
+                    if(data.elem.checked){
+                        $('.yj-from').eq(1).slideDown();
+                        params[cid].type = 1;
+
+                    }else{
+                        $('.yj-from').eq(1).slideUp();
+                        params[cid].type = 0;
+                    }
                 });
                 //库存
                 form.on('checkbox(kucun-yj)', function(data){

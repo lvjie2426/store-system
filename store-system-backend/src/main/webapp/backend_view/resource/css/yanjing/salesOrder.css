@@ -2777,10 +2777,10 @@ input[type=checkbox]:checked:after {
 }
 
 #printBox {
-    width: 90%;
+    width: 100%;
     margin: 0px auto;
     background: #fff;
-    padding: 20px 6px;
+    padding: 20px 16px;
     box-sizing: border-box;
     height: 100%;
     overflow: auto;
@@ -2897,4 +2897,9 @@ input[type=checkbox]:checked:after {
 }
 .YZBtn:hover{
     cursor: pointer;
+}
+
+/*为什么都写!important;sadiao*/
+.by-verifyCode .layui-layer-title{
+    border-bottom:none;
 }

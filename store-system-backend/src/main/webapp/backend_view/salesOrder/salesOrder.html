@@ -295,7 +295,7 @@
 
 
 <!-- 弹窗结构 -->
-<div id="printBox" style="display: none"></div>
+<div class="smallTicket h" id="printBox" style="display: none;"></div>
 <div id="salesOrder">
     <div id="search-customer-box">
 
@@ -1022,6 +1022,27 @@
                 </span>
         </div>
     </div>
+    <div class="verify" id="verifyAnothorCard">
+        <div class="content">
+            <ul class="input-list">
+                <li class="input-item">
+                    <input type="text" class="member-input" id="verifyInput" placeholder="输入手机号">
+                </li>
+                <li class="input-item two">
+                    <input type="text" class="member-input" placeholder="输入验证码">
+                    <span class="send-code">发送验证码</span>
+                </li>
+                <li class="input-item or-item">
+                    <i></i>
+                    <span>或者</span>
+                    <i></i>
+                </li>
+                <li class="input-item">
+                    <input type="text" placeholder="扫描微信ID二维码" class="member-input">
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 <!--全局js-->
@@ -1043,9 +1064,9 @@
 <script src="../resource/common/common.js?" +Math.random()></script>
 <script src="../resource/js/template-native.js"></script>
 <!-- 全局公共js -->
-<script src="../resource/js/yanjing.js"></script>
+<script src="../resource/js/yanjing/yanjing.js"></script>
 <!-- 时间插件js -->
-<script src="../resource/js/mobiscroll.2.13.2.js"></script>
+<script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
 <!-- 当前页面逻辑 -->
 <!--临时订单列表-->
 <script type="text/html" id="proOrderData">
@@ -1539,7 +1560,7 @@
 
                     </li>
                     <li>
-                        <div class="topic">他人储存值<span onclick="alert(23)" class="YZBtn">验证</span></div>
+                        <div class="topic">他人储存值<span class="YZBtn" onclick="verifyAnothorCard()">验证</span></div>
                         <%if(settlement.otherValue){%>
                             <%if(settlement.otherValue.type==2){%>
                                 <%if(settlement.otherValue.hasNum){%>
@@ -1853,6 +1874,36 @@
     });
     /**初始化页面*/
     function initPage(isfirst) {
+        //时间插件
+        $(function () {
+            var curr = new Date().getFullYear();
+            var opt = {};
+            opt.date = {preset: 'date'};
+            opt.datetime = {preset: 'datetime'};
+            opt.time = {preset: 'time'};
+
+            opt.default = {
+                theme: 'mbsc-android-holo', //皮肤样式
+                display: 'bubble', //显示方式
+                mode: 'scroller', //日期选择模式
+                dateFormat: 'yyyy-mm-dd',
+                lang: 'zh',
+                showNow: true,
+                nowText: "今天",
+                typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+            };
+            $('.settings2').bind('change', function () {
+                var demo = 'datetime';
+                if (!demo.match(/select/i)) {
+                    $('.demo-test-' + demo).val('');
+                }
+                $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+                $('.demo').hide();
+                $('.demo-' + demo).show();
+            });
+            $('#demo2').trigger('change');
+            return curr;
+        });
         getTemporaryOrder(); //获取门店下临时订单
         /**************顾客****************/
         renderCusInfo();
@@ -1866,9 +1917,13 @@
         });
         /**************验光****************/
         var time = quakooUtils.formatTimeToDate(Date.now());
+        $("#tests2").removeAttr("readOnly");
         $("#tests2").val(time);
+        //$("#tests2").prop("value",time);
+        //$("#tests2").attr("value",time);
+        //$("#tests2").attr('placeholder',time);
+        //$("#tests2").removeAttr("readonly");
 
-        $("#tests2").attr('placeholder',time);
         if(isfirst){
             renderYgTable(LocYgInfo.yuanTable, "#tableContent", true); //验光信息远用table
             renderYgTable(LocYgInfo.yinTable, "#tableContent");        //验光信息隐形table
@@ -1877,7 +1932,11 @@
         }
         getUsersByJob("验光师", 1, 1);                              //获取门店下的验光师
         getResult();//渲染结果和建议
-        getYgInfo(cusLocInfo.id);
+/*
+        if(cusLocInfo.id){
+            getYgInfo(cusLocInfo.id);
+        }
+*/
         /**************订单****************/
         getUsersByJob("销售员", 1, 2);                         //获取门店下的销售员
         getUsersByJob("加工师", 1, 3);                         //获取门店下的加工师
@@ -1936,7 +1995,9 @@
                 document.querySelector("#selectBox .text").innerHTML = "无临时订单";
             }
         })
+
     }
+
 
     /***************************************************顾客信息开始*****************************************************/
     /**渲染顾客信息*/
@@ -1964,36 +2025,6 @@
             cusLocInfo.job = ret.value;
         });
         getReferrer();//推荐人查询
-        //时间插件
-        $(function () {
-            var curr = new Date().getFullYear();
-            var opt = {};
-            opt.date = {preset: 'date'};
-            opt.datetime = {preset: 'datetime'};
-            opt.time = {preset: 'time'};
-
-            opt.default = {
-                theme: 'mbsc-android-holo', //皮肤样式
-                display: 'bubble', //显示方式
-                mode: 'scroller', //日期选择模式
-                dateFormat: 'yyyy-mm-dd',
-                lang: 'zh',
-                showNow: true,
-                nowText: "今天",
-                typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
-            };
-            $('.settings2').bind('change', function () {
-                var demo = 'datetime';
-                if (!demo.match(/select/i)) {
-                    $('.demo-test-' + demo).val('');
-                }
-                $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
-                $('.demo').hide();
-                $('.demo-' + demo).show();
-            });
-            $('#demo2').trigger('change');
-            return curr;
-        });
     }
     /**顾客信息顾客搜索*/
     function searchCus() {
@@ -2091,13 +2122,6 @@
                 cusLocInfo = {};
                 renderCusInfo();
                 layer.msg("未查询到顾客信息")
-            }
-
-            if (quakooUtils.isNotBlack(ret.rows[0])) {
-                // showCus(ret.rows[0]);
-                renderCusInfo();
-            } else {
-                showCus()
             }
         });
     }
@@ -2547,7 +2571,7 @@
 
     /**回显顾客信息*/
     function showCus(data) {
-        console.log("顾客信息",data);
+            console.log("顾客信息",data);
         if (quakooUtils.isNotBlack(data)) {//渲染
             cusId = data.id;
             cusPhone = data.phone;
@@ -2713,10 +2737,6 @@
         var param = {};
         param.pSubid = psid;
         param.subid = subid;
-        if (quakooUtils.isBlack(cusLocInfo.id)) {
-            layer.msg("请完善注册用户信息");
-            return;
-        }
         param.uid = cusLocInfo.id;
         param.optUid = optUid;
         var time = $("#tests2").val();
@@ -2727,6 +2747,10 @@
         param.optTime = new Date(year, month, day, hour).getTime();
         console.log(time,"&&",param.optTime);
         return;
+        if (quakooUtils.isBlack(cusLocInfo.id)) {
+            layer.msg("请完善注册用户信息");
+            return;
+        }
         if (param.optTime < 0 || quakooUtils.isBlack(param.optTime)) {
             layer.msg("请选择验光时间");
             return;
@@ -4193,11 +4217,7 @@
         if(locShopCart.valueCard.length>0){
             params.rechargePrice = locShopCart.valueCard[0].price;
         }
-        if (type){
-            params.makeStatus = 8;
-        }else{
-            params.makeStatus = 6;
-        }
+        params.makeStatus = 6;
         if(quakooUtils.isNotBlack(locShopCart.couponId)&&quakooUtils.isNotBlack(locShopCart.couponArr)){
             params.couponId = locShopCart.couponArr[0].id;
             params.couponFee = locShopCart.couponArr[0].price;
@@ -4236,7 +4256,6 @@
                     settlementList.valueCard.hasNum = ret.data.money;
                     settlementList.otherValue = {};
                     settlementList.otherValue.type = 1;
-                    settlementList.pickupStatus = 1;
                     for(var i in ret.data){
                         receiptInfo[i] = ret.data[i];
                     }
@@ -4261,49 +4280,79 @@
             closeBtn: 0,
             title: false,
             shade: 0.01,
-            shadeClose: true, //开启遮罩关闭
+            shadeClose: false, //开启遮罩关闭
             scrollbar: false,
             content: $('.wholeParagraph '),
             resize: false,
             btn: ['结算并打印小票', '取消'],
             move: $('#payDiaVertical .title'),
             yes: function (index, layero) {
-                /*if (printId) {
-                    printReceipts();
-                } else {
-                    layer.msg("请先完成支付");
-                }*/
-                if(settlementList.noPayNum > 0){
-                    layer.confirm('支付未完成，是否去结算', {icon: 3, title:'提示'}, function(index){
-                        printReceipts();
-                        layer.close(index);
-                    });
+                if(quakooUtils.isBlack(settlementList.desc)){
+                    layer.msg("请输入小票备注");
                 }else{
-                    printReceipts();
+                    if(settlementList.noPayNum > 0){
+                        layer.confirm('支付未完成，是否去结算', {icon: 3, title:'提示'}, function(index){
+                            printReceipts();
+                            layer.close(index);
+                        });
+                    }else{
+                        printReceipts();
+                    }
                 }
             },
             btn2: function (index, layero) {
+
+                layer.confirm('关闭后，订单将作废，确定要关闭吗', {icon: 3, title:'提示'}, function(index){
+                    layer.closeAll();
+                });
+                return false
             },
             success: function (layero, index) {
                 //底部取货勾选框
-//                        $('.layui-layer-btn').prepend('<div class="noPickUp"><input type="checkbox" id="week" /><label for="week">未取货</label></div>')
-                //渲染订单数据
+                $('.layui-layer-btn').append('<div class="noPickUp" id="noPickUp"><input type="checkbox" name="statusCheck" id="goodsChecked"/><label for="">未取货</label><input type="checkbox" name="statusCheck" id="processChecked"/><label for="">未加工</label></div>');
+                var dom = document.getElementById("noPickUp");
+                dom.addEventListener('click',function(e){
+                   var target = e.target;
+                   console.log(target);
+                   var flag = false;
+                   if($(target).prop("checked") == true||$(target).attr("checked") == true){
+                       flag = true;
+                   }
+                   $(this).find('input').removeAttr('checked');
+                   if(flag){
+                       $(target).prop("checked","checked");
+                   }
+                });
+
                 renderSubmit();
             }
 
         });
     }
+
     /**渲染提交订单信息*/
     function renderSubmit() {
         var html = template('payDiaVerticalList', {orderInfo: locShopCart,settlement:settlementList});
         var printHtml = template('printTicketTmp', {orderInfo: receiptInfo,settlement:settlementList});
-       //printContent = printHtml;
+        printContent = printHtml;
         $('#payDiaVertical').html(html);
         $('#printTicketUl').html(printHtml);
         inputPress('countCash',countOffline,1);       //现金
         inputPress('countValue',countOffline,2);      //储值卡
         inputPress('countOtherValue',countOffline,3); //他人储值卡
 
+        var timeout = null;
+        $("#paymentNote").bind("input propertyChange",function (){
+            settlementList.desc = $(this).val();
+            if(timeout !== null){
+                clearTimeout(timeout);
+            }
+            timeout = setTimeout(renderSubmit, 2200);
+        });
+        $("#paymentNote").blur(function () {
+            clearTimeout(timeout);
+            renderSubmit();
+        })
     }
     /**获取订单详情*/
     function getOrderInfo(orderId){
@@ -4491,18 +4540,28 @@
         });
     }
     function inputPress(id,callback,type){
-        console.log(document.getElementById(id));
+        var timeout = null;
+        $("#"+id).bind("input propertyChange",function(){
+            var value = $(this).val();
+            if(timeout !== null){
+                clearTimeout(timeout);
+            }
+            timeout = setTimeout(function(){
+                callback(value,type);
+            },1200);
+        });
         document.getElementById(id).onkeypress = function (e) {
             // debugger
             var value;
             var keycode = e.keyCode;
             if(keycode == 13){
+                clearTimeout(timeout);
                 document.getElementById(id).blur();
                 e.preventDefault();
                 value = document.getElementById(id).value;
                 callback(value,type);
             }
-        }
+        };
     }
 
     /**退款弹窗*/
@@ -4583,10 +4642,6 @@
     /**结算并打印小票*/
     function printReceipts() {
         var params = {};
-        if(quakooUtils.isBlack(settlementList.desc)){
-            layer.msg("请输入小票备注");
-            return
-        }
         params.boId = receiptInfo.id;
         if(settlementList.cash){
             params.cash = settlementList.cash;
@@ -4600,9 +4655,14 @@
         if(settlementList.otherValue&&settlementList.otherValue.type==2&&settlementList.otherValue.usedNum){
             params.otherStored = settlementList.otherValue.usedNum;
         }
-        if(settlementList.pickupStatus==2){
+        if($("#goodsChecked").prop("checked") == true){
             params.makeStatus = 3;
         }
+        if($("#processChecked").prop("checked") == true){
+            params.makeStatus = 1;
+        }
+        params.desc = settlementList.desc;
+        console.log("参数测试",params)
         quakooData.ajaxGetData(config.getUrl_businessOrder_settlementOrder(),params,function (ret) {
             console.log("结算并打印小票",ret);
             return;
@@ -4623,7 +4683,7 @@
             title: '',
             skin: '', //样式类名
             anim: 0,
-            area: ['270px', '500px'],
+            area: ['240px', '500px'],
             closeBtn: 0, //不显示关闭按钮
             resize: false,
             shadeClose: true, //开启遮罩关闭
@@ -4631,11 +4691,31 @@
             btn: '',
             success: function () {
                 $('#printBox').html(printContent);
-                $('#smallTicketBg').css("display", 'none')
+                $('#printBox #smallTicketBg').css("display", 'none')
             }
         })
     }
-
+    //验证他人储值卡
+    function verifyAnothorCard() {
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            title: "验证他人储值卡",
+            skin: "by-verifyCode",
+            anim: 0,
+            area: ['240px','245px'],
+            closeBtn: 0,
+            resize: false,
+            shadeClose: true,
+            content: $('#verifyAnothorCard'),
+            btn:['验证','取消'],
+            yes: function (){},
+            btn2: function (){},
+            success: function (){
+                $("#verifyInput").val("");
+            }
+        })
+    }
     /***************************************************订单信息结束*****************************************************/
 
 </script>

@@ -65,6 +65,7 @@ var settlementList = {
     total:1000000,//总计
     desc:"小票备注",//小票备注
     pickupStatus:1,//取货状态（是否勾选未取货）（1=>没有勾选，2=>勾选未取货）
+    //goodsChecked&&processChecked
 };
 /**小票数据(目前是提交订单的所有数据)*/
 var receiptInfo = {
