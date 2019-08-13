@@ -850,17 +850,41 @@
             </form>
         </div>
         <table class="table  table-self table-ticheng">
-            <tr>
-                <th>门店名称</th>
-                <th>团体</th>
-                <th>个人</th>
+            <tr class="bg-gray">
+                <th class="bg-gray">门店名称</th>
+                <th class="bg-gray">团体</th>
+                <th class="bg-gray">个人</th>
             </tr>
             <%for(var i=0;i< shopData.length;i++){%>
-                <tr>
-                    <td><%=shopData[i].name%></td>
-                    <td><input type="text" data-id="<%=shopData[i].id%>" placeholder="0"></td>
-                    <td><input type="text" placeholder="0"></td>
-                </tr>
+                <%if(commissionJson[shopData[i].id]){%>
+                    <tr>
+                        <td><%=shopData[i].name%></td>
+                        <%if(group){%>
+                        <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" value="<%=commissionJson[shopData[i].id].price%>" placeholder="0"></td>
+                        <%}else{%>
+                        <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+                        <%}%>
+                        <%if(personal){%>
+                        <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" value="<%=commissionJson[shopData[i].id].users%>" placeholder="0"></td>
+                        <%}else{%>
+                        <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+                        <%}%>
+                    </tr>
+                <%}else{%>
+                    <tr>
+                        <td><%=shopData[i].name%></td>
+                        <%if(group){%>
+                        <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"></td>
+                        <%}else{%>
+                        <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+                        <%}%>
+                        <%if(personal){%>
+                        <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"></td>
+                        <%}else{%>
+                        <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+                        <%}%>
+                    </tr>
+                <%}%>
             <%}%>
         </table>
     </script>
@@ -1234,7 +1258,6 @@
             param.desc =desc;
             param.sort =sort;
             quakooData.ajaxGetData(config.getUrl_productprovider_add(),param,function (ret) {
-                console.log("设置供应商",ret)
                 if(ret.success){
                     layer.msg("供应商设置成功",{icon:1});
                     layer.close(index);
@@ -1305,7 +1328,6 @@
                 }
                 html.push('" id="yj-add-status" onclick="changeYjStatus(this)"><i></i></div></div></div>')
             }
-            console.log(params[cid])
             layer.open({
                 type: 1,shade: 0.01,title:html.join(''),
                 skin: 'layui-layer-add-goods  layui-layer-addtsgoods', //样式类名
@@ -1322,10 +1344,11 @@
                     layer.close(index)
                 },
                 btn2: function(index){
-                    addYjGoods(isUpdate,index)
+                    addYjGoods(isUpdate,index);
                     return false;
                 },
                 success: function(layero, index){
+                    groupFlag=false;personalFlag=false;
                     openYjGoods(isUpdate);
                 }
             });
@@ -1334,7 +1357,6 @@
         function updateGoods(id) {
             quakooUtils.stopEventBubble()
             quakooData.ajaxGetData(config.getUrl_product_loadSPU(),{id:id},function (ret) {
-                console.log(ret)
                 if(ret.success){
                     updateParams = ret.data;
                     addGoods(true)
@@ -1413,8 +1435,6 @@
                                     }
                                 }
                             }
-                            console.log(ret.rows)
-
                             var html = template('vipTmp',{list:ret.rows});
                             $('#vipDom').html(html);
                             /*$('.vipInput').each(function (index,item) {
@@ -1449,7 +1469,6 @@
                     layer.close(index)
                 },
                 btn2: function(index, layero){
-                    if(title=='现货'){
                         params[cid].nowRangesJson = [];
                         for(var i in momentNowRangeData){
                             if(momentNowRangeData[i]){
@@ -1457,7 +1476,6 @@
                             }
                         }
                         momentNowRangeData = {};
-                    }else if(title=='定制'){
                         params[cid].rangesJson = [];
                         for(var i in momentRangeData){
                             if(momentRangeData[i]){
@@ -1465,7 +1483,6 @@
                             }
                         }
                         momentRangeData = {};
-                    }
 
                 },
                 success: function(layero, index){
@@ -1489,7 +1506,7 @@
             }
             var cols = [];//球
             var rangeData = [];//柱
-            cols.push({field:'num', minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+            cols.push({field:'num', minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'});
             for(var i=0;i<ballData.length;i++){
                 (function (i) {
                     cols.push({field:'', minWidth:60,align:'center', title: ballData[i].content, id:ballData[i].id, unresize:true,templet:function (d) {
@@ -1567,14 +1584,18 @@
                     endTdIndex = $(e.target).parents('td').attr('data-field');
                 }
                 $('#dragDiv').remove();
-                var startTr = Math.min(beginTrIndex,endTrIndex)
-                var startTd = Math.min(beginTdIndex,endTdIndex)
-                var endTr = Math.max(beginTrIndex,endTrIndex)
-                var endTd = Math.max(beginTdIndex,endTdIndex)
+                var startTr = Math.min(beginTrIndex,endTrIndex);
+                var startTd = Math.min(beginTdIndex,endTdIndex);
+                var endTr = Math.max(beginTrIndex,endTrIndex);
+                var endTd = Math.max(beginTdIndex,endTdIndex);
                 for(var i=startTr;i<=endTr;i++){
                     for(var j=startTd;j<=endTd;j++){
                         if(title=='现货'){
                             var dom = $("#rangeEvent").next().find('.layui-table-body tbody tr').eq(i).find('td').eq(j).find('div div');
+                            if(dom.hasClass('active')){
+                                momentRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = '';
+                                dom.removeClass('active')
+                            }
                             if(dom.hasClass('activenow')){
                                 momentNowRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = '';
                             }else{
@@ -1583,12 +1604,14 @@
                             dom.toggleClass('activenow')
                         }else if(title=='定制'){
                             var dom = $("#rangeEvent").next().find('.layui-table-body tbody tr').eq(i).find('td').eq(j).find('div div');
-                            if(dom.hasClass('active')){
-                                momentRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = '';
-                            }else{
-                                momentRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = {ballId:dom.attr('data-ballId'),columnId:dom.attr('data-columnId')};
+                            if(!dom.hasClass('activenow')){
+                                if(dom.hasClass('active')){
+                                    momentRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = '';
+                                }else{
+                                    momentRangeData[dom.attr('data-ballId')+''+dom.attr('data-columnId')] = {ballId:dom.attr('data-ballId'),columnId:dom.attr('data-columnId')};
+                                }
+                                dom.toggleClass('active')
                             }
-                            dom.toggleClass('active')
                         }
                     }
                 }
@@ -1628,10 +1651,9 @@
                 },
                 btn2: function(){
                     params[cid].skuJson = [];
-                    console.log(momentPriceData)
+                    console.log('momentPriceData',momentPriceData);
                     for(var i in momentPriceData){
-                        if(momentPriceData[i]){
-                            console.log("test content",momentPriceData[i]);
+                        if(momentPriceData[i].eyeTypeArr){
                             for(var j=0;j<momentPriceData[i].eyeTypeArr.length;j++){
                                 var obj = {};
                                 for(var k in momentPriceData[i]){
@@ -1649,11 +1671,9 @@
                 },
 
                 success: function(layero, index){
-                    console.log(111,params[cid].skuJson)
+                    console.log(111,params[cid].skuJson);
                     if(params[cid] && params[cid].skuJson){
                         for(var i=0;i<params[cid].skuJson.length;i++){
-                            console.log(params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId])
-                            console.log(momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]])
                             if(momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]]){
                                 momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]].eyeTypeArr.push(params[cid].skuJson[i].eyeType);
                             }else{
@@ -1662,7 +1682,7 @@
                             }
                         }
                     }
-                    console.log(momentPriceData)
+                    console.log('momentPriceData2',momentPriceData);
                     $('.layui-layer-view-price .layui-layer-btn').append('<div class="view-price-add"><input class="yj-input" placeholder="输入数量" type="number" id="numInput"><button class="btn btn-primary" onclick="numInputBtn('+type+')">键入</button></div>')
                     setPrice(type)
                 }
@@ -1692,10 +1712,10 @@
             });
         }
         var commissionJson = {};//本地提成
+        var groupFlag=false,personalFlag=false;
         //设定提成
         function openSettingTicheng() {
-            var selGroup
-            layer.open({
+            var index = layer.open({
                 type: 1,shade: 0.01,title:'设定提成',
                 skin: 'layui-layer-yj layui-layer-ticheng', //样式类名
                 anim: 0,
@@ -1709,15 +1729,28 @@
                     layer.close(index)
                 },
                 btn2: function(){
-                    $("#tiChengDom .groupInput").each(function (index,item) {
-                        if(item.value){
-                            if(commissionJson[item.getAttribute('data-id')]){
-                                commissionJson[item.getAttribute('data-id')].price = item.value;
-                            }else{
-                                commissionJson[item.getAttribute('data-id')] = {subId:item.getAttribute('data-id'),price:item.value,users:[]}
+                    if(groupFlag){
+                        $("#tiChengDom .tuanduiInput").each(function (index,item) {
+                            if(item.value){
+                                if(commissionJson[item.getAttribute('data-id')]){
+                                    commissionJson[item.getAttribute('data-id')].price = item.value;
+                                }else{
+                                    commissionJson[item.getAttribute('data-id')] = {subId:item.getAttribute('data-id'),price:item.value}
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                    if(personalFlag){
+                        $("#tiChengDom .gerenInput").each(function (index,item) {
+                            if(item.value){
+                                if(commissionJson[item.getAttribute('data-id')]){
+                                    commissionJson[item.getAttribute('data-id')].users = item.value;
+                                }else{
+                                    commissionJson[item.getAttribute('data-id')] = {subId:item.getAttribute('data-id'),users:item.value}
+                                }
+                            }
+                        });
+                    }
                     params[cid].commissionJson = [];
                     if(!groupFlag){
                         for(var i in commissionJson){
@@ -1729,25 +1762,26 @@
                     if(!personalFlag){
                         for(var i in commissionJson){
                             if(commissionJson[i]){
-                                commissionJson[i].users = [];
+                                commissionJson[i].users = '';
                             }
                         }
                     }
                     for(var i in commissionJson){
                         if(commissionJson[i] && (commissionJson[i].users || commissionJson[i].price)){
-                            params[cid].commissionJson.push(commissionJson[i])
+                            params[cid].commissionJson.push(commissionJson[i]);
                         }
                     }
                     commissionJson = {};
                 },
                 success: function(layero, index){
+                    console.log("shuju",params[cid].commissionJson);
                     if(params[cid] && params[cid].commissionJson){
                         for(var i=0;i<params[cid].commissionJson.length;i++){
                             commissionJson[params[cid].commissionJson[i].subId] = params[cid].commissionJson[i];
                         }
                     }
-                    console.log("shopData",shopData);
-                    $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,commissionJson:commissionJson,group:selGroup,personal:selPerson}));
+                    console.log("模版",commissionJson);
+                    $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,commissionJson:commissionJson,group:groupFlag,personal:personalFlag}));
                     layui.use('form', function(){
                         var form = layui.form;
                         form.render();
@@ -1756,17 +1790,21 @@
                                 if(data.value=='group'){
                                     groupFlag = true;
                                     $("#tiChengDom .group").show();
+                                    $(".tuanduiInput").removeAttr("disabled");
                                 }else if(data.value=='personal'){
                                     personalFlag = true;
                                     $("#tiChengDom .personal").show();
+                                    $(".gerenInput").removeAttr("disabled");
                                 }
                             }else{
                                 if(data.value=='group'){
                                     groupFlag = false;
                                     $("#tiChengDom .group").hide();
+                                    $(".tuanduiInput").attr("disabled",'disabled').val(0);
                                 }else if(data.value=='personal'){
                                     personalFlag = false;
                                     $("#tiChengDom .personal").hide();
+                                    $(".gerenInput").attr("disabled",'disabled').val(0);
                                 }
                             }
                         });
@@ -1774,141 +1812,6 @@
                 }
             });
         }
-
-        /*
-                //设定提成
-                function openSettingTicheng() {
-                    var groupFlag = false,personalFlag = false;
-                    layer.open({
-                        type: 1,shade: 0.01,title:'设定提成',
-                        skin: 'layui-layer-yj layui-layer-ticheng', //样式类名
-                        anim: 0,
-                        area:['360px','420px'],
-                        closeBtn: 0, //不显示关闭按钮
-                        resize:false,
-                        shadeClose: true, //开启遮罩关闭
-                        content: $('.content-view-ticheng'),
-                        btn: ['取消','确定'],
-                        yes: function(index, layero){
-                            layer.close(index)
-                        },
-                        btn2: function(){
-                            console.log($("#tiChengDom .groupInput"))
-                            $("#tiChengDom .groupInput").each(function (index,item) {
-                                if(item.value){
-                                    if(commissionJson[item.getAttribute('data-id')]){
-                                        commissionJson[item.getAttribute('data-id')].price = item.value;
-                                    }else{
-                                        commissionJson[item.getAttribute('data-id')] = {subId:item.getAttribute('data-id'),price:item.value,users:[]}
-                                    }
-                                }
-                            })
-                            params[cid].commissionJson = [];
-                            if(!groupFlag){
-                                for(var i in commissionJson){
-                                    if(commissionJson[i]){
-                                        commissionJson[i].price = '';
-                                    }
-                                }
-                            }
-                            if(!personalFlag){
-                                for(var i in commissionJson){
-                                    if(commissionJson[i]){
-                                        commissionJson[i].users = [];
-                                    }
-                                }
-                            }
-                            for(var i in commissionJson){
-                                if(commissionJson[i] && (commissionJson[i].users || commissionJson[i].price)){
-                                    params[cid].commissionJson.push(commissionJson[i])
-                                }
-                            }
-                            commissionJson = {};
-                        },
-                        success: function(layero, index){
-                            if(params[cid] && params[cid].commissionJson){
-                                for(var i=0;i<params[cid].commissionJson.length;i++){
-                                    if(params[cid].commissionJson[i].price){
-                                        groupFlag = true;
-                                    }
-                                    if(params[cid].commissionJson[i].users.length>0){
-                                        personalFlag = true;
-                                    }
-                                    commissionJson[params[cid].commissionJson[i].subId] = params[cid].commissionJson[i];
-                                }
-                            }
-                            $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,group:groupFlag,personal:personalFlag,commissionJson:commissionJson}))
-                            layui.use('form', function(){
-                                var form = layui.form;
-                                form.render();
-                                form.on('checkbox()', function(data){
-                                    if(data.elem.checked){
-                                        if(data.value=='group'){
-                                            groupFlag = true;
-                                            $("#tiChengDom .group").show();
-                                        }else if(data.value=='personal'){
-                                            personalFlag = true;
-                                            $("#tiChengDom .personal").show();
-                                        }
-                                    }else{
-                                        if(data.value=='group'){
-                                            groupFlag = false;
-                                            $("#tiChengDom .group").hide();
-                                        }else if(data.value=='personal'){
-                                            personalFlag = false;
-                                            $("#tiChengDom .personal").hide();
-                                        }
-                                    }
-                                });
-                            });
-                        }
-                    });
-                }
-        */
-/*
-        //设定个人提成
-        function openSettingPersonalTicheng(id) {
-            if(!commissionJson[id]){
-                commissionJson[id] = {subId:id,users:[]}
-            }
-            layer.open({
-                type: 1,shade: 0.01,title:'设定个人提成',
-                skin: 'layui-layer-yj layui-layer-ticheng', //样式类名
-                anim: 0,
-                area:['360px','420px'],
-                closeBtn: 0, //不显示关闭按钮
-                resize:false,
-                shadeClose: true, //开启遮罩关闭
-                content: $('.content-view-personal-ticheng'),
-                btn: ['取消','确定'],
-                yes: function(index, layero){
-                    layer.close(index)
-                },
-                btn2: function(){
-                    commissionJson[id].users = [];
-                    $("#personalTiChengDom .personal").each(function (index,item) {
-                        if(item.value){
-                            var obj = {};
-                            obj[item.getAttribute('data-id')] = item.value;
-                            commissionJson[id].users.push(obj);
-                        }
-                    })
-                },
-                success: function(layero, index){
-                    quakooData.ajaxGetData(config.getUrl_user_getAllUser(),{sid:id,userType:1},function (ret) {
-                        var user = {};
-                        for(var i=0;i<commissionJson[id].users.length;i++){
-                            for(var j in commissionJson[id].users[i]){
-                                user[j] = commissionJson[id].users[i][j]
-                            }
-                        }
-                        $("#personalTiChengDom").html(template('personalTiChengTmp',{list:ret.data,user:user}))
-                    })
-                }
-            });
-        }
-*/
-
         //初始化价格表格 type  1零售价  2批发价  3备货量   4积分价
         function setPrice(type) {
             var range = {};     //定制
@@ -2200,10 +2103,10 @@
                     endTdIndex = $(e.target).parents('td').attr('data-field');
                 }
                 $('#dragDiv').remove();
-                var startTr = Math.min(beginTrIndex,endTrIndex)
-                var startTd = Math.min(beginTdIndex,endTdIndex)
-                var endTr = Math.max(beginTrIndex,endTrIndex)
-                var endTd = Math.max(beginTdIndex,endTdIndex)
+                var startTr = Math.min(beginTrIndex,endTrIndex);
+                var startTd = Math.min(beginTdIndex,endTdIndex);
+                var endTr = Math.max(beginTrIndex,endTrIndex);
+                var endTd = Math.max(beginTdIndex,endTdIndex);
                 priceCheck = [];
                 for(var i=startTr;i<=endTr;i++){
                     for(var j=startTd;j<=endTd;j++){

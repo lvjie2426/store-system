@@ -581,8 +581,44 @@ body {
     overflow: hidden;
 }
 
-.table-ticheng tr th:first-of-type {
-    width: 50%;
+.table-ticheng tr th{
+    background-color: #F4F4F8;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+}
+
+.table-ticheng tr th:nth-of-type(1){
+    width: 160px;
+}
+
+.tabel.table-ticheng .bg-gray{
+    background:#F4F4F8;
+}
+
+.table-ticheng th{
+    border-top: 1px solid rgba(236, 236, 244, 1);
+}
+
+.table-ticheng,.table-ticheng tr,.table-ticheng tr td{
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+
+.table-ticheng tbody tr td{
+    padding:0;
+    height: 36px;
+    line-height: 36px;
+}
+
+.table-ticheng tbody tr td:first-of-type {
+    padding-left: 8px;
+}
+
+.table-ticheng tr td input{
+    width:100%;
+    height:100%;
+    padding:8px;
+    border:none;
 }
 
 .goods-youxiaoqi .yj-input {
