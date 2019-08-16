@@ -102,6 +102,9 @@ var ygInfo = {
  * @type {{}}
  */
 var goodsManageData = {
+    initFn: function (){
+
+    },
     cid : 2,//类目ID；
     pid : 2,//供应商ID
     bid : 23,//品牌iID
@@ -109,27 +112,41 @@ var goodsManageData = {
     name : "",//搜索关键字
     saleStatus : 0,//筛选条件的销售状态，（0=>开启）（1=>关闭）
     supplierLocData : {},//供应商数据
-    priceCheck : [],//设定加个选中的单元格
-    ballData : '',//球数据
-    columnData : '',//柱数据
+    priceCheck : [],//设定价格选中的单元格
+    ballData : [{//球数据
+        content: "0.00",
+        id: 23,
+        pnName: "球",
+    }],
+    columnData : [{//柱数据
+        content:'',
+        id: 23,
+        pnName: "",
+    }],
     brandData : '',//品牌数据
     providerData : '',//供应商数据
     jiaodianData : '',//焦点数据
-    zheshelvData : '',//
-    gongnengData : '',//
-    typeData : '',//
-    zhouqiData : '',//
-    baozhuangData : '',//
-    type10Data : '',//
-    baozhuang11Data : '',//
-    shopData : '',//
-    yjDate : '',//
-    params : '',//
-    updateParams : '',//
-    columns : '',//
-    columnsTeshu : '',//
-    $table : '',//
-    TableInit : '',//
+    zheshelvData : '',//折射率数据
+    gongnengData : '',//功能数据
+    typeData : '',//类型数据（隐形眼镜）
+    zhouqiData : '',//更换周期（隐形眼镜）
+    baozhuangData : '',//包装
+    type10Data : '',//类型（护理产品）
+    baozhuang11Data : '',//包装（护理产品）
+    shopData : [{ //公司下门店数据
+        id:23,
+        name:'',
+    }],
+    yjDate : '',//时间范围
+    params : {  //添加商品的参数
+
+    },
+    updateParams : '',//当前被编辑的数据
+    columns : '',//其他商品的表格
+    columnsTeshu : '',//特殊商品的表格
+    $table : $('#yj-table'),//商品列表表格
+    TableInit : function(){},//表格初始化
+
 };
 
 

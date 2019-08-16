@@ -897,7 +897,7 @@
         var bid = '';//品牌ID
         var sid = '';//系列ID
         var name = '';//搜索关键字
-        var saleStatus = '';//筛选条件的销售状态0开启1关闭
+        var saleStatus = -1;//筛选条件的销售状态0开启1关闭
         var supplierLocData = {};//供应商数据
 
         var priceCheck = [];//设定价格选中的单元格
@@ -947,13 +947,13 @@
                     paginationLoop:false,
                     columns:columns,
                     queryParams:function (param) {
-                        console.log('param',param)
+                        console.log('表格参数param',param)
                         if(cid){param.cid = cid;}
                         if(bid){param.bid = bid;}
                         if(pid){param.pid = pid;}
                         if(sid){param.sid = sid;}
                         if(name){param.name = name;}
-                        if(saleStatus){param.saleStatus = saleStatus;}
+                        if(saleStatus!=-1){param.saleStatus = saleStatus;}
                         param.subid = subid;
                         param.token = quakooUser.getUserInfo().token;
                         param.page = param.offset / param.limit + 1;
@@ -1080,7 +1080,7 @@
                 shopData = ret.data;
             }
         });
-        //获取供应商
+        //获取供应商（页面及弹窗）
         quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
                 providerData = ret.data;
@@ -1093,7 +1093,7 @@
                 })
             }
         })
-        //获取品牌
+        //获取品牌（页面及弹窗）
         quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
             if(ret && ret.success){
                 brandData = ret.data;
@@ -1187,7 +1187,10 @@
             form.render();
         });
 
-        //选择一级类目
+        /**
+         * 选择一级类目
+         * @param value 类目ID，如果不传取全局变量cid
+         */
         function chooseGoodsType(value){
             var Table;
             if(value){
@@ -1269,14 +1272,21 @@
         }
         //添加商品
         function addGoods(isUpdate) {
-            var btn = ['取消','新增'];
-            var title = '新增';
-            if(isUpdate){
+            var btn,title;
+            params[cid] = {};
+            if(!isUpdate){
+                btn = ['取消','新增'];
+                title = '新增';
+                params[cid].subid = subid;
+                params[cid].cid = cid;
+                params[cid].properties = {};
+                params[cid].skuJson = [];
+                params[cid].productCustomRangeList = [];
+                params[cid].ugDiscount = [];
+                params[cid].type = params[cid].type||0;
+            }else{
                 btn = ['取消','编辑'];
                 title = '编辑';
-            }
-            params[cid] = {};
-            if(isUpdate){
                 params[cid] = updateParams;
                 params[cid].skuJson = [];
                 if(params[cid].skuList && params[cid].skuList.length>0){
@@ -1304,18 +1314,10 @@
                     params[cid].newIcon = obj.url;
                     params[cid].style = obj.style;
                 }
-            }else{
-                params[cid].subid = subid;
-                params[cid].cid = cid;
-                params[cid].properties = {};
-                params[cid].skuJson = [];
-                params[cid].productCustomRangeList = [];
-                params[cid].ugDiscount = [];
-                params[cid].type = params[cid].type||0;
             }
             params[cid].categoryName = $('#category'+cid).text();
-            momentPriceData = {}
-            momentRangeData = {}
+            momentPriceData = {};
+            momentRangeData = {};
             var html = [];
             html.push('<div class="layui-yj-header"><div class="layui-layer-title mine-title"><div>');
             html.push(title+params[cid].categoryName)
@@ -1666,7 +1668,6 @@
                             }
                         }
                     }
-                    console.log(params[cid].skuJson);
                     momentPriceData = {};
                 },
 
@@ -1812,12 +1813,12 @@
                 }
             });
         }
-        //初始化价格表格 type  1零售价  2批发价  3备货量   4积分价
+        //初始化价格表格 type  1零售价  2批发价  3备货量   4积分价   5左眼选择    6右眼选择
         function setPrice(type) {
             var range = {};     //定制
             var nowRange = {};  //现货
-
             //现货数据
+            console.log('1',params[cid].nowRangesJson);
             if(params[cid] && params[cid].nowRangesJson){
                 for(var i=0;i<params[cid].nowRangesJson.length;i++){
                     nowRange[params[cid].nowRangesJson[i].ballId+''+params[cid].nowRangesJson[i].columnId] = params[cid].nowRangesJson[i];
@@ -1829,7 +1830,6 @@
                     range[params[cid].rangesJson[i].ballId+''+params[cid].rangesJson[i].columnId] = params[cid].rangesJson[i];
                 }
             }
-
             if(params[cid].type==0){
                 $('#setPriceBtn li').eq(3).hide().siblings().show();
             }else{
