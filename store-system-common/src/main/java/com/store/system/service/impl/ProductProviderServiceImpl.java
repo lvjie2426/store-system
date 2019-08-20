@@ -82,16 +82,8 @@ public class ProductProviderServiceImpl implements ProductProviderService {
 
     @Override
     public List<ProductProvider> getSubAllList(long subid) throws Exception {
-        List<ProductProviderPool> pools = productProviderPoolDao.getAllList(subid);
-        Set<Long> pids = poolFieldSetUtils.fieldList(pools, "pid");
-        List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(pids));
-        Map<Long, ProductProvider> providerMap = mapUtils.listToMap(providers, "id");
-        List<ProductProvider> res = Lists.newArrayList();
-        for(ProductProviderPool pool : pools) {
-            ProductProvider provider = providerMap.get(pool.getPid());
-            if(provider != null) res.add(provider);
-        }
-        return res;
+        List<ProductProvider> providers = productProviderDao.getAllList(ProductProvider.status_nomore,subid);
+        return providers;
     }
 
 }

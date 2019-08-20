@@ -107,8 +107,6 @@ public class ProductProviderController extends BaseController {
     public ModelAndView getSubAllList(@RequestParam(value = "subid") long subid,
                                       HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            ClientSubordinate subordinate = subordinateService.load(subid);
-            if(subordinate.getPid() > 0) subid = subordinate.getPid();
             List<ProductProvider> res = productProviderService.getSubAllList(subid);
             return this.viewNegotiating(request,response, new ResultClient(true, res));
         } catch (StoreSystemException e) {

@@ -18,9 +18,6 @@ public interface ProductProviderService {
     public List<ProductProvider> getAllList() throws Exception;
 
 
-
-
-
     public boolean addPool(ProductProviderPool pool) throws Exception;
 
     public boolean delPool(ProductProviderPool pool) throws Exception;
