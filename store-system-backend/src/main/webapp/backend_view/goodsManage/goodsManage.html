@@ -1081,7 +1081,7 @@
             }
         });
         //获取供应商（页面及弹窗）
-        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:shopId},function (ret) {
             if(ret && ret.success){
                 providerData = ret.data;
                 //商品列表的筛选
