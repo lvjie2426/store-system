@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.space.annotation.domain.CombinationKey;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
@@ -27,6 +28,8 @@ public class ProductProvider implements Serializable {
 
     @PrimaryKey
     private long id;
+
+    private long subid;
 
     private String name;
 
