@@ -43,7 +43,8 @@
 		<bean class="com.quakoo.webframework.ServerBusyInterceptor" />
         <bean class="com.store.system.backend.interceptor.UserInterceptor" />
 	</mvc:interceptors>
-	<aop:aspectj-autoproxy proxy-target-class="true"/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <bean id="statAspcet" class="com.store.system.interceptor.StatAspcet" />
 
     <import resource="dao-config.xml"></import>
 

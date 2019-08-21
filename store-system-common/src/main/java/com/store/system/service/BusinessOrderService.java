@@ -52,7 +52,7 @@ public interface BusinessOrderService {
 
     public ClientSettlementOrder settlementPay(long boId, int cash, int stored, int otherStored) throws Exception;
 
-    public ClientBusinessOrder settlementOrder(long boId, int cash, int stored, int otherStored, int score, int makeStatus) throws Exception;
+    public ClientBusinessOrder settlementOrder(long boId, int cash, int stored, int otherStored, int score, int makeStatus,String desc) throws Exception;
 
 
 

@@ -338,9 +338,10 @@ public class BusinessOrderController extends BaseController{
                                         @RequestParam(required = false, value = "stored", defaultValue = "0") int stored,
                                         @RequestParam(required = false, value = "otherStored", defaultValue = "0") int otherStored,
                                         @RequestParam(required = false, value = "score", defaultValue = "0") int score,
-                                        @RequestParam(required = false, value = "makeStatus", defaultValue = "6") int makeStatus) throws Exception {
+                                        @RequestParam(required = false, value = "makeStatus", defaultValue = "6") int makeStatus,
+                                        String desc) throws Exception {
         try {
-            ClientBusinessOrder res = businessOrderService.settlementOrder(boId,cash,stored,otherStored,score,makeStatus);
+            ClientBusinessOrder res = businessOrderService.settlementOrder(boId,cash,stored,otherStored,score,makeStatus,desc);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

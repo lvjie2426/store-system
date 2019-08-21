@@ -583,14 +583,23 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             }
         }
         if (otherStored > 0) {
+            if(otherStored>businessOrder.getRealPrice()) {
+                throw new StoreSystemException("他人储值支付不能超过实收金额！");
+            }
             totalPrice += otherStored;
             client.setOtherStored(otherStored);
         }
         if (cash > 0) {
+            if(cash>businessOrder.getRealPrice()) {
+                throw new StoreSystemException("现金支付不能超过实收金额！");
+            }
             totalPrice += cash;
             client.setCash(cash);
         }
         if (stored > 0) {
+            if(stored>businessOrder.getRealPrice()) {
+                throw new StoreSystemException("储值支付不能超过实收金额！");
+            }
             totalPrice += stored;
             client.setStored(stored);
         }
@@ -600,7 +609,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     }
 
     @Override
-    public ClientBusinessOrder settlementOrder(long boId, int cash, int stored, int otherStored, int score, int makeStatus) throws Exception {
+    public ClientBusinessOrder settlementOrder(long boId, int cash, int stored, int otherStored, int score, int makeStatus,String desc) throws Exception {
         BusinessOrder businessOrder = businessOrderDao.load(boId);
 
         PayInfo payInfo = new PayInfo();
@@ -609,6 +618,9 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         payInfo.setStatus(PayInfo.status_pay);
         payInfo.setBoId(boId);
         if (cash > 0) {
+            if(cash>businessOrder.getRealPrice()) {
+                throw new StoreSystemException("现金支付不能超过实收金额！");
+            }
             payInfo.setPrice(cash);
             payInfo.setPayType(PayInfo.pay_type_cash);
             payInfoService.insert(payInfo);
@@ -617,6 +629,9 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         }
 
         if (otherStored > 0) {
+            if(otherStored>businessOrder.getRealPrice()) {
+                throw new StoreSystemException("他人储值支付不能超过实收金额！");
+            }
             payInfo.setPrice(otherStored);
             payInfo.setPayType(PayInfo.pay_type_stored);
             payInfoService.insert(payInfo);
@@ -625,6 +640,9 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         }
 
         if (stored > 0) {
+            if(stored>businessOrder.getRealPrice()) {
+                throw new StoreSystemException("储值支付不能超过实收金额！");
+            }
             payInfo.setPrice(stored);
             payInfo.setPayType(PayInfo.pay_type_stored);
             payInfoService.insert(payInfo);
@@ -655,6 +673,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         if (total == businessOrder.getRealPrice()) {
             businessOrder.setStatus(BusinessOrder.status_pay);
         }
+        businessOrder.setReceiptDesc(desc);
         businessOrderDao.update(businessOrder);
 
         return transformClient(businessOrderDao.load(boId));

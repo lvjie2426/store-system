@@ -25,7 +25,7 @@
 
 
 	<servlet>
-		<servlet-name>store-system-backend</servlet-name>
+		<servlet-name>store-system</servlet-name>
 		<servlet-class>com.store.system.interceptor.OptionDispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -34,7 +34,7 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>store-system-backend</servlet-name>
+		<servlet-name>store-system</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 

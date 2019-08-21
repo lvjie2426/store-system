@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+	                    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		                http://www.springframework.org/schema/beans
+		                http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		                http://www.springframework.org/schema/data/mongo
+                        http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+		                http://www.springframework.org/schema/context
+		                http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		                http://www.springframework.org/schema/aop
+		                http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+    <import resource="cache-config.xml" />
+
+    <bean class="com.quakoo.space.aop.HyperspaceBeanPostProcessor"></bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+        <property name="locations">
+            <list>
+                <value>classpath:dao.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <!-- 配置信息 -->
+    <bean id="hyperspaceConfig" class="com.quakoo.space.HyperspaceConfig">
+        <property name="projectName" value="${project.name}" />
+        <property name="zkAddress" value="${zookeeper.address}" />
+    </bean>
+
+    <bean id="dataSource" class='${jdbc.class}'>
+        <property name="alias" value="dataSource" />
+        <property name="driver" value="${jdbc.driver}" />
+        <property name="driverUrl" value="${business.jdbc.driverUrl}" />
+        <property name="user" value="${business.jdbc.user}" />
+        <property name="password" value="${business.jdbc.password}" />
+        <property name="maximumConnectionCount"
+                  value="${business.jdbc.maximumConnectionCount}" />
+        <property name="simultaneousBuildThrottle"
+                  value="${business.jdbc.simultaneousBuildThrottle}" />
+        <property name="testBeforeUse" value="${jdbc.testBeforeUse}" />
+        <property name="houseKeepingTestSql" value="${jdbc.houseKeepingTestSql}" />
+    </bean>
+
+    <!-- sequence datasources -->
+    <bean id="sequenceDataSource" class='${jdbc.class}'>
+        <property name="alias" value="sequenceDataSource_m_0" />
+        <property name="driver" value="${jdbc.driver}" />
+        <property name="driverUrl" value="${sequence.jdbc.driverUrl}" />
+        <property name="user" value="${sequence.jdbc.user}" />
+        <property name="password" value="${sequence.jdbc.password}" />
+        <property name="maximumConnectionCount" value="${sequence.jdbc.maximumConnectionCount}" />
+        <property name="simultaneousBuildThrottle" value="${sequence.jdbc.simultaneousBuildThrottle}" />
+        <property name="testBeforeUse" value="${jdbc.testBeforeUse}" />
+        <property name="houseKeepingTestSql" value="${jdbc.houseKeepingTestSql}" />
+    </bean>
+
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource" />
+    </bean>
+
+
+    <!-- 下面是业务dao -->
+    <bean id="userMaxValueIncrementer" class="com.quakoo.db.StepMaxValueIncrementer">
+        <property name="tableName" value="user_seq" />
+        <property name="columnName" value="id" />
+        <property name="step" value="50" />
+        <property name="dataSource" ref="sequenceDataSource" />
+    </bean>
+    <bean id="userDao" class="com.store.system.dao.impl.UserDaoImpl">
+        <property name="tableName" value="user" />
+        <property name="incrementer" ref="userMaxValueIncrementer" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="permissionDao" class="com.store.system.dao.impl.PermissionDaoImpl">
+        <property name="tableName" value="permission" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="loginUserPoolDao" class="com.store.system.dao.impl.LoginUserPoolDaoImpl">
+        <property name="tableName" value="login_user_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="roleDao" class="com.store.system.dao.impl.RoleDaoImpl">
+        <property name="tableName" value="role" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="commissionRewardDao" class="com.store.system.dao.impl.CommissionRewardDaoImpl">
+        <property name="tableName" value="commission_reward" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="rolePermissionDao" class="com.store.system.dao.impl.RolePermissionPoolDaoImpl">
+        <property name="tableName" value="role_permission_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="userPermissionPoolDao" class="com.store.system.dao.impl.UserPermissionPoolDaoImpl">
+        <property name="tableName" value="user_permission_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="subordinateDao" class="com.store.system.dao.impl.SubordinateDaoImpl">
+        <property name="tableName" value="subordinate" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="subordinateUserPoolDao" class="com.store.system.dao.impl.SubordinateUserPoolDaoImpl">
+        <property name="tableName" value="subordinate_user_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="roleInitTemplateDao" class="com.store.system.dao.impl.RoleInitTemplateDaoImpl">
+        <property name="tableName" value="role_init_template" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="roleTemplateItemDao" class="com.store.system.dao.impl.RoleTemplateItemDaoImpl">
+        <property name="tableName" value="role_template_item" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productBrandDao" class="com.store.system.dao.impl.ProductBrandDaoImpl">
+        <property name="tableName" value="product_brand" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productBrandPoolDao" class="com.store.system.dao.impl.ProductBrandPoolDaoImpl">
+        <property name="tableName" value="product_brand_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productCategoryDao" class="com.store.system.dao.impl.ProductCategoryDaoImpl">
+        <property name="tableName" value="product_category" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productCategoryPoolDao" class="com.store.system.dao.impl.ProductCategoryPoolDaoImpl">
+        <property name="tableName" value="product_category_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productPropertyNameDao" class="com.store.system.dao.impl.ProductPropertyNameDaoImpl">
+        <property name="tableName" value="product_property_name" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productPropertyNamePoolDao" class="com.store.system.dao.impl.ProductPropertyNamePoolDaoImpl">
+        <property name="tableName" value="product_property_name_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productPropertyValueDao" class="com.store.system.dao.impl.ProductPropertyValueDaoImpl">
+        <property name="tableName" value="product_property_value" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productPropertyValuePoolDao" class="com.store.system.dao.impl.ProductPropertyValuePoolDaoImpl">
+        <property name="tableName" value="product_property_value_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productProviderDao" class="com.store.system.dao.impl.ProductProviderDaoImpl">
+        <property name="tableName" value="product_provider" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productProviderPoolDao" class="com.store.system.dao.impl.ProductProviderPoolDaoImpl">
+        <property name="tableName" value="product_provider_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productSeriesDao" class="com.store.system.dao.impl.ProductSeriesDaoImpl">
+        <property name="tableName" value="product_series" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productSeriesPoolDao" class="com.store.system.dao.impl.ProductSeriesPoolDaoImpl">
+        <property name="tableName" value="product_series_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productSKUDao" class="com.store.system.dao.impl.ProductSKUDaoImpl">
+        <property name="tableName" value="product_sku" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productSPUDao" class="com.store.system.dao.impl.ProductSPUDaoImpl">
+        <property name="tableName" value="product_spu" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inventoryWarehouseDao" class="com.store.system.dao.impl.InventoryWarehouseDaoImpl">
+        <property name="tableName" value="inventory_warehouse" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inventoryDetailDao" class="com.store.system.dao.impl.InventoryDetailDaoImpl">
+        <property name="tableName" value="inventory_detail" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inventoryInBillDao" class="com.store.system.dao.impl.InventoryInBillDaoImpl">
+        <property name="tableName" value="inventory_in_bill" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inventoryOutBillDao" class="com.store.system.dao.impl.InventoryOutBillDaoImpl">
+        <property name="tableName" value="inventory_out_bill" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inventoryCheckBillDao" class="com.store.system.dao.impl.InventoryCheckBillDaoImpl">
+        <property name="tableName" value="inventory_check_bill" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inventoryInvokeBillDao" class="com.store.system.dao.impl.InventoryInvokeBillDaoImpl">
+        <property name="tableName" value="inventory_invoke_bill" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="payPassportDao" class="com.store.system.dao.impl.PayPassportDaoImpl">
+        <property name="tableName" value="pay_passport" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="orderDao" class="com.store.system.dao.impl.OrderDaoImpl">
+        <property name="tableName" value="order" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="orderNotifyDao" class="com.store.system.dao.impl.OrderNotifyDaoImpl">
+        <property name="tableName" value="order_notify" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="optometryInfoDao" class="com.store.system.dao.impl.OptometryInfoDaoImpl">
+        <property name="tableName" value="optometry_info" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="userGradeDao" class="com.store.system.dao.impl.UserGradeDaoImpl">
+        <property name="tableName" value="user_grade" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="marketingCouponDao" class="com.store.system.dao.impl.MarketingCouponDaoImpl">
+        <property name="tableName" value="marketing_coupon" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="marketingTimingSmsDao" class="com.store.system.dao.impl.MarketingTimingSmsDaoImpl">
+        <property name="tableName" value="marketing_timing_sms" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="productCustomDao" class="com.store.system.dao.impl.ProductCustomDaoImpl">
+        <property name="tableName" value="product_custom" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="userGradeCategoryDiscountDao" class="com.store.system.dao.impl.UserGradeCategoryDiscountDaoImpl">
+        <property name="tableName" value="usergrade_category_discount" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="paymentDao" class="com.store.system.dao.impl.PaymentDaoImpl">
+        <property name="tableName" value="payment" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="missionDao" class="com.store.system.dao.impl.MissionDaoImpl">
+        <property name="tableName" value="mission" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="subordinateMissionDao" class="com.store.system.dao.impl.SubordinateMissionPoolDaoImpl">
+        <property name="tableName" value="subordinate_mission_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="userMissionPoolDao" class="com.store.system.dao.impl.UserMissionPoolDaoImpl">
+        <property name="tableName" value="user_mission_pool" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="salaryDao" class="com.store.system.dao.impl.SalaryDaoImpl">
+        <property name="tableName" value="salary" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="salaryRecordDao" class="com.store.system.dao.impl.SalaryRecordDaoImpl">
+        <property name="tableName" value="salary_record" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="dictionaryDao" class="com.store.system.dao.impl.DictionaryDaoImpl">
+        <property name="tableName" value="dictionary" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="afterSaleDetailDao" class="com.store.system.dao.impl.AfterSaleDetailDaoImpl">
+        <property name="tableName" value="afterSale_detail" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="afterSaleLogDao" class="com.store.system.dao.impl.AfterSaleLogDaoImpl">
+        <property name="tableName" value="afterSale_log" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="commissionDao" class="com.store.system.dao.impl.CommissionDaoImpl">
+        <property name="tableName" value="commission" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="staticticsCustomerJobDao" class="com.store.system.dao.impl.StatisticsCustomerJobDaoImpl">
+        <property name="tableName" value="statistics_customer_job" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="saleStatisticsDao" class="com.store.system.dao.impl.SaleStatisticsDaoImpl">
+        <property name="tableName" value="sale_statistics" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="saleCategoryStatisticsDao" class="com.store.system.dao.impl.SaleCategoryStatisticsDaoImpl">
+        <property name="tableName" value="sale_category_statistics" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="refundOrderDao" class="com.store.system.dao.impl.RefundOrderDaoImpl">
+        <property name="tableName" value="refund_order" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inventoryStatisticsDao" class="com.store.system.dao.impl.InventoryStatisticsDaoImpl">
+        <property name="tableName" value="inventory_statistics" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="settlementDao" class="com.store.system.dao.impl.SettlementDaoImpl">
+        <property name="tableName" value="settlement" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="walletDao" class="com.store.system.dao.impl.WalletDaoImpl">
+        <property name="tableName" value="wallet" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="walletDetailDao" class="com.store.system.dao.impl.WalletDetailDaoImpl">
+        <property name="tableName" value="wallet_detail" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="businessOrderDao" class="com.store.system.dao.impl.BusinessDaoImpl">
+        <property name="tableName" value="business_order" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="payInfoDao" class="com.store.system.dao.impl.PayInfoDaoImpl">
+        <property name="tableName" value="payInfo" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+    <bean id="companyDao" class="com.store.system.dao.impl.CompanyDaoImpl">
+        <property name="tableName" value="company" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="userLogDao" class="com.store.system.dao.impl.UserLogDaoImpl">
+        <property name="tableName" value="userLog" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+</beans>
