@@ -30,7 +30,7 @@ public interface ProductService {
 
     public boolean delSPU(long id) throws Exception;
 
-    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid,String name,int saleStatus) throws Exception;
+    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid,int type,String name,int saleStatus) throws Exception;
 
 
 
@@ -43,4 +43,8 @@ public interface ProductService {
     public boolean updateSaleStatus(long id, int open)throws Exception;
 
     public List<ProductSKU> getSkuBySubid(long subid,int type)throws Exception;
+
+    public boolean checkStatus(List<Long> ids) throws Exception;
+
+    public Pager getSPUNoNirNumPager(Pager pager, long subid)throws Exception;
 }

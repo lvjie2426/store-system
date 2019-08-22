@@ -417,7 +417,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid, String name,int saleStatus) throws Exception {
+    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid, int type,String name,int saleStatus) throws Exception {
         String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore;
         String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore;
         String limit = " limit %d , %d ";
@@ -440,6 +440,10 @@ public class ProductServiceImpl implements ProductService {
         if (sid > 0) {
             sql += " and sid = " + sid;
             sqlCount += " and sid = " + sid;
+        }
+        if (type >= 0) {
+            sql += " and type = " + type;
+            sqlCount += " and type = " + type;
         }
         if (StringUtils.isNotBlank(name)) {
             sql += " and `name` like '%" + name + "%'";
@@ -573,6 +577,49 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductSKU> getSkuBySubid(long subid, int type) throws Exception {
         String sql = " SELECT * FROM product_sku WHERE 1=1 AND spuid in (SELECT id FROM product_spu WHERE 1=1 AND subid = " + subid + " AND type = " + type + ")";
         return jdbcTemplate.query(sql,new HyperspaceBeanPropertyRowMapper<ProductSKU>(ProductSKU.class));
+    }
+
+    @Override
+    public boolean checkStatus(List<Long> ids) throws Exception {
+
+        List<ProductSPU> load = productSPUDao.load(ids);
+        if(load.size()>0){
+            for(ProductSPU productSPU:load){
+                productSPU.setCheckStatus(ProductSPU.checkStatus_yes);
+                productSPU.setCheckStatusDate(System.currentTimeMillis());
+                productSPUDao.update(productSPU);
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public Pager getSPUNoNirNumPager(Pager pager, long subid) throws Exception {
+
+        String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + subid;
+        String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + subid;
+        String limit = " limit %d , %d ";
+
+        sql=sql+" and type="+ProductSPU.type_devices;
+        sqlCount=sqlCount+" and type="+ProductSPU.type_devices;
+
+        sql=sql+" and (nirNum=''";
+        sqlCount=sqlCount+" and (nirNum=''";
+        sql=sql+" or nirNumDate=0";
+        sqlCount=sqlCount+" or nirNumDate=0";
+        sql=sql+" or nirImg=[])";
+        sqlCount=sqlCount+" or nirImg=[])";
+
+        sql = sql + " order  by `sort` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+
+        pager.setData(transformClients(productSPUList));
+        pager.setTotalCount(count);
+        return pager;
     }
 
 }

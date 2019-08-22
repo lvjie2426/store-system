@@ -93,6 +93,14 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     @Override
     public InventoryOutBill add(InventoryOutBill inventoryOutBill) throws Exception {
         check(inventoryOutBill);
+        //查询
+        Subordinate subordinate = subordinateDao.load(inventoryOutBill.getSubid());
+        if(subordinate.getIsCheck()==Subordinate.isCheck_no){
+            //todo 这里获取店长，设置成店长的id。
+            inventoryOutBill.setCheckUid(0);
+            inventoryOutBill.setCheck(InventoryOutBill.check_pass);
+            inventoryOutBill.setStatus(InventoryOutBill.status_end);
+        }
         return inventoryOutBillDao.insert(inventoryOutBill);
     }
 
@@ -216,6 +224,21 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     public Pager getCheckPager(Pager pager, long subid) throws Exception {
         String sql = "SELECT * FROM `inventory_out_bill` where subid = " + subid + " and `status` > " + InventoryOutBill.status_edit;
         String sqlCount = "SELECT COUNT(id) FROM `inventory_out_bill` where subid = " + subid + " and `status` > " + InventoryOutBill.status_edit;
+        String limit = " limit %d , %d ";
+        sql = sql + " order  by `ctime` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<InventoryOutBill> outBills = this.jdbcTemplate.query(sql, rowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        List<ClientInventoryOutBill> data = transformClients(outBills);
+        pager.setData(data);
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public Pager getAllPager(Pager pager, long subid, int type) throws Exception {
+        String sql = "SELECT * FROM `inventory_out_bill` where subid = " + subid + " and `type` = " + type;
+        String sqlCount = "SELECT COUNT(id) FROM `inventory_out_bill` where subid = " + subid +" and `type` = " + type;
         String limit = " limit %d , %d ";
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());

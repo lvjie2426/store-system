@@ -33,6 +33,12 @@ public class ProductSPU implements Serializable {
     public static final int sale_status_open=0;//开启
     public static final int sale_status_close=1;//关闭
 
+    public static final int type_common = 0; //常规产品
+    public static final int type_devices = 1; //医疗器械
+
+    public static final int checkStatus_no = 0;//未审核/未验收
+    public static final int checkStatus_yes = 1;//审核通过/已验收
+
     @PrimaryKey
     private long id;
 
@@ -83,6 +89,20 @@ public class ProductSPU implements Serializable {
     private int nowRemind; //现货库存提醒
 
     private int totalRemind; //总库存提醒
+
+    //医疗器械
+    private int type;//类型 非医疗器械0 医疗器械1
+
+    private int checkStatus;//审核状态  0 未审核 1 审核通过
+
+    private long checkStatusDate;//审核时间
+
+    private String nirNum;//国械注准号
+
+    private long nirNumDate;//国械注准号注册时间 
+
+    @HyperspaceColumn(isJson = true)
+    private List<String> nirImg= Lists.newArrayList();//注册图片
 
 
     @SortKey

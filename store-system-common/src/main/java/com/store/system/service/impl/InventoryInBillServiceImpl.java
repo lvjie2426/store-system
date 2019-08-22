@@ -254,8 +254,19 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     @Override
     public InventoryInBill add(InventoryInBill inventoryInBill) throws Exception {
         check(inventoryInBill);
+
+        //查询
+        Subordinate subordinate = subordinateDao.load(inventoryInBill.getSubid());
+        if(subordinate.getIsCheck()==Subordinate.isCheck_no){
+            //todo 这里获取店长，设置成店长的id。
+            inventoryInBill.setCheckUid(0);
+            inventoryInBill.setCheck(InventoryInBill.check_pass);
+            inventoryInBill.setStatus(InventoryInBill.status_end);
+        }
         return inventoryInBillDao.insert(inventoryInBill);
     }
+
+
 
     @Override
     public boolean update(InventoryInBill inventoryInBill) throws Exception {
@@ -339,6 +350,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         pager.setTotalCount(count);
         return pager;
     }
+
 
     private List<ClientInventoryInBill> transformClients(List<InventoryInBill> inBills) throws Exception {
         List<ClientInventoryInBill> res = Lists.newArrayList();

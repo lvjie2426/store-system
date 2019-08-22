@@ -160,4 +160,13 @@ public class InventoryOutBillController extends BaseController {
         }
     }
 
+    // 获取医疗器械 所有出库单
+    @RequestMapping("/getAllPager")
+    public ModelAndView getAllPager(@RequestParam(value = "subid") long subid,
+                                    @RequestParam(value = "type") int type,
+                                      Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        pager = inventoryOutBillService.getAllPager(pager, subid,type);
+        return this.viewNegotiating(request,response, new PagerResult<>(pager));
+    }
+
 }
