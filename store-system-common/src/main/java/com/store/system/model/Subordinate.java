@@ -36,6 +36,9 @@ public class Subordinate implements Serializable {
     public static final int processType_per = 0;//本店加工
     public static final int processType_pub = 1;//其他店加工
 
+    public static final int isCheck_yes=0;//入库需要审核
+    public static final int isCheck_no = 1;//入库不需要审核,默认店长审核通过
+
 
     @PrimaryKey
     private long id;
@@ -67,6 +70,8 @@ public class Subordinate implements Serializable {
     private String adminPassword;//管理员密码 账号名+密码登录时候用
 
     private int status;
+
+    private int isCheck;//是否要审核入库
 
     private long province;//省
     private long city;//城市
