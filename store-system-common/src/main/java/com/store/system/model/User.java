@@ -146,7 +146,8 @@ public class User implements Serializable {
 
     private int cardNumber;//会员卡
 
-    private String card;//学生卡
+    @HyperspaceColumn(isJson = true)
+    private Map<String, String> bankCard=new HashMap<String, String>(); //银行卡号
 
     @SortKey
     private long ctime;
