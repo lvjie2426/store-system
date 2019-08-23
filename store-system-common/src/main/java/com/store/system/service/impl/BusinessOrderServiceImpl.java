@@ -528,33 +528,33 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     }
 
     @Override
-    public Map<String,Integer> calculateSale(List<PayInfo> payInfos) {
-        Map<String,Integer> map = Maps.newHashMap();
-        int sale=0;
-        int ali=0;
-        int wx=0;
-        int cash=0;
-        int other=0;
-        for(PayInfo payInfo:payInfos) {
-                if (payInfo.getPayType() == PayInfo.pay_type_ali) {
-                    ali += payInfo.getPrice();
-                }
-                if (payInfo.getPayType() == PayInfo.pay_type_wx) {
-                    wx += payInfo.getPrice();
-                }
-                if (payInfo.getPayType() == PayInfo.pay_type_cash) {
-                    cash += payInfo.getPrice();
-                }
-                if (payInfo.getPayType() == PayInfo.pay_type_stored) {
-                    other += payInfo.getPrice();
-                }
+    public Map<String, Integer> calculateSale(List<PayInfo> payInfos) {
+        Map<String, Integer> map = Maps.newHashMap();
+        int sale = 0;
+        int ali = 0;
+        int wx = 0;
+        int cash = 0;
+        int other = 0;
+        for (PayInfo payInfo : payInfos) {
+            if (payInfo.getPayType() == PayInfo.pay_type_ali) {
+                ali += payInfo.getPrice();
+            }
+            if (payInfo.getPayType() == PayInfo.pay_type_wx) {
+                wx += payInfo.getPrice();
+            }
+            if (payInfo.getPayType() == PayInfo.pay_type_cash) {
+                cash += payInfo.getPrice();
+            }
+            if (payInfo.getPayType() == PayInfo.pay_type_stored) {
+                other += payInfo.getPrice();
+            }
         }
         sale = ali + wx + cash + other;
-        map.put("ali",ali);
-        map.put("wx",wx);
-        map.put("cash",cash);
-        map.put("other",other);
-        map.put("sale",sale);
+        map.put("ali", ali);
+        map.put("wx", wx);
+        map.put("cash", cash);
+        map.put("other", other);
+        map.put("sale", sale);
         return map;
     }
 
@@ -562,49 +562,49 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     public ClientSettlementOrder settlementPay(long boId, int cash, int stored, int otherStored) throws Exception {
         BusinessOrder businessOrder = businessOrderDao.load(boId);
         ClientSettlementOrder client = new ClientSettlementOrder();
-        List<PayInfo> payInfos = payInfoService.getAllList(boId,PayInfo.status_pay);
-        int totalPrice=0;
-        for(PayInfo info:payInfos){
-            if(info.getPayType()==PayInfo.pay_type_ali){
+        List<PayInfo> payInfos = payInfoService.getAllList(boId, PayInfo.status_pay);
+        int totalPrice = 0;
+        for (PayInfo info : payInfos) {
+            if (info.getPayType() == PayInfo.pay_type_ali) {
                 client.setAli(info.getPrice());
                 totalPrice += info.getPrice();
             }
-            if(info.getPayType()==PayInfo.pay_type_wx){
+            if (info.getPayType() == PayInfo.pay_type_wx) {
                 client.setWx(info.getPrice());
                 totalPrice += info.getPrice();
             }
-            if(info.getPayType()==PayInfo.pay_type_cash){
+            if (info.getPayType() == PayInfo.pay_type_cash) {
                 client.setCash(info.getPrice());
                 totalPrice += info.getPrice();
             }
-            if(info.getPayType()==PayInfo.pay_type_stored){
+            if (info.getPayType() == PayInfo.pay_type_stored) {
                 client.setStored(info.getPrice());
                 totalPrice += info.getPrice();
             }
         }
         if (otherStored > 0) {
-            if(otherStored>businessOrder.getRealPrice()) {
+            if (otherStored > businessOrder.getRealPrice()) {
                 throw new StoreSystemException("他人储值支付不能超过实收金额！");
             }
             totalPrice += otherStored;
             client.setOtherStored(otherStored);
         }
         if (cash > 0) {
-            if(cash>businessOrder.getRealPrice()) {
+            if (cash > businessOrder.getRealPrice()) {
                 throw new StoreSystemException("现金支付不能超过实收金额！");
             }
             totalPrice += cash;
             client.setCash(cash);
         }
         if (stored > 0) {
-            if(stored>businessOrder.getRealPrice()) {
+            if (stored > businessOrder.getRealPrice()) {
                 throw new StoreSystemException("储值支付不能超过实收金额！");
             }
             totalPrice += stored;
             client.setStored(stored);
         }
         client.setTotal(totalPrice);
-        client.setAmount(businessOrder.getRealPrice()-totalPrice);
+        client.setAmount(businessOrder.getRealPrice() - totalPrice);
         return client;
     }
 
@@ -618,18 +618,18 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         payInfo.setStatus(PayInfo.status_pay);
         payInfo.setBoId(boId);
         if (cash > 0) {
-            if(cash>businessOrder.getRealPrice()) {
+            if (cash > businessOrder.getRealPrice()) {
                 throw new StoreSystemException("现金支付不能超过实收金额！");
             }
             payInfo.setPrice(cash);
             payInfo.setPayType(PayInfo.pay_type_cash);
             payInfoService.insert(payInfo);
-            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash , FinanceLog.type_in, 0, cash,
+            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash, FinanceLog.type_in, 0, cash,
                     "用户支付", true);
         }
 
         if (otherStored > 0) {
-            if(otherStored>businessOrder.getRealPrice()) {
+            if (otherStored > businessOrder.getRealPrice()) {
                 throw new StoreSystemException("他人储值支付不能超过实收金额！");
             }
             payInfo.setPrice(otherStored);
@@ -640,32 +640,32 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         }
 
         if (stored > 0) {
-            if(stored>businessOrder.getRealPrice()) {
+            if (stored > businessOrder.getRealPrice()) {
                 throw new StoreSystemException("储值支付不能超过实收金额！");
             }
             payInfo.setPrice(stored);
             payInfo.setPayType(PayInfo.pay_type_stored);
             payInfoService.insert(payInfo);
             User user = userDao.load(businessOrder.getUid());
-            if(user!=null){
-                user.setMoney(user.getMoney()-stored);
+            if (user != null) {
+                user.setMoney(user.getMoney() - stored);
                 userDao.update(user);
             }
-            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash , FinanceLog.type_in, 0, stored,
+            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash, FinanceLog.type_in, 0, stored,
                     "用户支付", true);
         }
 
-        if(score > 0){
+        if (score > 0) {
             User user = userDao.load(businessOrder.getUid());
-            if(user!=null){
-                user.setScore(user.getScore()-score);
+            if (user != null) {
+                user.setScore(user.getScore() - score);
                 userDao.update(user);
             }
         }
         businessOrder.setMakeStatus(makeStatus);
         //若所有不同支付方式的支付总金额等于订单应付金额
         // 则认为此订单已缴费 否则未缴费
-        List<PayInfo> payInfos = payInfoService.getAllList(boId,PayInfo.status_pay);
+        List<PayInfo> payInfos = payInfoService.getAllList(boId, PayInfo.status_pay);
         long total = 0;
         for (PayInfo info : payInfos) {
             total += info.getPrice();

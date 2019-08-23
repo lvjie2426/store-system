@@ -806,6 +806,10 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isNotBlank(user.getJob())){ olduser.setJob(user.getJob()); }
         //邮件
         if(StringUtils.isNotBlank(user.getMail())){ olduser.setMail(user.getMail()); }
+        //身份证号
+        if(StringUtils.isNotBlank(user.getIdCard())){ olduser.setIdCard(user.getIdCard()); }
+        //银行卡号
+        if(user.getBankCard()!=null&&user.getBankCard().size()>0){ olduser.setBankCard(user.getBankCard()); }
         //手机号
         if(StringUtils.isNotBlank(user.getPhone())){ olduser.setPhone(user.getPhone()); }
         //储值金额(分)

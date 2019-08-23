@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-/**
+/**门店销售数据统计
  * @ClassName SaleStatisticsJob
  * @Description TODO
  * @Author LaoMa
