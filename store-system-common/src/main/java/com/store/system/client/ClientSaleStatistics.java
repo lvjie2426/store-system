@@ -38,6 +38,8 @@ public class ClientSaleStatistics {
 
     private double perPrice; //平均客单价(元)
 
+    private int customer; //回头客
+
     private double profits;//毛利润(元)
 
     private int saleStatus;  //销售额状态
@@ -56,6 +58,9 @@ public class ClientSaleStatistics {
     private double perPriceOld; //平均客单价(元)
 
     private double profitsOld;//毛利润(元)
+
+    private int customerOld; //回头客
+
 
     private List<SaleStatistics> details = Lists.newArrayList();
 }

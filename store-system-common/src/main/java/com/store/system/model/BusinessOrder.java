@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -89,7 +90,10 @@ public class BusinessOrder implements Serializable {
 
     private int status; //订单状态
 
+    private long day;//支付完成日期
+
     @SortKey
+    @PagerCursor
     private long ctime;
 
     private long utime;

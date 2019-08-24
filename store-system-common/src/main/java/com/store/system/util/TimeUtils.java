@@ -9,6 +9,13 @@ import java.util.List;
 
 public class TimeUtils {
 
+
+    public static String getSDFTime(long time){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStr=simpleDateFormat.format(time);
+        return timeStr;
+    }
+
     public static long getDayFormTime(long time){
        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
        String timeStr=simpleDateFormat.format(time);
@@ -309,4 +316,47 @@ public class TimeUtils {
         Date res = ca.getTime();
         return res.getTime();
     }
+
+
+    public static long getTodayTime(int hourOfDay, int minute, int second){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),hourOfDay,minute,second);
+        return calendar.getTime().getTime();
+    }
+
+    public static long getYesterdayTime(int hourOfDay, int minute, int second){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)-1,hourOfDay,minute,second);
+        return calendar.getTime().getTime();
+    }
+
+    public static long getWeekFirstTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONDAY), calendar.get(Calendar.DAY_OF_MONTH), 0, 0,0);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return calendar.getTime().getTime();
+    }
+
+    public static long getWeekLastTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONDAY), calendar.get(Calendar.DAY_OF_MONTH), 23, 59,59);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return calendar.getTime().getTime() + (7 * 24 * 60 * 60 * 1000);
+    }
+
+    public static long getMonthFirstTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONDAY), calendar.get(Calendar.DAY_OF_MONTH), 0, 0,0);
+        calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return calendar.getTime().getTime();
+    }
+
+    public static long getMonthLastTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONDAY), calendar.get(Calendar.DAY_OF_MONTH), 0, 0,0);
+        calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 24);
+        return calendar.getTime().getTime();
+    }
+
 }

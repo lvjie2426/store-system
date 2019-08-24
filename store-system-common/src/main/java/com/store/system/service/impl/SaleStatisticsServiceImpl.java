@@ -1,11 +1,15 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
+import com.store.system.client.ClientBusinessOrder;
 import com.store.system.client.ClientSaleStatistics;
 import com.store.system.dao.SaleStatisticsDao;
+import com.store.system.model.BusinessOrder;
 import com.store.system.model.SaleStatistics;
 import com.store.system.model.Subordinate;
+import com.store.system.service.BusinessOrderService;
 import com.store.system.service.SaleStatisticsService;
 import com.store.system.service.SubordinateService;
 import com.store.system.util.ArithUtils;
@@ -14,10 +18,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName SaleStatisticsServiceImpl
@@ -35,6 +36,8 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
     private JdbcTemplate jdbcTemplate;
     @Resource
     private SubordinateService subordinateService;
+    @Resource
+    private BusinessOrderService businessOrderService;
 
 
     @Override
@@ -43,7 +46,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         for(Long day:days) {
             list.addAll(saleStatisticsDao.getDayList(day, subId));
         }
-        ClientSaleStatistics res = transformClient(list,new ArrayList<SaleStatistics>());
+        ClientSaleStatistics res = transformClient(list,new ArrayList<SaleStatistics>(),subId);
         res.setDetails(list);
         return res;
     }
@@ -86,7 +89,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         yesterday.setWeek(TimeUtils.getWeekFormTime(yesterdayTime));
         yesterday.setMonth(TimeUtils.getMonthFormTime(yesterdayTime));
         yesterday = saleStatisticsDao.load(yesterday);
-        ClientSaleStatistics res = transformClient(list,oldList);
+        ClientSaleStatistics res = transformClient(list,oldList,subId);
 
         //计算销售额昨日比较今日的增长率或减少率
         if(saleStatistics!=null&&yesterday!=null) {
@@ -126,7 +129,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1);
         long oldWeek = TimeUtils.getWeekFormTime(calendar.getTimeInMillis());
         List<SaleStatistics> oldList = saleStatisticsDao.getWeekList(oldWeek, subId);
-        ClientSaleStatistics res = transformClient(saleStatistics, oldList);
+        ClientSaleStatistics res = transformClient(saleStatistics, oldList, subId);
         res.setDetails(saleStatistics);
 
         Calendar cal = Calendar.getInstance();
@@ -134,7 +137,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         long lastWeek = TimeUtils.getWeekFormTime(cal.getTimeInMillis());
         List<SaleStatistics> lastList = saleStatisticsDao.getWeekList(lastWeek, subId);
         if (lastList.size() > 0) {
-            ClientSaleStatistics last = transformClient(lastList, Lists.<SaleStatistics>newArrayList());
+            ClientSaleStatistics last = transformClient(lastList, Lists.<SaleStatistics>newArrayList(), subId);
             //计算销售单数上周比较这周的增长率或减少率
             if (res != null && last != null) {
                 if (res.getSale() - last.getSale() >= 0) {
@@ -174,7 +177,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1);
         long oldMonth = TimeUtils.getWeekFormTime(calendar.getTimeInMillis());
         List<SaleStatistics> oldList = saleStatisticsDao.getMonthList(oldMonth,subId);
-        ClientSaleStatistics res = transformClient(saleStatistics,oldList);
+        ClientSaleStatistics res = transformClient(saleStatistics,oldList,subId);
         res.setDetails(saleStatistics);
 
 
@@ -182,7 +185,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         cal.add(Calendar.WEEK_OF_YEAR, -1);
         long lastMonth = TimeUtils.getMonthFormTime(cal.getTimeInMillis());
         List<SaleStatistics> lastList = saleStatisticsDao.getMonthList(lastMonth,subId);
-        ClientSaleStatistics last = transformClient(lastList,Lists.<SaleStatistics>newArrayList());
+        ClientSaleStatistics last = transformClient(lastList,Lists.<SaleStatistics>newArrayList(),subId);
         //计算销售单数上月比较这月的增长率或减少率
         if(res!=null&&last!=null) {
             if (res.getSale() - last.getSale() >= 0) {
@@ -233,24 +236,44 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
 
         sql = sql + " order  by ctime desc";
         List<SaleStatistics> saleStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleStatistics.class));
-        return transformClient(saleStatistics,new ArrayList<SaleStatistics>());
+        return transformClient(saleStatistics,new ArrayList<SaleStatistics>(),subId);
     }
 
 
-    private ClientSaleStatistics transformClient(List<SaleStatistics> statisticsList,List<SaleStatistics> oldList) throws Exception{
+    private ClientSaleStatistics transformClient(List<SaleStatistics> statisticsList,List<SaleStatistics> oldList,long subId) throws Exception{
         ClientSaleStatistics client = new ClientSaleStatistics();
         double sale=0;
         int num=0;
         double perPrice=0;
         double profits=0;
-        long subId=0;
+        int customer = 0;
         for(SaleStatistics statistics:statisticsList){
-            subId=statistics.getSubId();
             sale = ArithUtils.add(sale,statistics.getSale());
             num += statistics.getNum();
             perPrice = ArithUtils.add(perPrice,statistics.getPerPrice());
             profits = ArithUtils.add(profits,statistics.getProfits());
         }
+
+        long currentTime = System.currentTimeMillis();
+        List<BusinessOrder> businessOrders = businessOrderService.getList(subId, BusinessOrder.status_pay,BusinessOrder.makeStatus_qu_yes,currentTime);
+
+        if(businessOrders.size()>0) {
+            Map<Long, List<BusinessOrder>> map = Maps.newHashMap();
+            for (BusinessOrder one : businessOrders) {
+                List<BusinessOrder> list = map.get(one.getUid());
+                if(null == list) {
+                    list = Lists.newArrayList();
+                    map.put(one.getUid(), list);
+                }
+                list.add(one);
+            }
+            for (Map.Entry<Long, List<BusinessOrder>> entry : map.entrySet()) {
+                if (entry.getValue().size() >= 2) {
+                    customer++;
+                }
+            }
+        }
+        client.setCustomer(customer);
         client.setSale(sale);
         client.setNum(num);
         client.setPerPrice(perPrice);
@@ -262,6 +285,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         int numOld=0;
         double perPriceOld=0;
         double profitsOld=0;
+        int customerOld = 0;
         if(oldList.size()>0){
             for(SaleStatistics statistics:oldList){
                 saleOld = ArithUtils.add(saleOld,statistics.getSale());
@@ -270,10 +294,33 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
                 profitsOld = ArithUtils.add(profitsOld,statistics.getProfits());
             }
         }
+
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1);
+        long oldTime = calendar.getTimeInMillis();
+        List<BusinessOrder> ordersOld = businessOrderService.getList(subId, BusinessOrder.status_pay,BusinessOrder.makeStatus_qu_yes,oldTime);
+        List<BusinessOrder> oldlist = null;
+        if(ordersOld.size()>0) {
+            Map<Long, List<BusinessOrder>> map = Maps.newHashMap();
+            for (BusinessOrder one : ordersOld) {
+                if(null == oldlist) {
+                    oldlist = Lists.newArrayList();
+                }
+                oldlist.add(one);
+                map.put(one.getUid(), oldlist);
+            }
+            for (Map.Entry<Long, List<BusinessOrder>> entry : map.entrySet()) {
+                if (entry.getValue().size() >= 2) {
+                    customerOld++;
+                }
+            }
+        }
+
         client.setSaleOld(saleOld);
         client.setNumOld(numOld);
         client.setPerPriceOld(perPriceOld);
         client.setProfitsOld(profitsOld);
+        client.setCustomerOld(customerOld);
         return client;
     }
 }

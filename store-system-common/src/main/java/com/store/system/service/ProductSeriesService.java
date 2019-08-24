@@ -1,7 +1,6 @@
 package com.store.system.service;
 
-import com.store.system.model.ProductBrand;
-import com.store.system.model.ProductBrandPool;
+import com.store.system.client.ClientProductSeries;
 import com.store.system.model.ProductSeries;
 import com.store.system.model.ProductSeriesPool;
 
@@ -18,6 +17,9 @@ public interface ProductSeriesService {
     public ProductSeries load(long id) throws Exception;
 
     public List<ProductSeries> getAllList(long bid) throws Exception;
+
+    public List<ClientProductSeries> getAllList() throws Exception;
+
 
 
 

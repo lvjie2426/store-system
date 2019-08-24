@@ -25,7 +25,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 
 
     private final static List<String> accessUrls = Arrays.asList("/login/in", "/login/verifyCode", "/main/exit",
-            "/storage");
+            "/storage","/businessOrder","/common");
 
 
     @Autowired

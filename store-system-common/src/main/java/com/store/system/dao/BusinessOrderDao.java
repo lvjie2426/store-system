@@ -20,4 +20,12 @@ public interface BusinessOrderDao extends HDao<BusinessOrder> {
     public List<BusinessOrder> getAllList(long subId, int makeStatus) throws DataAccessException;
 
     public List<BusinessOrder> getUserList(long uid, int makeStatus) throws DataAccessException;
+
+    public List<BusinessOrder> getPageList(long subId, int status, int makeStatus, long day, double cursor, int size) throws DataAccessException;
+
+    public List<BusinessOrder> getPageList(long subId, int status, int makeStatus, double cursor, int size) throws DataAccessException;
+
+    public int getCount(long subId, int status, int makeStatus) throws DataAccessException;
+
+    public int getCount(long subId, int status, int makeStatus, long day) throws DataAccessException;
 }

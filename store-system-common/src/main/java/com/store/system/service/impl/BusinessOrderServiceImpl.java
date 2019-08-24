@@ -3,6 +3,8 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
@@ -19,12 +21,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @ClassName BusinessOrderServiceImpl
@@ -210,6 +209,119 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         return pager;
     }
 
+    @Override
+    public Pager getPager(final Pager pager, final long subId, final long day,
+                          final int status, final int makeStatus) throws Exception {
+        return new PagerRequestService<BusinessOrder>(pager, 0) {
+            /**
+             * 步骤一：获取分页结果
+             *
+             * @param cursor
+             * @param size
+             * @return
+             */
+            @Override
+            public List<BusinessOrder> step1GetPageResult(String cursor, int size) throws Exception {
+                return businessOrderDao.getPageList(subId,status,makeStatus,day,Double.parseDouble(cursor),size);
+            }
+
+            /**
+             * 步骤二:：获取总数
+             *
+             * @return
+             */
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return businessOrderDao.getCount(subId,status,makeStatus,day);
+            }
+
+            /**
+             * 步骤三：对数据进行过滤,过滤逻辑不支持涉及跨页
+             *
+             * @param unTransformDatas
+             * @param session
+             * @return
+             */
+            @Override
+            public List<BusinessOrder> step3FilterResult(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            /**
+             * 步骤四：对结果进行转换。
+             *
+             * @param unTransformDatas
+             * @param session
+             * @return
+             * @throws Exception
+             */
+            @Override
+            public List<?> step4TransformData(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClient(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+    @Override
+    public Pager getPager(final Pager pager, final long subId, final long startTime, final long endTime,
+                          final int status, final int makeStatus) throws Exception {
+        return new PagerRequestService<BusinessOrder>(pager, 0) {
+            /**
+             * 步骤一：获取分页结果
+             *
+             * @param cursor
+             * @param size
+             * @return
+             */
+            @Override
+            public List<BusinessOrder> step1GetPageResult(String cursor, int size) throws Exception {
+                return businessOrderDao.getPageList(subId,status,makeStatus,Double.parseDouble(cursor),size);
+            }
+
+            /**
+             * 步骤二:：获取总数
+             *
+             * @return
+             */
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return businessOrderDao.getCount(subId,status,makeStatus);
+            }
+
+            /**
+             * 步骤三：对数据进行过滤,过滤逻辑不支持涉及跨页
+             *
+             * @param unTransformDatas
+             * @param session
+             * @return
+             */
+            @Override
+            public List<BusinessOrder> step3FilterResult(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            /**
+             * 步骤四：对结果进行转换。
+             *
+             * @param unTransformDatas
+             * @param session
+             * @return
+             * @throws Exception
+             */
+            @Override
+            public List<?> step4TransformData(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+                List<BusinessOrder> res = Lists.newArrayList();
+                for(BusinessOrder order:unTransformDatas){
+                    if(order.getCtime()>startTime && order.getCtime()<=endTime){
+                        res.add(order);
+                    }
+                }
+                return transformClient(res);
+            }
+        }.getPager();
+    }
+
 
     @Override
     public ClientBusinessOrder add(BusinessOrder businessOrder) throws Exception {
@@ -231,6 +343,27 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     public List<ClientBusinessOrder> getAllList(long subId, int status, int makeStatus) throws Exception {
         List<BusinessOrder> list = businessOrderDao.getAllList(subId, status, makeStatus);
         return transformClient(list);
+    }
+
+    @Override
+    public List<BusinessOrder> getList(long subId, int status, int makeStatus, long time) throws Exception {
+        String sql = "SELECT  *  FROM `business_order`   where  1=1  ";
+
+        if (status > 0){
+            sql = sql + " and `status` = " + status;
+        }
+        if (makeStatus > 0){
+            sql = sql + " and `makeStatus` = " + makeStatus;
+        }
+        if (subId > 0) {
+            sql = sql + " and `subId` = " + subId;
+        }
+        if (time > 0) {
+            sql = sql + " and `ctime` <=" + time;
+        }
+        sql = sql + " order  by ctime desc";
+        List<BusinessOrder> orderList = this.jdbcTemplate.query(sql, rowMapper);
+        return orderList;
     }
 
     @Override
@@ -500,7 +633,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             sql = sql + " and `status` = " + BusinessOrder.status_pay;
         }
         if (subId > 0) {
-            sql = sql + " and `subid` = " + subId;
+            sql = sql + " and `subId` = " + subId;
         }
         if (endTime > 0) {
             sql = sql + " and `ctime` >=" + startTime;

@@ -30,6 +30,10 @@ public interface BusinessOrderService {
 
     public Pager getBackPager(Pager pager, long subId, String name, String phone, String orderNo) throws Exception;
 
+    public Pager getPager(Pager pager, long subId, long day, int status, int makeStatus) throws Exception;
+
+    public Pager getPager(Pager pager, long subId, long startTime, long endTime, int status, int makeStatus) throws Exception;
+
     public ClientBusinessOrder add(BusinessOrder businessOrder) throws Exception;
 
     public ClientBusinessOrder load(long id) throws Exception;
@@ -37,6 +41,8 @@ public interface BusinessOrderService {
     public List<ClientBusinessOrder> getAllList(long subId) throws Exception;
 
     public List<ClientBusinessOrder> getAllList(long subId, int status, int makeStatus) throws Exception;
+
+    public List<BusinessOrder> getList(long subId, int status, int makeStatus, long time) throws Exception;
 
     public Map<String,Object> loadOrder(long id) throws Exception;
 

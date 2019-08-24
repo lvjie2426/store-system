@@ -10,4 +10,5 @@ public interface ProductSeriesDao extends HDao<ProductSeries> {
 
     public List<ProductSeries> getAllList(long bid, int status) throws DataAccessException;
 
+    public List<ProductSeries> getAllList(int status) throws DataAccessException;
 }
