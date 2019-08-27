@@ -218,7 +218,7 @@ public class MissionController extends BaseController {
 
     //app--销售奖励
     //todo 客户需要确认修改一下页面。
-    @RequestMapping("/saleReward")
+/*    @RequestMapping("/saleReward")
     public ModelAndView saleReward(HttpServletRequest request,HttpServletResponse response, Date date,
                                    @RequestParam(name = "subid") long subid)throws Exception{
         try {
@@ -230,5 +230,5 @@ public class MissionController extends BaseController {
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }
-    }
+    }*/
 }
