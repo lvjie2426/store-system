@@ -1293,6 +1293,51 @@ public class UserServiceImpl implements UserService {
         return transformClient(users);
     }
 
+    @Override
+    public Map<String, Object> taskRewardApp(String date, long sid) throws Exception {
+
+        Map<String,Object> map = Maps.newHashMap();
+        //查询门店内的员工
+        List<User> users = userDao.getAllList(sid,User.userType_backendUser,User.status_nomore);
+        List<ClientUser> clientUsers = Lists.newArrayList();
+        int personal = 0;//个人销售额(分)
+        int tem = 0;//总店销售额(分)
+        //查询员工完成的所有订单的金额 已完成订单的销售量 保存下来
+        for(User user:users){
+            List<UserMissionPool> userMissionPools = userMissionPoolDao.getAllList(user.getId());
+            for(UserMissionPool userMissionPool:userMissionPools){
+                long ctime = userMissionPool.getCtime();
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(ctime);
+               int month= cal.get(Calendar.MONTH+1);
+               int year= cal.get(Calendar.YEAR);
+               String o="";
+               if(month<10){
+                   o=year+"0"+month;
+               }else{
+                   o=year+""+month;
+               }
+               if(o.equals(date)){
+                   //判断是否有完成任务
+                   if(userMissionPool.getUid()==user.getId()&&userMissionPool.getProgress()>=100){
+                       personal+=userMissionPool.getPrice()/100;
+                   }
+               }
+
+            }
+            tem += personal;
+            ClientUser clientUser = transformClient(user);
+            clientUser.setSale(personal);
+            clientUsers.add(clientUser);
+            personal = 0;
+        }
+        //sale数值大的排前面
+        Collections.sort(clientUsers);
+        map.put("tem",tem);
+        map.put("clientUsers",clientUsers);
+        return map;
+    }
+
     //传入年月 判断是否当前月
     private boolean inExistence(String date,long time)throws Exception{
         Calendar calendar = Calendar.getInstance();

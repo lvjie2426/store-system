@@ -30,7 +30,8 @@ public class BusinessOrder implements Serializable {
     public static final int status_refund = 2; //已退款
 
     public static final int type_goods = 1; //商品购买
-    public static final int type_other = 2; //其他购买
+    public static final int type_medical = 2; //医疗器械商品购买
+    public static final int type_other = 3; //其他购买
 
     public static final int makeStatus_no = 1; //未加工
     public static final int makeStatus_no_pay = 2; //欠款
@@ -87,6 +88,8 @@ public class BusinessOrder implements Serializable {
     private List<Surcharge> surcharges = new ArrayList<>(); //附加费用
 
     private int makeStatus;
+
+    private int type;//类型
 
     private int status; //订单状态
 

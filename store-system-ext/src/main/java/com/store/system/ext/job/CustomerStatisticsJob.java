@@ -6,6 +6,7 @@ import com.quakoo.space.annotation.cache.CacheDaoMethod;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.dao.StatisticsCustomerJobDao;
 import com.store.system.dao.SubordinateDao;
+import com.store.system.model.BusinessOrder;
 import com.store.system.model.StatisticsCustomerJob;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
@@ -69,6 +70,12 @@ public class CustomerStatisticsJob implements InitializingBean {
                             String sqlUser = " SELECT * from user WHERE 1=1 AND ctime >" + DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8")
                                     +" AND userType = " + User.userType_user + " AND sid = " + children.getId();
                             List<User> users =  jdbcTemplate.query(sqlUser,new HyperspaceBeanPropertyRowMapper<User>(User.class));
+
+                            // 查询今日下单
+                            String businessSql="select count(1) as num from business_order where ctime > "
+                            +DateUtils.getStartTimeOfDay(new Date().getTime(),"GMT+8") + "GROUP BY uid";
+                            List<Integer> businessOrders=jdbcTemplate.queryForList(businessSql,Integer.class);
+
                             if(statisticsCustomers.size()>0){
                                 StatisticsCustomerJob statisticsCustomer = statisticsCustomers.get(0);
                                 if(users.size()>0){
@@ -80,6 +87,18 @@ public class CustomerStatisticsJob implements InitializingBean {
                                             statisticsCustomer.setMonth(statisticsCustomer.getWoman()+1);
                                         }
                                     }
+                                    if(businessOrders.size()>0){
+                                        for(Integer list:businessOrders){
+                                            if(list==2){
+                                                // 回头客
+                                                statisticsCustomer.setReturnNum(statisticsCustomer.getReturnNum()+1);
+                                            }else if(list>=3){
+                                                // 老顾客
+                                                statisticsCustomer.setOldNum(statisticsCustomer.getOldNum()+1);
+                                            }
+                                        }
+                                    }
+
                                     statisticsCustomer.setTotal(statisticsCustomer.getMan()+statisticsCustomer.getWoman());
                                     statisticsCustomerJobDao.update(statisticsCustomer);
                                 }
@@ -99,6 +118,17 @@ public class CustomerStatisticsJob implements InitializingBean {
                                             statisticsCustomerJob.setMan(statisticsCustomerJob.getMan()+1);
                                         }else{
                                             statisticsCustomerJob.setMonth(statisticsCustomerJob.getWoman()+1);
+                                        }
+                                    }
+                                    if(businessOrders.size()>0){
+                                        for(Integer list:businessOrders){
+                                            if(list==2){
+                                                // 回头客
+                                                statisticsCustomerJob.setReturnNum(statisticsCustomerJob.getReturnNum()+1);
+                                            }else if(list>=3){
+                                                // 老顾客
+                                                statisticsCustomerJob.setOldNum(statisticsCustomerJob.getOldNum()+1);
+                                            }
                                         }
                                     }
                                     statisticsCustomerJob.setTotal(statisticsCustomerJob.getMan()+statisticsCustomerJob.getWoman());

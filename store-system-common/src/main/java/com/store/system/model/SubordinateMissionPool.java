@@ -29,7 +29,7 @@ public class SubordinateMissionPool implements Serializable{
     private long mid;//任务ID
 
     @CombinationKey
-    private long sid;//企业ID
+    private long sid;//门店ID
 
     @HyperspaceColumn(isJson = true)
     private List<Long> oids=new ArrayList<>();//订单ID

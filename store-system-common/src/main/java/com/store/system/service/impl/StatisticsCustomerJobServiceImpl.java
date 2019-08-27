@@ -86,11 +86,15 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
         int man =  0;
         int woman = 0;
         int total = 0;
+        int oldNum = 0;
+        int returnNum = 0;
         List<Integer> ages = Lists.newArrayList();
         if(customers.size()>0){
             for(StatisticsCustomerJob customer:customers){
                 ages.addAll(customer.getAge());
                 man+=customer.getMan();
+                oldNum+=customer.getOldNum();
+                returnNum+=customer.getReturnNum();
                 woman+=customer.getWoman();
                 total+=man+woman;
                 details.add(customer);
@@ -108,6 +112,9 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
             res.setMore(getCount(ages,61,999));
             res.setSubid(subid);
             res.setDetails(details);
+
+            res.setOldNum(oldNum);
+            res.setReturnNum(returnNum);
             Subordinate subordinate = subordinateDao.load(subid);
             if(subordinate!=null){ res.setSubName(subordinate.getName()); }
         }

@@ -40,6 +40,10 @@ public class StatisticsCustomerJob implements Serializable{
 
     private int total;//总数
 
+    private int returnNum;//回头客人数
+
+    private int oldNum;//老顾客人数
+
     @HyperspaceColumn(isJson = true)
     private List<Integer> age = new ArrayList<>();//年龄
 
