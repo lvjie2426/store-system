@@ -679,6 +679,49 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         return transformClient(businessOrderDao.load(boId));
     }
 
+    @Override
+    public Pager getMedicalAllList(Pager pager, long startTime, long endTime, String licenceNum, long subId) throws Exception {
+        String sql = "SELECT  *  FROM `business_order` where  1=1 ";
+        String sqlCount = "SELECT  COUNT(*)  FROM `business_order` where 1=1";
+        String limit = "  limit %d , %d ";
+        {
+            sql = sql + " and `type` = " + BusinessOrder.type_medical;
+            sqlCount = sqlCount + " and `type` = " + BusinessOrder.type_medical;
+        }
+        if (subId > 0) {
+            sql = sql + " and `subId` = " + subId;
+            sqlCount = sqlCount + " and `subId` = " + subId;
+        }
+        if (startTime > 0) {
+            sql = sql + " and `ctime` >" + startTime;
+            sqlCount = sqlCount + " and `ctime` >" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `ctime` <" + endTime;
+            sqlCount = sqlCount + " and `ctime` <" + endTime;
+        }
+
+        if (StringUtils.isNotBlank(licenceNum)) {
+            sql = sql + " and  `skuList`  like '%\"licenceNum:\""+licenceNum+"%'";
+            sqlCount = sqlCount + " and  `skuList`  like '%\"licenceNum:\""+licenceNum+"%'";
+        }
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<BusinessOrder> list = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+
+        pager.setData(transformClient(list));
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public List<BusinessOrder> getAllBySubid(long subid, int status_pay, int makeStatus_qu_yes) throws Exception {
+        List<BusinessOrder> list = businessOrderDao.getAllList(subid, status_pay, makeStatus_qu_yes);
+        return list;
+    }
+
 
     private List<ClientBusinessOrder> transformClient(List<BusinessOrder> businessOrders) throws Exception {
         List<ClientBusinessOrder> clients = new ArrayList<>();

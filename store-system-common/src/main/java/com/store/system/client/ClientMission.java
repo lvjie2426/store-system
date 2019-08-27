@@ -10,6 +10,7 @@ public class ClientMission extends Mission{
 
     private int allAmount;//任务总量
 
+    public ClientMission(){}
     public ClientMission(Mission mission) {
         try {
             BeanUtils.copyProperties(this, mission  );
