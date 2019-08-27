@@ -6,6 +6,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
@@ -349,6 +351,57 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         pager.setData(data);
         pager.setTotalCount(count);
         return pager;
+    }
+
+    @Override
+    public Pager getCreateWebPager(final Pager pager, final long createUid) throws Exception {
+        return new PagerRequestService<InventoryInBill>(pager, 0) {
+            @Override
+            public List<InventoryInBill> step1GetPageResult(String cursor, int size) throws Exception {
+                return inventoryInBillDao.getCreatePageList(createUid,Double.parseDouble(cursor),size);
+            }
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return inventoryInBillDao.getCreateCount(createUid);
+            }
+
+            @Override
+            public List<InventoryInBill> step3FilterResult(List<InventoryInBill> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<InventoryInBill> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClients(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+
+    @Override
+    public Pager getCheckWebPager(final Pager pager, final long subid) throws Exception {
+        return new PagerRequestService<InventoryInBill>(pager, 0) {
+            @Override
+            public List<InventoryInBill> step1GetPageResult(String cursor, int size) throws Exception {
+                return inventoryInBillDao.getCheckPageList(subid,Double.parseDouble(cursor),size);
+            }
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return inventoryInBillDao.getCheckCount(subid);
+            }
+
+            @Override
+            public List<InventoryInBill> step3FilterResult(List<InventoryInBill> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<InventoryInBill> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClients(unTransformDatas);
+            }
+        }.getPager();
     }
 
 

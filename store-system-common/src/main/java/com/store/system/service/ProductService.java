@@ -5,7 +5,6 @@ import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
-import com.store.system.model.UserGradeCategoryDiscount;
 
 import java.util.List;
 
@@ -35,6 +34,8 @@ public interface ProductService {
 
 
     public ClientProductSPU selectSPU(long subid, long pid, long cid, long bid, long sid) throws Exception;
+
+    public ClientProductSPU selectSPU(long subid, long cid, long bid, long sid) throws Exception;
 
     public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid, int type) throws Exception;
 

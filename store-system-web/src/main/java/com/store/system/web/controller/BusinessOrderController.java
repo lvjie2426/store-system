@@ -323,12 +323,12 @@ public class BusinessOrderController extends BaseController{
     }
 
     /***
-    * 订单结算
-    * @Param: [request, response, boId, cash, stored, otherStored, score, makeStatus]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/8/8
-    */
+     * 订单结算
+     * @Param: [request, response, boId, cash, stored, otherStored, score, makeStatus]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/8/8
+     */
     @RequestMapping("/settlementOrder")
     public ModelAndView settlementOrder(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(required = true) long boId,
@@ -339,7 +339,7 @@ public class BusinessOrderController extends BaseController{
                                         @RequestParam(required = false, value = "makeStatus", defaultValue = "6") int makeStatus,
                                         String desc) throws Exception {
         try {
-            ClientBusinessOrder res = businessOrderService.settlementOrder(boId,cash,stored,otherStored,score,makeStatus,desc);
+            ClientBusinessOrder res = businessOrderService.settlementOrder(boId, cash, stored, otherStored, score, makeStatus, desc);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -348,12 +348,12 @@ public class BusinessOrderController extends BaseController{
 
 
     /***
-    * 销售记录
-    * @Param: [request, response, pager, type, subId]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/8/24
-    */
+     * 销售记录
+     * @Param: [request, response, pager, type, subId]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/8/24
+     */
     @RequestMapping("/saleLogs")
     public ModelAndView saleLogs(HttpServletRequest request, HttpServletResponse response,
                                  Pager pager, int type, long subId,
@@ -382,7 +382,7 @@ public class BusinessOrderController extends BaseController{
                 pager = businessOrderService.getPager(pager, subId, startTime, endTime,
                         BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
             } else if (type == Constant.type_search) {
-                if(day==0){
+                if (day == 0) {
                     throw new StoreSystemException("请选择日期！");
                 }
                 pager = businessOrderService.getPager(pager, subId, day,

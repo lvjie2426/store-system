@@ -35,12 +35,6 @@ public class InventoryInBillController extends BaseController {
     private SubordinateService subordinateService;
 
     @Resource
-    private ProductPropertyNameService productPropertyNameService;
-
-    @Resource
-    private ProductPropertyValueService productPropertyValueService;
-
-    @Resource
     private InventoryInBillService inventoryInBillService;
 
     @Resource
@@ -57,7 +51,6 @@ public class InventoryInBillController extends BaseController {
      **/
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "subid") long subid,
-                               @RequestParam(value = "pid") long pid,
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
                                @RequestParam(value = "sid") long sid,
@@ -67,35 +60,9 @@ public class InventoryInBillController extends BaseController {
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("店铺为空");
             ClientInventoryInBillSelect res = new ClientInventoryInBillSelect();
-            ClientProductSPU productSPU = productService.selectSPU(pSubid, pid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(pSubid, cid, bid, sid);
             List<ClientProductSKU> skuList =  productService.getSaleSKUAllList(subid,productSPU.getId(),0);
             if(skuList.size()>0) res.setSkuList(skuList);
-//            if(null != productSPU) {
-//                List<ProductPropertyName> propertyNames = productPropertyNameService.getSubAllList(pSubid, cid);
-//                for(Iterator<ProductPropertyName> it = propertyNames.iterator(); it.hasNext();) {
-//                    ProductPropertyName propertyName = it.next();
-//                    if(propertyName.getType() != ProductPropertyName.type_sku) it.remove();
-//                }
-//                if(propertyNames.size() > 0) {
-//                    res = new ClientInventoryInBillSelect();
-//                    res.setProductSPU(productSPU);
-//                    List<ClientProductProperty> properties = Lists.newArrayList();
-//                    for(ProductPropertyName propertyName : propertyNames) {
-//                        ClientProductProperty property = new ClientProductProperty(propertyName);
-//                        if(propertyName.getInput() == ProductPropertyName.input_no) {
-//                            List<ProductPropertyValue> propertyValues = productPropertyValueService.getSubAllList(pSubid, propertyName.getId());
-//                            List<ClientProductPropertyValue> values = Lists.newArrayList();
-//                            for(ProductPropertyValue propertyValue : propertyValues) {
-//                                ClientProductPropertyValue value = new ClientProductPropertyValue(propertyValue);
-//                                values.add(value);
-//                            }
-//                            property.setValues(values);
-//                        }
-//                        properties.add(property);
-//                    }
-//                    res.setSkuProperties(properties);
-//                }
-//            }
             return this.viewNegotiating(request,response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -166,25 +133,27 @@ public class InventoryInBillController extends BaseController {
         }
     }
 
+    /***
+    * 员工端入库单列表
+    * @Param: [pager, request, response, model]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/8/27
+    */
     @RequestMapping("/getCreatePager")
-    public ModelAndView getCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model,
-                                       @RequestParam(required = false,value = "startTime",defaultValue = "0") long startTime,
-                                       @RequestParam(required = false,value = "endTime",defaultValue = "0") long endTime,
-                                       @RequestParam(required = false,value = "type",defaultValue = "-1") int type) throws Exception {
+    public ModelAndView getCreateWebPager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         User user = UserUtils.getUser(request);
         long createUid = user.getId();
-        pager = inventoryInBillService.getCreatePager(pager, createUid, startTime, endTime, type);
-        return this.viewNegotiating(request,response, new PagerResult<>(pager));
+        pager = inventoryInBillService.getCreateWebPager(pager, createUid);
+        return this.viewNegotiating(request,response, pager.toModelAttribute());
     }
 
     @RequestMapping("/getCheckPager")
-    public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
-                                      @RequestParam(required = false,value = "startTime",defaultValue = "0") long startTime,
-                                      @RequestParam(required = false,value = "endTime",defaultValue = "0") long endTime,
-                                      @RequestParam(required = false,value = "type",defaultValue = "-1") int type,
-                                      Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryInBillService.getCheckPager(pager, subid, startTime, endTime, type);
-        return this.viewNegotiating(request,response, new PagerResult<>(pager));
+    public ModelAndView getCheckWebPager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        User user = UserUtils.getUser(request);
+        long subid = user.getSid();
+        pager = inventoryInBillService.getCheckWebPager(pager, subid);
+        return this.viewNegotiating(request,response, pager.toModelAttribute());
     }
 
     @RequestMapping("/pass")
@@ -212,16 +181,5 @@ public class InventoryInBillController extends BaseController {
     }
 
 
-    //获取所有 医疗器械入库单
-    //todo
-    @RequestMapping("/getAllPager")
-    public ModelAndView getAllPager(@RequestParam(value = "subid") long subid,
-                                      @RequestParam(required = false,value = "startTime",defaultValue = "0") long startTime,
-                                      @RequestParam(required = false,value = "endTime",defaultValue = "0") long endTime,
-                                      @RequestParam(required = false,value = "type",defaultValue = "-1") int type,
-                                      Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryInBillService.getCheckPager(pager, subid, startTime, endTime, type);
-        return this.viewNegotiating(request,response, new PagerResult<>(pager));
-    }
 
 }

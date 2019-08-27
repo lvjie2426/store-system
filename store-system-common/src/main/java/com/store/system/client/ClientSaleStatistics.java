@@ -28,7 +28,8 @@ public class ClientSaleStatistics {
     public static final int type_week = 3; //本周
     public static final int type_month = 4; //本月
     public static final int type_halfYear = 5; //近半年
-    public static final int type_search = 6; //按时间查询
+    public static final int type_search = 6; //按时间段查询
+    public static final int type_day = 7;//按日期查询
 
     private String subName;//门店名称
 

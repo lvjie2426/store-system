@@ -474,6 +474,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ClientProductSPU selectSPU(long subid,  long cid, long bid, long sid) throws Exception {
+        List<ProductSPU> productSPUList = productSPUDao.getAllList(subid, cid, bid, sid);
+        ProductSPU productSPU = productSPUList.get(0);
+        ClientProductSPU clientProductSPU = transformClient(productSPU);
+        return clientProductSPU;
+    }
+
+    @Override
     public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid, int type) throws Exception {
         String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + pSubid;
         String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + pSubid;

@@ -23,4 +23,6 @@ public interface SaleStatisticsService {
 
     public ClientSaleStatistics searchSale(long startTime, long endTime, long subId) throws Exception;
 
+    public ClientSaleStatistics getDate(long day, long subId) throws Exception;
+
 }
