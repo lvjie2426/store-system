@@ -138,4 +138,6 @@ public interface UserService {
     public List<ClientUser> getUserListByPhone(long sid,int userType,String phone,String name)throws Exception;
 
     public List<ClientUser> searchUserList(long sid,int userType,String phone,String name)throws Exception;
+
+    public Map<String,Object> taskRewardApp(String date, long sid)throws Exception;
 }
