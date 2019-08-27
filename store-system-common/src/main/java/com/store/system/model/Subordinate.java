@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -94,6 +95,7 @@ public class Subordinate implements Serializable {
     private String threePolicy;
 
 
+    @PagerCursor
     @SortKey
     private long ctime;
 
