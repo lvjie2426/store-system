@@ -708,7 +708,7 @@
         }
     })
     //获取供应商
-    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
+    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:shopId},function (ret) {
         if(ret && ret.success){
             providerData = ret.data;
         }
