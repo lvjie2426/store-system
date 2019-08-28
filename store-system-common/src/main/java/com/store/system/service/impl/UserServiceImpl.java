@@ -777,6 +777,7 @@ public class UserServiceImpl implements UserService {
         return clientUser;
     }
 
+    @Override
     public List<User> getAllUserBySid(long sid)throws Exception{
         List<SubordinateUserPool> subordinateUserPools=subordinateUserPoolDao.getAllList(sid,User.status_nomore);
         List<Long> uids=new ArrayList<>();
@@ -1336,6 +1337,17 @@ public class UserServiceImpl implements UserService {
         map.put("tem",tem);
         map.put("clientUsers",clientUsers);
         return map;
+    }
+
+    @Override
+    public List<ClientUser> getStaffUserBySid(Long sid) throws Exception {
+        List<ClientUser> clientUserList=Lists.newArrayList();
+        List<User> allList = userDao.getAllList(sid, User.userType_backendUser, User.status_nomore);
+        for(User user:allList ){
+            ClientUser clientUser=new ClientUser(user);
+            clientUserList.add(clientUser);
+        }
+        return clientUserList;
     }
 
     //传入年月 判断是否当前月

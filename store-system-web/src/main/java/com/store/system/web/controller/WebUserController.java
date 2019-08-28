@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -251,5 +252,26 @@ public class WebUserController extends BaseController {
         }
     }
 
+    /**
+     * create by: zhangmeng
+     * description: 获取门店下员工
+     * create time: 2019/08/28 0028 10:32:56
+     *
+     * @Param: request
+     * @Param: response
+     * @Param: sid
+     * @return
+     */
+    @RequestMapping("/getUserBySid")
+    public ModelAndView getUserBySid(HttpServletRequest request, HttpServletResponse response,
+                                   Long sid) throws Exception {
+
+        try {
+            List<ClientUser> res = userService.getStaffUserBySid(sid);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(e.getMessage()));
+        }
+    }
 }
 
