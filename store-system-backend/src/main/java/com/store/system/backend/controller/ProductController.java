@@ -242,7 +242,7 @@ public class ProductController extends BaseController {
     /**
      * 获取公司的所有商品SPU
      * method_name: getSPUPager
-     * params: [subid, cid, pid, bid, sid, pager, request, response, model,name]
+     * params: [subid(门店ID), cid, pid, bid, sid, pager, request, response, model,name]
      * return: org.springframework.web.servlet.ModelAndView
      * creat_user: lihao
      * creat_date: 2019/3/2

@@ -454,7 +454,7 @@ public class ProductServiceImpl implements ProductService {
             sqlCount += " and saleStatus = " + saleStatus;
         }
 
-        sql = sql + " order  by `sort` desc";
+        sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
@@ -494,7 +494,7 @@ public class ProductServiceImpl implements ProductService {
             sql += " and bid = " + bid;
             sqlCount += " and bid = " + bid;
         }
-        sql = sql + " order  by `sort` desc";
+        sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
@@ -620,7 +620,7 @@ public class ProductServiceImpl implements ProductService {
         sql=sql+" or nirImg=[])";
         sqlCount=sqlCount+" or nirImg=[])";
 
-        sql = sql + " order  by `sort` desc";
+        sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);

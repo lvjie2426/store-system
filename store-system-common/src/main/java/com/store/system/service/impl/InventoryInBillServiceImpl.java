@@ -145,7 +145,6 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 productSKU.setRetailPrice(item.getRetailPrice());
                 productSKU.setCostPrice(item.getCostPrice());
                 productSKU.setIntegralPrice(item.getIntegralPrice());
-                productSKU.setSort(System.currentTimeMillis());
                 productSKU = productSKUDao.insert(productSKU); //SKU不存在先存sku
                 if(null != productSKU) {
                     long skuid = productSKU.getId();

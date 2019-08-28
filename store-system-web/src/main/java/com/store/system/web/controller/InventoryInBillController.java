@@ -51,6 +51,7 @@ public class InventoryInBillController extends BaseController {
      **/
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "subid") long subid,
+                               @RequestParam(value = "pid") long pid,
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
                                @RequestParam(value = "sid") long sid,
@@ -60,7 +61,7 @@ public class InventoryInBillController extends BaseController {
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("店铺为空");
             ClientInventoryInBillSelect res = new ClientInventoryInBillSelect();
-            ClientProductSPU productSPU = productService.selectSPU(pSubid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(pSubid, pid, cid, bid, sid);
             List<ClientProductSKU> skuList =  productService.getSaleSKUAllList(subid,productSPU.getId(),0);
             if(skuList.size()>0) res.setSkuList(skuList);
             return this.viewNegotiating(request,response, new ResultClient(res));

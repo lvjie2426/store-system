@@ -66,8 +66,6 @@ public class ProductSPU implements Serializable {
 
     private int status;
 
-    private long sort;
-
     private String other; //附加属性
 
     private String ext; //扩展字段
@@ -86,9 +84,11 @@ public class ProductSPU implements Serializable {
     @HyperspaceColumn(isJson = true)
     private List<ProductCustomRange> nowRanges= Lists.newArrayList();//现货范围
 
-    private int nowRemind; //现货库存提醒
+    private int nowRemind; //现货库存为0的产品达到的数量
 
-    private int totalRemind; //总库存提醒
+    private double totalRemind; //总库存少于备货量百分之n，进行提醒
+
+    private int underRemind;  //当库存低于n数量，进行提醒
 
     //医疗器械
     private int type;//类型 非医疗器械0 医疗器械1

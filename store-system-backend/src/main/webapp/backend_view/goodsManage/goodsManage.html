@@ -954,7 +954,7 @@
                         if(sid){param.sid = sid;}
                         if(name){param.name = name;}
                         if(saleStatus!=-1){param.saleStatus = saleStatus;}
-                        param.subid = subid;
+                        param.subid = shopId;
                         param.token = quakooUser.getUserInfo().token;
                         param.page = param.offset / param.limit + 1;
                         param.size = param.limit;
@@ -2260,7 +2260,7 @@
                         if(sid){param.sid = sid;}
                         if(name){param.name = name;}
                         if(saleStatus){param.saleStatus = saleStatus;}
-                        param.subid = quakooUser.getUserInfo().psid;
+                        param.subid = quakooUser.getUserInfo().sid;
                         param.token = quakooUser.getUserInfo().token;
                         param.page = param.offset / param.limit + 1;
                         param.size = param.limit;
