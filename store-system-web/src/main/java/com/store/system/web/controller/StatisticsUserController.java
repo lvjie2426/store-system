@@ -86,7 +86,7 @@ public class StatisticsUserController extends BaseController{
         try{
             List<ClientStatisticsCustomer> res = Lists.newArrayList();
             for(Long subid:subids){
-                ClientStatisticsCustomer customerList = statisticsCustomerJobService.getCustomerByTime(subid,startTime,endTime);
+                ClientStatisticsCustomer customerList = statisticsCustomerJobService.getWebCustomerByTime(subid,startTime,endTime);
                 res.add((customerList));
             }
             return this.viewNegotiating(request,response,new ResultClient(true,res));

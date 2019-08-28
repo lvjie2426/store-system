@@ -14,10 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ProjectName: store-system
@@ -79,6 +76,17 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
         return statisticsCustomer(customers,subid);
     }
 
+    @Override
+    public ClientStatisticsCustomer getWebCustomerByTime(long subid, long startTime, long endTime) throws Exception {
+        List<StatisticsCustomerJob> list = statisticsCustomerJobDao.getList(subid);
+        List<StatisticsCustomerJob> customers =new ArrayList<>();
+        for(StatisticsCustomerJob statisticsCustomerJob:list){
+            if(statisticsCustomerJob.getCtime()>startTime&&statisticsCustomerJob.getCtime()<endTime){
+                customers.add(statisticsCustomerJob);
+            }
+        }
+        return statisticsCustomer(customers,subid);
+    }
 
     private ClientStatisticsCustomer statisticsCustomer(List<StatisticsCustomerJob> customers,long subid)throws Exception{
         ClientStatisticsCustomer res = new ClientStatisticsCustomer(new StatisticsCustomerJob());
