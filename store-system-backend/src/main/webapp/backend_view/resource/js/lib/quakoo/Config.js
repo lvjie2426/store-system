@@ -24,13 +24,13 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-        this.serverUrl = "http://39.107.247.82:20005";
+        // this.serverUrl = "http://39.107.247.82:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
         // this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
-         // this.serverUrl = "http://192.168.1.11:20005";
+         this.serverUrl = "http://127.0.0.1:20005";
         /**聊天服务地址*/
         this.chatNativeUrl = "";
         /**图片服务器地址*/
@@ -312,9 +312,9 @@ var Config = (function(_super){
     /**获取供应商*/
     _proto.getUrl_productProvider_getSubAllList = function(){return this.serverUrl + '/productprovider/getSubAllList';};
     /**获取门店下的品牌*/
-    _proto.getUrl_productBrand_getSubAllList = function(){return this.serverUrl + '/productbrand/getSubAllList';};
+    _proto.getUrl_productBrand_getSubAllList = function(){return this.serverUrl + '/productbrand/getAllList';};
     /**获取品牌下系列列表*/
-    _proto.getUrl_productSeries_getSubAllList = function(){return this.serverUrl + '/productseries/getSubAllList';};
+    _proto.getUrl_productSeries_getSubAllList = function(){return this.serverUrl + '/productseries/getAllList';};
     /**获取商品列表*/
     _proto.getUrl_product_getSPUPager = function(){return this.serverUrl + '/product/getSPUPager';};
     /**增加商品*/
