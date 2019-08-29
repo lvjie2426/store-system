@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.mail.search.SearchTerm;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +33,12 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     private void check(ProductBrand productBrand) throws StoreSystemException {
         String name = productBrand.getName();
         if(StringUtils.isBlank(name)) throw new StoreSystemException("名称不能为空");
+        List<ProductBrand> productBrands = productBrandDao.getAllList(ProductBrand.status_nomore);
+        for(ProductBrand brand:productBrands){
+            if(brand.getName().equals(productBrand.getName())){
+                throw new StoreSystemException("该品牌已存在,不可重复添加！");
+            }
+        }
     }
 
     @Override

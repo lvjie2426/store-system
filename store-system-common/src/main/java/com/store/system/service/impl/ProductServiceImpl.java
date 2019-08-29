@@ -1,6 +1,7 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
@@ -47,6 +48,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductPropertyNameDao productPropertyNameDao;
 
     @Resource
+    private ProductPropertyValueDao productPropertyValueDao;
+
+    @Resource
     private ProductSPUDao productSPUDao;
 
     @Resource
@@ -66,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private SubordinateDao subordinateDao;
+
     @Resource
     private UserGradeDao userGradeDao;
 
@@ -92,6 +97,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private ProductSeriesService productSeriesService;
+
+    @Resource
+    private CommissionDao commissionDao;
 
 
     private void checkSPU(ProductSPU productSPU) throws StoreSystemException {
@@ -181,7 +189,7 @@ public class ProductServiceImpl implements ProductService {
                        List<Long> delSkuids, String brandName, String seriesName) throws Exception {
         List<ProductSKU> productSKUList = Lists.newArrayList(addProductSKUList);
         productSKUList.addAll(updateProductSKUList);
-        check(productSPU, productSKUList, false);
+        check(productSPU, productSKUList, null,null,false);
         if(StringUtils.isNotBlank(brandName)){
             ProductBrand brand = new ProductBrand();
             brand.setName(brandName);
@@ -239,13 +247,14 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private void check(ProductSPU productSPU, List<ProductSKU> productSKUList, boolean isAdd) throws Exception {
+    private void check(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName, boolean isAdd) throws Exception {
         Map<Long, Object> properties = productSPU.getProperties();
         if (productSPU.getSubid() == 0) throw new StoreSystemException("SPU店铺不能为空");
         if (productSPU.getCid() == 0) throw new StoreSystemException("SPU类目不能为空");
-        if (productSPU.getBid() == 0) throw new StoreSystemException("SPU品牌不能为空");
 
         if(isAdd) {
+            if (productSPU.getSid() == 0 && StringUtils.isBlank(seriesName)) throw new StoreSystemException("SPU系列不能为空");
+            if (productSPU.getBid() == 0 && StringUtils.isBlank(brandName)) throw new StoreSystemException("SPU品牌不能为空");
             int count = productSPUDao.getCount(productSPU.getSubid(), productSPU.getPid(),
                     productSPU.getCid(), productSPU.getBid(), productSPU.getSid());
             if (count > 0) throw new StoreSystemException("已存在此产品的SPU,请重新添加");
@@ -275,7 +284,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName) throws Exception {
-        check(productSPU, productSKUList, true);
+        check(productSPU, productSKUList, brandName, seriesName,true);
         if(StringUtils.isNotBlank(brandName)){
             ProductBrand brand = new ProductBrand();
             brand.setName(brandName);
@@ -378,6 +387,13 @@ public class ProductServiceImpl implements ProductService {
             if (null != brand) client.setBrandName(brand.getName());
             ProductSeries series = seriesMap.get(client.getSid());
             if (null != series) client.setSeriesName(series.getName());
+            Commission commission = new Commission();
+            commission.setSpuId(one.getId());
+            commission.setSubId(one.getSubid());
+            commission = commissionDao.load(commission);
+            if(commission!=null){
+                client.setCommission(commission);
+            }
             res.add(client);
         }
         return res;
@@ -535,6 +551,7 @@ public class ProductServiceImpl implements ProductService {
             for (InventoryDetail detail : allDetails) {
                 wids.add(detail.getWid());
                 sids.add(detail.getSubid());
+
                 ClientInventoryDetail clientInventoryDetail = new ClientInventoryDetail(detail);
                 if (detail.getSubid() == subid) {
                     details.add(clientInventoryDetail);
@@ -543,6 +560,16 @@ public class ProductServiceImpl implements ProductService {
                     otherDetails.add(clientInventoryDetail);
                 }
             }
+            Map<Object, Object> map_value = Maps.newHashMap();
+            Map<Long, Object> map = one.getProperties();
+            for (Map.Entry<Long, Object> entry : map.entrySet()) {
+                ProductPropertyName name = productPropertyNameDao.load(entry.getKey());
+                ProductPropertyValue value = productPropertyValueDao.load(Long.parseLong((String) entry.getValue()));
+                if (name != null && value != null) {
+                    map_value.put(name.getContent(), value.getContent());
+                }
+            }
+            client.setP_properties_value(map_value);
             client.setDetails(details);
             client.setOtherDetails(otherDetails);
             client.setCanUseNum(num);

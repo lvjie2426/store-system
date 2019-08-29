@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -18,6 +19,8 @@ public class ClientProductSKU extends ProductSKU {
     private List<ClientInventoryDetail> otherDetails; //其他分店库存详情
 
     private double discount; //商品的会员折扣
+
+    private Map<Object,Object> p_properties_value;//SKU属性的值
 
     public ClientProductSKU(ProductSKU productSKU) {
         try {

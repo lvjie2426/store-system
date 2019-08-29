@@ -2391,9 +2391,12 @@
             if(!nowParam.bid){
                 nowParam.brandName = $("#brandName").val();
                 nowParam.seriesName = $("#seriesName").val();
+                nowParam.bid=0;
+                nowParam.sid=0;
             }else{
                 if(!nowParam.sid){
                     nowParam.seriesName = $("#seriesName").val();
+                    nowParam.sid=0;
                 }
             }
             nowParam.nowRemind = $("#yj-add-kucun").val();

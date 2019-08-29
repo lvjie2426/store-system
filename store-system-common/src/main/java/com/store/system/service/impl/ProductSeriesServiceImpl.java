@@ -43,6 +43,12 @@ public class ProductSeriesServiceImpl implements ProductSeriesService {
         String name = productSeries.getName();
         if(bid == 0) throw new StoreSystemException("品牌不能为空");
         if(StringUtils.isBlank(name)) throw new StoreSystemException("名称不能为空");
+        List<ProductSeries> series = productSeriesDao.getAllList(ProductSeries.status_nomore);
+        for(ProductSeries one:series){
+            if(one.getName().equals(productSeries.getName())){
+                throw new StoreSystemException("该系列已存在,不可重复添加！");
+            }
+        }
     }
 
     @Override
