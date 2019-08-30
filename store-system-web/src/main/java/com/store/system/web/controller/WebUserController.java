@@ -219,6 +219,7 @@ public class WebUserController extends BaseController {
         return super.viewNegotiating(request, response, new ResultClient(true, true));
     }
 
+    // 管理端员工信息接口同时调用
     @RequestMapping("/load")
     public ModelAndView load(@RequestParam(value = "uid", required = false, defaultValue = "0") long uid,
                              HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -235,7 +236,7 @@ public class WebUserController extends BaseController {
     }
 
     /***
-    * 完善个人资料
+    * 完善个人资料 / 编辑员工
     * @Param: [request, response, user]
     * @return: org.springframework.web.servlet.ModelAndView
     * @Author: LaoMa
@@ -254,7 +255,7 @@ public class WebUserController extends BaseController {
 
     /**
      * create by: zhangmeng
-     * description: 获取门店下员工
+     * description: 获取门店下员工 获取正常状态员工。
      * create time: 2019/08/28 0028 10:32:56
      *
      * @Param: request
@@ -273,5 +274,46 @@ public class WebUserController extends BaseController {
             return this.viewNegotiating(request, response, new ResultClient(e.getMessage()));
         }
     }
+
+
+    // 管理端 创建新员工
+    @RequestMapping("/addUser")
+    public ModelAndView addUser(
+            User user, HttpServletResponse response, HttpServletRequest request
+    ) throws Exception {
+
+        try {
+            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, user.getPhone(), User.userType_user);
+            if (uid > 0) throw new StoreSystemException("当前手机号已注册");
+            return this.viewNegotiating(request, response, new ResultClient(userService.register(user)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));
+        }
+    }
+
+    /**
+     * create by: zhangmeng
+     * description: 管理端  人员管理获取全部
+     * create time: 2019/08/28 0028 10:32:56
+     *
+     * @Param: request
+     * @Param: response
+     * @Param: sid
+     * @return
+     */
+    @RequestMapping("/getAllUserBySid")
+    public ModelAndView getAllUserBySid(HttpServletRequest request, HttpServletResponse response,
+                                     Long sid) throws Exception {
+
+        try {
+            List<ClientUser> res = userService.getAllStaffUserBySid(sid);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(e.getMessage()));
+        }
+    }
+
+
+
 }
 

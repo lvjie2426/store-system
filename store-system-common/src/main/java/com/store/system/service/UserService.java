@@ -2,6 +2,7 @@ package com.store.system.service;
 
 
 import com.store.system.bean.StatisticsOrderUser;
+import com.store.system.client.ClientMissForUser;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.model.ExportUser;
@@ -139,7 +140,9 @@ public interface UserService {
 
     public List<ClientUser> searchUserList(long sid,int userType,String phone,String name)throws Exception;
 
-    public Map<String,Object> taskRewardApp(String date, long sid)throws Exception;
+    public ClientMissForUser taskRewardApp(String date, long sid)throws Exception;
 
     public List<ClientUser> getStaffUserBySid(Long sid)throws Exception;
+
+    public List<ClientUser> getAllStaffUserBySid(Long sid)throws Exception;
 }
