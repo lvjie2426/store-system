@@ -283,8 +283,9 @@ public class WebUserController extends BaseController {
     ) throws Exception {
 
         try {
-            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, user.getPhone(), User.userType_user);
+            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, user.getPhone(), User.userType_backendUser);
             if (uid > 0) throw new StoreSystemException("当前手机号已注册");
+            user.setPassword("123456");
             return this.viewNegotiating(request, response, new ResultClient(userService.register(user)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));
