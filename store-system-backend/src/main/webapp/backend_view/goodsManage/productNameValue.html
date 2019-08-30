@@ -393,7 +393,7 @@
             btnAlign: 'r',
             yes: function () {
                 var params = {};
-                var url = "/productpropertyname/add";
+                var url = serverUrl + "/productpropertyname/add";
                 var result = {succ: "添加成功!", fail: "添加失败"};
                 var cid = $("#cid").val();
                 var type = $("#type").val();
@@ -413,9 +413,7 @@
                     params.defaul = defaul;
                     params.multiple = multiple;
                     params.sort = sort;
-                    myAjax(url, params, handle);
-
-                    function handle(data, params) {
+                    quakooData.ajaxGetData(url,params, function handle(data,param){
                         var msg = (data.msg == undefined ? '' : ',' + data.msg);
                         if (data.success) {
                             layer.msg(result.succ, {icon: 1, time: 500, shade: 0.01}, function () {
@@ -426,7 +424,7 @@
                         } else {
                             layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
                         }
-                    }
+                    })
                 }
             },
             btn2: function () {
@@ -451,9 +449,9 @@
             btnAlign: 'r',
             yes: function () {
                 var params = {};
-                var url = "/productpropertyname/update";
+                var url = serverUrl + "/productpropertyname/update";
                 var result = {succ: "更新成功!", fail: "更新失败"};
-                var cid = row.cid;
+                var cid = $("#cid").val();
                 var type = $("#type").val();
                 var content = $('#name').val();
                 var input = $('#input').val();
@@ -472,9 +470,7 @@
                     params.multiple = multiple;
                     params.sort = sort;
                     params.id = row.id;
-                    myAjax(url, params, handle);
-
-                    function handle(data, params) {
+                    quakooData.ajaxGetData(url,params, function handle(data,param){
                         var msg = (data.msg == undefined ? '' : ',' + data.msg);
                         if (data.success) {
                             layer.msg(result.succ, {icon: 1, time: 500, shade: 0.01}, function () {
@@ -485,7 +481,7 @@
                         } else {
                             layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
                         }
-                    }
+                    })
                 }
             },
             btn2: function () {
@@ -557,7 +553,7 @@
 
     //删除权限
     function deleteRole(id) {
-        var url = serverUrl + "/productpropertyvalue/del";
+        var url = serverUrl + "/productpropertyname/del";
         layer.msg('确认删除吗?', {
             shade: [0.1, '##f5f5f5'],
             time: 0 //不自动关闭

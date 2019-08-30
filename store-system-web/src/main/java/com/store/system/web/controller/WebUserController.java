@@ -1,14 +1,18 @@
 package com.store.system.web.controller;
 
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.secure.MD5Utils;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
+import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.LoginUserPool;
+import com.store.system.model.Subordinate;
 import com.store.system.model.User;
+import com.store.system.service.OptometryInfoService;
 import com.store.system.service.PayService;
 import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
@@ -36,6 +40,8 @@ public class WebUserController extends BaseController {
     
     @Autowired
     private UserService userService;
+    @Autowired
+    private OptometryInfoService optometryInfoService;
 
 	/**
 	 * 登录
@@ -272,6 +278,29 @@ public class WebUserController extends BaseController {
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(e.getMessage()));
+        }
+    }
+
+    /***
+    * 公司下的意向顾客
+    * @Param: [pager, request, response, model, name]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/8/30
+    */
+    @RequestMapping("/getIntentionUsers")
+    public ModelAndView getIntentionUsers(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model,
+                                          String name) throws Exception {
+        try {
+            long psid = 0;
+            User user = UserUtils.getUser(request);
+            if (user != null) {
+                psid = user.getPsid();
+            }
+            pager = userService.getIntentionPager(pager, psid, User.userType_user, User.status_nomore, name);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 

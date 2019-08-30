@@ -348,7 +348,7 @@ public class BusinessOrderController extends BaseController{
 
 
     /***
-     * 销售记录
+     * 今日销售记录
      * @Param: [request, response, pager, type, subId]
      * @return: org.springframework.web.servlet.ModelAndView
      * @Author: LaoMa

@@ -2,6 +2,7 @@ package com.store.system.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.quakoo.baseFramework.json.JsonUtils;
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.baseFramework.secure.AESUtils;
 import com.quakoo.baseFramework.secure.Base64Util;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
@@ -150,6 +151,7 @@ public class User implements Serializable {
     private Map<String, String> bankCard=new HashMap<String, String>(); //银行卡号
 
     @SortKey
+    @PagerCursor
     private long ctime;
 
     private long utime;

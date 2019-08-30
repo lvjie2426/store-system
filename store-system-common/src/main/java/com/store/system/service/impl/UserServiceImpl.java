@@ -1055,6 +1055,90 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Pager getPager(final Pager pager, final long psid, final int userType, final int status, final String name) throws Exception {
+        return new PagerRequestService<User>(pager, 0) {
+            @Override
+            public List<User> step1GetPageResult(String cursor, int size) throws Exception {
+                String sql = "select * from `user` where 1=1  ";
+                if (psid > 0) {
+                    sql = sql + " and `psid` = " + psid;
+                }
+                if (status > -1) {
+                    sql = sql + " and `status` = " + status;
+                }
+                if (userType > -1) {
+                    sql = sql + " and `userType` = " + userType;
+                }
+                if (StringUtils.isNotBlank(name)) {
+                    sql = sql + " and `name` like '%" + name + "%'";
+                }
+                long ctimeCursor = Long.parseLong(cursor);
+                if (ctimeCursor == 0) ctimeCursor = Long.MAX_VALUE;
+                sql = sql + " and `ctime` <= " + ctimeCursor + " order by ctime desc limit " + size;
+                return jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<User>(User.class));
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<User> step3FilterResult(List<User> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<User> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClient(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+    @Override
+    public Pager getIntentionPager(final Pager pager, final long psid, final int userType, final int status, final String name) throws Exception {
+        return new PagerRequestService<User>(pager, 0) {
+            @Override
+            public List<User> step1GetPageResult(String cursor, int size) throws Exception {
+                String sql = "SELECT DISTINCT u.* FROM `user` AS u JOIN `optometry_info` AS o ON u.id = o.uid WHERE 1 = 1";
+                if (psid > 0) {
+                    sql = sql + " and u.`psid` = " + psid;
+                }
+                if (status > -1) {
+                    sql = sql + " and u.`status` = " + status;
+                }
+                if (userType > -1) {
+                    sql = sql + " and u.`userType` = " + userType;
+                }
+                if (StringUtils.isNotBlank(name)) {
+                    sql = sql + " and u.`name` like '%" + name + "%'";
+                }
+                long ctimeCursor = Long.parseLong(cursor);
+                if (ctimeCursor == 0) ctimeCursor = Long.MAX_VALUE;
+                sql = sql + " and u.`ctime` <= " + ctimeCursor + " order by u.ctime desc limit " + size;
+                return jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<User>(User.class));
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<User> step3FilterResult(List<User> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<User> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClient(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+    @Override
     public Set<String> getAllUserJob(long sid, int userType) throws Exception {
         TransformFieldSetUtils fieldSetUtils = new TransformFieldSetUtils(User.class);
         List<User> users = userDao.getAllList(sid, userType, User.status_nomore);

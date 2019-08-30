@@ -2,13 +2,17 @@ package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
+import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientInventoryDetail;
 import com.store.system.dao.*;
 import com.store.system.model.*;
 import com.store.system.service.InventoryDetailService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -130,7 +134,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
     }
 
     @Override
-    public Pager getPager(Pager pager, long wid, long cid) throws Exception {
+    public Pager getBackendPager(Pager pager, long wid, long cid) throws Exception {
         String sql = "select * from inventory_detail where 1 = 1 ";
         String sqlCount = "select count(id) from inventory_detail where 1 = 1 ";
         if(wid > 0) {
@@ -138,8 +142,8 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
             sqlCount = sqlCount + " and wid = " + wid;
         }
         if(cid > 0) {
-            sql = sql + " and cid = " + cid;
-            sqlCount = sqlCount + " and cid = " + cid;
+            sql = sql + " and p_cid = " + cid;
+            sqlCount = sqlCount + " and p_cid = " + cid;
         }
         String limit = " limit %d , %d ";
         sql = sql + " order by ctime desc";
@@ -150,6 +154,32 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         pager.setData(data);
         pager.setTotalCount(count);
         return pager;
+    }
+
+    @Override
+    public Pager getPager(final Pager pager, final long wid, final long cid) throws Exception {
+        return new PagerRequestService<InventoryDetail>(pager, 0) {
+            @Override
+            public List<InventoryDetail> step1GetPageResult(String cursor, int size) throws Exception {
+                return inventoryDetailDao.getPageList(wid,cid,Double.parseDouble(cursor),size);
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return inventoryDetailDao.getCount(wid,cid);
+            }
+
+            @Override
+            public List<InventoryDetail> step3FilterResult(List<InventoryDetail> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<InventoryDetail> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClients(unTransformDatas);
+            }
+        }.getPager();
     }
 
     @Override
