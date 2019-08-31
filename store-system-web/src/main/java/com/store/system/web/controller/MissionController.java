@@ -5,16 +5,14 @@ import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.client.ClientMissForUser;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Mission;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
-import com.store.system.service.MissionService;
-import com.store.system.service.OrderService;
-import com.store.system.service.SubordinateService;
-import com.store.system.service.UserService;
+import com.store.system.service.*;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -51,6 +49,9 @@ public class MissionController extends BaseController {
 
     @Resource
     private SubordinateService subordinateService;
+
+    @Resource
+    private ProductService productService;
 
     @Resource
     private OrderService orderService;
@@ -184,7 +185,6 @@ public class MissionController extends BaseController {
      * @return
      */
     @RequestMapping("/taskReward")
-    //todo 客户需要确认修改一下页面。
     public ModelAndView taskReward(HttpServletRequest request,HttpServletResponse response,
                                    @RequestParam(value = "date") String date,//date格式201905
                                    @RequestParam(value = "sid") long sid)throws Exception{
@@ -193,8 +193,8 @@ public class MissionController extends BaseController {
             Subordinate subordinate = subordinateService.load(sid);
             long pSubid = subordinate.getPid();
             if(pSubid == 0) throw new StoreSystemException("门店ID错误");
-            Map<String,Object> res =  userService.taskRewardApp(date,sid);
-            return this.viewNegotiating(request,response,new ResultClient(res));
+            ClientMissForUser clientMissForUser =  userService.taskRewardApp(date,sid);
+            return this.viewNegotiating(request,response,new ResultClient(clientMissForUser));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
         }
@@ -231,4 +231,23 @@ public class MissionController extends BaseController {
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }
     }*/
+
+
+    // 获取提成商品清单
+    @RequestMapping("/getCommSpu")
+    public ModelAndView getCommSpu(HttpServletRequest request,HttpServletResponse response,Pager pager, long subid,long cid)throws Exception{
+
+
+        try{
+            Subordinate subordinate=subordinateService.load(subid);
+            long sid=subordinate.getId();
+            if(sid==0){
+                throw  new StoreSystemException("门店id错误!");
+            }
+            pager=   productService.getCommSpu(pager,subid,cid);
+            return this.viewNegotiating(request,response,pager.toModelAttribute());
+        }catch (StoreSystemException s){
+            return  this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
 }

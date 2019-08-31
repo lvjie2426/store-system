@@ -4,14 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
-import com.store.system.client.ClientInventoryDetail;
-import com.store.system.client.ClientProductSKU;
-import com.store.system.client.ClientProductSPU;
-import com.store.system.client.ClientUserGradeCategoryDiscount;
+import com.store.system.client.*;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
@@ -43,6 +42,8 @@ public class ProductServiceImpl implements ProductService {
     private TransformMapUtils warehouseMapUtils = new TransformMapUtils(InventoryWarehouse.class);
 
     private TransformMapUtils subordinateMapUtils = new TransformMapUtils(Subordinate.class);
+
+    private TransformMapUtils commissionMapUtils = new TransformMapUtils(Commission.class);
 
     @Resource
     private ProductPropertyNameDao productPropertyNameDao;
@@ -655,6 +656,53 @@ public class ProductServiceImpl implements ProductService {
         pager.setData(transformClients(productSPUList));
         pager.setTotalCount(count);
         return pager;
+    }
+
+
+    @Override
+    public Pager getCommSpu(Pager pager, final long subid, final long cid) throws Exception {
+        return  new PagerRequestService<Commission>(pager,0){
+
+            @Override
+            public List<Commission> step1GetPageResult(String cursor, int size) throws Exception {
+
+                List<Commission> list = commissionDao.getAllList(subid,Double.parseDouble(cursor),size);
+                return list;
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<Commission> step3FilterResult(List<Commission> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<Commission> list, PagerSession pagerSession) throws Exception {
+                return transformClients(list,cid);
+            }
+        }.getPager();
+
+
+    }
+
+    public List<ClientCommission> transformClients(List<Commission> list, long cid) {
+
+        List<ClientCommission> clientCommissionList = new ArrayList<>();
+        for (Commission commission : list) {
+
+            ClientCommission clientCommission = new ClientCommission(commission);
+            ProductSPU load = productSPUDao.load(commission.getSubId());
+            clientCommission.setCode(load.getName());
+            clientCommissionList.add(clientCommission);
+
+        }
+
+        return clientCommissionList;
+
     }
 
 }

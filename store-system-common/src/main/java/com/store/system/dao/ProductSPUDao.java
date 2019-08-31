@@ -15,6 +15,8 @@ public interface ProductSPUDao extends HDao<ProductSPU> {
 
     public List<ProductSPU> getAllList(long subid, long cid, long bid) throws DataAccessException;
 
+    public List<ProductSPU> getAllList(long subid, long cid) throws DataAccessException;
+
     public List<ProductSPU> getAllList(long subid, long cid, long bid, long sid) throws DataAccessException;
 
 }

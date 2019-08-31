@@ -48,4 +48,6 @@ public interface ProductService {
     public boolean checkStatus(List<Long> ids) throws Exception;
 
     public Pager getSPUNoNirNumPager(Pager pager, long subid)throws Exception;
+
+    public Pager getCommSpu(Pager pager,long subid, long cid)throws Exception;
 }
