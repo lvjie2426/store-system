@@ -240,11 +240,11 @@ public class MissionController extends BaseController {
 
         try{
             Subordinate subordinate=subordinateService.load(subid);
-            long sid=subordinate.getId();
+            long sid=subordinate.getPid();
             if(sid==0){
                 throw  new StoreSystemException("门店id错误!");
             }
-            pager=   productService.getCommSpu(pager,subid,cid);
+            pager=   productService.getCommSpu(pager,sid,cid);
             return this.viewNegotiating(request,response,pager.toModelAttribute());
         }catch (StoreSystemException s){
             return  this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
