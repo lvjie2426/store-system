@@ -1476,25 +1476,68 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ClientUser> getStaffUserBySid(Long sid) throws Exception {
-        List<ClientUser> clientUserList = Lists.newArrayList();
-        List<User> allList = userDao.getAllList(sid, User.userType_backendUser, User.status_nomore);
-        for (User user : allList) {
-            ClientUser clientUser = new ClientUser(user);
-            clientUserList.add(clientUser);
-        }
-        return clientUserList;
+    public Pager getStaffUserBySid(Pager pager,final Long sid) throws Exception {
+        return new PagerRequestService<User>(pager, 0) {
+            @Override
+            public List<User> step1GetPageResult(String s, int i) throws Exception {
+                List<User> allList = userDao.getPagerAllList(sid, User.userType_backendUser, User.status_nomore,Double.parseDouble(s),i);
+                return allList;
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<User> step3FilterResult(List<User> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<User> list, PagerSession pagerSession) throws Exception {
+                List<ClientUser> clientUserList = Lists.newArrayList();
+                for (User user : list) {
+                    ClientUser clientUser = new ClientUser(user);
+                    clientUserList.add(clientUser);
+                }
+                return clientUserList;
+            }
+        }.getPager();
+
     }
 
     @Override
-    public List<ClientUser> getAllStaffUserBySid(Long sid) throws Exception {
-        List<ClientUser> clientUserList = Lists.newArrayList();
-        List<User> allList = userDao.getAllUserList(sid, User.userType_backendUser);
-        for (User user : allList) {
-            ClientUser clientUser = new ClientUser(user);
-            clientUserList.add(clientUser);
-        }
-        return clientUserList;
+    public Pager getAllStaffUserBySid(Pager pager,final Long sid) throws Exception {
+        return new PagerRequestService<User>(pager, 0) {
+
+            @Override
+            public List<User> step1GetPageResult(String s, int i) throws Exception {
+                List<User> allList = userDao.getAllUserList(sid, User.userType_backendUser,Double.parseDouble(s),i);
+                return allList;
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<User> step3FilterResult(List<User> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<User> list, PagerSession pagerSession) throws Exception {
+                List<ClientUser> clientUserList = Lists.newArrayList();
+
+                for (User user : list) {
+                    ClientUser clientUser = new ClientUser(user);
+                    clientUserList.add(clientUser);
+                }
+                return clientUserList;
+            }
+        }.getPager();
     }
 
     //传入年月 判断是否当前月

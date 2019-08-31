@@ -146,7 +146,7 @@ public interface UserService {
 
     public ClientMissForUser taskRewardApp(String date, long sid)throws Exception;
 
-    public List<ClientUser> getStaffUserBySid(Long sid)throws Exception;
+    public Pager getStaffUserBySid(Pager pager,Long sid)throws Exception;
 
-    public List<ClientUser> getAllStaffUserBySid(Long sid)throws Exception;
+    public Pager getAllStaffUserBySid(Pager pager,Long sid)throws Exception;
 }

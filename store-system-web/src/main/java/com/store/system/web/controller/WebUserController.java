@@ -270,12 +270,12 @@ public class WebUserController extends BaseController {
      * @return
      */
     @RequestMapping("/getUserBySid")
-    public ModelAndView getUserBySid(HttpServletRequest request, HttpServletResponse response,
+    public ModelAndView getUserBySid(Pager pager,HttpServletRequest request, HttpServletResponse response,
                                    Long sid) throws Exception {
 
         try {
-            List<ClientUser> res = userService.getStaffUserBySid(sid);
-            return this.viewNegotiating(request, response, new ResultClient(res));
+            pager = userService.getStaffUserBySid(pager,sid);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(e.getMessage()));
         }
@@ -332,12 +332,12 @@ public class WebUserController extends BaseController {
      * @return
      */
     @RequestMapping("/getAllUserBySid")
-    public ModelAndView getAllUserBySid(HttpServletRequest request, HttpServletResponse response,
+    public ModelAndView getAllUserBySid(Pager pager,HttpServletRequest request, HttpServletResponse response,
                                      Long sid) throws Exception {
 
         try {
-            List<ClientUser> res = userService.getAllStaffUserBySid(sid);
-            return this.viewNegotiating(request, response, new ResultClient(res));
+            pager= userService.getAllStaffUserBySid(pager,sid);
+            return this.viewNegotiating(request, response,new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(e.getMessage()));
         }

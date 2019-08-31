@@ -24,5 +24,7 @@ public interface UserDao extends HDao<User> {
 
     public List<User> getAllListByJob(int userType,int status,String job,long sid)throws Exception;
 
-    public List<User> getAllUserList(Long sid, int userType)throws Exception;
+    public List<User> getAllUserList(Long sid, int userType,double s,int size)throws Exception;
+
+    public List<User> getPagerAllList(Long sid, int userType_backendUser, int status_nomore, double v, int i)throws Exception;
 }
