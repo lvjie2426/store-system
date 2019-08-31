@@ -43,6 +43,8 @@ public class ProductServiceImpl implements ProductService {
 
     private TransformMapUtils subordinateMapUtils = new TransformMapUtils(Subordinate.class);
 
+    private TransformMapUtils productSPUMapUtils = new TransformMapUtils(ProductSPU.class);
+
     private TransformMapUtils commissionMapUtils = new TransformMapUtils(Commission.class);
 
     @Resource
@@ -682,7 +684,25 @@ public class ProductServiceImpl implements ProductService {
 
             @Override
             public List<?> step4TransformData(List<Commission> list, PagerSession pagerSession) throws Exception {
-                return transformClients(list,cid);
+                Map<Long, List<Commission>> map = Maps.newHashMap();
+                Set<Long> spuIds = new HashSet<>();
+                for (Commission info : list) {
+                    spuIds.add(info.getSpuId());
+                }
+                List<ProductSPU> spus = productSPUDao.load(Lists.newArrayList(spuIds));
+                Map<Long, ProductSPU> spuMap = productSPUMapUtils.listToMap(spus, "id");
+                for (Commission info : list) {
+                    ProductSPU spu = spuMap.get(info.getSpuId());
+                    if (spu != null) {
+                        List<Commission> commissions = map.get(spu.getCid());
+                        if (commissions == null) {
+                            commissions = Lists.newArrayList();
+                            map.put(spu.getCid(), commissions);
+                        }
+                        commissions.add(info);
+                    }
+                }
+                return map.get(cid);
             }
         }.getPager();
 
