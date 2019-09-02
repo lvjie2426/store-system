@@ -200,4 +200,21 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         return transformClients(details);
     }
 
+    @Override
+    public List<ClientInventoryDetail> getWaringList(long wid, long cid) throws Exception {
+        List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndCid(wid, cid);
+        Set<Long> p_spuids = fieldSetUtils.fieldList(details, "p_spuid");
+        List<ProductSPU> productSPUList = productSPUDao.load(Lists.newArrayList(p_spuids));
+        Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(productSPUList, "id");
+        List<InventoryDetail> res = Lists.newArrayList();
+        //sku库存数量低于预警设置数量
+        for (InventoryDetail detail : details) {
+            ProductSPU spu = spuMap.get(detail.getP_spuid());
+            if (detail.getNum() <= spu.getUnderRemind()) {
+                res.add(detail);
+            }
+        }
+        return transformClients(res);
+    }
+
 }

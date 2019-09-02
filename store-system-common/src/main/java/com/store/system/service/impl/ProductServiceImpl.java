@@ -276,10 +276,12 @@ public class ProductServiceImpl implements ProductService {
             if (!properties.keySet().contains(nameId)) throw new StoreSystemException("SPU缺少关键属性");
         }
 
-        for (ProductSKU productSKU : productSKUList) {
-            properties = productSKU.getProperties();
-            for (long nameId : skuNames) {
-                if (!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
+        if(productSKUList.size()>0) {
+            for (ProductSKU productSKU : productSKUList) {
+                properties = productSKU.getProperties();
+                for (long nameId : skuNames) {
+                    if (!properties.keySet().contains(nameId)) throw new StoreSystemException("SKU缺少关键属性");
+                }
             }
         }
     }

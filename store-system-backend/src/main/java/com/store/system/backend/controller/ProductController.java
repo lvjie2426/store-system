@@ -78,15 +78,18 @@ public class ProductController extends BaseController {
      **/
     @RequestMapping("/add")
     public ModelAndView add(ProductSPU productSPU, String brandName, String seriesName,
-                            @RequestParam(required = true, value = "skuJson") String skuJson,
+                            @RequestParam(required = false, value = "skuJson") String skuJson,
                             @RequestParam(required = false, value = "commissionJson") String commissionJson,
                             @RequestParam(required = false, value = "rangesJson") String rangesJson,
                             @RequestParam(required = false, value = "nowRangesJson") String nowRangesJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            List<ProductSKU> productSKUList = null;
+            List<ProductSKU> productSKUList = Lists.newArrayList();
             try {
-                productSKUList = JsonUtils.fromJson(skuJson, new TypeReference<List<ProductSKU>>() {});
+                if (StringUtils.isNotBlank(skuJson)) {
+                    productSKUList = JsonUtils.fromJson(skuJson, new TypeReference<List<ProductSKU>>() {
+                    });
+                }
             } catch (Exception e) {
                 throw new StoreSystemException("sku格式错误");
             }

@@ -143,18 +143,26 @@ public class InventoryInBillController extends BaseController {
     */
     @RequestMapping("/getCreatePager")
     public ModelAndView getCreateWebPager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        User user = UserUtils.getUser(request);
-        long createUid = user.getId();
-        pager = inventoryInBillService.getCreateWebPager(pager, createUid);
-        return this.viewNegotiating(request,response, pager.toModelAttribute());
+        try {
+            User user = UserUtils.getUser(request);
+            long createUid = user.getId();
+            pager = inventoryInBillService.getCreateWebPager(pager, createUid);
+            return this.viewNegotiating(request,response, pager.toModelAttribute());
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     @RequestMapping("/getCheckPager")
     public ModelAndView getCheckWebPager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        User user = UserUtils.getUser(request);
-        long subid = user.getSid();
-        pager = inventoryInBillService.getCheckWebPager(pager, subid);
-        return this.viewNegotiating(request,response, pager.toModelAttribute());
+        try {
+            User user = UserUtils.getUser(request);
+            long subid = user.getSid();
+            pager = inventoryInBillService.getCheckWebPager(pager, subid);
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     @RequestMapping("/pass")

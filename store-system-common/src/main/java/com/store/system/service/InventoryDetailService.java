@@ -26,4 +26,6 @@ public interface InventoryDetailService {
 
     public List<ClientInventoryDetail> getAllList(long subid) throws Exception;
 
+    public List<ClientInventoryDetail> getWaringList(long wid, long cid) throws Exception;
+
 }

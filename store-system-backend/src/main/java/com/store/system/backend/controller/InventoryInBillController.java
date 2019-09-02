@@ -10,6 +10,7 @@ import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.*;
+import com.store.system.util.CodeUtil;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -122,6 +123,9 @@ public class InventoryInBillController extends BaseController {
             List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(inventoryInBill.getSubid());
             if(warehouses.size()>0)
                 inventoryInBill.setWid(warehouses.get(0).getId());
+            for(InventoryInBillItem bill:billItems){
+                bill.setCode(String.valueOf(CodeUtil.getRandom(10)));
+            }
             inventoryInBill.setItems(billItems);
             inventoryInBill = inventoryInBillService.add(inventoryInBill);
             return this.viewNegotiating(request,response, new ResultClient(inventoryInBill));

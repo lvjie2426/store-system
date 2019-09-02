@@ -28,4 +28,6 @@ public interface InventoryDetailDao extends HDao<InventoryDetail> {
 
     public int getCount(long wid, long p_cid) throws DataAccessException;
 
+    public List<InventoryDetail> getAllListByWidAndCid(long wid, long p_cid) throws DataAccessException;
+
 }
