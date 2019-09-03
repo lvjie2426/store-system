@@ -1,6 +1,7 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
@@ -44,6 +45,8 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 
     private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
 
+    private TransformMapUtils nameMapUtils = new TransformMapUtils(ProductPropertyName.class);
+
     @Resource
     private InventoryWarehouseDao inventoryWarehouseDao;
 
@@ -67,6 +70,9 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 
     @Resource
     private InventoryDetailDao inventoryDetailDao;
+
+    @Resource
+    private ProductPropertyNameDao productPropertyNameDao;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -121,12 +127,22 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 client.setP_name(spu.getName());
             }
             ProductSKU sku = skuMap.get(one.getP_skuid());
+            Map<Long,Object> map = sku.getProperties();
+            Map<Object,Object> map_value = Maps.newHashMap();
             if(null != sku) {
                 client.setP_code(sku.getCode());
                 client.setP_properties(sku.getProperties());
                 client.setP_retailPrice(sku.getRetailPrice());
                 client.setP_costPrice(sku.getCostPrice());
                 client.setP_integralPrice(sku.getIntegralPrice());
+
+                Set<Long> keys = map.keySet();
+                List<ProductPropertyName> names = productPropertyNameDao.load(Lists.newArrayList(keys));
+                Map<Long, ProductPropertyName> nameMap = nameMapUtils.listToMap(names, "id");
+                for(Map.Entry<Long,Object> entry:map.entrySet()){
+                    map_value.put(nameMap.get(entry.getKey()).getContent(),entry.getValue());
+                }
+                client.setP_properties_value(map_value);
             }
             res.add(client);
         }
@@ -216,5 +232,41 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         }
         return transformClients(res);
     }
+
+    @Override
+    public List<ClientInventoryDetail> getExpireList(long wid, long cid) throws Exception {
+        List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndCid(wid, cid);
+        Set<Long> p_skuids = fieldSetUtils.fieldList(details, "p_skuid");
+        List<ProductSKU> productSKUList = productSKUDao.load(Lists.newArrayList(p_skuids));
+        Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(productSKUList, "id");
+
+        List<InventoryDetail> res = Lists.newArrayList();
+        //sku保质期
+        for (InventoryDetail detail : details) {
+            ProductSKU sku = skuMap.get(detail.getP_skuid());
+            if(sku!=null) {
+                long current = System.currentTimeMillis();
+                //护理产品的保质期结束时间
+                long nurseEndTime=0;
+                long endTime=0;
+
+                if(sku.getProperties().containsKey(33L)){
+                    nurseEndTime = Long.parseLong((String) sku.getProperties().get(33L));
+                }
+                //隐形眼镜的保质期
+                if(sku.getProperties().containsKey(35L)) {
+                    endTime = Long.parseLong((String)  sku.getProperties().get(35L));
+                }
+                //若到期时间在三天之内，则为到期产品
+                if (nurseEndTime - current <= 3 * 60 * 60 * 24 * 1000) {
+                    res.add(detail);
+                } else if (endTime - current <= 3 * 60 * 60 * 24 * 1000) {
+                    res.add(detail);
+                }
+            }
+        }
+        return transformClients(res);
+    }
+
 
 }

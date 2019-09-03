@@ -81,6 +81,13 @@ public class ProductPropertyNameServiceImpl implements ProductPropertyNameServic
     }
 
     @Override
+    public  boolean updateStatus(long id, int status)  throws Exception {
+        ProductPropertyName name = productPropertyNameDao.load(id);
+        name.setStatus(status);
+        return productPropertyNameDao.update(name);
+    }
+
+    @Override
     public boolean addPool(ProductPropertyNamePool pool) throws Exception {
         ProductPropertyNamePool sign = productPropertyNamePoolDao.load(pool);
         if (sign != null) throw new StoreSystemException("已添加");

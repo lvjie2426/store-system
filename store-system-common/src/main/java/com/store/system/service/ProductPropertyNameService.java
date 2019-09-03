@@ -17,6 +17,8 @@ public interface ProductPropertyNameService {
 
     public List<ProductPropertyName> getAllList(long cid) throws Exception;
 
+    public boolean updateStatus(long id, int status) throws Exception;
+
 
 
 

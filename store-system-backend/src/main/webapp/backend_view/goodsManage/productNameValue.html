@@ -310,7 +310,7 @@
         return oTableInit;
     };
     var columns = [
-        {field: "sort", title: "排序"},
+        {field: "id", title: "ID", align: "center" },
         {field: "cname", title: "类目名称"},
         {
             field: "content", title: "内容说明", formatter: function (value, row, index) {
@@ -341,7 +341,9 @@
                 var stau = {1: "多值", 0: "非多值"}
                 return stau[value];
             }
-        }, {
+        },
+        {field: "sort", title: "排序"},
+        {
             field: "status", title: "状态", formatter: function (value, row, index) {
                 var html = '';
                 if (value == 0) {
@@ -354,17 +356,23 @@
         },
         {
             field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
-                var html = '';
-                var data = JSON.stringify(row);
-                html += '<a class="btn btn-info btn-sm  btn-success" href="javascript:void(0);" onclick=\'roleList(' + data + ')\'>属性值列表</a>';
+            var html = '';
+            var data = JSON.stringify(row);
+            var status = row.status;
+            if (status == 0) {
+                html = "<a  class='btn btn-info btn-danger btn-sm btn-outline' href='javascript:void(0)'  onclick=\'updateStatus(" + row.id + ",1)\'>删除</a>";
                 html += '&nbsp&nbsp';
-                html += '<a class="btn btn-info btn-sm  btn-success" href="javascript:void(0);" onclick=\'editRole(' + data + ')\'>编辑</a>';
-                html += '&nbsp&nbsp';
-                html += '<a class="btn   btn-danger  btn-success" href="javascript:void(0);" onclick="deleteRole(' + row.id + ')" >删除</a>';
-                return html;
+            } else if (status == 1) {
+                html = "<a  class='btn btn-info btn-success btn-sm btn-outline' href='javascript:void(0)'  onclick=\'updateStatus(" + row.id + ",0)\'>恢复</a>";
+                html += '&nbsp';
             }
-        }
-    ]
+            html += '&nbsp&nbsp';
+            html += '<a class="btn btn-info btn-sm  btn-success" href="javascript:void(0);" onclick=\'roleList(' + data + ')\'>属性值列表</a>';
+            html += '&nbsp&nbsp';
+            html += '<a class="btn btn-info btn-sm  btn-success" href="javascript:void(0);" onclick=\'editRole(' + data + ')\'>编辑</a>';
+            return html;
+        }}
+    ];
 
     function searchUser() {
         handleTable("", 5, "");
@@ -503,6 +511,33 @@
                 $("#defaul").val(row.defaul);
                 $("#multiple").val(row.multiple);
             }
+        });
+    }
+
+    //删除 == 切换状态
+    function updateStatus(id,status) {
+        var url;
+        var param = { id: id,status:status };
+        url = serverUrl + '/productpropertyname/updateStatus';
+
+        layer.msg("确定执行该操作吗？", {
+            shade: [0.1, '##f5f5f5'],
+            btnAlign: 'c',
+            time: 0 //不自动关闭
+            ,
+            btn: ['确定', '取消'],
+            yes: function(index) {
+                layer.close(index);
+                quakooData.ajaxGetData(url, param, function (data, param) {
+                    if (data.success == true) {
+                        layer.msg('修改成功', { icon: 1, shade: 0.01 });
+                        handleTable("", 3, serverUrl + "/productpropertyname/search");
+                    } else {
+                        layer.msg('操作失败，请重试！', { icon: 2, shade: 0.01 });
+                    }
+                })
+            },
+            btn2: function(index, layero) {}
         });
     }
 

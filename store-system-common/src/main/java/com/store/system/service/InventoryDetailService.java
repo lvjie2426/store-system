@@ -28,4 +28,6 @@ public interface InventoryDetailService {
 
     public List<ClientInventoryDetail> getWaringList(long wid, long cid) throws Exception;
 
+    public List<ClientInventoryDetail> getExpireList(long wid, long cid) throws Exception;
+
 }
