@@ -210,6 +210,33 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     }
 
     @Override
+    public Pager getPager(final Pager pager, final long staffId, final int status, final int makeStatus) throws Exception {
+        return new PagerRequestService<BusinessOrder>(pager, 0) {
+            @Override
+            public List<BusinessOrder> step1GetPageResult(String cursor, int size) throws Exception {
+                return businessOrderDao.getUserList(staffId, status, makeStatus, Double.parseDouble(cursor), size);
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return businessOrderDao.getUserCount(staffId, status, makeStatus);
+            }
+
+            @Override
+            public List<BusinessOrder> step3FilterResult(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClient(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+
+    @Override
     public Pager getPager(final Pager pager, final long subId, final long day,
                           final int status, final int makeStatus) throws Exception {
         return new PagerRequestService<BusinessOrder>(pager, 0) {

@@ -771,7 +771,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         //消费次数
-        List<BusinessOrder> orders = businessOrderDao.getUserList(user.getId(), BusinessOrder.makeStatus_qu_yes);
+        List<BusinessOrder> orders = businessOrderDao.getUserList(user.getId(),BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
         if (orders.size() > 0) {
             clientUser.setPayCount(orders.size());
             // TODO: 2019/7/24

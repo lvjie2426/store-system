@@ -47,65 +47,6 @@ public class BusinessOrderController extends BaseController{
     @Resource
     private DictionaryService dictionaryService;
 
-
-    /**
-    * 获取全部订单/作废订单 makeStatus=5
-    * @Param: [request, response, pager, name, model, startTime, endTime, staffId, status, uid, subId, makeStatus]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/7/23
-    */
-    @RequestMapping("/getAllList")
-    public ModelAndView getSubOrder(HttpServletRequest request, HttpServletResponse response,
-                                    Pager pager,String name, Model model,
-                                    @RequestParam(required = false, value = "startTime", defaultValue = "0") long startTime,
-                                    @RequestParam(required = false, value = "endTime", defaultValue = "0") long endTime,
-                                    @RequestParam(required = false, value = "staffId", defaultValue = "0") long staffId,
-                                    @RequestParam(required = false, value = "status", defaultValue = "0") int status,
-                                    @RequestParam(required = false, value = "uid", defaultValue = "0") long uid,
-                                    @RequestParam(required = false, value = "subId", defaultValue = "0") long subId,
-                                    @RequestParam(required = false, value = "makeStatus", defaultValue = "0") int makeStatus) throws Exception {
-        try {
-            Subordinate subordinate = subordinateService.load(subId);
-            if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
-            pager = businessOrderService.getAllList(pager, startTime, endTime, staffId, status, uid, name, makeStatus, subId);
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-
-    }
-
-    /**
-    *   description: 获取未完成订单 makeStatus不传。
-    *   根据订单状态查询，makeStatus =1=2=3
-    * @Param: [request, response, pager, startTime, subId, endTime, staffId, status, uid, name, makeStatus, model]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/7/23
-    */
-    @RequestMapping("/getIncomplete")
-    public ModelAndView getIncomplete(HttpServletRequest request, HttpServletResponse response,
-                                      Pager pager,Model model, String name,
-                                      @RequestParam(required = false, value = "startTime", defaultValue = "0") long startTime,
-                                      @RequestParam(required = false, value = "endTime", defaultValue = "0") long endTime,
-                                      @RequestParam(required = false, value = "staffId", defaultValue = "0") long staffId,
-                                      @RequestParam(required = false, value = "status", defaultValue = "0") int status,
-                                      @RequestParam(required = false, value = "uid", defaultValue = "0") long uid,
-                                      @RequestParam(required = false, value = "subId", defaultValue = "0") long subId,
-                                      @RequestParam(required = false, value = "makeStatus", defaultValue = "0") int makeStatus) throws Exception {
-
-        try {
-            Subordinate subordinate = subordinateService.load(subId);
-            if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
-            pager = businessOrderService.getUnfinishedList(pager, startTime, endTime, staffId, status, uid, name, subId, makeStatus);
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-
-    }
-
     /***
     * 创建订单(临时订单)
     * @Param: [request, response, businessOrder, skuJson, surchargesJson]
@@ -132,26 +73,6 @@ public class BusinessOrderController extends BaseController{
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-
-    }
-
-    /***
-    * 获取临时订单
-    * @Param: [request, response, subId]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/7/24
-    */
-    @RequestMapping("/getTemporaryOrder")
-    public ModelAndView getTemporaryOrder(HttpServletRequest request, HttpServletResponse response,
-                                          long subId) throws Exception {
-
-        try {
-            List<ClientBusinessOrder> orderList = businessOrderService.getAllList(subId);
-            return this.viewNegotiating(request, response, new ResultClient(orderList));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
 
     }
@@ -346,6 +267,27 @@ public class BusinessOrderController extends BaseController{
         }
     }
 
+
+
+    /***
+     * 员工的订单记录
+     * @Param: [request, response, pager]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/9/4
+     */
+    @RequestMapping("/getUserList")
+    public ModelAndView getUserList(HttpServletRequest request, HttpServletResponse response,
+                                    Pager pager) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            pager = businessOrderService.getPager(pager, user.getId(), BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
 
     /***
      * 今日销售记录
