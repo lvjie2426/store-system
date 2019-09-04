@@ -1,8 +1,10 @@
 package com.store.system.dao.impl;
 
 import com.quakoo.space.CacheBaseDao;
+import com.quakoo.space.annotation.cache.CacheDaoMethod;
 import com.quakoo.space.annotation.dao.HyperspaceDao;
 import com.quakoo.space.enums.HyperspaceType;
+import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.store.system.dao.InventoryCheckBillDao;
 import com.store.system.model.InventoryCheckBill;
 
@@ -17,4 +19,9 @@ public class InventoryCheckBillDaoImpl extends CacheBaseDao<InventoryCheckBill> 
         return super.cache_map();
     }
 
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<InventoryCheckBill> getAll(long subid, double cursor, int size) {
+        return null;
+    }
 }
