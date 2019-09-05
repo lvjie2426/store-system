@@ -569,9 +569,13 @@ public class ProductServiceImpl implements ProductService {
             Map<Long, Object> map = one.getProperties();
             for (Map.Entry<Long, Object> entry : map.entrySet()) {
                 ProductPropertyName name = productPropertyNameDao.load(entry.getKey());
-                ProductPropertyValue value = productPropertyValueDao.load(Long.parseLong((String) entry.getValue()));
-                if (name != null && value != null) {
-                    map_value.put(name.getContent(), value.getContent());
+                if(name.getInput()==ProductPropertyName.input_no){
+                    ProductPropertyValue value = productPropertyValueDao.load(Long.parseLong((String) entry.getValue()));
+                    if (value != null) {
+                        map_value.put(name.getContent(), value.getContent());
+                    }
+                }else {
+                    map_value.put(name.getContent(), entry.getValue());
                 }
             }
             client.setP_properties_value(map_value);

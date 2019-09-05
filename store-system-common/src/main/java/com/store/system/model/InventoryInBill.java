@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -58,6 +59,7 @@ public class InventoryInBill implements Serializable {
     private int type;
 
     @SortKey
+    @PagerCursor
     private long ctime;
 
     private long utime;

@@ -55,6 +55,8 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
 
+    private TransformMapUtils nameMapUtils = new TransformMapUtils(ProductPropertyName.class);
+
     private RowMapperHelp<InventoryInBill> rowMapper = new RowMapperHelp<>(InventoryInBill.class);
 
     @Resource
@@ -65,6 +67,9 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     @Resource
     private ProductPropertyNameDao productPropertyNameDao;
+
+    @Resource
+    private ProductPropertyValueDao productPropertyValueDao;
 
     @Resource
     private InventoryInBillDao inventoryInBillDao;
@@ -459,6 +464,21 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                     clientItem.setBid(spu.getBid());
                     clientItem.setCid(spu.getCid());
                     clientItem.setSid(spu.getSid());
+
+                    Map<Object, Object> map_value = Maps.newHashMap();
+                    Map<Long, Object> map = item.getProperties();
+                    for (Map.Entry<Long, Object> entry : map.entrySet()) {
+                        ProductPropertyName name = productPropertyNameDao.load(entry.getKey());
+                        if(name.getInput()==ProductPropertyName.input_no){
+                            ProductPropertyValue value = productPropertyValueDao.load(Long.parseLong((String) entry.getValue()));
+                            if (value != null) {
+                                map_value.put(name.getContent(), value.getContent());
+                            }
+                        }else {
+                            map_value.put(name.getContent(), entry.getValue());
+                        }
+                    }
+                    clientItem.setP_properties_value(map_value);
                 }
                 ProductBrand brand = brandMap.get(clientItem.getBid());
                 if(null != brand) clientItem.setBrandName(brand.getName());
