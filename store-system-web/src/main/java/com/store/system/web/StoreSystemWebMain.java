@@ -1,3 +1,5 @@
+package com.store.system.web;
+
 import ch.qos.logback.classic.LoggerContext;
 import com.quakoo.webframework.AbstractServer;
 import com.quakoo.webframework.Config;
