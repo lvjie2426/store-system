@@ -51,5 +51,6 @@
     <bean id="statAspcet" class="com.store.system.interceptor.StatAspcet" />
 
     <import resource="dao-config.xml"></import>
+    <import resource="attendance-dao-config.xml"></import>
 
 </beans>
