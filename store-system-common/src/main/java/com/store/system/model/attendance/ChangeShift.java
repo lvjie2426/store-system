@@ -37,11 +37,11 @@ public class ChangeShift implements Serializable{
     */
     private long changeTime;
     /***
-     * 调班时间
+     * 被调班人
      */
     private long replaceUid;
     /**
-     * 请假人UID
+     * 申请调班人UID
      */
     private long askUid;
     /**
