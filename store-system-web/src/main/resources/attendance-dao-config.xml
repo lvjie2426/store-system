@@ -40,8 +40,8 @@
         </property>
     </bean>
 
-    <bean id="userLeaveDao" class="com.store.system.dao.impl.UserLeaveDaoImpl">
-        <property name="tableName" value="user_leave" />
+    <bean id="UserLeavePoolDao" class="com.store.system.dao.impl.UserLeavePoolDaoImpl">
+        <property name="tableName" value="user_leave_pool" />
         <property name="dataSources">
             <list>
                 <ref bean="dataSource" />

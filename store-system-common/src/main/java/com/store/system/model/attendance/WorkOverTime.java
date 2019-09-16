@@ -37,7 +37,7 @@ public class WorkOverTime implements Serializable {
     /**
      * 申请时间
      */
-    private double applyTime;
+    private long applyTime;
     /**
      * 加班时长(小时)
      */

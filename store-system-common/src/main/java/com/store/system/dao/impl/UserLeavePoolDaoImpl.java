@@ -7,7 +7,7 @@ import com.quakoo.space.annotation.dao.HyperspaceDao;
 import com.quakoo.space.enums.HyperspaceType;
 import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.quakoo.space.enums.cache.CacheMethodParamEnum;
-import com.store.system.dao.UserLeaveDao;
+import com.store.system.dao.UserLeavePoolDao;
 import com.store.system.model.attendance.UserLeavePool;
 import org.springframework.dao.DataAccessException;
 
@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 @HyperspaceDao(type = HyperspaceType.cache)
-public class UserLeaveDaoImpl extends CacheBaseDao<UserLeavePool>
-        implements UserLeaveDao {
+public class UserLeavePoolDaoImpl extends CacheBaseDao<UserLeavePool>
+        implements UserLeavePoolDao {
 
     private static final long serialVersionUID = -1L;
 

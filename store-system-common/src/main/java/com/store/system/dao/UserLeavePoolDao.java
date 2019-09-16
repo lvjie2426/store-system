@@ -6,7 +6,7 @@ import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
-public interface UserLeaveDao extends HDao<UserLeavePool> {
+public interface UserLeavePoolDao extends HDao<UserLeavePool> {
 
     public List<UserLeavePool> getAllList(long uid);
 
