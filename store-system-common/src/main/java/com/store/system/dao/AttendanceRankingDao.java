@@ -11,4 +11,5 @@ import com.store.system.model.attendance.AttendanceRanking;
  * @Version 1.0
  **/
 public interface AttendanceRankingDao extends HDao<AttendanceRanking> {
+
 }
