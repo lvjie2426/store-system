@@ -3,6 +3,7 @@ package com.store.system.util;
 import com.google.common.collect.Lists;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,12 @@ public class TimeUtils {
 
     public static long getMonthFormTime(long time){
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMM");
+        String timeStr=simpleDateFormat.format(time);
+        return  Long.parseLong(timeStr);
+    }
+
+    public static long getYearFormTime(long time){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy");
         String timeStr=simpleDateFormat.format(time);
         return  Long.parseLong(timeStr);
     }
@@ -359,4 +366,37 @@ public class TimeUtils {
         return calendar.getTime().getTime();
     }
 
+    public static List<Long> getMonthFullDay(int year , int month){
+        SimpleDateFormat dateFormatYYYYMMDD = new SimpleDateFormat("yyyyMMdd");
+        List<Long> fullDayList = new ArrayList<>(32);
+        // 获得当前日期对象
+        Calendar cal = Calendar.getInstance();
+        cal.clear();// 清除信息
+        cal.set(Calendar.YEAR, year);
+        // 1月从0开始
+        cal.set(Calendar.MONTH, month-1 );
+        // 当月1号
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        int count = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        for (int j = 1; j <= count ; j++) {
+            fullDayList.add(Long.parseLong(dateFormatYYYYMMDD.format(cal.getTime())));
+            cal.add(Calendar.DAY_OF_MONTH,1);
+        }
+        return fullDayList;
+    }
+
+    public static List<Long> getYearFullDay(int year){
+        SimpleDateFormat dateFormatYYYYMMDD = new SimpleDateFormat("yyyyMMdd");
+        List<Long> fullDayList = new ArrayList<>(32);
+        // 获得当前日期对象
+        Calendar cal = Calendar.getInstance();
+        cal.clear();// 清除信息
+        cal.set(Calendar.YEAR, year);
+        int count = cal.getActualMaximum(Calendar.DAY_OF_YEAR);
+        for (int j = 1; j <= count ; j++) {
+            fullDayList.add(Long.parseLong(dateFormatYYYYMMDD.format(cal.getTime())));
+            cal.add(Calendar.DAY_OF_MONTH,1);
+        }
+        return fullDayList;
+    }
 }

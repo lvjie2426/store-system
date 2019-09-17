@@ -30,6 +30,10 @@ public class ApprovalLog implements Serializable{
     @PrimaryKey
     private long id;
 
+    private long sid;
+
+    private long subId;
+
     private long typeId;
 
     private int type;

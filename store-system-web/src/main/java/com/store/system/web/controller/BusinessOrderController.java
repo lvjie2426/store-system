@@ -321,7 +321,7 @@ public class BusinessOrderController extends BaseController{
                 long endTime = TimeUtils.getMonthLastTime();
                 pager = businessOrderService.getPager(pager, subId, startTime, endTime,
                         BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
-            } else if (type == Constant.type_search) {
+            } else if (type == Constant.type_day_search) {
                 if (day == 0) {
                     throw new StoreSystemException("请选择日期！");
                 }

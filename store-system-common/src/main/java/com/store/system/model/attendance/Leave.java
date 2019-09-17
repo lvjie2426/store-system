@@ -1,6 +1,5 @@
 package com.store.system.model.attendance;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
