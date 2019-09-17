@@ -60,6 +60,14 @@ public class ChangeShift implements Serializable{
      * 请假状态
      */
     private int status;
+    /**
+     * 公司ID
+     */
+    private long sid;
+    /**
+     * 门店ID
+     */
+    private long subId;
 
     @SortKey
     private long ctime;

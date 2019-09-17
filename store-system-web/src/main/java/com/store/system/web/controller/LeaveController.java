@@ -3,6 +3,7 @@ package com.store.system.web.controller;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientLeave;
 import com.store.system.client.ResultClient;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
 import com.store.system.model.attendance.Leave;
 import com.store.system.model.attendance.WorkOverTime;
@@ -28,11 +29,12 @@ import java.util.List;
 @RequestMapping("leave")
 public class LeaveController extends BaseController {
 
-   @Autowired
-   private LeaveService leaveService;
+    @Autowired
+    private LeaveService leaveService;
 
     /**
      * 获取个人请假历史记录
+     *
      * @param request
      * @param response
      * @return
@@ -40,26 +42,36 @@ public class LeaveController extends BaseController {
      */
     @RequestMapping("/getListByUid")
     public ModelAndView getListByUid(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        User user = UserUtils.getUser(request);
-        List<ClientLeave> res = leaveService.getListByUid(user.getId());
-        return this.viewNegotiating(request,response, new ResultClient(true, res));
+        try {
+            User user = UserUtils.getUser(request);
+            List<ClientLeave> res = leaveService.getListByUid(user.getId());
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     /**
      * 申请请假
+     *
      * @param request
      * @param response
      * @return
      * @throws Exception
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request, HttpServletResponse response,Leave leave) throws Exception {
-        Leave res = leaveService.add(leave);
-        return this.viewNegotiating(request,response, new ResultClient(true, res));
+    public ModelAndView add(HttpServletRequest request, HttpServletResponse response, Leave leave) throws Exception {
+        try {
+            Leave res = leaveService.add(leave);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     /**
      * 请假详情
+     *
      * @param request
      * @param response
      * @param id
@@ -69,12 +81,33 @@ public class LeaveController extends BaseController {
     @RequestMapping("/load")
     public ModelAndView load(HttpServletRequest request, HttpServletResponse response,
                              long id) throws Exception {
-        ClientLeave res = leaveService.load(id);
-        return this.viewNegotiating(request,response, new ResultClient(true, res));
+        try {
+            ClientLeave res = leaveService.load(id);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
+    @RequestMapping("/pass")
+    public ModelAndView pass(HttpServletRequest request, HttpServletResponse response,
+                             long id) throws Exception {
+        try {
+            boolean flag = leaveService.pass(id);
+            return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
 
-
-
-
+    @RequestMapping("/nopass")
+    public ModelAndView nopass(HttpServletRequest request, HttpServletResponse response,
+                             long id,String reason) throws Exception {
+        try {
+           boolean flag = leaveService.nopass(id,reason);
+            return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
 }

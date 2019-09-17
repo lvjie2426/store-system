@@ -28,4 +28,19 @@ public interface LeaveService {
      * @throws Exception
      */
     public List<ClientLeave> getListByUid(long uid)throws Exception;
+
+    /**
+     * 审核通过
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean pass(long id)throws Exception;
+    /**
+     * 审核bu通过
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean nopass(long id, String reason)throws Exception;
 }

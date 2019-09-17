@@ -29,6 +29,26 @@ public interface ChangeShiftService {
      */
     public List<ClientChangeShift> getListByUid(long uid)throws Exception;
 
-
+    /**
+     * 个人被调班历史记录
+     * @return
+     * @throws Exception
+     */
     public  List<ClientChangeShift> getListByReplaceUid(long id)throws Exception;
+
+    /**
+     * 审核不通过
+     * @param id
+     * @param reason
+     * @return
+     * @throws Exception
+     */
+    public  boolean nopass(long id, String reason)throws Exception;
+    /**
+     * 审核通过
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean pass(long id)throws Exception;
 }

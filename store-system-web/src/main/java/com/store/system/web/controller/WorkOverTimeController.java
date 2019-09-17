@@ -33,6 +33,7 @@ public class WorkOverTimeController extends BaseController {
 
     /**
      * 获取个人加班历史记录
+     *
      * @param request
      * @param response
      * @return
@@ -40,13 +41,18 @@ public class WorkOverTimeController extends BaseController {
      */
     @RequestMapping("/getListByUser")
     public ModelAndView getListByUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        User user = UserUtils.getUser(request);
-        List<ClientWorkOverTime> res = workOverTimeService.getListByUid(user.getId());
-        return this.viewNegotiating(request,response, new ResultClient(true, res));
+        try {
+            User user = UserUtils.getUser(request);
+            List<ClientWorkOverTime> res = workOverTimeService.getListByUid(user.getId());
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     /**
      * 申请加班
+     *
      * @param request
      * @param response
      * @param workOverTime
@@ -54,13 +60,18 @@ public class WorkOverTimeController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request, HttpServletResponse response,WorkOverTime workOverTime) throws Exception {
-        WorkOverTime res = workOverTimeService.add(workOverTime);
-        return this.viewNegotiating(request,response, new ResultClient(true, res));
+    public ModelAndView add(HttpServletRequest request, HttpServletResponse response, WorkOverTime workOverTime) throws Exception {
+        try {
+            WorkOverTime res = workOverTimeService.add(workOverTime);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     /**
      * 加班详情
+     *
      * @param request
      * @param response
      * @param id
@@ -70,8 +81,50 @@ public class WorkOverTimeController extends BaseController {
     @RequestMapping("/load")
     public ModelAndView load(HttpServletRequest request, HttpServletResponse response,
                              long id) throws Exception {
-        ClientWorkOverTime res = workOverTimeService.load(id);
-        return this.viewNegotiating(request,response, new ResultClient(true, res));
+        try {
+            ClientWorkOverTime res = workOverTimeService.load(id);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /**
+     * 审核加班通过
+     * @param request
+     * @param response
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/pass")
+    public ModelAndView check(HttpServletRequest request, HttpServletResponse response,
+                             long id) throws Exception {
+        try {
+            boolean flag = workOverTimeService.pass(id);
+            return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /**
+     * 审核加班bu通过
+     * @param request
+     * @param response
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/nopass")
+    public ModelAndView nopass(HttpServletRequest request, HttpServletResponse response,
+                             long id,String reason) throws Exception {
+        try {
+            boolean flag = workOverTimeService.nopass(id,reason);
+            return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
 }

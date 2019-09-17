@@ -29,4 +29,19 @@ public interface WorkOverTimeService {
      * @throws Exception
      */
     public  List<ClientWorkOverTime> getListByUid(long uid)throws Exception;
+
+    /**
+     * 审核加班通过
+     * @param id
+     * @return
+     */
+    public boolean pass(long id)throws Exception;
+
+    /**
+     * 审核加班不通过
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean nopass(long id,String reason)throws Exception;
 }

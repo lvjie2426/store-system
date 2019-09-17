@@ -2,6 +2,9 @@ package com.store.system.dao;
 
 import com.quakoo.space.interfaces.HDao;
 import com.store.system.model.attendance.ApprovalLog;
+import org.springframework.dao.DataAccessException;
+
+import java.util.List;
 
 /**
  * @ClassName ApprovalLogDao
@@ -11,4 +14,6 @@ import com.store.system.model.attendance.ApprovalLog;
  * @Version 1.0
  **/
 public interface ApprovalLogDao extends HDao<ApprovalLog> {
+
+    public List<ApprovalLog> getList(long checkUid) throws DataAccessException;
 }

@@ -1,9 +1,12 @@
 package com.store.system.service.impl;
 
 import com.store.system.client.ClientChangeShift;
+import com.store.system.dao.ApprovalLogDao;
 import com.store.system.dao.ChangeShiftDao;
 import com.store.system.dao.UserDao;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
+import com.store.system.model.attendance.ApprovalLog;
 import com.store.system.model.attendance.ChangeShift;
 import com.store.system.service.ChangeShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +29,36 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
     private ChangeShiftDao changeShiftDao;
     @Autowired
     private UserDao  userDao;
+    @Autowired
+    private ApprovalLogDao approvalLogDao;
+
+    private void check(ChangeShift changeShift) {
+        if(changeShift.getDate()==0)throw new StoreSystemException("调班日期不能为空！");
+        if(changeShift.getFlightTime()==0)throw new StoreSystemException("班次时间不能为空");
+        if(changeShift.getChangeTime()==0)throw new StoreSystemException("调班时间不能为空！");
+        if(changeShift.getReplaceUid()==0)throw new StoreSystemException("被调班人不能为空！");
+        if(changeShift.getAskUid()==0)throw new StoreSystemException("申请人不能为空！");
+        if(changeShift.getCheckUid()==0)throw new StoreSystemException("审核人不能为空！");
+        if(changeShift.getCopyUid()==0)throw new StoreSystemException("抄送人不能为空！");
+        if(changeShift.getSid()==0)throw new StoreSystemException("企业不能为空！");
+        if(changeShift.getSubId()==0)throw new StoreSystemException("门店不能为空！");
+    }
+
+
     @Override
     public ChangeShift add(ChangeShift changeShift) throws Exception {
-        return changeShiftDao.insert(changeShift);
+        check(changeShift);
+        ChangeShift insert = changeShiftDao.insert(changeShift);
+        if(insert!=null&&insert.getCheckUid()>0){
+            ApprovalLog approvalLog=new ApprovalLog();
+            approvalLog.setCheckUid(insert.getCheckUid());
+            approvalLog.setSid(insert.getSid());
+            approvalLog.setSubId(insert.getSubId());
+            approvalLog.setType(ApprovalLog.type_work);
+            approvalLog.setTypeId(insert.getId());
+            approvalLogDao.insert(approvalLog);
+        }
+        return insert;
     }
 
     @Override
@@ -56,6 +86,24 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
             clientChangeShifts.add(clientChangeShift);
         }
         return clientChangeShifts;
+    }
+
+    @Override
+    public boolean nopass(long id, String reason) throws Exception {
+        ChangeShift load = changeShiftDao.load(id);
+        if(load!=null){
+            load.setStatus(ChangeShift.status_fail);
+        }
+        return changeShiftDao.update(load);
+    }
+
+    @Override
+    public boolean pass(long id) throws Exception {
+        ChangeShift load = changeShiftDao.load(id);
+        if(load!=null){
+            load.setStatus(ChangeShift.status_success);
+        }
+        return changeShiftDao.update(load);
     }
 
     public ClientChangeShift TransFormCliens(ChangeShift changeShift){
