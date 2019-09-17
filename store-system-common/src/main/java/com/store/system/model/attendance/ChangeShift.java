@@ -21,6 +21,9 @@ import java.io.Serializable;
         identityType = IdentityType.origin_indentity)
 public class ChangeShift implements Serializable{
 
+    public static final int status_ask=0;//申请中
+    public static final int status_success=1;//审核通过
+    public static final int status_fail=2;//审核不通过
 
     @PrimaryKey
     private long id;
@@ -52,6 +55,11 @@ public class ChangeShift implements Serializable{
      *  抄送UID
      */
     private long copyUid;
+
+    /**
+     * 请假状态
+     */
+    private int status;
 
     @SortKey
     private long ctime;
