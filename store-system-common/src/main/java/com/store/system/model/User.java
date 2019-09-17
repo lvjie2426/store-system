@@ -135,6 +135,8 @@ public class User implements Serializable {
 
     private int money; //储值金额
 
+    private long aid;//考勤ID
+
     private String plat;
 
     private String platVersion;

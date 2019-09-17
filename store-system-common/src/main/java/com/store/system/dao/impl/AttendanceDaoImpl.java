@@ -31,27 +31,33 @@ public class AttendanceDaoImpl extends CacheBaseDao<AttendanceLog>
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
-    public List<AttendanceLog> getAllListBySubDay(long sid, long day){
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<AttendanceLog> getAllListBySubDay(long subId, long day){
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<AttendanceLog> getAllListBySubMonth(long subId, long month){
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<AttendanceLog> getAllListBySubWeek(long subId, long week){
         return null;
     }
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
-    public List<AttendanceLog> getAllListBySubMonth(long sid, long month){
-        return null;
-    }
-
-    @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
-    public List<AttendanceLog> getAllListByUserMonth(long sid,long month,long uid){
+    public List<AttendanceLog> getAllListByUserMonth(long sid, long subId, long month, long uid){
         return null;
     }
 
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
-    public List<AttendanceLog> getAllListByUserDay(long sid,long day,long uid){
+    public List<AttendanceLog> getAllListByUserDay(long sid, long subId, long day,long uid){
         return null;
     }
 
