@@ -15,5 +15,5 @@ import java.util.List;
  **/
 public interface WorkOverTimeDao extends HDao<WorkOverTime> {
 
-   public List<WorkOverTime> getListByUid(long askUid)throws DataAccessException;
+   public List<WorkOverTime> getListByUid(long askUid,double cursor,int size)throws DataAccessException;
 }

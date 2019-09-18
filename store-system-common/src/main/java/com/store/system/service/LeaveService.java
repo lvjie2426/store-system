@@ -1,5 +1,6 @@
 package com.store.system.service;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.client.ClientLeave;
 import com.store.system.model.attendance.Leave;
 import com.store.system.model.attendance.WorkOverTime;
@@ -27,7 +28,7 @@ public interface LeaveService {
      * @return
      * @throws Exception
      */
-    public List<ClientLeave> getListByUid(long uid)throws Exception;
+    public Pager getListByUid(Pager pager, long uid)throws Exception;
 
     /**
      * 审核通过

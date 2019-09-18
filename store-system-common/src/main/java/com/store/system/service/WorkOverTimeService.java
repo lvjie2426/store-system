@@ -28,7 +28,7 @@ public interface WorkOverTimeService {
      * @return
      * @throws Exception
      */
-    public  List<ClientWorkOverTime> getListByUid(long uid)throws Exception;
+    public  Pager  getListByUid(long uid,Pager pager)throws Exception;
 
     /**
      * 审核加班通过

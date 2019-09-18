@@ -27,8 +27,10 @@ public class UserLeavePoolDaoImpl extends CacheBaseDao<UserLeavePool>
 
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
-    public List<UserLeavePool> getAllList(long uid) {
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<UserLeavePool> getAllList(long uid,
+                                          @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor) Double cursor,
+                                          @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) {
         return null;
     }
 

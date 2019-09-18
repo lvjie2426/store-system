@@ -16,7 +16,7 @@ import java.util.List;
  **/
 public interface ChangeShiftDao extends HDao<ChangeShift>{
 
-    public List<ChangeShift> getListByUid(long askUid)throws DataAccessException;
+    public List<ChangeShift> getListByUid(long askUid,double cursor,int size)throws DataAccessException;
 
     public List<ChangeShift> getListByReplaceUid(long replaceUid)throws DataAccessException;
 }

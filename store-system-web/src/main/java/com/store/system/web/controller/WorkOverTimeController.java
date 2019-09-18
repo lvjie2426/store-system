@@ -1,5 +1,6 @@
 package com.store.system.web.controller;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientProductSeries;
 import com.store.system.client.ClientWorkOverTime;
@@ -40,11 +41,11 @@ public class WorkOverTimeController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/getListByUser")
-    public ModelAndView getListByUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView getListByUser(HttpServletRequest request, HttpServletResponse response, Pager pager) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            List<ClientWorkOverTime> res = workOverTimeService.getListByUid(user.getId());
-            return this.viewNegotiating(request, response, new ResultClient(true, res));
+            pager = workOverTimeService.getListByUid(user.getId(), pager);
+            return this.viewNegotiating(request, response, new ResultClient(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
@@ -91,6 +92,7 @@ public class WorkOverTimeController extends BaseController {
 
     /**
      * 审核加班通过
+     *
      * @param request
      * @param response
      * @param id
@@ -99,7 +101,7 @@ public class WorkOverTimeController extends BaseController {
      */
     @RequestMapping("/pass")
     public ModelAndView check(HttpServletRequest request, HttpServletResponse response,
-                             long id) throws Exception {
+                              long id) throws Exception {
         try {
             boolean flag = workOverTimeService.pass(id);
             return this.viewNegotiating(request, response, new ResultClient(flag));
@@ -110,6 +112,7 @@ public class WorkOverTimeController extends BaseController {
 
     /**
      * 审核加班bu通过
+     *
      * @param request
      * @param response
      * @param id
@@ -118,9 +121,9 @@ public class WorkOverTimeController extends BaseController {
      */
     @RequestMapping("/nopass")
     public ModelAndView nopass(HttpServletRequest request, HttpServletResponse response,
-                             long id,String reason) throws Exception {
+                               long id, String reason) throws Exception {
         try {
-            boolean flag = workOverTimeService.nopass(id,reason);
+            boolean flag = workOverTimeService.nopass(id, reason);
             return this.viewNegotiating(request, response, new ResultClient(flag));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

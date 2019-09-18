@@ -1,5 +1,8 @@
 package com.store.system.service.impl;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.store.system.client.ClientChangeShift;
 import com.store.system.dao.ApprovalLogDao;
 import com.store.system.dao.ChangeShiftDao;
@@ -67,14 +70,35 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
     }
 
     @Override
-    public List<ClientChangeShift> getListByUid(long uid) throws Exception {
-        List<ChangeShift> listByUid = changeShiftDao.getListByUid(uid);
-        List<ClientChangeShift> clientChangeShifts=new ArrayList<>(listByUid.size());
-        for(ChangeShift changeShift:listByUid){
-            ClientChangeShift clientChangeShift=TransFormCliens(changeShift);
-            clientChangeShifts.add(clientChangeShift);
-        }
-        return clientChangeShifts;
+    public Pager getListByUid(final long uid, Pager pager) throws Exception {
+        return new PagerRequestService<ChangeShift>(pager, 0) {
+            @Override
+            public List<ChangeShift> step1GetPageResult(String s, int i) throws Exception {
+                List<ChangeShift> listByUid = changeShiftDao.getListByUid(uid,Double.parseDouble(s),i);
+                return listByUid;
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<ChangeShift> step3FilterResult(List<ChangeShift> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<ChangeShift> list, PagerSession pagerSession) throws Exception {
+                List<ClientChangeShift> clientChangeShifts=new ArrayList<>(list.size());
+                for(ChangeShift changeShift:list){
+                    ClientChangeShift clientChangeShift=TransFormCliens(changeShift);
+                    clientChangeShifts.add(clientChangeShift);
+                }
+                return clientChangeShifts;
+            }
+        }.getPager();
+
     }
 
     @Override

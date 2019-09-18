@@ -1,5 +1,6 @@
 package com.store.system.service;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.client.ClientChangeShift;
 import com.store.system.model.User;
 import com.store.system.model.attendance.ChangeShift;
@@ -27,7 +28,7 @@ public interface ChangeShiftService {
      * @return
      * @throws Exception
      */
-    public List<ClientChangeShift> getListByUid(long uid)throws Exception;
+    public Pager getListByUid(long uid,Pager pager)throws Exception;
 
     /**
      * 个人被调班历史记录

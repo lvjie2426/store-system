@@ -1,7 +1,9 @@
 package com.store.system.web.controller;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientLeave;
+import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
@@ -41,11 +43,11 @@ public class LeaveController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/getListByUid")
-    public ModelAndView getListByUid(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView getListByUid(HttpServletRequest request, HttpServletResponse response,Pager pager) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            List<ClientLeave> res = leaveService.getListByUid(user.getId());
-            return this.viewNegotiating(request, response, new ResultClient(true, res));
+            pager = leaveService.getListByUid(pager,user.getId());
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

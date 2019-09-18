@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserLeavePoolDao extends HDao<UserLeavePool> {
 
-    public List<UserLeavePool> getAllList(long uid);
+    public List<UserLeavePool> getAllList(long uid,Double cursor,int size);
 
     public int getCountByUser(long uid, int status) throws DataAccessException;
 

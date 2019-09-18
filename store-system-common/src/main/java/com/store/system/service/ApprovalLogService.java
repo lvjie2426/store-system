@@ -23,7 +23,7 @@ public interface ApprovalLogService {
      * @return
      * @throws Exception
      */
-    public List<ClientApprovalLog> getList(long id) throws Exception;
+    public Pager getList(long id,Pager pager) throws Exception;
 
 
 }

@@ -1,5 +1,6 @@
 package com.store.system.web.controller;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientChangeShift;
 import com.store.system.client.ResultClient;
@@ -40,11 +41,11 @@ public class ChangeShiftController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/getListByUser")
-    public ModelAndView getListByUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView getListByUser(HttpServletRequest request, HttpServletResponse response,Pager pager) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            List<ClientChangeShift> res = changeShiftService.getListByUid(user.getId());
-            return this.viewNegotiating(request, response, new ResultClient(true, res));
+            pager = changeShiftService.getListByUid(user.getId(),pager);
+            return this.viewNegotiating(request, response, new ResultClient(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

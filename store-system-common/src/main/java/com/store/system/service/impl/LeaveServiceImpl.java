@@ -1,6 +1,9 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.store.system.client.ClientLeave;
 import com.store.system.dao.ApprovalLogDao;
@@ -75,16 +78,40 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public List<ClientLeave> getListByUid(long uid) throws Exception {
-        List<UserLeavePool> allList = userLeavePoolDao.getAllList(uid);
-        Set<Long> lid = UserLeave.fieldList(allList, "lid");
-        List<Leave> load = leaveDao.load(Lists.newArrayList(lid));
-        List<ClientLeave> clientLeaveList=new ArrayList<>(load.size());
-        for(Leave leave:load){
-            ClientLeave clientLeave=  transformClients(leave);
-            clientLeaveList.add(clientLeave);
-        }
-        return clientLeaveList;
+    public Pager getListByUid(Pager pager,final long uid) throws Exception {
+
+        return new PagerRequestService<Leave>(pager,0) {
+            @Override
+            public List<Leave> step1GetPageResult(String cursor, int size) throws Exception {
+                List<UserLeavePool> allList = userLeavePoolDao.getAllList(uid,Double.parseDouble(cursor),size);
+                Set<Long> lid = UserLeave.fieldList(allList, "lid");
+                List<Leave> load = leaveDao.load(Lists.newArrayList(lid));
+                 return load;
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<Leave> step3FilterResult(List<Leave> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<Leave> list, PagerSession pagerSession) throws Exception {
+
+                List<ClientLeave> clientLeaveList=new ArrayList<>(list.size());
+
+                for(Leave leave:list){
+                    ClientLeave clientLeave=  transformClients(leave);
+                    clientLeaveList.add(clientLeave);
+                }
+                return clientLeaveList;
+            }
+        }.getPager();
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.store.system.web.controller;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientApprovalLog;
 import com.store.system.client.ResultClient;
@@ -38,11 +39,11 @@ public class ApprovalLogController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/getList")
-    public ModelAndView getList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView getList(HttpServletRequest request, HttpServletResponse response, Pager pager) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            List<ClientApprovalLog> res = approvalLogService.getList(user.getId());
-            return this.viewNegotiating(request, response, new ResultClient(true, res));
+            pager = approvalLogService.getList(user.getId(),pager);
+            return this.viewNegotiating(request, response, new ResultClient(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

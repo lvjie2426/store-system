@@ -2,9 +2,11 @@ package com.store.system.dao.impl;
 
 import com.quakoo.space.CacheBaseDao;
 import com.quakoo.space.annotation.cache.CacheDaoMethod;
+import com.quakoo.space.annotation.cache.CacheMethodParam;
 import com.quakoo.space.annotation.dao.HyperspaceDao;
 import com.quakoo.space.enums.HyperspaceType;
 import com.quakoo.space.enums.cache.CacheMethodEnum;
+import com.quakoo.space.enums.cache.CacheMethodParamEnum;
 import com.store.system.dao.ApprovalLogDao;
 import com.store.system.model.attendance.ApprovalLog;
 import org.springframework.dao.DataAccessException;
@@ -30,8 +32,10 @@ public class ApprovalLogDaoImpl extends CacheBaseDao<ApprovalLog> implements App
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<ApprovalLog> getList(long checkUid) throws DataAccessException {
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<ApprovalLog> getList(long checkUid,
+                                     @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor) double cursor,
+                                     @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
         return null;
     }
 }

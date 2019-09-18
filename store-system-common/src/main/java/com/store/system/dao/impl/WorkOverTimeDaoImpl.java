@@ -2,9 +2,11 @@ package com.store.system.dao.impl;
 
 import com.quakoo.space.CacheBaseDao;
 import com.quakoo.space.annotation.cache.CacheDaoMethod;
+import com.quakoo.space.annotation.cache.CacheMethodParam;
 import com.quakoo.space.annotation.dao.HyperspaceDao;
 import com.quakoo.space.enums.HyperspaceType;
 import com.quakoo.space.enums.cache.CacheMethodEnum;
+import com.quakoo.space.enums.cache.CacheMethodParamEnum;
 import com.store.system.dao.UserLeaveDaysDao;
 import com.store.system.dao.WorkOverTimeDao;
 import com.store.system.model.attendance.UserLeaveDays;
@@ -32,8 +34,10 @@ public class WorkOverTimeDaoImpl extends CacheBaseDao<WorkOverTime> implements W
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<WorkOverTime> getListByUid(long askUid) throws DataAccessException {
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<WorkOverTime> getListByUid(long askUid,
+                                           @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor) double cursor,
+                                           @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
         return null;
     }
 }

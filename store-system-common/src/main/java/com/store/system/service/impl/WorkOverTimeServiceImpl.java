@@ -1,5 +1,8 @@
 package com.store.system.service.impl;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.store.system.client.ClientWorkOverTime;
 import com.store.system.dao.ApprovalLogDao;
 import com.store.system.dao.UserDao;
@@ -67,14 +70,38 @@ public class WorkOverTimeServiceImpl implements WorkOverTimeService {
     }
 
     @Override
-    public List<ClientWorkOverTime> getListByUid(long askUid) throws Exception {
-        List<WorkOverTime> listByUid = workOverTimeDao.getListByUid(askUid);
-        List<ClientWorkOverTime> clientWorkOverTimeList=new ArrayList<>(listByUid.size());
-        for(WorkOverTime workOverTime:listByUid){
-            ClientWorkOverTime clientWorkOverTime=transformClients(workOverTime);
-            clientWorkOverTimeList.add(clientWorkOverTime);
-        }
-        return clientWorkOverTimeList;
+    public Pager getListByUid(final long askUid,Pager pager) throws Exception {
+        return new PagerRequestService<WorkOverTime>(pager,0) {
+            @Override
+            public List<WorkOverTime> step1GetPageResult(String cursor, int size) throws Exception {
+                List<WorkOverTime> listByUid = workOverTimeDao.getListByUid(askUid,Double.parseDouble(cursor),size);
+                return listByUid;
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<WorkOverTime> step3FilterResult(List<WorkOverTime> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<WorkOverTime> list, PagerSession pagerSession) throws Exception {
+                List<ClientWorkOverTime> clientWorkOverTimeList=new ArrayList<>(list.size());
+                for(WorkOverTime workOverTime:list){
+                    ClientWorkOverTime clientWorkOverTime=transformClients(workOverTime);
+                    clientWorkOverTimeList.add(clientWorkOverTime);
+                }
+                return clientWorkOverTimeList;
+            }
+        }.getPager();
+
+
+
+
     }
 
     @Override
