@@ -3,12 +3,16 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.store.system.bean.ClientRankingFirst;
+import com.store.system.bean.ClientWorkingHour;
 import com.store.system.bean.SimpleUser;
+import com.store.system.dao.AttendanceLogDao;
 import com.store.system.dao.AttendanceRankingDao;
 import com.store.system.model.User;
+import com.store.system.model.attendance.AttendanceLog;
 import com.store.system.model.attendance.AttendanceRanking;
 import com.store.system.service.AttendanceRankingService;
 import com.store.system.service.UserService;
+import com.store.system.util.ArithUtils;
 import com.store.system.util.TimeUtils;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +36,8 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
     private AttendanceRankingDao attendanceRankingDao;
     @Resource
     private UserService userService;
+    @Resource
+    private AttendanceLogDao attendanceLogDao;
 
 
 
@@ -120,6 +126,99 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
         return transformClient(rankingMap);
     }
 
+    public List<ClientWorkingHour> getSubWorkingHourListByMonth(long sid, List<Long> subIds, long month) throws Exception {
+        List<AttendanceLog> attendanceLogs = Lists.newArrayList();
+        for(Long subId:subIds){
+            attendanceLogs.addAll(attendanceLogDao.getAllListBySubMonth(subId,month));
+        }
+        Map<Long,List<AttendanceLog>> map = transformMap(attendanceLogs);
+        return transformWorkingClient(map);
+    }
+
+    @Override
+    public List<ClientWorkingHour> getSubWorkingHourListByYear(long sid, List<Long> subIds, long year) throws Exception {
+        List<AttendanceLog> attendanceLogs = Lists.newArrayList();
+        for(Long subId:subIds){
+            attendanceLogs.addAll(attendanceLogDao.getAllListBySubYear(subId,year));
+        }
+        Map<Long,List<AttendanceLog>> map = transformMap(attendanceLogs);
+        return transformWorkingClient(map);
+    }
+
+    @Override
+    public List<ClientWorkingHour> getSubWorkingHourListByUpYear(long sid, List<Long> subIds, long year) throws Exception {
+        List<Long> days = Lists.newArrayList();
+        days.addAll(TimeUtils.getMonthFullDay((int) year,1));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,2));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,3));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,4));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,5));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,6));
+        Map<Long,List<AttendanceLog>> map = getSubWorkingHourList(sid,subIds,days);
+        return transformWorkingClient(map);
+    }
+
+    @Override
+    public List<ClientWorkingHour> getSubWorkingHourListByDownYear(long sid, List<Long> subIds, long year) throws Exception {
+        List<Long> days = Lists.newArrayList();
+        days.addAll(TimeUtils.getMonthFullDay((int) year,7));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,8));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,9));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,10));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,11));
+        days.addAll(TimeUtils.getMonthFullDay((int) year,12));
+        Map<Long,List<AttendanceLog>> map = getSubWorkingHourList(sid,subIds,days);
+        return transformWorkingClient(map);
+    }
+
+    private Map<Long, List<AttendanceLog>> transformMap(List<AttendanceLog> attendanceLogs) {
+        Map<Long, List<AttendanceLog>> map = Maps.newHashMap();
+        for (AttendanceLog attendanceLog : attendanceLogs) {
+            List<AttendanceLog> logs = map.get(attendanceLog.getUid());
+            if (logs == null) {
+                logs = Lists.newArrayList();
+                map.put(attendanceLog.getUid(), logs);
+            }
+            logs.add(attendanceLog);
+        }
+        return map;
+    }
+
+    private Map<Long,List<AttendanceLog>> getSubWorkingHourList(long sid, List<Long> subIds, List<Long> days) {
+        Map<Long,List<AttendanceLog>> map = Maps.newHashMap();
+        for(Long day:days){
+            for(Long subId:subIds) {
+                List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListBySubDay(subId, day);
+                map = transformMap(attendanceLogs);
+            }
+        }
+        return map;
+    }
+
+    private List<ClientWorkingHour> transformWorkingClient(Map<Long,List<AttendanceLog>> map) throws Exception {
+        List<ClientWorkingHour> res = Lists.newArrayList();
+        for (Map.Entry<Long, List<AttendanceLog>> entry : map.entrySet()) {
+            double hours = 0;
+            int days = 0;
+            ClientWorkingHour client = new ClientWorkingHour();
+            User user = userService.load(entry.getKey());
+            client.setSimpleUser(new SimpleUser(user));
+            for (AttendanceLog log : entry.getValue()) {
+                double time = ArithUtils.div((double) (log.getEndTime() - log.getStartTime()), (double) 1000 * 60 * 60, 1);
+                hours += time;
+                if (time > 0) {
+                    int day = 1;
+                    days += day;
+                }
+            }
+            client.setHours(hours);
+            client.setDays(days);
+            res.add(client);
+        }
+        sortWorking(res);
+        return res;
+    }
+
     private Map<Long,List<AttendanceRanking>> getSubFirstTimesList(long sid, List<Long> subIds, List<Long> days) {
         Map<Long,List<AttendanceRanking>> rankingMap = Maps.newHashMap();
         for(Long day:days){
@@ -181,4 +280,17 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
         });
     }
 
+    private void sortWorking(List<ClientWorkingHour> list){
+        Collections.sort(list, new Comparator<ClientWorkingHour>(){
+            public int compare(ClientWorkingHour p1, ClientWorkingHour p2) {
+                if(p1.getDays() < p2.getDays() && p1.getHours() < p2.getHours()){
+                    return 1;
+                }
+                if(p1.getDays() == p2.getDays() && p1.getHours() == p2.getHours()){
+                    return 0;
+                }
+                return -1;
+            }
+        });
+    }
 }

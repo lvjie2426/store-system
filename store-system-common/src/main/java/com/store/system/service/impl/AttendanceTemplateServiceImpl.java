@@ -36,8 +36,8 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
 
 
     @Override
-    public List<ClientAttendanceTemplate> getAllList(long sid) throws Exception {
-        List<AttendanceTemplate> allList = attendanceTemplateDao.getAllList(sid);
+    public List<ClientAttendanceTemplate> getAllList(long subId) throws Exception {
+        List<AttendanceTemplate> allList = attendanceTemplateDao.getAllList(subId);
         List<Long> uids = Lists.newArrayList();
         for (AttendanceTemplate t : allList) {
             long uid = t.getUid();
@@ -55,6 +55,11 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
     @Override
     public AttendanceTemplate add(AttendanceTemplate attendanceTemplate) throws Exception {
         attendanceTemplate = attendanceTemplateDao.insert(attendanceTemplate);
+        User user = userService.load(attendanceTemplate.getUid());
+        if(user!=null) {
+            user.setAid(attendanceTemplate.getId());
+            userService.updateUser(user);
+        }
         return attendanceTemplate;
     }
 
@@ -64,7 +69,7 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
      * @param attendanceTemplate
      */
     public boolean update(AttendanceTemplate attendanceTemplate) throws Exception {
-        AttendanceTemplate template = attendanceTemplateDao.load(attendanceTemplate.getId());
+        AttendanceTemplate template = attendanceTemplateDao.load(attendanceTemplate.getUid());
         if (template != null) {
 /*            template.setName(attendanceTemplate.getName());
             template.setStart(attendanceTemplate.getStart());
@@ -100,7 +105,7 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
         for (AttendanceTemplate attendanceTemplate : attendanceTemplates) {
             ClientAttendanceTemplate clientAttendanceTemplate = new ClientAttendanceTemplate();
             BeanUtils.copyProperties(clientAttendanceTemplate, attendanceTemplate);
-            clientAttendanceTemplate.setCreater(new SimpleUser(userMap.get(clientAttendanceTemplate.getUid())));
+            clientAttendanceTemplate.setSimpleUser(new SimpleUser(userMap.get(clientAttendanceTemplate.getUid())));
             result.add(clientAttendanceTemplate);
         }
         return result;

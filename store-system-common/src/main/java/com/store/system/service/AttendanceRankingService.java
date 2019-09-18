@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 import com.store.system.bean.ClientRankingFirst;
+import com.store.system.bean.ClientWorkingHour;
 import com.store.system.model.attendance.AttendanceRanking;
 
 import java.util.List;
@@ -29,4 +30,17 @@ public interface AttendanceRankingService {
     public List<ClientRankingFirst> getSubFirstTimesListByUpYear(long sid, List<Long> subIds, long year) throws Exception;
 
     public List<ClientRankingFirst> getSubFirstTimesListByDownYear(long sid, List<Long> subIds, long year) throws Exception;
+
+
+    public List<ClientWorkingHour> getSubWorkingHourListByMonth(long sid, List<Long> subIds, long month)  throws Exception;
+
+    public List<ClientWorkingHour> getSubWorkingHourListByYear(long sid, List<Long> subIds, long year) throws Exception;
+
+    public List<ClientWorkingHour> getSubWorkingHourListByUpYear(long sid, List<Long> subIds, long year) throws Exception;
+
+    public List<ClientWorkingHour> getSubWorkingHourListByDownYear(long sid, List<Long> subIds, long year) throws Exception;
+
+
+
+
 }

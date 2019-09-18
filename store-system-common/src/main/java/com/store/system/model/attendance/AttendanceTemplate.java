@@ -40,7 +40,9 @@ public class AttendanceTemplate implements Serializable{
 
     private long sid;//公司ID
 
-    private long uid;//创建人id
+    private long subId;//门店ID
+
+    private long uid;//使用人id
 
     //轮换制,固定制度
     private int type;

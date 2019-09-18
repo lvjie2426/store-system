@@ -3,6 +3,8 @@ package com.store.system.model.attendance;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -12,10 +14,7 @@ import java.io.Serializable;
 public class AttendanceItem  implements Serializable{
 
 
-    /***
-    * 时间戳作为ID
-    */
-    private long timeId;
+    private Map<String,String> itemMap = new HashMap<>();
     /**
      * 从0点开始 计算分钟   100=1点30分   600=10点
      */

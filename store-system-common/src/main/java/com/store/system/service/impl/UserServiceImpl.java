@@ -1161,6 +1161,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<ClientUser> getAllUser(long sid, int userType, long aid) throws Exception {
+        String sql = " SELECT * FROM `user` WHERE 1=1 ";
+
+        if (sid > 0) {
+            sql = sql + " AND sid =" + sid;
+        }
+        if (userType > 0) {
+            sql = sql + " AND userType =" + userType;
+        }
+        {
+            sql = sql + " AND aid =" + aid;
+        }
+        sql = sql + " order  by `ctime` desc";
+        List<User> users = jdbcTemplate.query(sql, rowMapper);
+        return transformClient(users);
+    }
+
+    @Override
     public ClientUser getUser(String phone) throws Exception {
         User user = userDao.getUserByPhone(User.userType_user, User.status_nomore, phone);
         return transformClient(user);

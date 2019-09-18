@@ -132,6 +132,7 @@ public class CreateAttendanceLogJob implements InitializingBean {
         }
         attendanceLog.setMonth(TimeUtils.getMonthFormTime(time));
         attendanceLog.setWeek(TimeUtils.getWeekFormTime(time));
+        attendanceLog.setYear(TimeUtils.getYearFormTime(time));
         attendanceLogDao.insert(attendanceLog);
 
     }

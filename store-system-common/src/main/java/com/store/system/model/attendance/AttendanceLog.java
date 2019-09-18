@@ -35,25 +35,21 @@ public class AttendanceLog implements Serializable {
     @ShardingKey
     @CombinationKey
     private long sid;
-
     /**
      * 门店ID
      */
     @CombinationKey
     private long subId;
-
     /**
      * 员工ID
      */
     @CombinationKey
     private long uid;
-
     /**
      * 日期/天
      */
     @CombinationKey
     private long day;
-
     /**
      * 周
      */
@@ -62,6 +58,10 @@ public class AttendanceLog implements Serializable {
      * 月
      */
     private long month;
+    /**
+     * 年
+     */
+    private long year;
 
     /**
      * 应该打卡的开始时间

@@ -125,6 +125,8 @@ public interface UserService {
 
     public List<ClientUser> getAllUser(long sid,int userType)throws Exception;
 
+    public List<ClientUser> getAllUser(long sid, int userType, long aid)throws Exception;
+
     public ClientUser getUser(String phone)throws Exception;
 
     //会员信息认证

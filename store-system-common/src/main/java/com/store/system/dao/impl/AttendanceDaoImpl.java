@@ -44,6 +44,12 @@ public class AttendanceDaoImpl extends CacheBaseDao<AttendanceLog>
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<AttendanceLog> getAllListBySubYear(long subId, long year){
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
     public List<AttendanceLog> getAllListBySubWeek(long subId, long week){
         return null;
     }

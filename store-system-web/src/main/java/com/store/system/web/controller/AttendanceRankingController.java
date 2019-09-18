@@ -3,6 +3,7 @@ package com.store.system.web.controller;
 import com.google.common.collect.Lists;
 import com.quakoo.webframework.BaseController;
 import com.store.system.bean.ClientRankingFirst;
+import com.store.system.bean.ClientWorkingHour;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.attendance.AttendanceRanking;
@@ -163,4 +164,33 @@ public class AttendanceRankingController extends BaseController{
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
+
+
+    @RequestMapping("/getSubWorkingHourList")
+    public ModelAndView getSubWorkingHourList(HttpServletRequest request, HttpServletResponse response,
+                                             long sid, @RequestParam(name = "subIds[]") List<Long> subIds,
+                                             @RequestParam(required = false, value = "year", defaultValue = "0") long year,
+                                             @RequestParam(required = false, value = "month", defaultValue = "0") long month,
+                                             int type) throws Exception {
+        try {
+            List<ClientWorkingHour> res = Lists.newArrayList();
+            long currentMonth = TimeUtils.getMonthFormTime(System.currentTimeMillis());
+            long currentYear = TimeUtils.getYearFormTime(System.currentTimeMillis());
+            if(type == Constant.type_month){
+                res = attendanceRankingService.getSubWorkingHourListByMonth(sid, subIds, currentMonth);
+            }else if(type == Constant.type_month_search){
+                res = attendanceRankingService.getSubWorkingHourListByMonth(sid, subIds, month);
+            }else if(type == Constant.type_year_search){
+                res = attendanceRankingService.getSubWorkingHourListByYear(sid, subIds, year);
+            }else if(type == Constant.type_halfUpYear){
+                res = attendanceRankingService.getSubWorkingHourListByUpYear(sid, subIds, currentYear);
+            }else if(type == Constant.type_halfDownYear){
+                res = attendanceRankingService.getSubWorkingHourListByDownYear(sid, subIds, currentYear);
+            }
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
 }

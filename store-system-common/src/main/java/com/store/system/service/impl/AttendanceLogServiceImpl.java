@@ -40,7 +40,6 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	@Resource
 	private SubordinateService subordinateService;
 
-
 	@Resource
 	private AttendanceLogDao attendanceLogDao;
 
@@ -63,6 +62,9 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 
 	@Resource
 	private HolidayService holidayService;
+
+	@Resource
+	private SubSettingsDao subSettingsDao;
 
 	@Resource
 	JdbcTemplate jdbcTemplate;
@@ -552,7 +554,11 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 					return item;
 				}else {
 					//取出轮班表（跟日期对应上）(轮换的时候去掉节假日)
-					List<AttendanceItem> items = attendanceTemplate.getTurn();
+					List<AttendanceItem> items = Lists.newArrayList();
+					for(Map.Entry<Long,AttendanceItem> entry:attendanceTemplate.getTurnMap().entrySet()){
+						items.add(entry.getValue());
+					}
+//					List<AttendanceItem> items = attendanceTemplate.getTurn();
 					int workDay = 0;
 					//当前时间 和轮换开始时间 其中的假期日 特殊的时间
 					for(long oneDay=attendanceTemplate.getTurnStartDay();oneDay<=day;oneDay++){
@@ -583,7 +589,11 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 					return item;
 				}else{
 					//取出轮班表（跟日期对应上）(轮换的时候去掉节假日)
-					List<AttendanceItem> items = attendanceTemplate.getTurn();
+					List<AttendanceItem> items = Lists.newArrayList();
+					for(Map.Entry<Long,AttendanceItem> entry:attendanceTemplate.getTurnMap().entrySet()){
+						items.add(entry.getValue());
+					}
+//					List<AttendanceItem> items = attendanceTemplate.getTurn();
 					int workDay = 0;
 					//当前时间 和轮换开始时间 其中的假期日 特殊的时间
 					for(long oneDay=attendanceTemplate.getTurnStartDay();oneDay<=day;oneDay++){
@@ -794,32 +804,58 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 					absent = true;
 				}
 			}
-			int useFlexTime=0;//弹性时间（用过的）
-			if(attendanceLog.getStartTime()>0){
-				Date date=new Date(attendanceLog.getStartTime());
-				int mins=date.getHours()*60+date.getMinutes();
-				if(mins>(attendanceLog.getStart()+attendanceLog.getFlexTime())){
-					late=true;
-					clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_late);
-				}
-				if(mins>attendanceLog.getStart()&&!late){
-					useFlexTime=mins-attendanceLog.getStart();
-				}
-			}else{
-				clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_noCard);
-			}
 
-			if(attendanceLog.getEndTime()>0){
-				Date date=new Date(attendanceLog.getEndTime());
-				int mins=date.getHours()*60+date.getMinutes();
-				if(mins<(attendanceLog.getEnd()+useFlexTime)){
-					leaveEarly=true;
-					clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_leaveEarly);
+			SubSettings subSettings = subSettingsDao.load(attendanceLog.getSubId());
+			if(subSettings==null||subSettings.getHumanizedStatus()==SubSettings.status_off) {
+				int useFlexTime = 0;//弹性时间（用过的）
+				if (attendanceLog.getStartTime() > 0) {
+					Date date = new Date(attendanceLog.getStartTime());
+					int mins = date.getHours() * 60 + date.getMinutes();
+					if (mins > (attendanceLog.getStart() + attendanceLog.getFlexTime())) {
+						late = true;
+						clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_late);
+					}
+					if (mins > attendanceLog.getStart() && !late) {
+						useFlexTime = mins - attendanceLog.getStart();
+					}
+				} else {
+					clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_noCard);
 				}
-			}else{
-				clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_noCard);
-			}
 
+				if (attendanceLog.getEndTime() > 0) {
+					Date date = new Date(attendanceLog.getEndTime());
+					int mins = date.getHours() * 60 + date.getMinutes();
+					if (mins < (attendanceLog.getEnd() + useFlexTime)) {
+						leaveEarly = true;
+						clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_leaveEarly);
+					}
+				} else {
+					clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_noCard);
+				}
+			}else if(subSettings.getHumanizedStatus()==SubSettings.status_on){
+				//根据管理端人性化设置计算迟到、早退
+				if (attendanceLog.getStartTime() > 0) {
+					Date date = new Date(subSettings.getLateTime());
+					int mins = date.getHours() * 60 + date.getMinutes();
+					if (mins > (attendanceLog.getStart() + subSettings.getLateTime())) {
+						late = true;
+						clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_late);
+					}
+				} else {
+					clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_noCard);
+				}
+
+				if (attendanceLog.getEndTime() > 0) {
+					Date date = new Date(attendanceLog.getEndTime());
+					int mins = date.getHours() * 60 + date.getMinutes();
+					if (mins < (attendanceLog.getEnd() - subSettings.getEarlyTime())) {
+						leaveEarly = true;
+						clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_leaveEarly);
+					}
+				} else {
+					clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_noCard);
+				}
+			}
 
 		}
 
