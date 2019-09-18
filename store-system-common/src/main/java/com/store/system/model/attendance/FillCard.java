@@ -1,5 +1,6 @@
 package com.store.system.model.attendance;
 
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -54,6 +55,10 @@ public class FillCard implements Serializable {
      */
     private long askUid;
     /**
+     * 审核人uid
+     */
+    private long checkUid;
+    /**
      *  抄送UID
      */
     private long copyUid;
@@ -69,6 +74,7 @@ public class FillCard implements Serializable {
     private List<String> imgs;
 
     @SortKey
+    @PagerCursor
     private long ctime;
 
     private long utime;

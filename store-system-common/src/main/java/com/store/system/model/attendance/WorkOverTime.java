@@ -1,5 +1,6 @@
 package com.store.system.model.attendance;
 
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -81,6 +82,7 @@ public class WorkOverTime implements Serializable {
     private String reason;
 
     @SortKey
+    @PagerCursor
     private long ctime;
 
     private long utime;
