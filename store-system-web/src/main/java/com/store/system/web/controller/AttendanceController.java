@@ -166,4 +166,5 @@ public class AttendanceController extends BaseController {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
+
 }

@@ -9,6 +9,7 @@ import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /** 门店考勤设置
@@ -23,7 +24,7 @@ import java.util.List;
         identityType = IdentityType.human)
 public class SubSettings implements Serializable{
 
-    public static final int status_on = 0; //开启
+    public static final int status_on = 2; //开启
     public static final int status_off = 1; //关闭
 
     @PrimaryKey
@@ -47,10 +48,10 @@ public class SubSettings implements Serializable{
     private int earlyTime;
 
     @HyperspaceColumn(isJson = true)
-    private List<PunchCardPlace> punchCardPlaces;
+    private List<PunchCardPlace> punchCardPlaces=new ArrayList<>();
 
     @HyperspaceColumn(isJson = true)
-    private List<WirelessNetwork> wirelessNetworks;
+    private List<WirelessNetwork> wirelessNetworks=new ArrayList<>();
 
     private int placeStatus; //位置开启/关闭
 

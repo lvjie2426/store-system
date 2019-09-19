@@ -35,104 +35,45 @@ public class AttendanceRankingController extends BaseController{
     @Resource
     private AttendanceRankingService attendanceRankingService;
 
-    /***
-    * 某天排行榜
-    * @Param: [request, response, day]
+    /*** 
+    * 今日，昨日，某日，排行榜
+    * @Param: [request, response, sid, subIds, day, type]
     * @return: org.springframework.web.servlet.ModelAndView
     * @Author: LaoMa
-    * @Date: 2019/9/16
-    */
-    @RequestMapping("/getSubListByDay")
-    public ModelAndView getSubListByDay(HttpServletRequest request, HttpServletResponse response,
-                                        long sid, @RequestParam(name = "subIds[]") List<Long> subIds, long day) throws Exception {
+    * @Date: 2019/9/19
+    */ 
+    @RequestMapping("/getSubList")
+    public ModelAndView getSubList(HttpServletRequest request, HttpServletResponse response,
+                                             long sid, @RequestParam(name = "subIds[]") List<Long> subIds,
+                                             @RequestParam(required = false, value = "day", defaultValue = "0") long day,
+                                             int type) throws Exception {
         try {
-            List<AttendanceRanking> rankingList = attendanceRankingService.getSubListByDay(sid, subIds, day);
-            return this.viewNegotiating(request, response, new ResultClient(rankingList));
+            List<AttendanceRanking> res = Lists.newArrayList();
+            long today = TimeUtils.getDayFormTime(System.currentTimeMillis());
+            long currentMonth = TimeUtils.getMonthFormTime(System.currentTimeMillis());
+            long currentYear = TimeUtils.getYearFormTime(System.currentTimeMillis());
+            if(type == Constant.type_today){
+                res = attendanceRankingService.getSubListByDay(sid, subIds, today);
+            }else if(type == Constant.type_yesterday){
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -1);
+                long yesterday = TimeUtils.getDayFormTime(cal.getTimeInMillis());
+                res = attendanceRankingService.getSubListByDay(sid, subIds, yesterday);
+            }else if(type == Constant.type_day_search){
+                res = attendanceRankingService.getSubListByDay(sid, subIds, day);
+            }else if(type == Constant.type_month){
+                res = attendanceRankingService.getSubListByMonth(sid, subIds, currentMonth);
+            }else if(type == Constant.type_year_search){
+                res = attendanceRankingService.getSubListByYear(sid, subIds, currentYear);
+            }
+            return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
     /***
-    * 今日排行榜
-    * @Param: [request, response]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/9/16
-    */
-    @RequestMapping("/getSubListToday")
-    public ModelAndView getSubListToday(HttpServletRequest request, HttpServletResponse response,
-                                        long sid, @RequestParam(name = "subIds[]") List<Long> subIds) throws Exception {
-        try {
-            long day = TimeUtils.getDayFormTime(System.currentTimeMillis());
-            List<AttendanceRanking> rankingList = attendanceRankingService.getSubListByDay(sid, subIds, day);
-            return this.viewNegotiating(request, response, new ResultClient(rankingList));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-    }
-
-    /***
-    * 昨日排行榜
-    * @Param: [request, response]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/9/16
-    */
-    @RequestMapping("/getSubListYesterday")
-    public ModelAndView getSubListYesterday(HttpServletRequest request, HttpServletResponse response,
-                                            long sid, @RequestParam(name = "subIds[]") List<Long> subIds) throws Exception {
-        try {
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -1);
-            long day = TimeUtils.getDayFormTime(cal.getTimeInMillis());
-            List<AttendanceRanking> rankingList = attendanceRankingService.getSubListByDay(sid, subIds, day);
-            return this.viewNegotiating(request, response, new ResultClient(rankingList));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-    }
-
-    /***
-    * 按月查询排行榜
-    * @Param: [request, response]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/9/16
-    */
-    @RequestMapping("/getSubListMonth")
-    public ModelAndView getSubListMonth(HttpServletRequest request, HttpServletResponse response,
-                                        long sid, @RequestParam(name = "subIds[]") List<Long> subIds) throws Exception {
-        try {
-            long month = TimeUtils.getMonthFormTime(System.currentTimeMillis());
-            List<AttendanceRanking> rankingList = attendanceRankingService.getSubListByMonth(sid, subIds, month);
-            return this.viewNegotiating(request, response, new ResultClient(rankingList));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-    }
-
-    /***
-    * 按年查询排行榜
-    * @Param: [request, response]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/9/16
-    */
-    @RequestMapping("/getSubListYear")
-    public ModelAndView getSubListYear(HttpServletRequest request, HttpServletResponse response,
-                                       long sid, @RequestParam(name = "subIds[]") List<Long> subIds) throws Exception {
-        try {
-            long year = TimeUtils.getYearFormTime(System.currentTimeMillis());
-            List<AttendanceRanking> rankingList = attendanceRankingService.getSubListByYear(sid, subIds, year);
-            return this.viewNegotiating(request, response, new ResultClient(rankingList));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-    }
-
-    /***
-    * (员工端)早起鸟排行榜
+    * 早起鸟排行榜
     * @Param: [request, response]
     * @return: org.springframework.web.servlet.ModelAndView
     * @Author: LaoMa
@@ -165,7 +106,13 @@ public class AttendanceRankingController extends BaseController{
         }
     }
 
-
+    /***
+    * 工时排行榜
+    * @Param: [request, response, sid, subIds, year, month, type]
+    * @return: org.springframework.web.servlet.ModelAndView
+    * @Author: LaoMa
+    * @Date: 2019/9/19
+    */
     @RequestMapping("/getSubWorkingHourList")
     public ModelAndView getSubWorkingHourList(HttpServletRequest request, HttpServletResponse response,
                                              long sid, @RequestParam(name = "subIds[]") List<Long> subIds,

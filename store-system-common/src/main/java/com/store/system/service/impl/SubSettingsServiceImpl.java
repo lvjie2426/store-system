@@ -22,17 +22,53 @@ public class SubSettingsServiceImpl implements SubSettingsService {
 
 
     @Override
-    public void add(SubSettings subSettings) throws Exception {
+    public void update(SubSettings subSettings) throws Exception {
         SubSettings dbInfo = subSettingsDao.load(subSettings.getSubId());
         if (dbInfo == null) {
+            subSettings.setSubId(subSettings.getSubId());
             subSettingsDao.insert(subSettings);
         } else {
-            subSettingsDao.update(subSettings);
+            if(subSettings.getHumanizedStatus()>0){
+                dbInfo.setHumanizedStatus(subSettings.getHumanizedStatus());
+            }
+            if(subSettings.getSignTime()>0){
+                dbInfo.setSignTime(subSettings.getSignTime());
+            }
+            if(subSettings.getLateTime()>0){
+                dbInfo.setLateTime(subSettings.getLateTime());
+            }
+            if(subSettings.getEarlyTime()>0){
+                dbInfo.setEarlyTime(subSettings.getEarlyTime());
+            }
+            if(subSettings.getPunchCardPlaces().size()>0){
+                dbInfo.setPunchCardPlaces(subSettings.getPunchCardPlaces());
+            }
+            if(subSettings.getWirelessNetworks().size()>0){
+                dbInfo.setWirelessNetworks(subSettings.getWirelessNetworks());
+            }
+            if(subSettings.getPlaceStatus()>0){
+                dbInfo.setPlaceStatus(subSettings.getPlaceStatus());
+            }
+            if(subSettings.getNetStatus()>0){
+                dbInfo.setNetStatus(subSettings.getNetStatus());
+            }
+            subSettingsDao.update(dbInfo);
         }
     }
 
     @Override
     public SubSettings load(long subId) throws Exception {
-        return subSettingsDao.load(subId);
+        SubSettings dbInfo = subSettingsDao.load(subId);
+        SubSettings subSettings = new SubSettings();
+        if (dbInfo == null) {
+            subSettings.setSubId(subId);
+            subSettings.setHumanizedStatus(SubSettings.status_off);
+            subSettings.setPlaceStatus(SubSettings.status_off);
+            subSettings.setNetStatus(SubSettings.status_off);
+            subSettings = subSettingsDao.insert(subSettings);
+        } else {
+            return dbInfo;
+        }
+        return subSettings;
     }
 }

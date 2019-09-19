@@ -12,4 +12,6 @@ public class PunchCardPlace implements Serializable {
 
     private String distance; // 距离
 
+    private int status; //启用&关闭
+
 }

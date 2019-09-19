@@ -10,4 +10,5 @@ public class WirelessNetwork implements Serializable {
 
     private String number; //路由器编号
 
+    private int status; //启用&关闭
 }
