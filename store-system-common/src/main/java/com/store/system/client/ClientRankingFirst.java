@@ -1,5 +1,6 @@
-package com.store.system.bean;
+package com.store.system.client;
 
+import com.store.system.bean.SimpleUser;
 import lombok.Data;
 
 import java.io.Serializable;

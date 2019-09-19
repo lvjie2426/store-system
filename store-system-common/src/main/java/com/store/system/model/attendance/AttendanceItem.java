@@ -14,7 +14,7 @@ import java.util.Map;
 public class AttendanceItem  implements Serializable{
 
 
-    private Map<String,String> itemMap = new HashMap<>();
+    private Map<String,AttendanceTimeItem> itemMap = new HashMap<>();
     /**
      * 从0点开始 计算分钟   100=1点30分   600=10点
      */

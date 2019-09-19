@@ -1,7 +1,8 @@
 package com.store.system.service;
 
-import com.store.system.bean.ClientRankingFirst;
-import com.store.system.bean.ClientWorkingHour;
+import com.store.system.client.ClientAttendanceRanking;
+import com.store.system.client.ClientRankingFirst;
+import com.store.system.client.ClientWorkingHour;
 import com.store.system.model.attendance.AttendanceRanking;
 
 import java.util.List;
@@ -17,11 +18,11 @@ public interface AttendanceRankingService {
 
     public AttendanceRanking add(AttendanceRanking attendanceRanking) throws Exception;
 
-    public List<AttendanceRanking> getSubListByDay(long sid, List<Long> subIds, long day) throws Exception;
+    public List<ClientAttendanceRanking> getSubListByDay(long sid, List<Long> subIds, long day) throws Exception;
 
-    public List<AttendanceRanking> getSubListByMonth(long sid, List<Long> subIds, long month) throws Exception;
+    public List<ClientAttendanceRanking> getSubListByMonth(long sid, List<Long> subIds, long month) throws Exception;
 
-    public List<AttendanceRanking> getSubListByYear(long sid, List<Long> subIds, long year) throws Exception;
+    public List<ClientAttendanceRanking> getSubListByYear(long sid, List<Long> subIds, long year) throws Exception;
 
     public List<ClientRankingFirst> getSubFirstTimesListByMonth(long sid, List<Long> subIds, long month) throws Exception;
 
@@ -31,6 +32,8 @@ public interface AttendanceRankingService {
 
     public List<ClientRankingFirst> getSubFirstTimesListByDownYear(long sid, List<Long> subIds, long year) throws Exception;
 
+
+    public List<ClientWorkingHour> getSubWorkingHourListByDay(long sid, List<Long> subIds, long day)  throws Exception;
 
     public List<ClientWorkingHour> getSubWorkingHourListByMonth(long sid, List<Long> subIds, long month)  throws Exception;
 

@@ -105,7 +105,7 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
         for (AttendanceTemplate attendanceTemplate : attendanceTemplates) {
             ClientAttendanceTemplate clientAttendanceTemplate = new ClientAttendanceTemplate();
             BeanUtils.copyProperties(clientAttendanceTemplate, attendanceTemplate);
-            clientAttendanceTemplate.setSimpleUser(new SimpleUser(userMap.get(clientAttendanceTemplate.getUid())));
+            clientAttendanceTemplate.setUser(new SimpleUser(userMap.get(clientAttendanceTemplate.getUid())));
             result.add(clientAttendanceTemplate);
         }
         return result;

@@ -1,5 +1,6 @@
-package com.store.system.bean;
+package com.store.system.client;
 
+import com.store.system.bean.SimpleUser;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Data
 public class ClientWorkingHour implements Serializable{
 
-    private SimpleUser simpleUser;
+    private SimpleUser user;
 
     private double hours;
 

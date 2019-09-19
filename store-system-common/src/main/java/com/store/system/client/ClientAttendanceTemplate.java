@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class ClientAttendanceTemplate extends AttendanceTemplate {
 
-    private SimpleUser simpleUser;
+    private SimpleUser user;
 
 }

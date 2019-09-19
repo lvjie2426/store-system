@@ -2,11 +2,16 @@ package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.store.system.bean.ClientRankingFirst;
-import com.store.system.bean.ClientWorkingHour;
+import com.google.common.collect.Sets;
+import com.quakoo.baseFramework.transform.TransformMapUtils;
+import com.store.system.client.ClientAttendanceRanking;
+import com.store.system.client.ClientRankingFirst;
+import com.store.system.client.ClientWorkingHour;
 import com.store.system.bean.SimpleUser;
 import com.store.system.dao.AttendanceLogDao;
 import com.store.system.dao.AttendanceRankingDao;
+import com.store.system.dao.SubordinateDao;
+import com.store.system.model.Subordinate;
 import com.store.system.model.User;
 import com.store.system.model.attendance.AttendanceLog;
 import com.store.system.model.attendance.AttendanceRanking;
@@ -17,10 +22,7 @@ import com.store.system.util.TimeUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName AttendanceRankingServiceImpl
@@ -38,7 +40,12 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
     private UserService userService;
     @Resource
     private AttendanceLogDao attendanceLogDao;
+    @Resource
+    private SubordinateDao subordinateDao;
 
+
+    private TransformMapUtils userMapUtils = new TransformMapUtils(User.class);
+    private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
 
 
     @Override
@@ -51,36 +58,33 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
     }
 
     @Override
-    public List<AttendanceRanking> getSubListByDay(long sid, List<Long> subIds, long day) throws Exception {
+    public List<ClientAttendanceRanking> getSubListByDay(long sid, List<Long> subIds, long day) throws Exception {
         List<AttendanceRanking> res = Lists.newArrayList();
         for(Long subId:subIds){
             List<AttendanceRanking> rankings = attendanceRankingDao.getSubListByDay(sid,subId,day);
             res.addAll(rankings);
         }
-        sort(res);
-        return res;
+        return transformClient(res);
     }
 
     @Override
-    public List<AttendanceRanking> getSubListByMonth(long sid, List<Long> subIds, long month) throws Exception {
+    public List<ClientAttendanceRanking> getSubListByMonth(long sid, List<Long> subIds, long month) throws Exception {
         List<AttendanceRanking> res = Lists.newArrayList();
         for(Long subId:subIds){
             List<AttendanceRanking> rankings = attendanceRankingDao.getSubListByMonth(sid,subId,month);
             res.addAll(rankings);
         }
-        sort(res);
-        return res;
+        return transformClient(res);
     }
 
     @Override
-    public List<AttendanceRanking> getSubListByYear(long sid, List<Long> subIds, long year) throws Exception {
+    public List<ClientAttendanceRanking> getSubListByYear(long sid, List<Long> subIds, long year) throws Exception {
         List<AttendanceRanking> res = Lists.newArrayList();
         for(Long subId:subIds){
             List<AttendanceRanking> rankings = attendanceRankingDao.getSubListByYear(sid,subId,year);
             res.addAll(rankings);
         }
-        sort(res);
-        return res;
+        return transformClient(res);
     }
 
     @Override
@@ -124,6 +128,15 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
         days.addAll(TimeUtils.getMonthFullDay((int) year,12));
         Map<Long,List<AttendanceRanking>> rankingMap = getSubFirstTimesList(sid,subIds,days);
         return transformClient(rankingMap);
+    }
+
+    public List<ClientWorkingHour> getSubWorkingHourListByDay(long sid, List<Long> subIds, long day) throws Exception {
+        List<AttendanceLog> attendanceLogs = Lists.newArrayList();
+        for(Long subId:subIds){
+            attendanceLogs.addAll(attendanceLogDao.getAllListBySubDay(subId,day));
+        }
+        Map<Long,List<AttendanceLog>> map = transformMap(attendanceLogs);
+        return transformWorkingClient(map);
     }
 
     public List<ClientWorkingHour> getSubWorkingHourListByMonth(long sid, List<Long> subIds, long month) throws Exception {
@@ -202,7 +215,7 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
             int days = 0;
             ClientWorkingHour client = new ClientWorkingHour();
             User user = userService.load(entry.getKey());
-            client.setSimpleUser(new SimpleUser(user));
+            client.setUser(new SimpleUser(user));
             for (AttendanceLog log : entry.getValue()) {
                 double time = ArithUtils.div((double) (log.getEndTime() - log.getStartTime()), (double) 1000 * 60 * 60, 1);
                 hours += time;
@@ -252,9 +265,31 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
         return res;
     }
 
-    private void sort(List<AttendanceRanking> list){
-        Collections.sort(list, new Comparator<AttendanceRanking>(){
-            public int compare(AttendanceRanking p1, AttendanceRanking p2) {
+    private List<ClientAttendanceRanking> transformClient(List<AttendanceRanking> list) throws Exception{
+        List<ClientAttendanceRanking> res = Lists.newArrayList();
+        Set<Long> uids= Sets.newHashSet();
+        Set<Long> subIds = Sets.newHashSet();
+        for(AttendanceRanking ranking:list){
+            uids.add(ranking.getUid());
+            subIds.add(ranking.getSubId());
+        }
+        List<User> users = userService.load(Lists.newArrayList(uids));
+        Map<Long, User> userMap = userMapUtils.listToMap(users, "id");
+        List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(subIds));
+        Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
+        for(AttendanceRanking ranking:list){
+            ClientAttendanceRanking client = new ClientAttendanceRanking(ranking);
+            client.setUser(new SimpleUser(userMap.get(ranking.getUid())));
+            client.setSubName(subordinateMap.get(ranking.getSubId()).getName());
+            res.add(client);
+        }
+        sort(res);
+        return res;
+    }
+
+    private void sort(List<ClientAttendanceRanking> list){
+        Collections.sort(list, new Comparator<ClientAttendanceRanking>(){
+            public int compare(ClientAttendanceRanking p1, ClientAttendanceRanking p2) {
                 if(p1.getLeadTime() < p2.getLeadTime()){
                     return 1;
                 }
