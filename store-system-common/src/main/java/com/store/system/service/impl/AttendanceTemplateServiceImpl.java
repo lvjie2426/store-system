@@ -100,6 +100,24 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
     }
 
 
+    @Override
+    public ClientAttendanceTemplate getUserList(long id) throws Exception {
+
+        List<AttendanceTemplate> allList = attendanceTemplateDao.getUserList(id);
+        if(allList.size()>0){
+            User user=userService.load(id);
+            ClientAttendanceTemplate clientAttendanceTemplate=new ClientAttendanceTemplate();
+            BeanUtils.copyProperties(clientAttendanceTemplate,allList.get(0));
+            clientAttendanceTemplate.setUser(new SimpleUser(user));
+            return  clientAttendanceTemplate;
+        }
+
+
+        return new ClientAttendanceTemplate();
+
+    }
+
+
     private List<ClientAttendanceTemplate> trans(List<AttendanceTemplate> attendanceTemplates, Map<Long, User> userMap) throws InvocationTargetException, IllegalAccessException {
         List<ClientAttendanceTemplate> result = new ArrayList<>();
         for (AttendanceTemplate attendanceTemplate : attendanceTemplates) {

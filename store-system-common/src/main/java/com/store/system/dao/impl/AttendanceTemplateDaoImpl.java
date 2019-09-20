@@ -29,4 +29,10 @@ public class AttendanceTemplateDaoImpl extends CacheBaseDao<AttendanceTemplate>
     public List<AttendanceTemplate> getAllList(long subId) {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<AttendanceTemplate> getUserList(long uid) {
+        return null;
+    }
 }

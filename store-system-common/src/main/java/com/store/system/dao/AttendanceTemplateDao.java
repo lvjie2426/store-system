@@ -9,4 +9,6 @@ import java.util.List;
 public interface AttendanceTemplateDao extends HDao<AttendanceTemplate> {
 
     public List<AttendanceTemplate> getAllList(long subId);
+
+    public  List<AttendanceTemplate> getUserList(long id);
 }

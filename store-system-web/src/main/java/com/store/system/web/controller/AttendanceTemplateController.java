@@ -13,6 +13,7 @@ import com.store.system.model.attendance.AttendanceItem;
 import com.store.system.model.attendance.AttendanceTemplate;
 import com.store.system.service.AttendanceTemplateService;
 import com.store.system.service.UserService;
+import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,4 +101,21 @@ public class AttendanceTemplateController extends BaseController {
         }
     }
 
+    /**
+     * 获取个人排班详细列表
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/getUserList")
+    public ModelAndView getUserList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            User user= UserUtils.getUser(request);
+            ClientAttendanceTemplate res = attendanceTemplateService.getUserList(user.getId());
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
 }
