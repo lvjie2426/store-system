@@ -20,6 +20,8 @@ public class ClientAttendanceLog extends AttendanceLog {
     private String dayStr;//当天日期 2018-01-01
     private String startStr;//上午打卡时间 08:00
     private String endStr;//下午打卡时间 08:00
+    private String upStr;//上班时间
+    private String downStr;//下班时间
     private String name;//用户姓名
 
     /**

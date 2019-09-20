@@ -23,4 +23,5 @@ public class Constant {
     public static final int type_year_search = 8; //按年份查询
     public static final int type_halfUpYear = 9; //上半年
     public static final int type_halfDownYear = 10; //下半年
+    public static final int type_week_search = 11; //按周查询
 }

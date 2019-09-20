@@ -232,6 +232,68 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		return clientAttendanceInfo;
 	}
 
+	@Override
+	public List<ClientAttendanceLog> getAllListByDay(long sid, long subId, long uid, long day, boolean status) throws Exception {
+		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserDay(sid, subId, uid, day);
+		List<ClientAttendanceLog> res = Lists.newArrayList();
+		for (AttendanceLog log : logs) {
+			ClientAttendanceLog client = transformClient(log);
+			if(status) {
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_normal &&
+						client.getStartType() == ClientAttendanceLog.attendanceType_normal) {
+					res.add(client);
+				}
+			}else{
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_normal &&
+						client.getStartType() == ClientAttendanceLog.attendanceType_late) {
+					res.add(client);
+				}
+			}
+		}
+		return res;
+	}
+
+	@Override
+	public List<ClientAttendanceLog> getAllListByWeek(long sid, long subId, long uid, long week, boolean status) throws Exception {
+		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserDay(sid, subId, uid, week);
+		List<ClientAttendanceLog> res = Lists.newArrayList();
+		for (AttendanceLog log : logs) {
+			ClientAttendanceLog client = transformClient(log);
+			if(status) {
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_normal &&
+						client.getStartType() == ClientAttendanceLog.attendanceType_normal) {
+					res.add(client);
+				}
+			}else{
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_late &&
+						client.getStartType() == ClientAttendanceLog.attendanceType_late) {
+					res.add(client);
+				}
+			}
+		}
+		return res;
+	}
+
+	@Override
+	public List<ClientAttendanceLog> getAllListByMonth(long sid, long subId, long uid, long month, boolean status) throws Exception {
+		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserMonth(sid, subId, uid, month);
+		List<ClientAttendanceLog> res = Lists.newArrayList();
+		for (AttendanceLog log : logs) {
+			ClientAttendanceLog client = transformClient(log);
+			if(status) {
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_normal &&
+						client.getStartType() == ClientAttendanceLog.attendanceType_normal) {
+					res.add(client);
+				}
+			}else{
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_late &&
+						client.getStartType() == ClientAttendanceLog.attendanceType_late) {
+					res.add(client);
+				}
+			}
+		}
+		return res;
+	}
 	/**
 	 *
 	 * 补卡一条考勤记录
@@ -279,7 +341,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 				dbInfo.setEndTime(attendanceLog.getEndTime());
 			}
 		}
-		return attendanceLogDao.update(attendanceLog);
+		return attendanceLogDao.update(dbInfo);
 	}
 
 
@@ -376,37 +438,37 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 			}
 		}
 		logs=attendanceLogDao.load(logs);
-		return transformLogs(logs);
+		return transformLogs(logs,-1);
 	}
 
-	public Map<Long,ClientAttendanceInfo> getUserStatisticsMonth(List<Long> subIds, long month) throws Exception{
+	public Map<Long,ClientAttendanceInfo> getUserStatisticsMonth(List<Long> subIds, long month, int type) throws Exception{
 		List<AttendanceLog> logs=new ArrayList<>();
 		for(Long subId:subIds) {
 			List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListBySubMonth(subId,month);
 			logs.addAll(attendanceLogs);
 		}
-		return transformLogs(logs);
+		return transformLogs(logs,type);
 	}
 
-	public Map<Long,ClientAttendanceInfo> getUserStatisticsWeek(List<Long> subIds, long week) throws Exception{
+	public Map<Long,ClientAttendanceInfo> getUserStatisticsWeek(List<Long> subIds, long week, int type) throws Exception{
 		List<AttendanceLog> logs=new ArrayList<>();
 		for(Long subId:subIds) {
 			List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListBySubWeek(subId,week);
 			logs.addAll(attendanceLogs);
 		}
-		return transformLogs(logs);
+		return transformLogs(logs,type);
 	}
 
-	public Map<Long,ClientAttendanceInfo> getUserStatisticsDay(List<Long> subIds, long day) throws Exception{
+	public Map<Long,ClientAttendanceInfo> getUserStatisticsDay(List<Long> subIds, long day, int type) throws Exception{
 		List<AttendanceLog> logs=new ArrayList<>();
 		for(Long subId:subIds) {
 			List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListBySubDay(subId,day);
 			logs.addAll(attendanceLogs);
 		}
-		return transformLogs(logs);
+		return transformLogs(logs,type);
 	}
 
-	private Map<Long,ClientAttendanceInfo> transformLogs(List<AttendanceLog> logs) throws Exception{
+	private Map<Long,ClientAttendanceInfo> transformLogs(List<AttendanceLog> logs, int type) throws Exception{
 		Map<Long,List<AttendanceLog>> userAttendanceLog=new HashMap<>();
 		for(AttendanceLog attendanceLog:logs){
 			long uid=attendanceLog.getUid();
@@ -421,7 +483,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		for(long uid:userAttendanceLog.keySet()){
 			User clientUser=new User();
 			clientUser.setId(uid);
-			result.put(uid,createClientAttendanceInfo("",userAttendanceLog.get(uid), Lists.newArrayList(clientUser)));
+			result.put(uid,createClientAttendanceInfo("",userAttendanceLog.get(uid), Lists.newArrayList(clientUser), type));
 		}
 		return result;
 	}
@@ -441,7 +503,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		logs=attendanceLogDao.load(logs);
 		List<User> users=new ArrayList<>();
 		users.add(user);
-		ClientAttendanceInfo clientAttendanceInfo=createClientAttendanceInfo(timeTitle,logs,users);
+		ClientAttendanceInfo clientAttendanceInfo=createClientAttendanceInfo(timeTitle,logs,users,-1);
 		return clientAttendanceInfo;
 	}
 
@@ -490,7 +552,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		String timeTitle=sdf.format(new Date(TimeUtils.getTimeFormDay(day)));
 		ClientAttendanceInfo clientAttendanceInfo=null;
 		List<User> users=userService.getAllUserBySid(sid);
-		clientAttendanceInfo=createClientAttendanceInfo(timeTitle,attendanceLogs,users);
+		clientAttendanceInfo=createClientAttendanceInfo(timeTitle,attendanceLogs,users,-1);
 		return clientAttendanceInfo;
 	}
 
@@ -658,7 +720,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	 * @return
 	 * @throws Exception
 	 */
-	private ClientAttendanceInfo createClientAttendanceInfo(String timeTitle,List<AttendanceLog> attendanceLogs,List<User> users) throws Exception {
+	private ClientAttendanceInfo createClientAttendanceInfo(String timeTitle,List<AttendanceLog> attendanceLogs,List<User> users,int type) throws Exception {
 		int late=0;//迟到
 		int leaveEarly=0;//早退
 		int absent=0;//旷工
@@ -678,7 +740,15 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 				list=new ArrayList<>();
 				map.put(attendanceLog.getUid(),list);
 			}
-			list.add(attendanceLog);
+			if(type>=0) {
+				ClientAttendanceLog client = transformClient(attendanceLog);
+				if (client.getDayType() == type ||
+						client.getStartType() == type) {
+					list.add(client);
+				}
+			}else {
+				list.add(attendanceLog);
+			}
 		}
 
 		List<ClientAttendanceLog> clientAttendanceLogs=new ArrayList<>();
@@ -881,11 +951,17 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		}
 		{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
 			clientAttendanceLog.setDayStr(sdf.format(new Date(TimeUtils.getTimeFormDay(attendanceLog.getDay()))));
 			clientAttendanceLog.setStartStr(sdfTime.format(new Date(clientAttendanceLog.getStartTime())));
 			clientAttendanceLog.setEndStr(sdfTime.format(new Date(clientAttendanceLog.getEndTime())));
+			int startHour = clientAttendanceLog.getStart()/60;
+			int startMinute = clientAttendanceLog.getStart()%60;
+			int endHour = clientAttendanceLog.getEnd()/60;
+			int endMinute = clientAttendanceLog.getEnd()%60;
+			clientAttendanceLog.setUpStr(startHour+":"+(startMinute==0?String.valueOf("00"):startMinute));
+			clientAttendanceLog.setDownStr(endHour+":"+(endMinute==0?String.valueOf("00"):endMinute));
 			User user = userService.load(attendanceLog.getUid());
 			if(user!=null) {
 				clientAttendanceLog.setName(user.getName());

@@ -56,14 +56,19 @@ public class AttendanceDaoImpl extends CacheBaseDao<AttendanceLog>
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
-    public List<AttendanceLog> getAllListByUserMonth(long sid, long subId, long month, long uid){
+    public List<AttendanceLog> getAllListByUserMonth(long sid, long subId, long uid, long month){
         return null;
     }
 
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
+    public List<AttendanceLog> getAllListByUserWeek(long sid, long subId, long uid, long week){
+        return null;
+    }
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
-    public List<AttendanceLog> getAllListByUserDay(long sid, long subId, long day,long uid){
+    public List<AttendanceLog> getAllListByUserDay(long sid, long subId, long uid, long day){
         return null;
     }
 

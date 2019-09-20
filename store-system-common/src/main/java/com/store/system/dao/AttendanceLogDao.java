@@ -15,9 +15,11 @@ public interface AttendanceLogDao extends HDao<AttendanceLog> {
 
     public List<AttendanceLog> getAllListBySubWeek(long subId, long week);
 
-    public List<AttendanceLog> getAllListByUserMonth(long sid, long subId, long month, long uid);
+    public List<AttendanceLog> getAllListByUserMonth(long sid, long subId, long uid, long month);
 
-    public List<AttendanceLog> getAllListByUserDay(long sid, long subId, long day, long uid);
+    public List<AttendanceLog> getAllListByUserWeek(long sid, long subId, long uid, long week);
+
+    public List<AttendanceLog> getAllListByUserDay(long sid, long subId, long uid, long day);
 
 
 }
