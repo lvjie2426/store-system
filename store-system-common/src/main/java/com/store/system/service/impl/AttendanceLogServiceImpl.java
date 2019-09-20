@@ -205,7 +205,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 
 	@Override
 	public ClientAttendanceInfo getUserAttendanceByMonth(long sid, long subId, long uid, long month) throws Exception {
-		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserMonth(sid, subId, month, uid);
+		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserMonth(sid, subId, uid, month);
 		ClientAttendanceInfo clientAttendanceInfo = new ClientAttendanceInfo();
 		List<ClientAttendanceLog> clientAttendanceLogs = Lists.newArrayList();
 		for(AttendanceLog attendanceLog : logs){
@@ -255,7 +255,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 
 	@Override
 	public List<ClientAttendanceLog> getAllListByWeek(long sid, long subId, long uid, long week, boolean status) throws Exception {
-		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserDay(sid, subId, uid, week);
+		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserWeek(sid, subId, uid, week);
 		List<ClientAttendanceLog> res = Lists.newArrayList();
 		for (AttendanceLog log : logs) {
 			ClientAttendanceLog client = transformClient(log);
