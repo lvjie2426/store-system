@@ -40,4 +40,28 @@ public class WorkOverTimeDaoImpl extends CacheBaseDao<WorkOverTime> implements W
                                            @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<WorkOverTime> getAllListByUid(long askUid,int status) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<WorkOverTime> getAllListByDay(long askUid, int status, long day) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<WorkOverTime> getAllListByMonth(long askUid, int status, long month) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<WorkOverTime> getAllListByYear(long askUid, int status, long year) throws DataAccessException {
+        return null;
+    }
 }

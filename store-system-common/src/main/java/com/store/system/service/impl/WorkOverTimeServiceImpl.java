@@ -12,6 +12,7 @@ import com.store.system.model.User;
 import com.store.system.model.attendance.ApprovalLog;
 import com.store.system.model.attendance.WorkOverTime;
 import com.store.system.service.WorkOverTimeService;
+import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,10 @@ public class WorkOverTimeServiceImpl implements WorkOverTimeService {
     @Override
     public WorkOverTime add(WorkOverTime workOverTime) throws Exception {
         check(workOverTime);
+        workOverTime.setDay(TimeUtils.getDayFormTime(workOverTime.getApplyTime()));
+        workOverTime.setMonth(TimeUtils.getMonthFormTime(workOverTime.getApplyTime()));
+        workOverTime.setWeek(TimeUtils.getWeekFormTime(workOverTime.getApplyTime()));
+        workOverTime.setYear(TimeUtils.getYearFormTime(workOverTime.getApplyTime()));
         WorkOverTime insert = workOverTimeDao.insert(workOverTime);
         if(insert!=null&&insert.getCheckUid()>0){
             ApprovalLog approvalLog=new ApprovalLog();
@@ -61,6 +66,7 @@ public class WorkOverTimeServiceImpl implements WorkOverTimeService {
             approvalLog.setTypeId(insert.getId());
             approvalLogDao.insert(approvalLog);
         }
+
         return insert;
     }
 

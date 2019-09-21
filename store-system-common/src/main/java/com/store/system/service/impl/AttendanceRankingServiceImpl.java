@@ -11,10 +11,12 @@ import com.store.system.bean.SimpleUser;
 import com.store.system.dao.AttendanceLogDao;
 import com.store.system.dao.AttendanceRankingDao;
 import com.store.system.dao.SubordinateDao;
+import com.store.system.dao.WorkOverTimeDao;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
 import com.store.system.model.attendance.AttendanceLog;
 import com.store.system.model.attendance.AttendanceRanking;
+import com.store.system.model.attendance.WorkOverTime;
 import com.store.system.service.AttendanceRankingService;
 import com.store.system.service.UserService;
 import com.store.system.util.ArithUtils;
@@ -42,6 +44,8 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
     private AttendanceLogDao attendanceLogDao;
     @Resource
     private SubordinateDao subordinateDao;
+    @Resource
+    private WorkOverTimeDao workOverTimeDao;
 
 
     private TransformMapUtils userMapUtils = new TransformMapUtils(User.class);
@@ -136,7 +140,7 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
             attendanceLogs.addAll(attendanceLogDao.getAllListBySubDay(subId,day));
         }
         Map<Long,List<AttendanceLog>> map = transformMap(attendanceLogs);
-        return transformWorkingClient(map);
+        return transformWorkingClient(map, 1,day);
     }
 
     public List<ClientWorkingHour> getSubWorkingHourListByMonth(long sid, List<Long> subIds, long month) throws Exception {
@@ -145,7 +149,7 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
             attendanceLogs.addAll(attendanceLogDao.getAllListBySubMonth(subId,month));
         }
         Map<Long,List<AttendanceLog>> map = transformMap(attendanceLogs);
-        return transformWorkingClient(map);
+        return transformWorkingClient(map,2,month);
     }
 
     @Override
@@ -155,7 +159,7 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
             attendanceLogs.addAll(attendanceLogDao.getAllListBySubYear(subId,year));
         }
         Map<Long,List<AttendanceLog>> map = transformMap(attendanceLogs);
-        return transformWorkingClient(map);
+        return transformWorkingClient(map,3,year);
     }
 
     @Override
@@ -168,7 +172,7 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
         days.addAll(TimeUtils.getMonthFullDay((int) year,5));
         days.addAll(TimeUtils.getMonthFullDay((int) year,6));
         Map<Long,List<AttendanceLog>> map = getSubWorkingHourList(sid,subIds,days);
-        return transformWorkingClient(map);
+        return transformWorkingClient(map,4,year);
     }
 
     @Override
@@ -181,7 +185,7 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
         days.addAll(TimeUtils.getMonthFullDay((int) year,11));
         days.addAll(TimeUtils.getMonthFullDay((int) year,12));
         Map<Long,List<AttendanceLog>> map = getSubWorkingHourList(sid,subIds,days);
-        return transformWorkingClient(map);
+        return transformWorkingClient(map,5,year);
     }
 
     private Map<Long, List<AttendanceLog>> transformMap(List<AttendanceLog> attendanceLogs) {
@@ -208,7 +212,7 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
         return map;
     }
 
-    private List<ClientWorkingHour> transformWorkingClient(Map<Long,List<AttendanceLog>> map) throws Exception {
+    private List<ClientWorkingHour> transformWorkingClient(Map<Long,List<AttendanceLog>> map,int type,long date) throws Exception {
         List<ClientWorkingHour> res = Lists.newArrayList();
         for (Map.Entry<Long, List<AttendanceLog>> entry : map.entrySet()) {
             double hours = 0;
@@ -217,14 +221,63 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
             User user = userService.load(entry.getKey());
             client.setUser(new SimpleUser(user));
             for (AttendanceLog log : entry.getValue()) {
-                double time = ArithUtils.div((double) (log.getEndTime() - log.getStartTime()), (double) 1000 * 60 * 60, 1);
-                hours += time;
-                if (time > 0) {
-                    int day = 1;
-                    days += day;
+                //排除今天的工时
+                if(log.getEndTime()>0){
+                    double time = ArithUtils.div((double) (log.getEndTime() - log.getStartTime()), (double) 1000 * 60 * 60, 1);
+                    hours += time;
+                    if (time > 0) {
+                        int day = 1;
+                        days += day;
+                    }
                 }
             }
-            client.setHours(hours);
+            //加上时间区间内的加班时间
+            int workHours = 0;
+            List<WorkOverTime> workOverTimes = new ArrayList<>();
+            if (type == 1) {
+                //天
+                workOverTimes = workOverTimeDao.getAllListByDay(user.getId(), WorkOverTime.status_success, date);
+
+            } else if (type == 2) {
+                //月
+                workOverTimes = workOverTimeDao.getAllListByMonth(user.getId(), WorkOverTime.status_success, date);
+
+            } else if (type == 3) {
+                // 年
+                workOverTimes = workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, date);
+            } else if (type == 4) {
+                //上半年
+                List<Long> dates = Lists.newArrayList();
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 1));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 2));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 3));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 4));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 5));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 6));
+                for (Long da : dates) {
+                    workOverTimes.addAll(workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, da));
+                }
+
+            } else {
+                //下半年
+                List<Long> dates = Lists.newArrayList();
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 7));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 8));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 9));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 10));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 11));
+                dates.addAll(TimeUtils.getMonthFullDay((int) date, 12));
+                for (Long da : dates) {
+                    workOverTimes.addAll(workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, da));
+                }
+
+            }
+
+
+            for (WorkOverTime workOverTime : workOverTimes) {
+                workHours += workOverTime.getWorkTime();
+            }
+            client.setHours(hours+workHours);
             client.setDays(days);
             res.add(client);
         }

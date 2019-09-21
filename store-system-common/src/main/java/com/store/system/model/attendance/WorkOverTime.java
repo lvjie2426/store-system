@@ -1,10 +1,7 @@
 package com.store.system.model.attendance;
 
 import com.quakoo.baseFramework.model.pagination.PagerCursor;
-import com.quakoo.space.annotation.domain.HyperspaceColumn;
-import com.quakoo.space.annotation.domain.HyperspaceDomain;
-import com.quakoo.space.annotation.domain.PrimaryKey;
-import com.quakoo.space.annotation.domain.SortKey;
+import com.quakoo.space.annotation.domain.*;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
@@ -59,6 +56,23 @@ public class WorkOverTime implements Serializable {
      * 申请人UID
      */
     private long askUid;
+    /**
+     * 日期/天
+     */
+    @CombinationKey
+    private long day;
+    /**
+     * 周
+     */
+    private long week;
+    /**
+     * 月
+     */
+    private long month;
+    /**
+     * 年
+     */
+    private long year;
     /**
      * 审批人UID
      */
