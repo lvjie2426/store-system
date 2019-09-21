@@ -94,6 +94,15 @@
         </property>
     </bean>
 
+    <bean id="userSettingsDao" class="com.store.system.dao.impl.UserSettingsDaoImpl">
+        <property name="tableName" value="user_settings"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="userLeaveDaysDao" class="com.store.system.dao.impl.UserLeaveDaysDaoImpl">
         <property name="tableName" value="user_leavedays"/>
         <property name="dataSources">

@@ -59,7 +59,6 @@ public class WorkOverTime implements Serializable {
     /**
      * 日期/天
      */
-    @CombinationKey
     private long day;
     /**
      * 周
