@@ -203,12 +203,14 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
 
     private Map<Long,List<AttendanceLog>> getSubWorkingHourList(long sid, List<Long> subIds, List<Long> days) {
         Map<Long,List<AttendanceLog>> map = Maps.newHashMap();
+        List<AttendanceLog> attendanceLogs = Lists.newArrayList();
         for(Long day:days){
             for(Long subId:subIds) {
-                List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListBySubDay(subId, day);
-                map = transformMap(attendanceLogs);
+                List<AttendanceLog> logs = attendanceLogDao.getAllListBySubDay(subId, day);
+                attendanceLogs.addAll(logs);
             }
         }
+        map = transformMap(attendanceLogs);
         return map;
     }
 
@@ -224,7 +226,7 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
                 //排除今天的工时
                 if(log.getEndTime()>0){
                     double time = ArithUtils.div((double) (log.getEndTime() - log.getStartTime()), (double) 1000 * 60 * 60, 1);
-                    hours += time;
+                    hours =  ArithUtils.add(hours, time);
                     if (time > 0) {
                         int day = 1;
                         days += day;
