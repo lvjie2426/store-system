@@ -51,6 +51,17 @@ public class ProductPropertyNameController extends BaseController {
         }
     }
 
+    @RequestMapping("/updateStatus")
+    public ModelAndView updateStatus(ProductPropertyName productPropertyName, HttpServletRequest request, HttpServletResponse response, Model model,
+                                     long id, int status) throws Exception {
+        try {
+            boolean res = productPropertyNameService.updateStatus(id, status);
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
     @RequestMapping("/del")
     public ModelAndView del(@RequestParam(value = "id") long id,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {

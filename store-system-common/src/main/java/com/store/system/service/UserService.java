@@ -2,6 +2,7 @@ package com.store.system.service;
 
 
 import com.store.system.bean.StatisticsOrderUser;
+import com.store.system.client.ClientMissForUser;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.model.ExportUser;
@@ -116,9 +117,15 @@ public interface UserService {
 
     public Pager getBackSubCustomerPager(Pager pager, long subid, String phone, String phone1, String name, String name1, int sex,int userType, String job,long userGradeId,int cardNumber) throws Exception; //获取分店下的顾客
 
+    public Pager getPager(Pager pager, long psid, int userType, int status, String name) throws Exception;
+
+    public Pager getIntentionPager(Pager pager, long psid, int userType, int status, String name) throws Exception;
+
     public Set<String> getAllUserJob(long sid,int userType)throws Exception;
 
     public List<ClientUser> getAllUser(long sid,int userType)throws Exception;
+
+    public List<ClientUser> getAllUser(long sid, int userType, long aid)throws Exception;
 
     public ClientUser getUser(String phone)throws Exception;
 
@@ -138,4 +145,10 @@ public interface UserService {
     public List<ClientUser> getUserListByPhone(long sid,int userType,String phone,String name)throws Exception;
 
     public List<ClientUser> searchUserList(long sid,int userType,String phone,String name)throws Exception;
+
+    public ClientMissForUser taskRewardApp(String date, long sid)throws Exception;
+
+    public Pager getStaffUserBySid(Pager pager,Long sid)throws Exception;
+
+    public Pager getAllStaffUserBySid(Pager pager,Long sid)throws Exception;
 }

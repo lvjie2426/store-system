@@ -43,7 +43,7 @@ public class StatAspcet {
         this.requestArgs.set(requestArgs);
     }
 
-    @Around("execution(public * com.glasses.*Controller.*(..))")
+    @Around("execution(public * com.store.system..*Controller.*(..))")
     public Object logStat(ProceedingJoinPoint joinPoint) throws Throwable {
         initValues();
         try {

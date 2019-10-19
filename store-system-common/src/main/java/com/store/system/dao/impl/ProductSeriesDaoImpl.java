@@ -25,4 +25,10 @@ public class ProductSeriesDaoImpl extends CacheBaseDao<ProductSeries> implements
     public List<ProductSeries> getAllList(long bid, int status) throws DataAccessException {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<ProductSeries> getAllList(int status) throws DataAccessException {
+        return null;
+    }
 }

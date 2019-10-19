@@ -1,6 +1,8 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientSubordinate;
@@ -190,6 +192,35 @@ public class SubordinateServiceImpl implements SubordinateService {
 	public List<Subordinate> getAllList() throws Exception {
 		return subordinateDao.getAllList(Subordinate.status_online);
 	}
+
+	@Override
+	public Pager getWebTwoLevelAllList(final Pager pager,final long sid) throws Exception {
+		return new PagerRequestService<Subordinate>(pager, 0) {
+
+			@Override
+			public List<Subordinate> step1GetPageResult(String s, int i) throws Exception {
+				List<Subordinate> subordinates = subordinateDao.getAllList(sid,Subordinate.status_online,Double.parseDouble(s),i);
+				return subordinates;
+			}
+
+			@Override
+			public int step2GetTotalCount() throws Exception {
+				return 0;
+			}
+
+			@Override
+			public List<Subordinate> step3FilterResult(List<Subordinate> list, PagerSession pagerSession) throws Exception {
+				return list;
+			}
+
+			@Override
+			public List<?> step4TransformData(List<Subordinate> list, PagerSession pagerSession) throws Exception {
+				return transformClient(list);
+			}
+
+		}.getPager();
+	}
+
 
 	@Override
 	public boolean delete(long id) throws Exception {

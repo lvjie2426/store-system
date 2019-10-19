@@ -102,4 +102,16 @@ public class UserDaoImpl extends CacheBaseDao<User> implements UserDao {
     public List<User> getAllListByJob(int userType, int status, String job, long sid) throws Exception {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<User> getAllUserList(Long sid, int userType,double cursor,int size) throws Exception {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<User> getPagerAllList(Long sid, int userType, int status, double cursor, int size) throws Exception {
+        return null;
+    }
 }

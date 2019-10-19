@@ -954,7 +954,7 @@
                         if(sid){param.sid = sid;}
                         if(name){param.name = name;}
                         if(saleStatus!=-1){param.saleStatus = saleStatus;}
-                        param.subid = subid;
+                        param.subid = shopId;
                         param.token = quakooUser.getUserInfo().token;
                         param.page = param.offset / param.limit + 1;
                         param.size = param.limit;
@@ -1081,7 +1081,7 @@
             }
         });
         //获取供应商（页面及弹窗）
-        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:shopId},function (ret) {
             if(ret && ret.success){
                 providerData = ret.data;
                 //商品列表的筛选
@@ -1094,7 +1094,7 @@
             }
         })
         //获取品牌（页面及弹窗）
-        quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{},function (ret) {
             if(ret && ret.success){
                 brandData = ret.data;
                 var html = template('selectTagTmpAll',{title:'全部商品类型',list:ret.data});
@@ -1105,7 +1105,7 @@
                         bid = data.value;
                         chooseGoodsType()
                         //获取品牌下的系列列表
-                        quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:data.value},function (ret1) {
+                        quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{bid:data.value},function (ret1) {
                             if(ret1 && ret1.success){
                                 if(ret1.data.length>0){
                                     var html2 = template('selectTagTmpAll',{title:'系列',list:ret1.data});
@@ -2260,7 +2260,7 @@
                         if(sid){param.sid = sid;}
                         if(name){param.name = name;}
                         if(saleStatus){param.saleStatus = saleStatus;}
-                        param.subid = quakooUser.getUserInfo().psid;
+                        param.subid = quakooUser.getUserInfo().sid;
                         param.token = quakooUser.getUserInfo().token;
                         param.page = param.offset / param.limit + 1;
                         param.size = param.limit;
@@ -2324,7 +2324,7 @@
                 $('#yj-add-series').html('');
                 params[cid].sid = -1;
                 //获取品牌下的系列列表
-                quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:quakooUser.getUserInfo().psid,bid:ret.value},function (ret1) {
+                quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{bid:ret.value},function (ret1) {
                     if(ret1 && ret1.success){
                         var html = template('selectTagInputTmp',{title:'',list:ret1.data});
                         $('#yj-add-series').html(html);
@@ -2391,9 +2391,12 @@
             if(!nowParam.bid){
                 nowParam.brandName = $("#brandName").val();
                 nowParam.seriesName = $("#seriesName").val();
+                nowParam.bid=0;
+                nowParam.sid=0;
             }else{
                 if(!nowParam.sid){
                     nowParam.seriesName = $("#seriesName").val();
+                    nowParam.sid=0;
                 }
             }
             nowParam.nowRemind = $("#yj-add-kucun").val();

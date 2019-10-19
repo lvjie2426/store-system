@@ -3,11 +3,19 @@ package com.store.system.util;
 import com.google.common.collect.Lists;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class TimeUtils {
+
+
+    public static String getSDFTime(long time){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStr=simpleDateFormat.format(time);
+        return timeStr;
+    }
 
     public static long getDayFormTime(long time){
        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
@@ -43,6 +51,12 @@ public class TimeUtils {
 
     public static long getMonthFormTime(long time){
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMM");
+        String timeStr=simpleDateFormat.format(time);
+        return  Long.parseLong(timeStr);
+    }
+
+    public static long getYearFormTime(long time){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy");
         String timeStr=simpleDateFormat.format(time);
         return  Long.parseLong(timeStr);
     }
@@ -308,5 +322,81 @@ public class TimeUtils {
         ca.add(Calendar.DATE, num);
         Date res = ca.getTime();
         return res.getTime();
+    }
+
+
+    public static long getTodayTime(int hourOfDay, int minute, int second){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),hourOfDay,minute,second);
+        return calendar.getTime().getTime();
+    }
+
+    public static long getYesterdayTime(int hourOfDay, int minute, int second){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)-1,hourOfDay,minute,second);
+        return calendar.getTime().getTime();
+    }
+
+    public static long getWeekFirstTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONDAY), calendar.get(Calendar.DAY_OF_MONTH), 0, 0,0);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return calendar.getTime().getTime();
+    }
+
+    public static long getWeekLastTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONDAY), calendar.get(Calendar.DAY_OF_MONTH), 23, 59,59);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return calendar.getTime().getTime() + (7 * 24 * 60 * 60 * 1000);
+    }
+
+    public static long getMonthFirstTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONDAY), calendar.get(Calendar.DAY_OF_MONTH), 0, 0,0);
+        calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return calendar.getTime().getTime();
+    }
+
+    public static long getMonthLastTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONDAY), calendar.get(Calendar.DAY_OF_MONTH), 0, 0,0);
+        calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 24);
+        return calendar.getTime().getTime();
+    }
+
+    public static List<Long> getMonthFullDay(int year , int month){
+        SimpleDateFormat dateFormatYYYYMMDD = new SimpleDateFormat("yyyyMMdd");
+        List<Long> fullDayList = new ArrayList<>(32);
+        // 获得当前日期对象
+        Calendar cal = Calendar.getInstance();
+        cal.clear();// 清除信息
+        cal.set(Calendar.YEAR, year);
+        // 1月从0开始
+        cal.set(Calendar.MONTH, month-1 );
+        // 当月1号
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        int count = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        for (int j = 1; j <= count ; j++) {
+            fullDayList.add(Long.parseLong(dateFormatYYYYMMDD.format(cal.getTime())));
+            cal.add(Calendar.DAY_OF_MONTH,1);
+        }
+        return fullDayList;
+    }
+
+    public static List<Long> getYearFullDay(int year){
+        SimpleDateFormat dateFormatYYYYMMDD = new SimpleDateFormat("yyyyMMdd");
+        List<Long> fullDayList = new ArrayList<>(32);
+        // 获得当前日期对象
+        Calendar cal = Calendar.getInstance();
+        cal.clear();// 清除信息
+        cal.set(Calendar.YEAR, year);
+        int count = cal.getActualMaximum(Calendar.DAY_OF_YEAR);
+        for (int j = 1; j <= count ; j++) {
+            fullDayList.add(Long.parseLong(dateFormatYYYYMMDD.format(cal.getTime())));
+            cal.add(Calendar.DAY_OF_MONTH,1);
+        }
+        return fullDayList;
     }
 }

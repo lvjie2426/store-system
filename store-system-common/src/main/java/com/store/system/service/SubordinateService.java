@@ -35,4 +35,6 @@ public interface SubordinateService {
 	public List<Subordinate> getAllParentSubordinate()throws Exception;
 
 	public List<Subordinate> getAllList()throws Exception;
+
+	public Pager getWebTwoLevelAllList(Pager pager, long sid)throws Exception;
 }

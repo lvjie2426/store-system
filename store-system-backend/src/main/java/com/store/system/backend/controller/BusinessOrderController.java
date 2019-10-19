@@ -79,6 +79,30 @@ public class BusinessOrderController extends BaseController{
     }
 
     /**
+     * 获取医疗器械全部销售并完成的订单
+     * @Param: [request, response, pager, name, model, startTime, endTime, staffId, status, uid, subId, makeStatus]
+     * @return: org.springframework.web.servlet.ModelAndView
+     */
+    @RequestMapping("/getMedicalAllList")
+    public ModelAndView getMedicalAllList(HttpServletRequest request, HttpServletResponse response,
+                                    Pager pager,String licenceNum, Model model,
+                                    @RequestParam(required = false, value = "startTime", defaultValue = "0") long startTime,
+                                    @RequestParam(required = false, value = "endTime", defaultValue = "0") long endTime,
+                                    @RequestParam(required = false, value = "subId", defaultValue = "0") long subId) throws Exception {
+        try {
+            Subordinate subordinate = subordinateService.load(subId);
+            if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
+            pager = businessOrderService.getMedicalAllList(pager, startTime, endTime, licenceNum, subId);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
+
+
+
+    /**
     *   description: 获取未完成订单 makeStatus不传。
     *   根据订单状态查询，makeStatus =1=2=3
     * @Param: [request, response, pager, startTime, subId, endTime, staffId, status, uid, name, makeStatus, model]
@@ -338,15 +362,15 @@ public class BusinessOrderController extends BaseController{
                                         @RequestParam(required = false, value = "stored", defaultValue = "0") int stored,
                                         @RequestParam(required = false, value = "otherStored", defaultValue = "0") int otherStored,
                                         @RequestParam(required = false, value = "score", defaultValue = "0") int score,
-                                        @RequestParam(required = false, value = "makeStatus", defaultValue = "6") int makeStatus) throws Exception {
+                                        @RequestParam(required = false, value = "makeStatus", defaultValue = "6") int makeStatus,
+                                        String desc) throws Exception {
         try {
-            ClientBusinessOrder res = businessOrderService.settlementOrder(boId,cash,stored,otherStored,score,makeStatus);
+            ClientBusinessOrder res = businessOrderService.settlementOrder(boId,cash,stored,otherStored,score,makeStatus,desc);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
-
 
 
 

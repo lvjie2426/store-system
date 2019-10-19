@@ -1,6 +1,7 @@
 package com.store.system.model;
 
 import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -33,6 +34,12 @@ public class ProductSPU implements Serializable {
     public static final int sale_status_open=0;//开启
     public static final int sale_status_close=1;//关闭
 
+    public static final int type_common = 0; //常规产品
+    public static final int type_devices = 1; //医疗器械
+
+    public static final int checkStatus_no = 0;//未审核/未验收
+    public static final int checkStatus_yes = 1;//审核通过/已验收
+
     @PrimaryKey
     private long id;
 
@@ -60,8 +67,6 @@ public class ProductSPU implements Serializable {
 
     private int status;
 
-    private long sort;
-
     private String other; //附加属性
 
     private String ext; //扩展字段
@@ -80,12 +85,29 @@ public class ProductSPU implements Serializable {
     @HyperspaceColumn(isJson = true)
     private List<ProductCustomRange> nowRanges= Lists.newArrayList();//现货范围
 
-    private int nowRemind; //现货库存提醒
+    private int nowRemind; //现货库存为0的产品达到的数量
 
-    private int totalRemind; //总库存提醒
+    private double totalRemind; //总库存少于备货量百分之n，进行提醒
+
+    private int underRemind;  //当库存低于n数量，进行提醒
+
+    //医疗器械
+    private int type;//类型 非医疗器械0 医疗器械1
+
+    private int checkStatus;//审核状态  0 未审核 1 审核通过
+
+    private long checkStatusDate;//审核时间
+
+    private String nirNum;//国械注准号
+
+    private long nirNumDate;//国械注准号注册时间 
+
+    @HyperspaceColumn(isJson = true)
+    private List<String> nirImg= Lists.newArrayList();//注册图片
 
 
     @SortKey
+    @PagerCursor
     private long ctime;
 
     private long utime;

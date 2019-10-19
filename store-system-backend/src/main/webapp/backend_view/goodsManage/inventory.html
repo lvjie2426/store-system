@@ -731,7 +731,7 @@
         }
     })
     //获取品牌数据
-    quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{subid:subid},function (ret) {
+    quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(),{},function (ret) {
         if(ret && ret.success){
             brandData = ret.data;
         }
@@ -745,7 +745,7 @@
         }
     })
     //获取供应商
-    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:subid},function (ret) {
+    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:shopId},function (ret) {
         if(ret && ret.success){
             providerData = ret.data;
         }
@@ -899,7 +899,7 @@
                         }
                         $('#yj-brand'+categoryData[i].id).next().html('');
                         //获取品牌下的系列列表
-                        quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{subid:subid,bid:ret.value},function (ret1) {
+                        quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(),{bid:ret.value},function (ret1) {
                             if(ret1 && ret1.success){
                                 var html2 = template('selectTagTmp',{title:'系列',list:ret1.data});
                                 $('#yj-brand'+categoryData[i].id).next().html(html2).show();

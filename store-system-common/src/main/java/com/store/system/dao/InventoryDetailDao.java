@@ -24,4 +24,10 @@ public interface InventoryDetailDao extends HDao<InventoryDetail> {
 
     public List<InventoryDetail> getAllListBySPU(long p_spuid) throws DataAccessException;
 
+    public List<InventoryDetail> getPageList(long wid, long p_cid, double cursor, int size) throws DataAccessException;
+
+    public int getCount(long wid, long p_cid) throws DataAccessException;
+
+    public List<InventoryDetail> getAllListByWidAndCid(long wid, long p_cid) throws DataAccessException;
+
 }

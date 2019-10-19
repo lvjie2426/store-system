@@ -3,6 +3,8 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
@@ -19,12 +21,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @ClassName BusinessOrderServiceImpl
@@ -210,6 +209,146 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         return pager;
     }
 
+    @Override
+    public Pager getPager(final Pager pager, final long staffId, final int status, final int makeStatus) throws Exception {
+        return new PagerRequestService<BusinessOrder>(pager, 0) {
+            @Override
+            public List<BusinessOrder> step1GetPageResult(String cursor, int size) throws Exception {
+                return businessOrderDao.getUserList(staffId, status, makeStatus, Double.parseDouble(cursor), size);
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return businessOrderDao.getUserCount(staffId, status, makeStatus);
+            }
+
+            @Override
+            public List<BusinessOrder> step3FilterResult(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClient(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+
+    @Override
+    public Pager getPager(final Pager pager, final long subId, final long day,
+                          final int status, final int makeStatus) throws Exception {
+        return new PagerRequestService<BusinessOrder>(pager, 0) {
+            /**
+             * 步骤一：获取分页结果
+             *
+             * @param cursor
+             * @param size
+             * @return
+             */
+            @Override
+            public List<BusinessOrder> step1GetPageResult(String cursor, int size) throws Exception {
+                return businessOrderDao.getPageList(subId,status,makeStatus,day,Double.parseDouble(cursor),size);
+            }
+
+            /**
+             * 步骤二:：获取总数
+             *
+             * @return
+             */
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return businessOrderDao.getCount(subId,status,makeStatus,day);
+            }
+
+            /**
+             * 步骤三：对数据进行过滤,过滤逻辑不支持涉及跨页
+             *
+             * @param unTransformDatas
+             * @param session
+             * @return
+             */
+            @Override
+            public List<BusinessOrder> step3FilterResult(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            /**
+             * 步骤四：对结果进行转换。
+             *
+             * @param unTransformDatas
+             * @param session
+             * @return
+             * @throws Exception
+             */
+            @Override
+            public List<?> step4TransformData(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClient(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+    @Override
+    public Pager getPager(final Pager pager, final long subId, final long startTime, final long endTime,
+                          final int status, final int makeStatus) throws Exception {
+        return new PagerRequestService<BusinessOrder>(pager, 0) {
+            /**
+             * 步骤一：获取分页结果
+             *
+             * @param cursor
+             * @param size
+             * @return
+             */
+            @Override
+            public List<BusinessOrder> step1GetPageResult(String cursor, int size) throws Exception {
+                return businessOrderDao.getPageList(subId,status,makeStatus,Double.parseDouble(cursor),size);
+            }
+
+            /**
+             * 步骤二:：获取总数
+             *
+             * @return
+             */
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return businessOrderDao.getCount(subId,status,makeStatus);
+            }
+
+            /**
+             * 步骤三：对数据进行过滤,过滤逻辑不支持涉及跨页
+             *
+             * @param unTransformDatas
+             * @param session
+             * @return
+             */
+            @Override
+            public List<BusinessOrder> step3FilterResult(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            /**
+             * 步骤四：对结果进行转换。
+             *
+             * @param unTransformDatas
+             * @param session
+             * @return
+             * @throws Exception
+             */
+            @Override
+            public List<?> step4TransformData(List<BusinessOrder> unTransformDatas, PagerSession session) throws Exception {
+                List<BusinessOrder> res = Lists.newArrayList();
+                for(BusinessOrder order:unTransformDatas){
+                    if(order.getCtime()>startTime && order.getCtime()<=endTime){
+                        res.add(order);
+                    }
+                }
+                return transformClient(res);
+            }
+        }.getPager();
+    }
+
 
     @Override
     public ClientBusinessOrder add(BusinessOrder businessOrder) throws Exception {
@@ -231,6 +370,27 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     public List<ClientBusinessOrder> getAllList(long subId, int status, int makeStatus) throws Exception {
         List<BusinessOrder> list = businessOrderDao.getAllList(subId, status, makeStatus);
         return transformClient(list);
+    }
+
+    @Override
+    public List<BusinessOrder> getList(long subId, int status, int makeStatus, long time) throws Exception {
+        String sql = "SELECT  *  FROM `business_order`   where  1=1  ";
+
+        if (status > 0){
+            sql = sql + " and `status` = " + status;
+        }
+        if (makeStatus > 0){
+            sql = sql + " and `makeStatus` = " + makeStatus;
+        }
+        if (subId > 0) {
+            sql = sql + " and `subId` = " + subId;
+        }
+        if (time > 0) {
+            sql = sql + " and `ctime` <=" + time;
+        }
+        sql = sql + " order  by ctime desc";
+        List<BusinessOrder> orderList = this.jdbcTemplate.query(sql, rowMapper);
+        return orderList;
     }
 
     @Override
@@ -500,7 +660,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             sql = sql + " and `status` = " + BusinessOrder.status_pay;
         }
         if (subId > 0) {
-            sql = sql + " and `subid` = " + subId;
+            sql = sql + " and `subId` = " + subId;
         }
         if (endTime > 0) {
             sql = sql + " and `ctime` >=" + startTime;
@@ -528,33 +688,33 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     }
 
     @Override
-    public Map<String,Integer> calculateSale(List<PayInfo> payInfos) {
-        Map<String,Integer> map = Maps.newHashMap();
-        int sale=0;
-        int ali=0;
-        int wx=0;
-        int cash=0;
-        int other=0;
-        for(PayInfo payInfo:payInfos) {
-                if (payInfo.getPayType() == PayInfo.pay_type_ali) {
-                    ali += payInfo.getPrice();
-                }
-                if (payInfo.getPayType() == PayInfo.pay_type_wx) {
-                    wx += payInfo.getPrice();
-                }
-                if (payInfo.getPayType() == PayInfo.pay_type_cash) {
-                    cash += payInfo.getPrice();
-                }
-                if (payInfo.getPayType() == PayInfo.pay_type_stored) {
-                    other += payInfo.getPrice();
-                }
+    public Map<String, Integer> calculateSale(List<PayInfo> payInfos) {
+        Map<String, Integer> map = Maps.newHashMap();
+        int sale = 0;
+        int ali = 0;
+        int wx = 0;
+        int cash = 0;
+        int other = 0;
+        for (PayInfo payInfo : payInfos) {
+            if (payInfo.getPayType() == PayInfo.pay_type_ali) {
+                ali += payInfo.getPrice();
+            }
+            if (payInfo.getPayType() == PayInfo.pay_type_wx) {
+                wx += payInfo.getPrice();
+            }
+            if (payInfo.getPayType() == PayInfo.pay_type_cash) {
+                cash += payInfo.getPrice();
+            }
+            if (payInfo.getPayType() == PayInfo.pay_type_stored) {
+                other += payInfo.getPrice();
+            }
         }
         sale = ali + wx + cash + other;
-        map.put("ali",ali);
-        map.put("wx",wx);
-        map.put("cash",cash);
-        map.put("other",other);
-        map.put("sale",sale);
+        map.put("ali", ali);
+        map.put("wx", wx);
+        map.put("cash", cash);
+        map.put("other", other);
+        map.put("sale", sale);
         return map;
     }
 
@@ -562,45 +722,54 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     public ClientSettlementOrder settlementPay(long boId, int cash, int stored, int otherStored) throws Exception {
         BusinessOrder businessOrder = businessOrderDao.load(boId);
         ClientSettlementOrder client = new ClientSettlementOrder();
-        List<PayInfo> payInfos = payInfoService.getAllList(boId,PayInfo.status_pay);
-        int totalPrice=0;
-        for(PayInfo info:payInfos){
-            if(info.getPayType()==PayInfo.pay_type_ali){
+        List<PayInfo> payInfos = payInfoService.getAllList(boId, PayInfo.status_pay);
+        int totalPrice = 0;
+        for (PayInfo info : payInfos) {
+            if (info.getPayType() == PayInfo.pay_type_ali) {
                 client.setAli(info.getPrice());
                 totalPrice += info.getPrice();
             }
-            if(info.getPayType()==PayInfo.pay_type_wx){
+            if (info.getPayType() == PayInfo.pay_type_wx) {
                 client.setWx(info.getPrice());
                 totalPrice += info.getPrice();
             }
-            if(info.getPayType()==PayInfo.pay_type_cash){
+            if (info.getPayType() == PayInfo.pay_type_cash) {
                 client.setCash(info.getPrice());
                 totalPrice += info.getPrice();
             }
-            if(info.getPayType()==PayInfo.pay_type_stored){
+            if (info.getPayType() == PayInfo.pay_type_stored) {
                 client.setStored(info.getPrice());
                 totalPrice += info.getPrice();
             }
         }
         if (otherStored > 0) {
+            if (otherStored > businessOrder.getRealPrice()) {
+                throw new StoreSystemException("他人储值支付不能超过实收金额！");
+            }
             totalPrice += otherStored;
             client.setOtherStored(otherStored);
         }
         if (cash > 0) {
+            if (cash > businessOrder.getRealPrice()) {
+                throw new StoreSystemException("现金支付不能超过实收金额！");
+            }
             totalPrice += cash;
             client.setCash(cash);
         }
         if (stored > 0) {
+            if (stored > businessOrder.getRealPrice()) {
+                throw new StoreSystemException("储值支付不能超过实收金额！");
+            }
             totalPrice += stored;
             client.setStored(stored);
         }
         client.setTotal(totalPrice);
-        client.setAmount(businessOrder.getRealPrice()-totalPrice);
+        client.setAmount(businessOrder.getRealPrice() - totalPrice);
         return client;
     }
 
     @Override
-    public ClientBusinessOrder settlementOrder(long boId, int cash, int stored, int otherStored, int score, int makeStatus) throws Exception {
+    public ClientBusinessOrder settlementOrder(long boId, int cash, int stored, int otherStored, int score, int makeStatus,String desc) throws Exception {
         BusinessOrder businessOrder = businessOrderDao.load(boId);
 
         PayInfo payInfo = new PayInfo();
@@ -609,14 +778,20 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         payInfo.setStatus(PayInfo.status_pay);
         payInfo.setBoId(boId);
         if (cash > 0) {
+            if (cash > businessOrder.getRealPrice()) {
+                throw new StoreSystemException("现金支付不能超过实收金额！");
+            }
             payInfo.setPrice(cash);
             payInfo.setPayType(PayInfo.pay_type_cash);
             payInfoService.insert(payInfo);
-            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash , FinanceLog.type_in, 0, cash,
+            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash, FinanceLog.type_in, 0, cash,
                     "用户支付", true);
         }
 
         if (otherStored > 0) {
+            if (otherStored > businessOrder.getRealPrice()) {
+                throw new StoreSystemException("他人储值支付不能超过实收金额！");
+            }
             payInfo.setPrice(otherStored);
             payInfo.setPayType(PayInfo.pay_type_stored);
             payInfoService.insert(payInfo);
@@ -625,29 +800,32 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         }
 
         if (stored > 0) {
+            if (stored > businessOrder.getRealPrice()) {
+                throw new StoreSystemException("储值支付不能超过实收金额！");
+            }
             payInfo.setPrice(stored);
             payInfo.setPayType(PayInfo.pay_type_stored);
             payInfoService.insert(payInfo);
             User user = userDao.load(businessOrder.getUid());
-            if(user!=null){
-                user.setMoney(user.getMoney()-stored);
+            if (user != null) {
+                user.setMoney(user.getMoney() - stored);
                 userDao.update(user);
             }
-            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash , FinanceLog.type_in, 0, stored,
+            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), businessOrder.getUid(), FinanceLog.mode_cash, FinanceLog.type_in, 0, stored,
                     "用户支付", true);
         }
 
-        if(score > 0){
+        if (score > 0) {
             User user = userDao.load(businessOrder.getUid());
-            if(user!=null){
-                user.setScore(user.getScore()-score);
+            if (user != null) {
+                user.setScore(user.getScore() - score);
                 userDao.update(user);
             }
         }
         businessOrder.setMakeStatus(makeStatus);
         //若所有不同支付方式的支付总金额等于订单应付金额
         // 则认为此订单已缴费 否则未缴费
-        List<PayInfo> payInfos = payInfoService.getAllList(boId,PayInfo.status_pay);
+        List<PayInfo> payInfos = payInfoService.getAllList(boId, PayInfo.status_pay);
         long total = 0;
         for (PayInfo info : payInfos) {
             total += info.getPrice();
@@ -655,9 +833,53 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         if (total == businessOrder.getRealPrice()) {
             businessOrder.setStatus(BusinessOrder.status_pay);
         }
+        businessOrder.setReceiptDesc(desc);
         businessOrderDao.update(businessOrder);
 
         return transformClient(businessOrderDao.load(boId));
+    }
+
+    @Override
+    public Pager getMedicalAllList(Pager pager, long startTime, long endTime, String licenceNum, long subId) throws Exception {
+        String sql = "SELECT  *  FROM `business_order` where  1=1 ";
+        String sqlCount = "SELECT  COUNT(*)  FROM `business_order` where 1=1";
+        String limit = "  limit %d , %d ";
+        {
+            sql = sql + " and `type` = " + BusinessOrder.type_medical;
+            sqlCount = sqlCount + " and `type` = " + BusinessOrder.type_medical;
+        }
+        if (subId > 0) {
+            sql = sql + " and `subId` = " + subId;
+            sqlCount = sqlCount + " and `subId` = " + subId;
+        }
+        if (startTime > 0) {
+            sql = sql + " and `ctime` >" + startTime;
+            sqlCount = sqlCount + " and `ctime` >" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `ctime` <" + endTime;
+            sqlCount = sqlCount + " and `ctime` <" + endTime;
+        }
+
+        if (StringUtils.isNotBlank(licenceNum)) {
+            sql = sql + " and  `skuList`  like '%\"licenceNum:\""+licenceNum+"%'";
+            sqlCount = sqlCount + " and  `skuList`  like '%\"licenceNum:\""+licenceNum+"%'";
+        }
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<BusinessOrder> list = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+
+        pager.setData(transformClient(list));
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public List<BusinessOrder> getAllBySubid(long subid, int status_pay, int makeStatus_qu_yes) throws Exception {
+        List<BusinessOrder> list = businessOrderDao.getAllList(subid, status_pay, makeStatus_qu_yes);
+        return list;
     }
 
 

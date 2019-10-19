@@ -25,7 +25,7 @@ public class InventoryDetailController extends BaseController {
     public ModelAndView getCheckPager(@RequestParam(value = "wid") long wid,
                                       @RequestParam(value = "cid", defaultValue = "0") long cid,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryDetailService.getPager(pager, wid, cid);
+        pager = inventoryDetailService.getBackendPager(pager, wid, cid);
         return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 

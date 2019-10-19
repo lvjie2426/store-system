@@ -25,4 +25,10 @@ public class ProductProviderDaoImpl extends CacheBaseDao<ProductProvider> implem
     public List<ProductProvider> getAllList(int status) throws DataAccessException {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<ProductProvider> getAllList(int status, long subid) throws DataAccessException {
+        return null;
+    }
 }

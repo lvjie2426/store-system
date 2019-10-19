@@ -179,6 +179,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             res = true;
             order.setOrderNo(resMap.get("trade_no"));
             order.setStatus(Order.status_pay);
+            order.setAuthCode(authCode);
             long pay_time = 0;
             String paymentStr = resMap.get("gmt_payment"); //交易付款时间
             if (StringUtils.isNotBlank(paymentStr))
@@ -467,6 +468,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             if("SUCCESS".equals(result_code)) {
                 order.setStatus(Order.status_pay);
                 order.setDetail(sendRes);
+                order.setAuthCode(authCode);
             } else {
                 String path = request.getServletContext().getRealPath("");
                 File file = new File(path);

@@ -10,10 +10,7 @@ import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryOutBill;
 import com.store.system.model.User;
-import com.store.system.service.InventoryDetailService;
-import com.store.system.service.InventoryOutBillService;
-import com.store.system.service.InventoryWarehouseService;
-import com.store.system.service.ProductService;
+import com.store.system.service.*;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -43,6 +40,9 @@ public class InventoryOutBillController extends BaseController {
     @Resource
     private InventoryWarehouseService inventoryWarehouseService;
 
+    @Resource
+    private SubordinateService subordinateService;
+
     @RequestMapping("/select")
     public ModelAndView select(@RequestParam(value = "subid") long subid,
                                @RequestParam(value = "pid") long pid,
@@ -51,8 +51,11 @@ public class InventoryOutBillController extends BaseController {
                                @RequestParam(value = "sid") long sid,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            ClientSubordinate subordinate = subordinateService.load(subid);
+            long pSubid = subordinate.getPid();
+            if(pSubid == 0) throw new StoreSystemException("店铺为空");
             List<ClientInventoryDetail> details = Lists.newArrayList();
-            ClientProductSPU productSPU = productService.selectSPU(subid, pid, cid, bid, sid);
+            ClientProductSPU productSPU = productService.selectSPU(pSubid, pid, cid, bid, sid);
             if(null != productSPU) {
                 List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
                 if(warehouses.size()>0){
@@ -158,6 +161,15 @@ public class InventoryOutBillController extends BaseController {
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
+    }
+
+    // 获取医疗器械 所有出库单
+    @RequestMapping("/getAllPager")
+    public ModelAndView getAllPager(@RequestParam(value = "subid") long subid,
+                                    @RequestParam(value = "type") int type,
+                                      Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        pager = inventoryOutBillService.getAllPager(pager, subid,type);
+        return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 
 }

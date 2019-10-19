@@ -35,6 +35,8 @@ public class ClientInventoryDetail extends InventoryDetail {
 
     private Map<Long, Object> p_properties; //SKU 属性
 
+    private Map<Object, Object> p_properties_value; //SKU 属性
+
     private int p_retailPrice;
 
     private int p_costPrice;

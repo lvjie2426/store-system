@@ -1,13 +1,10 @@
 package com.store.system.service.impl;
 
-import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.dao.ProductProviderDao;
 import com.store.system.dao.ProductProviderPoolDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.ProductCategory;
-import com.store.system.model.ProductCategoryPool;
 import com.store.system.model.ProductProvider;
 import com.store.system.model.ProductProviderPool;
 import com.store.system.service.ProductProviderService;
@@ -16,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Service
 public class ProductProviderServiceImpl implements ProductProviderService {
@@ -35,6 +30,12 @@ public class ProductProviderServiceImpl implements ProductProviderService {
     private void check(ProductProvider productProvider) throws StoreSystemException {
         String name = productProvider.getName();
         if(StringUtils.isBlank(name)) throw new StoreSystemException("名称不能为空");
+        List<ProductProvider> productProviders = productProviderDao.getAllList(ProductProvider.status_nomore);
+        for(ProductProvider provider:productProviders){
+            if(provider.getName().equals(productProvider.getName())){
+                throw new StoreSystemException("该供应商已存在,不可重复添加！");
+            }
+        }
     }
 
     @Override
@@ -82,16 +83,8 @@ public class ProductProviderServiceImpl implements ProductProviderService {
 
     @Override
     public List<ProductProvider> getSubAllList(long subid) throws Exception {
-        List<ProductProviderPool> pools = productProviderPoolDao.getAllList(subid);
-        Set<Long> pids = poolFieldSetUtils.fieldList(pools, "pid");
-        List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(pids));
-        Map<Long, ProductProvider> providerMap = mapUtils.listToMap(providers, "id");
-        List<ProductProvider> res = Lists.newArrayList();
-        for(ProductProviderPool pool : pools) {
-            ProductProvider provider = providerMap.get(pool.getPid());
-            if(provider != null) res.add(provider);
-        }
-        return res;
+        List<ProductProvider> providers = productProviderDao.getAllList(ProductProvider.status_nomore,subid);
+        return providers;
     }
 
 }

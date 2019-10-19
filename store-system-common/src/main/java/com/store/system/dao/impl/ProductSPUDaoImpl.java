@@ -37,4 +37,23 @@ public class ProductSPUDaoImpl extends CacheBaseDao<ProductSPU> implements Produ
     public List<ProductSPU> getAllList(long subid, long cid, long bid) throws DataAccessException {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<ProductSPU> getAllList(long subid, long cid) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<ProductSPU> getAllList(long subid, long cid, long bid, long sid) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<ProductSPU> getWebAllList(long subid, long cid, double cursor, int size) throws DataAccessException {
+        return null;
+    }
+
 }

@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface InventoryDetailService {
 
-    public Pager getPager(Pager pager, long wid, long cid) throws Exception;
+    public Pager getBackendPager(Pager pager, long wid, long cid) throws Exception;
 
+    public Pager getPager(Pager pager, long wid, long cid) throws Exception;
     /**
      * 库存详情
      * method_name: getAllList
@@ -24,5 +25,9 @@ public interface InventoryDetailService {
     public List<InventoryDetail> getAllOriginList(long wid, long p_spuid) throws Exception;
 
     public List<ClientInventoryDetail> getAllList(long subid) throws Exception;
+
+    public List<ClientInventoryDetail> getWaringList(long wid, long cid) throws Exception;
+
+    public List<ClientInventoryDetail> getExpireList(long wid, long cid) throws Exception;
 
 }

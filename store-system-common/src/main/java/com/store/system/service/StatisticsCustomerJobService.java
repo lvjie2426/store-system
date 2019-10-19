@@ -19,4 +19,6 @@ public interface StatisticsCustomerJobService {
 
     public ClientStatisticsCustomer getCustomerByTime(long subid,long startTime,long endTime)throws Exception;
 
+    public ClientStatisticsCustomer getWebCustomerByTime(long subid,long startTime,long endTime)throws Exception;
+
 }

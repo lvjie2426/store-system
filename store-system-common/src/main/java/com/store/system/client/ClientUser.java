@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
-import java.util.Comparator;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -26,6 +26,8 @@ public class ClientUser extends User implements Comparable<ClientUser>{
     private String tname;//推荐人姓名
 
     private double discount;//会员折扣
+
+    private List<ClientOptometryInfo> optometryInfos;
 
     private int lastMoney;//最后一次消费金额(分)
 

@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.*;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
@@ -28,11 +29,11 @@ public class Commission implements Serializable{
     @CombinationKey
     private long spuId;//SPUID
 
-    @HyperspaceColumn(isJson = true)
     private int users; //个人提成
 
     private int price; //团队提成
     @SortKey
+    @PagerCursor
     private long ctime;
 
     private long utime;

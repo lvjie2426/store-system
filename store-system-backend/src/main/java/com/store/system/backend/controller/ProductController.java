@@ -78,15 +78,18 @@ public class ProductController extends BaseController {
      **/
     @RequestMapping("/add")
     public ModelAndView add(ProductSPU productSPU, String brandName, String seriesName,
-                            @RequestParam(required = true, value = "skuJson") String skuJson,
+                            @RequestParam(required = false, value = "skuJson") String skuJson,
                             @RequestParam(required = false, value = "commissionJson") String commissionJson,
                             @RequestParam(required = false, value = "rangesJson") String rangesJson,
                             @RequestParam(required = false, value = "nowRangesJson") String nowRangesJson,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            List<ProductSKU> productSKUList = null;
+            List<ProductSKU> productSKUList = Lists.newArrayList();
             try {
-                productSKUList = JsonUtils.fromJson(skuJson, new TypeReference<List<ProductSKU>>() {});
+                if (StringUtils.isNotBlank(skuJson)) {
+                    productSKUList = JsonUtils.fromJson(skuJson, new TypeReference<List<ProductSKU>>() {
+                    });
+                }
             } catch (Exception e) {
                 throw new StoreSystemException("sku格式错误");
             }
@@ -242,7 +245,7 @@ public class ProductController extends BaseController {
     /**
      * 获取公司的所有商品SPU
      * method_name: getSPUPager
-     * params: [subid, cid, pid, bid, sid, pager, request, response, model,name]
+     * params: [subid(门店ID), cid, pid, bid, sid, pager, request, response, model,name]
      * return: org.springframework.web.servlet.ModelAndView
      * creat_user: lihao
      * creat_date: 2019/3/2
@@ -254,6 +257,7 @@ public class ProductController extends BaseController {
                                     @RequestParam(value = "pid", defaultValue = "0") long pid,
                                     @RequestParam(value = "bid", defaultValue = "0") long bid,
                                     @RequestParam(value = "sid", defaultValue = "0") long sid,
+                                    @RequestParam(value = "type", defaultValue = "0") int type,
                                     @RequestParam(value = "name", defaultValue = "") String name,
                                     @RequestParam(value = "saleStatus", defaultValue = "-1") int saleStatus,
                                     Pager pager,
@@ -261,7 +265,7 @@ public class ProductController extends BaseController {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             if(subordinate.getPid() > 0) subid = subordinate.getPid();
-            pager = productService.getSPUBackPager(pager, subid, cid, pid, bid, sid,name,saleStatus);
+            pager = productService.getSPUBackPager(pager, subid, cid, pid, bid, sid,type,name,saleStatus);
             return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -349,6 +353,35 @@ public class ProductController extends BaseController {
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
+
+    //医疗器械商品 审核通过 变成已验收状态。
+    @RequestMapping("/checkStatus")
+    public ModelAndView checkStatus(HttpServletRequest request, HttpServletResponse response,
+                                    @RequestParam(required = true, value = "ids[]", defaultValue = "") List<Long> ids) throws Exception {
+        try {
+
+            boolean flag= productService.checkStatus(ids);
+            return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
+
+    //获取未补充证明的医疗器械的商品
+    @RequestMapping("/getNoNirNum")
+    public ModelAndView getNoNirNum(@RequestParam(value = "subid", defaultValue = "0") long subid,
+                                    Pager pager,
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            Subordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() > 0) subid = subordinate.getPid();
+            pager = productService.getSPUNoNirNumPager(pager, subid);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
 

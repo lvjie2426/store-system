@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <bean id="attendanceDao" class="com.store.system.dao.impl.AttendanceDaoImpl">
+        <property name="tableName" value="attendance_log"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="attendanceTemplateDao" class="com.store.system.dao.impl.AttendanceTemplateDaoImpl">
+        <property name="tableName" value="attendance_template"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="holidayInfoDao" class="com.store.system.dao.impl.HolidayInfoDaoImpl">
+        <property name="tableName" value="holiday_info"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="leaveDao" class="com.store.system.dao.impl.LeaveDaoImpl">
+        <property name="tableName" value="leave"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="UserLeavePoolDao" class="com.store.system.dao.impl.UserLeavePoolDaoImpl">
+        <property name="tableName" value="user_leave_pool"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="punchCardDao" class="com.store.system.dao.impl.PunchCardDaoImpl">
+        <property name="tableName" value="punchcard_log"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="approvalLogDao" class="com.store.system.dao.impl.ApprovalLogDaoImpl">
+        <property name="tableName" value="approval_log"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="attendanceRankingDao" class="com.store.system.dao.impl.AttendanceRankingDaoImpl">
+        <property name="tableName" value="attendance_ranking"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="changeShiftDao" class="com.store.system.dao.impl.ChangeShiftDaoImpl">
+        <property name="tableName" value="change_shift"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="subSettingsDao" class="com.store.system.dao.impl.SubSettingsDaoImpl">
+        <property name="tableName" value="sub_settings"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="userSettingsDao" class="com.store.system.dao.impl.UserSettingsDaoImpl">
+        <property name="tableName" value="user_settings"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="userLeaveDaysDao" class="com.store.system.dao.impl.UserLeaveDaysDaoImpl">
+        <property name="tableName" value="user_leavedays"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="workOverTimeDao" class="com.store.system.dao.impl.WorkOverTimeDaoImpl">
+        <property name="tableName" value="work_overtime"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="subordinateAttendanceStatisticsDao"
+          class="com.store.system.dao.impl.SubordinateAttendanceStatisticsDaoImpl">
+        <property name="tableName" value="subordinate_attendance_statistics"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="userAttendanceStatisticsDao" class="com.store.system.dao.impl.UserAttendanceStatisticsDaoImpl">
+        <property name="tableName" value="user_attendance_statistics"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fillCardDao" class="com.store.system.dao.impl.FillCardDaoImpl">
+        <property name="tableName" value="fill_card"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

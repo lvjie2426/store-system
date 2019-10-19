@@ -10,6 +10,7 @@ import com.store.system.client.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.*;
+import com.store.system.util.CodeUtil;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -122,6 +123,9 @@ public class InventoryInBillController extends BaseController {
             List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(inventoryInBill.getSubid());
             if(warehouses.size()>0)
                 inventoryInBill.setWid(warehouses.get(0).getId());
+            for(InventoryInBillItem bill:billItems){
+                bill.setCode(String.valueOf(CodeUtil.getRandom(10)));
+            }
             inventoryInBill.setItems(billItems);
             inventoryInBill = inventoryInBillService.add(inventoryInBill);
             return this.viewNegotiating(request,response, new ResultClient(inventoryInBill));
@@ -209,6 +213,19 @@ public class InventoryInBillController extends BaseController {
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
+    }
+
+
+    //获取所有 医疗器械入库单
+    //todo
+    @RequestMapping("/getAllPager")
+    public ModelAndView getAllPager(@RequestParam(value = "subid") long subid,
+                                      @RequestParam(required = false,value = "startTime",defaultValue = "0") long startTime,
+                                      @RequestParam(required = false,value = "endTime",defaultValue = "0") long endTime,
+                                      @RequestParam(required = false,value = "type",defaultValue = "-1") int type,
+                                      Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        pager = inventoryInBillService.getCheckPager(pager, subid, startTime, endTime, type);
+        return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 
 }

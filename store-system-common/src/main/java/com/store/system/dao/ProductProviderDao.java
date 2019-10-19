@@ -10,4 +10,6 @@ public interface ProductProviderDao extends HDao<ProductProvider> {
 
     public List<ProductProvider> getAllList(int status) throws DataAccessException;
 
+    public List<ProductProvider> getAllList(int status,long subid) throws DataAccessException;
+
 }

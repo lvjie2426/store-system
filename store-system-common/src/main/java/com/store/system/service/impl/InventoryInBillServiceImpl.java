@@ -6,6 +6,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
@@ -53,6 +55,8 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
 
+    private TransformMapUtils nameMapUtils = new TransformMapUtils(ProductPropertyName.class);
+
     private RowMapperHelp<InventoryInBill> rowMapper = new RowMapperHelp<>(InventoryInBill.class);
 
     @Resource
@@ -63,6 +67,9 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     @Resource
     private ProductPropertyNameDao productPropertyNameDao;
+
+    @Resource
+    private ProductPropertyValueDao productPropertyValueDao;
 
     @Resource
     private InventoryInBillDao inventoryInBillDao;
@@ -143,7 +150,6 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 productSKU.setRetailPrice(item.getRetailPrice());
                 productSKU.setCostPrice(item.getCostPrice());
                 productSKU.setIntegralPrice(item.getIntegralPrice());
-                productSKU.setSort(System.currentTimeMillis());
                 productSKU = productSKUDao.insert(productSKU); //SKU不存在先存sku
                 if(null != productSKU) {
                     long skuid = productSKU.getId();
@@ -254,8 +260,19 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     @Override
     public InventoryInBill add(InventoryInBill inventoryInBill) throws Exception {
         check(inventoryInBill);
+
+        //查询
+        Subordinate subordinate = subordinateDao.load(inventoryInBill.getSubid());
+        if(subordinate.getIsCheck()==Subordinate.isCheck_no){
+            //todo 这里获取店长，设置成店长的id。
+            inventoryInBill.setCheckUid(0);
+            inventoryInBill.setCheck(InventoryInBill.check_pass);
+            inventoryInBill.setStatus(InventoryInBill.status_end);
+        }
         return inventoryInBillDao.insert(inventoryInBill);
     }
+
+
 
     @Override
     public boolean update(InventoryInBill inventoryInBill) throws Exception {
@@ -340,6 +357,58 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         return pager;
     }
 
+    @Override
+    public Pager getCreateWebPager(final Pager pager, final long createUid) throws Exception {
+        return new PagerRequestService<InventoryInBill>(pager, 0) {
+            @Override
+            public List<InventoryInBill> step1GetPageResult(String cursor, int size) throws Exception {
+                return inventoryInBillDao.getCreatePageList(createUid,Double.parseDouble(cursor),size);
+            }
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return inventoryInBillDao.getCreateCount(createUid);
+            }
+
+            @Override
+            public List<InventoryInBill> step3FilterResult(List<InventoryInBill> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<InventoryInBill> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClients(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+
+    @Override
+    public Pager getCheckWebPager(final Pager pager, final long subid) throws Exception {
+        return new PagerRequestService<InventoryInBill>(pager, 0) {
+            @Override
+            public List<InventoryInBill> step1GetPageResult(String cursor, int size) throws Exception {
+                return inventoryInBillDao.getCheckPageList(subid,Double.parseDouble(cursor),size);
+            }
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return inventoryInBillDao.getCheckCount(subid);
+            }
+
+            @Override
+            public List<InventoryInBill> step3FilterResult(List<InventoryInBill> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<InventoryInBill> unTransformDatas, PagerSession session) throws Exception {
+
+                return transformClients(unTransformDatas);
+            }
+        }.getPager();
+    }
+
+
     private List<ClientInventoryInBill> transformClients(List<InventoryInBill> inBills) throws Exception {
         List<ClientInventoryInBill> res = Lists.newArrayList();
         Set<Long> uids = Sets.newHashSet();
@@ -395,6 +464,21 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                     clientItem.setBid(spu.getBid());
                     clientItem.setCid(spu.getCid());
                     clientItem.setSid(spu.getSid());
+
+                    Map<Object, Object> map_value = Maps.newHashMap();
+                    Map<Long, Object> map = item.getProperties();
+                    for (Map.Entry<Long, Object> entry : map.entrySet()) {
+                        ProductPropertyName name = productPropertyNameDao.load(entry.getKey());
+                        if(name.getInput()==ProductPropertyName.input_no){
+                            ProductPropertyValue value = productPropertyValueDao.load(Long.parseLong((String) entry.getValue()));
+                            if (value != null) {
+                                map_value.put(name.getContent(), value.getContent());
+                            }
+                        }else {
+                            map_value.put(name.getContent(), entry.getValue());
+                        }
+                    }
+                    clientItem.setP_properties_value(map_value);
                 }
                 ProductBrand brand = brandMap.get(clientItem.getBid());
                 if(null != brand) clientItem.setBrandName(brand.getName());

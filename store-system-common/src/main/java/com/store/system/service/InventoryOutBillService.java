@@ -22,4 +22,5 @@ public interface InventoryOutBillService {
 
     public Pager getCheckPager(Pager pager, long subid) throws Exception;
 
+    public Pager getAllPager(Pager pager, long subid, int type)throws Exception;
 }

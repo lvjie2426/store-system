@@ -30,7 +30,8 @@ public class Order implements Serializable {
     public static final int pay_type_wx = 2; //微信
 
     public static final int type_goods = 1; //商品购买
-    public static final int type_other = 2; //其他购买
+    public static final int type_medical = 2; //医疗器械商品购买
+    public static final int type_other = 3; //其他购买
 
     public static final int pay_mode_app = 1; //app支付
     public static final int pay_mode_wap = 2; //手机网页支付

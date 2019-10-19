@@ -1,5 +1,7 @@
 package com.store.system.dao.impl;
 
+import com.quakoo.space.annotation.cache.CacheMethodParam;
+import com.quakoo.space.enums.cache.CacheMethodParamEnum;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.model.Subordinate;
 import com.quakoo.space.CacheBaseDao;
@@ -33,5 +35,14 @@ public class SubordinateDaoImpl extends CacheBaseDao<Subordinate> implements Sub
     public List<Subordinate> getAllList(long pid, int status) throws DataAccessException {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<Subordinate> getAllList(long pid, int status,
+                                        @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor)double cursor,
+                                        @CacheMethodParam(paramEnum = CacheMethodParamEnum.size)int size) throws DataAccessException {
+        return null;
+    }
+
 
 }

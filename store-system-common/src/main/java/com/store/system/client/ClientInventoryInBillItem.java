@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -28,6 +29,8 @@ public class ClientInventoryInBillItem extends InventoryInBillItem {
     private long sid; //系列ID
 
     private String seriesName;
+
+    private Map<Object,Object> p_properties_value;//SKU属性的值
 
     public ClientInventoryInBillItem(InventoryInBillItem inventoryInBillItem) {
         try {

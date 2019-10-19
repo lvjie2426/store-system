@@ -1,5 +1,6 @@
 package com.store.system.model;
 
+import com.quakoo.baseFramework.model.pagination.PagerCursor;
 import com.quakoo.space.annotation.domain.HyperspaceColumn;
 import com.quakoo.space.annotation.domain.HyperspaceDomain;
 import com.quakoo.space.annotation.domain.PrimaryKey;
@@ -41,12 +42,15 @@ public class InventoryCheckBill implements Serializable {
 
     private long checkUid; //盘点人
 
+    private long deadline; //截至日期
+
     @HyperspaceColumn(isJson = true)
     private List<InventoryCheckBillItem> items; //子条目JSON
 
     private int status;
 
     @SortKey
+    @PagerCursor
     private long ctime;
 
     private long utime;

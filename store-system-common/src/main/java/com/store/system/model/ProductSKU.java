@@ -60,8 +60,6 @@ public class ProductSKU implements Serializable {
     private int status;
 
     @SortKey
-    private long sort;
-
     private long ctime;
 
     private long utime;

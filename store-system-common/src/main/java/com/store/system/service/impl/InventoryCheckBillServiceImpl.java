@@ -5,12 +5,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.bean.InventoryCheckBillItem;
-import com.store.system.client.ClientInventoryCheckBill;
-import com.store.system.client.ClientInventoryCheckBillItem;
+import com.store.system.client.*;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
@@ -20,9 +21,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.apache.poi.hssf.record.chart.ChartTitleFormatRecord.sid;
 
 @Service
 public class InventoryCheckBillServiceImpl implements InventoryCheckBillService {
@@ -104,7 +108,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
             if(null == detail) throw new StoreSystemException("库存明细为空");
             if(detail.getWid() != wid) throw new StoreSystemException("盘点单子项目仓库错误");
             if(item.getCurrentNum() != detail.getNum()) throw new StoreSystemException("条目明细错误");
-            if(item.getRealNum() != 0) throw new StoreSystemException("条目明细错误");
+//            if(item.getRealNum() != 0) throw new StoreSystemException("条目明细错误");
         }
     }
 
@@ -112,6 +116,9 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     @Transactional
     public InventoryCheckBill add(InventoryCheckBill inventoryCheckBill, List<Long> list) throws Exception {
         check(inventoryCheckBill);
+        if(list.size()==0){
+            throw new StoreSystemException("门店不可以为空！");
+        }
         for(Long li:list){
             inventoryCheckBill.setSubid(li);
             inventoryCheckBill = inventoryCheckBillDao.insert(inventoryCheckBill);
@@ -211,6 +218,102 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     @Override
     public InventoryCheckBill getEndById(long id) throws Exception {
         return inventoryCheckBillDao.load(id);
+    }
+
+    @Override
+    public Pager getAll(Pager pager, final long subid) throws Exception {
+        return new PagerRequestService<InventoryCheckBill>(pager,0) {
+            @Override
+            public List<InventoryCheckBill> step1GetPageResult(String s, int i) throws Exception {
+                return  inventoryCheckBillDao.getAll(subid,Double.parseDouble(s),i);
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<InventoryCheckBill> step3FilterResult(List<InventoryCheckBill> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<InventoryCheckBill> list, PagerSession pagerSession) throws Exception {
+                return transformClients(list);
+            }
+        }.getPager();
+    }
+
+    @Override
+    public Pager getAllByCid(Pager pager,final long subid,final long cid) throws Exception {
+        return new PagerRequestService<ProductSPU>(pager, 0) {
+            @Override
+            public List<ProductSPU> step1GetPageResult(String s, int i) throws Exception {
+                List<ProductSPU> allList = productSPUDao.getWebAllList(subid, cid,Double.parseDouble(s),i);
+               return allList;
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<ProductSPU> step3FilterResult(List<ProductSPU> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<ProductSPU> list, PagerSession pagerSession) throws Exception {
+                List<ClientInventoryCheckBillSelect> resList = new ArrayList<>();
+
+                List<ClientProductSPU> clientProductSPUS=new ArrayList<>();
+                for(ProductSPU productSPU:list){
+                    ClientProductSPU clientProductSPU=new ClientProductSPU(productSPU);
+                    clientProductSPUS.add(clientProductSPU);
+                }
+
+                for(ClientProductSPU productSPU:clientProductSPUS){
+                    ClientInventoryCheckBillSelect res = new ClientInventoryCheckBillSelect();
+                    res.setProductSPU(productSPU);
+                    int currentNum = 0;
+                    List<InventoryWarehouse> warehouses = inventoryWarehouseDao.getAllList(subid,InventoryWarehouse.status_nomore);
+                    long wid=0;
+                    if(warehouses.size()>0){
+                        wid = warehouses.get(0).getId();
+                    }
+                    List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndSPU(wid, productSPU.getId());
+                    List<ClientInventoryDetail> clientInventoryDetails=new ArrayList<>();
+                    for(InventoryDetail detail : details) {
+                        ClientInventoryDetail clientInventoryDetail=new ClientInventoryDetail(detail);
+                        currentNum += detail.getNum();
+                        clientInventoryDetails.add(clientInventoryDetail);
+                    }
+                    res.setCurrentNum(currentNum);
+                    res.setDetails(clientInventoryDetails);
+                    resList.add(res);
+                }
+
+                return resList;
+            }
+        }.getPager();
+
+    }
+
+    private List<ClientInventoryCheckBill> transformClient(List<InventoryCheckBill> list) {
+        List<ClientInventoryCheckBill> lists =new ArrayList<>();
+        for(InventoryCheckBill inventoryCheckBill:list){
+            ClientInventoryCheckBill clientInventoryCheckBill=new ClientInventoryCheckBill(inventoryCheckBill);
+            if(inventoryCheckBill.getStatus()!=InventoryCheckBill.status_edit){
+                User load = userDao.load(inventoryCheckBill.getInitUid());
+                if(load!=null){
+                    clientInventoryCheckBill.setInitUserName(load.getUserName());
+                }
+                lists.add(clientInventoryCheckBill);
+            }
+        }
+        return lists;
     }
 
     private List<ClientInventoryCheckBill> transformClients(List<InventoryCheckBill> checkBills) throws Exception {

@@ -1,14 +1,17 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
+import com.store.system.client.ClientProductSeries;
 import com.store.system.dao.ProductBrandDao;
 import com.store.system.dao.ProductSeriesDao;
 import com.store.system.dao.ProductSeriesPoolDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.*;
-import com.store.system.service.ProductBrandService;
+import com.store.system.model.ProductBrand;
+import com.store.system.model.ProductSeries;
+import com.store.system.model.ProductSeriesPool;
 import com.store.system.service.ProductSeriesService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -32,11 +35,20 @@ public class ProductSeriesServiceImpl implements ProductSeriesService {
 
     private TransformMapUtils mapUtils = new TransformMapUtils(ProductSeries.class);
 
+    private TransformMapUtils brandMapUtils = new TransformMapUtils(ProductBrand.class);
+
+
     private void check(ProductSeries productSeries) throws StoreSystemException {
         long bid = productSeries.getBid();
         String name = productSeries.getName();
         if(bid == 0) throw new StoreSystemException("品牌不能为空");
         if(StringUtils.isBlank(name)) throw new StoreSystemException("名称不能为空");
+        List<ProductSeries> series = productSeriesDao.getAllList(ProductSeries.status_nomore);
+        for(ProductSeries one:series){
+            if(one.getName().equals(productSeries.getName())){
+                throw new StoreSystemException("该系列已存在,不可重复添加！");
+            }
+        }
     }
 
     @Override
@@ -94,6 +106,11 @@ public class ProductSeriesServiceImpl implements ProductSeriesService {
     }
 
     @Override
+    public List<ClientProductSeries> getAllList() throws Exception {
+        return transformClient(productSeriesDao.getAllList(ProductSeries.status_nomore));
+    }
+
+    @Override
     public boolean addPool(ProductSeriesPool pool) throws Exception {
         ProductSeriesPool sign = productSeriesPoolDao.load(pool);
         if(sign != null) throw new StoreSystemException("已添加");
@@ -116,6 +133,22 @@ public class ProductSeriesServiceImpl implements ProductSeriesService {
         for(ProductSeriesPool pool : pools) {
             ProductSeries series = seriesMap.get(pool.getSid());
             if(series != null) res.add(series);
+        }
+        return res;
+    }
+
+    private List<ClientProductSeries> transformClient(List<ProductSeries> producprtSeries) throws Exception{
+        List<ClientProductSeries> res = Lists.newArrayList();
+        Set<Long> bids = Sets.newHashSet();
+        for (ProductSeries info : producprtSeries) {
+            bids.add(info.getBid());
+        }
+        List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
+        Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
+        for(ProductSeries info : producprtSeries){
+            ClientProductSeries client = new ClientProductSeries(info);
+            client.setBrandName(brandMap.get(info.getBid()).getName());
+            res.add(client);
         }
         return res;
     }
