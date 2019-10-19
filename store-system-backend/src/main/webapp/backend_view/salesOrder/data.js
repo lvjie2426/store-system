@@ -1,7 +1,7 @@
 /**购物车数据
  * 金额存储全部是分（传给后台全部是分），展示时做元的计算
  * */
-var locShopCart= {
+var locShopCart = {
     id:2,
     saleUid:1,//销售员ID
     machinistId:1,//加工师id

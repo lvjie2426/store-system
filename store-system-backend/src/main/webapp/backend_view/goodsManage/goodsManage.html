@@ -1133,7 +1133,7 @@
                     return b.content-a.content;
                 });
             }
-        })
+        });
         //获取属性-柱
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:config.zhuId},function (ret) {
             if(ret && ret.success){
@@ -1141,7 +1141,7 @@
                     return b.content-a.content;
                 });
             }
-        })
+        });
         //获取属性-焦点
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:1},function (ret) {
             jiaodianData = ret.data;
