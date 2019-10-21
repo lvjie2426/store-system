@@ -19,6 +19,7 @@ public class ClientUserOnLogin extends User {
     private String token;
     private String sName;//公司名称
     private String subName;//门店名称
+    private boolean admin;//是否具有管理端权限
     public ClientUserOnLogin() {
     }
 
