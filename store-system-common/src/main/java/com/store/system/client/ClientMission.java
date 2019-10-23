@@ -3,12 +3,17 @@ package com.store.system.client;
 import com.store.system.model.Mission;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
+
+import java.util.List;
+
 @Data
 public class ClientMission extends Mission{
 
     private int allProgress;//任务总完成度
 
     private int allAmount;//任务总量
+
+    private List<Personal> PersonalList;
 
     public ClientMission(){}
     public ClientMission(Mission mission) {

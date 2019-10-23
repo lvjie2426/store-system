@@ -468,15 +468,15 @@ public class UserServiceImpl implements UserService {
         if (null == dbUser || dbUser.getStatus() == User.status_delete) {
             throw new StoreSystemException("用户不存在");
         }
-        if (StringUtils.isBlank(user.getQqId()) && StringUtils.isBlank(user.getWeixinId()) && StringUtils.isBlank(user.getWeiboId())) {
-            if (StringUtils.isBlank(code)) {
-                if (StringUtils.isNotBlank(dbUser.getPassword()) &&
-                        !MD5Utils.md5ReStr(user.getPassword().getBytes()).equalsIgnoreCase(dbUser.getPassword())) {
-                    throw new StoreSystemException("密码不正确");
-                }
-
-            }
-        }
+//        if (StringUtils.isBlank(user.getQqId()) && StringUtils.isBlank(user.getWeixinId()) && StringUtils.isBlank(user.getWeiboId())) {
+//            if (StringUtils.isBlank(code)) {
+//                if (StringUtils.isNotBlank(dbUser.getPassword()) &&
+//                        !MD5Utils.md5ReStr(user.getPassword().getBytes()).equalsIgnoreCase(dbUser.getPassword())) {
+//                    throw new StoreSystemException("密码不正确");
+//                }
+//
+//            }
+//        }
         ClientUserOnLogin clientUserOnLogin = new ClientUserOnLogin(dbUser);
         Subordinate subordinate = subordinateService.load(clientUserOnLogin.getSid());
         Subordinate pSubordinate = subordinateService.load(clientUserOnLogin.getPsid());
@@ -864,7 +864,7 @@ public class UserServiceImpl implements UserService {
             loginUserPoolDao.insert(loginUserPool);
             return res;
         }
-        return false;
+        return res;
     }
 
     private void check(User user) throws StoreSystemException {

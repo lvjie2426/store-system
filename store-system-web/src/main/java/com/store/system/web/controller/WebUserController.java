@@ -53,14 +53,14 @@ public class WebUserController extends BaseController {
 											 User loginUser,@RequestParam(required = false, value = "authCode") String authCode,
 											 Model model) throws Exception {
         try {
-            if (StringUtils.isNotBlank(loginUser.getPhone())) {
-                String rightAuthCode = userService.getAuthCode(loginUser.getPhone());
-                if (StringUtils.isBlank(authCode) && StringUtils.isBlank(loginUser.getPassword()))
-                    throw new StoreSystemException("请输入密码或验证码");
-                if (StringUtils.isNotBlank(authCode) && !authCode.equals(rightAuthCode)) {
-                    throw new StoreSystemException("验证码不正确");
-                }
-            }
+//            if (StringUtils.isNotBlank(loginUser.getPhone())) {
+//                String rightAuthCode = userService.getAuthCode(loginUser.getPhone());
+//                if (StringUtils.isBlank(authCode) && StringUtils.isBlank(loginUser.getPassword()))
+//                    throw new StoreSystemException("请输入密码或验证码");
+//                if (StringUtils.isNotBlank(authCode) && !authCode.equals(rightAuthCode)) {
+//                    throw new StoreSystemException("验证码不正确");
+//                }
+//            }
             ClientUserOnLogin clientUserOnLogin = userService.login(loginUser, authCode);
 //            if (!WebPermissionUtil.hasSchoolLoginPermission(userService.getUserPermissions(clientUserOnLogin.getId()))) {
 //                clientUserOnLogin.setAdmin(false);
