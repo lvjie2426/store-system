@@ -740,16 +740,15 @@
         layer.open({
             type: 1,
             shade: 0.01,
-            title: false,
+            title: title,
             skin: 'content-view-setPay-tan content-view-submit', //样式类名
             anim: 0,
             area: ['370px', '460px'],
             closeBtn: 0, //不显示关闭按钮
             resize: false,
             shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-setPay'), //容器对象
             btn: ['关闭'],
-            content: '<h3 style="line-heigth:40px;text-align:center;width:100%;">'+title+'</h1><p style="word-wrap:break-word;width: 100%;padding:10px 15px;box-sizing:border-box;">' +value+ '</p>' //这里content是一个普通的String
+            content: '<p style="word-wrap:break-word;width: 100%;padding:10px 15px;box-sizing:border-box;">' +value+ '</p>' //这里content是一个普通的String
         });
     }
 
