@@ -715,6 +715,25 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    public ClientProductCategory searchSpu(String name) throws Exception {
+        ClientProductCategory clientProductCategory=new ClientProductCategory();
+        List<ProductCategory> allList = productCategoryDao.getAllList(ProductCategory.status_nomore);
+        Map<String,List<ClientProductSPU>> map=new HashMap<>();
+        for(ProductCategory li:allList){
+
+            String sql="select * from product_spu where name like'%"+name+"%'";
+            sql = sql+" and cid="+li.getId();
+            List<ProductSPU> query = this.jdbcTemplate.query(sql, spuRowMapper);
+            if(query.size()>0){
+                map.put(li.getName(),transformClients(query));
+            }
+
+        }
+        clientProductCategory.setMap(map);
+        return clientProductCategory;
+    }
+
     public List<ClientCommission> transformClients(List<Commission> list, long cid) {
 
         List<ClientCommission> clientCommissionList = new ArrayList<>();

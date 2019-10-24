@@ -5,6 +5,7 @@ import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class ClientMission extends Mission{
@@ -13,7 +14,7 @@ public class ClientMission extends Mission{
 
     private int allAmount;//任务总量
 
-    private List<Personal> PersonalList;
+    private Map<Object,List<Personal>> PersonalList;
 
     public ClientMission(){}
     public ClientMission(Mission mission) {
