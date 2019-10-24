@@ -685,25 +685,64 @@
                     <div class="goods-select">
                         <div class="goods-select-title">零售价</div>
                         <div class="selectBox">
-                            <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].retailPrice){%>
-                            <input type="text" placeholder="零售价" value="<%=list.skuJson[0].retailPrice%>" class="yj-input" id="yj-add-retailPrice">
-                            <%}else{%>
-                            <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice">
+                            <%if(list.categoryName == '镜架'){%>
+                                <%if(list.properties && list.properties[19]){%>
+                                    <input type="text" placeholder="零售价" value="<%=list.properties[19]/100%>" class="yj-input" id="yj-add-retailPrice" data-pnid="19">
+                                <%}else{%>
+                                    <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="19">
+                                <%}%>
+                            <%}else if(list.categoryName == '太阳镜'){%>
+                                <%if(list.properties && list.properties[21]){%>
+                                    <input type="text" placeholder="零售价" value="<%=list.properties[21]/100%>" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                <%}else{%>
+                                    <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                <%}%>
+                            <%}else if(list.categoryName == '其他商品'){%>
+                                <%if(list.properties && list.properties[21]){%>
+                                    <input type="text" placeholder="零售价" value="<%=list.properties[21]/100%>" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                <%}else{%>
+                                    <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                <%}%>
+                            <%}else if(list.categoryName == '护理产品'){%>
+                                <%if(list.properties && list.properties[21]){%>
+                                <input type="text" placeholder="零售价" value="<%=list.properties[21]/100%>" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                <%}else{%>
+                                <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                <%}%>
                             <%}%>
                         </div>
                     </div>
                     <div class="goods-select">
                         <div class="goods-select-title">成本价</div>
                         <div class="selectBox">
-                            <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].costPrice){%>
-                            <input type="text" placeholder="成本价" value="<%=list.skuJson[0].retailPrice%>" class="yj-input" id="yj-add-costPrice">
-                            <%}else{%>
-                            <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice">
+                            <%if(list.categoryName == '镜架'){%>
+                                <%if(list.properties && list.properties[20]){%>
+                                    <input type="text" placeholder="成本价" value="<%=list.properties[20]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="20">
+                                <%}else{%>
+                                    <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="20">
+                                <%}%>
+                            <%}else if(list.categoryName == '太阳镜'){%>
+                                <%if(list.properties && list.properties[22]){%>
+                                    <input type="text" placeholder="成本价" value="<%=list.properties[22]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <%}else{%>
+                                    <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <%}%>
+                            <%}else if(list.categoryName == '其他商品'){%>
+                                <%if(list.properties && list.properties[22]){%>
+                                <input type="text" placeholder="成本价" value="<%=list.properties[22]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <%}else{%>
+                                <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <%}%>
+                            <%}else if(list.categoryName == '护理产品'){%>
+                                <%if(list.properties && list.properties[22]){%>
+                                <input type="text" placeholder="成本价" value="<%=list.properties[22]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <%}else{%>
+                                <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <%}%>
                             <%}%>
                         </div>
                     </div>
                     <%}%>
-
                     <div class="goods-select goods-range">
                         <div class="goods-select-title">提成</div>
                         <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
@@ -1654,6 +1693,7 @@
                 },
                 btn2: function(){
                     params[cid].skuJson = [];
+                    console.log(params[cid].skuJson);
                     for(var i in momentPriceData){
                         if(momentPriceData[i].eyeTypeArr){
                             for(var j=0;j<momentPriceData[i].eyeTypeArr.length;j++){
@@ -1668,6 +1708,7 @@
                             }
                         }
                     }
+                    console.log(params[cid].skuJson);
                     momentPriceData = {};
                 },
                 success: function(layero, index){
@@ -1702,16 +1743,25 @@
                     layer.close(index)
                 },
                 btn2: function(){
+                    //个数预警
                     var nowRemind = $('#nowRemind').val();
+                    //百分比预警
                     var totalRemind = $('#totalRemind').val();
                     if(nowRemind){
                         gStockWarn.nowRemind = nowRemind;
                     }
                     if(totalRemind){
-                        gStockWarn.nowRemind = nowRemind;
+                        gStockWarn.totalRemind = totalRemind;
                     }
                 },
                 success: function(layero, index){
+                    if(gStockWarn.nowRemind){
+                        $('#nowRemind').val(gStockWarn.nowRemind);
+                    }
+                    if(gStockWarn.totalRemind){
+                        $('#totalRemind').val(gStockWarn.totalRemind);
+                    }
+
                 }
             });
         }
@@ -1756,7 +1806,7 @@
                         });
                     }
                     params[cid].commissionJson = [];
-                    if(!groupFlag){
+                    /*if(!groupFlag){
                         for(var i in commissionJson){
                             if(commissionJson[i]){
                                 commissionJson[i].price = '';
@@ -1769,7 +1819,7 @@
                                 commissionJson[i].users = '';
                             }
                         }
-                    }
+                    }*/
                     for(var i in commissionJson){
                         if(commissionJson[i] && (commissionJson[i].users || commissionJson[i].price)){
                             params[cid].commissionJson.push(commissionJson[i]);
@@ -2389,7 +2439,17 @@
                     nowParam.sid=0;
                 }
             }
-            nowParam.nowRemind = $("#yj-add-kucun").val();
+            //预警库存
+            if(cid===1){
+                if(gStockWarn.nowRemind){
+                    nowParam.nowRemind = gStockWarn.nowRemind;
+                }
+                if(gStockWarn.totalRemind){
+                    nowParam.totalRemind = gStockWarn.totalRemind;
+                }
+            }else{
+                nowParam.nowRemind = $("#yj-add-kucun").val();
+            }
             //销售状态  0开启  1关闭
             if($('#yj-add-status').hasClass('active')){
                 nowParam.saleStatus = 0;
@@ -2419,8 +2479,8 @@
                         // nowParam.skuJson[0].code = $('#yj-add-code-1').val();
                         nowParam.skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
                     }else{
-                        nowParam.skuJson[0].retailPrice = $('#yj-add-retailPrice').val();
-                        nowParam.skuJson[0].costPrice = $('#yj-add-costPrice').val();
+                        nowParam.properties[config.jingjiaRealPriceId] = $('#yj-add-retailPrice').val();
+                        nowParam.properties[config.jingjiaCostPriceId] = $('#yj-add-costPrice').val();
                         // nowParam.skuJson[0].code = $('#yj-add-code').val();
                     }
                 }else{
@@ -2480,6 +2540,7 @@
 
                 quakooData.ajaxGetData(config.getUrl_product_change(),nowParam,function (ret) {
                     if(ret.success){
+                        gStockWarn = {};//清空预警
                         layer.msg('修改成功',{icon: 1})
                         layer.close(index)
                         chooseGoodsType();
@@ -2490,10 +2551,12 @@
                 })
             }else{
                 nowParam.skuJson = JSON.stringify(nowParam.skuJson);
+                nowParam.commissionJson = JSON.stringify(nowParam.commissionJson);
                 nowParam.nowRangesJson = JSON.stringify(nowParam.nowRangesJson);
                 nowParam.rangesJson = JSON.stringify(nowParam.rangesJson);
                 quakooData.ajaxGetData(config.getUrl_product_add(),nowParam,function (ret) {
                     if(ret.success){
+                        gStockWarn = {};//清空预警
                         layer.msg('添加成功',{icon: 1});
                         layer.close(index);
                         chooseGoodsType();
