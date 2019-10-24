@@ -342,7 +342,7 @@ public class WebUserController extends BaseController {
 
         try {
             pager= userService.getAllStaffUserBySid(pager,sid);
-            return this.viewNegotiating(request, response,new PagerResult<>(pager));
+            return this.viewNegotiating(request, response,pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(e.getMessage()));
         }

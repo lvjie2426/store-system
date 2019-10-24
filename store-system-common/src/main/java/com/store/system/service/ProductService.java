@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.store.system.client.ClientProductCategory;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.model.ProductSKU;
@@ -50,4 +51,7 @@ public interface ProductService {
     public Pager getSPUNoNirNumPager(Pager pager, long subid)throws Exception;
 
     public Pager getCommSpu(Pager pager,long subid, long cid)throws Exception;
+
+    // 用于按照name搜索商品
+    public ClientProductCategory searchSpu(String name)throws Exception;
 }

@@ -2,14 +2,18 @@ package com.store.system.client;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @program: store-system
- * @description:
+ * @description: 用于返回数据
  * @author: zhangmeng
  * @create: 2019-10-22 11:11
  **/
 @Data
 public class Personal {
+
+    private long sid;
 
     private String uName;//员工name
 

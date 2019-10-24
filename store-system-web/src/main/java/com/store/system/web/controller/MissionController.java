@@ -57,19 +57,9 @@ public class MissionController extends BaseController {
     private OrderService orderService;
 
     @RequestMapping("/add")
-    public ModelAndView add(Mission mission, String executorJson, String skuIdsJson,
+    public ModelAndView add(Mission mission,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            List<Long> ids = Lists.newArrayList();
-            List<Long> skuIds = Lists.newArrayList();
-            if(StringUtils.isNotBlank(executorJson)) {
-                ids = JsonUtils.fromJson(executorJson, new TypeReference<List<Long>>() {});
-            }
-            if(StringUtils.isNotBlank(skuIdsJson)) {
-                skuIds = JsonUtils.fromJson(skuIdsJson, new TypeReference<List<Long>>() {});
-            }
-            mission.setExecutor(ids);
-            mission.setSkuIds(skuIds);
             Mission missionEntity = missionService.insert(mission);
             return this.viewNegotiating(request,response, new ResultClient(true, missionEntity));
         } catch (StoreSystemException e) {
