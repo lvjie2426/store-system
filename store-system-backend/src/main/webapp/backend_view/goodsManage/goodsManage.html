@@ -141,12 +141,12 @@
             <form class="layui-form" action="">
                 <div class="layui-form-item" pane="">
                     <div class="layui-input-block yj-check-input">
-                        <input type="checkbox" name="" lay-filter="kucun" lay-skin="primary" title="当现货库存为0的产品达到<input readonly='' class='yj-input' placeholder='数量'>个提醒" >
+                        <input type="checkbox" name="" lay-filter="stockWarn" lay-skin="primary" title="当现货库存为0的产品达到<input class='yj-input' id='nowRemind' placeholder='数量'>个提醒" >
                     </div>
                 </div>
                 <div class="layui-form-item" pane="">
                     <div class="layui-input-block yj-check-input">
-                        <input type="checkbox" name="" lay-filter="kucun" lay-skin="primary" title="当总库存少于备货量百分之<input readonly='' class='yj-input' placeholder='数量'>提醒" >
+                        <input type="checkbox" name="" lay-filter="stockWarn" lay-skin="primary" title="当总库存少于备货量百分之<input class='yj-input' id='totalRemind' placeholder='数量'>提醒" >
                     </div>
                 </div>
             </form>
@@ -921,6 +921,8 @@
         var params = {};//添加商品所需要的参数  key  类目id；value：所需参数
         var updateParams;//当前被编辑的数据
 
+        var gStockWarn = {};//预警库存
+
         var columns;        //其它商品的表格
         var columnsTeshu;   //特殊商品的表格
         var $table =  $('#yj-table');//商品列表表格
@@ -947,7 +949,6 @@
                     paginationLoop:false,
                     columns:columns,
                     queryParams:function (param) {
-                        console.log('表格参数param',param)
                         if(cid){param.cid = cid;}
                         if(bid){param.bid = bid;}
                         if(pid){param.pid = pid;}
@@ -1653,7 +1654,6 @@
                 },
                 btn2: function(){
                     params[cid].skuJson = [];
-                    console.log('momentPriceData',momentPriceData);
                     for(var i in momentPriceData){
                         if(momentPriceData[i].eyeTypeArr){
                             for(var j=0;j<momentPriceData[i].eyeTypeArr.length;j++){
@@ -1670,9 +1670,7 @@
                     }
                     momentPriceData = {};
                 },
-
                 success: function(layero, index){
-                    console.log(111,params[cid].skuJson);
                     if(params[cid] && params[cid].skuJson){
                         for(var i=0;i<params[cid].skuJson.length;i++){
                             if(momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]]){
@@ -1683,7 +1681,6 @@
                             }
                         }
                     }
-                    console.log('momentPriceData2',momentPriceData);
                     $('.layui-layer-view-price .layui-layer-btn').append('<div class="view-price-add"><input class="yj-input" placeholder="输入数量" type="number" id="numInput"><button class="btn btn-primary" onclick="numInputBtn('+type+')">键入</button></div>')
                     setPrice(type)
                 }
@@ -1695,7 +1692,7 @@
                 type: 1,shade: 0.01,title:"设置预警库存",
                 skin: 'layui-layer-yj layui-layer-yujing', //样式类名
                 anim: 0,
-                area:['360px','188px'],
+                area:['360px','200px'],
                 closeBtn: 0, //不显示关闭按钮
                 resize:false,
                 shadeClose: true, //开启遮罩关闭
@@ -1705,10 +1702,16 @@
                     layer.close(index)
                 },
                 btn2: function(){
-                    return false;
+                    var nowRemind = $('#nowRemind').val();
+                    var totalRemind = $('#totalRemind').val();
+                    if(nowRemind){
+                        gStockWarn.nowRemind = nowRemind;
+                    }
+                    if(totalRemind){
+                        gStockWarn.nowRemind = nowRemind;
+                    }
                 },
                 success: function(layero, index){
-
                 }
             });
         }
@@ -1775,13 +1778,11 @@
                     commissionJson = {};
                 },
                 success: function(layero, index){
-                    console.log("shuju",params[cid].commissionJson);
                     if(params[cid] && params[cid].commissionJson){
                         for(var i=0;i<params[cid].commissionJson.length;i++){
                             commissionJson[params[cid].commissionJson[i].subId] = params[cid].commissionJson[i];
                         }
                     }
-                    console.log("模版",commissionJson);
                     $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,commissionJson:commissionJson,group:groupFlag,personal:personalFlag}));
                     layui.use('form', function(){
                         var form = layui.form;
@@ -1818,7 +1819,6 @@
             var range = {};     //定制
             var nowRange = {};  //现货
             //现货数据
-            console.log('1',params[cid].nowRangesJson);
             if(params[cid] && params[cid].nowRangesJson){
                 for(var i=0;i<params[cid].nowRangesJson.length;i++){
                     nowRange[params[cid].nowRangesJson[i].ballId+''+params[cid].nowRangesJson[i].columnId] = params[cid].nowRangesJson[i];
@@ -1841,7 +1841,6 @@
             cols.push({field:'num', minWidth:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
 
             $('#setPriceBtn li').eq(type-1).addClass('active').siblings().removeClass('active');
-
             for(var i=0;i<ballData.length;i++){
                 (function (i) {
                     cols.push({field: '', minWidth: 60, title: ballData[i].content, unresize: true,
@@ -1949,8 +1948,6 @@
                 });
                 //监听单元格事件
                 /*table.on('edit(priceEvent)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                    console.log(obj)
-                    console.log(this)
                     if(type==1){
                         if(!quakooUtils.isNum(obj.value)){
                             layer.msg('产品编码必须为数字');
@@ -2050,9 +2047,6 @@
                         }
                     }
 
-                    // console.log(obj.value); //得到修改后的值
-                    // console.log(obj.field); //当前编辑的字段名
-                    // console.log(obj.data); //所在行的所有相关数据
                 });*/
                 initTableDragInput(type)
             });
@@ -2113,8 +2107,6 @@
                         var dom = $("#priceEvent").next().find('.layui-table-body tbody tr').eq(i).find('td').eq(j).find('div div');
                         if(type==5 || type==6){
                             var ballId = $(dom).attr('data-ballId');
-                            console.log(11,$(dom).attr('data-ballId'))
-                            console.log(22,$(dom).attr('data-columnId'))
                             var columnId = $(dom).attr('data-columnId');
                             if(dom.hasClass('ico_check')){
                                 momentPriceData[ballId+''+columnId].eyeTypeArr.remove(type-4);
@@ -2283,8 +2275,6 @@
                 typeData:typeData,zhouqiData:zhouqiData,baozhuangData:baozhuangData,
                 type10Data:type10Data,baozhuang11Data:baozhuang11Data
             };
-            console.log("paramsData",params);
-            console.log("新增商品弹窗数据",data);
             var html = template('addGoodsTmp',data);
             document.getElementById('addGoodsDom').innerHTML = html;
             layui.use('form', function(){
@@ -2488,7 +2478,6 @@
                 nowParam.updateSkuJson = JSON.stringify(nowParam.updateSkuJson);
                 nowParam.delSkuIdJson = JSON.stringify(nowParam.delSkuIdJson);
 
-                console.log(nowParam)
                 quakooData.ajaxGetData(config.getUrl_product_change(),nowParam,function (ret) {
                     if(ret.success){
                         layer.msg('修改成功',{icon: 1})
@@ -2503,14 +2492,13 @@
                 nowParam.skuJson = JSON.stringify(nowParam.skuJson);
                 nowParam.nowRangesJson = JSON.stringify(nowParam.nowRangesJson);
                 nowParam.rangesJson = JSON.stringify(nowParam.rangesJson);
-                console.log(nowParam)
                 quakooData.ajaxGetData(config.getUrl_product_add(),nowParam,function (ret) {
                     if(ret.success){
-                        layer.msg('添加成功',{icon: 1})
-                        layer.close(index)
+                        layer.msg('添加成功',{icon: 1});
+                        layer.close(index);
                         chooseGoodsType();
                     }else{
-                        layer.msg(ret.data,{icon: 2})
+                        layer.msg(ret.data,{icon: 2});
                     }
                 })
             }
@@ -2526,6 +2514,8 @@
                 $('#cover').parent().show();
             })
         }
+        var i;
+
         //设置供应商图片
         function setSupIcon() {
             quakooImg.open(function (data) {
@@ -2608,6 +2598,7 @@
                 param.properties[config.qiuId] = ballId;
                 param.properties[config.zhuId] = columnId;
                 param[str] = self.value;
+                param.eyeTypeArr = [];
                 momentPriceData[ballId+''+columnId] = param;
             }
         }

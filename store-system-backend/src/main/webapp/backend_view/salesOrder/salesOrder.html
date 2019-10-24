@@ -2003,7 +2003,6 @@
     /**渲染顾客信息*/
     function renderCusInfo(){
         var data = {list:cusLocInfo};
-        console.log("顾客模版数据",data);
         var html = template("cusBasicTmp",data);
         var memHtml = template("memberTmp",data);
         $("#cusBasicUl").html(html);
@@ -2436,7 +2435,6 @@
                                         param.name = searchWord;
                                     }
                                     quakooData.ajaxGetData(config.getUrl_user_searchUserList(),param,function(ret){
-                                        console.log("马总",ret);
                                         if(ret&&ret.success){
                                             if(quakooUtils.isNotBlack(ret.data)){
                                                 thisPhone = ret.data[0].phone
@@ -2571,7 +2569,6 @@
 
     /**回显顾客信息*/
     function showCus(data) {
-            console.log("顾客信息",data);
         if (quakooUtils.isNotBlack(data)) {//渲染
             cusId = data.id;
             cusPhone = data.phone;
@@ -2745,7 +2742,6 @@
         var day = time.substring(8, 10);
         var hour = time.substring(time.length - 5, time.length - 3);
         param.optTime = new Date(year, month, day, hour).getTime();
-        console.log(time,"&&",param.optTime);
         return;
         if (quakooUtils.isBlack(cusLocInfo.id)) {
             layer.msg("请完善注册用户信息");
@@ -2840,7 +2836,6 @@
         quakooData.ajaxGetData(config.getUrl_optometryinfo_getList(), param, function (ret) {
             if (ret && ret.success) {
                 if(quakooUtils.isNotBlack(ret.data)){
-                    console.log("获取验光信息",ret.data);
                     //tab切换
                     var html = "";
                     var data = [];
@@ -3296,7 +3291,6 @@
             obj.price = num;
             locShopCart.valueCard = [];
             locShopCart.valueCard.push(obj);
-            console.log(locShopCart)
             countOrder();
             layer.close(index);
         }
@@ -3343,7 +3337,6 @@
     }
     /**渲染表格数据*/
     function renderList(){
-        console.log("本地订单数据",locShopCart);
         var data = {list:locShopCart};
         var html = template("orderFormList",data);
         $("#orderForm").html(html);
@@ -3868,7 +3861,6 @@
                 for(var i in ret.data){
                     locMember[i] = ret.data[i];
                 }
-                console.log("会员信息",locMember)
             }
         })
     }
@@ -3892,7 +3884,6 @@
                         }
 /*
                         quakooData.ajaxGetData(config.getUrl_marketingcoupon_calculateMoney(),{mcId:ret.value,num:locShopCart.goodsNumber,money:locShopCart.dicountPrice},function(ret){
-                            console.log("cuxiaojianmian",ret)
                         })
 */
                     });
@@ -3992,7 +3983,6 @@
         if(quakooUtils.isNotBlack(locShopCart.machinistId)){
             params.machinistId = locShopCart.machinistId;
         }
-        console.log("params",params);
         if(quakooUtils.isNotBlack(ygInfo.now.id)){
             params.oiId = ygInfo.now.id;
         }
@@ -4313,7 +4303,6 @@
                 var dom = document.getElementById("noPickUp");
                 dom.addEventListener('click',function(e){
                    var target = e.target;
-                   console.log(target);
                    var flag = false;
                    if($(target).prop("checked") == true||$(target).attr("checked") == true){
                        flag = true;
@@ -4357,7 +4346,6 @@
     /**获取订单详情*/
     function getOrderInfo(orderId){
         quakooData.ajaxGetData(config.getUrl_order_loadOrder(),{id:orderId},function (ret) {
-            console.log("订单详情",ret);
         })
     }
     /**线上付款*/
@@ -4520,7 +4508,6 @@
             params.otherStored = price;
         }
         quakooData.ajaxGetData(config.getUrl_businessOrder_settlementPay(),params,function (ret){
-            console.log("金额计算",ret);
             if(ret&&ret.success){
                 if(ret.data.ali){
                     settlementList.ali.money = ret.data.ali;
@@ -4662,9 +4649,7 @@
             params.makeStatus = 1;
         }
         params.desc = settlementList.desc;
-        console.log("参数测试",params)
         quakooData.ajaxGetData(config.getUrl_businessOrder_settlementOrder(),params,function (ret) {
-            console.log("结算并打印小票",ret);
             return;
             if(ret && ret.success){
                 if(ret.data){
