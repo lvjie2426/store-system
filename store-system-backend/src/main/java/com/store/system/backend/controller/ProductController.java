@@ -385,4 +385,19 @@ public class ProductController extends BaseController {
         }
     }
 
+    // 搜索商品  按照spu的name 分类返回
+    @RequestMapping("/searchSpu")
+    public ModelAndView searchSpu(@RequestParam(value = "name") String name,
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            if(StringUtils.isBlank(name)){
+                throw new StoreSystemException("搜索字段不能为空");
+            }
+
+            return this.viewNegotiating(request, response, new ResultClient(productService.searchSpu(name)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
 }

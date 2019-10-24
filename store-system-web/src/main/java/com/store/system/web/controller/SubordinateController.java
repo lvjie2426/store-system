@@ -37,12 +37,12 @@ public class SubordinateController extends BaseController {
     private SubordinateService subordinateService;
 
     @RequestMapping("/getSubordinateStore")
-    public ModelAndView getSubordinateStore(HttpServletRequest request, HttpServletResponse response,
-                                            long sid,Pager pager,
+    public ModelAndView     getSubordinateStore(HttpServletRequest request, HttpServletResponse response,
+                                            long sid,
                                             Model model) throws Exception {
         try {
-             pager= subordinateService.getWebTwoLevelAllList(pager,sid);
-            return this.viewNegotiating(request,response,pager.toModelAttribute());
+            List<ClientSubordinate> list= subordinateService.getTwoLevelAllList(sid);
+            return this.viewNegotiating(request,response,new ResultClient(true,list));
         }catch (StoreSystemException e){
             return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }

@@ -22,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MissionServiceImpl implements MissionService {
@@ -56,7 +53,6 @@ public class MissionServiceImpl implements MissionService {
     @Override
     @Transactional
     public Mission insert(Mission mission) throws Exception {
-        mission.setStartTime(System.currentTimeMillis());
         mission = missionDao.insert(mission);
         if (mission.getType() == Mission.type_tem) {
             //团队任务
@@ -187,11 +183,13 @@ public class MissionServiceImpl implements MissionService {
         map.put("list", clientList);
         map.put("money", money);
         return map;
-    } @Override
+    }
 
-    public Map<String, Object> getAllMissionApp(long sid,Date date) throws Exception {
-        long end= DateUtils.getMonthEnd(date);
-        long start=DateUtils.getMonthBegin(date);
+    @Override
+
+    public Map<String, Object> getAllMissionApp(long sid, Date date) throws Exception {
+        long end = DateUtils.getMonthEnd(date);
+        long start = DateUtils.getMonthBegin(date);
         Map<String, Object> map = Maps.newHashMap();
         String sql = "SELECT * FROM `mission` where sid = " + sid + " AND status = " + Mission.status_yes;
         sql = sql + " and `ctime` <" + end + " and `ctime` >" + start;
@@ -210,8 +208,8 @@ public class MissionServiceImpl implements MissionService {
     //检查当前订单满足那些任务的完成条件并返回任务
     @Override
     public List<Mission> checkMission(long skuId, long sid, long subid, long uid) throws Exception {
-        String sql = "SELECT * FROM `mission` where sid = " + sid+" and `endTime` > " +System.currentTimeMillis();
-        sql=sql+" and `startTime` <" +System.currentTimeMillis() +" and missionStatus = "+Mission.missionStatus_nofinish;
+        String sql = "SELECT * FROM `mission` where sid = " + sid + " and `endTime` > " + System.currentTimeMillis();
+        sql = sql + " and `startTime` <" + System.currentTimeMillis() + " and missionStatus = " + Mission.missionStatus_nofinish;
         sql = sql + " order  by `ctime` desc";
         List<Mission> missions = this.jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<Mission>(Mission.class));
         List<Mission> res = Lists.newArrayList();
@@ -303,25 +301,25 @@ public class MissionServiceImpl implements MissionService {
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<Mission> missions = jdbcTemplate.query(sql, new RowMapperHelp<Mission>(Mission.class));
-        List<ClientMission> clientMissionPoolList=new ArrayList<>();
-        for(Mission mission:missions){
-            UserMissionPool userMissionPool=new UserMissionPool();
+        List<ClientMission> clientMissionPoolList = new ArrayList<>();
+        for (Mission mission : missions) {
+            UserMissionPool userMissionPool = new UserMissionPool();
             userMissionPool.setMid(mission.getId());
             userMissionPool.setUid(user.getId());
             UserMissionPool userMissionPoolDaoList = userMissionPoolDao.load(userMissionPool);
-            if(userMissionPoolDaoList!=null){
-                ClientMission clientMission=new ClientMission(mission);
+            if (userMissionPoolDaoList != null) {
+                ClientMission clientMission = new ClientMission(mission);
                 clientMission.setAllAmount(userMissionPoolDaoList.getNumber());
                 clientMission.setAllProgress(userMissionPoolDaoList.getProgress());
                 clientMissionPoolList.add(clientMission);
             }
 
-            SubordinateMissionPool subordinateMissionPool=new SubordinateMissionPool();
+            SubordinateMissionPool subordinateMissionPool = new SubordinateMissionPool();
             subordinateMissionPool.setMid(mission.getId());
             subordinateMissionPool.setSid(user.getSid());
             SubordinateMissionPool subordinateMissionPoolDaoList = subordinateMissionPoolDao.load(subordinateMissionPool);
-            if(subordinateMissionPoolDaoList!=null){
-                ClientMission clientMission=new ClientMission(mission);
+            if (subordinateMissionPoolDaoList != null) {
+                ClientMission clientMission = new ClientMission(mission);
                 clientMission.setAllAmount(subordinateMissionPoolDaoList.getNumber());
                 clientMission.setAllProgress(subordinateMissionPoolDaoList.getProgress());
                 clientMissionPoolList.add(clientMission);
@@ -336,7 +334,7 @@ public class MissionServiceImpl implements MissionService {
         ClientMission clientMission = new ClientMission(mission);
         int allProgress = 0;
         int allAmount = 0;
-        List<Personal> list=new ArrayList<>();
+        List<Personal> list = new ArrayList<>();
 
         if (mission.getType() == Mission.type_tem) {
             //团队任务 需要先查询门店下的所有sku 然后进行统计
@@ -346,10 +344,10 @@ public class MissionServiceImpl implements MissionService {
                 subordinateMissionPool.setSid(id);
                 subordinateMissionPool.setMid(mission.getId());
                 subordinateMissionPool = subordinateMissionPoolDao.load(subordinateMissionPool);
-                Personal personal=new Personal();
+                Personal personal = new Personal();
                 if (subordinateMissionPool != null) {
                     Subordinate subordinate = subordinateDao.load(subordinateMissionPool.getSid());
-                    personal.setSName(subordinate!=null?subordinate.getName():"");
+                    personal.setSName(subordinate != null ? subordinate.getName() : "");
                     if (mission.getAmountType() == Mission.amountType_number) {
                         allAmount += subordinateMissionPool.getNumber();//总数量
                         personal.setNumber(subordinateMissionPool.getNumber());
@@ -362,12 +360,14 @@ public class MissionServiceImpl implements MissionService {
             allProgress += getProgress(allAmount, mission.getTarget());//完成度 当前完成数量/目标数量
         } else {
             //个人任务
+
             for (Long id : clientMission.getExecutor()) {
+
                 UserMissionPool userMissionPool = new UserMissionPool();
                 userMissionPool.setMid(mission.getId());
                 userMissionPool.setUid(id);
                 userMissionPool = userMissionPoolDao.load(userMissionPool);
-                Personal personal=new Personal();
+                Personal personal = new Personal();
                 if (userMissionPool != null) {
                     if (mission.getAmountType() == Mission.amountType_number) {
                         personal.setNumber(userMissionPool.getNumber());
@@ -379,19 +379,36 @@ public class MissionServiceImpl implements MissionService {
                 }
                 // 插入个人完成情况
                 User load = userDao.load(id);
-                personal.setUName(load!=null?load.getName():"");
-                if(load!=null){
+                personal.setSid(load != null ? load.getSid() : 0);
+                personal.setUName(load != null ? load.getName() : "");
+                if (load != null) {
                     Subordinate subordinate = subordinateDao.load(load.getSid());
-                    personal.setSName(subordinate!=null?subordinate.getName():"");
+                    personal.setSName(subordinate != null ? subordinate.getName() : "");
                 }
                 list.add(personal);
             }
             allProgress += getProgress(allAmount, mission.getTarget());//完成度 当前完成数量/目标数量
         }
-        clientMission.setPersonalList(list);
+        // 更改结构 按照店铺分类
+        Map map = listToMap(list);
+        clientMission.setPersonalList(map);
         clientMission.setAllProgress(allProgress);  //完成度
         clientMission.setAllAmount(allAmount);      //完成量
         return clientMission;
+    }
+
+    private Map listToMap(List<Personal> list) {
+        Map<Object, List<Personal>> map = new HashMap();
+        for (Personal li : list) {
+            if (map.containsKey(li.getSid())) {
+                map.get(li.getSid()).add(li);
+            } else {
+                List<Personal> listP = new ArrayList<>();
+                listP.add(li);
+                map.put(li.getSid(), listP);
+            }
+        }
+        return map;
     }
 
     private List<ClientMission> transformClient(List<Mission> mission) throws Exception {

@@ -720,15 +720,36 @@
                     {field: "wxOrderNotifyUrl", width:"150",title: "微信订单通知路径", valign:"middle"},
                     {field: "aliPid", width:"150",title: "支付宝合作伙伴帐号", valign:"middle"},
                     {field: "aliAppid", width:"150",title: "支付宝合作应用ID", valign:"middle"},
-                    {field: "aliPrivateKey", width:"150",title: "阿里私钥", valign:"middle"},
-                    {field: "aliPublicKey", width:"150",title: "阿里公钥", valign:"middle"},
+                    {field: "aliPrivateKey", width:"150",title: "阿里私钥", valign:"middle",formatter:function(value,row,index){
+                        console.log(row);
+                        return '<span class="btn btn-info" onclick=\'toast1("'+value+'","阿里秘钥")\'>查看秘钥</span>'
+                    }},
+                    {field: "aliPublicKey", width:"150",title: "阿里公钥", valign:"middle",formatter:function(value,row,index){
+                        return '<span class="btn btn-info" onclick=\'toast1("'+value+'","阿里公钥")\'>查看公钥</span>'
+                    }},
                     {field: "aliOrderNotifyUrl", width:"150",title: "阿里回调地址", valign:"middle"},
                     {field: "", title: "操作",width:"70", valign:"middle",formatter: function (value, row, index) {
                             return '<button class="btn btn-info" type="button" onclick=\'setPay('+JSON.stringify(row)+')\'>编辑</button>';
-                        }},
+                    }},
                 ],
             });
         })
+    }
+
+    function toast1(value,title) {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: title,
+            skin: 'content-view-setPay-tan content-view-submit', //样式类名
+            anim: 0,
+            area: ['370px', '460px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            btn: ['关闭'],
+            content: '<p style="word-wrap:break-word;width: 100%;padding:10px 15px;box-sizing:border-box;">' +value+ '</p>' //这里content是一个普通的String
+        });
     }
 
     /**接口——获取当前公司信息*/
