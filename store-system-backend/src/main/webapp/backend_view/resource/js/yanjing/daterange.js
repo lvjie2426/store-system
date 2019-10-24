@@ -4,7 +4,6 @@ function dateRange(dom,fixed) {
     this.checkStart = '';  //确定的开始日期
     this.checkEnd = '';  //确定的结束日期
     this.showYear = new Date().getFullYear();  //开始日期的年数
-    this.showYear = new Date().getFullYear();  //开始日期的年数
     this.showMonth = new Date().getMonth() + 1;//开始日期的月数
     this.showDays = new Date().getDate();      //开始日期的天数
     this.showYearEnd = new Date(this.showYear,this.showMonth,this.showDays).getFullYear();      //结束日期的年数

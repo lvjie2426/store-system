@@ -269,9 +269,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <%for(var i=0;i< list.skuids.length;i++){%>
+                    <%for(var i=0;i< list.skuList.length;i++){%>
                     <tr>
-                        <td><%=list.skuids[i].code%>
+                        <td><%=list.skuList[i].code%>
                             <!--<span class="sign-btn">定制商品</span>
                             <div class="selectBox small-select selectBatch" id="selectBatch">
                                 <div class="select-box-header">
@@ -286,17 +286,17 @@
                                 </div>
                             </div>-->
                         </td>
-                        <td><%=list.skuids[i].num%></td>
-                        <td>￥<%=list.skuids[i].price%></td>
+                        <td><%=list.skuList[i].num%></td>
+                        <td>￥<%=list.skuList[i].price%></td>
                         <td>
-                            <input type="number" class="discount" readonly="readonly" value="<%=list.skuids[i].discount%>" placeholder="10.0">
+                            <input type="number" class="discount" readonly="readonly" value="<%=list.skuList[i].discount%>" placeholder="10.0">
                         </td>
-                        <td>￥<%=list.skuids[i].subtotal%></td>
-                        <%if(list.skuids[i].qualityType==1){%>
+                        <td>￥<%=list.skuList[i].subtotal%></td>
+                        <%if(list.skuList[i].qualityType==1){%>
                         <td><i class="indate indate-danger"></i>过期</td>
-                        <%}else if(list.skuids[i].qualityType==2){%>
+                        <%}else if(list.skuList[i].qualityType==2){%>
                         <td><i class="indate indate-going"></i>保修中</td>
-                        <%}else if(list.skuids[i].qualityType==3){%>
+                        <%}else if(list.skuList[i].qualityType==3){%>
                         <td><i class="indate indate-renew"></i>换新</td>
                         <%}else{%>
                         <td><i class="indate"></i>-</td>
@@ -304,8 +304,8 @@
                         <%if(type==1){%>
                         <td>
                             <span class="change" onclick="change()">更换</span>
-                            <span class="sales-return" onclick="salesReturn('<%=list.skuids[i].skuid%>')">退货</span>
-                            <span class="breakage" onclick="breakage('<%=list.skuids[i].skuid%>')">报损</span>
+                            <span class="sales-return" onclick="salesReturn('<%=list.skuList[i].skuid%>')">退货</span>
+                            <span class="breakage" onclick="breakage('<%=list.skuList[i].skuid%>')">报损</span>
                         </td>
                         <%}%>
                     </tr>
