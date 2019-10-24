@@ -153,7 +153,7 @@
                 </li>
                 <li class="info-item">
                     <button type="button">年龄</button>
-                    <span><%=list.uname%></span>
+                    <span><%=list.uAge%></span>
                 </li>
                 <li class="info-item">
                     <button type="button">联系方式</button>
@@ -242,9 +242,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <%for(var i=0;i< list.skuids.length;i++){%>
+                    <%for(var i=0;i< list.skuList.length;i++){%>
                     <tr>
-                        <td><%=list.skuids[i].code%>
+                        <td><%=list.skuList[i].code%>
                             <!--<span class="sign-btn">定制商品</span>
                             <div class="selectBox small-select selectBatch" id="selectBatch">
                                 <div class="select-box-header">
@@ -259,17 +259,17 @@
                                 </div>
                             </div>-->
                         </td>
-                        <td><%=list.skuids[i].num%></td>
-                        <td>￥<%=list.skuids[i].price%></td>
+                        <td><%=list.skuList[i].num%></td>
+                        <td>￥<%=list.skuList[i].price%></td>
                         <td>
-                            <input type="number" class="discount" readonly="readonly" value="<%=list.skuids[i].discount%>" placeholder="10.0">
+                            <input type="number" class="discount" readonly="readonly" value="<%=list.skuList[i].discount%>" placeholder="10.0">
                         </td>
-                        <td>￥<%=list.skuids[i].subtotal%></td>
-                        <%if(list.skuids[i].qualityType==1){%>
+                        <td>￥<%=list.skuList[i].subtotal%></td>
+                        <%if(list.skuList[i].qualityType==1){%>
                         <td><i class="indate indate-danger"></i>过期</td>
-                        <%}else if(list.skuids[i].qualityType==2){%>
+                        <%}else if(list.skuList[i].qualityType==2){%>
                         <td><i class="indate indate-going"></i>保修中</td>
-                        <%}else if(list.skuids[i].qualityType==3){%>
+                        <%}else if(list.skuList[i].qualityType==3){%>
                         <td><i class="indate indate-renew"></i>换新</td>
                         <%}else{%>
                         <td><i class="indate"></i>-</td>
@@ -311,14 +311,6 @@
                         <i>￥</i><input type="number" readonly="readonly" value="<%=list.refund%>" placeholder="0">
                     </span>
                 </div>
-            </div>
-        </div>
-        <div class="bot clear">
-            <div class="bot-item">
-                <span class="name">售后原因:<%=list.reason%></span>
-            </div>
-            <div class="bot-item">
-                <span class="name">操作人:<%=list.optId%></span>
             </div>
         </div>
     </div>
