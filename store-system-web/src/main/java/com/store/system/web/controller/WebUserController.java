@@ -17,6 +17,7 @@ import com.store.system.service.PayService;
 import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
 import com.store.system.util.UserUtils;
+import com.store.system.util.WebPermissionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,8 +41,6 @@ public class WebUserController extends BaseController {
     
     @Autowired
     private UserService userService;
-    @Autowired
-    private OptometryInfoService optometryInfoService;
 
 	/**
 	 * 登录
@@ -54,15 +53,21 @@ public class WebUserController extends BaseController {
 											 User loginUser,@RequestParam(required = false, value = "authCode") String authCode,
 											 Model model) throws Exception {
         try {
-            if (StringUtils.isNotBlank(loginUser.getPhone())) {
-                String rightAuthCode = userService.getAuthCode(loginUser.getPhone());
-                if (StringUtils.isBlank(authCode) && StringUtils.isBlank(loginUser.getPassword()))
-                    throw new StoreSystemException("请输入密码或验证码");
-                if (StringUtils.isNotBlank(authCode) && !authCode.equals(rightAuthCode)) {
-                    throw new StoreSystemException("验证码不正确");
-                }
-            }
+//            if (StringUtils.isNotBlank(loginUser.getPhone())) {
+//                String rightAuthCode = userService.getAuthCode(loginUser.getPhone());
+//                if (StringUtils.isBlank(authCode) && StringUtils.isBlank(loginUser.getPassword()))
+//                    throw new StoreSystemException("请输入密码或验证码");
+//                if (StringUtils.isNotBlank(authCode) && !authCode.equals(rightAuthCode)) {
+//                    throw new StoreSystemException("验证码不正确");
+//                }
+//            }
             ClientUserOnLogin clientUserOnLogin = userService.login(loginUser, authCode);
+//            if (!WebPermissionUtil.hasSchoolLoginPermission(userService.getUserPermissions(clientUserOnLogin.getId()))) {
+//                clientUserOnLogin.setAdmin(false);
+//            }else{
+//                clientUserOnLogin.setAdmin(true);
+//            }
+//            return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));

@@ -21,8 +21,8 @@ import java.util.List;
         identityType = IdentityType.human)
 public class UserSettings implements Serializable{
 
-    public static final int status_on = 2; //开启
-    public static final int status_off = 1; //关闭
+    public static final int status_on = 1; //开启
+    public static final int status_off = 0; //关闭
 
     @PrimaryKey
     private long uid;

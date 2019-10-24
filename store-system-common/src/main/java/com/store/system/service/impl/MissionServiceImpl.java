@@ -6,6 +6,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientMission;
+import com.store.system.client.Personal;
 import com.store.system.dao.*;
 import com.store.system.model.*;
 import com.store.system.service.*;
@@ -48,7 +49,9 @@ public class MissionServiceImpl implements MissionService {
     private UserMissionPoolDao userMissionPoolDao;
 
     @Resource
-    private ProductService productService;
+    private UserDao userDao;
+    @Resource
+    private SubordinateDao subordinateDao;
 
     @Override
     @Transactional
@@ -333,6 +336,7 @@ public class MissionServiceImpl implements MissionService {
         ClientMission clientMission = new ClientMission(mission);
         int allProgress = 0;
         int allAmount = 0;
+        List<Personal> list=new ArrayList<>();
 
         if (mission.getType() == Mission.type_tem) {
             //团队任务 需要先查询门店下的所有sku 然后进行统计
@@ -342,10 +346,15 @@ public class MissionServiceImpl implements MissionService {
                 subordinateMissionPool.setSid(id);
                 subordinateMissionPool.setMid(mission.getId());
                 subordinateMissionPool = subordinateMissionPoolDao.load(subordinateMissionPool);
+                Personal personal=new Personal();
                 if (subordinateMissionPool != null) {
+                    Subordinate subordinate = subordinateDao.load(subordinateMissionPool.getSid());
+                    personal.setSName(subordinate!=null?subordinate.getName():"");
                     if (mission.getAmountType() == Mission.amountType_number) {
                         allAmount += subordinateMissionPool.getNumber();//总数量
+                        personal.setNumber(subordinateMissionPool.getNumber());
                     } else {
+                        personal.setPrice(subordinateMissionPool.getPrice());
                         allAmount += subordinateMissionPool.getPrice();//总价格
                     }
                 }
@@ -358,16 +367,28 @@ public class MissionServiceImpl implements MissionService {
                 userMissionPool.setMid(mission.getId());
                 userMissionPool.setUid(id);
                 userMissionPool = userMissionPoolDao.load(userMissionPool);
+                Personal personal=new Personal();
                 if (userMissionPool != null) {
                     if (mission.getAmountType() == Mission.amountType_number) {
+                        personal.setNumber(userMissionPool.getNumber());
                         allAmount += userMissionPool.getNumber();//总数量
                     } else {
+                        personal.setPrice(userMissionPool.getPrice());
                         allAmount += userMissionPool.getPrice();//总价格
                     }
                 }
+                // 插入个人完成情况
+                User load = userDao.load(id);
+                personal.setUName(load!=null?load.getName():"");
+                if(load!=null){
+                    Subordinate subordinate = subordinateDao.load(load.getSid());
+                    personal.setSName(subordinate!=null?subordinate.getName():"");
+                }
+                list.add(personal);
             }
             allProgress += getProgress(allAmount, mission.getTarget());//完成度 当前完成数量/目标数量
         }
+        clientMission.setPersonalList(list);
         clientMission.setAllProgress(allProgress);  //完成度
         clientMission.setAllAmount(allAmount);      //完成量
         return clientMission;
