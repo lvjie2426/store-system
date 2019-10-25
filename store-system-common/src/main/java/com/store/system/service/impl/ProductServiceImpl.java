@@ -102,6 +102,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductSeriesService productSeriesService;
 
     @Resource
+    private CommissionService commissionService;
+
+    @Resource
     private CommissionDao commissionDao;
 
 
@@ -189,7 +192,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void change(ProductSPU productSPU, List<ProductSKU> addProductSKUList, List<ProductSKU> updateProductSKUList,
-                       List<Long> delSkuids, String brandName, String seriesName) throws Exception {
+                       List<Long> delSkuids, String brandName, String seriesName, List<Commission> commissions) throws Exception {
         List<ProductSKU> productSKUList = Lists.newArrayList(addProductSKUList);
         productSKUList.addAll(updateProductSKUList);
         check(productSPU, productSKUList, null,null,false);
@@ -248,6 +251,11 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
         }
+        if(commissions.size()>0) {
+            for (Commission commission : commissions) {
+                commissionService.update(commission);
+            }
+        }
     }
 
     private void check(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName, boolean isAdd) throws Exception {
@@ -288,7 +296,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName) throws Exception {
+    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName, List<Commission> commissions) throws Exception {
         check(productSPU, productSKUList, brandName, seriesName,true);
         if(StringUtils.isNotBlank(brandName)){
             ProductBrand brand = new ProductBrand();
@@ -323,6 +331,12 @@ public class ProductServiceImpl implements ProductService {
             productSKU.setSpuid(spuid);
             productSKU.setCode(String.valueOf(CodeUtil.getRandom(10)));
             productSKUDao.insert(productSKU);
+        }
+        if(commissions.size()>0) {
+            for (Commission commission : commissions) {
+                commission.setSpuId(spuid);
+                commissionService.add(commission);
+            }
         }
 
     }

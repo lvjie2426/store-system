@@ -107,13 +107,10 @@ public class ProductController extends BaseController {
 //            } catch (Exception e) {
 //                throw new StoreSystemException("会员折扣格式错误");
 //            }
-            List<Commission> commissions = null;
+            List<Commission> commissions = Lists.newArrayList();
             try {
                 if (StringUtils.isNotBlank(commissionJson)) {
                     commissions = JsonUtils.fromJson(commissionJson, new TypeReference<List<Commission>>() {});
-                    for (Commission commission : commissions) {
-                        commissionService.add(commission);
-                    }
                 }
             } catch (Exception e) {
                 throw new StoreSystemException("commission提成格式错误");
@@ -128,7 +125,7 @@ public class ProductController extends BaseController {
             }
             productSPU.setRanges(ranges);
             productSPU.setNowRanges(nowRanges);
-            productService.add(productSPU, productSKUList, brandName, seriesName);
+            productService.add(productSPU, productSKUList, brandName, seriesName, commissions);
             return this.viewNegotiating(request, response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -171,13 +168,10 @@ public class ProductController extends BaseController {
             } catch (Exception e) {
                 throw new StoreSystemException("删除的sku格式错误");
             }
-            List<Commission> commissions = null;
+            List<Commission> commissions = Lists.newArrayList();
             try {
                 if(StringUtils.isNotBlank(commissionJson)) {
                     commissions = JsonUtils.fromJson(commissionJson, new TypeReference<List<Commission>>() {});
-                    for (Commission commission : commissions) {
-                        commissionService.update(commission);
-                    }
                 }
             } catch (Exception e) {
                 throw new StoreSystemException("修改的commission提成格式错误");
@@ -193,7 +187,7 @@ public class ProductController extends BaseController {
             }
             productSPU.setRanges(ranges);
             productSPU.setNowRanges(nowRanges);
-            productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds, brandName, seriesName);
+            productService.change(productSPU, addProductSKUList, updateProductSKUList, delSkuIds, brandName, seriesName, commissions);
             return this.viewNegotiating(request,response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

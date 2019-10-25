@@ -26,6 +26,7 @@ public class ClientBusinessOrder extends BusinessOrder{
     private String couponName; //优惠券名称
     private String uName; //顾客
     private String uPhone;
+    private int uAge;
     private int score;//顾客可用积分
     private int money;//顾客可用储值
     private ClientUser userInfo;//顾客信息

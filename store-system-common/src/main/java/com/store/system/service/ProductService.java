@@ -4,6 +4,7 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.client.ClientProductCategory;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
+import com.store.system.model.Commission;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
 
@@ -15,7 +16,7 @@ public interface ProductService {
 
     public ProductSKU addSKU(ProductSKU productSKU) throws Exception;
 
-    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName) throws Exception;
+    public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName, List<Commission> commissions) throws Exception;
 
     public ClientProductSPU loadSPU(long id) throws Exception;
 
@@ -24,7 +25,7 @@ public interface ProductService {
     public boolean updateSKU(ProductSKU productSKU) throws Exception;
 
     public void change(ProductSPU productSPU, List<ProductSKU> addProductSKUList, List<ProductSKU> updateProductSKUList,
-                       List<Long> delSkuids, String brandName, String seriesName) throws Exception;
+                       List<Long> delSkuids, String brandName, String seriesName, List<Commission> commissions) throws Exception;
 
     public boolean delSKU(long id) throws Exception;
 
