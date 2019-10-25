@@ -603,23 +603,23 @@
                     <%}%>
                 </div>
             </div>-->
-            <div class="goods-select">
-                <div class="goods-select-title">库存</div>
-                <div class="selectBox" >
-                    <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].num){%>
-                    <input type="text" placeholder="库存"  value="<%=list.skuJson[0].code%>" class="yj-input" id="yj-add-num">
-                    <%}else{%>
-                    <input type="text" placeholder="库存"  class="yj-input" id="yj-add-num">
-                    <%}%>
-                </div>
-            </div>
+<!--            <div class="goods-select">-->
+<!--                <div class="goods-select-title">库存</div>-->
+<!--                <div class="selectBox" >-->
+<!--                    <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].num){%>-->
+<!--                    <input type="text" placeholder="库存"  value="<%=list.skuJson[0].code%>" class="yj-input" id="yj-add-num">-->
+<!--                    <%}else{%>-->
+<!--                    <input type="text" placeholder="库存"  class="yj-input" id="yj-add-num">-->
+<!--                    <%}%>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="goods-select">
                 <div class="goods-select-title">成本价</div>
                 <div class="selectBox" >
-                    <%if(list.skuJson && list.skuJson.length>0 && list.skuJson[0].costPrice){%>
-                    <input type="text" placeholder="成本价"  value="<%=list.skuJson[0].code%>" class="yj-input" id="yj-add-costPrice">
+                    <%if(list.properties && list.properties[30]){%>
+                    <input type="text" placeholder="成本价" value="<%=list.properties[30]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="30">
                     <%}else{%>
-                    <input type="text" placeholder="成本价"  class="yj-input" id="yj-add-costPrice">
+                    <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="30">
                     <%}%>
                 </div>
             </div>
@@ -697,17 +697,17 @@
                                 <%}else{%>
                                     <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
                                 <%}%>
-                            <%}else if(list.categoryName == '其他商品'){%>
-                                <%if(list.properties && list.properties[21]){%>
-                                    <input type="text" placeholder="零售价" value="<%=list.properties[21]/100%>" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                            <%}else if(list.categoryName == '其它商品'){%>
+                                <%if(list.properties && list.properties[27]){%>
+                                    <input type="text" placeholder="零售价" value="<%=list.properties[27]/100%>" class="yj-input" id="yj-add-retailPrice" data-pnid="27">
                                 <%}else{%>
-                                    <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                    <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="27">
                                 <%}%>
                             <%}else if(list.categoryName == '护理产品'){%>
-                                <%if(list.properties && list.properties[21]){%>
-                                <input type="text" placeholder="零售价" value="<%=list.properties[21]/100%>" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                <%if(list.properties && list.properties[23]){%>
+                                <input type="text" placeholder="零售价" value="<%=list.properties[23]/100%>" class="yj-input" id="yj-add-retailPrice" data-pnid="23">
                                 <%}else{%>
-                                <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="21">
+                                <input type="text" placeholder="零售价" class="yj-input" id="yj-add-retailPrice" data-pnid="23">
                                 <%}%>
                             <%}%>
                         </div>
@@ -727,17 +727,17 @@
                                 <%}else{%>
                                     <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="22">
                                 <%}%>
-                            <%}else if(list.categoryName == '其他商品'){%>
-                                <%if(list.properties && list.properties[22]){%>
-                                <input type="text" placeholder="成本价" value="<%=list.properties[22]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                            <%}else if(list.categoryName == '其它商品'){%>
+                                <%if(list.properties && list.properties[28]){%>
+                                <input type="text" placeholder="成本价" value="<%=list.properties[28]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="28">
                                 <%}else{%>
-                                <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="28">
                                 <%}%>
                             <%}else if(list.categoryName == '护理产品'){%>
-                                <%if(list.properties && list.properties[22]){%>
-                                <input type="text" placeholder="成本价" value="<%=list.properties[22]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <%if(list.properties && list.properties[24]){%>
+                                <input type="text" placeholder="成本价" value="<%=list.properties[24]/100%>" class="yj-input" id="yj-add-costPrice" data-pnid="24">
                                 <%}else{%>
-                                <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="22">
+                                <input type="text" placeholder="成本价" class="yj-input" id="yj-add-costPrice" data-pnid="24">
                                 <%}%>
                             <%}%>
                         </div>
@@ -2448,7 +2448,9 @@
                     nowParam.totalRemind = gStockWarn.totalRemind;
                 }
             }else{
-                nowParam.nowRemind = $("#yj-add-kucun").val();
+                if($("#yj-add-kucun").val()){
+                    nowParam.nowRemind = $("#yj-add-kucun").val();
+                }
             }
             //销售状态  0开启  1关闭
             if($('#yj-add-status').hasClass('active')){
@@ -2460,9 +2462,9 @@
                 nowParam.productCustomRangeList = JSON.stringify(nowParam.productCustomRangeList);
             }else if($('#category'+cid).text()=='特殊商品'){
                 nowParam.skuJson = [{}];
-                nowParam.skuJson[0].num = $('#yj-add-num').val();
+                //nowParam.skuJson[0].num = $('#yj-add-num').val();
                 // nowParam.skuJson[0].code = $('#yj-add-code').val();
-                nowParam.skuJson[0].costPrice = $('#yj-add-costPrice').val();
+                nowParam.properties[config.teshushangpinCostPriceId] = $('#yj-add-costPrice').val()*100;
                 nowParam.icon = $('#cover').attr('real-src');
                 nowParam.name = $('#yj-add-name').val();
                 if(nowParam.type==1){
@@ -2479,8 +2481,19 @@
                         // nowParam.skuJson[0].code = $('#yj-add-code-1').val();
                         nowParam.skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
                     }else{
-                        nowParam.properties[config.jingjiaRealPriceId] = $('#yj-add-retailPrice').val();
-                        nowParam.properties[config.jingjiaCostPriceId] = $('#yj-add-costPrice').val();
+                        if($('#category'+cid).text()=='镜架'){
+                            nowParam.properties[config.jingjiaRealPriceId] = $('#yj-add-retailPrice').val()*100;
+                            nowParam.properties[config.jingjiaCostPriceId] = $('#yj-add-costPrice').val()*100;
+                        }else if($('#category'+cid).text()=='太阳镜'){
+                            nowParam.properties[config.taiyangjingRealPriceId] = $('#yj-add-retailPrice').val()*100;
+                            nowParam.properties[config.taiyangjingCostPriceId] = $('#yj-add-costPrice').val()*100;
+                        }else if($('#category'+cid).text()=='其它商品'){
+                            nowParam.properties[config.qitashangpinRealPriceId] = $('#yj-add-retailPrice').val()*100;
+                            nowParam.properties[config.qitashangpinCostPriceId] = $('#yj-add-costPrice').val()*100;
+                        }else if($('#category'+cid).text()=='护理商品'){
+                            nowParam.properties[config.hulishangpinRealPriceId] = $('#yj-add-retailPrice').val()*100;
+                            nowParam.properties[config.hulishangpinCostPriceId] = $('#yj-add-costPrice').val()*100;
+                        }
                         // nowParam.skuJson[0].code = $('#yj-add-code').val();
                     }
                 }else{
