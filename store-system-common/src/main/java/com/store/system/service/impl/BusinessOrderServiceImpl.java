@@ -608,6 +608,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         if(user != null) {
             client.setUName(user.getName());
             client.setUPhone(user.getPhone());
+            client.setUAge(user.getAge());
             client.setScore(user.getScore());
             client.setMoney(user.getMoney());
             ClientUser clientUser = new ClientUser(user);
