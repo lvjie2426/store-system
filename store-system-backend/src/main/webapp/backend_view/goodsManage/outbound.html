@@ -464,6 +464,7 @@
                                         </ul>
                                     </div>
                                 </div>
+<!--
                                 <div class="selectBox" id="out-type">
                                     <div class="select-box-header">
                                         <span class="text">常规商品</span> <i class="iconfont icon-ico_arrow_down"></i>
@@ -486,9 +487,8 @@
                                         </ul>
                                     </div>
                                 </div>
+-->
                                 <div class="btn btn-info" style="float: right" onclick="getSpu()">查询</div>
-
-
                             </div>
                             <div class="outbound-body-tag">
                                 <div class="tag-list">A品牌A系列</div>
@@ -512,7 +512,6 @@
                             </div>
                         </div>
                     </li>
-
                 </ul>
 
                 <div class="out-table1">
@@ -543,7 +542,14 @@
                     <span>产品编码</span>
                     <span>品牌</span>
                     <span>系列</span>
-                    <span>商品类型</span>
+                    <%if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
+                    <span>型号</span>
+                    <span>色号</span>
+                    <%}else if(list[i].name=='隐形眼镜'){%>
+                    <%}else if(list[i].name=='护理产品'){%>
+                    <%}else if(list[i].name=='其它商品'){%>
+                    <%}%>
+                    <span>积分价</span>
                     <span>数量</span>
                     <%if(showTool){%>
                     <span class="removeLi">操作</span>
@@ -555,10 +561,17 @@
                         <span><%=list[i].data[j].code%></span>
                         <span><%=list[i].data[j].brandName%></span>
                         <span><%=list[i].data[j].seriesName%></span>
-                        <%if(list[i].data[j].type==0){%>
-                        <span>常规商品</span>
+                        <%if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
+                        <span><%=list[i].data[j].p_properties_value['型号']%></span>
+                        <span><%=list[i].data[j].p_properties_value['色号']%></span>
+                        <%}else if(list[i].name=='隐形眼镜'){%>
+                        <%}else if(list[i].name=='护理产品'){%>
+                        <%}else if(list[i].name=='其它商品'){%>
+                        <%}%>
+                        <%if(list[i].data[j].p_integralPrice&&list[i].data[j].p_integralPrice>0){%>
+                        <span><%=list[i].data[j].p_integralPrice%></span>
                         <%}else{%>
-                        <span>积分商品</span>
+                        <span>无</span>
                         <%}%>
                         <span><%=list[i].data[j].num%></span>
                         <%if(showTool){%>
@@ -717,7 +730,7 @@
         function addGoods(id) {
             allOutList = {};
             var inUserName = '出库人';
-            peopleId = ''
+            peopleId = '';
             if(id){
                 inUserName = allData[id].outUserName;
                 peopleId = allData[id].outUid;
@@ -962,23 +975,22 @@
         // 获取一个商品的SPU，返回需要确定的所有SKU属性
         function getSpu() {
             if(!bid){
-                layer.msg('请选择品牌')
+                layer.msg('请选择品牌');
                 return
             }
             if(!pid){
-                layer.msg('请选择供应商')
+                layer.msg('请选择供应商');
                 return
             }
             quakooData.ajaxGetData(config.getUrl_inventoryOutBill_select(),{subid:shopId,type:type,cid:cid,pid:pid,bid:bid,sid:sid},function (ret) {
                 if(ret && ret.success){
-                    console.log(ret)
                     nowGoodData = ret.data;
                     skuObj = {};
                     for(var j=0;j<nowGoodData.length;j++){
-                        nowGoodData[j].properties = nowGoodData[j].p_properties;
+                        nowGoodData[j].properties = nowGoodData[j].p_properties_value;
                         nowGoodData[j].code = nowGoodData[j].p_code;
                         if(nowGoodData[j].properties){
-                            skuObj[nowGoodData[j].properties[15]+''+nowGoodData[j].properties[16]] = nowGoodData[j];
+                            skuObj[nowGoodData[j].properties['球']+''+nowGoodData[j].properties['柱']] = nowGoodData[j];
                         }
                     }
                     if(ret.data){
@@ -1031,20 +1043,40 @@
                                 });
                             });
                         }else {
-                            var column = [
-                                { field: 'code', title: '产品编码'},
-                                { field: 'properties', title: '球' , formatter: function (value) {
-                                        return value[15];
-                                    }  },
-                                { field: 'properties', title: '柱', formatter: function (value) {
-                                        return value[16];
-                                    }},
-                                {field: 'num', title: '库存量' },
-                                {field: '', title: '出库量'  , formatter: function (value,row,index) {
-                                        return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
+                            var column;
+                            if($('#category'+cid).text()=='镜架'||$('#category'+cid).text()=='太阳镜'){
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    { field: 'p_properties_value', title: '型号' , formatter: function (value) {
+                                            return value['型号'];
+                                        }  },
+                                    { field: 'p_properties_value', title: '色号', formatter: function (value) {
+                                            return value['色号'];
+                                        }},
+                                    {field: 'num', title: '库存量'},
+                                    {field: '', title: '出库量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
+                                        }
                                     }
-                                }
-                            ]
+                                ]
+                            }else if($('#category'+cid).text()=='隐形眼镜'){
+
+                            }else{
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    { field: 'properties', title: '球' , formatter: function (value) {
+                                            return value[15];
+                                        }  },
+                                    { field: 'properties', title: '柱', formatter: function (value) {
+                                            return value[16];
+                                        }},
+                                    {field: 'num', title: '库存量' },
+                                    {field: '', title: '出库量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
+                                        }
+                                    }
+                                ]
+                            }
                             $("#out-table").bootstrapTable('destroy');
                             $("#out-table").bootstrapTable({
                                 data: nowGoodData,                 //被加载的数据。
@@ -1070,7 +1102,7 @@
         //添加到本地出库单
         function addToList() {
             if(quakooUtils.isBlack(nowGoodData)){
-                layer.msg('请查询商品')
+                layer.msg('请查询商品');
                 return
             }
             $('.in-yj-input').each(function (index,item) {
@@ -1082,8 +1114,8 @@
             if($('#category'+cid).text()=='镜片'){
                 for(var i=0;i<nowGoodData.length;i++){
                     if(nowGoodData[i].properties){
-                        if(skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]] && skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum){
-                            nowGoodData[i].num = skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum;
+                        if(skuObj[nowGoodData[i].properties['球']+''+nowGoodData[i].properties['柱']] && skuObj[nowGoodData[i].properties['球']+''+nowGoodData[i].properties['柱']].newNum){
+                            nowGoodData[i].num = skuObj[nowGoodData[i].properties['球']+''+nowGoodData[i].properties['柱']].newNum;
                             nowGoodData[i].brandName = brandName;
                             nowGoodData[i].seriesName = seriesName;
                             nowGoodData[i].providerName = providerName;
@@ -1103,25 +1135,27 @@
                 }
             }
             if(arr.length<=0){
-                layer.msg('请输入出库数量')
+                layer.msg('请输入出库数量');
                 return;
             }
             allOutList[cid].data = arr;
-            var html = template('outListTmp',{list:allOutList,showTool:true})
+            var html = template('outListTmp',{list:allOutList,showTool:true});
             $("#outListDom").html(html)
         }
         //移除出库单中的商品
         function removeOutLi(i,j) {
             allOutList[i].data.splice(j,1);
-            var html = template('outListTmp',{list:allOutList,showTool:true})
+            var html = template('outListTmp',{list:allOutList,showTool:true});
             $("#outListDom").html(html)
         }
         //确认出库单
         function updateListStatus(id) {
             quakooData.ajaxGetData(config.getUrl_inventoryOutBill_pass(),{id:id},function (ret) {
                 if(ret && ret.success){
-                    layer.msg('确认成功',{icon:1})
+                    layer.msg('确认成功',{icon:1});
                     getInData()
+                }else{
+                    layer.msg(ret.data,{icon:2});
                 }
             })
         }

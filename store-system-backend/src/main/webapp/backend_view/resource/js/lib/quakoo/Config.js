@@ -24,7 +24,7 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-        // this.serverUrl = "http://39.107.247.82:20005";
+        this.serverUrl = "http://39.107.247.82:20005";
         this.serverUrl = "http://192.168.1.10:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
@@ -58,6 +58,10 @@ var Config = (function(_super){
         this.gongnengId = 3;
         /**镜架-质保时长*/
         this.jingjiaTimeId = 4;
+        /**镜架-零售价*/
+        this.jingjiaRealPriceId = 19;
+        /**镜架-成本价*/
+        this.jingjiaCostPriceId = 20;
         /**隐形眼镜-类型*/
         this.yinxingLeixingId = 5;
         /**更换周期*/
@@ -68,6 +72,10 @@ var Config = (function(_super){
         this.yinxingTimeId = 8;
         /**太阳镜-质保时长*/
         this.taiyangTimeId = 9;
+        /**太阳镜-零售价*/
+        this.taiyangjingRealPriceId = 21;
+        /**太阳镜-成本价*/
+        this.taiyangjingCostPriceId = 22;
         /**护理产品-类型*/
         this.huliLeixingId = 10;
         /**护理产品-包装*/
@@ -76,8 +84,18 @@ var Config = (function(_super){
         this.shoumingId = 12;
         /**护理产品-质保时长*/
         this.huliTimeId = 13;
+        /**护理产品-零售价*/
+        this.hulishangpinRealPriceId = 23;
+        /**护理产品-成本价*/
+        this.hulishangpinCostPriceId = 24;
         /**其他商品-质保时长*/
         this.qitaTimeId = 14;
+        /**其他商品-零售价*/
+        this.qitashangpinRealPriceId = 27;
+        /**其他商品-成本价*/
+        this.qitashangpinCostPriceId = 28;
+        /**特殊商品-成本价*/
+        this.teshushangpinCostPriceId = 30;
         /**球*/
         this.qiuId = 15;
         /**柱*/
