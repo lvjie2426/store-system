@@ -633,6 +633,7 @@
                     <span><%=list[i].data[j].p_properties_value['柱']%></span>
                     <span><%=list[i].data[j].shengchanpihao%></span>
                     <span class="line16"><%=list[i].data[j].newDate%></span>
+                    <!-- <span class="line16"><%=list[i].data[j].startTimeHm%> + <%=list[i].data[j].endTimeHm%></span> -->
                     <%}else if(list[i].name=='护理产品'){%>
                     <span><%=list[i].data[j].shengchanpihao%></span>
                     <span class="line16"><%=list[i].data[j].newDate%></span>
@@ -878,17 +879,27 @@
                 inUserName = allData[id].inUserName;
                 for (var i = 0; i < allData[id].clientItems.length; i++) {
                     if (allData[id].clientItems[i].cid == 1) {
+                    } else if (allData[id].clientItems[i].cid == 2) {
+                        allData[id].clientItems[i].xinghao = allData[id].clientItems[i].properties['17'];
+                        allData[id].clientItems[i].sehao = allData[id].clientItems[i].properties['18'];
+                    } else if (allData[id].clientItems[i].cid == 4) {
+                        allData[id].clientItems[i].xinghao = allData[id].clientItems[i].properties['36'];
+                        allData[id].clientItems[i].sehao = allData[id].clientItems[i].properties['37'];
+                    } else if (allData[id].clientItems[i].cid == 3) {
+                        allData[id].clientItems[i].shengchanpihao = allData[id].clientItems[i].properties['34'];
+                        allData[id].clientItems[i].startTime = allData[id].clientItems[i].properties['35'];
+                        allData[id].clientItems[i].endTime = allData[id].clientItems[i].properties['40'];
+                        // allData[id].clientItems[i].newDate = allData[id].clientItems[i].properties['40'];
 
-                    } else if (allData[id].clientItems[i].cid == 2 || allData[id].clientItems[i].cid == 4) {
-                        allData[id].clientItems[i].xinghao = allData[id].clientItems[i].p_properties_value['型号'];
-                        allData[id].clientItems[i].sehao = allData[id].clientItems[i].p_properties_value['色号'];
-                    } else if (allData[id].clientItems[i].cid == 3 || allData[id].clientItems[i].cid == 5) {
-                        allData[id].clientItems[i].shengchanpihao = allData[id].clientItems[i].properties['22'];
-                        allData[id].clientItems[i].newDate = allData[id].clientItems[i].properties['21'];
+                    } else if (allData[id].clientItems[i].cid == 5) {
+                        allData[id].clientItems[i].shengchanpihao = allData[id].clientItems[i].properties['31'];
+                        allData[id].clientItems[i].startTime = allData[id].clientItems[i].properties['32'];
+                        allData[id].clientItems[i].endTime = allData[id].clientItems[i].properties['33'];
                     } else if (allData[id].clientItems[i].cid == 6) {
-                        allData[id].clientItems[i].xinghao = allData[id].clientItems[i].properties['22'];
-                        allData[id].clientItems[i].guangdu = allData[id].clientItems[i].properties['20'];
+                        allData[id].clientItems[i].xinghao = allData[id].clientItems[i].properties['38'];
+                        allData[id].clientItems[i].guangdu = allData[id].clientItems[i].properties['39'];
                     }
+
                     if (allOutList[allData[id].clientItems[i].cid]) {
                         allOutList[allData[id].clientItems[i].cid].data.push(allData[id].clientItems[i]);
                     } else {
@@ -1113,7 +1124,7 @@
                                 },
                                 {
                                     field: '', title: '保质期', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="' + index + '" placeholder="保质期">';
+                                        return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" value="' + (row.newDate ? row.newDate : '') + '" data-index="' + index + '" placeholder="保质期">';
                                     }
                                 },
                                 {
@@ -1460,6 +1471,16 @@
                     nowGoodData[item.getAttribute('data-index')].xinghao = item.value;
                 }
             })
+
+            // if (cid == 3 || cid == 5) {
+            //     $('.in-yj-input-time').each(function (index, item) {
+            //         if (quakooUtils.isNotBlack(item.value)) {
+            //             nowGoodData[item.getAttribute('data-index')].startTimeHm = item.startTimeHm;
+            //             nowGoodData[item.getAttribute('data-index')].endTimeHm = item.endTimeHm;
+            //         }
+            //     })
+            // }
+
             $('.in-yj-input-time').each(function (index, item) {
                 if (quakooUtils.isNotBlack(item.value)) {
                     nowGoodData[item.getAttribute('data-index')].newDate = item.value;
@@ -1510,11 +1531,10 @@
             var html = template('outListTmp', { list: allOutList, showTool: true })
             $("#outListDom").html(html)
         }
-        var aaa;
         //确认入库
         function addInList(status, index, id) {
             var closeFlag = true;
-            
+
             for (var i in allOutList) {
                 if (allOutList[i].data.length > 0) {
                     closeFlag = false;
@@ -1558,26 +1578,31 @@
                         obj.integralPrice = allOutList[i].data[j].integralPrice;
                         obj.num = allOutList[i].data[j].num;
                         obj.properties = allOutList[i].data[j].properties;
-                        aaa = allOutList[i].data[j].shengchanpihao;
                         if (cid == 2) {
                             obj.properties['17'] = allOutList[i].data[j].xinghao;
                             obj.properties['18'] = allOutList[i].data[j].sehao;
                         } else if (cid == 4) {
                             obj.properties['36'] = allOutList[i].data[j].xinghao;
                             obj.properties['37'] = allOutList[i].data[j].sehao;
-                        } else if (cid == 3 || cid == 5) {
-                            obj.properties['22'] = allOutList[i].data[j].shengchanpihao;
-                            obj.properties['21'] = allOutList[i].data[j].newDate;
+                        } else if (cid == 3) {
+                            obj.properties['34'] = allOutList[i].data[j].shengchanpihao;
+                            obj.properties['35'] = allOutList[i].data[j].startTimeHm;
+                            obj.properties['40'] = allOutList[i].data[j].endTimeHm;
+                            obj.properties['1000'] = allOutList[i].data[j].newDate;
+                        } else if (cid == 5) {
+                            obj.properties['31'] = allOutList[i].data[j].shengchanpihao;
+                            obj.properties['32'] = allOutList[i].data[j].startTimeHm;
+                            obj.properties['33'] = allOutList[i].data[j].endTimeHm;
+                            obj.properties['1001'] = allOutList[i].data[j].newDate;
                         } else if (cid == 6) {
-                            obj.properties['22'] = allOutList[i].data[j].shengchanpihao;
-                            obj.properties['20'] = allOutList[i].data[j].guangdu;
+                            obj.properties['38'] = allOutList[i].data[j].xinghao;
+                            obj.properties['39'] = allOutList[i].data[j].guangdu;
                         }
 
                         params.itemsJson.push(obj)
                     }
                 }
             }
-            console.log(aaa);
             params.itemsJson = JSON.stringify(params.itemsJson)
             if (id) {
                 quakooData.ajaxGetData(config.getUrl_inventoryInBill_update(), params, function (ret) {
@@ -1614,7 +1639,9 @@
                 nowGoodData[self.getAttribute('data-index')].endTimeHm = date.getTime()[3];
                 nowGoodData[self.getAttribute('data-index')].endTime = date.getTime()[1];
                 self.value = date.getTime()[0] + '-' + date.getTime()[1];
+                console.log(date.getTime())
             })
+            console.log(date.getTime())
         }
         //确认入库单
         function updateListStatus(id) {
