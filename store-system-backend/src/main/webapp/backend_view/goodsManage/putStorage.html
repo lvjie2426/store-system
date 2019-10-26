@@ -877,6 +877,18 @@
             if (id) {
                 inUserName = allData[id].inUserName;
                 for (var i = 0; i < allData[id].clientItems.length; i++) {
+                    if (allData[id].clientItems[i].cid == 1) {
+
+                    } else if (allData[id].clientItems[i].cid == 2 || allData[id].clientItems[i].cid == 4) {
+                        allData[id].clientItems[i].xinghao = allData[id].clientItems[i].p_properties_value['型号'];
+                        allData[id].clientItems[i].sehao = allData[id].clientItems[i].p_properties_value['色号'];
+                    } else if (allData[id].clientItems[i].cid == 3 || allData[id].clientItems[i].cid == 5) {
+                        allData[id].clientItems[i].shengchanpihao = allData[id].clientItems[i].properties['22'];
+                        allData[id].clientItems[i].newDate = allData[id].clientItems[i].properties['21'];
+                    } else if (allData[id].clientItems[i].cid == 6) {
+                        allData[id].clientItems[i].xinghao = allData[id].clientItems[i].properties['22'];
+                        allData[id].clientItems[i].guangdu = allData[id].clientItems[i].properties['20'];
+                    }
                     if (allOutList[allData[id].clientItems[i].cid]) {
                         allOutList[allData[id].clientItems[i].cid].data.push(allData[id].clientItems[i]);
                     } else {
@@ -1498,9 +1510,11 @@
             var html = template('outListTmp', { list: allOutList, showTool: true })
             $("#outListDom").html(html)
         }
+        var aaa;
         //确认入库
         function addInList(status, index, id) {
             var closeFlag = true;
+            
             for (var i in allOutList) {
                 if (allOutList[i].data.length > 0) {
                     closeFlag = false;
@@ -1544,17 +1558,26 @@
                         obj.integralPrice = allOutList[i].data[j].integralPrice;
                         obj.num = allOutList[i].data[j].num;
                         obj.properties = allOutList[i].data[j].properties;
+                        aaa = allOutList[i].data[j].shengchanpihao;
                         if (cid == 2) {
                             obj.properties['17'] = allOutList[i].data[j].xinghao;
                             obj.properties['18'] = allOutList[i].data[j].sehao;
                         } else if (cid == 4) {
                             obj.properties['36'] = allOutList[i].data[j].xinghao;
                             obj.properties['37'] = allOutList[i].data[j].sehao;
+                        } else if (cid == 3 || cid == 5) {
+                            obj.properties['22'] = allOutList[i].data[j].shengchanpihao;
+                            obj.properties['21'] = allOutList[i].data[j].newDate;
+                        } else if (cid == 6) {
+                            obj.properties['22'] = allOutList[i].data[j].shengchanpihao;
+                            obj.properties['20'] = allOutList[i].data[j].guangdu;
                         }
+
                         params.itemsJson.push(obj)
                     }
                 }
             }
+            console.log(aaa);
             params.itemsJson = JSON.stringify(params.itemsJson)
             if (id) {
                 quakooData.ajaxGetData(config.getUrl_inventoryInBill_update(), params, function (ret) {
