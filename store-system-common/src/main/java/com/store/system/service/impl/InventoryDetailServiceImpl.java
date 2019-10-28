@@ -155,7 +155,11 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                         Map<Long, ProductPropertyValue> valueMap = valueMapUtils.listToMap(valueList, "id");
 
                         for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
-                            map_value.put(nameMap.get(skuEntry.getKey()).getContent(), valueMap.get(Long.parseLong(skuEntry.getValue().toString())).getContent());
+                            if(nameMap.get(skuEntry.getKey()).getInput() == ProductPropertyName.input_no){
+                                map_value.put(nameMap.get(skuEntry.getKey()).getContent(), valueMap.get(Long.parseLong(skuEntry.getValue().toString())).getContent());
+                            }else{
+                                map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
+                            }
                         }
                         client.setP_properties_value(map_value);
                     } else {
