@@ -1280,7 +1280,7 @@
         quakooData.ajaxGetData(config.getUrl_user_add(), param, function (ret) {
             if (ret && ret.success) {
                 layer.msg("成功创建员工" + name, {icon: 1});
-                getStaffList(subid);
+                getStaffList();
                 setTimeout(function () {
                     layer.close(index);
                 }, 200);
@@ -1315,7 +1315,7 @@
                                 console.log("编辑：", ret);
                                 if (ret && ret.success) {
                                     layer.msg("编辑员工信息成功", {icon: 1});
-                                    getStaffList(subid);
+                                    getStaffList();
                                     setTimeout(function () {
                                         layer.close(index);
                                     }, 200);
@@ -1597,7 +1597,7 @@
             console.log(ret);
             if (ret && ret.success) {
                 if (ret.data == "true") {
-                    getStaffList(subid);
+                    getStaffList();
                 }
             }
         });
