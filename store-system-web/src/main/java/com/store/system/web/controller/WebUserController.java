@@ -8,12 +8,15 @@ import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
+import com.store.system.dao.OptometryInfoDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.LoginUserPool;
+import com.store.system.model.OptometryInfo;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
 import com.store.system.service.OptometryInfoService;
 import com.store.system.service.PayService;
+import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
 import com.store.system.util.SmsUtils;
 import com.store.system.util.UserUtils;
@@ -41,10 +44,14 @@ public class WebUserController extends BaseController {
     
     @Autowired
     private UserService userService;
+    @Autowired
+    private OptometryInfoDao optometryInfoDao;
+    @Autowired
+    private SubordinateService subordinateService;
 
 	/**
 	 * 登录
-	 * @return
+	 * @returnd
 	 * @throws Exception
 	 */
 	@RequestMapping("/login")
@@ -309,6 +316,29 @@ public class WebUserController extends BaseController {
         }
     }
 
+    /**
+     * 保存意向顾客  保存到user表，同时optometryinfo 验光表也保存
+     * @param user
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/addCustomer")
+    public ModelAndView addCustomer(User user, OptometryInfo optometryInfo,HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            user.setContactPhone(user.getPhone());
+            user = userService.addCustomer(user);
+            if(optometryInfo!=null){
+                optometryInfo.setUid(user.getId());
+                optometryInfoDao.insert(optometryInfo);
+            }
+            return this.viewNegotiating(request,response, new ResultClient(user));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
 
     // 管理端 创建新员工
     @RequestMapping("/addUser")
@@ -348,7 +378,20 @@ public class WebUserController extends BaseController {
         }
     }
 
-
+    //获取所有 顾客/员工 的职业
+    @RequestMapping("/getAllUserJob")
+    public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,
+                                      @RequestParam(value = "sid") long sid,
+                                      @RequestParam(value = "userType",defaultValue = "0") int userType)throws Exception{
+        try{
+            Subordinate subordinate = subordinateService.load(sid);
+            long pSubid = subordinate.getPid();
+            if(pSubid == 0) throw new StoreSystemException("门店ID错误");
+            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(sid,userType)));
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
+        }
+    }
 
 }
 
