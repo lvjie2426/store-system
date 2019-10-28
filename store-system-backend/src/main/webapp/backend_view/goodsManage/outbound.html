@@ -542,12 +542,17 @@
                     <span>产品编码</span>
                     <span>品牌</span>
                     <span>系列</span>
-                    <%if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
+                    <%if(list[i].name=='镜片'){%>
+                    <span>左右眼</span>
+                    <%else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
                     <span>型号</span>
                     <span>色号</span>
-                    <%}else if(list[i].name=='隐形眼镜'){%>
-                    <%}else if(list[i].name=='护理产品'){%>
+                    <%}else if(list[i].name=='隐形眼镜'||list[i].name=='护理产品'){%>
+                    <span>生产批号</span>
+                    <span>保质期</span>
                     <%}else if(list[i].name=='其它商品'){%>
+                    <span>型号</span>
+                    <span>光度</span>
                     <%}%>
                     <span>积分价</span>
                     <span>数量</span>
@@ -561,12 +566,20 @@
                         <span><%=list[i].data[j].code%></span>
                         <span><%=list[i].data[j].brandName%></span>
                         <span><%=list[i].data[j].seriesName%></span>
-                        <%if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
+                        <%if(list[i].name=='镜片'){%>
+                            <%if(){%>
+                            <%}else{%>
+                            <%}%>
+                        <span></span>
+                        <%else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
                         <span><%=list[i].data[j].p_properties_value['型号']%></span>
                         <span><%=list[i].data[j].p_properties_value['色号']%></span>
-                        <%}else if(list[i].name=='隐形眼镜'){%>
-                        <%}else if(list[i].name=='护理产品'){%>
+                        <%}else if(list[i].name=='隐形眼镜'||list[i].name=='护理产品'){%>
+                        <span><%=list[i].data[j].p_properties_value['生产批号']%></span>
+                        <span><%=getYMDTime(list[i].data[j].p_properties_value['保质期开始时间'])%><br><%=getYMDTime(list[i].data[j].p_properties_value['保质期结束时间'])%></span>
                         <%}else if(list[i].name=='其它商品'){%>
+                        <span><%=list[i].data[j].p_properties_value['型号']%></span>
+                        <span><%=list[i].data[j].p_properties_value['光度']%></span>
                         <%}%>
                         <%if(list[i].data[j].p_integralPrice&&list[i].data[j].p_integralPrice>0){%>
                         <span><%=list[i].data[j].p_integralPrice%></span>
@@ -705,7 +718,6 @@
                     return param
                 },
                 onPreBody: function (data) {
-                    console.log(data)
                     var arr = [];
                     for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
                         if(this.data[i]){
@@ -772,7 +784,7 @@
             });
         }
         function addRepertorySuccess(index,id) {
-            var html = template('addTmp',{brandData:brandData,categoryData:categoryData,ballData:ballData,columnData:columnData,providerData:providerData})
+            var html = template('addTmp',{brandData:brandData,categoryData:categoryData,ballData:ballData,columnData:columnData,providerData:providerData});
             $('#addDom').html(html);
 
             //编辑的话，赋初值
@@ -997,7 +1009,7 @@
                         if($('#category'+cid).text()=='镜片'){
                             var cols = [[], []];//球
                             var rangeData = [];//柱
-                            cols[0].push({field:'num',rowspan:2,unresize:true, minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+                            cols[0].push({field:'num',rowspan:2,unresize:true, minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'});
                             for(var i=0;i<ballData.length;i++){
                                 (function (i) {
                                     cols[0].push({align: 'center', title:ballData[i].content, colspan: 2,unresize:true})
@@ -1035,14 +1047,13 @@
                                             skuObj[ball + '' + colum].newNum = skuObj[ball + '' + colum].num;
                                             this.value = skuObj[ball + '' + colum].num;
                                         }
-                                        console.log(skuObj)
                                     }else{
                                         this.value = '';
                                         layer.msg('该规格暂无库存');
                                     }
                                 });
                             });
-                        }else {
+                        }else{
                             var column;
                             if($('#category'+cid).text()=='镜架'||$('#category'+cid).text()=='太阳镜'){
                                 column = [
@@ -1060,6 +1071,24 @@
                                     }
                                 ]
                             }else if($('#category'+cid).text()=='隐形眼镜'){
+                                column = [
+                                    { field: 'code', title: '产品编码'},
+                                    { field: 'p_properties_value', title: '生产批号' , formatter: function (value) {
+                                        if(value){
+                                            return value['生产批号']
+                                        }
+                                        }  },
+                                    { field: 'p_properties_value', title: '保质期', formatter: function (value) {
+                                        if(value){
+                                            return quakooUtils.formatTimeToDay(value['保质期开始时间'])+quakooUtils.formatTimeToDay(value['保质期结束时间']);
+                                        }
+                                        }},
+                                    {field: 'num', title: '库存量' },
+                                    {field: '', title: '出库量'  , formatter: function (value,row,index) {
+                                            return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
+                                        }
+                                    }
+                                ]
 
                             }else{
                                 column = [
@@ -1139,6 +1168,8 @@
                 return;
             }
             allOutList[cid].data = arr;
+            console.log(JSON.stringify(allOutList[cid].data));
+            return;
             var html = template('outListTmp',{list:allOutList,showTool:true});
             $("#outListDom").html(html)
         }

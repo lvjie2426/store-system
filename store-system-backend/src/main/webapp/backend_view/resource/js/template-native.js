@@ -103,6 +103,12 @@ template.helper('getDateTime', function (l,formatStr) {
 	}
 	return new Date(l).format(formatStr);
 });
+template.helper('getYMDTime', function (l,formatStr) {
+	if(!formatStr){
+		formatStr = 'yyyy-MM-dd';
+	}
+	return new Date(l).format(formatStr);
+});
 template.helper('formatDateToDotted', function (time) {
 	return quakooUtils.formatTimeToDateDianLY(time)
 });

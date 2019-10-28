@@ -625,7 +625,7 @@
             </div>
             <%}%>
 
-            <%if(list.categoryName=='镜片'){%>
+            <%if(list.categoryName=='镜片'||list.categoryName=='隐形眼镜'){%>
             <div class="goods-select goods-range">
                 <div class="goods-select-title">现货范围</div>
                 <div class="goods-range-body" onclick="openGoodsRange('现货',<%=isUpdate%>)">设定现货范围</div>
@@ -2401,9 +2401,9 @@
                     params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
                 })
                 //包装
-                // selectTag($("#yj-add-baozhuang"),function (ret) {
-                //     params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
-                // })
+                selectTag($("#yj-add-baozhuang"),function (ret) {
+                    params[cid].properties[ret.el.find('.optionUL li').attr('data-pnid')] = ret.value;
+                })
             }else if($('#category'+cid).text()=='护理产品'){
                 //类型10
                 selectTag($("#yj-add-type-10"),function (ret) {
