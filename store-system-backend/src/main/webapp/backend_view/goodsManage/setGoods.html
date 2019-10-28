@@ -421,11 +421,14 @@
         }
     })
     //获取供应商
-    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:shopId},function (ret) {
-        if(ret && ret.success){
-            providerData = ret.data;
-        }
-    })
+    function getSupplier(shopId){
+        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:shopId},function (ret) {
+            if(ret && ret.success){
+                providerData = ret.data;
+            }
+        })
+    }
+    getSupplier(shopId);
     //获取属性-柱
     quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:16},function (ret) {
         if(ret && ret.success){
@@ -618,6 +621,7 @@
         //门店
         selectTag($("#out-shop"), function (ret) {
             selectSid = ret.value;
+            getSupplier(selectSid);
         })
         //调货人
         selectTag($("#out-people"), function (ret) {
