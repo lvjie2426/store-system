@@ -57,6 +57,8 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     private TransformMapUtils nameMapUtils = new TransformMapUtils(ProductPropertyName.class);
 
+    private TransformMapUtils valueMapUtils = new TransformMapUtils(ProductPropertyValue.class);
+
     private RowMapperHelp<InventoryInBill> rowMapper = new RowMapperHelp<>(InventoryInBill.class);
 
     @Resource
@@ -478,6 +480,38 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                             map_value.put(name.getContent(), entry.getValue());
                         }
                     }
+//                    Map<Object, Object> map_value = Maps.newHashMap();
+//                    Map<Long,Object> map = item.getProperties();
+//                    Set<Long> keys = map.keySet();
+//                    List<ProductPropertyName> names = productPropertyNameDao.load(Lists.newArrayList(keys));
+//                    Map<Long, ProductPropertyName> nameMap = nameMapUtils.listToMap(names, "id");
+//                    //如果是输入属性，则直接封装value返回
+//                    //如果是非输入属性，则根据ID从value表中查找到content封装返回
+//                    for (Map.Entry<Long, ProductPropertyName> entry : nameMap.entrySet()) {
+//                        if (entry.getValue().getInput() == ProductPropertyName.input_no) {
+//                            Set<Long> values = Sets.newHashSet();
+//                            for (Object object : map.values()) {
+//                                values.add(Long.parseLong(object.toString()));
+//                            }
+//                            List<ProductPropertyValue> valueList = productPropertyValueDao.load(Lists.newArrayList(values));
+//                            Map<Long, ProductPropertyValue> valueMap = valueMapUtils.listToMap(valueList, "id");
+//
+//                            for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
+//                                if(nameMap.get(skuEntry.getKey()).getInput() == ProductPropertyName.input_no){
+//                                    map_value.put(nameMap.get(skuEntry.getKey()).getContent(), valueMap.get(Long.parseLong(skuEntry.getValue().toString())).getContent());
+//                                }else{
+//                                    map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
+//                                }
+//                            }
+//                            clientItem.setP_properties_value(map_value);
+//                        } else {
+//                            for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
+//                                map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
+//                            }
+//                            clientItem.setP_properties_value(map_value);
+//                        }
+//
+//                    }
                     clientItem.setP_properties_value(map_value);
                 }
                 ProductBrand brand = brandMap.get(clientItem.getBid());

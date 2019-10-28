@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,6 +60,8 @@ public class StatAspcet {
                 } else if (o instanceof Model) {
                     //no
                 } else if (o instanceof byte[]) {
+                    //no
+                } else if (o instanceof MultipartFile) {
                     //no
                 } else {
                     reqStr.append(",");
