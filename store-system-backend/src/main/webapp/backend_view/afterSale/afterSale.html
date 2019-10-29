@@ -569,8 +569,10 @@
                     }},
                 {field: "uname", title: "顾客姓名", align:"left",valign:"middle"},
                 {field: "uphone", title: "联系方式", align:"left",valign:"middle"},
-                {field: "priceYuan", title: "成交金额", align:"left",valign:"middle",formatter:function (value, row, index) {
-                        return '￥'+value;
+                {field: "discountPrice", title: "成交金额", align:"left",valign:"middle",formatter:function (value, row, index) {
+                        if(value){
+                            return '￥'+(value/100).toFixed(2);
+                        }
                     }},
                 {field: "personnelName", title: "销售员", align:"left",valign:"middle"},
                 {field: "asCount", title: "售后次数", align:"center",valign:"middle"},

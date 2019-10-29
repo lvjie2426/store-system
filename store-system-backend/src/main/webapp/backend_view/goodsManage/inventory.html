@@ -1203,6 +1203,7 @@
                 data.data[i].realNum = allPdDidObj[data.data[i].did].realNum;
             }
         }
+        console.log(data.data);
         $("#startRightTable").bootstrapTable('destroy')
         $("#startRightTable").bootstrapTable({
             data: data.data,
@@ -1229,7 +1230,7 @@
                             return value
                         }else{
                             if(value!=0){
-                                return '<input value="' + value + '" onkeyup="realNumChange(this)" type="number" >'
+                                return '<input value="' + value + '" onkeyup="realNumChange(this,'+row.did+','+row.currentNum+')" type="number" >'
                             }else{
                                 return '<input value="" onkeyup="realNumChange(this,'+row.did+','+row.currentNum+')" type="number" >'
                             }
@@ -1275,7 +1276,7 @@
                     if(data.success){
                         layer.msg('已完成',{icon:1})
                         getInData();
-                        layer.close(index);
+                        layer.closeAll();
                     }else{
                         layer.msg(data.msg,{icon:2})
                     }
