@@ -287,7 +287,7 @@
                         <div class="outbound-body-content outbound-body-top-hidden">
                             <span class="jp-box text-default">请先选择门店、品牌和系列</span>
                             <input class="jp-no-box" type="number" placeholder="搜索关键字">
-                            <div class="btn btn-info fr" onclick="addToList()">添加至出库单</div>
+                            <div class="btn btn-info fr" onclick="addToList()">添加至调货单</div>
                         </div>
                         <div class="outbound-body-top-show clearfix">
                             <div class="text-end clearfix">
@@ -331,7 +331,19 @@
                 <span>产品编码</span>
                 <span>品牌</span>
                 <span>系列</span>
-                <span>商品类型</span>
+                <%if(list[i].name=='镜片'){%>
+                <span>左右眼</span>
+                <%}else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
+                <span>型号</span>
+                <span>色号</span>
+                <%}else if(list[i].name=='隐形眼镜'||list[i].name=='护理产品'){%>
+                <span>生产批号</span>
+                <span>保质期</span>
+                <%}else if(list[i].name=='其它商品'){%>
+                <span>型号</span>
+                <span>光度</span>
+                <%}%>
+                <span>积分价</span>
                 <span>数量</span>
                 <%if(showTool){%>
                 <span class="removeLi">操作</span>
@@ -343,10 +355,28 @@
                     <span><%=list[i].data[j].code%></span>
                     <span><%=list[i].data[j].brandName%></span>
                     <span><%=list[i].data[j].seriesName%></span>
-                    <%if(list[i].data[j].type==0){%>
-                    <span>常规商品</span>
+                    <%if(list[i].name=='镜片'){%>
+                    <%if(list[i].data[j].eyeType==0){%>
+                    <span>左/右</span>
+                    <%}else if(list[i].data[j].eyeType==1){%>
+                    <span>左眼</span>
+                    <%}else if(list[i].data[j].eyeType==2){%>
+                    <span>右眼</span>
+                    <%}%>
+                    <%}else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
+                    <span><%=list[i].data[j].p_properties_value['型号']%></span>
+                    <span><%=list[i].data[j].p_properties_value['色号']%></span>
+                    <%}else if(list[i].name=='隐形眼镜'||list[i].name=='护理产品'){%>
+                    <span><%=list[i].data[j].p_properties_value['生产批号']%></span>
+                    <span><%=getYMDTime(list[i].data[j].p_properties_value['保质期开始时间'])%><br><%=getYMDTime(list[i].data[j].p_properties_value['保质期结束时间'])%></span>
+                    <%}else if(list[i].name=='其它商品'){%>
+                    <span><%=list[i].data[j].p_properties_value['型号']%></span>
+                    <span><%=list[i].data[j].p_properties_value['光度']%></span>
+                    <%}%>
+                    <%if(list[i].data[j].p_integralPrice&&list[i].data[j].p_integralPrice>0){%>
+                    <span><%=list[i].data[j].p_integralPrice%></span>
                     <%}else{%>
-                    <span>积分商品</span>
+                    <span>无</span>
                     <%}%>
                     <span><%=list[i].data[j].num%></span>
                     <%if(showTool){%>
@@ -694,36 +724,33 @@
     // 获取一个商品的SPU，返回需要确定的所有SKU属性
     function getSpu() {
         if(!selectSid){
-            layer.msg('请选择门店')
+            layer.msg('请选择门店');
             return
         }
         if(!bid){
-            layer.msg('请选择品牌')
+            layer.msg('请选择品牌');
             return
         }
         if(!pid){
-            layer.msg('请选择供应商')
+            layer.msg('请选择供应商');
             return
         }
-        quakooData.ajaxGetData(config.getUrl_inventoryInvokeBill_select(),{subid:selectSid,type:type,cid:cid,pid:pid,bid:bid,sid:sid},function (ret) {
+        quakooData.ajaxGetData(config.getUrl_inventoryInvokeBill_select(),{subid:selectSid,cid:cid,pid:pid,bid:bid,sid:sid},function (ret) {
             if(ret && ret.success){
                 nowGoodData = ret.data;
                 skuObj = {};
                 for(var j=0;j<nowGoodData.length;j++){
-                    if(nowGoodData[j].p_properties){
-                        nowGoodData[j].properties = nowGoodData[j].p_properties;
-                    }
+                    nowGoodData[j].properties = nowGoodData[j].p_properties_value;
                     nowGoodData[j].code = nowGoodData[j].p_code;
-                    nowGoodData[j].type = nowGoodData[j].p_type;
                     if(nowGoodData[j].properties){
-                        skuObj[nowGoodData[j].properties[15]+''+nowGoodData[j].properties[16]] = nowGoodData[j];
+                        skuObj[nowGoodData[j].properties['球']+''+nowGoodData[j].properties['柱']] = nowGoodData[j];
                     }
                 }
                 if(ret.data){
                     if($('#category'+cid).text()=='镜片'){
                         var cols = [[], []];//球
                         var rangeData = [];//柱
-                        cols[0].push({field:'num',rowspan:2,unresize:true, minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
+                        cols[0].push({field:'num',rowspan:2,unresize:true, minWidth:60,align:'center', title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'});
                         for(var i=0;i<ballData.length;i++){
                             (function (i) {
                                 cols[0].push({align: 'center', title:ballData[i].content, colspan: 2,unresize:true})
@@ -767,21 +794,63 @@
                                 }
                             });
                         });
-                    }else {
-                        var column = [
-                            { field: 'code', title: '产品编码'},
-                            { field: 'properties', title: '球' , formatter: function (value) {
-                                    return value?value[15]:'-';
-                                }  },
-                            { field: 'properties', title: '柱', formatter: function (value) {
-                                    return value?value[16]:'-';
-                                }},
-                            {field: 'num', title: '库存量' },
-                            {field: '', title: '调货量'  , formatter: function (value,row,index) {
-                                    return '<input type="text" class="in-yj-input" onkeyup="checkNum(this)" data-index="'+index+'" placeholder="数量">';
+                    }else{
+                        var column;
+                        if($('#category'+cid).text()=='镜架'||$('#category'+cid).text()=='太阳镜'){
+                            column = [
+                                { field: 'code', title: '产品编码'},
+                                { field: 'p_properties_value', title: '型号' , formatter: function (value) {
+                                        return value['型号'];
+                                    }  },
+                                { field: 'p_properties_value', title: '色号', formatter: function (value) {
+                                        return value['色号'];
+                                    }},
+                                {field: 'num', title: '库存量'},
+                                {field: '', title: '出库量'  , formatter: function (value,row,index) {
+                                        return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
+                                    }
                                 }
-                            }
-                        ]
+                            ]
+                        }else if($('#category'+cid).text()=='隐形眼镜'||$('#category'+cid).text()=='护理产品'){
+                            column = [
+                                { field: 'code', title: '产品编码'},
+                                { field: 'p_properties_value', title: '生产批号' , formatter: function (value) {
+                                        if(value){
+                                            return value['生产批号']
+                                        }
+                                    }  },
+                                { field: 'p_properties_value', title: '保质期', formatter: function (value) {
+                                        if(value){
+                                            return quakooUtils.formatTimeToDay(value['保质期开始时间'])+'<br>'+quakooUtils.formatTimeToDay(value['保质期结束时间']);
+                                        }
+                                    }},
+                                {field: 'num', title: '库存量' },
+                                {field: '', title: '出库量'  , formatter: function (value,row,index) {
+                                        return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
+                                    }
+                                }
+                            ]
+                        }else if($('#category'+cid).text()=='其它商品'){
+                            column = [
+                                { field: 'code', title: '产品编码'},
+                                { field: 'p_properties_value', title: '型号', formatter: function (value) {
+                                        if(value){
+                                            return value['型号'];
+                                        }
+                                    }  },
+                                { field: 'p_properties_value', title: '光度', formatter: function (value) {
+                                        if(value){
+                                            return value['光度'];
+                                        }
+                                    }},
+                                {field: 'num', title: '库存量'},
+                                {field: '', title: '出库量'  , formatter: function (value,row,index) {
+                                        return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
+                                    }
+                                }
+                            ]
+                        }
+                        console.log('然儿',nowGoodData);
                         $("#out-table").bootstrapTable('destroy');
                         $("#out-table").bootstrapTable({
                             data: nowGoodData,                 //被加载的数据。
@@ -807,7 +876,7 @@
     //添加到本地出库单
     function addToList() {
         if(quakooUtils.isBlack(nowGoodData)){
-            layer.msg('请查询商品')
+            layer.msg('请查询商品');
             return
         }
         $('.in-yj-input').each(function (index,item) {
@@ -819,8 +888,8 @@
         if($('#category'+cid).text()=='镜片'){
             for(var i=0;i<nowGoodData.length;i++){
                 if(nowGoodData[i].properties){
-                    if(skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]] && skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum){
-                        nowGoodData[i].num = skuObj[nowGoodData[i].properties[15]+''+nowGoodData[i].properties[16]].newNum;
+                    if(skuObj[nowGoodData[i].properties['球']+''+nowGoodData[i].properties['柱']] && skuObj[nowGoodData[i].properties['球']+''+nowGoodData[i].properties['柱']].newNum){
+                        nowGoodData[i].num = skuObj[nowGoodData[i].properties['球']+''+nowGoodData[i].properties['柱']].newNum;
                         nowGoodData[i].brandName = brandName;
                         nowGoodData[i].seriesName = seriesName;
                         nowGoodData[i].providerName = providerName;
@@ -840,11 +909,12 @@
             }
         }
         if(arr.length<=0){
-            layer.msg('请输入调货数量')
+            layer.msg('请输入出库数量');
             return;
         }
         allOutList[cid].data = arr;
-        var html = template('outListTmp',{list:allOutList,showTool:true})
+        console.log('马儿',allOutList);
+        var html = template('outListTmp',{list:allOutList,showTool:true});
         $("#outListDom").html(html)
     }
     //添加调货单
@@ -1004,6 +1074,7 @@
                         })
                     });
                 });
+                console.log('马儿',allOutList)
                 var html1 = template('outListTmp',{list:allOutList,showTool:false})
                 $("#diaohuoDom").html(html1)
             }

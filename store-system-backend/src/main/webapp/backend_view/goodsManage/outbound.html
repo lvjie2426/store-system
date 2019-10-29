@@ -567,11 +567,11 @@
                         <span><%=list[i].data[j].brandName%></span>
                         <span><%=list[i].data[j].seriesName%></span>
                         <%if(list[i].name=='镜片'){%>
-                            <%if(list[i].data.eyeType==0){%>
+                            <%if(list[i].data[j].eyeType==0){%>
                                 <span>左/右</span>
-                            <%}else if(list[i].data.eyeType==1){%>
+                            <%}else if(list[i].data[j].eyeType==1){%>
                                 <span>左眼</span>
-                            <%}else if(list[i].data.eyeType==2){%>
+                            <%}else if(list[i].data[j].eyeType==2){%>
                                 <span>右眼</span>
                             <%}%>
                         <%}else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
