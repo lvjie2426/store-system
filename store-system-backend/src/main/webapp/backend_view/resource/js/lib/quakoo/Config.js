@@ -25,7 +25,7 @@ var Config = (function(_super){
 
         /**测试服务器地址*/
         this.serverUrl = "http://39.107.247.82:20005";
-        this.serverUrl = "http://192.168.1.14:20005";
+        // this.serverUrl = "http://192.168.1.14:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
@@ -96,6 +96,8 @@ var Config = (function(_super){
         this.qitashangpinCostPriceId = 28;
         /**特殊商品-成本价*/
         this.teshushangpinCostPriceId = 30;
+        /**特殊商品-名称*/
+        this.teshushangpinNameId = 29;
         /**球*/
         this.qiuId = 15;
         /**柱*/

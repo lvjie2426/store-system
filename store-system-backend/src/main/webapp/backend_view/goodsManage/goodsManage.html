@@ -585,10 +585,10 @@
             <div class="goods-select">
                 <div class="goods-select-title">名称</div>
                 <div class="selectBox" >
-                    <%if(list.name){%>
-                    <input type="text" value="<%=list.name%>" class="yj-input" placeholder="名称" id="yj-add-name">
+                    <%if(list.properties && list.properties[29]){%>
+                    <input type="text" value="<%=list.properties[29]%>" class="yj-input" placeholder="名称" id="yj-add-name" data-pnid="29">
                     <%}else{%>
-                    <input type="text"  class="yj-input" placeholder="名称" id="yj-add-name">
+                    <input type="text"  class="yj-input" placeholder="名称" id="yj-add-name" data-pnid="29">
                     <%}%>
                 </div>
             </div>
@@ -1050,7 +1050,9 @@
                     return '<img class="yj-table-img" src="'+value+'">';
                 }
             },
-            {field: "name", title: "名称", valign:"middle"},
+            {field: "properties", title: "名称", valign:"middle",formatter: function (value) {
+                    return value[29]
+                }},
             /*{field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
                     return '100·2';
                 }
@@ -2466,7 +2468,7 @@
                 // nowParam.skuJson[0].code = $('#yj-add-code').val();
                 nowParam.properties[config.teshushangpinCostPriceId] = $('#yj-add-costPrice').val()*100;
                 nowParam.icon = $('#cover').attr('real-src');
-                nowParam.name = $('#yj-add-name').val();
+                nowParam.properties[config.teshushangpinNameId] = $('#yj-add-name').val();
                 if(nowParam.type==1){
                     nowParam.skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
                 }
