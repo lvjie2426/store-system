@@ -2474,29 +2474,26 @@
                 }
             }else{
                 nowParam.properties[$('#yj-add-day').attr('data-pnid')] = $('#yj-add-day').val();
-                if($('#category'+cid).text()=='护理产品'){
-                    nowParam.properties[$('#yj-add-shouming').attr('data-pnid')] = $('#yj-add-shouming').val();
-                }
+
                 if($('#category'+cid).text()!='隐形眼镜'){
                     nowParam.skuJson = [{}];
+                    if($('#category'+cid).text()=='镜架'){
+                        nowParam.properties[config.jingjiaRealPriceId] = $('#yj-add-retailPrice').val()*100;
+                        nowParam.properties[config.jingjiaCostPriceId] = $('#yj-add-costPrice').val()*100;
+                    }else if($('#category'+cid).text()=='太阳镜'){
+                        nowParam.properties[config.taiyangjingRealPriceId] = $('#yj-add-retailPrice').val()*100;
+                        nowParam.properties[config.taiyangjingCostPriceId] = $('#yj-add-costPrice').val()*100;
+                    }else if($('#category'+cid).text()=='其它商品'){
+                        nowParam.properties[config.qitashangpinRealPriceId] = $('#yj-add-retailPrice').val()*100;
+                        nowParam.properties[config.qitashangpinCostPriceId] = $('#yj-add-costPrice').val()*100;
+                    }else if($('#category'+cid).text()=='护理产品'){
+                        nowParam.properties[config.hulishangpinRealPriceId] = $('#yj-add-retailPrice').val()*100;
+                        nowParam.properties[config.hulishangpinCostPriceId] = $('#yj-add-costPrice').val()*100;
+                        nowParam.properties[config.shoumingId] = $('#yj-add-shouming').val();
+                    }
                     if(nowParam.type==1){
                         // nowParam.skuJson[0].code = $('#yj-add-code-1').val();
                         nowParam.skuJson[0].integralPrice = $('#yj-add-integralPrice').val();
-                    }else{
-                        if($('#category'+cid).text()=='镜架'){
-                            nowParam.properties[config.jingjiaRealPriceId] = $('#yj-add-retailPrice').val()*100;
-                            nowParam.properties[config.jingjiaCostPriceId] = $('#yj-add-costPrice').val()*100;
-                        }else if($('#category'+cid).text()=='太阳镜'){
-                            nowParam.properties[config.taiyangjingRealPriceId] = $('#yj-add-retailPrice').val()*100;
-                            nowParam.properties[config.taiyangjingCostPriceId] = $('#yj-add-costPrice').val()*100;
-                        }else if($('#category'+cid).text()=='其它商品'){
-                            nowParam.properties[config.qitashangpinRealPriceId] = $('#yj-add-retailPrice').val()*100;
-                            nowParam.properties[config.qitashangpinCostPriceId] = $('#yj-add-costPrice').val()*100;
-                        }else if($('#category'+cid).text()=='护理商品'){
-                            nowParam.properties[config.hulishangpinRealPriceId] = $('#yj-add-retailPrice').val()*100;
-                            nowParam.properties[config.hulishangpinCostPriceId] = $('#yj-add-costPrice').val()*100;
-                        }
-                        // nowParam.skuJson[0].code = $('#yj-add-code').val();
                     }
                 }else{
                     nowParam.properties[config.yinxingBaozhuangId] = $('#yj-add-baozhuang').val();
@@ -2565,7 +2562,11 @@
                     }
                 })
             }else{
-                nowParam.skuJson = JSON.stringify(nowParam.skuJson);
+                if(JSON.stringify(nowParam.skuJson)!='[{}]'){
+                    nowParam.skuJson = JSON.stringify(nowParam.skuJson);
+                }else{
+                    delete nowParam.skuJson;
+                }
                 nowParam.commissionJson = JSON.stringify(nowParam.commissionJson);
                 nowParam.nowRangesJson = JSON.stringify(nowParam.nowRangesJson);
                 nowParam.rangesJson = JSON.stringify(nowParam.rangesJson);
