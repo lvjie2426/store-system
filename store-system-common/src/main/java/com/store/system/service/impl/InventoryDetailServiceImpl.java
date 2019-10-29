@@ -139,6 +139,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 client.setP_retailPrice(sku.getRetailPrice());
                 client.setP_costPrice(sku.getCostPrice());
                 client.setP_integralPrice(sku.getIntegralPrice());
+                client.setEyeType(sku.getEyeType());
 
                 Set<Long> keys = map.keySet();
                 List<ProductPropertyName> names = productPropertyNameDao.load(Lists.newArrayList(keys));

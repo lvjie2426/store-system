@@ -55,7 +55,13 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
 
     private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
 
+    private TransformMapUtils nameMapUtils = new TransformMapUtils(ProductPropertyName.class);
+
+    private TransformMapUtils valueMapUtils = new TransformMapUtils(ProductPropertyValue.class);
+
     private RowMapperHelp<InventoryOutBill> rowMapper = new RowMapperHelp<>(InventoryOutBill.class);
+
+
 
     @Resource
     private InventoryOutBillDao inventoryOutBillDao;
@@ -86,6 +92,12 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
 
     @Resource
     private SubordinateDao subordinateDao;
+
+    @Resource
+    private ProductPropertyNameDao productPropertyNameDao;
+
+    @Resource
+    private ProductPropertyValueDao productPropertyValueDao;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -319,6 +331,39 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
                     if(null != sku) {
                         clientItem.setCode(sku.getCode());
                         clientItem.setProperties(sku.getProperties());
+
+                        Map<Long,Object> map = sku.getProperties();
+                        Map<Object,Object> map_value = Maps.newHashMap();
+                        Set<Long> keys = map.keySet();
+                        List<ProductPropertyName> names = productPropertyNameDao.load(Lists.newArrayList(keys));
+                        Map<Long, ProductPropertyName> nameMap = nameMapUtils.listToMap(names, "id");
+                        //如果是输入属性，则直接封装value返回
+                        //如果是非输入属性，则根据ID从value表中查找到content封装返回
+                        for (Map.Entry<Long, ProductPropertyName> entry : nameMap.entrySet()) {
+                            if (entry.getValue().getInput() == ProductPropertyName.input_no) {
+                                Set<Long> values = Sets.newHashSet();
+                                for (Object object : map.values()) {
+                                    values.add(Long.parseLong(object.toString()));
+                                }
+                                List<ProductPropertyValue> valueList = productPropertyValueDao.load(Lists.newArrayList(values));
+                                Map<Long, ProductPropertyValue> valueMap = valueMapUtils.listToMap(valueList, "id");
+
+                                for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
+                                    if(nameMap.get(skuEntry.getKey()).getInput() == ProductPropertyName.input_no){
+                                        map_value.put(nameMap.get(skuEntry.getKey()).getContent(), valueMap.get(Long.parseLong(skuEntry.getValue().toString())).getContent());
+                                    }else{
+                                        map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
+                                    }
+                                }
+                                clientItem.setP_properties_value(map_value);
+                            } else {
+                                for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
+                                    map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
+                                }
+                                clientItem.setP_properties_value(map_value);
+                            }
+
+                        }
                     }
                 }
                 ProductCategory category = categoryMap.get(clientItem.getCid());
