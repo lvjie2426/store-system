@@ -42,40 +42,43 @@ public class StatisticsSaleController extends BaseController{
     */
     @RequestMapping("/getSaleList")
     public ModelAndView getSaleList(HttpServletRequest request, HttpServletResponse response,
-                                    long subId, int type,
+                                    @RequestParam(name = "subIds[]") List<Long> subIds, int type,
                                     @RequestParam(required = false, value = "day", defaultValue = "0") long day) throws Exception {
         try {
             long week = TimeUtils.getWeekFormTime(System.currentTimeMillis());
             long month = TimeUtils.getMonthFormTime(System.currentTimeMillis());
             List<ClientSaleStatistics> res = Lists.newArrayList();
-            if (type == ClientSaleStatistics.type_today) {
-                long dayTime = System.currentTimeMillis();
-                ClientSaleStatistics statisticsWeek = saleStatisticsService.getDay(dayTime, subId);
-                if (statisticsWeek != null) {
-                    res.add(statisticsWeek);
-                }
-            } else if (type == ClientSaleStatistics.type_yesterday) {
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.DATE, -1);
-                long yesterdayTime = cal.getTimeInMillis();
-                ClientSaleStatistics statisticsWeek = saleStatisticsService.getDay(yesterdayTime, subId);
-                if (statisticsWeek != null) {
-                    res.add(statisticsWeek);
-                }
-            } else if (type == ClientSaleStatistics.type_week) {
-                ClientSaleStatistics statisticsWeek = saleStatisticsService.getWeek(week, subId);
-                if (statisticsWeek != null) {
-                    res.add(statisticsWeek);
-                }
-            } else if (type == ClientSaleStatistics.type_month) {
-                ClientSaleStatistics statisticsMonth = saleStatisticsService.getMonth(month, subId);
-                if (statisticsMonth != null) {
-                    res.add(statisticsMonth);
-                }
-            } else if (type == ClientSaleStatistics.type_day) {
-                ClientSaleStatistics client = saleStatisticsService.getDate(day, subId);
-                if (client != null) {
-                    res.add(client);
+            for(Long subId:subIds) {
+                if (type == ClientSaleStatistics.type_today) {
+                    long dayTime = System.currentTimeMillis();
+
+                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getDay(dayTime, subId);
+                    if (statisticsWeek != null) {
+                        res.add(statisticsWeek);
+                    }
+                } else if (type == ClientSaleStatistics.type_yesterday) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DATE, -1);
+                    long yesterdayTime = cal.getTimeInMillis();
+                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getDay(yesterdayTime, subId);
+                    if (statisticsWeek != null) {
+                        res.add(statisticsWeek);
+                    }
+                } else if (type == ClientSaleStatistics.type_week) {
+                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getWeek(week, subId);
+                    if (statisticsWeek != null) {
+                        res.add(statisticsWeek);
+                    }
+                } else if (type == ClientSaleStatistics.type_month) {
+                    ClientSaleStatistics statisticsMonth = saleStatisticsService.getMonth(month, subId);
+                    if (statisticsMonth != null) {
+                        res.add(statisticsMonth);
+                    }
+                } else if (type == ClientSaleStatistics.type_day) {
+                    ClientSaleStatistics client = saleStatisticsService.getDate(day, subId);
+                    if (client != null) {
+                        res.add(client);
+                    }
                 }
             }
             return this.viewNegotiating(request, response, new ResultClient(true, res));

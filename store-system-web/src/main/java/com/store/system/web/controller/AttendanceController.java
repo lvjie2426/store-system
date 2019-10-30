@@ -77,10 +77,10 @@ public class AttendanceController extends BaseController {
         try {
             User user = UserUtils.getUser(request);
             ClientAttendanceLog clientAttendanceLog = attendanceLogService.loadAttendanceLog(user.getId(), day);
-            if(clientAttendanceLog.getStart()<0 &&
-                    clientAttendanceLog.getEnd()<0){
-                return this.viewNegotiating(request, response, new ResultClient(true,"尚未设置考勤规则！请联系管理员！"));
-            }
+//            if(clientAttendanceLog.getStart()<0 &&
+//                    clientAttendanceLog.getEnd()<0){
+//                return this.viewNegotiating(request, response, new ResultClient(true,"尚未设置考勤规则！请联系管理员！"));
+//            }
             return this.viewNegotiating(request, response, new ResultClient(clientAttendanceLog));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

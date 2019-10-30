@@ -157,6 +157,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 			}
 			attendanceLog.setMonth(TimeUtils.getMonthFormTime(time));
 			attendanceLog.setWeek(TimeUtils.getWeekFormTime(time));
+			attendanceLog.setPunchCardType(punchCardType);
 			dblog = attendanceLogDao.insert(attendanceLog);
 		}
 
