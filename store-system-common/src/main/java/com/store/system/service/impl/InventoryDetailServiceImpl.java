@@ -14,6 +14,7 @@ import com.store.system.client.ClientInventoryDetail;
 import com.store.system.dao.*;
 import com.store.system.model.*;
 import com.store.system.service.InventoryDetailService;
+import com.store.system.service.ProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -73,11 +74,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
     private InventoryDetailDao inventoryDetailDao;
 
     @Resource
-    private ProductPropertyNameDao productPropertyNameDao;
-
-    @Resource
-    private ProductPropertyValueDao productPropertyValueDao;
-
+    private ProductService productService;
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -131,8 +128,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 client.setP_name(spu.getName());
             }
             ProductSKU sku = skuMap.get(one.getP_skuid());
-            Map<Long,Object> map = sku.getProperties();
-            Map<Object,Object> map_value = Maps.newHashMap();
+
             if (null != sku) {
                 client.setP_code(sku.getCode());
                 client.setP_properties(sku.getProperties());
@@ -140,37 +136,9 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 client.setP_costPrice(sku.getCostPrice());
                 client.setP_integralPrice(sku.getIntegralPrice());
                 client.setEyeType(sku.getEyeType());
-
-                Set<Long> keys = map.keySet();
-                List<ProductPropertyName> names = productPropertyNameDao.load(Lists.newArrayList(keys));
-                Map<Long, ProductPropertyName> nameMap = nameMapUtils.listToMap(names, "id");
-                //如果是输入属性，则直接封装value返回
-                //如果是非输入属性，则根据ID从value表中查找到content封装返回
-                for (Map.Entry<Long, ProductPropertyName> entry : nameMap.entrySet()) {
-                    if (entry.getValue().getInput() == ProductPropertyName.input_no) {
-                        Set<Long> values = Sets.newHashSet();
-                        for (Object object : map.values()) {
-                            values.add(Long.parseLong(object.toString()));
-                        }
-                        List<ProductPropertyValue> valueList = productPropertyValueDao.load(Lists.newArrayList(values));
-                        Map<Long, ProductPropertyValue> valueMap = valueMapUtils.listToMap(valueList, "id");
-
-                        for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
-                            if(nameMap.get(skuEntry.getKey()).getInput() == ProductPropertyName.input_no){
-                                map_value.put(nameMap.get(skuEntry.getKey()).getContent(), valueMap.get(Long.parseLong(skuEntry.getValue().toString())).getContent());
-                            }else{
-                                map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
-                            }
-                        }
-                        client.setP_properties_value(map_value);
-                    } else {
-                        for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
-                            map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
-                        }
-                        client.setP_properties_value(map_value);
-                    }
-
-                }
+                Map<Object,Object> map_value = Maps.newHashMap();
+                map_value = productService.getProperties(sku,client,"p_properties_value");
+                client.setP_properties_value(map_value);
             }
             res.add(client);
         }

@@ -36,6 +36,8 @@ public class ClientInventoryInvokeBillItem extends InventoryInvokeBillItem {
 
     private Map<Long, Object> properties; //sku属性json
 
+    private Map<Object, Object> k_properties_value; //SKU 属性
+
     public ClientInventoryInvokeBillItem(InventoryInvokeBillItem inventoryInvokeBillItem) {
         try {
             BeanUtils.copyProperties(this, inventoryInvokeBillItem);

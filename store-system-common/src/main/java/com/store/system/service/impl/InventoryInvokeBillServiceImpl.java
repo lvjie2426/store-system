@@ -20,6 +20,7 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.InventoryInvokeBillService;
 import com.store.system.service.InventoryWarehouseService;
+import com.store.system.service.ProductService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,6 +99,9 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
 
     @Resource
     private ProductSeriesDao productSeriesDao;
+
+    @Resource
+    private ProductService productService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -385,6 +389,9 @@ public class InventoryInvokeBillServiceImpl implements InventoryInvokeBillServic
                     }
                     ProductSKU sku = skuMap.get(detail.getP_skuid());
                     if(null != sku) {
+                        Map<Object,Object> map_value = Maps.newHashMap();
+                        map_value = productService.getProperties(sku,clientItem,"k_properties_value");
+                        clientItem.setK_properties_value(map_value);
                         clientItem.setCode(sku.getCode());
                         clientItem.setProperties(sku.getProperties());
                     }

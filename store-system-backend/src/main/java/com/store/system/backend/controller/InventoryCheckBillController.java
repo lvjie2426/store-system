@@ -45,8 +45,7 @@ public class InventoryCheckBillController extends BaseController {
     private InventoryWarehouseService inventoryWarehouseService;
 
     @RequestMapping("/select")
-    public ModelAndView select(@RequestParam(value = "type") int type,
-                               @RequestParam(value = "subid") long subid,
+    public ModelAndView select(@RequestParam(value = "subid") long subid,
                                @RequestParam(value = "pid") long pid,
                                @RequestParam(value = "cid") long cid,
                                @RequestParam(value = "bid") long bid,
