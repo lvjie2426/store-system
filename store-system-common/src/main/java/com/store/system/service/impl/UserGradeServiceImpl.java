@@ -64,14 +64,14 @@ public class UserGradeServiceImpl implements UserGradeService {
 
     @Override
     public UserGrade add(UserGrade userGrade) throws Exception {
-        check(userGrade, false);
+        check(userGrade, true);
         userGrade = userGradeDao.insert(userGrade);
         return userGrade;
     }
 
     @Override
     public boolean update(UserGrade userGrade) throws Exception {
-        check(userGrade, true);
+        check(userGrade, false);
         boolean res = userGradeDao.update(userGrade);
         return res;
     }

@@ -167,8 +167,9 @@ public class InventoryOutBillController extends BaseController {
     @RequestMapping("/getAllPager")
     public ModelAndView getAllPager(@RequestParam(value = "subid") long subid,
                                     @RequestParam(value = "type") int type,
+                                    String licenceNum,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        pager = inventoryOutBillService.getAllPager(pager, subid,type);
+        pager = inventoryOutBillService.getAllPager(pager, subid,type,licenceNum);
         return this.viewNegotiating(request,response, new PagerResult<>(pager));
     }
 

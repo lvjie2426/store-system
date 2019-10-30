@@ -10,4 +10,5 @@ public interface OptometryInfoDao extends HDao<OptometryInfo> {
 
     public List<OptometryInfo> getList(long uid, int size) throws DataAccessException;
 
+    public List<OptometryInfo> getUserList(long uid)throws DataAccessException;
 }

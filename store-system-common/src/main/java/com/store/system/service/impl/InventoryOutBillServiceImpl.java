@@ -247,7 +247,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     }
 
     @Override
-    public Pager getAllPager(Pager pager, long subid, int type) throws Exception {
+    public Pager getAllPager(Pager pager, long subid, int type,String licenceNum) throws Exception {
         String sql = "SELECT * FROM `inventory_out_bill` where subid = " + subid + " and `type` = " + type;
         String sqlCount = "SELECT COUNT(id) FROM `inventory_out_bill` where subid = " + subid +" and `type` = " + type;
         String limit = " limit %d , %d ";

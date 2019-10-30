@@ -280,7 +280,7 @@ public class BusinessOrderController extends BaseController{
         try {
             User user = UserUtils.getUser(request);
             pager = businessOrderService.getPager(pager, user.getId(), BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

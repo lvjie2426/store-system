@@ -15,4 +15,5 @@ public interface OptometryInfoService {
 
     public List<ClientOptometryInfo> getList(long uid, int size) throws Exception;
 
+    public OptometryInfo getUserList(long uid)throws Exception;
 }

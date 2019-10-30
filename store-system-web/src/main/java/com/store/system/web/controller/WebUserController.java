@@ -310,7 +310,7 @@ public class WebUserController extends BaseController {
                 psid = user.getPsid();
             }
             pager = userService.getIntentionPager(pager, psid, User.userType_user, User.status_nomore, name);
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+            return this.viewNegotiating(request, response, (pager.toModelAttribute()));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
@@ -326,11 +326,17 @@ public class WebUserController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/addCustomer")
-    public ModelAndView addCustomer(User user, OptometryInfo optometryInfo,HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView addCustomer(User user, OptometryInfo optometryInfo,
+                                    @RequestParam(required = false,value = "yuanYongResJson",defaultValue = "") String yuanYongResJson,
+                                    @RequestParam(required = false,value = "yinXingResJson",defaultValue = "")  String yinXingResJson,
+                                    @RequestParam(required = false,value = "jinYongResJson",defaultValue = "")  String jinYongResJson,
+                                    @RequestParam(required = false,value = "jianJinDuoJiaoDianResJson",defaultValue = "")   String jianJinDuoJiaoDianResJson,
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             user.setContactPhone(user.getPhone());
             user = userService.addCustomer(user);
             if(optometryInfo!=null){
+
                 optometryInfo.setUid(user.getId());
                 optometryInfoDao.insert(optometryInfo);
             }
