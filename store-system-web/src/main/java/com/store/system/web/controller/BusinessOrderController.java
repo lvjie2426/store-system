@@ -330,7 +330,7 @@ public class BusinessOrderController extends BaseController{
                             BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
                 }
             }
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

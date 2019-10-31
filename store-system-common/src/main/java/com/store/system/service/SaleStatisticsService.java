@@ -13,16 +13,16 @@ import java.util.List;
  **/
 public interface SaleStatisticsService {
 
-    public ClientSaleStatistics getDayList(List<Long> days, long subId) throws Exception;
+    public ClientSaleStatistics getDayList(List<Long> days, List<Long> subIds) throws Exception;
 
-    public ClientSaleStatistics getDay(long dayTime, long subId) throws Exception;
+    public ClientSaleStatistics getDay(long dayTime, List<Long> subIds) throws Exception;
 
-    public ClientSaleStatistics getWeek(long week, long subId) throws Exception;
+    public ClientSaleStatistics getWeek(long week, List<Long> subIds) throws Exception;
 
-    public ClientSaleStatistics getMonth(long month, long subId) throws Exception;
+    public ClientSaleStatistics getMonth(long month, List<Long> subIds) throws Exception;
 
-    public ClientSaleStatistics searchSale(long startTime, long endTime, long subId) throws Exception;
+    public ClientSaleStatistics searchSale(long startTime, long endTime, List<Long> subIds) throws Exception;
 
-    public ClientSaleStatistics getDate(long day, long subId) throws Exception;
+    public ClientSaleStatistics getDate(long day, List<Long> subIds) throws Exception;
 
 }

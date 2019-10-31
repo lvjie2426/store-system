@@ -360,6 +360,9 @@ public class ProductServiceImpl implements ProductService {
         List<ClientProductSKU> skuList = Lists.newArrayList();
         for (ProductSKU one : productSKUList) {
             ClientProductSKU clientProductSKU = new ClientProductSKU(one);
+            Map<Object, Object> map_value = Maps.newHashMap();
+            map_value = getProperties(one,clientProductSKU,"p_properties_value");
+            clientProductSKU.setP_properties_value(map_value);
             skuList.add(clientProductSKU);
         }
 

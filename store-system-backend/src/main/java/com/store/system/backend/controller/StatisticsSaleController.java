@@ -37,7 +37,7 @@ public class StatisticsSaleController extends BaseController{
     public ModelAndView saleToday(HttpServletRequest request, HttpServletResponse response, long subId)throws Exception{
         try {
             long dayTime = System.currentTimeMillis();
-            ClientSaleStatistics res = saleStatisticsService.getDay(dayTime,subId);
+            ClientSaleStatistics res = saleStatisticsService.getDay(dayTime,Lists.<Long>newArrayList(subId));
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -51,7 +51,7 @@ public class StatisticsSaleController extends BaseController{
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE, -1);
             long yesterdayTime = cal.getTimeInMillis();
-            ClientSaleStatistics res = saleStatisticsService.getDay(yesterdayTime,subId);
+            ClientSaleStatistics res = saleStatisticsService.getDay(yesterdayTime,Lists.<Long>newArrayList(subId));
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -63,7 +63,7 @@ public class StatisticsSaleController extends BaseController{
     public ModelAndView saleWeek(HttpServletRequest request, HttpServletResponse response, long subId)throws Exception{
         try {
             long week = TimeUtils.getWeekFormTime(System.currentTimeMillis());
-            ClientSaleStatistics res = saleStatisticsService.getWeek(week,subId);
+            ClientSaleStatistics res = saleStatisticsService.getWeek(week,Lists.<Long>newArrayList(subId));
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -75,7 +75,7 @@ public class StatisticsSaleController extends BaseController{
     public ModelAndView saleMonth(HttpServletRequest request, HttpServletResponse response, long subId)throws Exception{
         try {
             long month = TimeUtils.getMonthFormTime(System.currentTimeMillis());
-            ClientSaleStatistics res = saleStatisticsService.getMonth(month,subId);
+            ClientSaleStatistics res = saleStatisticsService.getMonth(month,Lists.<Long>newArrayList(subId));
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -86,10 +86,8 @@ public class StatisticsSaleController extends BaseController{
     @RequestMapping("/saleHalfYear")
     public ModelAndView saleHalfYear(HttpServletRequest request, HttpServletResponse response, long subId)throws Exception{
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            List<Long> days = TimeUtils.getPastMonthDays(calendar.get(Calendar.MONTH)+1);
-            ClientSaleStatistics res = saleStatisticsService.getDayList(days,subId);
+            List<Long> days = TimeUtils.getPastMonthDays(6);
+            ClientSaleStatistics res = saleStatisticsService.getDayList(days,Lists.<Long>newArrayList(subId));
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -102,7 +100,7 @@ public class StatisticsSaleController extends BaseController{
                                          @RequestParam(name = "startTime") long startTime,
                                          @RequestParam(name = "endTime") long endTime,long subId)throws Exception{
         try {
-            ClientSaleStatistics res = saleStatisticsService.searchSale(startTime,endTime,subId);
+            ClientSaleStatistics res = saleStatisticsService.searchSale(startTime,endTime,Lists.<Long>newArrayList(subId));
             return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
@@ -121,25 +119,23 @@ public class StatisticsSaleController extends BaseController{
             List<ClientSaleStatistics> res = Lists.newArrayList();
             for(Long subId:subIds){
                 if(type==ClientSaleStatistics.type_week) {
-                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getWeek(week,subId);
+                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getWeek(week,Lists.<Long>newArrayList(subId));
                     if (statisticsWeek != null) {
                         res.add(statisticsWeek);
                     }
                 }else if(type==ClientSaleStatistics.type_month){
-                    ClientSaleStatistics statisticsMonth = saleStatisticsService.getMonth(month, subId);
+                    ClientSaleStatistics statisticsMonth = saleStatisticsService.getMonth(month, Lists.<Long>newArrayList(subId));
                     if (statisticsMonth != null) {
                         res.add(statisticsMonth);
                     }
                 }else if(type==ClientSaleStatistics.type_halfYear){
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(System.currentTimeMillis());
-                    List<Long> days = TimeUtils.getPastMonthDays(calendar.get(Calendar.MONTH)+1);
-                    ClientSaleStatistics statisticsYear = saleStatisticsService.getDayList(days,subId);
+                    List<Long> days = TimeUtils.getPastMonthDays(6);
+                    ClientSaleStatistics statisticsYear = saleStatisticsService.getDayList(days,Lists.<Long>newArrayList(subId));
                     if (statisticsYear != null) {
                         res.add(statisticsYear);
                     }
                 }else if(type==ClientSaleStatistics.type_search){
-                    ClientSaleStatistics statistics = saleStatisticsService.searchSale(startTime,endTime,subId);
+                    ClientSaleStatistics statistics = saleStatisticsService.searchSale(startTime,endTime,Lists.<Long>newArrayList(subId));
                     if (statistics != null) {
                         res.add(statistics);
                     }

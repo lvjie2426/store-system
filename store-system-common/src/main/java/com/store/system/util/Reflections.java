@@ -1,33 +1,9 @@
-//package com.store.system.util;
-//
-//import org.apache.commons.lang3.Validate;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//
-//import java.lang.reflect.*;
-//
-///**
-// * @ClassName Reflections
-// * @Description TODO
-// * @Author LaoMa
-// * @Date 2019/10/29 17:35
-// * @Version 1.0
-// **/
-//public class Reflections {
-//}
-
-
 package com.store.system.util;
-
-/**
- * Created by lmb on 2018/8/28.
- */
-        import com.sun.deploy.net.proxy.ProxyHandler;
-        import org.apache.commons.lang3.StringUtils;
-        import org.apache.commons.lang3.Validate;
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import java.lang.reflect.*;
+import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import java.lang.reflect.*;
 
 /**
  * 反射工具类.

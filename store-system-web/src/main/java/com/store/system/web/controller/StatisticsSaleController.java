@@ -48,37 +48,34 @@ public class StatisticsSaleController extends BaseController{
             long week = TimeUtils.getWeekFormTime(System.currentTimeMillis());
             long month = TimeUtils.getMonthFormTime(System.currentTimeMillis());
             List<ClientSaleStatistics> res = Lists.newArrayList();
-            for(Long subId:subIds) {
-                if (type == ClientSaleStatistics.type_today) {
-                    long dayTime = System.currentTimeMillis();
-
-                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getDay(dayTime, subId);
-                    if (statisticsWeek != null) {
-                        res.add(statisticsWeek);
-                    }
-                } else if (type == ClientSaleStatistics.type_yesterday) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.DATE, -1);
-                    long yesterdayTime = cal.getTimeInMillis();
-                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getDay(yesterdayTime, subId);
-                    if (statisticsWeek != null) {
-                        res.add(statisticsWeek);
-                    }
-                } else if (type == ClientSaleStatistics.type_week) {
-                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getWeek(week, subId);
-                    if (statisticsWeek != null) {
-                        res.add(statisticsWeek);
-                    }
-                } else if (type == ClientSaleStatistics.type_month) {
-                    ClientSaleStatistics statisticsMonth = saleStatisticsService.getMonth(month, subId);
-                    if (statisticsMonth != null) {
-                        res.add(statisticsMonth);
-                    }
-                } else if (type == ClientSaleStatistics.type_day) {
-                    ClientSaleStatistics client = saleStatisticsService.getDate(day, subId);
-                    if (client != null) {
-                        res.add(client);
-                    }
+            if (type == ClientSaleStatistics.type_today) {
+                long dayTime = System.currentTimeMillis();
+                ClientSaleStatistics statisticsWeek = saleStatisticsService.getDay(dayTime, subIds);
+                if (statisticsWeek != null) {
+                    res.add(statisticsWeek);
+                }
+            } else if (type == ClientSaleStatistics.type_yesterday) {
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -1);
+                long yesterdayTime = cal.getTimeInMillis();
+                ClientSaleStatistics statisticsWeek = saleStatisticsService.getDay(yesterdayTime, subIds);
+                if (statisticsWeek != null) {
+                    res.add(statisticsWeek);
+                }
+            } else if (type == ClientSaleStatistics.type_week) {
+                ClientSaleStatistics statisticsWeek = saleStatisticsService.getWeek(week, subIds);
+                if (statisticsWeek != null) {
+                    res.add(statisticsWeek);
+                }
+            } else if (type == ClientSaleStatistics.type_month) {
+                ClientSaleStatistics statisticsMonth = saleStatisticsService.getMonth(month, subIds);
+                if (statisticsMonth != null) {
+                    res.add(statisticsMonth);
+                }
+            } else if (type == ClientSaleStatistics.type_day) {
+                ClientSaleStatistics client = saleStatisticsService.getDate(day, subIds);
+                if (client != null) {
+                    res.add(client);
                 }
             }
             return this.viewNegotiating(request, response, new ResultClient(true, res));
@@ -105,25 +102,23 @@ public class StatisticsSaleController extends BaseController{
             List<ClientSaleStatistics> res = Lists.newArrayList();
             for(Long subId:subIds){
                 if(type==ClientSaleStatistics.type_week) {
-                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getWeek(week,subId);
+                    ClientSaleStatistics statisticsWeek = saleStatisticsService.getWeek(week,Lists.<Long>newArrayList(subId));
                     if (statisticsWeek != null) {
                         res.add(statisticsWeek);
                     }
                 }else if(type==ClientSaleStatistics.type_month){
-                    ClientSaleStatistics statisticsMonth = saleStatisticsService.getMonth(month, subId);
+                    ClientSaleStatistics statisticsMonth = saleStatisticsService.getMonth(month, Lists.<Long>newArrayList(subId));
                     if (statisticsMonth != null) {
                         res.add(statisticsMonth);
                     }
                 }else if(type==ClientSaleStatistics.type_halfYear){
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(System.currentTimeMillis());
-                    List<Long> days = TimeUtils.getPastMonthDays(calendar.get(Calendar.MONTH)+1);
-                    ClientSaleStatistics statisticsYear = saleStatisticsService.getDayList(days,subId);
+                    List<Long> days = TimeUtils.getPastMonthDays(6);
+                    ClientSaleStatistics statisticsYear = saleStatisticsService.getDayList(days,Lists.<Long>newArrayList(subId));
                     if (statisticsYear != null) {
                         res.add(statisticsYear);
                     }
                 }else if(type==ClientSaleStatistics.type_search){
-                    ClientSaleStatistics statistics = saleStatisticsService.searchSale(startTime,endTime,subId);
+                    ClientSaleStatistics statistics = saleStatisticsService.searchSale(startTime,endTime,Lists.<Long>newArrayList(subId));
                     if (statistics != null) {
                         res.add(statistics);
                     }
