@@ -1264,7 +1264,7 @@
                     },
                     {
                         field: '', title: '保质期', formatter: function (value, row, index) {
-                            return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" value="' + (row.newDate ? row.newDate : '') + '" onfocus="selectTime(this)" data-id="' + value + '" placeholder="保质期">';
+                            return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" value="' + (row.newDate ? row.newDate : '') + '" data-index="' + index + '" placeholder="保质期">';
                         }
                     },
                     {
