@@ -11,6 +11,7 @@ import com.quakoo.space.annotation.domain.PrimaryKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import com.store.system.util.ArithUtils;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
@@ -167,9 +168,11 @@ public class User implements Serializable {
         return Base64Util.encode(AESUtils.encrypt(JsonUtils.objectMapper.writeValueAsBytes(map), key));
     }
     public static void main(String[] agrs) throws Exception {
+
+
         Map<String, Long> map = new HashMap<>();
-        map.put("id", 7L);
-        map.put("rand", 25232322L);
+        map.put("id", 49L);
+        map.put("rand", 356482L);
         System.out.println(URLEncoder.encode(Base64Util.encode(AESUtils.encrypt(JsonUtils.objectMapper.writeValueAsBytes(map), key))));
 
     }

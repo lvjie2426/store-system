@@ -1035,6 +1035,7 @@
                 });
             })
         }
+        var addSpuid;  //添加规格的时候的spuid
         function getSpu() {
             if (!bid) {
                 layer.msg('请选择品牌')
@@ -1045,165 +1046,172 @@
                 return
             }
             quakooData.ajaxGetData(config.getUrl_inventoryInBill_select(), { subid: shopId, type: type, cid: cid, pid: pid, bid: bid, sid: sid }, function (ret) {
-                if (ret && ret.success) {
+                if (ret && ret.success && ret.data) {
                     var column;
-                    if (ret.data) {
-                        $("#in-table").show();
+                    $("#in-table").show();
+                    if(ret.data.skuList){
+                        addSpuid = ret.data.skuList[0].spuid;
                         nowGoodData = ret.data.skuList;
-
-
-                        $('.out-box>div').hide()
-                        $('.out-box>input').hide()
-                        if ($('#category' + cid).text() == '镜片') {
-                            column = [
-                                { field: 'code', title: '产品编码' },
-                                {
-                                    field: 'p_properties_value', title: '球', formatter: function (value) {
-                                        return value['球'];
-                                    }
-                                },
-                                {
-                                    field: 'p_properties_value', title: '柱', formatter: function (value) {
-                                        return value['柱'];
-                                    }
-                                },
-                                {
-                                    field: 'id', title: '数量', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input" data-id="' + value + '" value="' + (row.newNum ? row.newNum : '') + '" placeholder="数量">';
-                                    }
-                                },
-                            ]
-                            // } else if ($('#category' + cid).text() == '镜架' || $('#category' + cid).text() == '太阳镜') {
-                        } else if ($('#category' + cid).text() == '镜架') {
-                            column = [
-                                { field: 'code', title: '产品编码' },
-                                {
-                                    field: '', title: '型号', formatter: function (value, row, index) {
-                                        return '<input type="text" style="width: 50px" class="in-yj-input-xinghao" data-index="' + index + '" value="' + (row.xinghao ? row.xinghao : '') + '" placeholder="型号">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '色号', formatter: function (value, row, index) {
-                                        return '<input type="text" style="width: 50px" class="in-yj-input-sehao" data-index="' + index + '" value="' + (row.sehao ? row.sehao : '') + '" placeholder="色号">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '数量', formatter: function (value, row, index) {
-                                        return '<input type="text" style="width: 50px" class="in-yj-input" data-index="' + index + '" value="' + (row.newNum ? row.newNum : '') + '" placeholder="数量">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '';
-                                    }
-                                }
-                            ]
-                        } else if ($('#category' + cid).text() == '太阳镜') {
-                            column = [
-                                { field: 'code', title: '产品编码' },
-                                {
-                                    field: '', title: '型号', formatter: function (value, row, index) {
-                                        return '<input type="text" style="width: 50px" class="in-yj-input-xinghao" data-index="' + index + '" value="' + (row.xinghao ? row.xinghao : '') + '" placeholder="型号">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '色号', formatter: function (value, row, index) {
-                                        return '<input type="text" style="width: 50px" class="in-yj-input-sehao" data-index="' + index + '" value="' + (row.sehao ? row.sehao : '') + '" placeholder="色号">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '数量', formatter: function (value, row, index) {
-                                        return '<input type="text" style="width: 50px" class="in-yj-input" data-index="' + index + '" value="' + (row.newNum ? row.newNum : '') + '" placeholder="数量">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '';
-                                    }
-                                }
-                            ]
-                        } else if ($('#category' + cid).text() == '隐形眼镜') {
-                            column = [
-                                { field: 'code', title: '产品编码' },
-                                {
-                                    field: 'p_properties_value', title: '球', formatter: function (value) {
-                                        return value['球'];
-                                    }
-                                },
-                                {
-                                    field: 'p_properties_value', title: '柱', formatter: function (value) {
-                                        return value['球'];
-                                    }
-                                },
-                                {
-                                    field: '', title: '生产批号', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input-shengchanpihao" data-index="' + index + '" placeholder="生产批号">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '保质期', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" value="' + (row.newDate ? row.newDate : '') + '" data-index="' + index + '" placeholder="保质期">';
-                                    }
-                                },
-                                {
-                                    field: 'id', title: '数量', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input" data-id="' + value + '" value="' + (row.newNum ? row.newNum : '') + '" placeholder="数量">';
-                                    }
-                                }
-                            ]
-                        } else if ($('#category' + cid).text() == '护理产品') {
-                            column = [
-                                { field: 'code', title: '产品编码' },
-                                {
-                                    field: '', title: '生产批号', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input-shengchanpihao" data-index="' + index + '" placeholder="生产批号">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '保质期', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="' + index + '" placeholder="保质期">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '数量', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input" data-index="' + index + '" placeholder="数量">';
-                                    }
-                                }
-                            ]
-                        } else if ($('#category' + cid).text() == '其它商品') {
-                            column = [
-                                { field: 'code', title: '产品编码' },
-                                {
-                                    field: '', title: '型号', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input-xinghao" data-index="' + index + '" placeholder="型号">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '光度', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input-guangdu" data-index="' + index + '" placeholder="光度">';
-                                    }
-                                },
-                                {
-                                    field: '', title: '数量', formatter: function (value, row, index) {
-                                        return '<input type="text" class="in-yj-input" data-index="' + index + '" placeholder="数量">';
-                                    }
-                                }
-                            ]
-                        }
-                        $("#in-table").bootstrapTable('destroy');
-                        $("#in-table").bootstrapTable({
-                            data: nowGoodData,                 //被加载的数据。
-                            classes: "table",
-                            sortable: false,
-                            sortOrder: "asc",
-                            showColumns: true,
-                            strictSearch: true,
-                            locale: "zh-CN",
-                            paginationHAlign: "center",
-                            clickToSelect: true,
-                            columns: column
-                        });
+                    }else{
+                        addSpuid = ret.data.id;
+                        nowGoodData = [];
                     }
+
+                    $('.out-box>div').hide()
+                    $('.out-box>input').hide()
+                    if ($('#category' + cid).text() == '镜片') {
+                        column = [
+                            { field: 'code', title: '产品编码' },
+                            {
+                                field: 'p_properties_value', title: '球', formatter: function (value) {
+                                    return value['球'];
+                                }
+                            },
+                            {
+                                field: 'p_properties_value', title: '柱', formatter: function (value) {
+                                    return value['柱'];
+                                }
+                            },
+                            {
+                                field: 'id', title: '数量', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input" data-id="' + value + '" value="' + (row.newNum ? row.newNum : '') + '" placeholder="数量">';
+                                }
+                            },
+                        ]
+                        // } else if ($('#category' + cid).text() == '镜架' || $('#category' + cid).text() == '太阳镜') {
+                    } else if ($('#category' + cid).text() == '镜架') {
+                        for (var i = 0; i < nowGoodData.length; i++) {
+                            nowGoodData[i].xinghao = nowGoodData[i].properties[17];
+                            nowGoodData[i].sehao = nowGoodData[i].properties[18];
+                        }
+                        column = [
+                            { field: 'code', title: '产品编码' },
+                            {
+                                field: '', title: '型号', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input-xinghao" data-index="' + index + '" value="' + (row.xinghao ? row.xinghao : '') + '" placeholder="型号" readonly="readonly">';
+                                }
+                            },
+                            {
+                                field: '', title: '色号', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input-sehao" data-index="' + index + '" value="' + (row.sehao ? row.sehao : '') + '" placeholder="色号" readonly="readonly">';
+                                }
+                            },
+                            {
+                                field: '', title: '数量', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input" data-index="' + index + '" value="' + (row.newNum ? row.newNum : '') + '" placeholder="数量" >';
+                                }
+                            },
+                            {
+                                field: '', title: '操作', formatter: function (value, row, index) {
+                                    return '';
+                                }
+                            }
+                        ]
+                    } else if ($('#category' + cid).text() == '太阳镜') {
+                        column = [
+                            { field: 'code', title: '产品编码' },
+                            {
+                                field: '', title: '型号', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input-xinghao" data-index="' + index + '" value="' + (row.xinghao ? row.xinghao : '') + '" placeholder="型号">';
+                                }
+                            },
+                            {
+                                field: '', title: '色号', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input-sehao" data-index="' + index + '" value="' + (row.sehao ? row.sehao : '') + '" placeholder="色号">';
+                                }
+                            },
+                            {
+                                field: '', title: '数量', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input" data-index="' + index + '" value="' + (row.newNum ? row.newNum : '') + '" placeholder="数量">';
+                                }
+                            },
+                            {
+                                field: '', title: '操作', formatter: function (value, row, index) {
+                                    return '';
+                                }
+                            }
+                        ]
+                    } else if ($('#category' + cid).text() == '隐形眼镜') {
+                        column = [
+                            { field: 'code', title: '产品编码' },
+                            {
+                                field: 'p_properties_value', title: '球', formatter: function (value) {
+                                    return value['球'];
+                                }
+                            },
+                            {
+                                field: 'p_properties_value', title: '柱', formatter: function (value) {
+                                    return value['球'];
+                                }
+                            },
+                            {
+                                field: '', title: '生产批号', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input-shengchanpihao" data-index="' + index + '" placeholder="生产批号">';
+                                }
+                            },
+                            {
+                                field: '', title: '保质期', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" value="' + (row.newDate ? row.newDate : '') + '" data-index="' + index + '" placeholder="保质期">';
+                                }
+                            },
+                            {
+                                field: 'id', title: '数量', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input" data-id="' + value + '" value="' + (row.newNum ? row.newNum : '') + '" placeholder="数量">';
+                                }
+                            }
+                        ]
+                    } else if ($('#category' + cid).text() == '护理产品') {
+                        column = [
+                            { field: 'code', title: '产品编码' },
+                            {
+                                field: '', title: '生产批号', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input-shengchanpihao" data-index="' + index + '" placeholder="生产批号">';
+                                }
+                            },
+                            {
+                                field: '', title: '保质期', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input-time yj-date" readonly="readonly" onfocus="selectTime(this)" data-index="' + index + '" placeholder="保质期">';
+                                }
+                            },
+                            {
+                                field: '', title: '数量', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input" data-index="' + index + '" placeholder="数量">';
+                                }
+                            }
+                        ]
+                    } else if ($('#category' + cid).text() == '其它商品') {
+                        column = [
+                            { field: 'code', title: '产品编码' },
+                            {
+                                field: '', title: '型号', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input-xinghao" data-index="' + index + '" placeholder="型号">';
+                                }
+                            },
+                            {
+                                field: '', title: '光度', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input-guangdu" data-index="' + index + '" placeholder="光度">';
+                                }
+                            },
+                            {
+                                field: '', title: '数量', formatter: function (value, row, index) {
+                                    return '<input type="text" class="in-yj-input" data-index="' + index + '" placeholder="数量">';
+                                }
+                            }
+                        ]
+                    }
+                    $("#in-table").bootstrapTable('destroy');
+                    $("#in-table").bootstrapTable({
+                        data: nowGoodData,                 //被加载的数据。
+                        classes: "table",
+                        sortable: false,
+                        sortOrder: "asc",
+                        showColumns: true,
+                        strictSearch: true,
+                        locale: "zh-CN",
+                        paginationHAlign: "center",
+                        clickToSelect: true,
+                        columns: column
+                    });
                 } else {
                     layer.msg(ret.data)
                 }
@@ -1322,7 +1330,7 @@
                     nowGoodData[item.getAttribute('data-index')].sehao = item.value;
                 }
             })
-            nowGoodData.push({ spuid: nowGoodData[0].spuid, properties: {} });
+            nowGoodData.push({ spuid: addSpuid, properties: {} });
             var column1;
             if ($('#category' + cid).text() == '镜架') {
                 column1 = [

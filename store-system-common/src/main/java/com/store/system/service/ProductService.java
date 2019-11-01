@@ -9,6 +9,7 @@ import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
 
@@ -55,4 +56,6 @@ public interface ProductService {
 
     // 用于按照name搜索商品
     public ClientProductCategory searchSpu(String name)throws Exception;
+
+    public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception;
 }

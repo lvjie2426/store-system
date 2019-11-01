@@ -70,7 +70,12 @@ public class InventoryInBillController extends BaseController {
             ClientInventoryInBillSelect res = new ClientInventoryInBillSelect();
             ClientProductSPU productSPU = productService.selectSPU(pSubid, pid, cid, bid, sid);
             List<ClientProductSKU> skuList =  productService.getSaleSKUAllList(subid,productSPU.getId(),0);
-            if(skuList.size()>0) res.setSkuList(skuList);
+            if(skuList.size()>0) {
+                res.setSkuList(skuList);
+                return this.viewNegotiating(request, response, new ResultClient(res));
+            }else{
+                return this.viewNegotiating(request, response, new ResultClient(productSPU));
+            }
 //            if(null != productSPU) {
 //                List<ProductPropertyName> propertyNames = productPropertyNameService.getSubAllList(pSubid, cid);
 //                for(Iterator<ProductPropertyName> it = propertyNames.iterator(); it.hasNext();) {
@@ -97,7 +102,7 @@ public class InventoryInBillController extends BaseController {
 //                    res.setSkuProperties(properties);
 //                }
 //            }
-            return this.viewNegotiating(request,response, new ResultClient(res));
+
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }

@@ -3,10 +3,12 @@ package com.store.system.dao.impl;
 import com.quakoo.space.CacheBaseDao;
 import com.quakoo.space.annotation.cache.CacheDaoMethod;
 import com.quakoo.space.annotation.cache.CacheMethodParam;
+import com.quakoo.space.annotation.cache.CacheSort;
 import com.quakoo.space.annotation.dao.HyperspaceDao;
 import com.quakoo.space.enums.HyperspaceType;
 import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.quakoo.space.enums.cache.CacheMethodParamEnum;
+import com.quakoo.space.enums.cache.CacheSortOrder;
 import com.store.system.dao.OptometryInfoDao;
 import com.store.system.model.OptometryInfo;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +27,13 @@ public class OptometryInfoDaoImpl extends CacheBaseDao<OptometryInfo> implements
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getListWithoutSharding)
     public List<OptometryInfo> getList(long uid, @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    @CacheSort(order = CacheSortOrder.desc)
+    public List<OptometryInfo> getUserList(long uid) throws DataAccessException {
         return null;
     }
 

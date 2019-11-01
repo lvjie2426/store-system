@@ -106,4 +106,13 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
         List<OptometryInfo> list = optometryInfoDao.getList(uid, size);
         return transformClients(list);
     }
+
+    @Override
+    public OptometryInfo getUserList(long uid) throws Exception {
+        List<OptometryInfo> list = optometryInfoDao.getUserList(uid);
+        if(list.size()>0){
+            return list.get(0);
+        }
+        return new OptometryInfo();
+    }
 }

@@ -16,6 +16,7 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.*;
 import com.store.system.util.CodeUtil;
+import com.store.system.util.Reflections;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,11 @@ public class ProductServiceImpl implements ProductService {
     private TransformMapUtils productSPUMapUtils = new TransformMapUtils(ProductSPU.class);
 
     private TransformMapUtils commissionMapUtils = new TransformMapUtils(Commission.class);
+
+    private TransformMapUtils nameMapUtils = new TransformMapUtils(ProductPropertyName.class);
+
+    private TransformMapUtils valueMapUtils = new TransformMapUtils(ProductPropertyValue.class);
+
 
     @Resource
     private ProductPropertyNameDao productPropertyNameDao;
@@ -222,11 +228,14 @@ public class ProductServiceImpl implements ProductService {
             productSPU.setBid(brand.getId());
             productSPU.setSid(series.getId());
         }
-        int count = productSPUDao.getCount(productSPU.getSubid(), productSPU.getPid(),
-                productSPU.getCid(), productSPU.getBid(), productSPU.getSid());
-        if(count==0) {
+//        int count = productSPUDao.getCount(productSPU.getSubid(), productSPU.getPid(),
+//                productSPU.getCid(), productSPU.getBid(), productSPU.getSid());
+//        if(count==0) {
+            productSPU.setNowRemind(productSPU.getNowRemind());
+            productSPU.setTotalRemind(productSPU.getTotalRemind());
+            productSPU.setUnderRemind(productSPU.getUnderRemind());
             productSPUDao.update(productSPU);
-        }
+//        }
 
         long spuid = productSPU.getId();
         if (addProductSKUList.size() > 0) {
@@ -327,10 +336,12 @@ public class ProductServiceImpl implements ProductService {
         productSPU = productSPUDao.insert(productSPU);
         if (null == productSPU) throw new StoreSystemException("SPU添加错误");
         long spuid = productSPU.getId();
-        for (ProductSKU productSKU : productSKUList) {
-            productSKU.setSpuid(spuid);
-            productSKU.setCode(String.valueOf(CodeUtil.getRandom(10)));
-            productSKUDao.insert(productSKU);
+        if (productSKUList.size() > 0) {
+            for (ProductSKU productSKU : productSKUList) {
+                productSKU.setSpuid(spuid);
+                productSKU.setCode(String.valueOf(CodeUtil.getRandom(10)));
+                productSKUDao.insert(productSKU);
+            }
         }
         if(commissions.size()>0) {
             for (Commission commission : commissions) {
@@ -349,6 +360,9 @@ public class ProductServiceImpl implements ProductService {
         List<ClientProductSKU> skuList = Lists.newArrayList();
         for (ProductSKU one : productSKUList) {
             ClientProductSKU clientProductSKU = new ClientProductSKU(one);
+            Map<Object, Object> map_value = Maps.newHashMap();
+            map_value = getProperties(one,clientProductSKU,"p_properties_value");
+            clientProductSKU.setP_properties_value(map_value);
             skuList.add(clientProductSKU);
         }
 
@@ -413,6 +427,10 @@ public class ProductServiceImpl implements ProductService {
             if(commission!=null){
                 client.setCommission(commission);
             }
+
+            Map<Object, Object> map_value = Maps.newHashMap();
+            map_value = getProperties(one,client,"spu_properties_value");
+            client.setSpu_properties_value(map_value);
             res.add(client);
         }
         return res;
@@ -580,18 +598,7 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
             Map<Object, Object> map_value = Maps.newHashMap();
-            Map<Long, Object> map = one.getProperties();
-            for (Map.Entry<Long, Object> entry : map.entrySet()) {
-                ProductPropertyName name = productPropertyNameDao.load(entry.getKey());
-                if(name.getInput()==ProductPropertyName.input_no){
-                    ProductPropertyValue value = productPropertyValueDao.load(Long.parseLong((String) entry.getValue()));
-                    if (value != null) {
-                        map_value.put(name.getContent(), value.getContent());
-                    }
-                }else {
-                    map_value.put(name.getContent(), entry.getValue());
-                }
-            }
+            map_value = getProperties(one,client,"p_properties_value");
             client.setP_properties_value(map_value);
             client.setDetails(details);
             client.setOtherDetails(otherDetails);
@@ -763,5 +770,46 @@ public class ProductServiceImpl implements ProductService {
         return clientCommissionList;
 
     }
+
+    public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception {
+        Map<Object, Object> map_value = Maps.newHashMap();
+        Map<Long, Object> map = (Map<Long, Object>) Reflections.invokeGetter(clazz, "properties");
+        if (map != null) {
+            Set<Long> keys = map.keySet();
+            List<ProductPropertyName> names = productPropertyNameDao.load(Lists.newArrayList(keys));
+            Map<Long, ProductPropertyName> nameMap = nameMapUtils.listToMap(names, "id");
+            //如果是输入属性，则直接封装value返回
+            //如果是非输入属性，则根据ID从value表中查找到content封装返回
+            for (Map.Entry<Long, ProductPropertyName> entry : nameMap.entrySet()) {
+                if (entry.getValue().getInput() == ProductPropertyName.input_no) {
+                    Set<Long> values = Sets.newHashSet();
+                    for (Object object : map.values()) {
+                        if (StringUtils.isNotBlank(object.toString())) {
+                            values.add(Long.parseLong(object.toString()));
+                        }
+                    }
+                    List<ProductPropertyValue> valueList = productPropertyValueDao.load(Lists.newArrayList(values));
+                    Map<Long, ProductPropertyValue> valueMap = valueMapUtils.listToMap(valueList, "id");
+
+                    for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
+                        if (nameMap.get(skuEntry.getKey()).getInput() == ProductPropertyName.input_no) {
+                            map_value.put(nameMap.get(skuEntry.getKey()).getContent(), valueMap.get(Long.parseLong(skuEntry.getValue().toString())).getContent());
+                        } else {
+                            map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
+                        }
+                    }
+                    Reflections.invokeSetter(client, property, map_value);
+                } else {
+                    for (Map.Entry<Long, Object> skuEntry : map.entrySet()) {
+                        map_value.put(nameMap.get(skuEntry.getKey()).getContent(), skuEntry.getValue());
+                    }
+                    Reflections.invokeSetter(client, property, map_value);
+                }
+            }
+        }
+        return map_value;
+    }
+
+
 
 }

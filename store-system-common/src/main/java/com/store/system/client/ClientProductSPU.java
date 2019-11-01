@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -20,6 +21,8 @@ public class ClientProductSPU extends ProductSPU {
     private String brandName;
 
     private String seriesName;
+
+    private Map<Object,Object> spu_properties_value;//SPU属性的值
 
     private List<ClientProductSKU> skuList;
 

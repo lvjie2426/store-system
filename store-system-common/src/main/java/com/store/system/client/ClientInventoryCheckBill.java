@@ -15,11 +15,11 @@ public class ClientInventoryCheckBill extends InventoryCheckBill {
 
     private String warehouseName;
 
-    private String initUserName;
+    private String initUserName;  //发起人
 
-    private String createUserName;
+    private String createUserName; //创建人
 
-    private String checkUserName;
+    private String checkUserName; //盘点人
 
     private List<ClientInventoryCheckBillItem> clientItems;
 

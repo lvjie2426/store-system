@@ -385,7 +385,7 @@
         <div class="head">
             <span class="title layui-layer-title">添加盘点</span>
             <%if(showShop){%>
-            <div class="selectShop">
+            <!--<div class="selectShop">
                 <div id="box001">门店(多选)<i class="icon iconfont icon-ico_arrow_down"></i></div>
                 <div id="selectBox001" class="optionBox">
                     <div class="btn-fixed" onclick="listHide()">确定</div>
@@ -404,6 +404,18 @@
                         <%}%>
                     </ul>
 
+                </div>
+            </div>-->
+            <div class="selectBox jj-box" id="out-shop" style="margin-top: 8px;float: right">
+                <div class="select-box-header">
+                    <span class="text">选择门店</span> <i class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <%for(var i=0;i< shopData.length;i++){%>
+                        <li value="<%=shopData[i].id%>"><%=shopData[i].name%></li>
+                        <%}%>
+                    </ul>
                 </div>
             </div>
             <%}%>
@@ -427,7 +439,7 @@
                         <div class="selectBox" >
 
                         </div>
-                        <div class="selectBox" id='yj-provider<%=categoryData[i].id%>'>
+                        <div class="selectBox yj-provider-select" id='yj-provider<%=categoryData[i].id%>'>
                             <div class="select-box-header"><span class="text">供应商</span> <i class="iconfont icon-ico_arrow_down"></i></div>
                             <div class="optionBox">
                                 <ul class="optionUL">
@@ -437,16 +449,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="selectBox" id='yj-type<%=categoryData[i].id%>'>
-                            <div class="select-box-header"><span class="text">商品类型</span> <i class="iconfont icon-ico_arrow_down"></i></div>
-                            <div class="optionBox">
-                                <ul class="optionUL">
-                                    <li class="txtOverflow" value="0">常规商品</li>
-                                    <li class="txtOverflow" value="1">积分商品</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="btn btn-info" onclick="addToList('<%=categoryData[i].id%>')">添加至盘点单</div>
+                        <div class="btn btn-info" style="float: right;" onclick="addToList('<%=categoryData[i].id%>')">添加至盘点单</div>
                     </div>
                 </li>
                 <%}%>
@@ -666,7 +669,7 @@
     <div class="head">
         <span class="title"><%=list.categoryName%></span>
         <span class="subTitle"><%=list.brandName%>·<%=list.seriesName%></span>
-        <input type="number" placeholder="输入条码">
+        <!--<input type="number" placeholder="输入条码">-->
     </div>
     <div class="body">
         <div class="tableCont">
@@ -745,11 +748,32 @@
         }
     })
     //获取供应商
-    quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:shopId},function (ret) {
-        if(ret && ret.success){
-            providerData = ret.data;
-        }
-    })
+    function getSupplier(id){
+        quakooData.ajaxGetData(config.getUrl_productProvider_getSubAllList(),{subid:id},function (ret) {
+            if(ret && ret.success){
+                providerData = ret.data;
+                var html = '';
+                for (var i = 0; i < providerData.length; i++) {
+                    html+= '<li class="txtOverflow"  value="'+providerData[i].id+'">'+providerData[i].name+'</li>'
+                }
+                $(".yj-provider-select ul").html(html);
+                for(var i=0;i<categoryData.length;i++){
+                    (function (i) {
+                        selectTag($("#yj-provider"+categoryData[i].id),function (ret) {
+                            console.log(ret.value);
+                            if(ret.value){
+                                if(allOutList[categoryData[i].id]){
+                                    allOutList[categoryData[i].id].pid = ret.value;
+                                }else{
+                                    allOutList[categoryData[i].id] = {cid:categoryData[i].id,pid:ret.value,name:categoryData[i].name,data:{}}
+                                }
+                            }
+                        })
+                    })(i)
+                }
+            }
+        })
+    }
     //获取属性-柱
     quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:16},function (ret) {
         if(ret && ret.success){
@@ -840,7 +864,7 @@
             resize: false,
             shadeClose: true, //开启遮罩关闭
             content: $('.content-view-addInventory'), //容器对象
-            btn: null,
+            btn: [],
             success: function (layero, index) {
                 $('.content-view-commonInventory-tan .layui-layer-content').height(560);
                 addRepertorySuccess(index,id)
@@ -910,33 +934,20 @@
                         })
                     }
                 })
-                selectTag($("#yj-provider"+categoryData[i].id),function (ret) {
-                    if(ret.value){
-                        if(allOutList[categoryData[i].id]){
-                            allOutList[categoryData[i].id].pid = ret.value;
-                        }else{
-                            allOutList[categoryData[i].id] = {cid:categoryData[i].id,pid:ret.value,name:categoryData[i].name,data:{}}
-                        }
-                    }
-                })
-                selectTag($("#yj-type"+categoryData[i].id),function (ret) {
-                    if(ret.value){
-                        if(allOutList[categoryData[i].id]){
-                            allOutList[categoryData[i].id].type = ret.value;
-                        }else{
-                            allOutList[categoryData[i].id] = {cid:categoryData[i].id,type:ret.value,name:categoryData[i].name,data:{}}
-                        }
-                    }
-                })
             })(i)
         }
         //发起人
         selectTag($("#yj-people"), function (ret) {
             peopleId = ret.value;
         })
+        selectTag($("#out-shop"), function (ret) {
+            subidsArr = [ret.value]
+            getSupplier(ret.value)
+            // peopleId = ret.value;
+        })
 
 
-        setTimeout(function () {
+        /*setTimeout(function () {
           layui.use(['form'], function () {
               var form = layui.form
               form.on('checkbox(shop)', function (data) {
@@ -948,7 +959,7 @@
                   }
               });
           })
-        },100)
+        },100)*/
 
         function getIndex(arr, value) {
             for (var i = 0; i < arr.length; i++) {
@@ -988,10 +999,8 @@
         if(!allOutList[id].pid){
             layer.msg('请选择供应商');return ;
         }
-        if(allOutList[id].type!=0 && allOutList[id].type!=1){
-            layer.msg('请选择商品类型');return ;
-        }
-        param.type = allOutList[id].type;
+
+        param.type = 0;
         param.pid = allOutList[id].pid;
         param.bid = allOutList[id].bid;
         param.sid = allOutList[id].sid;
@@ -1024,7 +1033,8 @@
     function addOutList(status,index,id) {
         var closeFlag = true;
         for(var i in allOutList){
-            if(allOutList[i].data.length>0){
+            console.log(Object.keys(allOutList[i].data).length);
+            if(Object.keys(allOutList[i].data).length>0){
                 closeFlag = false;
                 break ;
             }
@@ -1176,6 +1186,8 @@
                 selectTag($("#yj-pd-people"),function (ret) {
                     pdPeopleId = ret.value;
                 })
+                $("#yj-pd-people .select-box-header .text").html(allData[id].checkUserName);
+                pdPeopleId = allData[id].checkUid;
                 //底部按钮点击关闭弹窗
                 $('.content-view-startInvent .layui-layer-btn0').click(function () {
                     layer.close(index);
@@ -1191,6 +1203,7 @@
                 data.data[i].realNum = allPdDidObj[data.data[i].did].realNum;
             }
         }
+        console.log(data.data);
         $("#startRightTable").bootstrapTable('destroy')
         $("#startRightTable").bootstrapTable({
             data: data.data,
@@ -1217,7 +1230,7 @@
                             return value
                         }else{
                             if(value!=0){
-                                return '<input value="' + value + '" onkeyup="realNumChange(this)" type="number" >'
+                                return '<input value="' + value + '" onkeyup="realNumChange(this,'+row.did+','+row.currentNum+')" type="number" >'
                             }else{
                                 return '<input value="" onkeyup="realNumChange(this,'+row.did+','+row.currentNum+')" type="number" >'
                             }
@@ -1257,17 +1270,20 @@
     }
     //完成盘点
     function finishPd(id) {
-        layer.confirm('确认完成?', {icon: 1, title:'提示'}, function(index){
-            quakooData.ajaxGetData(config.getUrl_inventoryCheckBill_end(),{id:id},function (data) {
-                if(data.success){
-                    layer.msg('已完成',{icon:1})
-                    getInData();
-                    layer.close(index);
-                }else{
-                    layer.msg(data.msg,{icon:2})
-                }
-            })
-        });
+        savePd(function () {
+            layer.confirm('确认完成?', {icon: 1, title:'提示'}, function(index){
+                quakooData.ajaxGetData(config.getUrl_inventoryCheckBill_end(),{id:id},function (data) {
+                    if(data.success){
+                        layer.msg('已完成',{icon:1})
+                        getInData();
+                        layer.closeAll();
+                    }else{
+                        layer.msg(data.msg,{icon:2})
+                    }
+                })
+            });
+        })
+
     }
     //删除盘点
     function deletePd(id) {
@@ -1285,7 +1301,7 @@
     }
 
     //保存盘点
-    function savePd(index) {
+    function savePd(callback) {
         if(!pdPeopleId){
             layer.msg('请选择盘点人');
             return
@@ -1305,6 +1321,9 @@
         quakooData.ajaxGetData(config.getUrl_inventoryCheckBill_save(),params,function (data) {
             if(data.success){
                 layer.msg('保存成功',{icon:1})
+                if(callback){
+                    callback()
+                }
                 getInData()
             }else{
                 var msg = data.msg|| data.data;

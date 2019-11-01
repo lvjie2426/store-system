@@ -43,6 +43,8 @@ public class ClientInventoryDetail extends InventoryDetail {
 
     private int p_integralPrice;
 
+    private int eyeType;
+
     private int num;
 
     private long ctime;

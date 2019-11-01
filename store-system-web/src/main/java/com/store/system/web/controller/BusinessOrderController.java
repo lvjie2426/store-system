@@ -280,7 +280,7 @@ public class BusinessOrderController extends BaseController{
         try {
             User user = UserUtils.getUser(request);
             pager = businessOrderService.getPager(pager, user.getId(), BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
@@ -296,39 +296,41 @@ public class BusinessOrderController extends BaseController{
      */
     @RequestMapping("/saleLogs")
     public ModelAndView saleLogs(HttpServletRequest request, HttpServletResponse response,
-                                 Pager pager, int type, long subId,
+                                 Pager pager, int type,  @RequestParam(name = "subIds[]") List<Long> subIds,
                                  @RequestParam(required = false, value = "day", defaultValue = "0") long day) throws Exception {
         try {
-            Subordinate subordinate = subordinateService.load(subId);
-            if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
-            if (type == Constant.type_today) {
-                long startTime = TimeUtils.getTodayTime(0, 0, 0);
-                long endTime = TimeUtils.getTodayTime(23, 59, 59);
-                pager = businessOrderService.getPager(pager, subId, startTime, endTime,
-                        BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
-            } else if (type == Constant.type_yesterday) {
-                long startTime = TimeUtils.getYesterdayTime(0, 0, 0);
-                long endTime = TimeUtils.getYesterdayTime(23, 59, 59);
-                pager = businessOrderService.getPager(pager, subId, startTime, endTime,
-                        BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
-            } else if (type == Constant.type_week) {
-                long startTime = TimeUtils.getWeekFirstTime();
-                long endTime = TimeUtils.getWeekLastTime();
-                pager = businessOrderService.getPager(pager, subId, startTime, endTime,
-                        BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
-            } else if (type == Constant.type_month) {
-                long startTime = TimeUtils.getMonthFirstTime();
-                long endTime = TimeUtils.getMonthLastTime();
-                pager = businessOrderService.getPager(pager, subId, startTime, endTime,
-                        BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
-            } else if (type == Constant.type_day_search) {
-                if (day == 0) {
-                    throw new StoreSystemException("请选择日期！");
+//            Subordinate subordinate = subordinateService.load(subId);
+//            if (null == subordinate || subordinate.getPid() == 0) throw new StoreSystemException("分店ID错误");
+            for(Long subId:subIds) {
+                if (type == Constant.type_today) {
+                    long startTime = TimeUtils.getTodayTime(0, 0, 0);
+                    long endTime = TimeUtils.getTodayTime(23, 59, 59);
+                    pager = businessOrderService.getPager(pager, subId, startTime, endTime,
+                            BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
+                } else if (type == Constant.type_yesterday) {
+                    long startTime = TimeUtils.getYesterdayTime(0, 0, 0);
+                    long endTime = TimeUtils.getYesterdayTime(23, 59, 59);
+                    pager = businessOrderService.getPager(pager, subId, startTime, endTime,
+                            BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
+                } else if (type == Constant.type_week) {
+                    long startTime = TimeUtils.getWeekFirstTime();
+                    long endTime = TimeUtils.getWeekLastTime();
+                    pager = businessOrderService.getPager(pager, subId, startTime, endTime,
+                            BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
+                } else if (type == Constant.type_month) {
+                    long startTime = TimeUtils.getMonthFirstTime();
+                    long endTime = TimeUtils.getMonthLastTime();
+                    pager = businessOrderService.getPager(pager, subId, startTime, endTime,
+                            BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
+                } else if (type == Constant.type_day_search) {
+                    if (day == 0) {
+                        throw new StoreSystemException("请选择日期！");
+                    }
+                    pager = businessOrderService.getPager(pager, subId, day,
+                            BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
                 }
-                pager = businessOrderService.getPager(pager, subId, day,
-                        BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
             }
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

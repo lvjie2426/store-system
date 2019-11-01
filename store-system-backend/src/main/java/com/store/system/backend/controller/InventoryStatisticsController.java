@@ -55,9 +55,7 @@ public class InventoryStatisticsController extends BaseController{
                     List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_MONTH));
                     res = inventoryStatisticsService.getDayList(subId, days);
                 } else if (type == ClientSaleStatistics.type_halfYear) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(currentTime);
-                    List<Long> days = TimeUtils.getPastMonthDays(calendar.get(Calendar.MONTH) + 1);
+                    List<Long> days = TimeUtils.getPastMonthDays(6);
                     res = inventoryStatisticsService.getDayList(subId, days);
                 } else if (type == ClientSaleStatistics.type_search) {
                     res = inventoryStatisticsService.searchSale(startTime, endTime, subId);

@@ -1,9 +1,11 @@
 package com.store.system.web.controller;
 
 
+import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.secure.MD5Utils;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.OptometryInfoRes;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
 import com.store.system.client.PagerResult;
@@ -310,7 +312,7 @@ public class WebUserController extends BaseController {
                 psid = user.getPsid();
             }
             pager = userService.getIntentionPager(pager, psid, User.userType_user, User.status_nomore, name);
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+            return this.viewNegotiating(request, response, (pager.toModelAttribute()));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
@@ -326,11 +328,29 @@ public class WebUserController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/addCustomer")
-    public ModelAndView addCustomer(User user, OptometryInfo optometryInfo,HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public ModelAndView addCustomer(User user, OptometryInfo optometryInfo,
+                                    @RequestParam(required = false,value = "yuanYongResJson",defaultValue = "") String yuanYongResJson,
+                                    @RequestParam(required = false,value = "yinXingResJson",defaultValue = "")  String yinXingResJson,
+                                    @RequestParam(required = false,value = "jinYongResJson",defaultValue = "")  String jinYongResJson,
+                                    @RequestParam(required = false,value = "jianJinDuoJiaoDianResJson",defaultValue = "")   String jianJinDuoJiaoDianResJson,
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             user.setContactPhone(user.getPhone());
             user = userService.addCustomer(user);
             if(optometryInfo!=null){
+                if(StringUtils.isNotBlank(yuanYongResJson)){
+                    OptometryInfoRes yuanyongRes = JsonUtils.fromJson(yuanYongResJson, OptometryInfoRes.class);
+                    optometryInfo.setYuanYongRes(yuanyongRes);
+                }if(StringUtils.isNotBlank(yinXingResJson)){
+                    OptometryInfoRes yinXingRes = JsonUtils.fromJson(yinXingResJson, OptometryInfoRes.class);
+                    optometryInfo.setYinXingRes(yinXingRes);
+                }if(StringUtils.isNotBlank(jinYongResJson)){
+                    OptometryInfoRes jinYongRes = JsonUtils.fromJson(jinYongResJson, OptometryInfoRes.class);
+                    optometryInfo.setJinYongRes(jinYongRes);
+                }if(StringUtils.isNotBlank(jianJinDuoJiaoDianResJson)){
+                    OptometryInfoRes jianJinDuoJiaoDianRes = JsonUtils.fromJson(jianJinDuoJiaoDianResJson, OptometryInfoRes.class);
+                    optometryInfo.setJianJinDuoJiaoDianRes(jianJinDuoJiaoDianRes);
+                }
                 optometryInfo.setUid(user.getId());
                 optometryInfoDao.insert(optometryInfo);
             }
@@ -339,6 +359,57 @@ public class WebUserController extends BaseController {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
+
+    /**
+     * 修改意向顾客  修改user表，同时optometryinfo 验光表也修改
+     * @param user
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/updateCustomer")
+    public ModelAndView updateCustomer(User user, OptometryInfo optometryInfo,long oid,
+                                    @RequestParam(required = false,value = "yuanYongResJson",defaultValue = "") String yuanYongResJson,
+                                    @RequestParam(required = false,value = "yinXingResJson",defaultValue = "")  String yinXingResJson,
+                                    @RequestParam(required = false,value = "jinYongResJson",defaultValue = "")  String jinYongResJson,
+                                    @RequestParam(required = false,value = "jianJinDuoJiaoDianResJson",defaultValue = "")   String jianJinDuoJiaoDianResJson,
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            optometryInfo.setId(oid);
+            user.setContactPhone(user.getPhone());
+           boolean falg= userService.updateCustomer(user);
+            if(falg && optometryInfo.getId()>0){
+                if(StringUtils.isNotBlank(yuanYongResJson)){
+                    OptometryInfoRes yuanyongRes = JsonUtils.fromJson(yuanYongResJson, OptometryInfoRes.class);
+                    optometryInfo.setYuanYongRes(yuanyongRes);
+                }if(StringUtils.isNotBlank(yinXingResJson)){
+                    OptometryInfoRes yinXingRes = JsonUtils.fromJson(yinXingResJson, OptometryInfoRes.class);
+                    optometryInfo.setYinXingRes(yinXingRes);
+                }if(StringUtils.isNotBlank(jinYongResJson)){
+                    OptometryInfoRes jinYongRes = JsonUtils.fromJson(jinYongResJson, OptometryInfoRes.class);
+                    optometryInfo.setJinYongRes(jinYongRes);
+                }if(StringUtils.isNotBlank(jianJinDuoJiaoDianResJson)){
+                    OptometryInfoRes jianJinDuoJiaoDianRes = JsonUtils.fromJson(jianJinDuoJiaoDianResJson, OptometryInfoRes.class);
+                    optometryInfo.setJianJinDuoJiaoDianRes(jianJinDuoJiaoDianRes);
+                }
+                optometryInfo.setUid(user.getId());
+                optometryInfoDao.update(optometryInfo);
+            }else{
+                return this.viewNegotiating(request,response, new ResultClient("会员信息更新失败"));
+
+            }
+            return this.viewNegotiating(request,response, new ResultClient(user));
+
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+
+
+
 
     // 管理端 创建新员工
     @RequestMapping("/addUser")

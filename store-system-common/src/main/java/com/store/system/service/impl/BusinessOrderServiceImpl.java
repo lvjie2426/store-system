@@ -2,6 +2,7 @@ package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
@@ -24,6 +25,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @ClassName BusinessOrderServiceImpl
@@ -56,15 +58,29 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     @Resource
     private ProductSPUDao productSPUDao;
     @Resource
+    private ProductProviderDao productProviderDao;
+    @Resource
+    private ProductCategoryDao productCategoryDao;
+    @Resource
+    private ProductBrandDao productBrandDao;
+    @Resource
+    private ProductSeriesDao productSeriesDao;
+    @Resource
     private UserGradeService userGradeService;
     @Resource
     private MarketingCouponService marketingCouponService;
     @Resource
     private FinanceLogService financeLogService;
+    @Resource
+    private ProductService productService;
 
     private RowMapperHelp<BusinessOrder> rowMapper = new RowMapperHelp<>(BusinessOrder.class);
     private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
     private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
+    private TransformMapUtils providerMapUtils = new TransformMapUtils(ProductProvider.class);
+    private TransformMapUtils brandMapUtils = new TransformMapUtils(ProductBrand.class);
+    private TransformMapUtils seriesMapUtils = new TransformMapUtils(ProductSeries.class);
+    private TransformMapUtils categoryMapUtils = new TransformMapUtils(ProductCategory.class);
 
     @Override
     public Pager getAllList(Pager pager, long startTime, long endTime, long staffId, int status,
@@ -888,6 +904,60 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         List<ClientBusinessOrder> clients = new ArrayList<>();
         for (BusinessOrder info : businessOrders) {
             ClientBusinessOrder client = transformClient(info);
+            Set<Long> skuIds = Sets.newHashSet();
+            Set<Long> spuIds = Sets.newHashSet();
+            Set<Long> pids = Sets.newHashSet();
+            Set<Long> cids = Sets.newHashSet();
+            Set<Long> bids = Sets.newHashSet();
+            Set<Long> sids = Sets.newHashSet();
+            for (OrderSku sku : info.getSkuList()) {
+                skuIds.add(sku.getSkuId());
+                spuIds.add(sku.getSpuId());
+                ProductSPU spu = productSPUDao.load(sku.getSpuId());
+                pids.add(spu.getPid());
+                cids.add(spu.getCid());
+                bids.add(spu.getBid());
+                sids.add(spu.getSid());
+            }
+            List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuIds));
+            Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
+            List<ProductSKU> skuList = productSKUDao.load(Lists.newArrayList(skuIds));
+            Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(skuList, "id");
+
+            List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(pids));
+            Map<Long, ProductProvider> providerMap = providerMapUtils.listToMap(providers, "id");
+            List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
+            Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
+            List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
+            Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
+            List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
+            Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
+            List<ClientOrderSku> clientOrderSkus = Lists.newArrayList();
+            for(OrderSku sku:info.getSkuList()){
+                ClientOrderSku clientOrderSku = new ClientOrderSku(sku);
+
+                ProductSKU productSKU = skuMap.get(sku.getSkuId());
+                Map<Object,Object> sku_value = Maps.newHashMap();
+                sku_value = productService.getProperties(productSKU,clientOrderSku,"k_properties_value");
+                clientOrderSku.setK_properties_value(sku_value);
+
+                ProductSPU productSPU = spuMap.get(sku.getSpuId());
+                Map<Object,Object> spu_value = Maps.newHashMap();
+                spu_value = productService.getProperties(productSPU,clientOrderSku,"p_properties_value");
+                clientOrderSku.setP_properties_value(spu_value);
+                clientOrderSkus.add(clientOrderSku);
+
+                ProductSPU spu = productSPUDao.load(sku.getSpuId());
+                ProductProvider provider = providerMap.get(spu.getPid());
+                if (null != provider) clientOrderSku.setProviderName(provider.getName());
+                ProductCategory category = categoryMap.get(spu.getCid());
+                if (null != category) clientOrderSku.setCategoryName(category.getName());
+                ProductBrand brand = brandMap.get(spu.getBid());
+                if (null != brand) clientOrderSku.setBrandName(brand.getName());
+                ProductSeries series = seriesMap.get(spu.getSid());
+                if (null != series) clientOrderSku.setSeriesName(series.getName());
+            }
+            client.setSkuInfo(clientOrderSkus);
             clients.add(client);
         }
         return clients;

@@ -2,6 +2,7 @@ package com.store.system.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
@@ -16,6 +17,7 @@ import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.InventoryCheckBillService;
+import com.store.system.service.ProductService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +84,9 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
 
     @Resource
     private ProductSeriesDao productSeriesDao;
+
+    @Resource
+    private ProductService productService;
 
     @Resource
     private UserDao userDao;
@@ -386,6 +391,9 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
                     if(null != sku) {
                         clientItem.setCode(sku.getCode());
                         clientItem.setProperties(sku.getProperties());
+                        Map<Object,Object> map_value = Maps.newHashMap();
+                        map_value = productService.getProperties(sku,clientItem,"k_properties_value");
+                        clientItem.setK_properties_value(map_value);
                     }
                 }
                 ProductCategory category = categoryMap.get(clientItem.getCid());

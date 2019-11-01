@@ -36,6 +36,7 @@ public class ClientBusinessOrder extends BusinessOrder{
     private int asCount;//售后次数
     private List<OptometryInfo> optometryInfos;//顾客的验光信息历史记录
     private List<PayInfo> payInfos;  //支付记录
+    private List<ClientOrderSku> skuInfo;//商品信息
 
 
 

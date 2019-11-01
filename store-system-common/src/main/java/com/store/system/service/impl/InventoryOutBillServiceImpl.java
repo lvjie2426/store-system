@@ -16,6 +16,8 @@ import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.InventoryOutBillService;
+import com.store.system.service.ProductService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +57,13 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
 
     private TransformMapUtils subMapUtils = new TransformMapUtils(Subordinate.class);
 
+    private TransformMapUtils nameMapUtils = new TransformMapUtils(ProductPropertyName.class);
+
+    private TransformMapUtils valueMapUtils = new TransformMapUtils(ProductPropertyValue.class);
+
     private RowMapperHelp<InventoryOutBill> rowMapper = new RowMapperHelp<>(InventoryOutBill.class);
+
+
 
     @Resource
     private InventoryOutBillDao inventoryOutBillDao;
@@ -86,6 +94,9 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
 
     @Resource
     private SubordinateDao subordinateDao;
+
+    @Resource
+    private ProductService productService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -236,7 +247,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     }
 
     @Override
-    public Pager getAllPager(Pager pager, long subid, int type) throws Exception {
+    public Pager getAllPager(Pager pager, long subid, int type,String licenceNum) throws Exception {
         String sql = "SELECT * FROM `inventory_out_bill` where subid = " + subid + " and `type` = " + type;
         String sqlCount = "SELECT COUNT(id) FROM `inventory_out_bill` where subid = " + subid +" and `type` = " + type;
         String limit = " limit %d , %d ";
@@ -319,6 +330,10 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
                     if(null != sku) {
                         clientItem.setCode(sku.getCode());
                         clientItem.setProperties(sku.getProperties());
+
+                        Map<Object,Object> map_value = Maps.newHashMap();
+                        map_value = productService.getProperties(sku,clientItem,"p_properties_value");
+                        clientItem.setP_properties_value(map_value);
                     }
                 }
                 ProductCategory category = categoryMap.get(clientItem.getCid());

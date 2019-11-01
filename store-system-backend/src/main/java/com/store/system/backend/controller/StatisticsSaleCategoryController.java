@@ -111,9 +111,7 @@ public class StatisticsSaleCategoryController extends BaseController{
                     List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_MONTH));
                     map = saleCategoryStatisticsService.getDayList(subId, days);
                 } else if (type == ClientSaleStatistics.type_halfYear) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(System.currentTimeMillis());
-                    List<Long> days = TimeUtils.getPastMonthDays(calendar.get(Calendar.MONTH) + 1);
+                    List<Long> days = TimeUtils.getPastMonthDays(6);
                     map = saleCategoryStatisticsService.getDayList(subId, days);
                 } else if (type == ClientSaleStatistics.type_search) {
                     map = saleCategoryStatisticsService.searchSale(startTime, endTime, subId);

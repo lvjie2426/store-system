@@ -544,7 +544,7 @@
                     <span>系列</span>
                     <%if(list[i].name=='镜片'){%>
                     <span>左右眼</span>
-                    <%else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
+                    <%}else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
                     <span>型号</span>
                     <span>色号</span>
                     <%}else if(list[i].name=='隐形眼镜'||list[i].name=='护理产品'){%>
@@ -567,11 +567,14 @@
                         <span><%=list[i].data[j].brandName%></span>
                         <span><%=list[i].data[j].seriesName%></span>
                         <%if(list[i].name=='镜片'){%>
-                            <%if(){%>
-                            <%}else{%>
+                            <%if(list[i].data[j].eyeType==0){%>
+                                <span>左/右</span>
+                            <%}else if(list[i].data[j].eyeType==1){%>
+                                <span>左眼</span>
+                            <%}else if(list[i].data[j].eyeType==2){%>
+                                <span>右眼</span>
                             <%}%>
-                        <span></span>
-                        <%else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
+                        <%}else if(list[i].name=='镜架'||list[i].name=='太阳镜'){%>
                         <span><%=list[i].data[j].p_properties_value['型号']%></span>
                         <span><%=list[i].data[j].p_properties_value['色号']%></span>
                         <%}else if(list[i].name=='隐形眼镜'||list[i].name=='护理产品'){%>
@@ -929,6 +932,7 @@
         function lookRepertory(id) {
             allOutList = {};
             var outUserName = '';
+            console.log(allData[id]);
             if(id){
                 outUserName = allData[id].outUserName;
                 for(var i=0;i<allData[id].clientItems.length;i++){
@@ -976,7 +980,8 @@
                         });
 
                     });
-
+                    // console.log(JSON.stringify(allOutList));
+                    // return
                     $('#listDom').html(template('outListTmp',{list:allOutList,showTool:false}))
 
                 }
@@ -1070,7 +1075,7 @@
                                         }
                                     }
                                 ]
-                            }else if($('#category'+cid).text()=='隐形眼镜'){
+                            }else if($('#category'+cid).text()=='隐形眼镜'||$('#category'+cid).text()=='护理产品'){
                                 column = [
                                     { field: 'code', title: '产品编码'},
                                     { field: 'p_properties_value', title: '生产批号' , formatter: function (value) {
@@ -1080,7 +1085,7 @@
                                         }  },
                                     { field: 'p_properties_value', title: '保质期', formatter: function (value) {
                                         if(value){
-                                            return quakooUtils.formatTimeToDay(value['保质期开始时间'])+quakooUtils.formatTimeToDay(value['保质期结束时间']);
+                                            return quakooUtils.formatTimeToDay(value['保质期开始时间'])+'<br>'+quakooUtils.formatTimeToDay(value['保质期结束时间']);
                                         }
                                         }},
                                     {field: 'num', title: '库存量' },
@@ -1089,17 +1094,20 @@
                                         }
                                     }
                                 ]
-
-                            }else{
+                            }else if($('#category'+cid).text()=='其它商品'){
                                 column = [
                                     { field: 'code', title: '产品编码'},
-                                    { field: 'properties', title: '球' , formatter: function (value) {
-                                            return value[15];
+                                    { field: 'p_properties_value', title: '型号', formatter: function (value) {
+                                            if(value){
+                                                return value['型号'];
+                                            }
                                         }  },
-                                    { field: 'properties', title: '柱', formatter: function (value) {
-                                            return value[16];
+                                    { field: 'p_properties_value', title: '光度', formatter: function (value) {
+                                            if(value){
+                                                return value['光度'];
+                                            }
                                         }},
-                                    {field: 'num', title: '库存量' },
+                                    {field: 'num', title: '库存量'},
                                     {field: '', title: '出库量'  , formatter: function (value,row,index) {
                                             return '<input type="text" class="in-yj-input" data-index="'+index+'" placeholder="数量">';
                                         }
@@ -1168,8 +1176,8 @@
                 return;
             }
             allOutList[cid].data = arr;
-            console.log(JSON.stringify(allOutList[cid].data));
-            return;
+            // console.log(JSON.stringify(allOutList[cid].data));
+            // return;
             var html = template('outListTmp',{list:allOutList,showTool:true});
             $("#outListDom").html(html)
         }
