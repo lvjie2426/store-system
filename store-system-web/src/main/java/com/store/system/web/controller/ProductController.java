@@ -1,10 +1,14 @@
 package com.store.system.web.controller;
 
+import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.Subordinate;
 import com.store.system.service.ProductService;
+import com.store.system.service.SubordinateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,28 +21,39 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- * @program: store-system
- * @description:
- * @author: zhangmeng
- * @create: 2019-10-24 15:39
- **/
 @Controller
-@RequestMapping("/web/product")
+@RequestMapping("/product")
 public class ProductController extends BaseController {
 
     @Resource
     private ProductService productService;
+    @Resource
+    private SubordinateService subordinateService;
 
-    // 搜索商品  按照spu的name 分类返回
-    @RequestMapping("/searchSpu")
-    public ModelAndView searchSpu(@RequestParam(value = "name") String name,
-                                  HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    @RequestMapping("/getSaleSPUPager")
+    public ModelAndView getSaleSPUPager(HttpServletRequest request, HttpServletResponse response, Model model,Pager pager,
+                                  @RequestParam(value = "subid", defaultValue = "0") long subid,
+                                  @RequestParam(value = "type", defaultValue = "-1") int type,
+                                  String brandSeries) throws Exception {
         try {
-            if(StringUtils.isBlank(name)){
-                throw new StoreSystemException("搜索字段不能为空");
-            }
-            return this.viewNegotiating(request, response, new ResultClient(productService.searchSpu(name)));
+            long pSubid = subid;
+            Subordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() > 0) pSubid = subordinate.getPid();
+            pager = productService.getSaleSPUPager(pager,pSubid,subid,type,brandSeries);
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/getSaleSKUAllList")
+    public ModelAndView getSaleSKUAllList(@RequestParam(value = "subid", defaultValue = "0") long subid,
+                                          @RequestParam(value = "spuid") long spuid,
+                                          @RequestParam(value = "uid", defaultValue = "0") long uid,
+                                          HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            List<ClientProductSKU> res = productService.getSaleSKUAllList(subid, spuid, uid);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }

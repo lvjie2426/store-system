@@ -566,6 +566,55 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Pager getSaleSPUPager(final Pager pager, final long pSubid, final long subid,
+                                 final int type, final String brandSeries) throws Exception {
+        return new PagerRequestService<ProductSPU>(pager, 0) {
+            @Override
+            public List<ProductSPU> step1GetPageResult(String cursor, int size) throws Exception {
+                String sql = "select ps.* from `product_spu` as ps LEFT JOIN `product_brand` as pb ON ps.bid=pb.id " +
+                        " LEFT JOIN `product_series` as s ON ps.sid=s.id where 1=1";
+                {
+                    sql = sql + " and ps.`status` = " + ProductSPU.status_nomore + " and ps.`subid` = " + pSubid;
+                }
+                {
+                    sql = sql + " and ps.`type` = " + ProductSPU.type_common;
+                }
+                if (StringUtils.isNotBlank(brandSeries)) {
+                    sql = sql + " and pb.`name` like '%" + brandSeries + "%'" + " or s.`name` like '%" + brandSeries + "%'";
+                }
+                long ctimeCursor = Long.parseLong(cursor);
+                if (ctimeCursor == 0) ctimeCursor = Long.MAX_VALUE;
+                sql = sql + " and ps.`ctime` <= " + ctimeCursor + " order by ps.ctime desc limit " + size;
+                return jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<ProductSPU>(ProductSPU.class));
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<ProductSPU> step3FilterResult(List<ProductSPU> unTransformDatas, PagerSession session) throws Exception {
+                return unTransformDatas;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<ProductSPU> unTransformDatas, PagerSession session) throws Exception {
+                List<ClientProductSPU> data = transformClients(unTransformDatas);
+                for (ClientProductSPU one : data) {
+                    int num = 0;
+                    List<InventoryDetail> details = inventoryDetailDao.getAllListBySubAndSPU(subid, one.getId());
+                    for (InventoryDetail detail : details) {
+                        num += detail.getNum();
+                    }
+                    one.setCanUseNum(num);
+                }
+                return data;
+            }
+        }.getPager();
+    }
+
+    @Override
     public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid, long uid) throws Exception {
         List<ProductSKU> list = productSKUDao.getAllList(spuid, ProductSKU.status_nomore);
         List<ClientProductSKU> res = Lists.newArrayList();
@@ -732,8 +781,6 @@ public class ProductServiceImpl implements ProductService {
                 return map.get(cid);
             }
         }.getPager();
-
-
     }
 
     @Override

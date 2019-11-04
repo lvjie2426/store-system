@@ -242,7 +242,7 @@
             btnAlign: 'r',
             yes: function () {
                 var param = {};
-                var url = "/productpropertyvalue/update";
+                var url = serverUrl + "/productpropertyvalue/update";
                 var result = {succ: "更新成功!", fail: "更新失败"};
                 var content = $("#name").val();
                 var sort = $("#sort").val();
@@ -253,24 +253,23 @@
                 }
                 layer.close(index);
                 {
+                    param.id = row.id;
                     param.content = content;
                     param.pnid = pnid;
                     param.sort = sort;
-                    param.id = row;
-                    myAjax(url, param, handle);
-
-                    function handle(data, params) {
+//                    myAjax(url, param, handle);
+                    quakooData.ajaxGetData(url, param, function (data, param) {
                         var msg = (data.msg == undefined ? '' : ',' + data.msg);
                         if (data.success) {
                             layer.msg(result.succ, {icon: 1, time: 500, shade: 0.01}, function () {
                                 layer.close(index)
                             });
 
-                            handleTable("", 5, "");
+                            handleTable(data, 5, "/productpropertyvalue/getAllList");
                         } else {
                             layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
                         }
-                    }
+                    })
                 }
             },
             btn2: function () {
@@ -310,7 +309,7 @@
             success: function (data) {
                 layer.close(index);
                 if (data && data.success) {
-                    handleTable("", 3, "/goodsManage/productNameValue_item.html?id=" + pnid);
+                    handleTable(data, 5, "/productpropertyvalue/getAllList");
                     layer.msg(result.succ, {
                         icon: 1
                     });

@@ -42,6 +42,8 @@ public interface ProductService {
 
     public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid, int type) throws Exception;
 
+    public Pager getSaleSPUPager(Pager pager, long pSubid, long subid, int type, String brandSeries) throws Exception;
+
     public List<ClientProductSKU> getSaleSKUAllList(long subid, long spuid, long uid) throws Exception;
 
     public boolean updateSaleStatus(long id, int open)throws Exception;
