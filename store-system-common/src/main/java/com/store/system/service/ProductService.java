@@ -32,7 +32,7 @@ public interface ProductService {
 
     public boolean delSPU(long id) throws Exception;
 
-    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid,int type,String name,int saleStatus) throws Exception;
+    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid,int type,String name,int saleStatus,long subId) throws Exception;
 
 
 

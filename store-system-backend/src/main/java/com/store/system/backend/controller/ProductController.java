@@ -259,7 +259,7 @@ public class ProductController extends BaseController {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             if(subordinate.getPid() > 0) subid = subordinate.getPid();
-            pager = productService.getSPUBackPager(pager, subid, cid, pid, bid, sid,type,name,saleStatus);
+            pager = productService.getSPUBackPager(pager, subid, cid, pid, bid, sid,type,name,saleStatus, subordinate.getId());
             return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));

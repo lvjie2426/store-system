@@ -389,7 +389,7 @@ public class ProductServiceImpl implements ProductService {
         return  clientProductSPU ;
     }
 
-    private List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList) throws Exception {
+    private List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList,long subId) throws Exception {
         List<ClientProductSPU> res = Lists.newArrayList();
         if (productSPUList.size() == 0) return res;
         Set<Long> pids = Sets.newHashSet();
@@ -420,13 +420,9 @@ public class ProductServiceImpl implements ProductService {
             if (null != brand) client.setBrandName(brand.getName());
             ProductSeries series = seriesMap.get(client.getSid());
             if (null != series) client.setSeriesName(series.getName());
-            Commission commission = new Commission();
-            commission.setSpuId(one.getId());
-            commission.setSubId(one.getSubid());
-            commission = commissionDao.load(commission);
-            if(commission!=null){
-                client.setCommission(commission);
-            }
+
+            List<Commission> commissions = commissionDao.getAllList(subId, one.getId());
+            client.setCommissions(commissions);
 
             Map<Object, Object> map_value = Maps.newHashMap();
             map_value = getProperties(one,client,"spu_properties_value");
@@ -470,7 +466,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid, int type,String name,int saleStatus) throws Exception {
+    public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid, int type,String name,int saleStatus, long subId) throws Exception {
         String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore;
         String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore;
         String limit = " limit %d , %d ";
@@ -511,7 +507,7 @@ public class ProductServiceImpl implements ProductService {
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
-        pager.setData(transformClients(productSPUList));
+        pager.setData(transformClients(productSPUList,subId));
         pager.setTotalCount(count);
         return pager;
     }
@@ -551,7 +547,7 @@ public class ProductServiceImpl implements ProductService {
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
-        List<ClientProductSPU> data = transformClients(productSPUList);
+        List<ClientProductSPU> data = transformClients(productSPUList,0);
         for (ClientProductSPU one : data) {
             int num = 0;
             List<InventoryDetail> details = inventoryDetailDao.getAllListBySubAndSPU(subid, one.getId());
@@ -600,7 +596,7 @@ public class ProductServiceImpl implements ProductService {
 
             @Override
             public List<?> step4TransformData(List<ProductSPU> unTransformDatas, PagerSession session) throws Exception {
-                List<ClientProductSPU> data = transformClients(unTransformDatas);
+                List<ClientProductSPU> data = transformClients(unTransformDatas,0);
                 for (ClientProductSPU one : data) {
                     int num = 0;
                     List<InventoryDetail> details = inventoryDetailDao.getAllListBySubAndSPU(subid, one.getId());
@@ -731,7 +727,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
 
-        pager.setData(transformClients(productSPUList));
+        pager.setData(transformClients(productSPUList,0));
         pager.setTotalCount(count);
         return pager;
     }
@@ -794,7 +790,7 @@ public class ProductServiceImpl implements ProductService {
             sql = sql+" and cid="+li.getId();
             List<ProductSPU> query = this.jdbcTemplate.query(sql, spuRowMapper);
             if(query.size()>0){
-                map.put(li.getName(),transformClients(query));
+                map.put(li.getName(),transformClients(query,0));
             }
 
         }
@@ -802,7 +798,7 @@ public class ProductServiceImpl implements ProductService {
         return clientProductCategory;
     }
 
-    public List<ClientCommission> transformClients(List<Commission> list, long cid) {
+    public List<ClientCommission> transformClients(List<Commission> list) {
 
         List<ClientCommission> clientCommissionList = new ArrayList<>();
         for (Commission commission : list) {

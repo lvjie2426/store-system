@@ -33,7 +33,13 @@ public class CommissionDaoImpl extends CacheBaseDao<Commission> implements Commi
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<Commission> getAllList(long subId, long spuId) throws Exception {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageList)
     public List<Commission> getAllList(long subId, double cursor, int size) throws Exception {
         return null;
     }

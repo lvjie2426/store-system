@@ -26,7 +26,7 @@ public class ClientProductSPU extends ProductSPU {
 
     private List<ClientProductSKU> skuList;
 
-    private Commission commission; //商品提成
+    private List<Commission> commissions; //商品提成
 
     private List<ClientUserGradeCategoryDiscount> userGradeCategoryDiscountList;
 
