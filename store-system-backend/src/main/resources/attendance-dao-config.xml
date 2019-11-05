@@ -140,4 +140,14 @@
         </property>
     </bean>
 
+
+    <bean id="timeSettingDao" class="com.store.system.dao.impl.TimeSettingDaoImpl">
+        <property name="tableName" value="time_setting"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

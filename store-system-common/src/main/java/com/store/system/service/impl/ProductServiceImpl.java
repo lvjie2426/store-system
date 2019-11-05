@@ -596,7 +596,7 @@ public class ProductServiceImpl implements ProductService {
 
             @Override
             public List<?> step4TransformData(List<ProductSPU> unTransformDatas, PagerSession session) throws Exception {
-                List<ClientProductSPU> data = transformClients(unTransformDatas,0);
+                List<ClientProductSPU> data = transformClients(unTransformDatas,subid);
                 for (ClientProductSPU one : data) {
                     int num = 0;
                     List<InventoryDetail> details = inventoryDetailDao.getAllListBySubAndSPU(subid, one.getId());
