@@ -1,13 +1,21 @@
 package com.store.system.web.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.InventoryInBillItem;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.User;
 import com.store.system.model.attendance.TimeSetting;
 import com.store.system.service.TimeSettingService;
+import com.store.system.util.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -39,6 +47,23 @@ public class TimeSettingController extends BaseController{
         }
     }
 
+    @RequestMapping("/addList")
+    public ModelAndView addList(HttpServletRequest request, HttpServletResponse response, Model model,
+                                @RequestParam(value = "timeSettingJson") String timeSettingJson) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            List<TimeSetting> timeSettings = Lists.newArrayList();
+            if(StringUtils.isNotBlank(timeSettingJson)) {
+                timeSettings = JsonUtils.fromJson(timeSettingJson, new TypeReference<List<TimeSetting>>() {});
+            }
+            timeSettingService.addList(timeSettings,user.getPsid());
+            return this.viewNegotiating(request, response, new ResultClient(true));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+
     @RequestMapping("/del")
     public ModelAndView del(HttpServletRequest request, HttpServletResponse response, Model model, long id) throws Exception {
         try {
@@ -50,10 +75,17 @@ public class TimeSettingController extends BaseController{
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request, HttpServletResponse response, Model model, TimeSetting timeSetting) throws Exception {
+    public ModelAndView update(HttpServletRequest request, HttpServletResponse response, Model model,
+                               @RequestParam(value = "timeSettingJson") String timeSettingJson) throws Exception {
         try {
-            boolean res = timeSettingService.update(timeSetting);
-            return this.viewNegotiating(request, response, new ResultClient(res));
+            List<TimeSetting> timeSettings = Lists.newArrayList();
+            if(StringUtils.isNotBlank(timeSettingJson)) {
+                timeSettings = JsonUtils.fromJson(timeSettingJson, new TypeReference<List<TimeSetting>>() {});
+            }
+            for(TimeSetting timeSetting:timeSettings) {
+                timeSettingService.update(timeSetting);
+            }
+            return this.viewNegotiating(request, response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

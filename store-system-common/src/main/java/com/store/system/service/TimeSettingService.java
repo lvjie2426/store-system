@@ -15,6 +15,8 @@ public interface TimeSettingService {
 
     TimeSetting add(TimeSetting timeSetting) throws Exception;
 
+    void addList(List<TimeSetting> timeSettings, long sid) throws Exception;
+
     boolean del(long id) throws Exception;
 
     boolean update(TimeSetting timeSetting) throws Exception;

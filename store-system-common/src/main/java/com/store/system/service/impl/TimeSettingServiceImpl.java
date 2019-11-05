@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.google.common.collect.Lists;
 import com.store.system.dao.TimeSettingDao;
 import com.store.system.model.attendance.TimeSetting;
 import com.store.system.service.TimeSettingService;
@@ -21,10 +22,23 @@ public class TimeSettingServiceImpl implements TimeSettingService{
     @Resource
     private TimeSettingDao timeSettingDao;
 
+    @Override
+    public TimeSetting add(TimeSetting timeSettings) throws Exception {
+        return timeSettingDao.insert(timeSettings);
+    }
 
     @Override
-    public TimeSetting add(TimeSetting city) throws Exception {
-        return timeSettingDao.insert(city);
+    public void addList(List<TimeSetting> timeSettings, long sid) throws Exception {
+        List<String> strList = Lists.newArrayList();
+        List<TimeSetting> timeSettingList = timeSettingDao.getAllList(sid);
+        for(TimeSetting timeSetting:timeSettingList){
+            strList.add(timeSetting.getInterval());
+        }
+        for(TimeSetting timeSetting:timeSettingList){
+            if (!strList.contains(timeSetting.getInterval())){
+                timeSettingDao.insert(timeSetting);
+            }
+        }
     }
 
     @Override
