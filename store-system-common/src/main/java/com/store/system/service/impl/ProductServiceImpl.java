@@ -9,6 +9,7 @@ import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
+import com.quakoo.space.mapper.HyperspaceAllIdRowMapper;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.*;
 import com.store.system.dao.*;
@@ -52,6 +53,8 @@ public class ProductServiceImpl implements ProductService {
 
     private TransformMapUtils valueMapUtils = new TransformMapUtils(ProductPropertyValue.class);
 
+
+    private RowMapperHelp<Commission> rowMapper = new RowMapperHelp<>(Commission.class);
 
     @Resource
     private ProductPropertyNameDao productPropertyNameDao;
@@ -734,14 +737,23 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public Pager getCommSpu(Pager pager, final long subid, final long cid) throws Exception {
+    public Pager getCommSpu(Pager pager, final long subid, final long cid,final String name) throws Exception {
         return  new PagerRequestService<Commission>(pager,0){
 
             @Override
             public List<Commission> step1GetPageResult(String cursor, int size) throws Exception {
+                String sql="select c.* from commission c ,product_spu spu, product_series s,product_brand b" +
+                        " where c.spuId=spu.id and s.id=spu.sid and b.id=spu.bid and c.subid= "+subid;
+                sql+=" and spu.cid="+cid;
+                if(StringUtils.isNotBlank(name)){
+                    sql+= " and b.`name` like '%"+name+"%' and s.`name`like '%"+name+"%'";
+                }
+                long ctimeCursor = Long.parseLong(cursor);
+                if (ctimeCursor == 0) ctimeCursor = Long.MAX_VALUE;
+                sql = sql + " and c.`ctime` <= " + ctimeCursor + " order by c.ctime desc limit " + size;
 
-                List<Commission> list = commissionDao.getAllList(subid,Double.parseDouble(cursor),size);
-                return list;
+                List<Commission> commissions = jdbcTemplate.query(sql, rowMapper);
+                return commissions;
             }
 
             @Override
@@ -765,6 +777,7 @@ public class ProductServiceImpl implements ProductService {
                 Map<Long, ProductSPU> spuMap = productSPUMapUtils.listToMap(spus, "id");
                 for (Commission info : list) {
                     ProductSPU spu = spuMap.get(info.getSpuId());
+                    ClientProductSPU clientProductSPU = transformClient(spu);
                     if (spu != null) {
                         List<ClientCommission> commissions = map.get(spu.getCid());
                         if (commissions == null) {
@@ -772,7 +785,7 @@ public class ProductServiceImpl implements ProductService {
                             map.put(spu.getCid(), commissions);
                         }
                         ClientCommission clientCommission = new ClientCommission(info);
-                        clientCommission.setList(spu);
+                        clientCommission.setList(clientProductSPU);
                         commissions.add(clientCommission);
                     }
                 }

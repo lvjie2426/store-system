@@ -241,7 +241,8 @@ public class MissionController extends BaseController {
 
     // 获取提成商品清单
     @RequestMapping("/getCommSpu")
-    public ModelAndView getCommSpu(HttpServletRequest request,HttpServletResponse response,Pager pager, long subid,long cid)throws Exception{
+    public ModelAndView getCommSpu(HttpServletRequest request,HttpServletResponse response,Pager pager,
+                                   String name,long subid,long cid)throws Exception{
 
 
         try{
@@ -250,7 +251,7 @@ public class MissionController extends BaseController {
             if(sid==0){
                 throw  new StoreSystemException("门店id错误!");
             }
-            pager=   productService.getCommSpu(pager,sid,cid);
+            pager=   productService.getCommSpu(pager,sid,cid,name);
             return this.viewNegotiating(request,response,pager.toModelAttribute());
         }catch (StoreSystemException s){
             return  this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));

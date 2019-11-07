@@ -19,7 +19,7 @@ public class ClientCommission extends Commission{
 
     private String code;
 
-    private ProductSPU list;
+    private ClientProductSPU list;
 
     public ClientCommission(Commission commission) {
         try {

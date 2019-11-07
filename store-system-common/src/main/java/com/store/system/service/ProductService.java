@@ -54,7 +54,7 @@ public interface ProductService {
 
     public Pager getSPUNoNirNumPager(Pager pager, long subid)throws Exception;
 
-    public Pager getCommSpu(Pager pager,long subid, long cid)throws Exception;
+    public Pager getCommSpu(Pager pager,long subid, long cid,String name)throws Exception;
 
     // 用于按照name搜索商品
     public ClientProductCategory searchSpu(String name)throws Exception;
