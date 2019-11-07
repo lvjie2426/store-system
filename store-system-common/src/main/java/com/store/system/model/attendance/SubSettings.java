@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 门店考勤设置
+/** 门店/公司考勤设置
  * @ClassName SubSettings
  * @Description TODO
  * @Author LaoMa
@@ -46,6 +46,15 @@ public class SubSettings implements Serializable{
      * 早退时间(分钟)
      */
     private int earlyTime;
+    /***
+     * 上班前提醒时间(分钟)
+     */
+    private int beforeTime;
+    /***
+     * 下班前提醒时间(分钟)
+     */
+    private int afterTime;
+
 
     @HyperspaceColumn(isJson = true)
     private List<PunchCardPlace> punchCardPlaces=new ArrayList<>();

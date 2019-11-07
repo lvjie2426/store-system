@@ -95,7 +95,8 @@ public class TimeSettingController extends BaseController{
     public ModelAndView getAllList(HttpServletRequest request, HttpServletResponse response, Model model, long sid) throws Exception {
         try {
             List<TimeSetting> res = timeSettingService.getAllList(sid);
-            return this.viewNegotiating(request, response, new ResultClient(res));
+            ResultClient resultClient = new ResultClient(res);
+            return this.viewNegotiating(request, response, resultClient);
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

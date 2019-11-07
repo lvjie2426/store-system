@@ -1,5 +1,7 @@
 package com.store.system.web.controller;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientProductSKU;
@@ -9,7 +11,6 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Subordinate;
 import com.store.system.service.ProductService;
 import com.store.system.service.SubordinateService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/product")
@@ -54,6 +56,31 @@ public class ProductController extends BaseController {
         try {
             List<ClientProductSKU> res = productService.getSaleSKUAllList(subid, spuid, uid);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/getTaskPager")
+    public ModelAndView getTaskPager(HttpServletRequest request, HttpServletResponse response, Model model,Pager pager,
+                                        @RequestParam(value = "subid", defaultValue = "0") long subid,
+                                        String brandSeries) throws Exception {
+        try {
+            long pSubid = subid;
+            Subordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() > 0) pSubid = subordinate.getPid();
+            pager = productService.getSaleSPUPager(pager,pSubid,subid,0,brandSeries);
+            List<ClientProductSPU> spus = pager.getData();
+            Map<Long,List<ClientProductSPU>> map = Maps.newHashMap();
+            for (ClientProductSPU spu : spus) {
+                List<ClientProductSPU> spuList = map.get(spu.getCid());
+                if (null == spuList) {
+                    spuList = Lists.newArrayList();
+                    map.put(spu.getCid(), spuList);
+                }
+                spuList.add(spu);
+            }
+            return this.viewNegotiating(request, response, new ResultClient(map));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }

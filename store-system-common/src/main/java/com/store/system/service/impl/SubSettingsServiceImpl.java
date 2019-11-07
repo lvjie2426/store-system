@@ -40,6 +40,12 @@ public class SubSettingsServiceImpl implements SubSettingsService {
             if(subSettings.getEarlyTime()>0){
                 dbInfo.setEarlyTime(subSettings.getEarlyTime());
             }
+            if(subSettings.getBeforeTime()>0){
+                dbInfo.setBeforeTime(subSettings.getBeforeTime());
+            }
+            if(subSettings.getAfterTime()>0){
+                dbInfo.setAfterTime(subSettings.getAfterTime());
+            }
             if(subSettings.getPunchCardPlaces().size()>0){
                 dbInfo.setPunchCardPlaces(subSettings.getPunchCardPlaces());
             }

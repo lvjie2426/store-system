@@ -34,7 +34,7 @@ public class TimeSettingServiceImpl implements TimeSettingService{
         for(TimeSetting timeSetting:timeSettingList){
             strList.add(timeSetting.getInterval());
         }
-        for(TimeSetting timeSetting:timeSettingList){
+        for(TimeSetting timeSetting:timeSettings){
             if (!strList.contains(timeSetting.getInterval())){
                 timeSettingDao.insert(timeSetting);
             }

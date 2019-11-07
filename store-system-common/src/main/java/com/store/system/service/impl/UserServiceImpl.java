@@ -853,6 +853,9 @@ public class UserServiceImpl implements UserService {
         if (user.getMoney() != 0) {
             olduser.setMoney(user.getMoney() * 100);
         }
+        if (user.getAid() != 0) {
+            olduser.setAid(user.getAid());
+        }
         boolean res = userDao.update(olduser);
         if (res && !olduser.getPhone().equals(user.getPhone())) {
             LoginUserPool loginUserPool = new LoginUserPool();

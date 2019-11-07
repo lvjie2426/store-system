@@ -1,6 +1,7 @@
 package com.store.system.web.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.webframework.BaseController;
@@ -51,12 +52,17 @@ public class AttendanceTemplateController extends BaseController {
     */
     @RequestMapping("/add")
     public ModelAndView addAttendanceTemplate(HttpServletRequest request, HttpServletResponse response,
-                                              AttendanceTemplate attendanceTemplate, String turnMapJson, Model model) throws Exception {
+                                              AttendanceTemplate attendanceTemplate,String dayJson, String turnMapJson, Model model) throws Exception {
         Map<Long,AttendanceItem> turnMap = Maps.newHashMap();
+        List<Integer> days = Lists.newArrayList();
         try {
             if(StringUtils.isNotBlank(turnMapJson)) {
                 turnMap = JsonUtils.fromJson(turnMapJson, new TypeReference<Map<Long, AttendanceItem>>() {});
             }
+            if(StringUtils.isNotBlank(dayJson)) {
+                days = JsonUtils.fromJson(dayJson, new TypeReference<List<Integer>>() {});
+            }
+            attendanceTemplate.setWorkWeekDay(days);
             attendanceTemplate.setTurnMap(turnMap);
             AttendanceTemplate template = attendanceTemplateService.add(attendanceTemplate);
             return this.viewNegotiating(request, response, new ResultClient(true, template));

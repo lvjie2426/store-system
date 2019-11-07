@@ -487,7 +487,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             userScore=user.getScore();
         }
 
-        ClientBusinessOrder client=new ClientBusinessOrder(businessOrder);
+        ClientBusinessOrder client=transformClient(businessOrder);
         int originalPrice = 0;//原价(分)
         int discountPrice = 0;//折后金额(分)
         int totalPrice = 0;//总金额(分)
@@ -666,6 +666,9 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
 
         List<PayInfo> payInfos = payInfoService.getAllList(businessOrder.getId(),PayInfo.status_pay);
         client.setPayInfos(payInfos);
+
+        List<ClientOrderSku> clientOrderSkus = transformSKUClient(businessOrder.getSkuList());
+        client.setSkuInfo(clientOrderSkus);
         return client;
     }
 
@@ -904,66 +907,69 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         List<ClientBusinessOrder> clients = new ArrayList<>();
         for (BusinessOrder info : businessOrders) {
             ClientBusinessOrder client = transformClient(info);
-            Set<Long> skuIds = Sets.newHashSet();
-            Set<Long> spuIds = Sets.newHashSet();
-            Set<Long> pids = Sets.newHashSet();
-            Set<Long> cids = Sets.newHashSet();
-            Set<Long> bids = Sets.newHashSet();
-            Set<Long> sids = Sets.newHashSet();
-            for (OrderSku sku : info.getSkuList()) {
-                skuIds.add(sku.getSkuId());
-                spuIds.add(sku.getSpuId());
-                ProductSPU spu = productSPUDao.load(sku.getSpuId());
-                pids.add(spu.getPid());
-                cids.add(spu.getCid());
-                bids.add(spu.getBid());
-                sids.add(spu.getSid());
-            }
-            List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuIds));
-            Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
-            List<ProductSKU> skuList = productSKUDao.load(Lists.newArrayList(skuIds));
-            Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(skuList, "id");
-
-            List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(pids));
-            Map<Long, ProductProvider> providerMap = providerMapUtils.listToMap(providers, "id");
-            List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
-            Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
-            List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
-            Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
-            List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
-            Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
-            List<ClientOrderSku> clientOrderSkus = Lists.newArrayList();
-            for(OrderSku sku:info.getSkuList()){
-                ClientOrderSku clientOrderSku = new ClientOrderSku(sku);
-
-                ProductSKU productSKU = skuMap.get(sku.getSkuId());
-                Map<Object,Object> sku_value = Maps.newHashMap();
-                sku_value = productService.getProperties(productSKU,clientOrderSku,"k_properties_value");
-                clientOrderSku.setK_properties_value(sku_value);
-
-                ProductSPU productSPU = spuMap.get(sku.getSpuId());
-                Map<Object,Object> spu_value = Maps.newHashMap();
-                spu_value = productService.getProperties(productSPU,clientOrderSku,"p_properties_value");
-                clientOrderSku.setP_properties_value(spu_value);
-                clientOrderSkus.add(clientOrderSku);
-
-                ProductSPU spu = productSPUDao.load(sku.getSpuId());
-                ProductProvider provider = providerMap.get(spu.getPid());
-                if (null != provider) clientOrderSku.setProviderName(provider.getName());
-                ProductCategory category = categoryMap.get(spu.getCid());
-                if (null != category) clientOrderSku.setCategoryName(category.getName());
-                ProductBrand brand = brandMap.get(spu.getBid());
-                if (null != brand) clientOrderSku.setBrandName(brand.getName());
-                ProductSeries series = seriesMap.get(spu.getSid());
-                if (null != series) clientOrderSku.setSeriesName(series.getName());
-            }
+            List<ClientOrderSku> clientOrderSkus = transformSKUClient(info.getSkuList());
             client.setSkuInfo(clientOrderSkus);
             clients.add(client);
         }
         return clients;
     }
 
+    private List<ClientOrderSku> transformSKUClient(List<OrderSku> skuList) throws Exception {
+        Set<Long> skuIds = Sets.newHashSet();
+        Set<Long> spuIds = Sets.newHashSet();
+        Set<Long> pids = Sets.newHashSet();
+        Set<Long> cids = Sets.newHashSet();
+        Set<Long> bids = Sets.newHashSet();
+        Set<Long> sids = Sets.newHashSet();
+        for (OrderSku sku : skuList) {
+            skuIds.add(sku.getSkuId());
+            spuIds.add(sku.getSpuId());
+            ProductSPU spu = productSPUDao.load(sku.getSpuId());
+            pids.add(spu.getPid());
+            cids.add(spu.getCid());
+            bids.add(spu.getBid());
+            sids.add(spu.getSid());
+        }
+        List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuIds));
+        Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
+        List<ProductSKU> skus = productSKUDao.load(Lists.newArrayList(skuIds));
+        Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(skus, "id");
 
+        List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(pids));
+        Map<Long, ProductProvider> providerMap = providerMapUtils.listToMap(providers, "id");
+        List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
+        Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
+        List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
+        Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
+        List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
+        Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
+        List<ClientOrderSku> clientOrderSkus = Lists.newArrayList();
+        for (OrderSku sku : skuList) {
+            ClientOrderSku clientOrderSku = new ClientOrderSku(sku);
+
+            ProductSKU productSKU = skuMap.get(sku.getSkuId());
+            Map<Object, Object> sku_value = Maps.newHashMap();
+            sku_value = productService.getProperties(productSKU, clientOrderSku, "k_properties_value");
+            clientOrderSku.setK_properties_value(sku_value);
+
+            ProductSPU productSPU = spuMap.get(sku.getSpuId());
+            Map<Object, Object> spu_value = Maps.newHashMap();
+            spu_value = productService.getProperties(productSPU, clientOrderSku, "p_properties_value");
+            clientOrderSku.setP_properties_value(spu_value);
+            clientOrderSkus.add(clientOrderSku);
+
+            ProductSPU spu = productSPUDao.load(sku.getSpuId());
+            ProductProvider provider = providerMap.get(spu.getPid());
+            if (null != provider) clientOrderSku.setProviderName(provider.getName());
+            ProductCategory category = categoryMap.get(spu.getCid());
+            if (null != category) clientOrderSku.setCategoryName(category.getName());
+            ProductBrand brand = brandMap.get(spu.getBid());
+            if (null != brand) clientOrderSku.setBrandName(brand.getName());
+            ProductSeries series = seriesMap.get(spu.getSid());
+            if (null != series) clientOrderSku.setSeriesName(series.getName());
+        }
+        return clientOrderSkus;
+    }
 
 
 }
