@@ -712,6 +712,25 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 
 	}
 
+	@Override
+	public List<ClientAttendanceLog> getUserAttendanceBuByMonth(long psid, long sid, long id, long month) throws Exception {
+		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserMonth(psid, sid, id, month);
+		List<ClientAttendanceLog> list=new ArrayList<>(logs.size());
+		List<ClientAttendanceLog> returnlist=new ArrayList<>(logs.size());
+
+		for(AttendanceLog attendanceLog:logs){
+			ClientAttendanceLog clientAttendanceLog=transformClient(attendanceLog);
+			list.add(clientAttendanceLog);
+		}
+
+		for(ClientAttendanceLog clientAttendanceLog:list){
+			if(clientAttendanceLog.getDayType()==ClientAttendanceLog.attendanceType_absent||clientAttendanceLog.getDayType()==ClientAttendanceLog.attendanceType_noCard){
+				returnlist.add(clientAttendanceLog);
+			}
+		}
+		return  returnlist;
+	}
+
 
 	/**
 	 * 根据 考勤日志 生成统计数据

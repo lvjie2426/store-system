@@ -40,10 +40,11 @@ public class LeaveServiceImpl implements LeaveService {
     @Autowired
     private UserDao userDao;
     @Autowired
+    private UserLeavePoolDao userLeavePoolDao;
+    @Autowired
     private ApprovalLogDao approvalLogDao;
 
-    @Autowired
-    private UserLeavePoolDao userLeavePoolDao;
+
 
     private void check(Leave leave) {
         if(leave.getLeaveTime()==0)throw new StoreSystemException("请假时长不能为空！");
@@ -68,6 +69,10 @@ public class LeaveServiceImpl implements LeaveService {
             approvalLog.setType(ApprovalLog.type_work);
             approvalLog.setTypeId(insert.getId());
             approvalLogDao.insert(approvalLog);
+
+
+            UserLeavePool userLeavePool=new UserLeavePool(insert);
+            userLeavePoolDao.insert(userLeavePool);
         }
         return insert;
     }

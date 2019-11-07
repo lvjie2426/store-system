@@ -44,7 +44,7 @@ public class FillCardController extends BaseController {
         try {
             User user = UserUtils.getUser(request);
             pager = fillCardService.getListByUid(user.getId(), pager);
-            return this.viewNegotiating(request, response, new ResultClient(pager));
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

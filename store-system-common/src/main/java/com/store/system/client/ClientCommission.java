@@ -2,8 +2,11 @@ package com.store.system.client;
 
 import com.store.system.model.Commission;
 import com.store.system.model.FinanceLog;
+import com.store.system.model.ProductSPU;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
+
+import java.util.List;
 
 /**
  * @program: store-system
@@ -15,6 +18,8 @@ import org.apache.commons.beanutils.BeanUtils;
 public class ClientCommission extends Commission{
 
     private String code;
+
+    private ProductSPU list;
 
     public ClientCommission(Commission commission) {
         try {

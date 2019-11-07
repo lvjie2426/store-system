@@ -127,4 +127,5 @@ public interface AttendanceLogService {
 	public AttendanceItem getAttendanceItem(long day, AttendanceTemplate attendanceTemplate) throws Exception;
 
 
+	List<ClientAttendanceLog> getUserAttendanceBuByMonth(long psid, long sid, long id, long month) throws Exception;
 }

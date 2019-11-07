@@ -3,12 +3,15 @@ package com.store.system.service.impl;
 import com.store.system.dao.CommissionRewardDao;
 import com.store.system.dao.SubordinateDao;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.Commission;
 import com.store.system.model.CommissionReward;
 import com.store.system.model.Subordinate;
+import com.store.system.model.User;
 import com.store.system.service.CommissionRewardService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @ProjectName: store-system
@@ -29,6 +32,16 @@ public class CommissionRewardServiceImpl implements CommissionRewardService {
     public CommissionReward add(CommissionReward commissionReward) throws Exception {
         check(commissionReward);
         return commissionRewardDao.insert(commissionReward);
+    }
+
+    @Override
+    public Integer getAllByUser(User user, long subid) throws Exception {
+        List<CommissionReward> allByUser = commissionRewardDao.getAllByUser(user.getId(), subid, CommissionReward.type_reward);
+        Integer price=0;
+        for(CommissionReward commissionReward:allByUser){
+            price+= commissionReward.getPrice();
+        }
+        return price;
     }
 
     private void check(CommissionReward commissionReward) {

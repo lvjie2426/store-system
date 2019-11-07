@@ -56,6 +56,9 @@ public class MissionController extends BaseController {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private CommissionRewardService commissionRewardService;
+
     @RequestMapping("/add")
     public ModelAndView add(Mission mission,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -191,14 +194,16 @@ public class MissionController extends BaseController {
     }
 
     //任务奖励 app
+    // 获取该登陆人店铺的所有团队任务和个人指定任务。
     @RequestMapping("/getAllMission")
     public ModelAndView getAllMission(@RequestParam(value = "sid") long sid,
-                                      Date date,HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+                                      HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
+            User user=UserUtils.getUser(request);
             Subordinate subordinate = subordinateService.load(sid);
             long psid = subordinate.getPid();
             if(psid==0){ throw new StoreSystemException("门店ID错误");}
-            return this.viewNegotiating(request,response, new ResultClient( missionService.getAllMissionApp(psid,date)));
+            return this.viewNegotiating(request,response, new ResultClient( missionService.getAllMissionApp(psid,user)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
@@ -206,19 +211,33 @@ public class MissionController extends BaseController {
 
     //app--销售奖励
    @RequestMapping("/saleReward")
-    public ModelAndView saleReward(HttpServletRequest request,HttpServletResponse response, long date,
+    public ModelAndView saleReward(HttpServletRequest request,HttpServletResponse response, Pager pager,
                                    @RequestParam(name = "subid") long subid)throws Exception{
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long sid = subordinate.getPid();
             if(sid==0){ throw new StoreSystemException("门店ID有误"); }
-            Map<String,Object> res = orderService.saleRewardApp(subid,date);
-            return this.viewNegotiating(request,response,new ResultClient(true,res));
+            pager = orderService.saleRewardApp(pager,subid);
+            return this.viewNegotiating(request,response,pager.toModelAttribute());
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }
     }
-
+    //app--销售奖励总额
+    @RequestMapping("/saleRewardTotal")
+    public ModelAndView saleRewardTotal(HttpServletRequest request,HttpServletResponse response,
+                                   @RequestParam(name = "subid") long subid)throws Exception{
+        try {
+            User user=UserUtils.getUser(request);
+            Subordinate subordinate = subordinateService.load(subid);
+            long sid = subordinate.getPid();
+            if(sid==0){ throw new StoreSystemException("门店ID有误"); }
+            Integer price = commissionRewardService.getAllByUser(user,subid);
+            return this.viewNegotiating(request,response,new ResultClient(true,price));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
+        }
+    }
 
     // 获取提成商品清单
     @RequestMapping("/getCommSpu")

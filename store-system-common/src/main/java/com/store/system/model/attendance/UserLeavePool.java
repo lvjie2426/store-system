@@ -7,6 +7,7 @@ import com.quakoo.space.annotation.domain.ShardingKey;
 import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -16,6 +17,7 @@ import java.io.Serializable;
  *
  *
  */
+@Data
 @HyperspaceDomain(domainType = HyperspaceDomainType.listDataStructure,
         identityType = IdentityType.human)
 public class UserLeavePool implements Serializable {
@@ -40,45 +42,12 @@ public class UserLeavePool implements Serializable {
 
     private long utime;
 
+    public UserLeavePool(){}
 
-    public long getCtime() {
-        return ctime;
+    public UserLeavePool(Leave leave){
+        this.lid=leave.getId();
+        this.uid=leave.getAskUid();
+
     }
 
-    public void setCtime(long ctime) {
-        this.ctime = ctime;
-    }
-
-    public long getUtime() {
-        return utime;
-    }
-
-    public void setUtime(long utime) {
-        this.utime = utime;
-    }
-
-    public long getUid() {
-        return uid;
-    }
-
-    public void setUid(long uid) {
-        this.uid = uid;
-    }
-
-
-    public long getLid() {
-        return lid;
-    }
-
-    public void setLid(long lid) {
-        this.lid = lid;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

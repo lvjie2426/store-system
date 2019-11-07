@@ -1,5 +1,6 @@
 package com.store.system.bean;
 
+import com.store.system.model.Commission;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,6 +22,8 @@ public class SaleReward implements Serializable{
     private String sName ;//系列
 
     private int number ;//完成量
+
+    private Commission commission;
 
     private int royaltyPersonal;//个人奖励(分)
 

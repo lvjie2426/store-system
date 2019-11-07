@@ -12,7 +12,7 @@ public class ClientMission extends Mission{
 
     private int allProgress;//任务总完成度
 
-    private int allAmount;//任务总量
+    private int allAmount;//任务当前完成 量
 
     private Map<Object,List<Personal>> PersonalList;
 

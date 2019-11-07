@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 import com.store.system.model.CommissionReward;
+import com.store.system.model.User;
 
 /**
  * @ProjectName: store-system
@@ -17,4 +18,7 @@ public interface CommissionRewardService {
      * @throws Exception
      */
     public CommissionReward add(CommissionReward commissionReward)throws Exception;
+
+
+    Integer getAllByUser(User user, long subid)throws Exception;
 }

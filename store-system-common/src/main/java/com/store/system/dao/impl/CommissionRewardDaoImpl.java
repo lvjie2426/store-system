@@ -1,8 +1,10 @@
 package com.store.system.dao.impl;
 
 import com.quakoo.space.CacheBaseDao;
+import com.quakoo.space.annotation.cache.CacheDaoMethod;
 import com.quakoo.space.annotation.dao.HyperspaceDao;
 import com.quakoo.space.enums.HyperspaceType;
+import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.store.system.dao.CommissionRewardDao;
 import com.store.system.model.CommissionReward;
 
@@ -20,6 +22,12 @@ import java.util.Map;
 public class CommissionRewardDaoImpl extends CacheBaseDao<CommissionReward> implements CommissionRewardDao{
     @Override
     public Map<String, List<String>> getCacheMap() {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<CommissionReward> getAllByUser(long id, long sid, int type) throws Exception {
         return null;
     }
 }

@@ -186,24 +186,87 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
+    public Map<String, Object> getAllMissionApp(long sid, User user) throws Exception {
+        List<Mission> list = new ArrayList<>();
+        // 获取门店任务
+        List<Mission> allList = missionDao.getAllList(sid, Mission.status_yes);
+        for (Mission li : allList) {
+            if (li.getType() == Mission.type_tem && li.getExecutor().contains(user.getSid())) {
+                // 团队
+                list.add(li);
+            } else if (li.getType() == Mission.type_user && li.getExecutor().contains(user.getId())) {
+                // 个人
+                list.add(li);
+            }
+        }
 
-    public Map<String, Object> getAllMissionApp(long sid, Date date) throws Exception {
-        long end = DateUtils.getMonthEnd(date);
-        long start = DateUtils.getMonthBegin(date);
         Map<String, Object> map = Maps.newHashMap();
-        String sql = "SELECT * FROM `mission` where sid = " + sid + " AND status = " + Mission.status_yes;
-        sql = sql + " and `ctime` <" + end + " and `ctime` >" + start;
-        sql = sql + " order  by `ctime` desc";
-        List<Mission> missions = jdbcTemplate.query(sql, new RowMapperHelp<Mission>(Mission.class));
         int money = 0;//总奖励额
-        List<ClientMission> clientList = transformClient(missions);
+        List<ClientMission> clientList = countPrice(list, user);
         for (ClientMission client : clientList) {
-            money += client.getAllAmount();
+            if (client.getAllProgress() >= 100) {
+                money += client.getAmount();
+
+            }
         }
         map.put("list", clientList);
         map.put("money", money);
         return map;
     }
+
+    private List<ClientMission> countPrice(List<Mission> list, User user) throws Exception {
+        int allProgress = 0;
+        int allAmount = 0;
+        List<ClientMission> clientMissionList = new ArrayList<>(list.size());
+        for (Mission li : list) {
+            ClientMission clientMission = new ClientMission(li);
+            if (li.getType() == Mission.type_tem) {
+                //团队任务 需要先查询该员工门店下的所有sku 然后进行统计
+                SubordinateMissionPool subordinateMissionPool = new SubordinateMissionPool();
+                subordinateMissionPool.setSid(user.getSid());
+                subordinateMissionPool.setMid(li.getId());
+                subordinateMissionPool = subordinateMissionPoolDao.load(subordinateMissionPool);
+
+                if (subordinateMissionPool != null) {
+                    clientMission.setAllProgress(subordinateMissionPool.getProgress());
+                    if (li.getAmountType() == Mission.amountType_number) {
+                        clientMission.setAllAmount(subordinateMissionPool.getNumber());
+                        allAmount = subordinateMissionPool.getNumber();
+                    } else {
+                        clientMission.setAllAmount(subordinateMissionPool.getPrice());
+                        allAmount = subordinateMissionPool.getPrice();
+                    }
+                }
+                allProgress = getProgress(allAmount, li.getTarget());//完成度 当前完成数量/目标数量
+            } else {
+                //个人任务
+
+                UserMissionPool userMissionPool = new UserMissionPool();
+                userMissionPool.setMid(li.getId());
+                userMissionPool.setUid(user.getId());
+                userMissionPool = userMissionPoolDao.load(userMissionPool);
+                if (userMissionPool != null) {
+                    if (li.getAmountType() == Mission.amountType_number) {
+                        clientMission.setAllAmount(userMissionPool.getNumber());
+                        allAmount = userMissionPool.getNumber();
+                    } else {
+                        clientMission.setAllAmount(userMissionPool.getPrice());
+                        allAmount = userMissionPool.getPrice();
+                    }
+                }
+                allProgress = getProgress(allAmount, li.getTarget());//完成度 当前完成数量/目标数量
+
+            }
+            clientMission.setAllProgress(allProgress);  //完成度
+            clientMission.setAllAmount(allAmount);      //完成量
+            clientMissionList.add(clientMission);
+        }
+
+        return clientMissionList;
+    }
+
+
+
 
     //检查当前订单满足那些任务的完成条件并返回任务
     @Override

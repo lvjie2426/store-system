@@ -756,7 +756,7 @@ public class ProductServiceImpl implements ProductService {
 
             @Override
             public List<?> step4TransformData(List<Commission> list, PagerSession pagerSession) throws Exception {
-                Map<Long, List<Commission>> map = Maps.newHashMap();
+                Map<Long, List<ClientCommission>> map = Maps.newHashMap();
                 Set<Long> spuIds = new HashSet<>();
                 for (Commission info : list) {
                     spuIds.add(info.getSpuId());
@@ -766,12 +766,14 @@ public class ProductServiceImpl implements ProductService {
                 for (Commission info : list) {
                     ProductSPU spu = spuMap.get(info.getSpuId());
                     if (spu != null) {
-                        List<Commission> commissions = map.get(spu.getCid());
+                        List<ClientCommission> commissions = map.get(spu.getCid());
                         if (commissions == null) {
                             commissions = Lists.newArrayList();
                             map.put(spu.getCid(), commissions);
                         }
-                        commissions.add(info);
+                        ClientCommission clientCommission = new ClientCommission(info);
+                        clientCommission.setList(spu);
+                        commissions.add(clientCommission);
                     }
                 }
                 return map.get(cid);

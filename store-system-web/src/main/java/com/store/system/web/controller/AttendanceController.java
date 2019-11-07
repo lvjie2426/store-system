@@ -265,4 +265,24 @@ public class AttendanceController extends BaseController {
         }
     }
 
+    /***
+     * 获取用户某月的需要补卡考勤
+     * @Param: [request, response, month, model]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/9/17
+     */
+    @RequestMapping("/getUserBuMonth")
+    public ModelAndView getUserBuMonth(HttpServletRequest request, HttpServletResponse response,
+                                     long month, Model model) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            List<ClientAttendanceLog> list= attendanceLogService.
+                    getUserAttendanceBuByMonth(user.getPsid(), user.getSid(), user.getId(), month);
+            return this.viewNegotiating(request, response, new ResultClient(list));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
 }

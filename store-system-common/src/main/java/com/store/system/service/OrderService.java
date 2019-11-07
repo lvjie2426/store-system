@@ -64,5 +64,5 @@ public interface OrderService {
 
     public Map<String, Integer> calculateSale(List<Order> orders) throws Exception;
 
-    public Map<String, Object> saleRewardApp(long subid, long date) throws Exception;
+    public Pager saleRewardApp(Pager pager,long subid) throws Exception;
 }

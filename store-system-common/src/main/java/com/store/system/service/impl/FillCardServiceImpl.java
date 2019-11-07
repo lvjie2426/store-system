@@ -119,7 +119,7 @@ public class FillCardServiceImpl implements FillCardService {
 
            @Override
            public List<?> step4TransformData(List<FillCard> list, PagerSession pagerSession) throws Exception {
-               return null;
+               return list;
            }
        }.getPager();
     }

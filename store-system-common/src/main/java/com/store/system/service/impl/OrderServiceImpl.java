@@ -6,6 +6,8 @@ import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.lock.ZkLock;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
@@ -1458,71 +1460,86 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public Map<String, Object> saleRewardApp(long subid, long date) throws Exception {
-        Map<String, Object> map = Maps.newLinkedHashMap();
-        List<SaleReward> saleRewards = Lists.newArrayList();
-        int totalP = 0;
-        int totalT = 0;
-//        *获得门店下的商品提成集合*
-        List<Commission> commissionList = commissionDao.getAllList(subid);
-        if (commissionList.size() > 0) {
-            for (Commission commission : commissionList) {
-                int number = 0;
-                int royaltyPersonal = 0;
-                int royaltyTeam = 0;
-//                    *根据uid查询订单*
-                List<BusinessOrder> orderList = businessOrderService.getAllBySubid(commission.getSubId(),BusinessOrder.status_pay ,BusinessOrder.makeStatus_qu_yes);
-                for (BusinessOrder order : orderList) {
-//                        *有提成商品计算奖励*
-                    SaleReward saleReward = new SaleReward();
+    public Pager saleRewardApp(Pager pager,final long subid) throws Exception {
+        return new PagerRequestService<Commission>(pager,0){
 
-                    List<OrderSku> orderSkuList = order.getSkuList();
-
-                    for (OrderSku sku : orderSkuList) {
-
-                        if (commission.getSpuId() == sku.getSpuId()) {
-                            number = sku.getNum();//*完成量增加*
-                            if (commission.getUsers() > 0) {
-                                //个人
-                                royaltyPersonal += commission.getUsers() * number; //奖励 = 提成 * 成交数量
-
-                            }
-                            if (commission.getPrice() > 0) {
-                                // 团队
-                                royaltyTeam += commission.getPrice() * number;
-                            }
-
-                        }
-                        ProductSKU load = productSKUDao.load(sku.getSkuId());
-                        if(load!=null){
-                            saleReward.setProductName(load.getCode());
-                        }
-                        ProductSPU productSPU = productSPUDao.load(sku.getSpuId());
-                        if(productSPU!=null){
-                            ProductSeries productSeries = productSeriesDao.load(productSPU.getSid());
-                            ProductBrand productBrand = productBrandDao.load(productSPU.getBid());
-                            saleReward.setSName(productSeries!=null?productSeries.getName():"");
-                            saleReward.setBName(productBrand!=null?productBrand.getName():"");
-                        }
-                        saleReward.setNumber(number);
-                        saleReward.setRoyaltyPersonal(royaltyPersonal);//*个人奖励*
-                        saleReward.setRoyaltyTeam(royaltyTeam);//*团队奖励*
-                        saleRewards.add(saleReward);
-
-                    }
-
-
-                }
-
-
-                totalP += royaltyPersonal;
-                totalT += royaltyTeam;
+            @Override
+            public List<Commission> step1GetPageResult(String cursor, int size) throws Exception {
+                List<Commission> commissionList = commissionDao.getAllList(subid,Double.parseDouble(cursor),size);
+                return commissionList;
             }
-        }
-        map.put("saleRewards", saleRewards);
-        map.put("totalT", totalT);
-        map.put("totalP", totalP);
-        return map;
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<Commission> step3FilterResult(List<Commission> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<Commission> list, PagerSession pagerSession) throws Exception {
+                List<SaleReward> saleRewards = Lists.newArrayList();
+                int totalP = 0;
+                int totalT = 0;
+                if (list.size() > 0) {
+                    for (Commission commission : list) {
+                        int number = 0;
+                        int royaltyPersonal = 0;
+                        int royaltyTeam = 0;
+//                    *根据uid查询订单*
+                        List<BusinessOrder> orderList = businessOrderService.getAllBySubid(commission.getSubId(),BusinessOrder.status_pay ,BusinessOrder.makeStatus_qu_yes);
+                        for (BusinessOrder order : orderList) {
+//                        *有提成商品计算奖励*
+                            SaleReward saleReward = new SaleReward();
+                            saleReward.setCommission(commission);
+                            List<OrderSku> orderSkuList = order.getSkuList();
+                            for (OrderSku sku : orderSkuList) {
+                                if (commission.getSpuId() == sku.getSpuId()) {
+                                    number = sku.getNum();//*完成量增加*
+                                    if (commission.getUsers() > 0) {
+                                        //个人
+                                        royaltyPersonal += commission.getUsers() * number; //奖励 = 提成 * 成交数量
+                                    }
+                                    if (commission.getPrice() > 0) {
+                                        // 团队
+                                        royaltyTeam += commission.getPrice() * number;
+                                    }
+                                }
+                                ProductSKU load = productSKUDao.load(sku.getSkuId());
+                                if(load!=null){
+                                    saleReward.setProductName(load.getCode());
+                                }
+                                ProductSPU productSPU = productSPUDao.load(sku.getSpuId());
+                                if(productSPU!=null){
+                                    ProductSeries productSeries = productSeriesDao.load(productSPU.getSid());
+                                    ProductBrand productBrand = productBrandDao.load(productSPU.getBid());
+                                    saleReward.setSName(productSeries!=null?productSeries.getName():"");
+                                    saleReward.setBName(productBrand!=null?productBrand.getName():"");
+                                }
+                                saleReward.setNumber(number);
+                                saleReward.setRoyaltyPersonal(royaltyPersonal);//*个人奖励*
+                                saleReward.setRoyaltyTeam(royaltyTeam);//*团队奖励*
+                                saleRewards.add(saleReward);
+                                totalP += royaltyPersonal;
+                                totalT += royaltyTeam;
+                            }
+                        }
+                    }
+                }
+                return saleRewards;
+            }
+        }.getPager();
+
+
+
+
+
+
+
+//
     }
 
     private List<ClientOrder> transformClientTem(List<Order> list) {
