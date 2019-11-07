@@ -35,11 +35,15 @@ public class ChangeShift implements Serializable{
     /***
     * 班次时间
     */
-    private long flightTime;
+    private int flightStart;
+
+    private int flightEnd;
     /***
     * 调班时间
     */
-    private long changeTime;
+    private int changeStart;
+
+    private int changeEnd;
     /***
      * 被调班人
      */

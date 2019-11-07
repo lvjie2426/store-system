@@ -48,15 +48,16 @@ public class AttendanceController extends BaseController {
     public ModelAndView addAttendance(HttpServletRequest request, HttpServletResponse response,
                                       long time, String wifeNumber, String wifeName, String punchCardPlace, String mapData, Model model) throws Exception {
         try {
+            ClientAttendanceLog res = null;
             User user = UserUtils.getUser(request);
             if (StringUtils.isNotBlank(wifeName) && StringUtils.isNotBlank(wifeNumber)) {
-                attendanceLogService.insertAttendanceLog(user.getId(), user.getPsid(), user.getSid(), time, "",
+                res = attendanceLogService.insertAttendanceLog(user.getId(), user.getPsid(), user.getSid(), time, "",
                         PunchCardLog.punchCardType_wifi, 0, "", 0, wifeNumber, wifeName, "", "", "");
             } else if (StringUtils.isNotBlank(punchCardPlace) && StringUtils.isNotBlank(mapData)) {
-                attendanceLogService.insertAttendanceLog(user.getId(), user.getPsid(), user.getSid(), time, "",
+                res = attendanceLogService.insertAttendanceLog(user.getId(), user.getPsid(), user.getSid(), time, "",
                         PunchCardLog.punchCardType_gps, 0, "", 0, "", "", punchCardPlace, mapData, "");
             }
-            return this.viewNegotiating(request, response, new ResultClient());
+            return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

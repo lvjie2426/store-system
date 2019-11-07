@@ -28,6 +28,10 @@ public class TimeSetting implements Serializable {
 
     private String timeStr;
 
+    private int start;
+
+    private int end;
+
     /***
     * 时间区间
     */

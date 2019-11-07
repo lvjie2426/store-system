@@ -8,7 +8,9 @@ import com.quakoo.space.enums.HyperspaceType;
 import com.quakoo.space.enums.cache.CacheMethodEnum;
 import com.store.system.dao.AttendanceTemplateDao;
 import com.store.system.model.attendance.AttendanceTemplate;
+import org.springframework.dao.DataAccessException;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ public class AttendanceTemplateDaoImpl extends CacheBaseDao<AttendanceTemplate>
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<AttendanceTemplate> getUserList(long uid) {
+    public List<AttendanceTemplate> getUserList(long uid) throws DataAccessException{
         return null;
     }
 }

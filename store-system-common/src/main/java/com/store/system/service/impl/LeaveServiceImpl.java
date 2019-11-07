@@ -15,7 +15,9 @@ import com.store.system.model.User;
 import com.store.system.model.attendance.ApprovalLog;
 import com.store.system.model.attendance.Leave;
 import com.store.system.model.attendance.UserLeavePool;
+import com.store.system.service.AttendanceLogService;
 import com.store.system.service.LeaveService;
+import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,8 @@ public class LeaveServiceImpl implements LeaveService {
     private UserDao userDao;
     @Autowired
     private UserLeavePoolDao userLeavePoolDao;
+    @Autowired
+    private AttendanceLogService attendanceLogService;
     @Autowired
     private ApprovalLogDao approvalLogDao;
 
@@ -122,8 +126,21 @@ public class LeaveServiceImpl implements LeaveService {
     @Override
     public boolean pass(long id) throws Exception {
         Leave load = leaveDao.load(id);
-        if(load!=null){
+        if (load != null) {
             load.setStatus(Leave.status_success);
+            leaveDao.update(load);
+            UserLeavePool userLeavePool = new UserLeavePool();
+            userLeavePool.setLid(load.getId());
+            userLeavePool.setStatus(load.getStatus());
+            userLeavePool.setUid(load.getAskUid());
+            userLeavePoolDao.update(userLeavePool);
+            if (load.getStatus() == Leave.status_success) {
+                long startDay = TimeUtils.getDayFormTime(load.getStartTime());
+                long endDay = TimeUtils.getDayFormTime(load.getEndTime());
+                for (long day = startDay; day <= endDay; day++) {
+                    attendanceLogService.updateLeave(load.getAskUid(), day, load.getLeaveType(), load.getStartTime(), load.getEndTime());
+                }
+            }
         }
         return leaveDao.update(load);
     }

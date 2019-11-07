@@ -109,10 +109,6 @@ public class AttendanceLog implements Serializable {
      * 原始数据，补卡，系统管理员重置打卡等JSON格式保留信息，以备扩展
      */
     private String orgInfo;
-    /**
-     * 打卡方式
-     */
-    private int punchCardType;
 
     @SortKey
     @PagerCursor

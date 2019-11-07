@@ -37,8 +37,10 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
 
     private void check(ChangeShift changeShift) {
         if(changeShift.getDate()==0)throw new StoreSystemException("调班日期不能为空！");
-        if(changeShift.getFlightTime()==0)throw new StoreSystemException("班次时间不能为空");
-        if(changeShift.getChangeTime()==0)throw new StoreSystemException("调班时间不能为空！");
+        if(changeShift.getFlightStart()==0)throw new StoreSystemException("班次开始时间不能为空");
+        if(changeShift.getFlightEnd()==0)throw new StoreSystemException("班次结束时间不能为空");
+        if(changeShift.getChangeStart()==0)throw new StoreSystemException("调班开始时间不能为空！");
+        if(changeShift.getChangeEnd()==0)throw new StoreSystemException("调班结束时间不能为空！");
         if(changeShift.getReplaceUid()==0)throw new StoreSystemException("被调班人不能为空！");
         if(changeShift.getAskUid()==0)throw new StoreSystemException("申请人不能为空！");
         if(changeShift.getCheckUid()==0)throw new StoreSystemException("审核人不能为空！");

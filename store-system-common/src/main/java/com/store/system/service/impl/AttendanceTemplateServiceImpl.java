@@ -5,11 +5,13 @@ import com.google.common.collect.Lists;
 import com.store.system.bean.SimpleUser;
 import com.store.system.client.ClientAttendanceTemplate;
 import com.store.system.dao.AttendanceTemplateDao;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
 import com.store.system.model.attendance.AttendanceTemplate;
 import com.store.system.service.AttendanceTemplateService;
 import com.store.system.service.UserService;
 import org.apache.commons.beanutils.BeanUtils;
+import org.omg.CORBA.SystemException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,6 +56,10 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
 
     @Override
     public AttendanceTemplate add(AttendanceTemplate attendanceTemplate) throws Exception {
+        List<AttendanceTemplate> list = attendanceTemplateDao.getUserList(attendanceTemplate.getUid());
+        if(list.size()>1){
+            throw new StoreSystemException("该用户已存在考勤规则！请勿重复添加！");
+        }
         attendanceTemplate = attendanceTemplateDao.insert(attendanceTemplate);
         User user = userService.load(attendanceTemplate.getUid());
         if(user!=null) {

@@ -3,6 +3,7 @@ package com.store.system.backend.controller;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientAttendanceTemplate;
 import com.store.system.client.ResultClient;
+import com.store.system.exception.StoreSystemException;
 import com.store.system.model.attendance.AttendanceTemplate;
 import com.store.system.service.AttendanceTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,12 @@ public class AttendanceTemplateController extends BaseController {
     @RequestMapping("/add")
     public ModelAndView addAttendanceTemplate(HttpServletRequest request, HttpServletResponse response,
                                               AttendanceTemplate attendanceTemplate, Model model) throws Exception {
-        AttendanceTemplate template = attendanceTemplateService.add(attendanceTemplate);
-        return this.viewNegotiating(request,response,new ResultClient(true,template));
+        try {
+            AttendanceTemplate template = attendanceTemplateService.add(attendanceTemplate);
+            return this.viewNegotiating(request, response, new ResultClient(true, template));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
     /**

@@ -2,7 +2,10 @@ package com.store.system.client;
 
 
 import com.store.system.model.attendance.AttendanceLog;
+import com.store.system.model.attendance.ChangeShift;
+import com.store.system.model.attendance.PunchCardLog;
 import lombok.Data;
+import org.apache.commons.beanutils.BeanUtils;
 
 @Data
 public class ClientAttendanceLog extends AttendanceLog {
@@ -36,6 +39,17 @@ public class ClientAttendanceLog extends AttendanceLog {
      * 第二次打卡状态：正常，早退，没打卡
      */
     private int endType;
+
+    private PunchCardLog punchCardLog;
+
+
+    public ClientAttendanceLog(AttendanceLog attendanceLog){
+        try {
+            BeanUtils.copyProperties(this, attendanceLog);
+        } catch (Exception e) {
+            throw new IllegalStateException("ClientAttendanceLog construction error!");
+        }
+    }
 
 }
 

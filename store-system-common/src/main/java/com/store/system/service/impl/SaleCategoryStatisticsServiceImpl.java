@@ -56,13 +56,13 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
             sql = sql + " and `subId` = " + subId;
         }
         if (startTime > 0) {
-            sql = sql + " and `ctime` > " + startTime;
+            sql = sql + " and `day` > " + startTime;
         }
         if (endTime > 0) {
-            sql = sql + " and `ctime` < " + endTime;
+            sql = sql + " and `day` < " + endTime;
         }
 
-        sql = sql + " order  by ctime desc";
+        sql = sql + " order  by `day` desc";
         List<SaleCategoryStatistics> saleStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleCategoryStatistics.class));
         return transformClientSale(saleStatistics,subId);
     }
@@ -135,7 +135,6 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         }
         return map;
     }
-
 
     private ClientCategoryStatistics transformClientList(List<SaleCategoryStatistics> saleCategoryStatistics) throws Exception {
         ClientCategoryStatistics client = new ClientCategoryStatistics();

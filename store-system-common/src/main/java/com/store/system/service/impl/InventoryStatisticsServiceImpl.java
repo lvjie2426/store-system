@@ -52,13 +52,13 @@ public class InventoryStatisticsServiceImpl implements InventoryStatisticsServic
             sql = sql + " and `subId` = " + subId;
         }
         if (startTime > 0) {
-            sql = sql + " and `ctime` > " + startTime;
+            sql = sql + " and `day` > " + startTime;
         }
         if (endTime > 0) {
-            sql = sql + " and `ctime` < " + endTime;
+            sql = sql + " and `day` < " + endTime;
         }
 
-        sql = sql + " order  by ctime desc";
+        sql = sql + " order  by `day` desc";
         List<InventoryStatistics> inventoryStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(InventoryStatistics.class));
         return transformClient(inventoryStatistics);
     }

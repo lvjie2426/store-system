@@ -131,7 +131,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	}*/
 
 	@Override
-	public void insertAttendanceLog(long uid, long psid, long sid, long time, String img, int punchCardType, long card,
+	public ClientAttendanceLog insertAttendanceLog(long uid, long psid, long sid, long time, String img, int punchCardType, long card,
 									String snCode, int no, String wifeNumber, String wifeName, String punchCardPlace, String mapData, String callName) throws Exception {
 		AttendanceLog attendanceLog = new AttendanceLog();
 		attendanceLog.setDay(TimeUtils.getDayFormTime(time));
@@ -157,16 +157,18 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 			}
 			attendanceLog.setMonth(TimeUtils.getMonthFormTime(time));
 			attendanceLog.setWeek(TimeUtils.getWeekFormTime(time));
-			attendanceLog.setPunchCardType(punchCardType);
 			dblog = attendanceLogDao.insert(attendanceLog);
 		}
 
-		punchCardLog(dblog, uid, time, img, punchCardType, card, snCode, no,
+		PunchCardLog punchCardLog = punchCardLog(dblog, uid, time, img, punchCardType, card, snCode, no,
 				wifeNumber, wifeName, punchCardPlace, mapData, callName);
+		ClientAttendanceLog res = new ClientAttendanceLog(dblog);
+		res.setPunchCardLog(punchCardLog);
+		return res;
 
 	}
 
-	private void punchCardLog(AttendanceLog dblog, long uid, long time, String img, int punchCardType, long card,
+	private PunchCardLog punchCardLog(AttendanceLog dblog, long uid, long time, String img, int punchCardType, long card,
 							  String snCode, int no, String wifeNumber, String wifeName, String punchCardPlace, String mapData, String callName) throws Exception {
 		if (dblog.getStartTime() > 0) {
 			dblog.setEndImg(img);
@@ -191,8 +193,9 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		punchCardLog.setWifeName(wifeName);
 		punchCardLog.setWifeNumber(wifeNumber);
 		punchCardLog.setCallName(callName);
-		punchCardDao.insert(punchCardLog);
+		punchCardLog = punchCardDao.insert(punchCardLog);
 		attendanceLogDao.update(dblog);
+		return punchCardLog;
 	}
 
 
@@ -350,13 +353,26 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	 *
 	 * 修改为请假
 	 */
-	public void updateLeave(long uid,long day) throws Exception{
+	public void updateLeave(long uid,long day, int leaveType, long startTime, long endTime) throws Exception{
 		long time=TimeUtils.getTimeFormDay(day);
 		User user=userService.load(uid);
 		AttendanceLog dblog=loadOrCreateLog(user,time);
 		dblog.setLeave(AttendanceLog.leave_yes);
+
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		Date startDate=sdf.parse(""+day);
+		Date endDate=sdf.parse(""+day);
+		Map<String,String> orgInfoMap=new HashMap<>();
+		orgInfoMap.put("leaveType",String.valueOf(leaveType));
+		orgInfoMap.put("startTime",""+startTime);
+		orgInfoMap.put("endTime",""+endTime);
+		dblog.setOrgInfo(JsonUtils.format(orgInfoMap));
+		startDate.setMinutes(startDate.getMinutes()+dblog.getStart());
+		endDate.setMinutes(endDate.getMinutes()+dblog.getEnd());
+
 		createSubordinateAttendanceStatistics(user.getSid(),day);
 		createUserStatisticsAttendance(uid,time);
+		attendanceLogDao.update(dblog);
 	}
 
 
@@ -854,7 +870,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 
 
 	private ClientAttendanceLog transformClient(AttendanceLog attendanceLog) throws Exception{
-		ClientAttendanceLog clientAttendanceLog=new ClientAttendanceLog();
+		ClientAttendanceLog clientAttendanceLog=new ClientAttendanceLog(attendanceLog);
 
 		if(attendanceLog!=null){
 			BeanUtils.copyProperties(clientAttendanceLog,attendanceLog);

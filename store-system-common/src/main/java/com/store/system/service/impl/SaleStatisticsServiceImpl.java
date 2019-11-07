@@ -3,6 +3,7 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
+import com.store.system.client.ClientRankingFirst;
 import com.store.system.client.ClientSaleStatistics;
 import com.store.system.dao.SaleStatisticsDao;
 import com.store.system.model.BusinessOrder;
@@ -296,13 +297,13 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
                     sql = sql + " and `subId` = " + subId;
                 }
                 if (startTime > 0) {
-                    sql = sql + " and `ctime` > " + startTime;
+                    sql = sql + " and `day` > " + startTime;
                 }
                 if (endTime > 0) {
-                    sql = sql + " and `ctime` < " + endTime;
+                    sql = sql + " and `day` <= " + endTime;
                 }
 
-                sql = sql + " order  by ctime desc";
+                sql = sql + " order  by `day` desc";
                 saleStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleStatistics.class));
                 map.put(subId, saleStatistics);
             }
@@ -312,7 +313,22 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService{
         }
         res = transformClientMap(map, oldMap, subIds);
         res.setDetails(details);
+        sort(details);
         return res;
+    }
+
+    private void sort(List<SaleStatistics> list){
+        Collections.sort(list, new Comparator<SaleStatistics>(){
+            public int compare(SaleStatistics p1, SaleStatistics p2) {
+                if(p1.getDay() > p2.getDay()){
+                    return 1;
+                }
+                if(p1.getDay() == p2.getDay()){
+                    return 0;
+                }
+                return -1;
+            }
+        });
     }
 
     @Override

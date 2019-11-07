@@ -18,7 +18,7 @@ public interface AttendanceLogService {
 	 * @param img
 	 * @throws Exception
 	 */
-	public void insertAttendanceLog(long uid, long psid, long sid, long time, String img, int punchCardType, long card,
+	public ClientAttendanceLog insertAttendanceLog(long uid, long psid, long sid, long time, String img, int punchCardType, long card,
 									String snCode,int no,String wifeNumber, String wifeName, String punchCardPlace,String mapData,String callName) throws Exception;
 
 	/**
@@ -61,7 +61,7 @@ public interface AttendanceLogService {
 	 * @param day（日期：20180801)
 	 * @throws Exception
 	 */
-	public void updateLeave(long uid, long day) throws Exception;
+	public void updateLeave(long uid, long day, int leaveType, long startTime, long endTime) throws Exception;
 
 	/**
 	 * 手动统计用户月份考勤
