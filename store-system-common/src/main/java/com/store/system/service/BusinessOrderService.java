@@ -66,4 +66,5 @@ public interface BusinessOrderService {
     public Pager getMedicalAllList(Pager pager, long startTime, long endTime, String licenceNum, long subId)throws Exception;
 
     public  List<BusinessOrder> getAllBySubid(long subid, int status_pay, int makeStatus_qu_yes)throws Exception;
+
 }

@@ -191,7 +191,6 @@ public class MissionController extends BaseController {
     }
 
     //任务奖励 app
-    //todo 客户需要确认修改一下页面。
     @RequestMapping("/getAllMission")
     public ModelAndView getAllMission(@RequestParam(value = "sid") long sid,
                                       Date date,HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -205,11 +204,9 @@ public class MissionController extends BaseController {
         }
     }
 
-
     //app--销售奖励
-    //todo 客户需要确认修改一下页面。
-/*    @RequestMapping("/saleReward")
-    public ModelAndView saleReward(HttpServletRequest request,HttpServletResponse response, Date date,
+   @RequestMapping("/saleReward")
+    public ModelAndView saleReward(HttpServletRequest request,HttpServletResponse response, long date,
                                    @RequestParam(name = "subid") long subid)throws Exception{
         try {
             Subordinate subordinate = subordinateService.load(subid);
@@ -220,7 +217,7 @@ public class MissionController extends BaseController {
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response, new ResultClient(false, s.getMessage()));
         }
-    }*/
+    }
 
 
     // 获取提成商品清单

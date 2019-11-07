@@ -1,5 +1,6 @@
 package com.store.system.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.quakoo.baseFramework.jackson.JsonUtils;
@@ -10,6 +11,7 @@ import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.CalculateOrder;
 import com.store.system.bean.OrderExpireUnit;
+import com.store.system.bean.SaleReward;
 import com.store.system.client.ClientAfterSaleDetail;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ResultClient;
@@ -51,6 +53,11 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     private JdbcTemplate jdbcTemplate;
     @Resource
     private OrderDao orderDao;
+    @Resource
+    private ProductBrandDao productBrandDao;
+    @Resource
+    private ProductSeriesDao productSeriesDao;
+
     @Resource
     private ProductSKUDao productSKUDao;
     @Resource
@@ -110,15 +117,16 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     private ResultClient createAliOrder(int payMode, int type, String typeInfo, String title, String desc,
-                                         int price, OrderExpireUnit expireUnit, int expireNum, long subId) throws Exception {
-        if(price == 0) throw new StoreSystemException("price is zero!");
-        if(payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0)) throw new StoreSystemException("expire is error!");
-        List<PayPassport> payPassports = payPassportDao.getAllList(subId,PayPassport.status_on);
+                                        int price, OrderExpireUnit expireUnit, int expireNum, long subId) throws Exception {
+        if (price == 0) throw new StoreSystemException("price is zero!");
+        if (payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0))
+            throw new StoreSystemException("expire is error!");
+        List<PayPassport> payPassports = payPassportDao.getAllList(subId, PayPassport.status_on);
         PayPassport payPassport = null;
-        if(payPassports.size()>0){
+        if (payPassports.size() > 0) {
             payPassport = payPassports.get(0);
         }
-        if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
+        if (null == payPassport) return new ResultClient(false, null, "门店暂未设置支付方式,请联系管理员！");
         long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
 
         Order order = new Order();
@@ -132,7 +140,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         order.setDesc(desc);
         order.setPrice(price);
         order.setStatus(Order.status_no_pay);
-        if(payMode != Order.pay_mode_barcode) {
+        if (payMode != Order.pay_mode_barcode) {
             order.setExpireUnitId(expireUnit.getId());
             order.setExpireNum(expireNum);
             long expireTime = PayUtils.getExpireTime(System.currentTimeMillis(), expireUnit, expireNum);
@@ -175,7 +183,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 .get("alipay_trade_pay_response");
         String code = resMap.get("code");
         boolean res = false;
-        if(code.equals("10000")) {
+        if (code.equals("10000")) {
             res = true;
             order.setOrderNo(resMap.get("trade_no"));
             order.setStatus(Order.status_pay);
@@ -186,13 +194,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 pay_time = DateUtils.parseDate(paymentStr, "yyyy-MM-dd HH:mm:ss").getTime();
             order.setPayTime(pay_time);
         }
-        if(order.getStatus() == Order.status_pay) {
-            orderPayService.successHandleBusiness(order,boId);
+        if (order.getStatus() == Order.status_pay) {
+            orderPayService.successHandleBusiness(order, boId);
         }
         orderDao.update(order);
-        if(res){
-            return new ResultClient(true,transformClient(order));
-        }else{
+        if (res) {
+            return new ResultClient(true, transformClient(order));
+        } else {
             return new ResultClient(false);
         }
     }
@@ -248,7 +256,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 order.setStatus(Order.status_pay);
                 order.setOrderNo(trade_no);
                 order.setPayTime(pay_time);
-                orderPayService.successHandleBusiness(order,0);
+                orderPayService.successHandleBusiness(order, 0);
                 orderDao.update(order);
             }
             return true;
@@ -258,38 +266,41 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     private Map<String, String> aliOrderPayParam(long oid, int payMode, String authCode) throws Exception {
-        if(payMode == Order.pay_mode_barcode && StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
+        if (payMode == Order.pay_mode_barcode && StringUtils.isBlank(authCode))
+            throw new StoreSystemException("authCode is null!");
         Order order = orderDao.load(oid);
-        if(null == order) throw new StoreSystemException("order is null!");
-        if(order.getPayType() != Order.pay_type_ali) throw new StoreSystemException("order is not ali!");
-        if(order.getPayMode() != payMode) throw new StoreSystemException("order pay mode is error!");
-        if(order.getStatus() != Order.status_no_pay) throw new StoreSystemException("order status is error!");
+        if (null == order) throw new StoreSystemException("order is null!");
+        if (order.getPayType() != Order.pay_type_ali) throw new StoreSystemException("order is not ali!");
+        if (order.getPayMode() != payMode) throw new StoreSystemException("order pay mode is error!");
+        if (order.getStatus() != Order.status_no_pay) throw new StoreSystemException("order status is error!");
         Date now = new Date();
-        if(payMode != Order.pay_mode_barcode && now.getTime() > order.getExpireTime()) throw new StoreSystemException("order is expire!");
+        if (payMode != Order.pay_mode_barcode && now.getTime() > order.getExpireTime())
+            throw new StoreSystemException("order is expire!");
         long passportId = order.getPassportId();
         PayPassport payPassport = payPassportDao.load(passportId);
-        if(null == payPassport) throw new StoreSystemException("passport is null!");
+        if (null == payPassport) throw new StoreSystemException("passport is null!");
         String aliAppid = payPassport.getAliAppid();
         String aliPrivateKey = payPassport.getAliPrivateKey();
         String aliOrderNotifyUrl = payPassport.getAliOrderNotifyUrl();
-        if(StringUtils.isBlank(aliAppid)) throw new StoreSystemException("aliAppid is null!");
-        if(payMode != Order.pay_mode_barcode && StringUtils.isBlank(aliOrderNotifyUrl)) throw new StoreSystemException("aliOrderNotifyUrl is null!");
-        if(StringUtils.isBlank(aliPrivateKey)) throw new StoreSystemException("aliPrivateKey is null!");
+        if (StringUtils.isBlank(aliAppid)) throw new StoreSystemException("aliAppid is null!");
+        if (payMode != Order.pay_mode_barcode && StringUtils.isBlank(aliOrderNotifyUrl))
+            throw new StoreSystemException("aliOrderNotifyUrl is null!");
+        if (StringUtils.isBlank(aliPrivateKey)) throw new StoreSystemException("aliPrivateKey is null!");
         String itBPay = null;
-        if(payMode != Order.pay_mode_barcode) {
+        if (payMode != Order.pay_mode_barcode) {
             OrderExpireUnit expireUnit = OrderExpireUnit.get(order.getExpireUnitId());
-            if(expireUnit == OrderExpireUnit.inday) itBPay = expireUnit.getSign();
+            if (expireUnit == OrderExpireUnit.inday) itBPay = expireUnit.getSign();
             else itBPay = order.getExpireNum() + expireUnit.getSign();
         }
         String method = null;
         String product_code = null;
-        if(payMode == Order.pay_mode_app) {
+        if (payMode == Order.pay_mode_app) {
             product_code = "QUICK_MSECURITY_PAY";
             method = "alipay.trade.app.pay";
-        } else if(payMode == Order.pay_mode_wap) {
+        } else if (payMode == Order.pay_mode_wap) {
             product_code = "QUICK_WAP_WAY";
             method = "alipay.trade.wap.pay";
-        } else if(payMode == Order.pay_mode_barcode) {
+        } else if (payMode == Order.pay_mode_barcode) {
             product_code = "FACE_TO_FACE_PAYMENT";
             method = "alipay.trade.pay";
         }
@@ -297,10 +308,10 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         bizContentMap.put("body", StringUtils.isNotBlank(order.getDesc()) ? order.getDesc() : "");
         bizContentMap.put("subject", StringUtils.isNotBlank(order.getTitle()) ? order.getTitle() : "");
         bizContentMap.put("out_trade_no", PayUtils.getOutTradeNo(oid, order.getGmt()));
-        if(payMode == Order.pay_mode_barcode) bizContentMap.put("scene", "bar_code");
-        if(payMode == Order.pay_mode_barcode) bizContentMap.put("auth_code", authCode);
-        if(StringUtils.isNotBlank(itBPay)) bizContentMap.put("timeout_express", String.valueOf(itBPay));
-        double price = ArithUtils.div(order.getPrice(),100d,2);
+        if (payMode == Order.pay_mode_barcode) bizContentMap.put("scene", "bar_code");
+        if (payMode == Order.pay_mode_barcode) bizContentMap.put("auth_code", authCode);
+        if (StringUtils.isNotBlank(itBPay)) bizContentMap.put("timeout_express", String.valueOf(itBPay));
+        double price = ArithUtils.div(order.getPrice(), 100d, 2);
         bizContentMap.put("total_amount", String.valueOf(price));
         bizContentMap.put("product_code", product_code);
         String biz_content = JsonUtils.toJson(bizContentMap);
@@ -311,8 +322,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         sParaTemp.put("sign_type", "RSA2");
         sParaTemp.put("timestamp", DateUtils.simpleDateFormat(now, "yyyy-MM-dd HH:mm:ss"));
         sParaTemp.put("version", "1.0");
-        if(payMode != Order.pay_mode_barcode) sParaTemp.put("notify_url", aliOrderNotifyUrl);
-        if(payMode == Order.pay_mode_wap && StringUtils.isNotBlank(payPassport.getAliWapOrderReturnUrl())) {
+        if (payMode != Order.pay_mode_barcode) sParaTemp.put("notify_url", aliOrderNotifyUrl);
+        if (payMode == Order.pay_mode_wap && StringUtils.isNotBlank(payPassport.getAliWapOrderReturnUrl())) {
             sParaTemp.put("return_url", payPassport.getAliWapOrderReturnUrl());
         }
         sParaTemp.put("biz_content", biz_content);
@@ -323,15 +334,16 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     private ResultClient createWxOrder(int payMode, int type, String typeInfo, String title, String desc,
-                                        int price, OrderExpireUnit expireUnit, int expireNum, long subId) throws Exception {
-        if(price == 0) throw new StoreSystemException("price is zero!");
-        if(payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0))throw new StoreSystemException("expire is error!");
-        List<PayPassport> payPassports = payPassportDao.getAllList(subId,PayPassport.status_on);
+                                       int price, OrderExpireUnit expireUnit, int expireNum, long subId) throws Exception {
+        if (price == 0) throw new StoreSystemException("price is zero!");
+        if (payMode != Order.pay_mode_barcode && (expireUnit.getId() == 0 || expireNum == 0))
+            throw new StoreSystemException("expire is error!");
+        List<PayPassport> payPassports = payPassportDao.getAllList(subId, PayPassport.status_on);
         PayPassport payPassport = null;
-        if(payPassports.size()>0){
+        if (payPassports.size() > 0) {
             payPassport = payPassports.get(0);
         }
-        if(null == payPassport) return new ResultClient(false,null,"门店暂未设置支付方式,请联系管理员！");
+        if (null == payPassport) return new ResultClient(false, null, "门店暂未设置支付方式,请联系管理员！");
         long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
         Order order = new Order();
         order.setPayMode(payMode);
@@ -344,7 +356,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         order.setTypeInfo(typeInfo);
         order.setTitle(title);
         order.setDesc(desc);
-        if(payMode != Order.pay_mode_barcode) {
+        if (payMode != Order.pay_mode_barcode) {
             order.setExpireUnitId(expireUnit.getId());
             order.setExpireNum(expireNum);
             long expireTime = PayUtils.getExpireTime(System.currentTimeMillis(), expireUnit, expireNum);
@@ -353,7 +365,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         return new ResultClient(orderDao.insert(order));
     }
 
-    private boolean validSign(Map<String, String> params, String wxpayApiKey) throws Exception  {
+    private boolean validSign(Map<String, String> params, String wxpayApiKey) throws Exception {
         String return_code = params.get("return_code");// 通信标识
         String result_code = params.get("result_code");// 业务结果
         String return_msg = params.get("return_msg");// 业务结果
@@ -367,8 +379,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         return false;
     }
 
-    public static void main(String[] args) throws  Exception {
-        Map<String, String> map  =  Maps.newHashMap();
+    public static void main(String[] args) throws Exception {
+        Map<String, String> map = Maps.newHashMap();
 
 //        map.put("is_subscribe","N");
 //        map.put("appid","wx2feae2c615187670");
@@ -394,8 +406,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         map.put("nonce_str", "tsDJRRtPBWdFyUOo");
         map.put("trade_type", "APP");
         map.put("sign", "9CA5AD1988FB3EE357A797159CD25194");
-        map.put("appid","wx2feae2c615187670");
-        map.put("mch_id","1510090681");
+        map.put("appid", "wx2feae2c615187670");
+        map.put("mch_id", "1510090681");
         String apiKey = "90b62d7e7f38972cdf6effe9364b21db";
 
         String mysign = PayUtils.buildSign(map, apiKey);
@@ -433,19 +445,20 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         info.put("boId", businessOrder.getId());
         info.put("payModel", Order.pay_mode_barcode);
         ResultClient resultClient = createWxOrder(Order.pay_mode_barcode, type, JsonUtils.toJson(info), title, desc,
-                price, OrderExpireUnit.nvl, 0,subId);
+                price, OrderExpireUnit.nvl, 0, subId);
         Order order = (Order) resultClient.getData();
-        if(order == null) throw new StoreSystemException("order is null!");
-        if(StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
+        if (order == null) throw new StoreSystemException("order is null!");
+        if (StringUtils.isBlank(authCode)) throw new StoreSystemException("authCode is null!");
         PayPassport payPassport = payPassportDao.load(order.getPassportId());
         String wxAppid = payPassport.getWxAppid();
         String wxMerchantId = payPassport.getWxMerchantId();
         String wxApiKey = payPassport.getWxApiKey();
         String wxPkcs12CertificateName = payPassport.getWxPkcs12CertificateName();
-        if(StringUtils.isBlank(wxAppid)) throw new StoreSystemException("wxAppid is null!");
-        if(StringUtils.isBlank(wxMerchantId)) throw new StoreSystemException("wxMerchantId is null!");
-        if(StringUtils.isBlank(wxApiKey)) throw new StoreSystemException("wxApiKey is null!");
-        if(StringUtils.isBlank(wxPkcs12CertificateName)) throw new StoreSystemException("wxPkcs12CertificateName is null!");
+        if (StringUtils.isBlank(wxAppid)) throw new StoreSystemException("wxAppid is null!");
+        if (StringUtils.isBlank(wxMerchantId)) throw new StoreSystemException("wxMerchantId is null!");
+        if (StringUtils.isBlank(wxApiKey)) throw new StoreSystemException("wxApiKey is null!");
+        if (StringUtils.isBlank(wxPkcs12CertificateName))
+            throw new StoreSystemException("wxPkcs12CertificateName is null!");
         Map<String, String> sParaTemp = Maps.newHashMap();
         sParaTemp.put("appid", wxAppid);// 应用ID
         sParaTemp.put("mch_id", wxMerchantId);// 商户号
@@ -463,9 +476,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         Map<String, String> resMap = PayUtils.xmlStrToMap(sendRes);
         String code = resMap.get("return_code");
         boolean res = false;
-        if(code.equals("SUCCESS")) {
+        if (code.equals("SUCCESS")) {
             String result_code = resMap.get("result_code");
-            if("SUCCESS".equals(result_code)) {
+            if ("SUCCESS".equals(result_code)) {
                 order.setStatus(Order.status_pay);
                 order.setDetail(sendRes);
                 order.setAuthCode(authCode);
@@ -478,14 +491,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 waitWxBarcodeOrderRes(file, payPassport, out_trade_no, order);
             }
         }
-        if(order.getStatus() == Order.status_pay) {
+        if (order.getStatus() == Order.status_pay) {
             res = true;
-            orderPayService.successHandleBusiness(order,boId);
+            orderPayService.successHandleBusiness(order, boId);
         }
         orderDao.update(order);
-        if(res){
-            return new ResultClient(true,transformClient(order));
-        }else{
+        if (res) {
+            return new ResultClient(true, transformClient(order));
+        } else {
             return new ResultClient(false);
         }
     }
@@ -522,7 +535,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                     order.setStatus(Order.status_pay);
                     order.setOrderNo(transaction_id);
                     order.setPayTime(time_end);
-                    orderPayService.successHandleBusiness(order,0);
+                    orderPayService.successHandleBusiness(order, 0);
                     orderDao.update(order);
                 }
                 return true;
@@ -538,7 +551,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         Order order = orderDao.load(oid);
         if (null == order) throw new StoreSystemException("order is null!");
         if (order.getStatus() != Order.status_pay) throw new StoreSystemException("order status is error!");
-        if(order.getPayType() != Order.pay_type_ali) throw new StoreSystemException("order is not ali!");
+        if (order.getPayType() != Order.pay_type_ali) throw new StoreSystemException("order is not ali!");
         RefundOrder refundOrder = new RefundOrder();
         long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
         refundOrder.setGmt(gmt);
@@ -552,7 +565,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         Order order = orderDao.load(oid);
         if (null == order) throw new StoreSystemException("order is null!");
         if (order.getStatus() != Order.status_pay) throw new StoreSystemException("order status is error!");
-        if(order.getPayType() != Order.pay_type_wx) throw new StoreSystemException("order is not ali!");
+        if (order.getPayType() != Order.pay_type_wx) throw new StoreSystemException("order is not ali!");
         RefundOrder refundOrder = new RefundOrder();
         long gmt = NumberUtils.toLong(gmtFormat.format(new Date()));
         refundOrder.setGmt(gmt);
@@ -579,7 +592,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         if (StringUtils.isBlank(aliAddid)) throw new StoreSystemException("aliAddid is null!");
         if (StringUtils.isBlank(aliPrivateKey)) throw new StoreSystemException("aliPrivateKey is null!");
         String trade_no = order.getOrderNo();
-        double refund_amount = ArithUtils.div(order.getPrice(),100.0,2);
+        double refund_amount = ArithUtils.div(order.getPrice(), 100.0, 2);
         String out_request_no = PayUtils.getOutTradeNo(roid, refundOrder.getGmt());
         Map<String, Object> bizContentMap = Maps.newLinkedHashMap();
         bizContentMap.put("trade_no", trade_no);
@@ -628,7 +641,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             order.setStatus(Order.status_refund);
             orderRefundService.successHandleBusiness(order.getType(), order.getTypeInfo());
             orderDao.update(order);
-        } else if(refundOrder.getStatus() == RefundOrder.status_refund_fail){
+        } else if (refundOrder.getStatus() == RefundOrder.status_refund_fail) {
             orderRefundService.failHandleBusiness(order.getPayType(), order.getTypeInfo());
         }
         refundOrderDao.update(refundOrder);
@@ -639,7 +652,8 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     public boolean handleWxRefundOrder(HttpServletRequest request, long roid) throws Exception {
         RefundOrder refundOrder = refundOrderDao.load(roid);
         if (null == refundOrder) throw new StoreSystemException("refundOrder is null!");
-        if (refundOrder.getPayType() != RefundOrder.pay_type_wx) throw new StoreSystemException("refundOrder is not wx!");
+        if (refundOrder.getPayType() != RefundOrder.pay_type_wx)
+            throw new StoreSystemException("refundOrder is not wx!");
         if (refundOrder.getStatus() != 0) throw new StoreSystemException("refundOrder status is error!");
         long oid = refundOrder.getOid();
         Order order = orderDao.load(oid);
@@ -710,7 +724,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status,long uid,String name,int makeStatus,long subid) throws Exception {
+    public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, int makeStatus, long subid) throws Exception {
         String sql = "SELECT  *  FROM `order`   where  1=1 ";
         String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1";
         String limit = "  limit %d , %d ";
@@ -734,12 +748,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         if (endTime > 0) {
             sql = sql + " and `payTime` <" + endTime;
             sqlCount = sqlCount + " and `payTime` <" + endTime;
-        } if (uid > 0) {
+        }
+        if (uid > 0) {
             sql = sql + " and `uid` =" + uid;
             sqlCount = sqlCount + " and `uid` =" + uid;
-        }if (StringUtils.isNotBlank(name)) {
-            sql = sql + " and  `uid` in (select id from `user`  where name like '%"+name+"%')";
-            sqlCount = sqlCount + " and  uid in (select id from `user`  where name like '%"+name+"%')";
+        }
+        if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and  `uid` in (select id from `user`  where name like '%" + name + "%')";
+            sqlCount = sqlCount + " and  uid in (select id from `user`  where name like '%" + name + "%')";
         }
         sql = sql + " order  by ctime desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -762,7 +778,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             sql = sql + " and o.`status` = " + Order.status_pay;
             sqlCount = sqlCount + " and o.`status` = " + Order.status_pay;
         }
-        if(subid>0){
+        if (subid > 0) {
             sql = sql + " and o.`subid` = " + subid;
             sqlCount = sqlCount + " and o.`subid` = " + subid;
         }
@@ -780,20 +796,26 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         }
 
         sql = sql + String.format(limit, pager.getSize() * (pager.getPage() - 1), pager.getSize());
-        List<Order> orders =null;
-        int count=0;
-        List<Object> objects=new ArrayList<>();
-        if(StringUtils.isNotBlank(name)){objects.add("%"+name+"%");}
-        if(StringUtils.isNotBlank(phone)){objects.add("%"+phone+"%");}
-        if(StringUtils.isNotBlank(orderNo)){objects.add("%"+orderNo+"%");}
-        if(objects.size()>0) {
+        List<Order> orders = null;
+        int count = 0;
+        List<Object> objects = new ArrayList<>();
+        if (StringUtils.isNotBlank(name)) {
+            objects.add("%" + name + "%");
+        }
+        if (StringUtils.isNotBlank(phone)) {
+            objects.add("%" + phone + "%");
+        }
+        if (StringUtils.isNotBlank(orderNo)) {
+            objects.add("%" + orderNo + "%");
+        }
+        if (objects.size() > 0) {
             Object[] args = new Object[objects.size()];
             objects.toArray(args);
-            orders = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<Order>(Order.class),args);
-            count = this.jdbcTemplate.queryForObject(sqlCount,Integer.class);
-        }else{
+            orders = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<Order>(Order.class), args);
+            count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        } else {
             orders = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper<Order>(Order.class));
-            count = this.jdbcTemplate.queryForObject(sqlCount,Integer.class);
+            count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         }
         pager.setData(transformClient(orders));
         pager.setTotalCount(count);
@@ -849,7 +871,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
     @Override
     public ClientOrder countPrice(Order order) throws Exception {
-        ClientOrder clientOrder=new ClientOrder(order);
+        ClientOrder clientOrder = new ClientOrder(order);
 /*        double dicountPriceYuan=0.0d;
         double totaoPriceyuan=0.0d;
         //小计单，通过从数据库取数据计算订单上的单sku的小计
@@ -974,7 +996,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 //    }
 
     @Override
-    public Map<Object,Object> countSkuPrice(long uid,List<OrderSku> orderSkuList,long couponid, List<Surcharge> surchargeList, long sid) throws Exception {
+    public Map<Object, Object> countSkuPrice(long uid, List<OrderSku> orderSkuList, long couponid, List<Surcharge> surchargeList, long sid) throws Exception {
         Map<Object, Object> map = Maps.newHashMap();
        /* List<Long> skuIds = Lists.newArrayList();
         List<Long> spuIds = Lists.newArrayList();
@@ -1136,7 +1158,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }*/
 
     @Override
-    public Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid,int makeStatus) throws Exception {
+    public Pager getAllIncomplete(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, long subid, int makeStatus) throws Exception {
         String sql = "SELECT  *  FROM `order`   where  1=1  ";
         String sqlCount = "SELECT  COUNT(*)  FROM `order` where 1=1  ";
         String limit = "  limit %d , %d ";
@@ -1145,12 +1167,12 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             sql = sql + " and `subid` = " + subid;
             sqlCount = sqlCount + " and `subid` = " + subid;
         }
-        if(makeStatus>0){
+        if (makeStatus > 0) {
             sql = sql + " and `makeStatus` = " + makeStatus;
             sqlCount = sqlCount + " and `makeStatus` = " + makeStatus;
-        }else{
-            sql = sql + " and (`makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3 ) " ;
-            sqlCount = sqlCount + " and  (`makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3) " ;
+        } else {
+            sql = sql + " and (`makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3 ) ";
+            sqlCount = sqlCount + " and  (`makeStatus` = 1 OR `makeStatus` = 2 OR `makeStatus` = 3) ";
         }
         if (personnelid > 0) {
             sql = sql + " and `personnelid` = " + personnelid;
@@ -1163,12 +1185,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         if (endTime > 0) {
             sql = sql + " and `payTime` <" + endTime;
             sqlCount = sqlCount + " and `payTime` <" + endTime;
-        } if (uid > 0) {
+        }
+        if (uid > 0) {
             sql = sql + " and `uid` =" + uid;
             sqlCount = sqlCount + " and `uid` =" + uid;
-        }if (StringUtils.isNotBlank(name)) {
-            sql = sql + " and  `uid` in (select id from `user`  where name like '%"+name+"%')";
-            sqlCount = sqlCount + " and  uid in (select id from `user`  where name like '%"+name+"%')";
+        }
+        if (StringUtils.isNotBlank(name)) {
+            sql = sql + " and  `uid` in (select id from `user`  where name like '%" + name + "%')";
+            sqlCount = sqlCount + " and  uid in (select id from `user`  where name like '%" + name + "%')";
         }
         sql = sql + " order  by ctime desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -1180,13 +1204,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         pager.setTotalCount(count);
         return pager;
     }
+
     @Override
-    public Map<String,Object> loadOrder(long id) throws Exception {
-        Map<String,Object> map = Maps.newHashMap();
+    public Map<String, Object> loadOrder(long id) throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
         ClientOrder clientOrder = transformClient(orderDao.load(id));
         List<ClientAfterSaleDetail> details = afterSaleDetailService.getAllListByOid(id);
-        map.put("order",clientOrder);
-        map.put("afterSaleDetails",details);
+        map.put("order", clientOrder);
+        map.put("afterSaleDetails", details);
         return map;
     }
 
@@ -1256,52 +1281,67 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     @Override
     public Map<String, Object> saleReward(long subid) throws Exception {
         Map<String, Object> map = Maps.newLinkedHashMap();
-/*        List<SaleReward> saleRewards = Lists.newArrayList();
+        List<SaleReward> saleRewards = Lists.newArrayList();
         int totalP = 0;
         int totalT = 0;
-        *//**获得门店下的商品提成集合**//*
+//        *获得门店下的商品提成集合*
         List<Commission> commissionList = commissionDao.getAllList(subid);
         if (commissionList.size() > 0) {
             for (Commission commission : commissionList) {
                 int number = 0;
                 int royaltyPersonal = 0;
                 int royaltyTeam = 0;
-                *//**
-                 * 计算个人奖励
-                 *//*
-                Map<Long, Object> users = commission.getUsers();
-                for (Map.Entry<Long, Object> entry : users.entrySet()) {
-                    *//**获得用户对应的提成**//*
-                    int rewardUser = (int) entry.getValue();
-                    *//**根据uid查询订单**//*
-                    List<Order> orderList = orderDao.getUserFinishOrders(entry.getKey(), Order.makestatus_qu_yes);
-                    for (Order order : orderList) {
-                        *//**有提成商品计算奖励**//*
-                        List<OrderSku> orderSkuList = order.ge();
-                        for (OrderSku sku : orderSkuList) {
-                            if (commission.getSpuId() == sku.getSpuid()) {
-                                number += sku.getNum();*//**完成量增加**//*
-                                royaltyPersonal += rewardUser * number; //奖励 = 提成 * 成交数量
-                            }
-                        }
-                    }
-                }
-                *//**
-                 * 计算团队奖励
-                 *//*
-                royaltyTeam += number * commission.getPrice();
+//                    *根据uid查询订单*
+                List<BusinessOrder> orderList = businessOrderService.getAllBySubid(commission.getSubId(),BusinessOrder.status_pay ,BusinessOrder.makeStatus_qu_yes);
+                for (BusinessOrder order : orderList) {
+//                        *有提成商品计算奖励*
+                    SaleReward saleReward = new SaleReward();
 
-                SaleReward saleReward = new SaleReward();
-                saleReward.setRoyaltyPersonal(royaltyPersonal);*//**个人奖励**//*
-                saleReward.setRoyaltyTeam(royaltyTeam);*//**团队奖励**//*
-                saleRewards.add(saleReward);
+                    List<OrderSku> orderSkuList = order.getSkuList();
+
+                    for (OrderSku sku : orderSkuList) {
+
+                        if (commission.getSpuId() == sku.getSpuId()) {
+                            number += sku.getNum();//*完成量增加*
+                            if (commission.getUsers() > 0) {
+                                //个人
+                                royaltyPersonal += commission.getUsers() * number; //奖励 = 提成 * 成交数量
+
+                            }
+                            if (commission.getPrice() > 0) {
+                                // 团队
+                                royaltyTeam += commission.getPrice() * number;
+                            }
+
+                        }
+                        ProductSKU load = productSKUDao.load(sku.getSkuId());
+                        if(load!=null){
+                            saleReward.setProductName(load.getCode());
+                        }
+                        ProductSPU productSPU = productSPUDao.load(sku.getSpuId());
+                        if(productSPU!=null){
+                            ProductSeries productSeries = productSeriesDao.load(productSPU.getSid());
+                            ProductBrand productBrand = productBrandDao.load(productSPU.getBid());
+                            saleReward.setSName(productSeries!=null?productSeries.getName():"");
+                            saleReward.setBName(productBrand!=null?productBrand.getName():"");
+                        }
+
+                    }
+
+                    saleReward.setRoyaltyPersonal(royaltyPersonal);//*个人奖励*
+                    saleReward.setRoyaltyTeam(royaltyTeam);//*团队奖励*
+                    saleRewards.add(saleReward);
+
+                }
+
+
                 totalP += royaltyPersonal;
                 totalT += royaltyTeam;
             }
         }
         map.put("saleRewards", saleRewards);
         map.put("totalT", totalT);
-        map.put("totalP", totalP);*/
+        map.put("totalP", totalP);
         return map;
     }
 
@@ -1373,25 +1413,25 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         }
         sql = sql + " order  by ctime desc";
         List<Order> orderList = this.jdbcTemplate.query(sql, rowMapper);
-        Map<String,Integer> map = calculateSale(orderList);
+        Map<String, Integer> map = calculateSale(orderList);
         CalculateOrder order = new CalculateOrder();
-        order.setSale(map.get("sale")/100.0);
-        order.setAli(map.get("ali")/100.0);
-        order.setWx(map.get("wx")/100.0);
-        order.setCash(map.get("cash")/100.0);
-        order.setOther(map.get("other")/100.0);
+        order.setSale(map.get("sale") / 100.0);
+        order.setAli(map.get("ali") / 100.0);
+        order.setWx(map.get("wx") / 100.0);
+        order.setCash(map.get("cash") / 100.0);
+        order.setOther(map.get("other") / 100.0);
         order.setNum(orderList.size());
         return order;
     }
 
     @Override
-    public Map<String,Integer> calculateSale(List<Order> orders) {
-        Map<String,Integer> map = Maps.newHashMap();
-        int sale=0;
-        int ali=0;
-        int wx=0;
-        int cash=0;
-        int other=0;
+    public Map<String, Integer> calculateSale(List<Order> orders) {
+        Map<String, Integer> map = Maps.newHashMap();
+        int sale = 0;
+        int ali = 0;
+        int wx = 0;
+        int cash = 0;
+        int other = 0;
 /*        for(Order order:orders) {
             for (Integer type : order.getPayTypes()) {
                 if (type == Order.pay_type_ali) {
@@ -1409,11 +1449,79 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
             }
         }*/
         sale = ali + wx + cash + other;
-        map.put("ali",ali);
-        map.put("wx",wx);
-        map.put("cash",cash);
-        map.put("other",other);
-        map.put("sale",sale);
+        map.put("ali", ali);
+        map.put("wx", wx);
+        map.put("cash", cash);
+        map.put("other", other);
+        map.put("sale", sale);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> saleRewardApp(long subid, long date) throws Exception {
+        Map<String, Object> map = Maps.newLinkedHashMap();
+        List<SaleReward> saleRewards = Lists.newArrayList();
+        int totalP = 0;
+        int totalT = 0;
+//        *获得门店下的商品提成集合*
+        List<Commission> commissionList = commissionDao.getAllList(subid);
+        if (commissionList.size() > 0) {
+            for (Commission commission : commissionList) {
+                int number = 0;
+                int royaltyPersonal = 0;
+                int royaltyTeam = 0;
+//                    *根据uid查询订单*
+                List<BusinessOrder> orderList = businessOrderService.getAllBySubid(commission.getSubId(),BusinessOrder.status_pay ,BusinessOrder.makeStatus_qu_yes);
+                for (BusinessOrder order : orderList) {
+//                        *有提成商品计算奖励*
+                    SaleReward saleReward = new SaleReward();
+
+                    List<OrderSku> orderSkuList = order.getSkuList();
+
+                    for (OrderSku sku : orderSkuList) {
+
+                        if (commission.getSpuId() == sku.getSpuId()) {
+                            number = sku.getNum();//*完成量增加*
+                            if (commission.getUsers() > 0) {
+                                //个人
+                                royaltyPersonal += commission.getUsers() * number; //奖励 = 提成 * 成交数量
+
+                            }
+                            if (commission.getPrice() > 0) {
+                                // 团队
+                                royaltyTeam += commission.getPrice() * number;
+                            }
+
+                        }
+                        ProductSKU load = productSKUDao.load(sku.getSkuId());
+                        if(load!=null){
+                            saleReward.setProductName(load.getCode());
+                        }
+                        ProductSPU productSPU = productSPUDao.load(sku.getSpuId());
+                        if(productSPU!=null){
+                            ProductSeries productSeries = productSeriesDao.load(productSPU.getSid());
+                            ProductBrand productBrand = productBrandDao.load(productSPU.getBid());
+                            saleReward.setSName(productSeries!=null?productSeries.getName():"");
+                            saleReward.setBName(productBrand!=null?productBrand.getName():"");
+                        }
+                        saleReward.setNumber(number);
+                        saleReward.setRoyaltyPersonal(royaltyPersonal);//*个人奖励*
+                        saleReward.setRoyaltyTeam(royaltyTeam);//*团队奖励*
+                        saleRewards.add(saleReward);
+
+                    }
+
+
+                }
+
+
+                totalP += royaltyPersonal;
+                totalT += royaltyTeam;
+            }
+        }
+        map.put("saleRewards", saleRewards);
+        map.put("totalT", totalT);
+        map.put("totalP", totalP);
         return map;
     }
 
@@ -1506,7 +1614,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         return clientOrderList;
     }
 
-    private ClientOrder transformClient(Order order) throws Exception{
+    private ClientOrder transformClient(Order order) throws Exception {
         ClientOrder clientOrder = new ClientOrder(order);
 /*
         OptometryInfo optometryInfo = optometryInfoDao.load(order.getOiId());
@@ -1558,12 +1666,12 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
 
     private void waitWxBarcodeOrderRes(File file, PayPassport payPassport, String outTradeNo, Order order) throws Exception {
         boolean reverse = true;
-        for(int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 3; i++) {
             Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
             String queryRes = wxOrderQuery(payPassport, outTradeNo);
             order.setDetail(queryRes);
             Map<String, String> map = PayUtils.xmlStrToMap(queryRes);
-            if(map.get("return_code").equals("SUCCESS") && map.get("result_code").equals("SUCCESS") && map.get("trade_state").equals("SUCCESS")) {
+            if (map.get("return_code").equals("SUCCESS") && map.get("result_code").equals("SUCCESS") && map.get("trade_state").equals("SUCCESS")) {
                 order.setStatus(Order.status_pay);
                 order.setOrderNo(map.get("transaction_id"));
                 long time_end = DateUtils.parseDate(map.get("time_end"), "yyyyMMddHHmmss").getTime();
@@ -1572,7 +1680,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 break;
             }
         }
-        if(reverse) {
+        if (reverse) {
             String reverseRes = wxOrderReverse(file, payPassport, outTradeNo);
         }
     }

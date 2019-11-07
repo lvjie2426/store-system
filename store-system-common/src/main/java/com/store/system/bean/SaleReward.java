@@ -16,6 +16,10 @@ public class SaleReward implements Serializable{
 
     private String productName ;//商品名称
 
+    private String bName ;//品牌
+
+    private String sName ;//系列
+
     private int number ;//完成量
 
     private int royaltyPersonal;//个人奖励(分)
