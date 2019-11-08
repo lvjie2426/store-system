@@ -879,6 +879,7 @@ public class ProductServiceImpl implements ProductService {
         if (StringUtils.isNotBlank(name)) {
             sql += " AND ( b.`name` LIKE '%"+name+"%' OR s.`name` LIKE '%"+name+"%' )";
         }
+        sql+=" GROUP BY sku.id";
 
         List<ProductSKU> productSKUS = jdbcTemplate.query(sql, skuRowMapper);
 
