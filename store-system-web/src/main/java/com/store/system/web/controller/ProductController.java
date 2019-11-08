@@ -33,18 +33,18 @@ public class ProductController extends BaseController {
     private SubordinateService subordinateService;
 
     @RequestMapping("/getSaleSPUPager")
-    public ModelAndView getSaleSPUPager(HttpServletRequest request, HttpServletResponse response, Model model,Pager pager,
-                                  @RequestParam(value = "subid", defaultValue = "0") long subid,
-                                  @RequestParam(value = "type", defaultValue = "-1") int type,
-                                  String brandSeries) throws Exception {
+    public ModelAndView getSaleSPUPager(HttpServletRequest request, HttpServletResponse response, Model model, Pager pager,
+                                        @RequestParam(value = "subid", defaultValue = "0") long subid,
+                                        @RequestParam(value = "type", defaultValue = "-1") int type,
+                                        String brandSeries) throws Exception {
         try {
             long pSubid = subid;
             Subordinate subordinate = subordinateService.load(subid);
-            if(subordinate.getPid() > 0) pSubid = subordinate.getPid();
-            pager = productService.getSaleSPUPager(pager,pSubid,subid,type,brandSeries);
+            if (subordinate.getPid() > 0) pSubid = subordinate.getPid();
+            pager = productService.getSaleSPUPager(pager, pSubid, subid, type, brandSeries);
             return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
@@ -57,21 +57,21 @@ public class ProductController extends BaseController {
             List<ClientProductSKU> res = productService.getSaleSKUAllList(subid, spuid, uid);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
     @RequestMapping("/getTaskPager")
-    public ModelAndView getTaskPager(HttpServletRequest request, HttpServletResponse response, Model model,Pager pager,
-                                        @RequestParam(value = "subid", defaultValue = "0") long subid,
-                                        String brandSeries) throws Exception {
+    public ModelAndView getTaskPager(HttpServletRequest request, HttpServletResponse response, Model model, Pager pager,
+                                     @RequestParam(value = "subid", defaultValue = "0") long subid,
+                                     String brandSeries) throws Exception {
         try {
             long pSubid = subid;
             Subordinate subordinate = subordinateService.load(subid);
-            if(subordinate.getPid() > 0) pSubid = subordinate.getPid();
-            pager = productService.getSaleSPUPager(pager,pSubid,subid,0,brandSeries);
+            if (subordinate.getPid() > 0) pSubid = subordinate.getPid();
+            pager = productService.getSaleSPUPager(pager, pSubid, subid, 0, brandSeries);
             List<ClientProductSPU> spus = pager.getData();
-            Map<Long,List<ClientProductSPU>> map = Maps.newHashMap();
+            Map<Long, List<ClientProductSPU>> map = Maps.newHashMap();
             for (ClientProductSPU spu : spus) {
                 List<ClientProductSPU> spuList = map.get(spu.getCid());
                 if (null == spuList) {
@@ -82,7 +82,27 @@ public class ProductController extends BaseController {
             }
             return this.viewNegotiating(request, response, new ResultClient(map));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
+
+
+    /**
+     * 根据subids  name 搜索品牌 系列 商品 并根据cid 区分
+     */
+    @RequestMapping("/getCommSpuByName")
+    public ModelAndView getCommSpuByName(HttpServletRequest request, HttpServletResponse response,
+                                         String name,
+                                         long subid) throws Exception {
+
+
+        try {
+
+            Map<Long, List<ClientProductSPU>> map = productService.getCommSpuByName(subid, name);
+            return this.viewNegotiating(request, response, new ResultClient(map));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
+        }
+    }
+
 }

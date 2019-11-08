@@ -60,4 +60,6 @@ public interface ProductService {
     public ClientProductCategory searchSpu(String name)throws Exception;
 
     public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception;
+
+    public  Map<Long,List<ClientProductSPU>> getCommSpuByName(long subid, String name)throws Exception;
 }
