@@ -50,7 +50,40 @@ public class InventoryDetailController extends BaseController {
             pager = inventoryDetailService.getPager(pager, wid, cid);
             List<ClientInventoryDetail> details = inventoryDetailService.getWaringList(wid, cid);
             List<ClientInventoryDetail> expireList = inventoryDetailService.getExpireList(wid, cid);
-            res.put("pager",new PagerResult<>(pager));
+            res.put("pager",pager.toModelAttribute());
+            res.put("warning",details.size());
+            res.put("expire",expireList.size());
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /**
+     * 获取到快过期产品。
+     * @param cid
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/getDatedGoods")
+    public ModelAndView getDatedGoods(@RequestParam(value = "cid", defaultValue = "0") long cid,
+                                      HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            Map<String,Object> res = Maps.newHashMap();
+            long wid = 0;
+            long subid = 0;
+            User user = UserUtils.getUser(request);
+            if (user != null) {
+                subid = user.getSid();
+            }
+            List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
+            if (warehouses.size() > 0)
+                wid = warehouses.get(0).getId();
+            List<ClientInventoryDetail> details = inventoryDetailService.getWaringList(wid, cid);
+            List<ClientInventoryDetail> expireList = inventoryDetailService.getExpireList(wid, cid);
             res.put("warning",details.size());
             res.put("expire",expireList.size());
             return this.viewNegotiating(request, response, res);

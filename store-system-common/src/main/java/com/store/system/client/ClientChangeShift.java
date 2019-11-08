@@ -16,6 +16,7 @@ public class ClientChangeShift extends ChangeShift {
 
     private String copyName;
     private String replaceName;
+    private String checkName;
 
 
     public ClientChangeShift(ChangeShift changeShift){

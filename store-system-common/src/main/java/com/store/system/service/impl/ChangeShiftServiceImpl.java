@@ -142,6 +142,10 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
         if(load1!=null){
             clientChangeShift.setCopyName(load1.getName());
         }
+        User load2 = userDao.load(changeShift.getCheckUid());
+        if(load1!=null){
+            clientChangeShift.setCheckName(load1.getName());
+        }
         return clientChangeShift;
     }
 

@@ -1,10 +1,12 @@
 package com.store.system.client;
 
+import com.store.system.model.Commission;
 import com.store.system.model.InventoryDetail;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.util.List;
 import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
@@ -36,6 +38,8 @@ public class ClientInventoryDetail extends InventoryDetail {
     private Map<Long, Object> p_properties; //SKU 属性
 
     private Map<Object, Object> p_properties_value; //SKU 属性
+
+    private  List<Commission> commissions;// 提成个人/团队
 
     private int p_retailPrice;
 

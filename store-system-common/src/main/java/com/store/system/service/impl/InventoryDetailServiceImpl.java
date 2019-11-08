@@ -75,6 +75,9 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 
     @Resource
     private ProductService productService;
+
+    @Resource
+    private CommissionDao commissionDao;
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -127,6 +130,8 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 if(null != series) client.setSeriesName(series.getName());
                 client.setP_name(spu.getName());
             }
+            List<Commission> commissions = commissionDao.getAllList(one.getSubid(), one.getP_spuid());
+            client.setCommissions(commissions);
             ProductSKU sku = skuMap.get(one.getP_skuid());
 
             if (null != sku) {
@@ -140,6 +145,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 map_value = productService.getProperties(sku,client,"p_properties_value");
                 client.setP_properties_value(map_value);
             }
+
             res.add(client);
         }
         return res;
