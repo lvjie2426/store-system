@@ -100,9 +100,9 @@ public class AttendanceController extends BaseController {
                                      long month, Model model) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            ClientAttendanceInfo clientAttendanceInfo = attendanceLogService.
-                    getUserAttendanceByMonth(user.getPsid(), user.getSid(), user.getId(), month);
-            return this.viewNegotiating(request, response, new ResultClient(clientAttendanceInfo));
+            List<ClientAttendanceLog> userAttendanceBuByMonth = attendanceLogService.
+                    getUserAttendanceBuByMonth(user.getPsid(), user.getSid(), user.getId(), month);
+            return this.viewNegotiating(request, response, new ResultClient(userAttendanceBuByMonth));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

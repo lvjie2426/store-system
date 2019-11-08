@@ -746,7 +746,7 @@ public class ProductServiceImpl implements ProductService {
                         " where c.spuId=spu.id and s.id=spu.sid and b.id=spu.bid and c.subid= "+subid;
                 sql+=" and spu.cid="+cid;
                 if(StringUtils.isNotBlank(name)){
-                    sql+= " and b.`name` like '%"+name+"%' and s.`name`like '%"+name+"%'";
+                    sql+= " and ( b.`name` like '%"+name+"%' and s.`name` like '%"+name+"%')";
                 }
                 long ctimeCursor = Long.parseLong(cursor);
                 if (ctimeCursor == 0) ctimeCursor = Long.MAX_VALUE;

@@ -449,6 +449,28 @@ public class WebUserController extends BaseController {
         }
     }
 
+    /**
+     * create by: zhangmeng
+     * description:   获取门店下所有员工
+     * create time: 2019/08/28 0028 10:32:56
+     *
+     * @Param: request
+     * @Param: response
+     * @Param: sid
+     * @return
+     */
+    @RequestMapping("/getAllUserBySubid")
+    public ModelAndView getAllUserBySubid(Pager pager,HttpServletRequest request, HttpServletResponse response,
+                                        Long subid) throws Exception {
+
+        try {
+
+            return this.viewNegotiating(request, response,new ResultClient(userService.getAllUserBySid(subid)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(e.getMessage()));
+        }
+    }
+
     //获取所有 顾客/员工 的职业
     @RequestMapping("/getAllUserJob")
     public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,

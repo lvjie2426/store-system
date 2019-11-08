@@ -89,7 +89,7 @@ public class FillCardServiceImpl implements FillCardService {
             approvalLog.setCheckUid(insert.getCheckUid());
             approvalLog.setSid(insert.getSid());
             approvalLog.setSubId(insert.getSubId());
-            approvalLog.setType(ApprovalLog.type_work);
+            approvalLog.setType(ApprovalLog.type_card);
             approvalLog.setTypeId(insert.getId());
             approvalLogDao.insert(approvalLog);
         }
