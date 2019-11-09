@@ -61,5 +61,4 @@ public interface ProductService {
 
     public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception;
 
-    public  Map<Long,List<ClientInventoryDetail>> getCommSpuByName(long subid, String name)throws Exception;
 }

@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
-import com.store.system.client.ClientInventoryDetail;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.client.ResultClient;
@@ -62,6 +61,11 @@ public class ProductController extends BaseController {
         }
     }
 
+    /***
+    * 搜索任务商品查询
+    * @Param: [request, response, model, pager, subid, brandSeries]
+    * @return: org.springframework.web.servlet.ModelAndView
+    */
     @RequestMapping("/getTaskPager")
     public ModelAndView getTaskPager(HttpServletRequest request, HttpServletResponse response, Model model, Pager pager,
                                      @RequestParam(value = "subid", defaultValue = "0") long subid,
@@ -84,27 +88,6 @@ public class ProductController extends BaseController {
             return this.viewNegotiating(request, response, new ResultClient(map));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-    }
-
-
-    /**
-     * 根据subids  name code  搜索品牌 系列 商品 并根据cid 区分
-     */
-    @RequestMapping("/getCommSpuByName")
-    public ModelAndView getCommSpuByName(HttpServletRequest request, HttpServletResponse response,
-                                         String name,
-                                         long subid) throws Exception {
-
-
-        try {
-            long pSubid = subid;
-            Subordinate subordinate = subordinateService.load(subid);
-            if (subordinate.getPid() > 0) pSubid = subordinate.getPid();
-            Map<Long, List<ClientInventoryDetail>> map = productService.getCommSpuByName(pSubid, name);
-            return this.viewNegotiating(request, response, new ResultClient(map));
-        } catch (StoreSystemException s) {
-            return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
         }
     }
 

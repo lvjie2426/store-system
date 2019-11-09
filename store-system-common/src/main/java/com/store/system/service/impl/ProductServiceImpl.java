@@ -817,19 +817,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<ClientCommission> transformClients(List<Commission> list) {
-
         List<ClientCommission> clientCommissionList = new ArrayList<>();
         for (Commission commission : list) {
-
             ClientCommission clientCommission = new ClientCommission(commission);
             ProductSPU load = productSPUDao.load(commission.getSubId());
             clientCommission.setCode(load.getName());
             clientCommissionList.add(clientCommission);
-
         }
-
         return clientCommissionList;
-
     }
 
     public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception {
@@ -870,45 +865,5 @@ public class ProductServiceImpl implements ProductService {
         }
         return map_value;
     }
-
-    @Override
-    public Map<Long, List<ClientInventoryDetail>> getCommSpuByName(long subid, String name) throws Exception {
-        Map<Long, List<ClientInventoryDetail>> map = new HashedMap();
-        String sql = "SELECT d.* FROM inventory_detail d, product_sku sku, product_spu spu,  product_series s,  product_brand b WHERE  sku.spuid = spu.id   AND sku.spuid = spu.id AND d.p_skuid=sku.id and spu.`status`=0  AND b.id = spu.bid   AND spu.subid = "+subid;
-        if (StringUtils.isNotBlank(name)) {
-            sql += " AND ( b.`name` LIKE '%"+name+"%' OR s.`name` LIKE '%"+name+"%' or sku.code like '%"+name+"%' )";
-        }
-        sql+=" GROUP BY sku.id";
-
-        List<InventoryDetail> inventoryDetails = jdbcTemplate.query(sql, detailMapper);
-        for (InventoryDetail inventoryDetail : inventoryDetails) {
-            //spu 信息
-            ProductSPU load = productSPUDao.load(inventoryDetail.getP_spuid());
-            ClientProductSPU clientProductSPU = transformClient(load);
-            //sku 信息
-            ProductSKU productSKU = productSKUDao.load(inventoryDetail.getP_skuid());
-            List<Commission> commissions = commissionDao.getAllList(load.getSubid(), productSKU.getSpuid());
-
-            ClientInventoryDetail clientInventoryDetail=new ClientInventoryDetail(inventoryDetail);
-            clientInventoryDetail.setCommissions(commissions);
-            clientInventoryDetail.setBrandName(clientProductSPU.getBrandName());
-            clientInventoryDetail.setSeriesName(clientProductSPU.getSeriesName());
-            clientInventoryDetail.setP_retailPrice(productSKU.getRetailPrice());
-            clientInventoryDetail.setP_costPrice(productSKU.getCostPrice());
-            clientInventoryDetail.setP_integralPrice(productSKU.getIntegralPrice());
-            clientInventoryDetail.setCode(productSKU.getCode());
-
-            //根据cid 分类
-            if (map.containsKey(load.getCid())) {
-                map.get(load.getCid()).add(clientInventoryDetail);
-            } else {
-                List<ClientInventoryDetail> listspu = new ArrayList<>();
-                listspu.add(clientInventoryDetail);
-                map.put(load.getCid(), listspu);
-            }
-        }
-        return map;
-    }
-
 
 }
