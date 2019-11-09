@@ -39,7 +39,7 @@ public class ClientInventoryDetail extends InventoryDetail {
 
     private Map<Object, Object> p_properties_value; //SKU 属性
 
-    private  List<Commission> commissions;// 提成个人/团队
+    private List<Commission> commissions;// 提成个人/团队
 
     private int p_retailPrice;
 
@@ -52,6 +52,8 @@ public class ClientInventoryDetail extends InventoryDetail {
     private int num;
 
     private long ctime;
+
+    public ClientInventoryDetail(){}
 
     public ClientInventoryDetail(InventoryDetail inventoryDetail) {
         try {

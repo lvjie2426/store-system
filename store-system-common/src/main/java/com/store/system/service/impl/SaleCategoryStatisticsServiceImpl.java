@@ -97,39 +97,46 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
             client.setCName(category.getName());
             client.setSubName(subordinate.getName());
             clientList.add(client);
+            //rate==一个分类的销售额占所有分类的销售额的占比
             if(total>0) {
                 double rate = ArithUtils.div(client.getSale(), total, 2);
                 client.setRate(rate);
             }
 
-            int rate_0to100=0;
-            int rate_100to500=0;
-            int rate_500to1000=0;
-            int rate_1000to2000=0;
-            int rate_2000=0;
+            int num_0to100=0;
+            int num_100to500=0;
+            int num_500to1000=0;
+            int num_1000to2000=0;
+            int num_2000=0;
             for(OrderSku sku:skus){
                 if(sku.getLastSubtotal()>0&&sku.getLastSubtotal()<=100){
-                    rate_0to100++;
+                    num_0to100++;
                 }
                 if(sku.getLastSubtotal()>100&&sku.getLastSubtotal()<=500){
-                    rate_100to500++;
+                    num_100to500++;
                 }
                 if(sku.getLastSubtotal()>500&&sku.getLastSubtotal()<=1000){
-                    rate_500to1000++;
+                    num_500to1000++;
                 }
                 if(sku.getLastSubtotal()>1000&&sku.getLastSubtotal()<=2000){
-                    rate_1000to2000++;
+                    num_1000to2000++;
                 }
                 if(sku.getLastSubtotal()>2000){
-                    rate_2000++;
+                    num_2000++;
                 }
             }
+            //销售额分类占比==分类销售区间内的个数占比所有分类销售的数量
             if(client.getNum()>0) {
-                client.setRate_0to100(ArithUtils.div(rate_0to100, client.getNum(), 2));
-                client.setRate_100to500(ArithUtils.div(rate_100to500, client.getNum(), 2));
-                client.setRate_500to1000(ArithUtils.div(rate_500to1000, client.getNum(), 2));
-                client.setRate_1000to2000(ArithUtils.div(rate_1000to2000, client.getNum(), 2));
-                client.setRate_2000(ArithUtils.div(rate_2000, client.getNum(), 2));
+                client.setRate_0to100(ArithUtils.div(num_0to100, client.getNum(), 2));
+                client.setRate_100to500(ArithUtils.div(num_100to500, client.getNum(), 2));
+                client.setRate_500to1000(ArithUtils.div(num_500to1000, client.getNum(), 2));
+                client.setRate_1000to2000(ArithUtils.div(num_1000to2000, client.getNum(), 2));
+                client.setRate_2000(ArithUtils.div(num_2000, client.getNum(), 2));
+                client.setNum_0to100(num_0to100);
+                client.setNum_100to500(num_100to500);
+                client.setNum_500to1000(num_500to1000);
+                client.setNum_1000to2000(num_1000to2000);
+                client.setNum_2000(num_2000);
             }
             map.put(category.getId(),clientList);
         }

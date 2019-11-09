@@ -258,6 +258,31 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	}
 
 	@Override
+	public List<ClientAttendanceLog> getAllListByDay(long sid, long subId, long uid, List<Long> days, boolean status) throws Exception {
+		List<AttendanceLog> logs = Lists.newArrayList();
+		for(Long day:days) {
+			List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListByUserDay(sid, subId, uid, day);
+			logs.addAll(attendanceLogs);
+		}
+		List<ClientAttendanceLog> res = Lists.newArrayList();
+		for (AttendanceLog log : logs) {
+			ClientAttendanceLog client = transformClient(log);
+			if(status) {
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_normal &&
+						client.getStartType() == ClientAttendanceLog.attendanceType_normal) {
+					res.add(client);
+				}
+			}else{
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_normal &&
+						client.getStartType() == ClientAttendanceLog.attendanceType_late) {
+					res.add(client);
+				}
+			}
+		}
+		return res;
+	}
+
+	@Override
 	public List<ClientAttendanceLog> getAllListByWeek(long sid, long subId, long uid, long week, boolean status) throws Exception {
 		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserWeek(sid, subId, uid, week);
 		List<ClientAttendanceLog> res = Lists.newArrayList();
@@ -481,6 +506,17 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		for(Long subId:subIds) {
 			List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListBySubDay(subId,day);
 			logs.addAll(attendanceLogs);
+		}
+		return transformLogs(logs,type);
+	}
+
+	public Map<Long,ClientAttendanceInfo> getUserStatisticsDay(List<Long> subIds, List<Long> days, int type) throws Exception{
+		List<AttendanceLog> logs=new ArrayList<>();
+		for(Long subId:subIds) {
+			for(Long day:days) {
+				List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListBySubDay(subId, day);
+				logs.addAll(attendanceLogs);
+			}
 		}
 		return transformLogs(logs,type);
 	}

@@ -35,10 +35,9 @@ public interface ProductService {
     public Pager getSPUBackPager(Pager pager, long subid, long cid, long pid, long bid, long sid,int type,String name,int saleStatus,long subId) throws Exception;
 
 
-
     public ClientProductSPU selectSPU(long subid, long pid, long cid, long bid, long sid) throws Exception;
 
-    public ClientProductSPU selectSPU(long subid, long cid, long bid, long sid) throws Exception;
+    public List<ClientProductSPU> selectSPU(long subid, long cid) throws Exception;
 
     public Pager getSaleSPUBackPager(Pager pager, long pSubid, long subid, long cid, long bid, int type) throws Exception;
 

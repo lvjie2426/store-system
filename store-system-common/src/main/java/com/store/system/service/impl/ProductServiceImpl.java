@@ -529,12 +529,9 @@ public class ProductServiceImpl implements ProductService {
         return clientProductSPU;
     }
 
-    @Override
-    public ClientProductSPU selectSPU(long subid, long cid, long bid, long sid) throws Exception {
-        List<ProductSPU> productSPUList = productSPUDao.getAllList(subid, cid, bid, sid);
-        ProductSPU productSPU = productSPUList.get(0);
-        ClientProductSPU clientProductSPU = transformClient(productSPU);
-        return clientProductSPU;
+    public List<ClientProductSPU> selectSPU(long subid,  long cid) throws Exception {
+        List<ProductSPU> productSPUList = productSPUDao.getAllList(subid, cid);
+        return transformClients(productSPUList,subid);
     }
 
     @Override

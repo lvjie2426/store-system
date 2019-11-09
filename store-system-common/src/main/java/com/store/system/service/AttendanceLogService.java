@@ -42,6 +42,8 @@ public interface AttendanceLogService {
 
 	public List<ClientAttendanceLog> getAllListByDay(long sid, long subId, long uid, long day, boolean status) throws Exception;
 
+	public List<ClientAttendanceLog> getAllListByDay(long sid, long subId, long uid, List<Long> days, boolean status) throws Exception;
+
 	public List<ClientAttendanceLog> getAllListByWeek(long sid, long subId, long uid, long day, boolean status) throws Exception;
 
 	public List<ClientAttendanceLog> getAllListByMonth(long sid, long subId, long uid, long month, boolean status) throws Exception;
@@ -103,6 +105,8 @@ public interface AttendanceLogService {
 	public Map<Long, ClientAttendanceInfo> getUserStatisticsWeek(List<Long> subIds, long week, int type) throws Exception;
 
 	public Map<Long, ClientAttendanceInfo> getUserStatisticsDay(List<Long> subIds, long day, int type) throws Exception;
+
+	public Map<Long, ClientAttendanceInfo> getUserStatisticsDay(List<Long> subIds, List<Long> days, int type) throws Exception;
 
 	/**
 	 * 根据时间段 获取用户的 考勤日志合计（包含自行统计结果，考勤日志）

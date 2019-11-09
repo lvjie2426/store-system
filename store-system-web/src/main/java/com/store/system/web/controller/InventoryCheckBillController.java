@@ -65,20 +65,41 @@ public class InventoryCheckBillController extends BaseController {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
+
     //根据类目id 获取产品
-    @RequestMapping("/selectByCid")
-    public ModelAndView selectByCid(Pager pager,
-                               @RequestParam(value = "subid") long subid,
-                               @RequestParam(value = "cid") long cid,
-                               HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    @RequestMapping("/selectDetailsByCid")
+    public ModelAndView selectDetailsByCid(@RequestParam(value = "subid") long subid,
+                                           @RequestParam(value = "cid") long cid,
+                                           HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             ClientSubordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
-            if(pSubid == 0) throw new StoreSystemException("店铺为空");
-            pager=  inventoryCheckBillService.getAllByCid(pager,pSubid,cid);
-            return this.viewNegotiating(request,response, new ResultClient(true, new PagerResult<>(pager)));
+            if (pSubid == 0) throw new StoreSystemException("店铺为空");
+            List<ClientInventoryCheckBillSelect> res = Lists.newArrayList();
+            List<ClientProductSPU> spuList = productService.selectSPU(pSubid, cid);
+            for (ClientProductSPU productSPU : spuList) {
+                ClientInventoryCheckBillSelect select = new ClientInventoryCheckBillSelect();
+                if (null != productSPU) {
+                    select = new ClientInventoryCheckBillSelect();
+                    select.setProductSPU(productSPU);
+                    int currentNum = 0;
+                    List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
+                    long wid = 0;
+                    if (warehouses.size() > 0) {
+                        wid = warehouses.get(0).getId();
+                    }
+                    List<ClientInventoryDetail> details = inventoryDetailService.getAllList(wid, productSPU.getId());
+                    for (InventoryDetail detail : details) {
+                        currentNum += detail.getNum();
+                    }
+                    select.setCurrentNum(currentNum);
+                    select.setDetails(details);
+                }
+                res.add(select);
+            }
+            return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
@@ -145,10 +166,20 @@ public class InventoryCheckBillController extends BaseController {
     @RequestMapping("/getAll")
     public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-
         try {
-            pager = inventoryCheckBillService.getAll(pager, subid);
-            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+            pager = inventoryCheckBillService.getWebCheckPager(pager, subid);
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/getWebCreatePager")
+    public ModelAndView getWebCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            pager = inventoryCheckBillService.getWebCheckPager(pager, user.getId());
+            return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

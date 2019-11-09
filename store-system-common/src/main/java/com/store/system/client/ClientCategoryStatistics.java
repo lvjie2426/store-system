@@ -39,6 +39,16 @@ public class ClientCategoryStatistics {
 
     private double rate_2000;
 
+    private int num_0to100;
+
+    private int num_100to500;
+
+    private int num_500to1000;
+
+    private int num_1000to2000;
+
+    private int num_2000;
+
     private List<SaleCategoryStatistics> statistics = Lists.newArrayList();
 
 }

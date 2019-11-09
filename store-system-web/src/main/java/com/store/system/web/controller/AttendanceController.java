@@ -13,6 +13,7 @@ import com.store.system.model.attendance.PunchCardLog;
 import com.store.system.service.AttendanceLogService;
 import com.store.system.service.UserService;
 import com.store.system.util.Constant;
+import com.store.system.util.TimeUtils;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +119,7 @@ public class AttendanceController extends BaseController {
     @RequestMapping("/getUserNormalList")
     public ModelAndView getUserNormalList(HttpServletRequest request, HttpServletResponse response,
                                           @RequestParam(name = "month", required = false, defaultValue = "0") long month,
-                                          @RequestParam(name = "week", required = false, defaultValue = "0") long week,
+                                          @RequestParam(name = "days[]", required = false) List<Long> days,
                                           @RequestParam(name = "day", required = false, defaultValue = "0") long day,
                                           long uid, int type, Model model) throws Exception {
         try {
@@ -127,7 +128,7 @@ public class AttendanceController extends BaseController {
             if (type == Constant.type_day_search) {
                 res = attendanceLogService.getAllListByDay(user.getPsid(), user.getSid(), uid, day, true);
             } else if (type == Constant.type_week_search) {
-                res = attendanceLogService.getAllListByWeek(user.getPsid(), user.getSid(), uid, week, true);
+                res = attendanceLogService.getAllListByDay(user.getPsid(), user.getSid(), uid, days, true);
             } else if (type == Constant.type_month_search) {
                 res = attendanceLogService.getAllListByMonth(user.getPsid(), user.getSid(), uid, month, true);
             }
@@ -147,7 +148,7 @@ public class AttendanceController extends BaseController {
     @RequestMapping("/getUserLateList")
     public ModelAndView getUserLateList(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(name = "month", required = false, defaultValue = "0") long month,
-                                        @RequestParam(name = "week", required = false, defaultValue = "0") long week,
+                                        @RequestParam(name = "days[]", required = false) List<Long> days,
                                         @RequestParam(name = "day", required = false, defaultValue = "0") long day,
                                         long uid, int type, Model model) throws Exception {
         try {
@@ -156,7 +157,7 @@ public class AttendanceController extends BaseController {
             if (type == Constant.type_day_search) {
                 res = attendanceLogService.getAllListByDay(user.getPsid(), user.getSid(), uid, day, false);
             } else if (type == Constant.type_week_search) {
-                res = attendanceLogService.getAllListByWeek(user.getPsid(), user.getSid(), uid, week, false);
+                res = attendanceLogService.getAllListByDay(user.getPsid(), user.getSid(), uid, days, false);
             } else if (type == Constant.type_month_search) {
                 res = attendanceLogService.getAllListByMonth(user.getPsid(), user.getSid(), uid, month, false);
             }
@@ -211,9 +212,10 @@ public class AttendanceController extends BaseController {
      */
     @RequestMapping("/statisticsWeek")
     public ModelAndView statisticsWeek(HttpServletRequest request, HttpServletResponse response,
-                                       @RequestParam(name = "subIds[]") List<Long> subIds, long week, int type, Model model) throws Exception {
+                                       @RequestParam(name = "subIds[]") List<Long> subIds, int type, Model model,
+                                       @RequestParam(name = "days[]", required = false) List<Long> days) throws Exception {
         try {
-            Map<Long, ClientAttendanceInfo> res = attendanceLogService.getUserStatisticsWeek(subIds, week, type);
+            Map<Long, ClientAttendanceInfo> res = attendanceLogService.getUserStatisticsDay(subIds, days, type);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -248,15 +250,15 @@ public class AttendanceController extends BaseController {
     @RequestMapping("/statistics")
     public ModelAndView statistics(HttpServletRequest request, HttpServletResponse response,
                                    @RequestParam(name = "month", required = false, defaultValue = "0") long month,
-                                   @RequestParam(name = "week", required = false, defaultValue = "0") long week,
                                    @RequestParam(name = "day", required = false, defaultValue = "0") long day,
+                                   @RequestParam(name = "days[]", required = false) List<Long> days,
                                    @RequestParam(name = "subIds[]") List<Long> subIds, int type, int timeType, Model model) throws Exception {
         try {
             Map<Long, ClientAttendanceInfo> res = Maps.newHashMap();
             if (timeType == Constant.type_day_search) {
                 res = attendanceLogService.getUserStatisticsDay(subIds, day, type);
             } else if (timeType == Constant.type_week_search) {
-                res = attendanceLogService.getUserStatisticsWeek(subIds, week, type);
+                res = attendanceLogService.getUserStatisticsDay(subIds, days, type);
             } else if (timeType == Constant.type_month_search) {
                 res = attendanceLogService.getUserStatisticsMonth(subIds, month, type);
             }
@@ -281,6 +283,32 @@ public class AttendanceController extends BaseController {
             List<ClientAttendanceLog> list= attendanceLogService.
                     getUserAttendanceBuByMonth(user.getPsid(), user.getSid(), user.getId(), month);
             return this.viewNegotiating(request, response, new ResultClient(list));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /***
+     * 获取前n天 后-n天的日期 0为当日
+     */
+    @RequestMapping("/getDay")
+    public ModelAndView getDay(HttpServletRequest request, HttpServletResponse response,
+                                       int num) throws Exception {
+        try {
+            return this.viewNegotiating(request, response, new ResultClient(TimeUtils.getDay(num)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /***
+     * 获取前n周 后-n周的日期 0为当前周
+     */
+    @RequestMapping("/getWeek")
+    public ModelAndView getWeek(HttpServletRequest request, HttpServletResponse response,
+                               int num) throws Exception {
+        try {
+            return this.viewNegotiating(request, response, new ResultClient(TimeUtils.getWeekToDays(num)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

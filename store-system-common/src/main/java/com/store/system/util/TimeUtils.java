@@ -3,10 +3,7 @@ package com.store.system.util;
 import com.google.common.collect.Lists;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class TimeUtils {
 
@@ -398,5 +395,44 @@ public class TimeUtils {
             cal.add(Calendar.DAY_OF_MONTH,1);
         }
         return fullDayList;
+    }
+
+    /***
+    * 获取前n天 后-n天的日期 0为当日
+    */
+    public static long getDay(int num) {
+        Date date=new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,num);//把日期往后增加一天.整数往后推,负数往前移动
+        date=calendar.getTime(); //这个时间就是日期往后推一天的结果
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        String dateString = formatter.format(date);
+        return Long.parseLong(dateString);
+    }
+
+    /***
+     * 获取前n周 后-n周的日期 0为当前周
+     */
+    public static List<Long> getWeekToDays(int num) {
+        List<Long> res = Lists.newArrayList();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+        int year = Integer.parseInt(sdfYear.format(System.currentTimeMillis()));
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year); // 2016年
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("ww");
+        String timeStr=simpleDateFormat.format(System.currentTimeMillis());
+        int week = Integer.parseInt(timeStr);
+        cal.set(Calendar.WEEK_OF_YEAR, week+num);
+        cal.set(Calendar.DAY_OF_WEEK, 2); // 1表示周日，2表示周一，7表示周六
+        Long one = Long.parseLong(sdf.format(cal.getTime()));
+        res.add(one);
+        for(int i = 1; i <= 6; i++) {
+            cal.add(Calendar.DAY_OF_WEEK, 1);
+            one = Long.parseLong(sdf.format(cal.getTime()));
+            res.add(one);
+        }
+        return res;
     }
 }

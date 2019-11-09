@@ -11,16 +11,23 @@ import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientInventoryDetail;
+import com.store.system.client.ClientProductSKU;
+import com.store.system.client.ClientProductSPU;
 import com.store.system.dao.*;
 import com.store.system.model.*;
 import com.store.system.service.InventoryDetailService;
 import com.store.system.service.ProductService;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 public class InventoryDetailServiceImpl implements InventoryDetailService {
@@ -44,10 +51,6 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
     private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
 
     private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
-
-    private TransformMapUtils nameMapUtils = new TransformMapUtils(ProductPropertyName.class);
-
-    private TransformMapUtils valueMapUtils = new TransformMapUtils(ProductPropertyValue.class);
 
     @Resource
     private InventoryWarehouseDao inventoryWarehouseDao;
@@ -81,7 +84,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    private List<ClientInventoryDetail> transformClients(List<InventoryDetail> details) throws Exception {
+    private List<ClientInventoryDetail> transformClients(List<InventoryDetail> details, boolean app) throws Exception {
         List<ClientInventoryDetail> res = Lists.newArrayList();
         Set<Long> p_spuids = fieldSetUtils.fieldList(details, "p_spuid");
         List<ProductSPU> productSPUList = productSPUDao.load(Lists.newArrayList(p_spuids));
@@ -148,8 +151,65 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 
             res.add(client);
         }
-        return res;
+        if(app) {
+            //返回合并重复的spuid并将数量相加的details
+            return getNewList(res);
+        }else {
+            return res;
+        }
     }
+
+    private List<ClientInventoryDetail> getNewList(List<ClientInventoryDetail> oldList){
+        HashMap<Long,ClientInventoryDetail> tempMap = new HashMap<Long,ClientInventoryDetail>();
+        //去掉重复的key
+        for(ClientInventoryDetail detail : oldList){
+            long spuid = detail.getP_spuid();
+            //containsKey(Object key)该方法判断Map集合中是否包含指定的键名，如果包含返回true，不包含返回false
+            //containsValue(Object value)该方法判断Map集合中是否包含指定的键值，如果包含返回true，不包含返回false
+            if(tempMap.containsKey(spuid)){
+                ClientInventoryDetail newDetail = new ClientInventoryDetail();
+                newDetail.setId(detail.getId());
+                newDetail.setSubid(detail.getSubid());
+                newDetail.setWid(detail.getWid());
+                newDetail.setP_cid(detail.getP_cid());
+                newDetail.setP_spuid(detail.getP_spuid());
+                newDetail.setP_skuid(detail.getP_skuid());
+                newDetail.setUtime(detail.getUtime());
+                newDetail.setSubName(detail.getSubName());
+                newDetail.setWarehouseName(detail.getWarehouseName());
+                newDetail.setP_pid(detail.getP_pid());
+                newDetail.setProviderName(detail.getProviderName());
+                newDetail.setCategoryName(detail.getCategoryName());
+                newDetail.setP_bid(detail.getP_bid());
+                newDetail.setBrandName(detail.getBrandName());
+                newDetail.setP_sid(detail.getP_sid());
+                newDetail.setSeriesName(detail.getSeriesName());
+                newDetail.setP_name(detail.getP_name());
+                newDetail.setP_code(detail.getP_code());
+                newDetail.setP_properties(detail.getP_properties());
+                newDetail.setP_properties_value(detail.getP_properties_value());
+                newDetail.setCommissions(detail.getCommissions());
+                newDetail.setP_retailPrice(detail.getP_retailPrice());
+                newDetail.setP_costPrice(detail.getP_costPrice());
+                newDetail.setP_integralPrice(detail.getP_integralPrice());
+                newDetail.setEyeType(detail.getEyeType());
+                newDetail.setCtime(detail.getCtime());
+                //合并相同key的value
+                newDetail.setNum(tempMap.get(spuid).getNum()+detail.getNum());
+                //HashMap不允许key重复，当有key重复时，前面key对应的value值会被覆盖
+                tempMap.put(spuid,newDetail );
+            }else{
+                tempMap.put(spuid,detail );
+            }
+        }
+        //去除重复key的list
+        List<ClientInventoryDetail> newList = new ArrayList<ClientInventoryDetail>();
+        for(Long temp:tempMap.keySet()){
+            newList.add(tempMap.get(temp));
+        }
+        return newList;
+    }
+
 
     @Override
     public Pager getBackendPager(Pager pager, long wid, long cid) throws Exception {
@@ -167,7 +227,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         sql = sql + " order by ctime desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<InventoryDetail> details = this.jdbcTemplate.query(sql, rowMapper);
-        List<ClientInventoryDetail> data = transformClients(details);
+        List<ClientInventoryDetail> data = transformClients(details,false);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         pager.setData(data);
         pager.setTotalCount(count);
@@ -195,7 +255,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
             @Override
             public List<?> step4TransformData(List<InventoryDetail> unTransformDatas, PagerSession session) throws Exception {
 
-                return transformClients(unTransformDatas);
+                return transformClients(unTransformDatas,true);
             }
         }.getPager();
     }
@@ -203,7 +263,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
     @Override
     public List<ClientInventoryDetail> getAllList(long wid, long p_spuid) throws Exception {
         List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndSPU(wid, p_spuid);
-        return transformClients(details);
+        return transformClients(details,false);
     }
 
     @Override
@@ -215,7 +275,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
     @Override
     public List<ClientInventoryDetail> getAllList(long subid) throws Exception {
         List<InventoryDetail> details = inventoryDetailDao.getAllListBySubId(subid);
-        return transformClients(details);
+        return transformClients(details,false);
     }
 
     @Override
@@ -232,7 +292,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 res.add(detail);
             }
         }
-        return transformClients(res);
+        return transformClients(res,false);
     }
 
     @Override
@@ -267,7 +327,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 }
             }
         }
-        return transformClients(res);
+        return transformClients(res,false);
     }
 
 

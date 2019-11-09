@@ -1,8 +1,6 @@
 package com.store.system.client;
 
-import com.store.system.model.InventoryDetail;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.List;

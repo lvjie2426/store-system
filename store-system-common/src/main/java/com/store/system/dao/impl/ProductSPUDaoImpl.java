@@ -50,10 +50,5 @@ public class ProductSPUDaoImpl extends CacheBaseDao<ProductSPU> implements Produ
         return null;
     }
 
-    @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
-    public List<ProductSPU> getWebAllList(long subid, long cid, double cursor, int size) throws DataAccessException {
-        return null;
-    }
 
 }
