@@ -5,6 +5,7 @@ import com.store.system.client.ClientInventoryDetail;
 import com.store.system.model.InventoryDetail;
 
 import java.util.List;
+import java.util.Map;
 
 public interface InventoryDetailService {
 
@@ -12,7 +13,6 @@ public interface InventoryDetailService {
 
     public Pager getPager(Pager pager, long wid, long cid) throws Exception;
 
-//    public Pager getSPUDetailPager(Pager pager, long wid, long cid) throws Exception;
     /**
      * 库存详情
      * method_name: getAllList
@@ -31,5 +31,7 @@ public interface InventoryDetailService {
     public List<ClientInventoryDetail> getWaringList(long wid, long cid) throws Exception;
 
     public List<ClientInventoryDetail> getExpireList(long wid, long cid) throws Exception;
+
+    public Map<Long,List<ClientInventoryDetail>> selectDetails(long wid, String search) throws Exception;
 
 }

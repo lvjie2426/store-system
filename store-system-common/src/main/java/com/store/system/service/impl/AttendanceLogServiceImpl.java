@@ -769,7 +769,6 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		List<AttendanceLog> logs = attendanceLogDao.getAllListByUserMonth(psid, sid, id, month);
 		List<ClientAttendanceLog> list=new ArrayList<>(logs.size());
 		List<ClientAttendanceLog> returnlist=new ArrayList<>(logs.size());
-
 		for(AttendanceLog attendanceLog:logs){
 			ClientAttendanceLog clientAttendanceLog=transformClient(attendanceLog);
 			list.add(clientAttendanceLog);

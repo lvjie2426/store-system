@@ -330,5 +330,17 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         return transformClients(res,false);
     }
 
+    @Override
+    public Map<Long,List<ClientInventoryDetail>> selectDetails(long wid, String search) throws Exception {
+        Map<Long,List<ClientInventoryDetail>> res = Maps.newHashMap();
+        List<InventoryDetail> details = inventoryDetailDao.selectDetails(wid,search);
+        List<ClientInventoryDetail> clients = transformClients(details,false);
+        for(ClientInventoryDetail detail:clients){
+            List<ClientInventoryDetail> list = res.computeIfAbsent(detail.getP_cid(), k -> Lists.newArrayList());
+            list.add(detail);
+        }
+        return res;
+    }
+
 
 }

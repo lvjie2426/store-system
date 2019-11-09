@@ -98,16 +98,16 @@ public class AttendanceController extends BaseController {
      */
     @RequestMapping("/getUserMonth")
     public ModelAndView getUserMonth(HttpServletRequest request, HttpServletResponse response,
-                                     long month, Model model) throws Exception {
+                                     long month, long psid, long sid, long uid, Model model) throws Exception {
         try {
-            User user = UserUtils.getUser(request);
-            List<ClientAttendanceLog> userAttendanceBuByMonth = attendanceLogService.
-                    getUserAttendanceBuByMonth(user.getPsid(), user.getSid(), user.getId(), month);
-            return this.viewNegotiating(request, response, new ResultClient(userAttendanceBuByMonth));
+            ClientAttendanceInfo clientAttendanceInfo = attendanceLogService.
+                    getUserAttendanceByMonth(psid, sid, uid, month);
+            return this.viewNegotiating(request, response, new ResultClient(clientAttendanceInfo));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
+
 
     /***
      * 获取用户某个时间正常的考勤日志
@@ -280,7 +280,7 @@ public class AttendanceController extends BaseController {
                                      long month, Model model) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            List<ClientAttendanceLog> list= attendanceLogService.
+            List<ClientAttendanceLog> list = attendanceLogService.
                     getUserAttendanceBuByMonth(user.getPsid(), user.getSid(), user.getId(), month);
             return this.viewNegotiating(request, response, new ResultClient(list));
         } catch (StoreSystemException e) {

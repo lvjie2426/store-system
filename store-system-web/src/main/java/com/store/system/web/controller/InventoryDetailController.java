@@ -5,12 +5,13 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientInventoryDetail;
 import com.store.system.client.ClientInventoryWarehouse;
-import com.store.system.client.PagerResult;
+import com.store.system.client.ClientSubordinate;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
 import com.store.system.service.InventoryDetailService;
 import com.store.system.service.InventoryWarehouseService;
+import com.store.system.service.SubordinateService;
 import com.store.system.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,8 @@ public class InventoryDetailController extends BaseController {
     private InventoryDetailService inventoryDetailService;
     @Resource
     private InventoryWarehouseService inventoryWarehouseService;
+    @Resource
+    private SubordinateService subordinateService;
 
     @RequestMapping("/getSPUDetailPager")
     public ModelAndView getSPUDetailPager(@RequestParam(value = "cid", defaultValue = "0") long cid,
@@ -147,6 +150,29 @@ public class InventoryDetailController extends BaseController {
             if (warehouses.size() > 0)
                 wid = warehouses.get(0).getId();
             List<ClientInventoryDetail> res = inventoryDetailService.getExpireList(wid, cid);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /***
+    * 库存搜索查询
+    * @Param: [request, response, model, search, subid]
+    * @return: org.springframework.web.servlet.ModelAndView
+    */
+    @RequestMapping("/selectDetails")
+    public ModelAndView selectDetails(HttpServletRequest request, HttpServletResponse response, Model model,
+                                      String search, long subid) throws Exception {
+        try {
+            ClientSubordinate subordinate = subordinateService.load(subid);
+            long pSubid = subordinate.getPid();
+            if(pSubid == 0) throw new StoreSystemException("公司为空！");
+            long wid = 0;
+            List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(subid);
+            if (warehouses.size() > 0)
+                wid = warehouses.get(0).getId();
+            Map<Long,List<ClientInventoryDetail>> res = inventoryDetailService.selectDetails(wid,search);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
