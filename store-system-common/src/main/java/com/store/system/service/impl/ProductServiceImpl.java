@@ -59,6 +59,8 @@ public class ProductServiceImpl implements ProductService {
 
     private RowMapperHelp<Commission> rowMapper = new RowMapperHelp<>(Commission.class);
 
+    private RowMapperHelp<InventoryDetail> detailMapper = new RowMapperHelp<>(InventoryDetail.class);
+
     @Resource
     private ProductPropertyNameDao productPropertyNameDao;
 
@@ -870,33 +872,38 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<Long, List<ClientProductSPU>> getCommSpuByName(long subid, String name) throws Exception {
-        Map<Long, List<ClientProductSPU>> map = new HashedMap();
-        String sql = "SELECT sku.* FROM product_sku sku, product_spu spu,  product_series s,  product_brand b WHERE  sku.spuid = spu.id   AND sku.spuid = spu.id   AND b.id = spu.bid   AND spu.subid = "+subid;
+    public Map<Long, List<ClientInventoryDetail>> getCommSpuByName(long subid, String name) throws Exception {
+        Map<Long, List<ClientInventoryDetail>> map = new HashedMap();
+        String sql = "SELECT d.* FROM inventory_detail d, product_sku sku, product_spu spu,  product_series s,  product_brand b WHERE  sku.spuid = spu.id   AND sku.spuid = spu.id AND d.p_skuid=sku.id and spu.`status`=0  AND b.id = spu.bid   AND spu.subid = "+subid;
         if (StringUtils.isNotBlank(name)) {
-            sql += " AND ( b.`name` LIKE '%"+name+"%' OR s.`name` LIKE '%"+name+"%' )";
+            sql += " AND ( b.`name` LIKE '%"+name+"%' OR s.`name` LIKE '%"+name+"%' or sku.code like '%"+name+"%' )";
         }
         sql+=" GROUP BY sku.id";
 
-        List<ProductSKU> productSKUS = jdbcTemplate.query(sql, skuRowMapper);
-
-        for (ProductSKU sku : productSKUS) {
-            List<ClientProductSKU> list = Lists.newArrayList();
-            ProductSPU load = productSPUDao.load(sku.getSpuid());
-            //根据cid 分类
+        List<InventoryDetail> inventoryDetails = jdbcTemplate.query(sql, detailMapper);
+        for (InventoryDetail inventoryDetail : inventoryDetails) {
+            //spu 信息
+            ProductSPU load = productSPUDao.load(inventoryDetail.getP_spuid());
             ClientProductSPU clientProductSPU = transformClient(load);
+            //sku 信息
+            ProductSKU productSKU = productSKUDao.load(inventoryDetail.getP_skuid());
+            List<Commission> commissions = commissionDao.getAllList(load.getSubid(), productSKU.getSpuid());
 
-            ClientProductSKU clientProductSKU = new ClientProductSKU(sku);
-            list.add(clientProductSKU);
-            clientProductSPU.setSkuList(list);
-            List<Commission> commissions = commissionDao.getAllList(load.getSubid(), sku.getSpuid());
-            clientProductSPU.setCommissions(commissions);
+            ClientInventoryDetail clientInventoryDetail=new ClientInventoryDetail(inventoryDetail);
+            clientInventoryDetail.setCommissions(commissions);
+            clientInventoryDetail.setBrandName(clientProductSPU.getBrandName());
+            clientInventoryDetail.setSeriesName(clientProductSPU.getSeriesName());
+            clientInventoryDetail.setP_retailPrice(productSKU.getRetailPrice());
+            clientInventoryDetail.setP_costPrice(productSKU.getCostPrice());
+            clientInventoryDetail.setP_integralPrice(productSKU.getIntegralPrice());
+            clientInventoryDetail.setCode(productSKU.getCode());
 
+            //根据cid 分类
             if (map.containsKey(load.getCid())) {
-                map.get(load.getCid()).add(clientProductSPU);
+                map.get(load.getCid()).add(clientInventoryDetail);
             } else {
-                List<ClientProductSPU> listspu = new ArrayList<>();
-                listspu.add(clientProductSPU);
+                List<ClientInventoryDetail> listspu = new ArrayList<>();
+                listspu.add(clientInventoryDetail);
                 map.put(load.getCid(), listspu);
             }
         }

@@ -23,13 +23,15 @@ public class ClientInventoryDetail extends InventoryDetail {
 
     private String categoryName;
 
+    private String code;//sku编码
+
     private long p_bid;
 
-    private String brandName;
+    private String brandName; //品牌名称
 
     private long p_sid;
 
-    private String seriesName;
+    private String seriesName; // 系列名称
 
     private String p_name;
 

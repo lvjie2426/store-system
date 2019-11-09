@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.store.system.client.ClientInventoryDetail;
 import com.store.system.client.ClientProductCategory;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
@@ -60,5 +61,5 @@ public interface ProductService {
 
     public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception;
 
-    public  Map<Long,List<ClientProductSPU>> getCommSpuByName(long subid, String name)throws Exception;
+    public  Map<Long,List<ClientInventoryDetail>> getCommSpuByName(long subid, String name)throws Exception;
 }

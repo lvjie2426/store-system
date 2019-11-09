@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.webframework.BaseController;
+import com.store.system.client.ClientInventoryDetail;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.client.ClientProductSPU;
 import com.store.system.client.ResultClient;
@@ -88,7 +89,7 @@ public class ProductController extends BaseController {
 
 
     /**
-     * 根据subids  name 搜索品牌 系列 商品 并根据cid 区分
+     * 根据subids  name code  搜索品牌 系列 商品 并根据cid 区分
      */
     @RequestMapping("/getCommSpuByName")
     public ModelAndView getCommSpuByName(HttpServletRequest request, HttpServletResponse response,
@@ -97,8 +98,10 @@ public class ProductController extends BaseController {
 
 
         try {
-
-            Map<Long, List<ClientProductSPU>> map = productService.getCommSpuByName(subid, name);
+            long pSubid = subid;
+            Subordinate subordinate = subordinateService.load(subid);
+            if (subordinate.getPid() > 0) pSubid = subordinate.getPid();
+            Map<Long, List<ClientInventoryDetail>> map = productService.getCommSpuByName(pSubid, name);
             return this.viewNegotiating(request, response, new ResultClient(map));
         } catch (StoreSystemException s) {
             return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));

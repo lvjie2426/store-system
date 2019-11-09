@@ -490,6 +490,9 @@ public class UserServiceImpl implements UserService {
                 clientUserOnLogin.setSubName(pSubordinate.getName());//门店名称
             }
         }
+        if( clientUserOnLogin.getBankCard().size()==0){
+            clientUserOnLogin.setBankCard(null);
+        }
         return clientUserOnLogin;
     }
 
@@ -748,6 +751,7 @@ public class UserServiceImpl implements UserService {
 
     private ClientUser transformClient(User user) throws Exception {
         ClientUser clientUser = new ClientUser(user);
+
         Set<Long> sids = Sets.newHashSet();
         if (user.getPsid() > 0) sids.add(user.getPsid());
         if (user.getSid() > 0) sids.add(user.getSid());
