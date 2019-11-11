@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
     <meta charset="UTF-8">
@@ -28,307 +29,731 @@
     <link rel="stylesheet" href="../resource/css/yanjing/medical.css">
     <!--单页样式结束-->
 
-</head>
-<body class="body-bg">
-<div class="header clear">
-    <ul class="tab-ul clear">
-        <li class="active">销售记录</li>
-        <li>入库记录</li>
-        <li>退货记录</li>
-    </ul>
-    <ol class="clear">
-        <li class="right-info active">
-            <div class="selectBox" id="selectCustomer">
-                <div class="select-box-header">
-                    <span class="text">顾客姓名</span><i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">1</li>
-                        <li value="02">2</li>
-                        <li value="03">3</li>
-                    </ul>
-                </div>
-            </div>
-            <input type="search" class="search-box" placeholder="搜索姓名">
-        </li>
-        <li class="right-info">
-            <div class="selectBox" id="selectBrand1">
-                <div class="select-box-header">
-                    <span class="text">品牌</span><i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">1</li>
-                        <li value="02">2</li>
-                        <li value="03">3</li>
-                    </ul>
-                </div>
-            </div>
-            <input type="search" class="search-box" placeholder="搜索品牌">
-        </li>
-        <li class="right-info">
-            <div class="selectBox" id="selectBrand2">
-                <div class="select-box-header">
-                    <span class="text">品牌</span><i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">1</li>
-                        <li value="02">2</li>
-                        <li value="03">3</li>
-                    </ul>
-                </div>
-            </div>
-            <input type="search" class="search-box" placeholder="搜索品牌">
-        </li>
-    </ol>
-</div>
-<div id="second-bar">
-    <ul class="filter-list clear">
-        <li class="filter-item">
-            <div class="selectBox" id="selectAllSalesStaff">
-                <div class="select-box-header">
-                    <span class="text">所有时间</span><i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">所有时间</li>
-                        <li value="02">近1个月</li>
-                        <li value="03">近3个月</li>
-                        <li value="03">近半年</li>
-                    </ul>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>
-<div class="content1 tab-item active">
-    <table id="xsjl-table" data-toggle="table"  class="table table-border"></table>
-</div>
-<div class="content2 tab-item">
-    <table id="rkjl-table" data-toggle="table"  class="table table-border"></table>
-</div>
-<div class="content3 tab-item">
-    <table id="thjl-table" data-toggle="table"  class="table table-border"></table>
-</div>
-<div class="bottom-bar">
-    <span>已选中2项</span>
-    <input type="button" class="print btn btn-primary" value="打印">
-    <input type="button" class="cancel btn btn-gray" value="取消选中">
-</div>
-<div class="content-view"></div>
-
-<!--全局JS引用-->
-<script src="../resource/js/jquery.min.js"></script>
-<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-<script src="../resource/js/lib/quakoo/project.js"></script>
-<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
-<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="../resource/js/plugins/layer/layer.js"></script>
-<script src="../resource/js/yanjing/yanjing.js"></script>
-<script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
-<!--//日期范围插件开始-->
-<script src="../resource/js/yanjing/daterange.js"></script>
-<!--//日期范围插件结束-->
-
-<script>
-
-    /*销售记录*/
-    var data3 = [
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"},
-        {stime:"2018.06.17 12:31",name:"青稞先生",phone:"110101010",brand:"品牌A",series:"系列A",cycle:"半年",quality:"2019.03.31<br/>2019.12.26",buyNum:'5',business:"张三"}
-    ];
-    $("#xsjl-table").bootstrapTable({
-        data:data3,                 //被加载的数据。
-        classes:"table",
-        pagination:true,            //是否显示分页
-        pageNumber:1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign:"center",
-        clickToSelect:true,
-        columns:[
-            {checkbox:true,valign:"middle"},
-            {field: "stime", title: "销售时间", align:"left",valign:"middle"},
-            {field: "name", title: "姓名", align:"left",valign:"middle"},
-            {field: "phone", title: "电话", align:"left",valign:"middle"},
-            {field: "brand", title: "品牌", align:"left",valign:"middle"},
-            {field: "series", title: "系列", align:"left",valign:"middle"},
-            {field: "cycle", title: "更换周期", align:"left",valign:"middle"},
-            {field: "quality", title: "保质期", align:"left",valign:"middle"},
-            {field: "buyNum", title: "购买数量", align:"left",valign:"middle"},
-            {field: "business", title: "营业员", align:"center",valign:"middle"},
-            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">打印</button>';
-                }
-            }
-
-        ]
-
-    });
-    /*入库记录*/
-    var data4 = [
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"}
-    ];
-    $("#rkjl-table").bootstrapTable({
-        data:data4,                 //被加载的数据。
-        classes:"table",
-        pagination:true,            //是否显示分页
-        pageNumber:1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign:"center",
-        clickToSelect:true,
-        columns:[
-            {checkbox:true,valign:"middle"},
-            {field: "stime", title: "入库时间", align:"left",valign:"middle"},
-            {field: "brand ", title: "品牌", align:"left",valign:"middle"},
-            {field: "series", title: "系列", align:"left",valign:"middle"},
-            {field: "model", title: "型号", align:"left",valign:"middle"},
-            {field: "cycle", title: "更换周期", align:"left",valign:"middle"},
-            {field: "productNum", title: "生产批号", align:"left",valign:"middle"},
-            {field: "quality", title: "保质期", align:"left",valign:"middle"},
-            {field: "num", title: "数量", align:"left",valign:"middle"},
-            {field: "putPerson", title: "入库人", align:"center",valign:"middle"},
-            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">打印</button>';
-                }
-            }
-
-        ]
-    });
-    /*退货记录*/
-    var data5 = [
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"},
-        {stime:"2018.12.10",brand:"品牌A",series:"系列A",model:"型号",cycle:"半年",productNum:"2319876741",quality:"2018.03.30<br/>2019.03.30",num:"50",putPerson:"李四"}
-    ];
-    $("#thjl-table").bootstrapTable({
-        data:data5,                 //被加载的数据。
-        classes:"table",
-        pagination:true,            //是否显示分页
-        pageNumber:1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign:"center",
-        clickToSelect:true,
-        columns:[
-            {checkbox:true,valign:"middle"},
-            {field: "stime", title: "退货时间", align:"left",valign:"middle"},
-            {field: "brand ", title: "品牌", align:"left",valign:"middle"},
-            {field: "series", title: "系列", align:"left",valign:"middle"},
-            {field: "model", title: "型号", align:"left",valign:"middle"},
-            {field: "cycle", title: "更换周期", align:"left",valign:"middle"},
-            {field: "productNum", title: "生产批号", align:"left",valign:"middle"},
-            {field: "quality", title: "保质期", align:"left",valign:"middle"},
-            {field: "num", title: "数量", align:"left",valign:"middle"},
-            {field: "putPerson", title: "退货人", align:"center",valign:"middle"},
-            {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">打印</button>';
-                }
-            }
-        ]
-    });
-    /**
-     * tab切换
-     * */
-    $(".tab-ul li").click(function(){
-        $(this).addClass('active').siblings().removeClass('active');
-        $(".tab-item").hide().eq($(this).index()).show();
-        $(".right-info").hide().eq($(this).index()).show();
-    });
-    /**
-     * 所有时间下拉框
-     * */
-    selectTag($("#selectAllSalesStaff"),function (ret) {
-        console.log(ret)
-    });
-    /**
-     * 顾客姓名下拉框
-     * */
-    selectTag($("#selectCustomer"),function (ret) {
-        console.log(ret)
-    });
-    /**
-     * 品牌1下拉框
-     * */
-    selectTag($("#selectBrand1"),function (ret) {
-        console.log(ret)
-    });
-    /**
-     * 品牌2下拉框
-     * */
-    selectTag($("#selectBrand2"),function (ret) {
-        console.log(ret)
-    });
-
-    $("table").click(function showBotBar(){
-        var botBar = $(".bottom-bar");
-        if($(".table tbody tr").hasClass("selected")){
-            botBar.css("display","block");
-        }else{
-            botBar.css("display","none")
+    <style>
+        #status::after {
+            width: 12px;
+            height: 12px;
+            border-radius: 100px;
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            right: 1px;
+            top: 1px;
+            bottom: 1px;
         }
 
-    });
-</script>
+        .mainGoodList {
+            width: 100%;
+            /* height: 462px;
+            overflow: scroll; */
+            box-sizing: border-box;
+            padding: 16px 16px;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row wrap;
+        }
+
+        .goot-select {
+            color: rgba(57, 57, 83, 1);
+            width: 156px;
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 30px;
+            font-family: PingFangSC-Semibold;
+            flex: 0 0 156px;
+            margin-bottom: 12px;
+        }
+
+        .goot-select.f1 {
+            margin-bottom: 0px;
+        }
+
+        .goot-select-items {
+            width: 100%;
+            color: rgba(130, 130, 151, 1);
+            height: 28px;
+            line-height: 28px;
+            padding: 0px 8px;
+            overflow: hidden;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+        }
+
+        .goot-select-items span {
+            font-size: 12px;
+            float: left;
+        }
+
+        .goot-items {
+            line-height: 17px;
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Semibold;
+            margin-bottom: 6px;
+        }
+
+        .goot-items1 {
+            line-height: 17px;
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Semibold;
+            margin-top: -1px;
+        }
+
+        .goot-items1 a {
+            color: rgba(65, 134, 220, 1);
+            text-decoration: underline;
+        }
+
+        .goot-select-items i {
+            float: right;
+        }
+
+        .zhibaoTime {
+            line-height: 16px;
+            color: rgba(130, 130, 151, 1);
+            font-size: 11px;
+            text-align: left;
+            font-family: Roboto-Bold;
+            margin-top: 4px;
+        }
+
+        .goot-goot-putong {
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            padding: 0px 16px;
+            border-top: 1px solid #eee;
+        }
+
+        .goot-goot-putong li {
+            line-height: 36px;
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Semibold;
+            overflow: hidden;
+        }
+
+        .zhekou {
+            background-color: rgba(244, 244, 248, 1);
+        }
+
+        .goot-goot-putong li .select {
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(65, 134, 220, 1);
+        }
+
+        .select i {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .goot-goot-huiyuan {
+            width: 360px;
+            height: 36px;
+            box-sizing: border-box;
+            padding: 0px 16px;
+            line-height: 36px;
+            background-color: rgba(244, 244, 248, 1);
+            box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
+        }
+
+        .goot-left {
+            float: left;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Semibold;
+        }
+
+        .goot-Right {
+            float: right;
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+
+        .goot-Right .yuan {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 100px;
+            background-color: rgba(65, 134, 220, 1);
+            position: relative;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .goot-Right .yuan::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -3px;
+            margin-left: -3px;
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 37px;
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .goot-Right a {
+            color: rgba(65, 134, 220, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            text-decoration: underline;
+            margin-left: 4px;
+        }
+
+        .lingshou {
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row wrap;
+            padding-top: 12px;
+        }
+
+        .goot-goot-putong.u2 {
+            margin-top: 62px;
+        }
+
+        #inNum {
+            width: 156px;
+            height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            padding-left: 8px;
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+        }
+
+        #inNum::-webkit-input-placeholder {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+        }
+
+        .useTime {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
+
+        .useTime div {
+            height: 17px;
+            line-height: 17px;
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            margin-bottom: 6px;
+        }
+
+        .useTime .uTime {
+            width: 180px;
+            box-sizing: border-box;
+            padding: 5px 8px 6px 8px;
+            height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            overflow: hidden;
+        }
+
+        .useTime .uTime span {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: Roboto-Medium;
+            float: left;
+        }
+
+        .useTime .uTime i {
+            float: right;
+            font-size: 12px;
+            color: rgba(130, 130, 151, 1);
+        }
+
+        #warnInput {
+            width: 60px;
+            height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            padding-left: 8px;
+        }
+
+        /* 注册医疗信息 */
+        .zhuceInfo {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 16px;
+        }
+
+        .zhuceInfo-first {
+            width: 100%;
+            height: 36px;
+            line-height: 36px;
+            background-color: rgba(255, 255, 255, 1);
+            overflow: hidden;
+            color: rgba(221, 91, 75, 1);
+            font-size: 12px;
+            box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1), 0px -1px 0px 0px rgba(244, 244, 248, 1);
+        }
+
+        .zhuceInfo-first i {
+            color: rgba(221, 91, 75, 1);
+            font-size: 12px;
+            text-align: left;
+            float: right;
+            font-family: PingFangSC-Semibold;
+        }
+
+        .zhuceInfo-items {
+            float: left;
+        }
+    </style>
+</head>
+
+<body class="body-bg">
+    <div class="header clear">
+        <ul class="tab-ul clear">
+            <li class="active">所有商品</li>
+            <li>入库记录</li>
+            <li>出库记录</li>
+        </ul>
+        <ol class="clear">
+            <li class="right-info active">
+                <div class="selectBox" id="selectCustomer">
+                    <div class="select-box-header">
+                        <span class="text">顾客姓名</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="search" class="search-box" placeholder="搜索姓名">
+            </li>
+
+            <button class="btn btn-primary" onclick="addGoods()">新增商品</button>
+
+
+            <li class="right-info">
+                <div class="selectBox" id="selectBrand1">
+                    <div class="select-box-header">
+                        <span class="text">品牌</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="search" class="search-box" placeholder="搜索品牌">
+            </li>
+            <li class="right-info">
+                <div class="selectBox" id="selectBrand2">
+                    <div class="select-box-header">
+                        <span class="text">品牌</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">1</li>
+                            <li value="02">2</li>
+                            <li value="03">3</li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="search" class="search-box" placeholder="搜索品牌">
+            </li>
+        </ol>
+    </div>
+    <div id="second-bar">
+        <ul class="filter-list clear">
+            <li class="filter-item">
+                <div class="selectBox" id="selectAllSalesStaff">
+                    <div class="select-box-header">
+                        <span class="text">所有时间</span><i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li value="01">所有时间</li>
+                            <li value="02">近1个月</li>
+                            <li value="03">近3个月</li>
+                            <li value="03">近半年</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="content1 tab-item active">
+        <table id="xsjl-table" data-toggle="table" class="table table-border"></table>
+    </div>
+    <div class="content2 tab-item">
+        <table id="rkjl-table" data-toggle="table" class="table table-border"></table>
+    </div>
+    <div class="content3 tab-item">
+        <table id="thjl-table" data-toggle="table" class="table table-border"></table>
+    </div>
+    <div class="bottom-bar">
+        <span>已选中2项</span>
+        <input type="button" class="print btn btn-primary" value="打印">
+        <input type="button" class="cancel btn btn-gray" value="取消选中">
+    </div>
+    <div class="content-view"></div>
+
+
+
+
+
+    <!--新增镜片-->
+    <div class="content-view content-view-addgoods" id="addGoodsDom">
+        <div class="mainGoodList">
+            <div class="goot-select">
+                <div class="goot-items">品牌</div>
+                <div class="goot-select-items"><span>品牌</span><i class="iconfont icon-ico_arrow_down"></i></div>
+            </div>
+            <div class="goot-select">
+                <div class="goot-items">系列</div>
+                <div class="goot-select-items"><span>系列</span><i class="iconfont icon-ico_arrow_down"></i></div>
+            </div>
+            <div class="goot-select">
+                <div class="goot-items">类型</div>
+                <div class="goot-select-items"><span>类型</span><i class="iconfont icon-ico_arrow_down"></i></div>
+            </div>
+            <div class="goot-select">
+                <div class="goot-items">更换周期</div>
+                <div class="goot-select-items"><span>更换周期</span><i class="iconfont icon-ico_arrow_down"></i></div>
+            </div>
+            <div class="goot-select">
+                <div class="goot-items">包装</div>
+                <div class="goot-select-items"><span>包装</span><i class="iconfont icon-ico_arrow_down"></i></div>
+            </div>
+            <div class="goot-select">
+                <div class="goot-items">质保时长/天*</div>
+                <div class="goot-select-items"><span>天数</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="zhibaoTime">*设定后会短信自动提醒顾客</div>
+            </div>
+            <div class="goot-select">
+                <div class="goot-items">供应商</div>
+                <div class="goot-select-items"><span>供应商</span><i class="iconfont icon-ico_arrow_down"></i></div>
+            </div>
+            <div class="goot-select">
+                <div class="goot-items">生产商</div>
+                <div class="goot-select-items"><span>生产商</span><i class="iconfont icon-ico_arrow_down"></i></div>
+            </div>
+            <div class="goot-select f1">
+                <div class="goot-items">现货范围</div>
+                <div class="goot-items1"><a href="">设定现货范围</a></div>
+            </div>
+            <div class="goot-select f1">
+                <div class="goot-items">定制单范围</div>
+                <div class="goot-items1"><a href="">设定定制范围</a></div>
+            </div>
+        </div>
+        <ul class="goot-goot-putong">
+            <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 常规商品</li>
+        </ul>
+        <ul class="goot-goot-huiyuan">
+            <li class="zhekou">
+                <span class="goot-left">会员折扣</span>
+                <span class="goot-Right">
+                    <span class="yuan"></span>参与会员折扣
+                    <a href="">设置</a>
+                </span>
+            </li>
+            <li class="lingshou">
+                <div class="goot-select">
+                    <div class="goot-items">零售价</div>
+                    <div class="goot-items1"><a href="">设定零售价</a></div>
+                </div>
+                <div class="goot-select">
+                    <div class="goot-items">提成</div>
+                    <div class="goot-items1"><a href="">设定提成</a></div>
+                </div>
+            </li>
+        </ul>
+        <ul class="goot-goot-putong u2">
+            <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 积分商品</li>
+        </ul>
+        <ul class="goot-goot-putong">
+            <li class="lingshou">
+                <div class="goot-select">
+                    <div class="goot-items">积分价</div>
+                    <div class="goot-items1"><a href="">设定积分价</a></div>
+                </div>
+                <div class="goot-select">
+                    <div class="goot-items">兑换数量上限</div>
+                    <div class="goot-items1"><input type="text" value="100" placeholder="输入数量" id="inNum"></div>
+                </div>
+            </li>
+            <div class="useTime">
+                <div>有效期</div>
+                <div class="uTime"><span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i></div>
+            </div>
+            <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 当库存低于 <input type="text"
+                    placeholder="数量" id="warnInput"> 触发警报</li>
+        </ul>
+
+        <!-- 注册医疗信息 -->
+        <ul class="zhuceInfo">
+            <li class="zhuceInfo-first">
+                <span class="zhuceInfo-items">医疗器械注册信息</span>
+                <i class="iconfont icon-ico_arrow_down"></i>
+            </li>
+            <li>
+                <ul></ul>
+            </li>
+        </ul>
+
+    </div>
+
+    <!--全局JS引用-->
+    <script src="../resource/js/jquery.min.js"></script>
+    <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakoo/project.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+    <script src="../resource/layui/layui.js"></script>
+    <script src="../resource/js/yanjing/yanjing.js"></script>
+    <script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
+    <!--//日期范围插件开始-->
+    <script src="../resource/js/yanjing/daterange.js"></script>
+    <!--//日期范围插件结束-->
+
+    <script>
+
+        /*销售记录*/
+        var data3 = [
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" },
+            { stime: "2018.06.17 12:31", name: "青稞先生", phone: "110101010", brand: "品牌A", series: "系列A", cycle: "半年", quality: "2019.03.31<br/>2019.12.26", buyNum: '5', business: "张三" }
+        ];
+        $("#xsjl-table").bootstrapTable({
+            data: data3,                 //被加载的数据。
+            classes: "table",
+            pagination: true,            //是否显示分页
+            pageNumber: 1,               //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                { checkbox: true, valign: "middle" },
+                { field: "stime", title: "销售时间", align: "left", valign: "middle" },
+                { field: "name", title: "姓名", align: "left", valign: "middle" },
+                { field: "phone", title: "电话", align: "left", valign: "middle" },
+                { field: "brand", title: "品牌", align: "left", valign: "middle" },
+                { field: "series", title: "系列", align: "left", valign: "middle" },
+                { field: "cycle", title: "更换周期", align: "left", valign: "middle" },
+                { field: "quality", title: "保质期", align: "left", valign: "middle" },
+                { field: "buyNum", title: "购买数量", align: "left", valign: "middle" },
+                { field: "business", title: "营业员", align: "center", valign: "middle" },
+                {
+                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary">打印</button>';
+                    }
+                }
+
+            ]
+
+        });
+        /*入库记录*/
+        var data4 = [
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" }
+        ];
+        $("#rkjl-table").bootstrapTable({
+            data: data4,                 //被加载的数据。
+            classes: "table",
+            pagination: true,            //是否显示分页
+            pageNumber: 1,               //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                { checkbox: true, valign: "middle" },
+                { field: "stime", title: "入库时间", align: "left", valign: "middle" },
+                { field: "brand ", title: "品牌", align: "left", valign: "middle" },
+                { field: "series", title: "系列", align: "left", valign: "middle" },
+                { field: "model", title: "型号", align: "left", valign: "middle" },
+                { field: "cycle", title: "更换周期", align: "left", valign: "middle" },
+                { field: "productNum", title: "生产批号", align: "left", valign: "middle" },
+                { field: "quality", title: "保质期", align: "left", valign: "middle" },
+                { field: "num", title: "数量", align: "left", valign: "middle" },
+                { field: "putPerson", title: "入库人", align: "center", valign: "middle" },
+                {
+                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary">打印</button>';
+                    }
+                }
+
+            ]
+        });
+        /*退货记录*/
+        var data5 = [
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" },
+            { stime: "2018.12.10", brand: "品牌A", series: "系列A", model: "型号", cycle: "半年", productNum: "2319876741", quality: "2018.03.30<br/>2019.03.30", num: "50", putPerson: "李四" }
+        ];
+        $("#thjl-table").bootstrapTable({
+            data: data5,                 //被加载的数据。
+            classes: "table",
+            pagination: true,            //是否显示分页
+            pageNumber: 1,               //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            columns: [
+                { checkbox: true, valign: "middle" },
+                { field: "stime", title: "退货时间", align: "left", valign: "middle" },
+                { field: "brand ", title: "品牌", align: "left", valign: "middle" },
+                { field: "series", title: "系列", align: "left", valign: "middle" },
+                { field: "model", title: "型号", align: "left", valign: "middle" },
+                { field: "cycle", title: "更换周期", align: "left", valign: "middle" },
+                { field: "productNum", title: "生产批号", align: "left", valign: "middle" },
+                { field: "quality", title: "保质期", align: "left", valign: "middle" },
+                { field: "num", title: "数量", align: "left", valign: "middle" },
+                { field: "putPerson", title: "退货人", align: "center", valign: "middle" },
+                {
+                    field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                        return '<button class="btn btn-primary">打印</button>';
+                    }
+                }
+            ]
+        });
+        /**
+         * tab切换
+         * */
+        $(".tab-ul li").click(function () {
+            $(this).addClass('active').siblings().removeClass('active');
+            $(".tab-item").hide().eq($(this).index()).show();
+            $(".right-info").hide().eq($(this).index()).show();
+        });
+        /**
+         * 所有时间下拉框
+         * */
+        selectTag($("#selectAllSalesStaff"), function (ret) {
+            console.log(ret)
+        });
+        /**
+         * 顾客姓名下拉框
+         * */
+        selectTag($("#selectCustomer"), function (ret) {
+            console.log(ret)
+        });
+        /**
+         * 品牌1下拉框
+         * */
+        selectTag($("#selectBrand1"), function (ret) {
+            console.log(ret)
+        });
+        /**
+         * 品牌2下拉框
+         * */
+        selectTag($("#selectBrand2"), function (ret) {
+            console.log(ret)
+        });
+
+        $("table").click(function showBotBar() {
+            var botBar = $(".bottom-bar");
+            if ($(".table tbody tr").hasClass("selected")) {
+                botBar.css("display", "block");
+            } else {
+                botBar.css("display", "none")
+            }
+
+        });
+
+        //添加商品
+        function addGoods() {
+            layer.open({
+                type: 1, shade: 0.01, title: ['<div style="float: left;font-size: 13px;">新增隐形眼镜</div><div style="float: right;font-size:12px;color:rgba(130, 130, 151, 1);">销售状态<span id="status" style="position:relative;vertical-align: middle;display: inline-block;width:24px;height:16px;border-radius: 100px;background-color:rgba(65, 134, 220, 1);"></span></div>', 'color: rgba(57, 57, 83, 1);background-color:#fff;font-size: 13px;font-family: PingFangSC-Semibold;'],
+                skin: 'layui-layer-add-goods  layui-layer-addtsgoods', //样式类名
+                area: ['360px', '550px'],
+                move: '.mine-title',
+                anim: 0,
+                maxWidth: '360',
+                closeBtn: 0, //不显示关闭按钮
+                resize: false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-addgoods'),
+            });
+        }
+    </script>
 </body>
+
 </html>
