@@ -35,6 +35,13 @@ public class PunchCardDaoImpl extends CacheBaseDao<PunchCardLog>
     }
 
     @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<PunchCardLog> getAllList(long uid, long day)
+            throws DataAccessException {
+        return null;
+    }
+
+    @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
     public int getCount(long uid) throws DataAccessException {
         return 0;

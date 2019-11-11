@@ -19,4 +19,8 @@ public interface SaleCategoryStatisticsService {
 
     public Map<Long,List<ClientCategoryStatistics>> searchSale(long startTime, long endTime, long subId) throws Exception;
 
+    public ClientCategoryStatistics getDayListSum(long subId, List<Long> days) throws Exception;
+
+    public ClientCategoryStatistics searchSaleSum(long startTime, long endTime, long subId) throws Exception;
+
 }

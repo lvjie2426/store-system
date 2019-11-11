@@ -28,34 +28,44 @@ public class SubSettingsServiceImpl implements SubSettingsService {
             subSettings.setSubId(subSettings.getSubId());
             subSettingsDao.insert(subSettings);
         } else {
-            if(subSettings.getHumanizedStatus()>0){
+            if (subSettings.getHumanizedStatus() > 0) {
                 dbInfo.setHumanizedStatus(subSettings.getHumanizedStatus());
             }
-            if(subSettings.getSignTime()>0){
+            if (subSettings.getSignTime() > 0) {
                 dbInfo.setSignTime(subSettings.getSignTime());
+            } else if (subSettings.getSignTime() == -1) {
+                dbInfo.setSignTime(0);
             }
-            if(subSettings.getLateTime()>0){
+            if (subSettings.getLateTime() > 0) {
                 dbInfo.setLateTime(subSettings.getLateTime());
+            } else if (subSettings.getLateTime() == -1) {
+                dbInfo.setLateTime(0);
             }
-            if(subSettings.getEarlyTime()>0){
+            if (subSettings.getEarlyTime() > 0) {
                 dbInfo.setEarlyTime(subSettings.getEarlyTime());
+            } else if (subSettings.getEarlyTime() == -1) {
+                dbInfo.setEarlyTime(0);
             }
-            if(subSettings.getBeforeTime()>0){
+            if (subSettings.getBeforeTime() > 0) {
                 dbInfo.setBeforeTime(subSettings.getBeforeTime());
+            } else if (subSettings.getBeforeTime() == -1) {
+                dbInfo.setBeforeTime(0);
             }
-            if(subSettings.getAfterTime()>0){
+            if (subSettings.getAfterTime() > 0) {
                 dbInfo.setAfterTime(subSettings.getAfterTime());
+            } else if (subSettings.getAfterTime() == -1) {
+                dbInfo.setAfterTime(0);
             }
-            if(subSettings.getPunchCardPlaces().size()>0){
+            if (subSettings.getPunchCardPlaces().size() > 0) {
                 dbInfo.setPunchCardPlaces(subSettings.getPunchCardPlaces());
             }
-            if(subSettings.getWirelessNetworks().size()>0){
+            if (subSettings.getWirelessNetworks().size() > 0) {
                 dbInfo.setWirelessNetworks(subSettings.getWirelessNetworks());
             }
-            if(subSettings.getPlaceStatus()>0){
+            if (subSettings.getPlaceStatus() > 0) {
                 dbInfo.setPlaceStatus(subSettings.getPlaceStatus());
             }
-            if(subSettings.getNetStatus()>0){
+            if (subSettings.getNetStatus() > 0) {
                 dbInfo.setNetStatus(subSettings.getNetStatus());
             }
             subSettingsDao.update(dbInfo);

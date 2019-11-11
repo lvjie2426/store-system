@@ -7,6 +7,8 @@ import com.store.system.model.attendance.PunchCardLog;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.util.List;
+
 @Data
 public class ClientAttendanceLog extends AttendanceLog {
 
@@ -40,7 +42,7 @@ public class ClientAttendanceLog extends AttendanceLog {
      */
     private int endType;
 
-    private PunchCardLog punchCardLog;
+    private List<PunchCardLog> cardLogs;
 
 
     public ClientAttendanceLog(AttendanceLog attendanceLog){

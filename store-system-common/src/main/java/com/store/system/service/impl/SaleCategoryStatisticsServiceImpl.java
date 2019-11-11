@@ -50,6 +50,35 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
     }
 
     @Override
+    public ClientCategoryStatistics getDayListSum(long subId, List<Long> days) throws Exception {
+        List<SaleCategoryStatistics> list=Lists.newArrayList();
+        for (Long day : days) {
+            list.addAll(saleCategoryStatisticsDao.getSubList(subId, day));
+        }
+        Map<Long,List<ClientCategoryStatistics>> map = transformClientSale(list,subId);
+        return transformClientSum(map);
+    }
+
+    @Override
+    public ClientCategoryStatistics searchSaleSum(long startTime, long endTime, long subId) throws Exception {
+        String sql = "SELECT  *  FROM `sale_category_statistics` where  1=1 ";
+        if (subId > 0) {
+            sql = sql + " and `subId` = " + subId;
+        }
+        if (startTime > 0) {
+            sql = sql + " and `day` > " + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `day` < " + endTime;
+        }
+
+        sql = sql + " order  by `day` desc";
+        List<SaleCategoryStatistics> saleStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleCategoryStatistics.class));
+        Map<Long,List<ClientCategoryStatistics>> map = transformClientSale(saleStatistics,subId);
+        return transformClientSum(map);
+    }
+
+    @Override
     public Map<Long,List<ClientCategoryStatistics>> searchSale(long startTime, long endTime, long subId) throws Exception {
         String sql = "SELECT  *  FROM `sale_category_statistics` where  1=1 ";
         if (subId > 0) {
@@ -158,6 +187,60 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         client.setPerPrice(perPrice);
         client.setStatistics(saleCategoryStatistics);
         return client;
+    }
+
+    private ClientCategoryStatistics transformClientSum(Map<Long,List<ClientCategoryStatistics>> map) throws Exception {
+        ClientCategoryStatistics res = new ClientCategoryStatistics();
+        List<ClientCategoryStatistics> list = Lists.newArrayList();
+        for(Map.Entry<Long,List<ClientCategoryStatistics>> entry:map.entrySet()){
+            list.addAll(entry.getValue());
+        }
+        double sale=0;
+        double perPrice=0;
+        int num=0;
+        double rate=0;
+        double rate_0to100=0;
+        double rate_100to500=0;
+        double rate_500to1000=0;
+        double rate_1000to2000=0;
+        double rate_2000=0;
+        int num_0to100=0;
+        int num_100to500=0;
+        int num_500to1000=0;
+        int num_1000to2000=0;
+        int num_2000=0;
+
+        for(ClientCategoryStatistics statistics:list){
+            sale += statistics.getSale();
+            perPrice += statistics.getPerPrice();
+            num += statistics.getNum();
+            rate += statistics.getRate();
+            rate_0to100 += statistics.getRate_0to100();
+            rate_100to500 += statistics.getRate_100to500();
+            rate_500to1000 += statistics.getRate_500to1000();
+            rate_1000to2000 += statistics.getRate_1000to2000();
+            rate_2000 += statistics.getRate_2000();
+            num_0to100 += statistics.getNum_0to100();
+            num_100to500 += statistics.getNum_100to500();
+            num_500to1000 += statistics.getNum_500to1000();
+            num_1000to2000 += statistics.getNum_1000to2000();
+            num_2000 += statistics.getNum_2000();
+        }
+        res.setSale(sale);
+        res.setPerPrice(perPrice);
+        res.setNum(num);
+        res.setRate(rate);
+        res.setRate_0to100(rate_0to100);
+        res.setRate_100to500(rate_100to500);
+        res.setRate_500to1000(rate_500to1000);
+        res.setRate_1000to2000(rate_1000to2000);
+        res.setRate_2000(rate_2000);
+        res.setNum_0to100(num_0to100);
+        res.setNum_100to500(num_100to500);
+        res.setNum_500to1000(num_500to1000);
+        res.setNum_1000to2000(num_1000to2000);
+        res.setNum_2000(num_2000);
+        return res;
     }
 
 }

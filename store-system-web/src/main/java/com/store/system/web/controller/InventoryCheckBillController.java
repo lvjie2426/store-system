@@ -131,6 +131,20 @@ public class InventoryCheckBillController extends BaseController {
         }
     }
 
+    @RequestMapping("/load")
+    public ModelAndView load(@RequestParam(value = "id") long id, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            List<ClientInventoryCheckBill> list = inventoryCheckBillService.load(id);
+            ClientInventoryCheckBill res = null;
+            if(list.size()>0){
+                res=list.get(0);
+            }
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
     //保存盘点
     @RequestMapping("/save")
     public ModelAndView save(InventoryCheckBill inventoryCheckBill, HttpServletRequest request, HttpServletResponse response, Model model,

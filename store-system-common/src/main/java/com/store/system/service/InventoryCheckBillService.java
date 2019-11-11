@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.store.system.client.ClientInventoryCheckBill;
 import com.store.system.model.InventoryCheckBill;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface InventoryCheckBillService {
     public boolean save(InventoryCheckBill inventoryCheckBill) throws Exception; //盘点
 
     public boolean end(long id, long checkUid) throws Exception;
+
+    public List<ClientInventoryCheckBill> load(long id) throws Exception;
 
 
 

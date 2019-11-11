@@ -67,4 +67,36 @@ public class StatisticsSaleCategoryController extends BaseController{
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
         }
     }
+
+
+    @RequestMapping("/saleSubordinatesSum")
+    public ModelAndView saleSubordinatesSum(HttpServletRequest request, HttpServletResponse response,
+                                                 @RequestParam(name = "subIds[]") List<Long> subIds, int type,
+                                                 @RequestParam(name = "startTime",required = false,defaultValue = "0") long startTime,
+                                                 @RequestParam(name = "endTime",required = false,defaultValue = "0") long endTime)throws Exception{
+        try {
+            ClientCategoryStatistics statistics = new ClientCategoryStatistics();
+            for(Long subId:subIds) {
+                if (type == ClientSaleStatistics.type_week) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_WEEK) - 1);
+                    statistics = saleCategoryStatisticsService.getDayListSum(subId, days);
+                } else if (type == ClientSaleStatistics.type_month) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_MONTH));
+                    statistics = saleCategoryStatisticsService.getDayListSum(subId, days);
+                } else if (type == ClientSaleStatistics.type_halfYear) {
+                    List<Long> days = TimeUtils.getPastMonthDays(6);
+                    statistics = saleCategoryStatisticsService.getDayListSum(subId, days);
+                } else if (type == ClientSaleStatistics.type_search) {
+                    statistics  = saleCategoryStatisticsService.searchSaleSum(startTime, endTime, subId);
+                }
+            }
+            return this.viewNegotiating(request,response,new ResultClient(true,statistics));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
 }

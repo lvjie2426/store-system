@@ -176,6 +176,12 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
+    public List<ClientInventoryCheckBill> load(long id) throws Exception {
+        InventoryCheckBill checkBill = inventoryCheckBillDao.load(id);
+        return transformClients(Lists.newArrayList(checkBill));
+    }
+
+    @Override
     public boolean save(InventoryCheckBill inventoryCheckBill) throws Exception {
         InventoryCheckBill dbCheckBill = inventoryCheckBillDao.load(inventoryCheckBill.getId());
         int status = dbCheckBill.getStatus();

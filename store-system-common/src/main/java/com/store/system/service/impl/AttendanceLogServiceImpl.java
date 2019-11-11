@@ -163,7 +163,6 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		PunchCardLog punchCardLog = punchCardLog(dblog, uid, time, img, punchCardType, card, snCode, no,
 				wifeNumber, wifeName, punchCardPlace, mapData, callName);
 		ClientAttendanceLog res = new ClientAttendanceLog(dblog);
-		res.setPunchCardLog(punchCardLog);
 		return res;
 
 	}
@@ -203,7 +202,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	 * 获取一条数据
 	 */
 	public ClientAttendanceLog loadAttendanceLog(long uid, long day) throws Exception{
-		User user =userService.load(uid);
+		User user = userService.load(uid);
 		return transformClient(loadOrCreateLog(user,TimeUtils.getTimeFormDay(day)));
 	}
 
@@ -310,12 +309,12 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		for (AttendanceLog log : logs) {
 			ClientAttendanceLog client = transformClient(log);
 			if(status) {
-				if (client.getDayType()==ClientAttendanceLog.attendanceType_normal &&
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_normal ||
 						client.getStartType() == ClientAttendanceLog.attendanceType_normal) {
 					res.add(client);
 				}
 			}else{
-				if (client.getDayType()==ClientAttendanceLog.attendanceType_late &&
+				if (client.getDayType()==ClientAttendanceLog.attendanceType_late ||
 						client.getStartType() == ClientAttendanceLog.attendanceType_late) {
 					res.add(client);
 				}
@@ -976,9 +975,9 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 			}else if(subSettings.getHumanizedStatus()==SubSettings.status_on){
 				//根据管理端人性化设置计算迟到、早退
 				if (attendanceLog.getStartTime() > 0) {
-					Date date = new Date(subSettings.getLateTime());
+					Date date = new Date(attendanceLog.getStartTime());
 					int mins = date.getHours() * 60 + date.getMinutes();
-					if (mins > (attendanceLog.getStart() + subSettings.getLateTime())) {
+					if (mins > (attendanceLog.getStart() + subSettings.getLateTime()*60)) {
 						late = true;
 						clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_late);
 					}
@@ -989,7 +988,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 				if (attendanceLog.getEndTime() > 0) {
 					Date date = new Date(attendanceLog.getEndTime());
 					int mins = date.getHours() * 60 + date.getMinutes();
-					if (mins < (attendanceLog.getEnd() - subSettings.getEarlyTime())) {
+					if (mins < (attendanceLog.getEnd() - subSettings.getEarlyTime()*60)) {
 						leaveEarly = true;
 						clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_leaveEarly);
 					}
@@ -1037,6 +1036,9 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 			if(user!=null) {
 				clientAttendanceLog.setName(user.getName());
 			}
+
+			List<PunchCardLog> punchCardLogs = punchCardDao.getAllList(attendanceLog.getUid(),attendanceLog.getDay());
+			clientAttendanceLog.setCardLogs(punchCardLogs);
 		}
 		return clientAttendanceLog;
 

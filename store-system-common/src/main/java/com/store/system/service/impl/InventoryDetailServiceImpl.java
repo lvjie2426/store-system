@@ -312,9 +312,9 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
                 long nurseEndTime=0;
                 long endTime=0;
 
-                if(sku.getProperties().containsKey(33L)){
-                    nurseEndTime = Long.parseLong((String) sku.getProperties().get(33L));
-                }
+//                if(sku.getProperties().containsKey(33L)){
+//                    nurseEndTime = Long.parseLong((String) sku.getProperties().get(33L));
+//                }
                 //隐形眼镜的保质期
                 if(sku.getProperties().containsKey(35L)) {
                     endTime = Long.parseLong((String)  sku.getProperties().get(35L));
