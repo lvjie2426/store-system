@@ -80,7 +80,23 @@ public interface UserService {
 
     public boolean updateUserPermission(long uid, List<Long> pids)throws Exception;
 
+    /**
+     * 创建登录的验证码
+     * @param phone     手机号
+     */
+    boolean createLoginCodeAuthCode(String phone) throws Exception;
 
+    /**
+     * 获取登录的验证码
+     * @param phone     手机号
+     */
+    String getLoginCodeAuthCode(String phone) throws Exception;
+
+    /**
+     * 短信验证码登陆(注册登录) 如果有微信openId则更新openId
+     * @param phone     手机号
+     */
+    public ClientUserOnLogin loginForCode(String phone) throws Exception;
 
     public boolean createAuthCode(String phone, String template)throws Exception;
 

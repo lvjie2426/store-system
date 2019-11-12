@@ -129,7 +129,9 @@ public class InventoryInBillController extends BaseController {
             if(warehouses.size()>0)
                 inventoryInBill.setWid(warehouses.get(0).getId());
             for(InventoryInBillItem bill:billItems){
-                bill.setCode(String.valueOf(CodeUtil.getRandom(10)));
+                if(StringUtils.isBlank(bill.getCode())) {
+                    bill.setCode(String.valueOf(CodeUtil.getRandom(10)));
+                }
             }
             inventoryInBill.setItems(billItems);
             inventoryInBill = inventoryInBillService.add(inventoryInBill);

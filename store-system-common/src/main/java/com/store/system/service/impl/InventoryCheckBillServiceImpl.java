@@ -369,6 +369,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
                     ProductSKU sku = skuMap.get(detail.getP_skuid());
                     if(null != sku) {
                         clientItem.setCode(sku.getCode());
+                        clientItem.setEyeType(sku.getEyeType());
                         clientItem.setProperties(sku.getProperties());
                         Map<Object,Object> map_value = Maps.newHashMap();
                         map_value = productService.getProperties(sku,clientItem,"k_properties_value");

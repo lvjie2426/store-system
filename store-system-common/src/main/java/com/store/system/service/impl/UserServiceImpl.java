@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
+import com.quakoo.baseFramework.property.PropertyLoader;
 import com.quakoo.baseFramework.redis.JedisX;
 import com.quakoo.baseFramework.secure.MD5Utils;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
@@ -23,8 +24,12 @@ import com.store.system.service.BusinessOrderService;
 import com.store.system.service.OrderService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
+import com.store.system.util.DateUtils;
+import com.store.system.util.NumberUtils;
 import com.store.system.util.SmsUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -85,6 +90,21 @@ public class UserServiceImpl implements UserService {
     private RowMapperHelp<User> rowMapper = new RowMapperHelp<>(User.class);
 
     private RowMapperHelp<UserGrade> ugMapper = new RowMapperHelp<>(UserGrade.class);
+
+
+    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    PropertyLoader loader = PropertyLoader.getInstance("dao.properties");
+    String messageAccessKeyId = loader.getProperty("accessKeyId");
+    String messageAccessKeySecret = loader.getProperty("accessKeySecret");
+    String company = loader.getProperty("company");
+    String templateId = loader.getProperty("templateId");
+
+    String appId = loader.getProperty("appId");
+    String appsecret = loader.getProperty("appsecret");
+
+    String QrCodeAppId = loader.getProperty("QrCodeAppId","");
+    String QrCodeAppsecret = loader.getProperty("QrCodeAppsecret","");
 
     @Autowired(required = true)
     @Qualifier("cachePool")
@@ -701,6 +721,59 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean createLoginCodeAuthCode(String phone) throws Exception {
+        String sent = cache.getString("exists_login_code_" + auth_code_key(phone));
+        if (StringUtils.isNotBlank(sent)) {
+            throw new StoreSystemException("验证码已经发送");
+        }
+        Random random = new Random();
+        int num = random.nextInt(9999);
+        String code = String.format("%04d", num);
+        String temCode = "{\"code\":\"" + code + "\"}";
+        boolean sign = SmsUtils.sendConfigMessge(phone, templateId,temCode,messageAccessKeyId,messageAccessKeySecret,company);
+        if (sign) {
+            cache.setString("exists_login_code_" + auth_code_key(phone), 58, "true");
+            cache.setString("login_code_" + auth_code_key(phone), 5 * 60, code);
+            cache.setString("login_code_time_" + phone, 10 * 60, System.currentTimeMillis()+"");
+
+        }
+        return true;
+    }
+
+    @Override
+    public String getLoginCodeAuthCode(String phone) throws Exception {
+        return cache.getString("login_code_" + auth_code_key(phone));
+    }
+
+    @Override
+    public ClientUserOnLogin loginForCode(String phone) throws Exception {
+        LoginUserPool loginUserPool = new LoginUserPool();
+        loginUserPool.setAccount(phone);
+        loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+        loginUserPool.setUserType(User.userType_backendUser);
+        LoginUserPool load = loginUserPoolDao.load(loginUserPool);
+
+        //验证码登录：两种情况
+        //一:提示未注册  这个一般在发送登录验证码时就进行了判断,这里第二次验证
+        if(load == null){
+            throw new StoreSystemException("你还没有注册账号");
+        }
+
+        User dbUser = userDao.load(load.getUid());
+        if (null == dbUser || dbUser.getStatus() == User.status_delete) {
+            throw new StoreSystemException("用户不存在");
+        }
+
+        if (dbUser.getStatus() == User.status_delete){
+            throw new StoreSystemException("用户已被冻结");
+        }
+        Random rand = new Random();
+        dbUser.setRand(rand.nextInt(100000000));
+        userDao.update(dbUser);
+        return transformUser(dbUser);
+    }
+
+    @Override
     public boolean createAuthCode(String phone, String template) throws Exception {
         String sent = cache.getString("exists_auth_common_user_" + (phone));
         if (StringUtils.isNotBlank(sent)) {
@@ -709,7 +782,8 @@ public class UserServiceImpl implements UserService {
         Random random = new Random();
         int num = random.nextInt(9999);
         String code = String.format("%04d", num);
-        boolean sign = SmsUtils.sendSms(phone, template, code);
+        boolean sign = SmsUtils.sendConfigMessge(phone, template,code,messageAccessKeyId,messageAccessKeySecret,company);
+//        boolean sign = SmsUtils.sendSms(phone, template, code);
         if (sign) {
             cache.setString("exists_auth_common_user_" + (phone), 58, "true");
             cache.setString("auth_common_user_" + (phone), 5 * 60, code);
@@ -732,6 +806,10 @@ public class UserServiceImpl implements UserService {
         userDao.increment(userDao.load(id), "score", num);
     }
 
+    private ClientUserOnLogin transformUser(User user) throws Exception {
+        ClientUserOnLogin clientUserOnLogin = new ClientUserOnLogin(user);
+        return clientUserOnLogin;
+    }
 
     public List<ClientUser> transformClient(List<User> users) throws Exception {
         Set<Long> sids = Sets.newHashSet();
@@ -828,10 +906,6 @@ public class UserServiceImpl implements UserService {
         //封面图
         if (StringUtils.isNotBlank(user.getCover())) {
             olduser.setCover(user.getCover());
-        }
-        //生日
-        if (user.getBirthdate() != 0) {
-            olduser.setBirthdate(user.getBirthdate());
         }
         //职位
         if (StringUtils.isNotBlank(user.getJob())) {
