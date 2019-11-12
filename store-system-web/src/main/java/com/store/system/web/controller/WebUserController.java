@@ -3,6 +3,8 @@ package com.store.system.web.controller;
 
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.property.PropertyLoader;
+import com.quakoo.baseFramework.redis.JedisX;
 import com.quakoo.baseFramework.secure.MD5Utils;
 import com.quakoo.webframework.BaseController;
 import com.store.system.bean.OptometryInfoRes;
@@ -12,26 +14,20 @@ import com.store.system.client.PagerResult;
 import com.store.system.client.ResultClient;
 import com.store.system.dao.OptometryInfoDao;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.LoginUserPool;
-import com.store.system.model.OptometryInfo;
-import com.store.system.model.Subordinate;
-import com.store.system.model.User;
-import com.store.system.service.OptometryInfoService;
-import com.store.system.service.PayService;
+import com.store.system.model.*;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
-import com.store.system.util.SmsUtils;
 import com.store.system.util.UserUtils;
 import com.store.system.util.WebPermissionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -43,6 +39,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/web/user")
 public class WebUserController extends BaseController {
+
+    @Autowired(required = true)
+    @Qualifier("cachePool")
+    protected JedisX cache;
+
+    private static final long FIVE_MINUTES = 5*60*1000;
     
     @Autowired
     private UserService userService;
@@ -50,47 +52,54 @@ public class WebUserController extends BaseController {
     private OptometryInfoDao optometryInfoDao;
     @Autowired
     private SubordinateService subordinateService;
-
+    PropertyLoader loader = PropertyLoader.getInstance("dao.properties");
+    String templateRegisterCode = loader.getProperty("templateRegisterCode");
+    String templateLoginCode = loader.getProperty("templateLoginCode");
 	/**
 	 * 登录
 	 * @returnd
 	 * @throws Exception
 	 */
 	@RequestMapping("/login")
-	public ModelAndView login(HttpServletRequest request,
-											 HttpServletResponse response,
-											 User loginUser,@RequestParam(required = false, value = "authCode") String authCode,
-											 Model model) throws Exception {
-        try {
-//            if (StringUtils.isNotBlank(loginUser.getPhone())) {
-//                String rightAuthCode = userService.getAuthCode(loginUser.getPhone());
-//                if (StringUtils.isBlank(authCode) && StringUtils.isBlank(loginUser.getPassword()))
-//                    throw new StoreSystemException("请输入密码或验证码");
-//                if (StringUtils.isNotBlank(authCode) && !authCode.equals(rightAuthCode)) {
-//                    throw new StoreSystemException("验证码不正确");
-//                }
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response,
+                              @RequestParam(required = true, value = "phone") String phone,
+                              @RequestParam(required = true, value = "authCode") String authCode) throws Exception {
+//        String timeRes = cache.getString("login_code_time_" + (phone));
+//        if(StringUtils.isNotBlank(timeRes)){
+//            long time = Long.valueOf(timeRes);
+//            if(System.currentTimeMillis() - time > FIVE_MINUTES){
+//                return this.viewNegotiating(request, response, new ResultClient("验证码失效，请重新获取"));
 //            }
-            ClientUserOnLogin clientUserOnLogin = userService.login(loginUser, authCode);
-//            if (!WebPermissionUtil.hasSchoolLoginPermission(userService.getUserPermissions(clientUserOnLogin.getId()))) {
-//                clientUserOnLogin.setAdmin(false);
-//            }else{
-//                clientUserOnLogin.setAdmin(true);
-//            }
-//            return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
+//        }
+        String res = userService.getLoginCodeAuthCode(phone);
+        try{
+            ClientUserOnLogin clientUserOnLogin = userService.loginForCode(phone);
+            List<Permission> permissions = userService.getUserPermissions(clientUserOnLogin.getId());
+            if (!WebPermissionUtil.hasSchoolLoginPermission(permissions)) {
+                clientUserOnLogin.setAdmin(false);
+            }else{
+                clientUserOnLogin.setAdmin(true);
+            }
+            try{
+                cache.delete("exists_login_code_" + (phone));
+                cache.delete("login_code_" + (phone));
+                cache.delete("login_code_time_" + phone);
+            }catch (Exception e){
+
+            }
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));
+        }catch (StoreSystemException e){
+            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
         }
 	}
-
 
 	@RequestMapping("/createAuthCodeOnReg")
 	public ModelAndView createAuthCodeOnReg(@RequestParam(required = true, value = "phone") String phone,
 									   HttpServletRequest request, HttpServletResponse response, final Model model) throws Exception {
         try {
-            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, phone, User.userType_user);
+            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, phone, User.userType_backendUser);
             if (uid > 0) throw new StoreSystemException("当前手机号已注册");
-            return this.viewNegotiating(request, response, new ResultClient(true, userService.createAuthCode(String.valueOf(phone), SmsUtils.templateLoginCode)));
+            return this.viewNegotiating(request, response, new ResultClient(true, userService.createAuthCode(String.valueOf(phone), templateRegisterCode)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));
         }
@@ -128,16 +137,31 @@ public class WebUserController extends BaseController {
         }
     }
 
-
     @RequestMapping("/createAuthCodeOnLogin")
-    public ModelAndView createAuthCode(@RequestParam(required = true, value = "phone") String phone,
-                                       HttpServletRequest request, HttpServletResponse response, final Model model) throws Exception {
+    public ModelAndView createAuthCode(HttpServletRequest request, HttpServletResponse response,
+                                       @RequestParam(required = true, value = "phone") String phone) throws Exception {
         try {
-            return this.viewNegotiating(request, response, new ResultClient(true, userService.createAuthCode(String.valueOf(phone), SmsUtils.templateLoginCode)));
+            long uid = userService.loadByAccount(LoginUserPool.loginType_phone,phone, User.userType_backendUser);
+            if (uid == 0) {
+                throw new StoreSystemException("当前手机号未注册");
+            }
+            boolean res = userService.createLoginCodeAuthCode(phone);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
+
+
+//    @RequestMapping("/createAuthCodeOnLogin")
+//    public ModelAndView createAuthCode(@RequestParam(required = true, value = "phone") String phone,
+//                                       HttpServletRequest request, HttpServletResponse response, final Model model) throws Exception {
+//        try {
+//            return this.viewNegotiating(request, response, new ResultClient(true, userService.createAuthCode(String.valueOf(phone), SmsUtils.templateLoginCode)));
+//        } catch (StoreSystemException e) {
+//            return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));
+//        }
+//    }
 
     /**
      * 获取手机修改密码验证码
@@ -153,9 +177,9 @@ public class WebUserController extends BaseController {
     public ModelAndView createAuthCodeOnUpdatePassword(@RequestParam(required = true, value = "phone") String phone,
                                                        HttpServletRequest request, HttpServletResponse response, final Model model) throws Exception {
         try {
-            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, phone, User.userType_user);
+            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, phone, User.userType_backendUser);
             if (uid == 0) throw new StoreSystemException("当前手机号未注册");
-            return this.viewNegotiating(request, response, new ResultClient(userService.createAuthCode(String.valueOf(phone), SmsUtils.templateUpdatePasswordCode)));
+            return this.viewNegotiating(request, response, new ResultClient(userService.createAuthCode(String.valueOf(phone), templateLoginCode)));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));
         }
@@ -187,7 +211,7 @@ public class WebUserController extends BaseController {
             if (StringUtils.isNotBlank(res) || StringUtils.isNotBlank(code)) {
                 if (!code.equals(res)) throw new StoreSystemException("验证码不正确");
             }
-            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, phone, User.userType_user);
+            long uid = userService.loadByAccount(LoginUserPool.loginType_phone, phone, User.userType_backendUser);
             if (uid == 0) throw new StoreSystemException("当前手机号未注册");
             User user = userService.load(uid);
             if (StringUtils.isNotBlank(oldPassword)) {

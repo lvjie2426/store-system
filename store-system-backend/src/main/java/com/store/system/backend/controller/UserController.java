@@ -6,6 +6,7 @@ import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.property.PropertyLoader;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientUser;
 import com.store.system.client.ClientUserOnLogin;
@@ -50,7 +51,6 @@ public class UserController extends BaseController {
     @Resource
     private UserService userService;
 
-
     @Resource
     private PermissionService permissionService;
 
@@ -59,6 +59,10 @@ public class UserController extends BaseController {
 
     @Resource
     private ImportFileService importFileService;
+
+    PropertyLoader loader = PropertyLoader.getInstance("dao.properties");
+    String templateRegisterCode = loader.getProperty("templateRegisterCode");
+    String templateLoginCode = loader.getProperty("templateLoginCode");
 
     @Resource
     private FileDownload download;
@@ -367,7 +371,7 @@ public class UserController extends BaseController {
     @RequestMapping("/createAuthCodeOnReg")
     public ModelAndView createAuthCodeOnReg(@RequestParam(required = true, value = "phone") String phone,
                                             HttpServletRequest request, HttpServletResponse response, final Model model) throws Exception {
-        return this.viewNegotiating(request, response, userService.createAuthCode(String.valueOf(phone), SmsUtils.templateLoginCode));
+        return this.viewNegotiating(request, response, userService.createAuthCode(String.valueOf(phone), templateLoginCode));
     }
 
     //销售开单 -- 检验手机号验证码

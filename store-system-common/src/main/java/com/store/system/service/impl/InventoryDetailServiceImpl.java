@@ -139,6 +139,7 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 
             if (null != sku) {
                 client.setP_code(sku.getCode());
+                client.setEyeType(sku.getEyeType());
                 client.setP_properties(sku.getProperties());
                 client.setP_retailPrice(sku.getRetailPrice());
                 client.setP_costPrice(sku.getCostPrice());
