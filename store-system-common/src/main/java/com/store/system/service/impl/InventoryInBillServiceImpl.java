@@ -394,11 +394,11 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         return new PagerRequestService<InventoryInBill>(pager, 0) {
             @Override
             public List<InventoryInBill> step1GetPageResult(String cursor, int size) throws Exception {
-                return inventoryInBillDao.getCheckPageList(subid,Double.parseDouble(cursor),size);
+                return inventoryInBillDao.getCheckPageList(subid, InventoryInBill.status_edit, Double.parseDouble(cursor),size);
             }
             @Override
             public int step2GetTotalCount() throws Exception {
-                return inventoryInBillDao.getCheckCount(subid);
+                return inventoryInBillDao.getCheckCount(subid,InventoryInBill.status_edit);
             }
 
             @Override
@@ -414,6 +414,11 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         }.getPager();
     }
 
+    @Override
+    public List<InventoryInBill> getListByStatus(long subid, int status) throws Exception {
+        List<InventoryInBill> bills =  inventoryInBillDao.getAllList(subid,status);
+        return bills;
+    }
 
     private List<ClientInventoryInBill> transformClients(List<InventoryInBill> inBills) throws Exception {
         List<ClientInventoryInBill> res = Lists.newArrayList();

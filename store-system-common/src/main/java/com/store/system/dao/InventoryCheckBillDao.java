@@ -11,4 +11,5 @@ public interface InventoryCheckBillDao extends HDao<InventoryCheckBill> {
 
     List<InventoryCheckBill> getPageList(long subid, double cursor, int size);
 
+    List<InventoryCheckBill> getAllList(long subid, int status);
 }

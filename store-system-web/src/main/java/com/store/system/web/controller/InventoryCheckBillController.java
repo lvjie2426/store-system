@@ -192,13 +192,22 @@ public class InventoryCheckBillController extends BaseController {
     public ModelAndView getWebCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            pager = inventoryCheckBillService.getWebCheckPager(pager, user.getId());
+            pager = inventoryCheckBillService.getWebCreatePager(pager, user.getId());
             return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
-
+    @RequestMapping("/getListByStatus")
+    public ModelAndView getListByStatus(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            List<InventoryCheckBill> res = inventoryCheckBillService.getListByStatus(user.getSid(),InventoryCheckBill.status_wait_check);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
 
 }

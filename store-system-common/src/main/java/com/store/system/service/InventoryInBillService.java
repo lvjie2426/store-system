@@ -3,6 +3,8 @@ package com.store.system.service;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.model.InventoryInBill;
 
+import java.util.List;
+
 
 public interface InventoryInBillService {
 
@@ -27,5 +29,7 @@ public interface InventoryInBillService {
     public Pager getCreateWebPager(Pager pager, long createUid) throws Exception;
 
     public Pager getCheckWebPager(Pager pager, long subid) throws Exception;
+
+    public List<InventoryInBill> getListByStatus(long subid, int status) throws Exception;
 
 }
