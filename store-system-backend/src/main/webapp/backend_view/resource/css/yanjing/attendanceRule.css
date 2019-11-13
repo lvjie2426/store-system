@@ -1,0 +1,898 @@
+/*公共样式*/
+/*清除浮动*/
+.clear{
+    zoom:1;
+}
+.clear:after{
+    content:'\20';
+    display:block;
+    height:0;
+    clear:both;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+
+/*处理底部下拉框滚动条开始*/
+::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+    /*width: 0;height: 0;*/
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 4px;
+}
+
+/*处理底部下拉框滚动条结束*/
+
+/*开关开始*/
+.switch .switch-btn{
+    width: 24px;
+    height: 16px;
+    opacity: 0.4;
+    border-radius: 100px;
+    background-color: rgba(130, 130, 151, 1);
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    transition: .5s;
+}
+.switch.active .switch-btn{
+    opacity: 1;
+    background-color: rgba(65, 134, 220, 1);
+}
+.switch.active .switch-btn i{
+    top: 2px;right: 2px;
+    left: auto;
+}
+.switch .switch-btn i{
+    transition: .5s;
+    width: 12px;
+    height: 12px;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 2px;left: 2px;
+}
+/*开关结束*/
+
+/*按钮开始*/
+.btn{
+    height: 26px;
+    line-height: 26px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    padding:0 10px;
+    border-radius: 2px;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: PingFangSC-Semibold;
+}
+.btn-default{
+
+}
+.btn-primary{
+    background-color:#4186DC;
+    color:#FFFFFF;
+}
+.btn-success{
+
+}
+.btn-info{
+
+}
+.btn-warning{
+
+}
+.btn-danger{
+    background-color: #DD5B4B;
+}
+/*按钮结束*/
+
+/*下拉框开始*/
+.selectBox{
+    width: auto;
+    min-width: 80px;
+    height: 28px;
+    line-height: 26px;
+    padding-left:8px;
+    padding-right:6px;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 2px;
+    background-color: #ffffff;
+    border: 1px solid #ececf4;
+    color: #828297;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: PingFangSC-Semibold;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.selectBox .select-box-header i{
+    margin:0;
+}
+/*下拉框结束*/
+
+/*单选样式开始*/
+.radio-button .box{
+    width: 100%;
+    height: 28px;
+    margin-bottom: 8px;
+}
+.radio-button .box>input{
+    display: none;
+}
+.radio-button label{
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+    padding-left:20px;
+    display: inline-block;
+    position: relative;
+    color: #393953;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.radio-button label:active{
+}
+.radio-button label:after{
+    content: "";/*必须设置*/
+    display: block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    width:14px;
+    height:14px;
+    background-color: #F4F4F8;
+    border:1px solid #828297;
+    border-radius: 100%;
+    position: absolute;
+    top: 6px;
+    left: 0;
+    z-index:9999999;
+}
+.radio-button input:checked+label:after{
+    width: 6px;
+    height: 6px;
+    background-color:#FFF;
+    border: 5px solid #4186DC;
+}
+/*单选样式结束*/
+
+/*表格样式*/
+.table thead{
+    background-color: #f4f4f8;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+.table tbody{
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+}
+
+
+/*字体引入开始*/
+@font-face {
+    font-family: 'iconfont';
+    src: url('../../fonts/iconfont.eot');
+    src: url('../../fonts/iconfont.eot?#iefix') format('embedded-opentype'),
+    url('../../fonts/iconfont.woff') format('woff'),
+    url('../../fonts/iconfont.ttf') format('truetype'),
+    url('../../fonts/iconfont.svg#iconfont') format('svg');
+}
+
+/*字体引入结束*/
+
+/* 主题样式 */
+body {
+    background: #ECECF3;
+}
+.yj-header {
+    width: 100%;
+    background: #fff;
+    height: 52px;
+    padding-right: 12px;
+    box-sizing: border-box;
+}
+
+.tab-ul {
+    float: left;
+}
+
+.yj-header-left {
+    float: left;
+    line-height: 52px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 14px;
+    font-family: PingFangSC-Semibold;
+    font-weight: bold;
+}
+
+.yj-header-left div {
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    line-height: 28px;
+    border-radius: 100px;
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 10px;
+    float: left;
+    margin: 12px 6px 0 12px;
+}
+.yj-header-left>div>i{
+    font-size: 14px;
+}
+.yj-header-right {
+    padding-top: 12px;
+    float: right;
+}
+
+.yj-header-right button {
+    float: left;
+}
+
+.yj-header-right>div {
+    float: left;
+    margin: 0 8px 0 20px;
+}
+
+.yj-header-right input {
+    margin-right: 10px;
+    margin-left: 20px;
+    float: left;
+}
+
+.goods-body{
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 12px;
+}
+.goods-body>ul{
+    width: 100%;
+}
+.item{
+    width: 31%;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    border: 1px solid #dfdfe9;
+    background: #fff;
+    float: left;
+    margin-right: 2%;
+    box-sizing: border-box;
+}
+
+.itemTop{
+    width: 100%;
+    height: 42px;
+    background-color: #F4F4F8;
+}
+.shopName{
+    margin: 11px 0 0 16px;
+    font-size: 13px;
+    color: #393953;
+    font-weight: 600;
+}
+.delRuleBox{
+    color: #828297;
+    font-size: 12px;
+    border: 1px solid rgba(130, 130, 151, 0.12);
+    border-radius: 2px;
+    padding: 5px 10px;
+    line-height: 17px;
+    margin: 6px 6px 0 0;
+}
+.shopInfo{
+    width:100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(130, 130, 151, 0.12);
+}
+.shopInfo>ul>li{
+    width: 100%;
+    line-height: 48px;
+    box-sizing: border-box;
+    padding: 6px 16px;
+}
+.shopInfo>ul>li:first-child{
+    margin-top: 4px;
+}
+.shopInfoTitle{
+    color: #828297;
+    font-size: 12px;
+    line-height: 17px;
+}
+.shopInfoExp{
+    font-size:12px;
+    color: #393953;
+    margin-top: 4px;
+    line-height: 14px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    max-width: 100%;
+}
+.foot{
+    width: 100%;
+    line-height: 40px;
+    text-align: right;
+    box-sizing: border-box;
+    padding: 0 6px;
+}
+.editBtn{
+    font-size: 12px;
+    line-height: 17px;
+    padding: 5px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #d9e5f6;
+    color: #4186DC;
+    background: #eaf1fa;
+    font-weight: 600;
+}
+
+/* 添加门店 */
+.shopList{
+    width: 100%;
+    background-color: #ffffff;
+    display: none;
+}
+.topBox{
+    box-sizing: border-box;
+    padding: 12px 16px 16px;
+}
+.shopNameBox{
+    width: 47.5%;
+}
+.shopInpName{
+    font-size: 12px;
+    color: #393953;
+    line-height: 17px;
+    font-weight: 600;
+}
+.nameInp{
+    width: 100%;
+    margin-top: 6px;
+}
+
+.nameInp>input{
+    width: 100%;
+    line-height: 28px;
+    font-size: 12px;
+    border-radius: 2px;
+    outline: none;
+    border: 1px solid rgba(130, 130, 151, 0.12);
+    box-sizing: border-box;
+    padding: 0 8px;
+}
+.centerBox{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
+}
+.addreeBox{
+    width: 100%;
+    height: 80px;
+    background-color: rgba(130, 130, 151, 1);
+    margin-top: 6px;
+}
+.selectAdderss{
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
+    margin: 12px 0;
+}
+.selectBoxOne{
+    position: relative;
+}
+.selectBoxOne>select{
+    outline: none;
+    height: 28px;
+    line-height: 28px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-left: 8px;
+    padding-right: 12px;
+    width: 101px;
+    border-radius: 2px;
+    color:#828297 ;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+.iconBox{
+    position: absolute;
+    right: 6px;
+    top: 6px;
+}
+.iconBox>i{
+    font-size: 14px;
+}
+.adressInp{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
+}
+.adressInp>input{
+    width: 100%;
+    line-height: 28px;
+    font-size: 12px;
+    border-radius: 2px;
+    outline: none;
+    border: 1px solid rgba(130, 130, 151, 0.12);
+    box-sizing: border-box;
+    padding: 0 8px;
+}
+
+
+/* 规则管理 */
+.editBox{
+    width: 1000px;
+    margin: 12px auto 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(130, 130, 151, 0.12);
+    display: none;
+}
+.editTop{
+    width:100%;
+    line-height: 44px;
+    box-sizing: border-box;
+    padding: 0 8px 0 24px;
+}
+.shopRuleName{
+    font-size: 13px;
+    color: #393953;
+    font-weight: 600;
+}
+.addClasses{
+    width: 100%;
+    box-sizing: border-box;
+    
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.04);
+}
+.classesName{
+    padding: 14px 22px 0 22px;
+}
+.classesName>span{
+    font-size: 12px;
+    color: #393953;
+    font-weight: 600;
+}
+.classesTip{
+    font-weight: normal !important;
+    color: #828297 !important;
+}
+.addClassesBox{
+    width: 100%;
+    margin-top: 8px;
+    padding: 0 22px 21px 22px;
+}
+.addClassesList>ul>li{
+    width: 126px;
+    height: 30px;
+    line-height: 32px;
+    margin-right: 20px;
+    margin-bottom:10px;
+}
+.titles{
+    color: #ffffff;
+    padding: 6px 6px 5px 6px;
+    text-align: center;
+}
+.exps{
+    padding: 5px 7px 5px 7px;
+    text-align: center;
+}
+.blueLeft{
+    background-color: #4186DC;
+    border-top-left-radius:2px;
+    border-bottom-left-radius:2px;
+}
+.blueRight{
+    background-color: rgba(235, 242, 251, 1);
+    color: #4186DC;
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    border-top-right-radius:2px;
+    border-bottom-right-radius:2px;
+}
+.qingLeft{
+    background-color: #57B8DB;
+    border-top-left-radius:2px;
+    border-bottom-left-radius:2px;
+}
+.qingRight{
+    background-color: rgba(238, 247, 251, 1);
+    color: #57B8DB;
+    border: 1px solid rgba(87, 184, 219, 0.1);
+    border-top-right-radius:2px;
+    border-bottom-right-radius:2px;
+}
+.redLeft{
+    background-color: #DD5B4B;
+    border-top-left-radius:2px;
+    border-bottom-left-radius:2px;
+}
+.redRight{
+    background-color: rgba(251, 238, 237, 1);
+    color: #DD5B4B;
+    border: 1px solid rgba(221, 91, 75, 0.1);
+    border-top-right-radius:2px;
+    border-bottom-right-radius:2px;
+}
+.ziseLeft{
+    background-color: #7D64C5;
+    border-top-left-radius:2px;
+    border-bottom-left-radius:2px;
+}
+.ziseRight{
+    background-color: rgba(242, 239, 249, 1);
+    color: #7D64C5;
+    border: 1px solid rgba(125, 100, 197, 0.1);
+    border-top-right-radius:2px;
+    border-bottom-right-radius:2px;
+}
+
+.addClassesBtn{
+    width: 122px;
+    border: 1px solid rgba(236, 236, 244, 1);
+    border-radius: 2px;
+    box-sizing: border-box;
+    padding: 5px 8px 5px 6px;
+    cursor: pointer;
+}
+.addClassesBtn>i{
+    font-size: 12px;
+    color: #828297;
+    line-height: 17px;
+}
+.btnFont{
+    font-size:12px;
+    color: #828297;
+    line-height: 17px;
+}
+.tianDuanTable{
+    width: 100%;
+}
+.tableTitle{
+    width: 100%;
+}
+.tableTitle>ul>li{
+    line-height: 40px;
+    text-align: center;
+    border-bottom: 1px solid rgba(130, 130, 151, 0.12);
+}
+.costNum{
+    width: 60px;
+}
+.staffName{
+    width: 90px;
+}
+.oneDay{
+    width: 110px;
+}
+.handle{
+    width: 80px;
+}
+
+.tableCont{
+    width: 100%;
+}
+.tableCont>ul>li{
+    position: relative;
+}
+.whiteZhe{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+.tableCont>ul>li>ul>li{
+    height: 121px;
+    line-height: 121px;
+    text-align: center;
+    border-right: 1px solid rgba(130, 130, 151, 0.12);
+    border-bottom: 1px solid rgba(130, 130, 151, 0.12);
+}
+.tableCont>ul>li>ul>li:last-child{
+    border-right: none;
+}
+/* 紫色时间段 */
+.ziseDay{
+    height: 100px;
+    line-height: 10px;
+    width: 90px;
+    margin: 10px auto 0;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 7px;
+    color: #7D64C5;
+    border-radius: 2px;
+    background-color: rgba(242, 239, 249, 1);
+    border: 1px solid rgba(125, 100, 197, 0.1);
+}
+.ziseDel{
+    width: 45px;
+    height: 26px;
+    float: right;
+    text-align: right;
+    color: #7D64C5;
+    background: linear-gradient(left,rgba(0,0,0,0),rgba(242, 239, 249, 1))
+}
+.ziseDel>i{
+    font-size: 14px;
+    padding: 7px 7px 0 0;
+}
+/* 蓝色时间段 */
+.blueDay{
+    margin: 10px auto 0;
+    width: 90px;
+    height: 28px;
+    line-height: 28px;
+    color: #4186DC;
+    border-radius: 2px;
+    background-color: rgba(235, 242, 251, 1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+}
+/* 浅青色 */
+.qingDay{
+    margin: 8px auto 0;
+    width: 90px;
+    height: 28px;
+    line-height: 28px;
+    color: #57B8DB;
+    border-radius: 2px;
+    background-color: rgba(238, 247, 251, 1);
+    border: 1px solid rgba(87, 184, 219, 0.1);
+}
+/* 红色 */
+.redDay{
+    margin: 8px auto 0;
+    width: 90px;
+    height: 28px;
+    line-height: 28px;
+    color: #DD5B4B;
+    border-radius: 2px;
+    background-color: rgba(251, 238, 237, 1);
+    border: 1px solid rgba(221, 91, 75, 0.1);
+}
+.hideOpt{
+    opacity: 0;
+}
+/* 添加员工 */
+.searchSatff>input{
+    width: 120px;
+    line-height: 28px;
+    font-size: 12px;
+    border-radius: 2px;
+    outline: none;
+    border: 1px solid rgba(130, 130, 151, 0.12);
+    box-sizing: border-box;
+    padding: 0 8px;
+    font-weight: normal;
+}
+.staffList{
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+}
+.tabBox{
+    width: 100%;
+}
+.tabBoxTop{
+    background-color: rgba(130, 130, 151, 0.12);
+}
+.checkBox{
+    width:36px;
+    line-height: 36px;
+    text-align: center;
+}
+.shopNameListBox{
+    width:212px;
+    line-height: 36px;
+}
+.shopNameListBox>span{
+    font-size: 12px;
+    color: #828297;
+    margin-left: 12px;
+    line-height: 17px;
+}
+.showStaffSelect{
+    width: 80px;
+    line-height: 36px;
+}
+.showStaffSelect>span{
+    font-size: 12px;
+    color: #828297;
+    margin-left: 12px;
+    line-height: 17px;
+}
+.showStaffSelect>button{
+    margin-left: 12px;
+}
+.itemStaff{
+    display: none;
+}
+.bgcolor{
+    background-color: rgba(130, 130, 151, 0.12);
+}
+
+
+/* 添加时间段 */
+.rightAddClassesBtn{
+    color: #ffffff !important;
+    margin: 8px 6px 0 0;
+}
+.eidtTimeDuanBox{
+    width: 100%;
+    height: 100%;
+    background-color: #F4F4F8;
+    display: none;
+}
+.positIcon{
+    position: relative;
+}
+.positIcon>i{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: 14px;
+    color: #828297;
+}
+.timeDuanList{
+    width: 100%;
+    max-height: 800px;
+    overflow-y: scroll;
+}
+
+.timeDuanList>ul>li:first-child{
+    margin-top: 12px;
+}
+.timeDuanList>ul>li{
+    width: 336px;
+    margin-left: 12px;
+    background: #ffffff;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    position: relative;
+}
+.delThisBox{
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #393953;
+    font-size: 8px;
+    right: -6px;
+    top: -6px;
+    border-radius: 50%;
+}
+.selectColorBox{
+    box-sizing: border-box;
+    padding: 0 16px 22px;
+}
+.colorList{
+    width:100%;
+    margin-top: 6px;
+}
+.colorList>ul{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.colorList>ul>li{
+    margin-right: 10px;
+}
+/* 五种颜色 */
+/* 蓝色 */
+.blue{
+    width: 26px;
+    height: 26px;
+    background-color: #4186DC;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 26px;
+}
+/* 浅蓝 */
+.qianLan{
+    width: 26px;
+    height: 26px;
+    background-color: #57B8DB;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 26px;
+}
+/* 红色 */
+.red{
+    width: 26px;
+    height: 26px;
+    background-color: #DD5B4B;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 26px;
+}
+/* 紫色 */
+.zise{
+    width: 26px;
+    height: 26px;
+    background-color: #7D64C5;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 26px;
+}
+/* 橙色 */
+.cheng{
+    width: 26px;
+    height: 26px;
+    background-color: #F0983F;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 26px;
+}
+
+.optHide{
+    opacity: 0;
+    font-size: 14px;
+    color: #ffffff;
+}
+.optBorBlue{
+    border: 1px solid rgba(65, 134, 220, 1);
+    padding: 2px;
+    border-radius: 2px;
+}
+.optBorBlue i {
+    opacity:1 !important;
+}
+.takeStart{
+    width: 100%;
+}
+.takeTitle{
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #393953;
+    line-height: 17px;
+}
+.takeInp{
+    width:100%;
+    margin-top: 7px;
+    text-align: center;
+    padding-bottom: 12px;
+}
+.takeInp>input{
+    width: 180px;
+    line-height: 28px;
+    font-size: 12px;
+    border-radius: 2px;
+    outline: none;
+    border: 1px solid rgba(130, 130, 151, 0.12);
+    background-color: #F4F4F8;
+    box-sizing: border-box;
+    padding: 0 8px;
+    font-weight: normal;
+}
