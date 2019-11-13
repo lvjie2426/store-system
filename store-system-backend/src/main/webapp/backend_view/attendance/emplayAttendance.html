@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="renderer" content="webkit">
+  <title>员工考勤</title>
+  <link href="../resource/layui/css/layui.css" rel="stylesheet">
+  <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+  <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+  <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+  <link href="../resource/css/reset.css" rel="stylesheet">
+  <link href="../resource/css/animate.css" rel="stylesheet">
+  <link href="../resource/css/style.css" rel="stylesheet">
+  <link href="../resource/css/common.css" rel="stylesheet">
+  <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+  <link rel="stylesheet" href="../resource/css/yanjing/companyManage.css">
+  <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+  <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+  <script src="../resource/js/baiduMap.js"></script>
+  <style>
+
+    input:disabled {
+      background-color: #fff;
+    }
+    /*主要内容*/
+    .companyManageCont {
+      position: relative;
+      min-height: 200px;
+      background: #ebebf3;
+      box-sizing: border-box;
+    }
+
+    /*主要内容头部*/
+    .companyManageCont .contHeader {
+      width: 100%;
+      height: 53px;
+      border-bottom: 1px solid #dfdfe9;
+      background: #fff;
+      margin-bottom: 16px;
+    }
+
+    /*头部左边*/
+    .companyManageCont .contHeader .tab-ul {
+      float: left;
+      width: 30%;
+    }
+
+    .companyManageCont .contHeader .tab-ul li {
+      color: #828297;
+    }
+
+    .companyManageCont .contHeader .tab-ul li.active {
+      color: #393953;
+      font-weight: bold;
+    }
+
+    /*头部右边*/
+    .companyManageCont .contHeader .headRight {
+      width: 60%;
+      float: right;
+      height: 100%;
+    }
+
+    .companyManageCont .contHeader .headRight .child {
+      float: right;
+      margin: 12px 12px 12px 0;
+    }
+
+    .companyManageCont .contHeader .headRight .newShop {
+      width: 68px;
+      height: 28px;
+      line-height: 28px;
+      background: #4186DC;
+      color: #fff;
+      border-radius: 2px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .companyManageCont .contHeader .headRight input {
+      width: 128px;
+      height: 28px;
+      line-height: 28px;
+      padding: 0 8px;
+      color: #000;
+      border-radius: 2px;
+      border: 1px solid #ececf4;
+    }
+
+    /*公司信息*/
+    .companyManageCont .companyMsg {
+      position: relative;
+      min-height: 135px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 2px;
+      border: 1px solid #dfdfe9;
+      box-sizing: border-box;
+    }
+
+    /*店铺列表*/
+    .companyManageCont .shopItems {
+      position: relative;
+      min-height: 100px;
+      margin-top: 12px;
+    }
+
+    .companyManageCont .shopItems .contUl {
+      width: 100%;
+    }
+
+    /*店铺列表li样式*/
+    .companyManageCont .shopItems .contUl li.item {
+      position: relative;
+      width: 32%;
+      height: 280px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+      border: 1px solid #dfdfe9;
+      background: #fff;
+      float: left;
+      margin-right: 2%;
+      box-sizing: border-box;
+    }
+
+    .companyManageCont .shopItems .contUl li.item>div {
+      width: 100%;
+      height: 40px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    /*店铺列表头部*/
+    .companyManageCont .shopItems .contUl li.item .top {
+      background: #f3f3f7;
+      border-bottom: 1px solid #dfdfe9;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .shopName {
+      font-size: 13px;
+      color: #393953;
+      line-height: 40px;
+      font-weight: bold;
+      padding-left: 16px;
+      width: 45%;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle {
+      position: absolute;
+      height: 100%;
+      width: 25%;
+      right: 0;
+      top: 0;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form,
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-item {
+      height: 100%;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-item {
+      margin-bottom: 0;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-label {
+      position: absolute;
+      display: block;
+      padding: 9px 0px;
+      width: 66px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: left;
+      right: 50px;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-input-block {
+      position: absolute;
+      margin-left: 0;
+      right: 16px;
+      min-height: 40px;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-switch {
+      position: relative;
+      height: 18px;
+      line-height: 16px;
+      width: 28px;
+      min-width: 24px;
+      padding: 0 0;
+      margin-top: 11px;
+      border: 1px solid #d2d2d2;
+      border-radius: 20px;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-onswitch {
+      border-color: #4186DC;
+      background-color: #4186DC;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-switch i {
+      top: 2px;
+      width: 12px;
+      height: 12px;
+      left: 2px;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .top .handle .layui-form-onswitch i {
+      left: 100%;
+      margin-left: -15px;
+      background-color: #fff;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .middle {
+      /*店铺列表中间部分*/
+      height: 200px;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .middle p {
+      height: 48px;
+      padding: 0 16px;
+      margin-bottom: 0;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .middle p span {
+      display: block;
+      font-size: 12px;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .middle p span.txt1 {
+      padding-top: 8px;
+      color: #828297;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .middle p span.txt2 {
+      color: #393953;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .bottom {
+      /*店铺列表底部*/
+      border-top: 1px solid #dfdfe9;
+      padding: 6px;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .bottom button {
+      cursor: pointer;
+      float: right;
+      height: 26px;
+      font-size: 12px;
+      outline: none;
+      border-radius: 2px;
+      margin-left: 6px;
+      padding: 0 10px;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .bottom button.edit {
+      border: 1px solid #d9e5f6;
+      color: #4186DC;
+      background: #eaf1fa;
+    }
+
+    .companyManageCont .shopItems .contUl li.item .bottom button.check {
+      color: #fff;
+      background: #4186DC;
+      border: 1px solid #4186DC;
+    }
+
+    .companyManageCont .shopItems .contUl li.item:nth-child(3n+3) {
+      margin-right: 0;
+    }
+
+    /* 头部样式 */
+    .title {
+      height: 52px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .title span {
+      display: block;
+      float: left;
+      width: 68px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+    }
+
+    .title span:nth-child(1) {
+      width: 28px;
+      height: 28px;
+      background: #4186DC;
+      border-radius: 50%;
+    }
+
+    .title span:nth-child(1) i {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .title span:nth-child(2) {
+      font-size: 14px;
+      color: #393953;
+      margin-left: 6px;
+      font-weight: 600;
+    }
+
+    .title span:nth-child(3) {
+      font-size: 12px;
+      background: #4186DC;
+      color: #fff;
+      float: right;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="companyManageCont">
+    <div class="contHeader">
+      <div class="title">
+        <span><i class="icon iconfont icon-ico_statistics_fille"></i></span>
+        <span>员工考勤</span>
+      </div>
+    </div>
+    <div class="shopItems wrap90 clearfix">
+      <ul class="contUl clearfix">
+
+      </ul>
+    </div>
+    <!--门店详细弹窗-->
+    <div class="content-view content-view-shopDes">
+      <div class="shopMsg">
+        <ul class="clearfix">
+          <li class="clearfix">
+            <p class="title">门店名称</p>
+            <input type="text" placeholder="名称">
+          </li>
+          <li>
+            <p class="title">门店简码</p>
+            <input type="text" placeholder="简码">
+          </li>
+          <li>
+            <p class="title">门店电话</p>
+            <input type="number" placeholder="电话">
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <!--全局js-->
+  <script src="../resource/js/jquery.min.js"></script>
+  <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+  <!--时间插件引用的css-->
+  <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+  <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+  <script src="../resource/js/plugins/layer/layer.js"></script>
+  <script src="../resource/layui/layui.js"></script>
+  <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+  <script src="../resource/js/lib/quakoo/project.js"></script>
+  <script src="../resource/js/yanjing.js"></script>
+  <script src="../resource/js/mobiscroll.2.13.2.js"></script>
+  <script>
+    //初始化layui模块，并监听事件
+    layui.use(['form', 'layedit', 'laydate'], function () {
+      form = layui.form
+      //店铺开启关闭功能
+      form.on('switch(switchTest)', function (data) {
+        var isOpenTxt = this.parentNode.previousElementSibling
+        this.checked == true ? isOpenTxt.innerHTML = '已请用考勤' : isOpenTxt.innerHTML = '未启用考勤'
+      });
+    })
+
+    //门店详细弹窗
+    function shopDes() {
+      mapInit()
+      layer.open({
+        type: 1,
+        shade: 0.01,
+        title: '创建门店',
+        skin: 'content-view-shopDes-tan content-view-submit', //样式类名
+        anim: 0,
+        area: ['370px', '550px'],
+        closeBtn: 0, //不显示关闭按钮
+        resize: false,
+        shadeClose: true, //开启遮罩关闭
+        content: $('.content-view-shopDes'), //容器对象
+        btn: ['取消', '保存'],
+        yes: function (index) {
+          layer.close(index);
+        },
+        btn2: function (index) {
+          layer.close(index);
+        },
+        success: function (layero, index) {
+          form.on('radio(jiagong)', function (data) {
+            if (data.value == 'own') {
+              $('#jiagong').removeClass('active')
+            } else {
+              $('#jiagong').addClass('active')
+            }
+          });
+          upploadPic()
+        }
+      });
+    }
+    //店铺li
+    var shopItem = '<li class="item">' +
+      '<div class="top">' +
+      '<p class="shopName txtOverflow">杭州市旗舰店</p>' +
+      '<div class="handle">' +
+      '<form class="layui-form">' +
+      '                            <div class="layui-form-item">' +
+      '                                <label class="layui-form-label">未启用考勤</label>' +
+      '                                <div class="layui-input-block">' +
+      '                                    <input id="shopIsOpen" type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest">' +
+      '                                </div>' +
+      '                            </div>' +
+      '                        </form>' +
+      '                    </div>' +
+      '                </div>' +
+      '                <div class="middle">' +
+      '                    <p class="Id">' +
+      '                        <span class="txt1">门店密码</span>' +
+      '                        <span class="txt2 txtOverflow">SH128</span>' +
+      '                    </p>' +
+      '                    <p class="addr">' +
+      '                        <span class="txt1">门店密码</span>' +
+      '                        <span class="txt2 txtOverflow">北京市朝阳区雍和宫</span>' +
+      '                    </p>' +
+      '                    <p class="tel">' +
+      '                        <span class="txt1">门店密码</span>' +
+      '                        <span class="txt2 txtOverflow">0571 3183 2188</span>' +
+      '                    </p>' +
+      '                    <p class="payMode">' +
+      '                        <span class="txt1">门店密码</span>' +
+      '                        <span class="txt2 txtOverflow">个人微信</span>' +
+      '                    </p>' +
+      '                </div>' +
+      '                <div class="bottom">' +
+      '                    <button class="edit">查看员工考勤</button>' +
+      '                </div>' +
+      '            </li>'
+    for (var i = 0; i < 10; i++) {
+      $('.shopItems .contUl').append(shopItem)
+    }
+
+  </script>
+</body>
+
+</html>
