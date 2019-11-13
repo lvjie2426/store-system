@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>考勤规则</title>
+    <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+    <link href="../resource/layui/css/layui.css" rel="stylesheet">
+    <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resource/css/reset.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <link rel="stylesheet" href="../resource/css/yanjing/statistics.css">
+</head>
+<body>
+<!--首页内容-->
+<div class="statContainer">
+    <div class="title">
+        <span><i class="icon iconfont icon-ico_statistics_fille"></i></span>
+        <span>考勤规则</span>
+    </div>
+    <div class="mainCont wrap90">
+        <div class="box box01">
+            <div class="head">
+                <div class="txt01">销售统计</div>
+                <div class="shopDivBox">
+                    <div class="shopDiv">
+
+                    </div>
+                </div>
+                <div>
+                    <span class="_btn" onclick="selectShop('sales')">多店对比</span>
+                </div>
+                <div class="timeBox yj-demo-time yj-demo-time01" id="salesTime">
+                    <div class="yj-date">
+                        <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                    </div>
+                </div>
+                <div class="tabBox">
+                    <ul class="tab-ul" id="salesType">
+                        <li class="active" onclick="changeType(1,1)">本周</li>
+                        <li class="" onclick="changeType(2,1)">本月</li>
+                        <li class="" onclick="changeType(3,1)">近半年</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="body clearfix">
+                <div class="left">
+                    <div class="chartCont" id="chartCont01">
+                    </div>
+                    <div class="_btn prev"><</div>
+                    <div class="_btn next">></div>
+                </div>
+                <div class="right">
+                    <ul class="clearfix">
+                        <li class="active" onclick="salesPercent(1,this)">产品分类销售额占比</li>
+                        <li onclick="salesPercent(2,this)">客单价分布占比</li>
+                    </ul>
+                    <div id="salesPercentDom">
+                        <!--js插入，百分比div-->
+                    </div>
+                    <div class="bottomBox clearfix" id="salesHtml">
+                        <span><em class="_bgColor01"></em>眼镜</span>
+                        <span><em class="_bgColor02"></em>镜片</span>
+                        <span><em class="_bgColor03"></em>隐形眼镜</span>
+                        <span><em class="_bgColor04"></em>太阳镜</span>
+                        <span><em class="_bgColor05"></em>护理产品</span>
+                        <span><em class="_bgColor06"></em>其它</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box box02">
+            <div class="head">
+                <div class="txt01">客单价同价</div>
+                <div class="timeBox yj-demo-time yj-demo-time02" id="kdjTime">
+                    <div class="yj-date">
+                        <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                    </div>
+                </div>
+                <div class="tabBox">
+                    <ul class="tab-ul" id="kdjType">
+                        <li class="active" onclick="changeType(1,2)">本周</li>
+                        <li class="" onclick="changeType(2,2)">本月</li>
+                        <li class="" onclick="changeType(3,2)">近半年</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="body">
+                <ul class="contUl clearfix" id="kdjDom">
+
+                </ul>
+            </div>
+        </div>
+        <div class="box box03">
+            <div class="head">
+                <div class="txt01">顾客统计</div>
+                <div class="shopDivBox">
+                    <div class="shopDiv">
+
+                    </div>
+                </div>
+                <div>
+                    <span class="_btn" onclick="selectShop('people')">多店对比</span>
+                </div>
+                <div class="timeBox yj-demo-time " id="peopleTime">
+                    <div class="yj-date">
+                        <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                    </div>
+                </div>
+                <div class="tabBox">
+                    <ul class="tab-ul" id="peopleType">
+                        <li class="active" onclick="changeType(1,3)">本周</li>
+                        <li onclick="changeType(2,3)">本月</li>
+                        <li onclick="changeType(3,3)">近半年</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="body clearfix">
+                <div class="left">
+                    <div class="chartCont" id="chartCont02">
+                    </div>
+                    <div class="_btn prev"><</div>
+                    <div class="_btn next">></div>
+                </div>
+                <div class="right" id="peopleRightDom">
+
+                </div>
+            </div>
+        </div>
+        <div class="box box04">
+            <div class="head">
+                <div class="txt01">库存总值统计</div>
+                <div class="timeBox yj-demo-time yj-demo-time04" id="kcTime">
+                    <div class="yj-date">
+                        <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                    </div>
+                </div>
+                <div class="tabBox">
+                    <ul class="tab-ul" id="kcType">
+                        <li class="active" onclick="changeType(1,4)">本周</li>
+                        <li onclick="changeType(2,4)">本月</li>
+                        <li onclick="changeType(3,4)">近半年</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="body clearfix" id="kcDom">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--选择多家门店弹窗-->
+<div class="content-view content-view-selectShop">
+    <ul>
+
+    </ul>
+</div>
+<!--全局js-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<!--时间插件引用的css-->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script src="../resource/js/yanjing/yanjing.js"></script>
+<script src="../resource/js/yanjing/daterange.js"></script>
+<script src="../resource/js/echarts.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
+<script type="text/html" id="peopleRightTmp">
+    <div class="sex">
+        <div class="male">
+            <p class="clearfix">
+                <span class="sexIcon"><i class="icon iconfont icon-ico_male"></i></span>
+                <span>男性</span>
+            </p>
+            <p><%=list.manProportion%>%</p>
+            <p>共<%=list.man%>人</p>
+        </div>
+        <div class="female">
+            <p class="clearfix">
+                <span class="sexIcon"><i class="icon iconfont icon-ico_female"></i></span>
+                <span>女性</span>
+            </p>
+            <p><%=list.womanProportion%>%</p>
+            <p>共<%=list.woman%>人</p>
+        </div>
+    </div>
+    <div class="chart">
+        <p class="title">各年龄段顾客数量占比</p>
+        <div class="percentCont percentCont08" id="peopleNum">
+            <!--js插入百分比div-->
+        </div>
+        <div class="bottomBox clearfix">
+            <span><em class="_bgColor01"></em>0-10</span>
+            <span><em class="_bgColor02"></em>11-20</span>
+            <span><em class="_bgColor03"></em>21-40</span>
+            <span><em class="_bgColor04"></em>41-60</span>
+            <span><em class="_bgColor05"></em>60+</span>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="kdjTmp">
+    <%for(var i in list){%>
+    <li class="item">
+        <div class="left">
+            <%if(list[i][0].cname=='镜片'){%>
+            <p><i class="icon iconfont icon-ico_lens"></i></p>
+            <%}else if(list[i][0].cname=='镜架'){%>
+            <p><i class="icon iconfont icon-ico_frame"></i></p>
+            <%}else if(list[i][0].cname=='隐形眼镜'){%>
+            <p><i class="icon iconfont icon-ico_contact_lens"></i></p>
+            <%}else if(list[i][0].cname=='太阳镜'){%>
+            <p><i class="icon iconfont icon-ico_sunglasses"></i></p>
+            <%}else if(list[i][0].cname=='护理产品'){%>
+            <p><i class="icon iconfont icon-ico_care_solution"></i></p>
+            <%}else{%>
+            <p><i class="icon iconfont icon-ico_more"></i></p>
+            <%}%>
+            <p><%=list[i][0].cname%></p>
+            <p class="_color01"><%=list[i][0].perPrice%></p>
+            <p>平均客单价 | 元</p>
+        </div>
+        <div class="right">
+            <p class="title">客单价分布比例</p>
+            <div class="percentCont percentCont0<%=i+1%>">
+                <!--js插入百分比div-->
+            </div>
+            <div class="bottomBox clearfix">
+                <span><em class="_bgColor01"></em>0-100</span>
+                <span><em class="_bgColor02"></em>100-500</span>
+                <span><em class="_bgColor03"></em>500-1000</span>
+                <span><em class="_bgColor04"></em>1555-2000</span>
+                <span><em class="_bgColor05"></em>2000+</span>
+            </div>
+        </div>
+    </li>
+    <%}%>
+
+</script>
+<script type="text/html" id="kcTmp">
+    <div class="left">
+        <p><i class="icon iconfont icon-ico_cash"></i></p>
+        <p class="txtOverflow"><%=allPrice%>元</p>
+        <p>库存总值</p>
+    </div>
+    <ul>
+        <%for(var i in list){%>
+        <li>
+            <p>
+                <%if(list[i][0].cname=='镜片'){%>
+                <span><i class="icon iconfont icon-ico_lens"></i><%=list[i][0].cname%></span>
+                <%}else if(list[i][0].cname=='镜架'){%>
+                <span><i class="icon iconfont icon-ico_frame"></i><%=list[i][0].cname%></span>
+                <%}else if(list[i][0].cname=='隐形眼镜'){%>
+                <span><i class="icon iconfont icon-ico_contact_lens"></i><%=list[i][0].cname%></span>
+                <%}else if(list[i][0].cname=='太阳镜'){%>
+                <span><i class="icon iconfont icon-ico_sunglasses"></i><%=list[i][0].cname%></span>
+                <%}else if(list[i][0].cname=='护理产品'){%>
+                <span><i class="icon iconfont icon-ico_care_solution"></i><%=list[i][0].cname%></span>
+                <%}else{%>
+                <span><i class="icon iconfont icon-ico_more"></i><%=list[i][0].cname%></span>
+                <%}%>
+                <span><%=list[i][0].price%>元</span>
+            </p>
+            <p>占比<%=list[i][0].rate%>%</p>
+        </li>
+        <%}%>
+    </ul>
+
+</script>
+
+<script>
+    var subid = quakooUser.getUserInfo().psid;//企业/公司id
+    var shopId = quakooDb.getItem('sel_ShopId');//门店id
+
+    var categoryData = [];//一级类目数据
+    var shopData = [];//门店数据
+    var myChart,myChart3;//两个折线图
+
+
+    //获取一级类目
+    quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(),{subid:subid},function (ret) {
+        if(ret && ret.success){
+            categoryData = ret.data;
+        }
+    })
+    //获取当前企业下门店列表
+    quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(),{sid:subid},function (ret) {
+        console.log("企业下门店",ret);
+        if(ret&&ret.success){
+            if(quakooUtils.isNotBlack(ret.data)){
+                shopData = ret.data;
+            }
+        }
+    });
+
+    //销售额统计
+    var salesShopArr = [shopId];
+    //顾客统计时间初始化
+    var salesTime = new dateRange("#salesTime");
+    salesTime.init()
+    $("#salesTime button").click(function () {
+        salesRangeType = 4;
+        salesInit()
+    })
+    var salesRangeType = 1;   //1本周   2本月   3近半年   4 时间范围
+    salesInit()
+    function salesInit() {
+        var parms = {};
+        parms.subIds = salesShopArr;
+        if(salesRangeType==4){
+            parms.startTime = salesTime.getTime()[2];
+            parms.endTime = salesTime.getTime()[3];
+            parms.type = 6;
+        }else{
+            parms.type = salesRangeType+2;
+        }
+        //销售额统计左边折线图
+        quakooData.ajaxGetData(config.getUrl_statisticsSale_saleSubordinates(),parms,function (ret) {
+            //顾客统计折线图初始化
+            chartInit(ret.data,1)
+        })
+        //销售额统计  右边 以及客单价
+        salesPercent()
+    }
+
+    //客单价同价
+    var kdjType = 1;
+    kdjInit()
+    var kdjTime = new dateRange("#kdjTime");
+    kdjTime.init()
+    $("#kdjTime button").click(function () {
+        kdjType = 4;
+        kdjInit()
+    })
+    function kdjInit() {
+        var parms = {};
+        parms.subIds = [shopId];
+        if(kdjType==4){
+            parms.startTime = kdjTime.getTime()[2];
+            parms.endTime = kdjTime.getTime()[3];
+            parms.type = 6;
+        }else{
+            parms.type = kdjType+2;
+        }
+        quakooData.ajaxGetData(config.getUrl_statisticsSaleCategory_saleSubordinates(),parms,function (ret) {
+            console.log('1111',ret.data[0])
+            $('#kdjDom').html(template('kdjTmp',{list:ret.data[0]}))
+            var data = ret.data[0]
+            var arr1 = [];  //0-100
+            var arr2 = [];  //100-500
+            var arr3 = [];  //500-1000
+            var arr4 = [];  //1000-2000
+            var arr5 = [];  //2000以上
+            for(var i in data){
+                arr1.push(data[i][0].rate_0to100)
+                arr2.push(data[i][0].rate_100to500)
+                arr3.push(data[i][0].rate_500to1000)
+                arr4.push(data[i][0].rate_1000to2000)
+                arr5.push(data[i][0].rate_2000)
+            }
+            setPercent(arr1,$('.percentCont02'),color02,'kdj')
+            setPercent(arr2,$('.percentCont03'),color03,'kdj')
+            setPercent(arr3,$('.percentCont04'),color04,'kdj')
+            setPercent(arr4,$('.percentCont05'),color05,'kdj')
+            setPercent(arr5,$('.percentCont06'),color06,'kdj')
+        })
+    }
+    //
+    function salesPercent(type,self) {
+        if(self){
+            $(self).addClass('active').siblings().removeClass('active')
+        }
+        var parms = {};
+        parms.subIds = salesShopArr;
+        if(salesRangeType==4){
+            parms.startTime = salesTime.getTime()[2];
+            parms.endTime = salesTime.getTime()[3];
+            parms.type = 6;
+        }else{
+            parms.type = salesRangeType+2;
+        }
+        //销售额统计  右边 以及客单价
+        quakooData.ajaxGetData(config.getUrl_statisticsSaleCategory_saleSubordinates(),parms,function (ret) {
+            //顾客统计折线图初始化
+            var html = '';
+            $('#salesPercentDom').html('')
+            for(var m =0;m< ret.data.length;m++){
+                var arr1 = [];  //产品分类销售额占比
+                var arr2 = [];  //客单价分布
+                html = '';
+                for(var i in ret.data[m]){
+                    arr1.push(ret.data[m][i][0].sale)
+                    arr2.push(ret.data[m][i][0].rate)
+                    html+='<span><em class="_bgColor01"></em>'+ret.data[m][i][0].cname+'</span>';
+                }
+                if(salesShopArr.length==1){
+                    // $('#salesPercentDom').css('marginBottom','60px')
+                    $('#salesPercentDom').append('<div id="salesNum'+m+'" class="percentCont percentCont01"></div>');
+                }else{
+                    // $('#salesPercentDom').css('marginBottom','20px')
+                    $('#salesPercentDom').append('<p style="padding: 10px 6.5%;">'+ret.data[m][i][0].subName+'</p><div id="salesNum'+m+'" class="percentCont percentCont08"></div>');
+                }
+                if(type==1){
+                    setPercent(arr1,$('#salesNum'+m),color01,'sales');
+                }else{
+                    setPercent(arr2,$('#salesNum'+m),color01,'sales');
+                }
+            }
+            $('#salesHtml').html(html)
+        })
+    }
+
+    //顾客统计
+    var peopleShopArr = [shopId];
+    //顾客统计时间初始化
+    var peopleTime = new dateRange("#peopleTime");
+    peopleTime.init()
+    $("#peopleTime button").click(function () {
+        peopleRangeType = 4;
+        peopleInit()
+    })
+    var peopleRangeType = 1;   //1本周   2本月   3近半年   4 时间范围
+    peopleInit()
+    //顾客初始化
+    function peopleInit(){
+        var url = '';
+        var urlRight = '';
+        var parms = {subids:peopleShopArr};
+        var parmsRight = {subid:shopId};
+        if(peopleRangeType==1){
+            urlRight = config.getUrl_statisticsCustomer_statisticsByWeek();
+            parmsRight.week = new Date().getTime();
+        }else if(peopleRangeType==2){
+            urlRight = config.getUrl_statisticsCustomer_statisticsByMonth();
+            parmsRight.month = new Date().getTime();
+        }else if(peopleRangeType==3){
+            urlRight = config.getUrl_statisticsCustomer_statisticsByHalfYear();
+            parmsRight.year = new Date().getTime();
+        }else if(peopleRangeType==4){
+            urlRight = config.getUrl_statisticsCustomer_statisticsByTime();
+            parmsRight.startTime = peopleTime.getTime()[2];
+            parmsRight.endTime = peopleTime.getTime()[3];
+        }
+
+        parms.subids = peopleShopArr;
+        if(peopleRangeType==4){
+            url = config.getUrl_statisticsCustomer_timeInterval();
+            parms.startTime = peopleTime.getTime()[2];
+            parms.endTime = peopleTime.getTime()[3];
+        }else{
+            url = config.getUrl_statisticsCustomer_statisticsBySubordinates();
+            parms.type = peopleRangeType;
+            parms.date = new Date().getTime();
+        }
+
+        //顾客右边
+        quakooData.ajaxGetData(urlRight,parmsRight,function (ret) {
+            var data = ret.data;
+            $('#peopleRightDom').html(template('peopleRightTmp',{list:data}))
+            setPercent([data.ten,data.twenty,data.forty,data.sixty,data.more],$('#peopleNum'),color01,'people')
+        })
+        //顾客左边的折线图
+        quakooData.ajaxGetData(url,parms,function (ret) {
+            chartInit(ret.data,3)
+        })
+    }
+
+
+    //库存统计
+    //库存统计时间初始化
+    var kcType = 1;   //1本周   2本月   3近半年   4 时间范围
+    var kcTime = new dateRange("#kcTime");
+    kcTime.init()
+    $("#kcTime button").click(function () {
+        kcType = 4;
+        kcInit()
+    })
+    kcInit()
+    //库存初始化
+    function kcInit(){
+        var parms = {subId:shopId};
+        if(kcType==4){
+            parms.startTime = kcTime.getTime()[2];
+            parms.endTime = kcTime.getTime()[3];
+            parms.type = 6;
+        }else{
+            parms.type = kcType+2;
+        }
+        quakooData.ajaxGetData(config.getUrl_statisticsInventory_saleSubordinates(),parms,function (ret) {
+            console.log(111111,ret.data)
+            var data = ret.data;
+            var allPrice = 0;
+            for(var i in data){
+                allPrice+=data[i][0].price;
+            }
+            for(var i in data){
+                data[i][0].rate = ((data[i][0].price/allPrice)*100).toFixed(2)
+            }
+            $('#kcDom').html(template('kcTmp',{list:data,allPrice:allPrice}))
+        })
+    }
+
+
+
+
+
+    //表格渲染
+    function chartInit(data,type) {
+        var seriseArr = [] //放入options下series的数组
+        var obj = {type: 'line', smooth:true}//统计图显示样式，固定为line
+        var seriseNum = 0;
+        var initOp = {};
+        var source = {};
+        source.xAxis = [];
+        var startNum1 = 0;
+        var endNum1 = 6;
+        var startNum3 = 0;
+        var endNum3 = 6;
+        if(type==1){
+            initOp.title = '销售额走势图'
+            initOp.span = '单位: 千元'
+            seriseNum = salesShopArr.length;
+            for (var i = 0; i < data.length; i++) {
+                if(!data[i].subName){
+                    data[i].subName = '门店名称未知'+i
+                }
+                source[data[i].subName] = [];
+                for (var j = 0; j < data[i].details.length; j++) {
+                    source.xAxis.push(data[i].details[j].day)
+                    source[data[i].subName].push(data[i].details[j].sale)
+                }
+            }
+        }else{
+            initOp.title = '顾客数量走势图'
+            initOp.span = '单位: 人'
+            seriseNum = peopleShopArr.length;
+            for (var i = 0; i < data.length; i++) {
+                if(!data[i].subName){
+                    data[i].subName = '门店名称未知'+i
+                }
+                source[data[i].subName] = [];
+                for (var j = 0; j < data[i].details.length; j++) {
+                    source.xAxis.push(data[i].details[j].day)
+                    source[data[i].subName].push(data[i].details[j].total)
+                }
+            }
+        }
+
+
+        for (var i = 0;i<seriseNum;i++){
+            seriseArr.push(obj)
+        }
+
+        //echarts配置项
+        var option = {
+            color:color01,
+            //底部缩放拉条
+            grid:{right:'5%',},
+            dataZoom:{
+                show:false,
+                zoomLock:true,
+                type:'slider',
+                minValueSpan: 7,
+                maxValueSpan: 7,
+                startValue:0,
+                endValue:6
+            },
+            //标题
+            title:{
+                text:initOp.title,
+                textStyle:{
+                    color: '#393953',
+                    fontSize: 12,
+                    lineHeight:17,
+                    // align:'center'
+                },
+                subtext: initOp.span,
+                subtextStyle: {
+                    color: '#828297',
+                    fontSize: 12,
+                    lineHeight:17,
+                },
+            },
+            //右上角图列组件
+            legend: {
+                type:'scroll',
+                icon:'roundRect',//'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+                itemWidth:10,//icon宽高
+                itemHeight:4,//icon宽高
+                itemGap:16,//间距
+                right:50,
+                top:0,
+                width:300,//组件宽度超出滚动
+                textStyle:{
+                    color:'#828297',
+                    fontSize:12,
+                }
+            },
+            //提示组件
+            tooltip: {
+                show:true,
+                trigger: 'axis',//鼠标悬停显示详细item、axis、none,axis多用在有轴
+                axisPointer: {
+                    type: 'line',//鼠标悬停显示详情形式line,shadow,cross
+                    axis:'x',//显示x或y轴内容
+                    //snap:false
+                    lineStyle:{
+                        type: 'dotted',
+                        shadowColor: '#000',
+                        shadowBlur: 15,
+                    }
+                }
+            },
+            //数据传入   //统计图主要数据
+            dataset: {source: source},
+            xAxis: {
+                type: 'category',//value,time,log
+            },
+            yAxis: {
+                type: 'value',
+            },
+            series: seriseArr,
+        };
+        if(type==1){
+            if(myChart){
+                myChart.dispose();
+            }
+            myChart = echarts.init(document.getElementById('chartCont01'));
+            myChart.setOption(option);
+        }
+
+        if(type==3){
+            if(myChart3){
+                myChart3.dispose();
+            }
+            myChart3 = echarts.init(document.getElementById('chartCont02'));
+            myChart3.setOption(option);
+        }
+
+        $('.mainCont .box01 .prev').click(function () {
+            if(startNum1 == 0){
+                startNum1 = 0 ;
+                return false;
+            }
+            startNum1--;
+            endNum1--;
+            myChart.dispatchAction({
+                type: 'dataZoom',
+                startValue: startNum1,
+                endValue:endNum1
+            })
+        })
+        $('.mainCont .box01 .next').click(function () {
+            if(endNum1>=source.xAxis.length-1){
+                endNum1 = source.xAxis.length-1
+                return false;
+            }
+            startNum1++;
+            endNum1++;
+            myChart.dispatchAction({
+                type: 'dataZoom',
+                startValue: startNum1,
+                endValue:endNum1
+            })
+        })
+
+
+        $('.mainCont .box03 .prev').click(function () {
+            if(startNum3 == 0){
+                startNum3 = 0 ;
+                return false;
+            }
+            startNum3--;
+            endNum3--;
+            myChart3.dispatchAction({
+                type: 'dataZoom',
+                startValue: startNum3,
+                endValue:endNum3
+            })
+        })
+        $('.mainCont .box03 .next').click(function () {
+            if(endNum3>= source.xAxis.length-1){
+                endNum3 = source.xAxis.length-1
+                return false;
+            }
+            startNum3++;
+            endNum3++;
+            myChart3.dispatchAction({
+                type: 'dataZoom',
+                startValue: startNum3,
+                endValue:endNum3
+            })
+        })
+
+    }
+
+    //改变本周   本月  近半年
+    function changeType(t,type) {
+        if(type==1){
+            salesRangeType = t;
+            $("#salesType li").eq(t-1).addClass('active').siblings().removeClass('active');
+            salesInit()
+        }else if(type==2){
+            kdjType = t;
+            $("#kdjType li").eq(t-1).addClass('active').siblings().removeClass('active');
+            kdjInit()
+        }else if(type==3){
+            peopleRangeType = t;
+            $("#peopleType li").eq(t-1).addClass('active').siblings().removeClass('active');
+            peopleInit()
+        }else if(type==4){
+            kcType = t;
+            $("#kcType li").eq(t-1).addClass('active').siblings().removeClass('active');
+            kcInit()
+        }
+    }
+
+    //选择多家门店弹窗
+    function selectShop(type) {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '添加要进行对比的门店',
+            skin: 'content-view-selectShop-tan', //样式类名
+            anim: 0,
+            area: ['360px','440px'],
+            closeBtn: 0, //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-selectShop'), //容器对象
+            btn: ['取消', '确定'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                var nameArr = [];
+                $('.content-view-selectShop .icon-ico_circle_cross_fil').each(function (i,el) {
+                    nameArr.push($(el).siblings('span').text())
+                })
+                //多选门店头部显示店铺名
+                if(type == 'sales'){
+                    if(salesShopArr.length>0){
+                        $('.box01 .txt01').hide();
+                        $('.box01 .head ._btn').css({'border':'none','color':'#4186DC'}).text('重新选择');
+                        $('.box01 .head .shopDiv').css({'width':nameArr.length*100+'px'})
+                        $('.box01 .head .shopDivBox').show()
+                        $('.box01 .head .shopName').remove()
+                        for(var i=0;i<nameArr.length;i++){
+                            $('.box01 .shopDiv').append('<div class="shopName">'+nameArr[i]+'</div>')
+                        }
+                    }else{
+                        $('.box01 .txt01').show();
+                        $('.box01 .head ._btn').css({'border':'1px solid #ececf4','color':'#828297'}).text('选择门店');
+                        $('.box01 .head .shopDivBox').hide()
+                        $('.box01 .head .shopName').remove()
+                        salesShopArr = [shopId]
+                    }
+                    salesInit()
+                }else if(type == 'people'){
+                    if(peopleShopArr.length>0){
+                        $('.box03 .head ._btn').css({'border':'none','color':'#4186DC'}).text('重新选择');
+                        $('.box03 .txt01').hide();
+                        $('.box03 .head .shopDiv').css({'width':nameArr.length*100+'px'})
+                        $('.box03 .head .shopDivBox').show()
+                        $('.box03 .head .shopName').remove()
+                        for(var i=0;i<nameArr.length;i++){
+                            $('.box03 .shopDiv').append('<div class="shopName">'+nameArr[i]+'</div>')
+                        }
+                    }else{
+                        $('.box03 .head ._btn').css({'border':'1px solid #ececf4','color':'#828297'}).text('选择门店');
+                        $('.box03 .head .shopDivBox').hide()
+                        $('.box03 .txt01').show();
+                        $('.box03 .head .shopName').remove()
+                        peopleShopArr = [shopId]
+                    }
+                    peopleInit()
+                }
+                layer.close(index);
+            },
+            success: function (layero, index) {
+                $('.content-view-selectShop ul').html('')
+                var arr = [];
+                if(type=='people'){
+                    arr = peopleShopArr;
+                }else{
+                    arr = salesShopArr;
+                }
+                for(var i = 0;i<shopData.length;i++){
+                    if(arr.indexOf(shopData[i].id)>=0){
+                        var li = '<li value="'+shopData[i].id+'"><span>'+shopData[i].name+'</span><i class="icon iconfont icon-ico_circle_cross_fil "></i></li>'
+                    }else{
+                        var li = '<li value="'+shopData[i].id+'"><span>'+shopData[i].name+'</span><i class="icon iconfont icon-ico_circle_plus_fill"></i></li>'
+                    }
+                    $('.content-view-selectShop ul').append(li)
+                }
+                $('.content-view-selectShop .iconfont').click(function () {
+                    if($(this).hasClass('icon-ico_circle_plus_fill')){
+                        arr.push($(this).parents('li').attr('value'));
+                        $(this).removeClass('icon-ico_circle_plus_fill').addClass('icon-ico_circle_cross_fil')
+                    }else {
+                        arr.splice(peopleShopArr.indexOf($(this).parents('li').attr('value')),1);
+                        $(this).removeClass('icon-ico_circle_cross_fil').addClass('icon-ico_circle_plus_fill')
+                    }
+                })
+            }
+        });
+    }
+
+    var color01 = ['#4186DC','#57B8DB','#DD5B4B','#54B677','#7D65C5','#F0983F']
+    var color02 = ['#4286DA','#3D7BC8','#3770B5','#3265A4','#2B5992']
+    var color03 = ['#57B7DA','#50A8C8','#4998B6','#4189A3','#3A7A91']
+    var color04 = ['#DC5A4B','#CA5245','#B74B40','#A54338','#923C31']
+    var color05 = ['#52B577','#4CA66D','#449763','#3E8859','#37784F']
+    var color06 = ['#7d65c3','#735db3','#6854a2','#5e4c93','#534382']
+    var color07 = ['#ef9741','#db8a3b','#c77e36','#b37130','#9f642b']
+
+
+
+
+
+    //设置百分比div然后添加入容器 (传入数据 容器 颜色)
+    function setPercent(data,el,color,type) {
+        el.html('')
+        var str = '';
+        var danwei = '';
+        if(type=='sales'){
+            str = '销售额'
+            danwei = '元'
+        }else if(type=='people'){
+            str = '人数'
+            danwei = '人'
+        }else if(type=='kdj'){
+            str = '百分比'
+            danwei = '%'
+        }
+        var total = data.reduce(function (a,b) {return a+b})
+        for(var i = 0;i<data.length;i++){
+            var width ;
+            var width2 ;
+            if(total==0){
+                width = '0%';
+                width2 = '0%';
+            }else{
+                width = toPercent(data[i]/total,10);
+                width2 = toPercent(data[i]/total,0);
+            }
+            var span = "<span>" +'|<br/>'+'|<br/>'+ width2 +"</span>"
+            if(i%2 != 0){
+                span = "<span>"+width2+'<br/>'+'|<br/>'+'|<br/>'+"</span>"
+            }
+            if(parseFloat(width.replace('%',''))!=0){
+                var div =
+                    "<div class='percentDiv' style='width:"+width+";"+"background:"+color[i]+";position: relative "+" '>" +
+                    span +
+                    "<div class='hoverBox'>"+'<div class="triangle-down"></div>'+str+':'+data[i]+danwei+"</div>"+
+                    "</div>";
+                el.append(div)
+            }
+
+        }
+        $('.percentDiv').hover(function () {
+            $(this).find('.hoverBox').show();
+        },function () {
+            $(this).find('.hoverBox').hide();
+        })
+        function toPercent(point,i){
+            var str=Number(point*100).toFixed(i);
+            str+="%";
+            return str;
+        }
+    }
+
+    window.onresize = function () {
+        myChart.resize();
+        myChart3.resize();
+    }
+</script>
+</body>
+</html>
