@@ -467,6 +467,7 @@
         .daoqiWarn .warnLeft {
             float: left;
         }
+
         .warn1 {
             background-color: #ECECF3;
             padding-bottom: 6px;
@@ -752,10 +753,60 @@
         .content3_3.active {
             display: block;
         }
-        
+
         /* 需要补充说明商品 */
-        #xsjl-table1 {
+        #table2 {
             display: none;
+        }
+
+        /* 顶部 */
+        .btn1,
+        .btn2 {
+            display: inline-block;
+            width: 64px;
+            height: 28px;
+            padding: 0px 6px;
+            line-height: 28px;
+            border-radius: 2px;
+            font-size: 12px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .btn1 {
+            color: rgba(65, 134, 220, 1);
+            border: 1px solid rgba(65, 134, 220, 0.1);
+            text-align: left;
+            font-family: PingFangSC-Semibold;
+            background-color: rgba(65, 134, 220, 0.1);
+            margin-right: 11px;
+        }
+
+        .btn2 {
+            color: rgba(87, 184, 219, 1);
+            text-align: left;
+            font-family: PingFangSC-Semibold;
+            background-color: rgba(87, 184, 219, 0.1);
+            border: 1px solid rgba(87, 184, 219, 0.1);
+            margin-right: 20px;
+        }
+
+        .btn.b1 {
+            height: 28px;
+        }
+
+        .addbtn {
+            display: inline-block;
+            width: 64px;
+            line-height: 28px;
+            border-radius: 2px;
+            background-color: rgba(65, 134, 220, 1);
+            color: rgba(255, 255, 255, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            text-align: center;
+            vertical-align: middle;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -769,9 +820,11 @@
         </ul>
         <ol class="clear">
             <li class="right-info active">
+                <span class="btn1" onclick="proLists()">企业列表</span>
+                <span class="btn2" onclick="employList()">员工列表</span>
                 <div class="selectBox" id="selectCustomer">
                     <div class="select-box-header">
-                        <span class="text">顾客姓名</span><i class="iconfont icon-ico_arrow_down"></i>
+                        <span class="text">生产批号</span><i class="iconfont icon-ico_arrow_down"></i>
                     </div>
                     <div class="optionBox">
                         <ul class="optionUL">
@@ -781,13 +834,11 @@
                         </ul>
                     </div>
                 </div>
-                <input type="search" class="search-box" placeholder="搜索姓名">
+                <input type="search" class="search-box" placeholder="搜索生产批号">
+                <span class="addbtn" onclick="addGoods()">新增商品</span>
             </li>
 
-            <button class="btn btn-primary" onclick="addGoods()">新增商品</button>
-            <button class="btn btn-primary" onclick="proLists()">企业列表</button>
             <button class="btn btn-primary" onclick="addPros()">新增企业</button>
-            <button class="btn btn-primary" onclick="employList()">员工列表</button>
             <button class="btn btn-primary" onclick="pxReload()">员工列表(培训记录)</button>
             <button class="btn btn-primary" onclick="tjReload()">员工列表(体检记录)</button>
 
@@ -853,8 +904,8 @@
                 <i class="iconfont icon-ico_arrow_right warnRight"></i>
             </div>
         </div>
-        <table id="xsjl-table" data-toggle="table" class="table table-border"></table>
-        <table id="xsjl-table1" data-toggle="table" class="table table-border"></table>
+        <div id="table1"><table id="xsjl-table" data-toggle="table" class="table table-border"></table></div>
+        <div id="table2"><table id="xsjl-table1" data-toggle="table" class="table table-border"></table></div>
     </div>
     <div class="content2 tab-item">
         <table id="rkjl-table" data-toggle="table" class="table table-border"></table>
@@ -1667,9 +1718,9 @@
             $(".tab-items").hide().eq($(this).index()).show();
         });
         // 未补充说明产品
-        function warnSP() {  
-            $("#xsjl-table").hide();
-            $("#xsjl-table1").show();
+        function warnSP() {
+            $("#table1").hide();
+            $("#table2").show();
         }
         /**
          * 所有时间下拉框
