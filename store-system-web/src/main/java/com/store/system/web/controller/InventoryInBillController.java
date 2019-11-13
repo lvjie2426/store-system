@@ -169,6 +169,18 @@ public class InventoryInBillController extends BaseController {
         }
     }
 
+    @RequestMapping("/getListByStatus")
+    public ModelAndView getListByStatus(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            long subid = user.getSid();
+            List<InventoryInBill> res = inventoryInBillService.getListByStatus(subid, InventoryInBill.status_wait_check);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
     @RequestMapping("/pass")
     public ModelAndView pass(@RequestParam(value = "id") long id, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {

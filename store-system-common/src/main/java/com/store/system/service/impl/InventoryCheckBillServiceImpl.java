@@ -285,6 +285,11 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         }.getPager();
     }
 
+    @Override
+    public List<InventoryCheckBill> getListByStatus(long subid, int status) throws Exception {
+        return inventoryCheckBillDao.getAllList(subid,status);
+    }
+
     private List<ClientInventoryCheckBill> transformClient(List<InventoryCheckBill> list) {
         List<ClientInventoryCheckBill> lists =new ArrayList<>();
         for(InventoryCheckBill inventoryCheckBill:list){

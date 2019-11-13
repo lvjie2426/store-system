@@ -25,7 +25,7 @@ public class InventoryInBillDaoImpl extends CacheBaseDao<InventoryInBill> implem
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
-    public List<InventoryInBill> getCheckPageList(long subid,
+    public List<InventoryInBill> getCheckPageList(long subid, int status,
                                              @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor) double cursor,
                                              @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
         return null;
@@ -41,7 +41,7 @@ public class InventoryInBillDaoImpl extends CacheBaseDao<InventoryInBill> implem
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
-    public int getCheckCount(long subid) throws DataAccessException {
+    public int getCheckCount(long subid, int status) throws DataAccessException {
         return 0;
     }
 
@@ -49,5 +49,11 @@ public class InventoryInBillDaoImpl extends CacheBaseDao<InventoryInBill> implem
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
     public int getCreateCount(long subid) throws DataAccessException {
         return 0;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryInBill> getAllList(long subid, int status) throws DataAccessException {
+        return null;
     }
 }
