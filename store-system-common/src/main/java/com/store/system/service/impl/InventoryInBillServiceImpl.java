@@ -394,11 +394,11 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         return new PagerRequestService<InventoryInBill>(pager, 0) {
             @Override
             public List<InventoryInBill> step1GetPageResult(String cursor, int size) throws Exception {
-                return inventoryInBillDao.getCheckPageList(subid, InventoryInBill.status_edit, Double.parseDouble(cursor),size);
+                return inventoryInBillDao.getCheckPageList(subid, InventoryInBill.status_wait_check, Double.parseDouble(cursor),size);
             }
             @Override
             public int step2GetTotalCount() throws Exception {
-                return inventoryInBillDao.getCheckCount(subid,InventoryInBill.status_edit);
+                return inventoryInBillDao.getCheckCount(subid,InventoryInBill.status_wait_check);
             }
 
             @Override

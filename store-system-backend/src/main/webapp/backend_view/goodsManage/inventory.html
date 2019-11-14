@@ -1150,13 +1150,21 @@
                 })
                 $('.content-view-commonInventory-tan .layui-layer-content').height(560);
 
-
                 var allCategory = {};
+                allPdDidObj = {};
                 for(var i=0;i<allData[id].clientItems.length;i++){
+                    if(allData[id].clientItems[i].realNum){
+                        allPdDidObj[allData[id].clientItems[i].did] = {did:allData[id].clientItems[i].did,currentNum:allData[id].clientItems[i].currentNum,realNum:allData[id].clientItems[i].realNum}
+                    }else{
+                        allPdDidObj[allData[id].clientItems[i].did] = {did:allData[id].clientItems[i].did,currentNum:allData[id].clientItems[i].currentNum,realNum:0}
+                    }
+
+
                     if(allCategory[allData[id].clientItems[i].cid]){
                         if(allCategory[allData[id].clientItems[i].cid].data[allData[id].clientItems[i].bid+'*'+allData[id].clientItems[i].sid]){
                             allCategory[allData[id].clientItems[i].cid].data[allData[id].clientItems[i].bid+'*'+allData[id].clientItems[i].sid].data.push(allData[id].clientItems[i])
                         }else{
+                            allCategory[allData[id].clientItems[i].cid].data[allData[id].clientItems[i].bid+'*'+allData[id].clientItems[i].sid] = {};
                             allCategory[allData[id].clientItems[i].cid].data[allData[id].clientItems[i].bid+'*'+allData[id].clientItems[i].sid].data = [allData[id].clientItems[i]];
                             allCategory[allData[id].clientItems[i].cid].data[allData[id].clientItems[i].bid+'*'+allData[id].clientItems[i].sid].brandName = allData[id].clientItems[i].brandName;
                             allCategory[allData[id].clientItems[i].cid].data[allData[id].clientItems[i].bid+'*'+allData[id].clientItems[i].sid].seriesName = allData[id].clientItems[i].seriesName;
@@ -1373,7 +1381,7 @@
             $(self).parents('tr').find('td').last().html('<span>'+num+'</span>')
         }
         if(self.value>=0){
-            allPdDidObj[id] = {did:id,currentNum:currentNum,realNum:self.value};
+            allPdDidObj[id].realNum = self.value;
         }
     }
     function listHide() {

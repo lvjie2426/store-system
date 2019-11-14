@@ -132,6 +132,24 @@ public class MissionController extends BaseController {
         }
     }
 
+    @RequestMapping("/getListByStatus")
+    public ModelAndView getListByStatus(@RequestParam(value = "sid") long sid,
+                                      @RequestParam(value = "missionStatus",defaultValue = "0") int missionStatus,
+                                      @RequestParam(value = "type",defaultValue = "-1") int type,
+                                      @RequestParam(value = "isNow",defaultValue = "0") int isNow,
+                                      HttpServletRequest request, HttpServletResponse response, Model model, Pager pager) throws Exception {
+
+        try {
+            Subordinate subordinate = subordinateService.load(sid);
+            long psid = subordinate.getPid();
+            if(psid==0){ throw new StoreSystemException("门店ID错误");}
+            pager = missionService.getWebByPager(pager,psid,missionStatus,type,isNow);
+            return this.viewNegotiating(request,response, new ResultClient(pager.getData()));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
     /**
      * create by: zhangmeng
      * description: 员工端获取销售任务列表

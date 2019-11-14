@@ -934,6 +934,32 @@ public class UserServiceImpl implements UserService {
         if (user.getAid() != 0) {
             olduser.setAid(user.getAid());
         }
+        if (user.getSid() != 0){
+            SubordinateUserPool subordinateUserPool = new SubordinateUserPool();
+            subordinateUserPool.setUid(olduser.getId());
+            subordinateUserPool.setSid(olduser.getSid());
+            subordinateUserPool = subordinateUserPoolDao.load(subordinateUserPool);
+            if(subordinateUserPool != null){
+                subordinateUserPool.setStatus(User.status_delete);
+                subordinateUserPoolDao.update(subordinateUserPool);
+            }
+            SubordinateUserPool newPool = new SubordinateUserPool();
+            newPool.setUid(user.getId());
+            newPool.setSid(user.getSid());
+            SubordinateUserPool dbInfo = subordinateUserPoolDao.load(newPool);
+            if(dbInfo != null){
+                newPool.setStatus(User.status_delete);
+                subordinateUserPoolDao.update(dbInfo);
+            }else{
+                newPool.setStatus(User.status_nomore);
+                subordinateUserPoolDao.insert(newPool);
+            }
+            olduser.setSid(user.getSid());
+        }
+        // 禁用开启
+        if (user.getStatus()!=olduser.getStatus()) {
+            olduser.setStatus(user.getStatus());
+        }
         boolean res = userDao.update(olduser);
         if (res && !olduser.getPhone().equals(user.getPhone())) {
             LoginUserPool loginUserPool = new LoginUserPool();

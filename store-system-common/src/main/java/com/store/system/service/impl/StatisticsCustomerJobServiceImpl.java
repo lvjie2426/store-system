@@ -123,9 +123,10 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
 
             res.setOldNum(oldNum);
             res.setReturnNum(returnNum);
-            Subordinate subordinate = subordinateDao.load(subid);
-            if(subordinate!=null){ res.setSubName(subordinate.getName()); }
+
         }
+        Subordinate subordinate = subordinateDao.load(subid);
+        if(subordinate!=null){ res.setSubName(subordinate.getName()); }
         return res;
     }
 
