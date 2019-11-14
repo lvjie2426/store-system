@@ -956,6 +956,10 @@ public class UserServiceImpl implements UserService {
             }
             olduser.setSid(user.getSid());
         }
+        // 禁用开启
+        if (user.getStatus()!=olduser.getStatus()) {
+            olduser.setStatus(user.getStatus());
+        }
         boolean res = userDao.update(olduser);
         if (res && !olduser.getPhone().equals(user.getPhone())) {
             LoginUserPool loginUserPool = new LoginUserPool();
