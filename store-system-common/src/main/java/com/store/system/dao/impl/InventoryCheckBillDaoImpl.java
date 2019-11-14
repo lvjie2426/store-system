@@ -32,7 +32,7 @@ public class InventoryCheckBillDaoImpl extends CacheBaseDao<InventoryCheckBill> 
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
     public List<InventoryCheckBill> getAllList(long subid, int status) {
         return null;
     }

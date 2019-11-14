@@ -289,8 +289,10 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         //sku库存数量低于预警设置数量
         for (InventoryDetail detail : details) {
             ProductSPU spu = spuMap.get(detail.getP_spuid());
-            if (detail.getNum() <= spu.getUnderRemind()) {
-                res.add(detail);
+            if(spu!=null) {
+                if (detail.getNum() <= spu.getUnderRemind()) {
+                    res.add(detail);
+                }
             }
         }
         return transformClients(res,false);
@@ -317,9 +319,9 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 //                    nurseEndTime = Long.parseLong((String) sku.getProperties().get(33L));
 //                }
                 //隐形眼镜的保质期
-                if(sku.getProperties().containsKey(35L)) {
-                    endTime = Long.parseLong((String)  sku.getProperties().get(35L));
-                }
+//                if(sku.getProperties().containsKey(35L)) {
+//                    endTime = Long.parseLong((String)  sku.getProperties().get(35L));
+//                }
                 //若到期时间在三天之内，则为到期产品
                 if (nurseEndTime - current <= 3 * 60 * 60 * 24 * 1000) {
                     res.add(detail);
