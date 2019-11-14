@@ -27,6 +27,12 @@
     <!--公用组件样式结束-->
     <!--单页样式-->
     <link rel="stylesheet" href="../resource/css/yanjing/medical.css">
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <link rel="stylesheet" href="../resource/css/yanjing/companyManage.css">
+    <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+    <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/css/baiduMap.css">
+    <script src="../resource/js/baiduMap.js"></script>
     <!--单页样式结束-->
 
     <style>
@@ -546,7 +552,7 @@
         }
 
         .goot-goot-putong.s1 {
-            border: 1px solid #eee;
+            border-bottom: 1px solid #eee;
         }
 
         .mainGoodList.m1 {
@@ -999,6 +1005,27 @@
             float: right;
             color: rgba(130, 130, 151, 1);
         }
+
+        .checksc {
+            display: block;
+        }
+
+
+
+        .icon10 {
+            position: relative;
+            left: 135px;
+            top: -24px;
+        }
+
+        .uploadPic.n1 {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .t1 {
+            line-height: 28px;
+        }
     </style>
 </head>
 
@@ -1259,15 +1286,15 @@
         <div class="mainGoodList">
             <div class="goot-select">
                 <div class="goot-items">企业名称</div>
-                <input type="text" placeholder="名称" class="proNames">
+                <input type="text" placeholder="名称" id="qysname" class="proNames">
             </div>
             <div class="goot-select">
                 <div class="goot-items">联系人</div>
-                <input type="text" placeholder="名称" class="proNames">
+                <input type="text" placeholder="名称" id="lxsname" class="proNames">
             </div>
             <div class="goot-select">
                 <div class="goot-items">联系电话</div>
-                <input type="text" placeholder="名称" class="proNames">
+                <input type="text" placeholder="名称" id="lxphone" class="proNames">
             </div>
             <div class="goot-select">
                 <div class="goot-items">经营范围</div>
@@ -1288,15 +1315,17 @@
             <div class="showAddress">天目山路西溪天堂</div>
             <div class="goot-select">
                 <div class="goot-items">营业执照编号</div>
-                <input type="text" placeholder="输入" class="proNames">
+                <input type="text" placeholder="输入" id="yybh" class="proNames">
             </div>
             <div class="goot-select">
                 <div class="goot-items">发证日期</div>
-                <div class="goot-select-items"><span>选择日期</span><i class="iconfont icon-ico_calendar"></i></div>
+                <div class="goot-select-items"><span id="yyzzDate">选择日期</span><i class="iconfont icon-ico_calendar"></i>
+                </div>
             </div>
             <div class="goot-select">
                 <div class="goot-items">有效日期</div>
-                <div class="goot-select-items"><span>选择有效期</span><i class="iconfont icon-ico_calendar"></i></div>
+                <div class="goot-select-items"><span id="zzyxDate">选择有效期</span><i
+                        class="iconfont icon-ico_calendar"></i></div>
             </div>
             <div class="goot-select">
 
@@ -1304,131 +1333,141 @@
             <div>
                 <div class="yingyeTu">营业执照照片 <span>1-3 张</span></div>
                 <div>
-                    <div class="img1">
-                        <img src="../resource/img/a1.jpg" alt="">
+                    <div class="img1" onclick="setSupIcon()">
+                        <img src="../resource/img/a1.jpg" id="yyimg" alt="">
                     </div>
                 </div>
             </div>
 
         </div>
         <ul class="goot-goot-putong s1">
-            <li><input type="checkbox" name="生产商" value="" class="selectPro"> 该企业为生产商</li>
+            <li><input type="checkbox" name="生产商" value="" class="selectPro" id="shcheck"> 该企业为生产商</li>
         </ul>
-        <div class="mainGoodList m1">
-            <div class="goot-select">
-                <div class="goot-items">医疗器械注册证编号</div>
-                <input type="text" placeholder="编号" class="proNames">
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">发证日期</div>
-                <div class="goot-select-items"><span>选择日期</span><i class="iconfont icon-ico_calendar"></i></div>
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">有效日期</div>
-                <div class="goot-select-items"><span>选择有效期</span><i class="iconfont icon-ico_calendar"></i></div>
-            </div>
-            <div class="goot-select">
+        <div class="checksc">
+            <div class="mainGoodList m1">
+                <div class="goot-select">
+                    <div class="goot-items">医疗器械注册证编号</div>
+                    <input type="text" placeholder="编号" id="ylnum" class="proNames">
+                </div>
+                <div class="goot-select">
+                    <div class="goot-items">发证日期</div>
+                    <div class="goot-select-items"><span id="ylqxDate">选择日期</span><i
+                            class="iconfont icon-ico_calendar"></i></div>
+                </div>
+                <div class="goot-select">
+                    <div class="goot-items">有效日期</div>
+                    <div class="goot-select-items"><span id="ylyxDate">选择有效期</span><i
+                            class="iconfont icon-ico_calendar"></i></div>
+                </div>
+                <div class="goot-select">
 
-            </div>
-            <div class="yingyeImg">
-                <div class="yingyeTu">医疗器械注册证照片</div>
-                <div>
-                    <div class="img1">
-                        <img src="../resource/img/a1.jpg" alt="">
+                </div>
+                <div class="yingyeImg">
+                    <div class="yingyeTu">医疗器械注册证照片</div>
+                    <div>
+                        <div class="img1">
+                            <img src="../resource/img/a1.jpg" id="ylimg" alt="">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="goot-select">
+                <div class="goot-select">
 
-            </div>
-        </div>
-        <div class="mainGoodList m1">
-            <div class="goot-select">
-                <div class="goot-items">生产许可证</div>
-                <input type="text" placeholder="编号" class="proNames">
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">发证日期</div>
-                <div class="goot-select-items"><span>选择日期</span><i class="iconfont icon-ico_calendar"></i></div>
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">有效日期</div>
-                <div class="goot-select-items"><span>选择有效期</span><i class="iconfont icon-ico_calendar"></i></div>
-            </div>
-            <div class="goot-select">
-
-            </div>
-            <div class="yingyeImg">
-                <div class="yingyeTu">生产许可证照片</div>
-                <div>
-                    <div class="img1">
-                        <img src="../resource/img/a1.jpg" alt="">
-                    </div>
                 </div>
             </div>
-            <div class="goot-select">
+            <div class="mainGoodList m1">
+                <div class="goot-select">
+                    <div class="goot-items">生产许可证</div>
+                    <input type="text" placeholder="编号" id="scxkNum" class="proNames">
+                </div>
+                <div class="goot-select">
+                    <div class="goot-items">发证日期</div>
+                    <div class="goot-select-items"><span id="scfzDate">选择日期</span><i
+                            class="iconfont icon-ico_calendar"></i></div>
+                </div>
+                <div class="goot-select">
+                    <div class="goot-items">有效日期</div>
+                    <div class="goot-select-items"><span id="scyxDate">选择有效期</span><i
+                            class="iconfont icon-ico_calendar"></i></div>
+                </div>
+                <div class="goot-select">
 
-            </div>
-        </div>
-        <div class="mainGoodList m1">
-            <div class="yingyeImg">
-                <div class="yingyeTu">其它资料照片</div>
-                <div>
-                    <div class="img1">
-                        <img src="../resource/img/a1.jpg" alt="">
+                </div>
+                <div class="yingyeImg">
+                    <div class="yingyeTu">生产许可证照片</div>
+                    <div>
+                        <div class="img1">
+                            <img src="../resource/img/a1.jpg" id="scimg" alt="">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="goot-select">
+                <div class="goot-select">
 
+                </div>
+            </div>
+            <div class="mainGoodList m1">
+                <div class="yingyeImg">
+                    <div class="yingyeTu">其它资料照片</div>
+                    <div>
+                        <div class="img1">
+                            <img src="../resource/img/a1.jpg" id="qtimg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="goot-select">
+
+                </div>
             </div>
         </div>
+
 
         <ul class="goot-goot-putong s1">
             <li><input type="checkbox" name="供应商" value="" class="selectPro"> 该企业为供应商</li>
         </ul>
-        <div class="mainGoodList m1">
-            <div class="goot-select">
-                <div class="goot-items">医疗器械经营许可证</div>
-                <input type="text" placeholder="编号" class="proNames">
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">批准日期</div>
-                <div class="goot-select-items"><span>选择日期</span><i class="iconfont icon-ico_calendar"></i></div>
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">有效日期</div>
-                <div class="goot-select-items"><span>选择有效期</span><i class="iconfont icon-ico_calendar"></i></div>
-            </div>
-            <div class="goot-select">
+        <div class="checksc">
+            <div class="mainGoodList m1">
+                <div class="goot-select">
+                    <div class="goot-items">医疗器械经营许可证</div>
+                    <input type="text" placeholder="编号" id="ylxkz" class="proNames">
+                </div>
+                <div class="goot-select">
+                    <div class="goot-items">批准日期</div>
+                    <div class="goot-select-items"><span id="ylpzDate">选择日期</span><i
+                            class="iconfont icon-ico_calendar"></i></div>
+                </div>
+                <div class="goot-select">
+                    <div class="goot-items">有效日期</div>
+                    <div class="goot-select-items"><span id="pzyxDate">选择有效期</span><i
+                            class="iconfont icon-ico_calendar"></i></div>
+                </div>
+                <div class="goot-select">
 
-            </div>
-            <div class="yingyeImg">
-                <div class="yingyeTu">医疗器械经营许可证照片</div>
-                <div>
-                    <div class="img1">
-                        <img src="../resource/img/a1.jpg" alt="">
+                </div>
+                <div class="yingyeImg">
+                    <div class="yingyeTu">医疗器械经营许可证照片</div>
+                    <div>
+                        <div class="img1">
+                            <img src="../resource/img/a1.jpg" id="ylxkzimg" alt="">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="goot-select">
+                <div class="goot-select">
 
-            </div>
-        </div>
-        <div class="mainGoodList m1">
-            <div class="yingyeImg">
-                <div class="yingyeTu">其它资料照片</div>
-                <div>
-                    <div class="img1">
-                        <img src="../resource/img/a1.jpg" alt="">
-                    </div>
                 </div>
             </div>
-            <div class="goot-select">
+            <div class="mainGoodList m1">
+                <div class="yingyeImg">
+                    <div class="yingyeTu">其它资料照片</div>
+                    <div>
+                        <div class="img1">
+                            <img src="../resource/img/a1.jpg" id="qtzlimg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="goot-select">
 
+                </div>
             </div>
         </div>
-
     </div>
     <!--员工列表培训记录弹窗-->
     <div class="content-view content-view-pxReload">
@@ -1531,7 +1570,8 @@
     <div class="content-view content-view-proLists">
         <div class="qyHeader">
             <span id="qyList1">所有企业</span>
-            <span id="qyList2" onclick="addPros()">新增企业</span>
+            <!-- <span id="qyList2" onclick="addPros()">新增企业</span> -->
+            <span id="qyList2" onclick="shopDes()">新增企业</span>
         </div>
         <div class="qiyeLists">
             <div class="daoqiWarn" onclick="cardGuoqi()">
@@ -1544,6 +1584,13 @@
             <table id="qyxx-table" data-toggle="table" class="table table-border"></table>
         </div>
     </div>
+
+    <!--门店详细弹窗-->
+    <div class="content-view content-view-shopDes" id="shopDom">
+
+    </div>
+
+
     <!-- 员工列表 -->
     <div class="content-view content-view-employList">
         <div class="qyHeader">
@@ -1597,52 +1644,389 @@
     <div class="content-view content-view-cardGuoqi">
         <table id="zjdq-table" data-toggle="table" class="table table-border"></table>
     </div>
-
     <!--全局JS引用-->
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+            accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" multiple="multiple" />
+    </form>
     <script src="../resource/js/jquery.min.js"></script>
     <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-    <script src="../resource/js/lib/quakoo/project.js"></script>
     <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
     <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
     <script src="../resource/js/plugins/layer/layer.js"></script>
-    <script src="../resource/layui/layui.js"></script>
-    <script src="../resource/js/yanjing/yanjing.js"></script>
     <script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
     <!--//日期范围插件开始-->
     <script src="../resource/js/yanjing/daterange.js"></script>
     <!--//日期范围插件结束-->
+    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakoo/Config.js"></script>
+    <script src="../resource/js/lib/quakoo/project.js"></script>
+    <script src="../resource/common/common.js?" +Math.random()></script>
+    <script src="../resource/js/template-native.js"></script>
+    <script src="../resource/js/yanjing/yanjing.js"></script>
+    <script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
+    <script src="../resource/js/yanjing/daterange.js"></script>
+    <script src="../resource/js/area/areaUtils.js"></script>
+    <script type="text/html" id="shopTmp">
+        <div class="shopMsg">
+            <ul class="clearfix">
+                <li class="clearfix">
+                    <p class="title">企业名称</p>
+                    <input type="text" value="<%=list.name%>" id="qysname" placeholder="名称">
+                </li>
+                <li>
+                    <p class="title">联系人</p>
+                    <input type="text" value="<%=list.storeCode%>" id="lxsname" placeholder="简码">
+                </li>
+                <li>
+                    <p class="title">联系电话</p>
+                    <input type="number" value="<%=list.phone%>" id="lxphone" placeholder="电话">
+                </li>
+                <li>
+                    <p class="title">经营范围</p>
+                    <input type="text" >
+                </li>
+            </ul>
+        </div>
+        <div class="address">
+            <p class="title">详细地址</p>
+            <!--<div class="mapDiv" id="mapDiv"></div>-->
+            <div class="inputBox">
+                <div class="selectBox" id="province">
+                    <div class="select-box-header">
+                        <%if(list.provinceName){%>
+                        <span class="text"><%=list.provinceName%></span> <i class="iconfont icon-ico_arrow_down"></i>
+                        <%}else{%>
+                        <span class="text t1">选择省</span> <i class="iconfont icon-ico_arrow_down t1"></i>
+                        <%}%>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i in oneArea){%>
+                            <li value="<%=oneArea[i].id%>"><%=oneArea[i].name%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+                <div class="selectBox" id="city">
+                    <div class="select-box-header">
+                        <%if(list.cityName){%>
+                        <span class="text"><%=list.cityName%></span> <i class="iconfont icon-ico_arrow_down"></i>
+                        <%}else{%>
+                        <span class="text t1">选择市</span> <i class="iconfont icon-ico_arrow_down t1"></i>
+                        <%}%>
+                    </div>
+                    <%if(twoArea.length>0){%>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <%for(var i in twoArea){%>
+                            <li value="<%=twoArea[i].id%>"><%=twoArea[i].name%></li>
+                            <%}%>
+                        </ul>
+                    </div>
+                    <%}%>
+                </div>
+                <div class="selectBox" id="area" style="width: 32%">
+                    <div class="select-box-header">
+                        <%if(list.areaName){%>
+                        <span class="text"><%=list.areaName%></span> <i class="iconfont icon-ico_arrow_down"></i>
+                        <%}else{%>
+                        <span class="text t1">选择区/县</span> <i class="iconfont icon-ico_arrow_down t1"></i>
+                        <%}%>
+                    </div>
+                    <%if(threeArea.length>0){%>
+                        <div class="optionBox">
+                            <ul class="optionUL">
+                                <%for(var i in threeArea){%>
+                                <li value="<%=threeArea[i].id%>"><%=threeArea[i].name%></li>
+                                <%}%>
+                            </ul>
+                        </div>
+                    <%}%>
+                </div>
+            </div>
+            <input type="text" placeholder="请输入具体门牌号" id="address" value="<%=list.address%>">
+        </div>
+            <div class="shopMsg">
+                    <ul class="clearfix">
+                        <li>
+                            <p class="title">营业执照编号</p>
+                            <input type="number" value="<%=list.phone%>" id="yybh" placeholder="营业执照编号">
+                        </li>
+                        <li>
+                            <p class="title">发证日期</p>
+                            <div>
+                                <%if(list.startTime){%>
+                                <input name="test" id="startTime"
+                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                       placeholder="<%=list.startTime%>" data-type="minute" id="yyzzDate"/>
+                                <%}else{%>
+                                <input name="test" id="startTime"
+                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                       placeholder="发证日期" data-type="minute" id="yyzzDate"/>
+                                <%}%>
+                
+                                <i class="icon iconfont icon-ico_calendar icon10"></i>
+                                <div class="settings" style="display:none;">
+                                    <select name="demo" id="demo01">
+                                        <option value="date">日期</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="title">有效日期</p>
+                            <div>
+                                <%if(list.startTime){%>
+                                <input name="test" id="startTime"
+                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                       placeholder="<%=list.startTime%>" data-type="minute" id="zzyxDate"/>
+                                <%}else{%>
+                                <input name="test" id="startTime"
+                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                       placeholder="有效日期" data-type="minute" id="zzyxDate"/>
+                                <%}%>
+                    
+                                <i class="icon iconfont icon-ico_calendar icon10"></i>
+                                <div class="settings" style="display:none;">
+                                    <select name="demo" id="demo01">
+                                        <option value="date">日期</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+            </div>
+        <!-- <div class="openHours">
+                <div class="cont">
+                    <p class="title">有效日期</p>
+                    <div>
+                        <%if(list.startTime){%>
+                        <input name="test" id="startTime"
+                               class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                               placeholder="<%=list.startTime%>" data-type="minute"/>
+                        <%}else{%>
+                        <input name="test" id="startTime"
+                               class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                               placeholder="有效日期" data-type="minute"/>
+                        <%}%>
+        
+                        <i class="icon iconfont icon-ico_calendar"></i>
+                        <div class="settings" style="display:none;">
+                            <select name="demo" id="demo01">
+                                <option value="date">日期</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+        </div> -->
 
+        <div class="uploadPic">
+            <p class="title">营业执照照片</p>
+            <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                <%if(list.storeImg){%>
+                <%for(var i=0;i< list.storeImg.length;i++){%>
+                <div class="imgBox">
+                    <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                    <div class="del" onclick="delImg(this)"  id="yyimg"></div>
+                </div>
+                <%}%>
+                <%}%>
+                <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
+            </div>
+        </div>
+        <ul class="goot-goot-putong s1">
+                <li><input type="checkbox" name="生产商" value="" class="selectPro" id="shcheck"> 该企业为生产商</li>
+            </ul>
+            <div class="shopMsg">
+                    <ul class="clearfix">
+                        <li>
+                            <p class="title">生产批号</p>
+                            <input type="number" value="<%=list.phone%>"  id="scxkNum" placeholder="医疗器械注册证编号">
+                        </li>
+                        <li>
+                            <p class="title">批准日期</p>
+                            <div>
+                                <%if(list.startTime){%>
+                                <input name="test" id="startTime"
+                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                       placeholder="<%=list.startTime%>" data-type="minute"  id="scfzDate"/>
+                                <%}else{%>
+                                <input name="test" id="startTime"
+                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                       placeholder="批准日期" data-type="minute"  id="scfzDate"/>
+                                <%}%>
+                
+                                <i class="icon iconfont icon-ico_calendar icon10"></i>
+                                <div class="settings" style="display:none;">
+                                    <select name="demo" id="demo01">
+                                        <option value="date">日期</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="title">有效日期</p>
+                            <div>
+                                <%if(list.startTime){%>
+                                <input name="test" id="startTime"
+                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                       placeholder="<%=list.startTime%>" data-type="minute" id="scyxDate"/>
+                                <%}else{%>
+                                <input name="test" id="startTime"
+                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                       placeholder="有效日期" data-type="minute" id="scyxDate"/>
+                                <%}%>
+                    
+                                <i class="icon iconfont icon-ico_calendar icon10"></i>
+                                <div class="settings" style="display:none;">
+                                    <select name="demo" id="demo01">
+                                        <option value="date">日期</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+            </div>
+
+        <div class="uploadPic">
+            <p class="title">生产许可证照片</p>
+            <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                <%if(list.storeImg){%>
+                <%for(var i=0;i< list.storeImg.length;i++){%>
+                <div class="imgBox">
+                    <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                    <div class="del" onclick="delImg(this)"  id="scimg"></div>
+                </div>
+                <%}%>
+                <%}%>
+                <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
+            </div>
+        </div>
+        <div class="uploadPic n1">
+            <p class="title" class="border1">其它资料照片</p>
+            <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                <%if(list.storeImg){%>
+                <%for(var i=0;i< list.storeImg.length;i++){%>
+                <div class="imgBox">
+                    <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                    <div class="del" onclick="delImg(this)"  id="qtimg"></div>
+                </div>
+                <%}%>
+                <%}%>
+                <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
+            </div>
+        </div>
+            <ul class="goot-goot-putong s1">
+                    <li><input type="checkbox" name="供应商" value="" class="selectPro"> 该企业为供应商</li>
+                </ul>
+                <div class="shopMsg">
+                        <ul class="clearfix">
+                            <li>
+                                <p class="title">医疗器械经营许可证</p>
+                                <input type="number" value="<%=list.phone%>" id="ylxkz" placeholder="医疗器械经营许可证">
+                            </li>
+                            <li>
+                                <p class="title">批准日期</p>
+                                <div>
+                                    <%if(list.startTime){%>
+                                    <input name="test" id="startTime"
+                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                           placeholder="<%=list.startTime%>" data-type="minute" id="ylpzDate"/>
+                                    <%}else{%>
+                                    <input name="test" id="startTime"
+                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                           placeholder="批准日期" data-type="minute" id="ylpzDate"/>
+                                    <%}%>
+                    
+                                    <i class="icon iconfont icon-ico_calendar icon10"></i>
+                                    <div class="settings" style="display:none;">
+                                        <select name="demo" id="demo01">
+                                            <option value="date">日期</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <p class="title">有效日期</p>
+                                <div>
+                                    <%if(list.startTime){%>
+                                    <input name="test" id="startTime"
+                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                           placeholder="<%=list.startTime%>" data-type="minute" id="pzyxDate"/>
+                                    <%}else{%>
+                                    <input name="test" id="startTime"
+                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                           placeholder="有效日期" data-type="minute"  id="pzyxDate"/>
+                                    <%}%>
+                        
+                                    <i class="icon iconfont icon-ico_calendar icon10"></i>
+                                    <div class="settings" style="display:none;">
+                                        <select name="demo" id="demo01">
+                                            <option value="date">日期</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                </div>
+    
+            <div class="uploadPic">
+                <p class="title">医疗器械经营许可证照片</p>
+                <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                    <%if(list.storeImg){%>
+                    <%for(var i=0;i< list.storeImg.length;i++){%>
+                    <div class="imgBox">
+                        <img src="<%=list.storeImg[i]%>" id="ylxkzimg" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                        <div class="del" onclick="delImg(this)"></div>
+                    </div>
+                    <%}%>
+                    <%}%>
+                    <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
+                </div>
+            </div>
+            <div class="uploadPic n1">
+                <p class="title" class="border1">其它资料照片</p>
+                <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                    <%if(list.storeImg){%>
+                    <%for(var i=0;i< list.storeImg.length;i++){%>
+                    <div class="imgBox">
+                        <img src="<%=list.storeImg[i]%>" id="qtzlimg" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                        <div class="del" onclick="delImg(this)"></div>
+                    </div>
+                    <%}%>
+                    <%}%>
+                    <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
+                </div>
+            </div>
+    </script>
+    <script type="text/html" id="selectTagTmp">
+        <div class="select-box-header">
+            <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down"></i>
+        </div>
+        <div class="optionBox">
+            <ul class="optionUL">
+                <%for(var i in list){%>
+                <li value="<%=list[i].id%>"><%=list[i].name%></li>
+                <%}%>
+            </ul>
+        </div>
+    </script>
     <script>
-
-        /*所有商品*/
-        var data3 = [
-            { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult active">已验收</span>', quality: "2019.12.26", business: "张三" },
-            { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-            { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-            { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-            { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-            { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-        ];
-        $("#xsjl-table").bootstrapTable({
-            data: data3,                 //被加载的数据。
-            classes: "table",
-            pagination: true,            //是否显示分页
-            pageNumber: 1,               //初始化加载第一页，默认第一页
-            pageSize: 10,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [
+        var sid = quakooUser.getUserInfo().psid;//企业/公司id
+        var areaJson = new areaJson();
+        var oneArea = areaJson.oneList;//省数据
+        var shopInfoshopInfo = {};//门店信息
+        var allShopData = {};// 所有门店信息
+        var processData = [];
+        var winObj = {
+            shopAll: [
                 { checkbox: true, valign: "middle" },
-                { field: "brand", title: "品牌", align: "left", valign: "middle" },
-                { field: "series", title: "系列", align: "left", valign: "middle" },
-                { field: "cycle", title: "生产企业", align: "left", valign: "middle" },
+                { field: "brandName", title: "品牌", align: "left", valign: "middle" },
+                { field: "seriesName", title: "系列", align: "left", valign: "middle" },
+                { field: "providerName", title: "生产企业", align: "left", valign: "middle" },
                 { field: "guoxie", title: "国械注准号", align: "left", valign: "middle" },
                 { field: "ysjieguo", title: "验收结果", align: "left", valign: "middle" },
                 { field: "quality", title: "验收日期", align: "left", valign: "middle" },
@@ -1652,10 +2036,129 @@
                         return '<button class="btn btn-primary">编辑</button>';
                     }
                 }
-
             ]
+        }
+        $(function () {
+            initPage();
+        })
+        //初始化函数
+        function initPage() {
+            // quakooData.ajaxGetData(config.getUrl_product_getSPUPager(), { subid: quakooUser.getUserInfo().psid, type: 1 }, function (ret) {
+            //     var tabTwo = new TableInit({
+            //         data: ret.data,
+            //         method: false,
+            //         type: 'client',
+            //         url: false,
+            //         columns: winObj.shopAll
+            //     });
+            // })
 
-        });
+            // tabTwo.Init();
+
+            //获取所有商品首页展示的列表
+            var tabTwo = new TableInit({
+                dom: '#xsjl-table',
+                data: false,
+                method: 'get',
+                type: 'server',
+                url: config.getUrl_product_getSPUPager(),
+                columns: winObj.shopAll,
+                callBack: function (row) {
+                    subid: quakooUser.getUserInfo().psid
+                    type: 1
+                    return row
+                }
+            });
+            tabTwo.Init();
+        }
+
+        //初始化
+        var TableInit = function (tabObj) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                console.log(tabObj);
+                $(tabObj.dom).bootstrapTable('destroy');
+                $(tabObj.dom).bootstrapTable({
+                    url: tabObj.url,         //请求后台的URL（*）
+                    method: tabObj.method,                      //请求方式（*）
+                    data: tabObj.data,
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+                    //                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                    sidePagination: tabObj.type,           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+                    //                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true,                  //是否显示所有的列
+                    //              showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+                    //              height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                    //                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: tabObj.columns,
+                    //                    showFooter:true,            //表格底部
+                    onClickRow: function (row) {
+                    },
+                    queryParamsType: 'limit',
+                    queryParams: function (params) {
+                        params.token = quakooUser.getUserInfo().token;
+                        params.page = (params.offset / params.limit) + 1;
+                        params.size = params.limit;
+                        return typeof tabObj.callBack == 'function' ? tabObj.callBack(params) : false;
+                    },
+                });
+            };
+            return oTableInit;
+        };
+
+        /*所有商品*/
+        // var data3 = [
+        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult active">已验收</span>', quality: "2019.12.26", business: "张三" },
+        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
+        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
+        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
+        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
+        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
+        // ];
+        // $("#xsjl-table").bootstrapTable({
+        //     data: data3,                 //被加载的数据。
+        //     classes: "table",
+        //     pagination: true,            //是否显示分页
+        //     pageNumber: 1,               //初始化加载第一页，默认第一页
+        //     pageSize: 10,
+        //     pageList: [5, 10, 15, 20],
+        //     sortable: false,
+        //     sortOrder: "asc",
+        //     showColumns: true,
+        //     strictSearch: true,
+        //     locale: "zh-CN",
+        //     paginationHAlign: "center",
+        //     clickToSelect: true,
+        //     columns: [
+        //         { checkbox: true, valign: "middle" },
+        //         { field: "brand", title: "品牌", align: "left", valign: "middle" },
+        //         { field: "series", title: "系列", align: "left", valign: "middle" },
+        //         { field: "cycle", title: "生产企业", align: "left", valign: "middle" },
+        //         { field: "guoxie", title: "国械注准号", align: "left", valign: "middle" },
+        //         { field: "ysjieguo", title: "验收结果", align: "left", valign: "middle" },
+        //         { field: "quality", title: "验收日期", align: "left", valign: "middle" },
+        //         { field: "business", title: "质检人员", align: "center", valign: "middle" },
+        //         {
+        //             field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+        //                 return '<button class="btn btn-primary">编辑</button>';
+        //             }
+        //         }
+        //     ]
+        // });
         /*所有商品(需要补充说明商品)*/
         var data10 = [
             { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
@@ -1702,18 +2205,6 @@
             { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
             { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
             { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" },
-            { stime: "2018.12.10", bianhao: "9218379212", sname: "清凉一夏暴龙太阳眼镜", shNum: "12", sPy: "北京暴龙眼镜有限公司", productNum: "2319876741", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", ysjieguo: "已验收", guoqi: "2019.03.30", putPerson: "李四", num: "50" }
         ];
         $("#rkjl-table").bootstrapTable({
 
@@ -1752,19 +2243,6 @@
 
         /*销售记录*/
         var data5 = [
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
             { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
             { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
             { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
@@ -1809,19 +2287,6 @@
             { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
             { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
             { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", sname: "李国芳", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" }
         ];
         $("#thReload-table").bootstrapTable({
             data: data9,                 //被加载的数据。
@@ -1858,18 +2323,6 @@
         });
         /*销毁记录*/
         var data8 = [
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
-            { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
             { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
             { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
             { stime: "2018.12.10", series: "9218379212", model: "清凉一夏暴龙太阳眼镜", cycle: "12", spy: "北京暴龙眼镜有限公司", quality: "21928378291", guoxieNum: "2319876741", guige: "瓶", spNum: "2319876741", quality: "2019.03.30", guoqi: "2019.03.30", putPerson: "王", shPerson: "李红", num: "50" },
@@ -1940,18 +2393,18 @@
         selectTag($(".selectCustomer"), function (ret) {
             console.log(ret)
         });
-        /**
-         * 品牌1下拉框
-         * */
-        selectTag($("#selectBrand1"), function (ret) {
-            console.log(ret)
-        });
-        /**
-         * 品牌2下拉框
-         * */
-        selectTag($("#selectBrand2"), function (ret) {
-            console.log(ret)
-        });
+        // /**
+        //  * 品牌1下拉框
+        //  * */
+        // selectTag($("#selectBrand1"), function (ret) {
+        //     console.log(ret)
+        // });
+        // /**
+        //  * 品牌2下拉框
+        //  * */
+        // selectTag($("#selectBrand2"), function (ret) {
+        //     console.log(ret)
+        // });
 
         // 底部表格显示
         $("table").click(function showBotBar() {
@@ -2069,23 +2522,90 @@
                 resize: false,
                 shadeClose: true, //开启遮罩关闭
                 content: $('.content-view-addPros'),
-                btn: ['取消', '新增']
+                btn: ['取消', '新增'],
+                yes: function (index, layero) {
+                    layer.close(index)
+                },
+                btn2: function (index) {
+                    addSuppliers(index);
+                    return false;
+                }
             });
         }
+        //新增企业
+        function addSuppliers(index) {
+            var param = {};
+            var name = $("#qysname").val(); //企业名称
+            var userName = $("#lxsname").val(); // 联系人
+            var phone = $("#lxphone").val(); //联系电话
+            var range = []; //经营范围
+            var storeImg = $("#yyimg").attr('src'); //企业营业执照照片
+            var comBusinessNum = $("#yybh").val(); //企业营业执照编号
+            var comBusinessDate = new Date($("#yyzzDate").html()).getTime(); //企业营业执照发证日期
+            var comBusinessDateEnd = new Date($("#zzyxDate").html()).getTime(); //企业营业执照有效日期结束时间
+            var comBusinessDateStart = new Date($("#zzyxDate").html()).getTime(); //企业营业执照有效日期开始时间
+            var manufacturerProvider = ['1', '2']; //生产商/供应商 1//生产商；2//供应商
+            var mfNum = $("#ylnum").val(); //医疗器械注册证编号
+            var mfRegisterDate = new Date($("#zzyxDate").html()).getTime(); //医疗器械注册证批准日期
+            var mfRegisterDateEnd = new Date($("#zzyxDate").html()).getTime(); //医疗器械注册证有效日期结束时间
+            var mfRegisterDateStart = new Date($("#zzyxDate").html()).getTime(); //医疗器械注册证有效日期开始时间
+            var mfRegisterImg = $("#ylimg").attr('src'); //医疗器械注册证照片
+            var licenceNum = $("#scxkNum").val(); //生产许可证编号
+            var licenceDate = new Date($("#zzyxDate").html()).getTime(); //生产许可证发证日期
+            var licenceDateEnd = new Date($("#zzyxDate").html()).getTime(); //生产许可证有效日期结束时间
+            var licenceDateStart = new Date($("#zzyxDate").html()).getTime(); //生产许可证有效日期开始时间
+            var licenceImg = $("#scimg").attr('src'); //生产许可证照片
+            var licenceDescImg = $("#qtimg").attr('src'); //生产许可证其他资料照片
+            var proNum = $("#ylxkz").val(); //医疗器械经营许可证
+            var proDate = new Date($("#ylpzDate").html()).getTime(); //供应商经营许可证批准日期
+            var proDateEnd = new Date($("#pzyxDate").html()).getTime(); //供应商经营许可证有效日期结束时间
+            var proDateStart = new Date($("#pzyxDate").html()).getTime(); //供应商经营许可证批准日期
+            var proImg = $("#ylxkzimg").attr('src'); //经营许可证照片
+            var proDescImg = $("#qtzlimg").attr('src'); //经营许可证其他资料照片
+            var province = null; //省
+            var city = null; //城市
+            var are = null; //区
+            if (quakooUtils.isBlack(icon)) {
+                layer.msg("请上传供应商图标");
+                return;
+            }
+            param.name = name;
+            param.userName = userName;
+            param.phone = phone;
+            param.range = range;
+            param.storeImg = storeImg;
+            param.comBusinessNum = comBusinessNum;
+            param.comBusinessDate = comBusinessDate;
+            param.comBusinessDateEnd = comBusinessDateEnd;
+            param.comBusinessDateStart = comBusinessDateStart;
+            param.manufacturerProvider = manufacturerProvider;
+            param.mfNum = mfNum;
+            param.mfRegisterDate = mfRegisterDate;
+            param.mfRegisterDateEnd = mfRegisterDateEnd;
+            param.phone = phone;
+            param.phone = phone;
+            param.phone = phone;
+            param.phone = phone;
+            param.phone = phone;
+            param.phone = phone;
+            param.phone = phone;
+            param.phone = phone;
+            param.sort = sort;
+            quakooData.ajaxGetData(config.getUrl_medicalAppliances_addgyshang(), param, function (ret) {
+                if (ret.success) {
+                    layer.msg("供应商设置成功", { icon: 1 });
+                    layer.close(index);
+                } else {
+                    layer.msg(ret.data);
+                }
+            })
+        }
+
 
         /*企业列表*/
         var data6 = [
             { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "何浩夏", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
             { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "何浩夏", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "何浩夏", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "何浩夏", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
             { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
             { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" }
         ];
@@ -2124,15 +2644,6 @@
             { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "何浩夏", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
             { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "何浩夏", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
             { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "何浩夏", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "供应商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "何浩夏", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
-            { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" },
             { pName: "北京暴龙眼镜有限公司", pLeixing: "生产商", person: "李晶晶", phone: "110101010", bianhao: "400617266271625", quality: "2019.03.31" }
         ];
         $("#zjdq-table").bootstrapTable({
@@ -2167,8 +2678,224 @@
 
         // 切换销售状态按钮
         $('#status1').click(function () {
-            $(this).toggleClass('active')
+            $(this).toggleClass('active');
         })
+
+        //选择生产商/供应商
+        $('.selectPro').click(function () {
+            alert(111)
+            $('.checksc').eq($(this).index()).show();
+        });
+
+        //创建门店弹窗
+        function shopDes(id) {
+            shopInfo = {};
+            if (id) {
+                for (var i in allShopData[id]) {
+                    shopInfo[i] = allShopData[id][i]
+                }
+            } else {
+                shopInfo.payType = 1;
+                shopInfo.processType = 0;
+                shopInfo.storedType = 0;
+            }
+
+
+            var index = layer.open({
+                type: 1,
+                shade: 0.01,
+                title: '新增企业',
+                skin: 'content-view-shopDes-tan content-view-submit', //样式类名
+                anim: 0,
+                area: ['370px', '550px'],
+                closeBtn: 0, //不显示关闭按钮
+                resize: false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('#shopDom'), //容器对象
+                btn: ['取消', '保存'],
+                yes: function (index) {
+                    layer.close(index);
+                },
+                btn2: function (index) {
+                    createShop(id, index)
+                    return false
+                },
+                success: function (layero, index) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    if (areaJson.getAreaByAid(shopInfo.province)) {
+                        shopInfo.provinceName = areaJson.getAreaByAid(shopInfo.province).name
+                    }
+                    if (areaJson.getAreaByAid(shopInfo.city)) {
+                        shopInfo.cityName = areaJson.getAreaByAid(shopInfo.city).name
+                    }
+                    if (areaJson.getAreaByAid(shopInfo.area)) {
+                        shopInfo.areaName = areaJson.getAreaByAid(shopInfo.area).name
+                    }
+                    var twoArea = areaJson.getSubList(shopInfo.province);
+                    var threeArea = areaJson.getSubList(shopInfo.city);
+                    console.log("23414", processData)
+                    $("#shopDom").html(template('shopTmp', { list: shopInfo, processData: processData, oneArea: oneArea, twoArea: twoArea, threeArea: threeArea }));
+                    // mapInit()
+                    //选择省市区
+                    selectTag($("#province"), function (ret) {
+                        shopInfo.province = ret.value;
+                        shopInfo.city = '';
+                        shopInfo.area = '';
+                        var areaInfo = areaJson.getSubList(ret.value);
+                        $("#city").html(template('selectTagTmp', { list: areaInfo, title: '选择市' }));
+                        $("#area").html('')
+                        selectTag($("#city"), function (ret1) {
+                            shopInfo.city = ret1.value;
+                            shopInfo.area = '';
+                            var area = areaJson.getSubList(ret1.value);
+                            $("#area").html(template('selectTagTmp', { list: area, title: '选择区/县' }))
+                            selectTag($("#area"), function (ret2) {
+                                shopInfo.area = ret2.value;
+                            })
+                        })
+                    });
+                    selectTag($("#city"), function (ret1) {
+                        shopInfo.city = ret1.value;
+                        shopInfo.area = '';
+                        var area = areaJson.getSubList(ret1.value);
+                        $("#area").html(template('selectTagTmp', { list: area, title: '选择区/县' }))
+                        selectTag($("#area"), function (ret2) {
+                            shopInfo.area = ret2.value;
+                        })
+                    });
+                    selectTag($("#area"), function (ret2) {
+                        shopInfo.area = ret2.value;
+                    });
+                }
+            });
+        }
+        function delImg(self) {
+            $(self).parent('.imgBox').remove()
+            if ($('#imgBox .imgBox').length < 9) {
+                $("#test2").show();
+            }
+        }
+
+        /**接口——企业下创建门店*/
+        function createShop(id, index) {
+            var param = {};
+            if (id) {
+                param.pid = sid;
+                param.id = id;
+
+            } else {
+                param.pid = sid;
+            }
+            param.payType = shopInfo.payType;
+            param.processType = shopInfo.processType;
+            param.storedType = shopInfo.storedType;
+            param.province = shopInfo.province;
+            param.city = shopInfo.city;
+            param.area = shopInfo.area;
+            param.process = shopInfo.process;
+            param.name = $("#name").val();
+            param.storeCode = $("#storeCode").val();
+            param.phone = $("#phone").val();
+            param.storeImgJson = [];                  //门店照片
+            for (var i = 0; i < $('#imgBox .imgBox').length; i++) {
+                param.storeImgJson.push($('#imgBox .imgBox').eq(i).find('img').attr('real-src'))
+            }
+            param.storeImgJson = JSON.stringify(param.storeImgJson);
+            param.address = $("#address").val();
+            if ($("#startTime").val()) {
+                param.startTime = $("#startTime").val();
+            } else {
+                if ($("#startTime").attr('placeholder').indexOf(':') >= 0) {
+                    param.startTime = $("#startTime").attr('placeholder');
+                }
+            }
+            if ($("#endTime").val()) {
+                param.endTime = $("#endTime").val();
+            } else {
+                if ($("#endTime").attr('placeholder').indexOf(':') >= 0) {
+                    param.endTime = $("#endTime").attr('placeholder');
+                }
+            }
+            param.threePolicy = $("#threePolicy").val();
+
+            var url = '';
+            var str = '';
+            if (id) {
+                url = config.getUrl_subordinate_updateSubordinateStore();
+                str = '修改成功'
+            } else {
+                url = config.getUrl_subordinate_addSubordinateStore();
+                str = '添加成功'
+            }
+            console.log(param);
+            if (quakooUtils.isBlack(param.name)) {
+                layer.msg("请输入门店名称");
+                return;
+            }
+            if (quakooUtils.isBlack(param.storeCode)) {
+                layer.msg("请输入门店简码");
+                return;
+            }
+            if (quakooUtils.isBlack(param.phone)) {
+                layer.msg("请输入门店电话");
+                return;
+            }
+            if (!quakooUtils.isMobileNum(param.phone)) {
+                layer.msg('请输入正确的手机号');
+                return;
+            }
+            if (quakooUtils.isBlack(param.province) || quakooUtils.isBlack(param.city) || quakooUtils.isBlack(param.area)) {
+                layer.msg('请选择门店地址');
+                return;
+            }
+            if (quakooUtils.isBlack(param.address)) {
+                layer.msg('请输入门店详细地址');
+                return;
+            }
+            if (quakooUtils.isBlack(param.storeImgJson)) {
+                layer.msg('请上传门店照片');
+                return;
+            }
+            if (quakooUtils.isBlack(param.startTime) || quakooUtils.isBlack(param.startTime)) {
+                layer.msg('请选择门店营业时间');
+                return;
+            }
+            if (quakooUtils.isBlack(param.threePolicy)) {
+                layer.msg('请输入三包政策');
+                return;
+            }
+            if (quakooUtils.isBlack(param.payType)) {
+                layer.msg('请选择支付方式');
+                return;
+            }
+            if (param.processType == 1) {
+                if (quakooUtils.isBlack(param.process)) {
+                    layer.msg('请选择加工中心');
+                    return;
+                }
+            }
+            quakooData.ajaxGetData(url, param, function (ret) {
+                if (ret.success) {
+                    layer.msg(str, { icon: 1 });
+                    layer.close(index);
+                    getShopList()
+                } else {
+                    layer.msg(ret.data, { icon: 2 })
+                }
+            })
+        }
 
     </script>
 </body>

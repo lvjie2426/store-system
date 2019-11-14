@@ -379,6 +379,9 @@ var Config = (function(_super){
     /**审核通过入库单*/
     _proto.getUrl_productprovider_add = function(){return this.serverUrl + '/productprovider/add';};
 
+    /**医疗器械*/
+    /**添加供应商/生产商企业*/
+    _proto.getUrl_medicalAppliances_addgyshang = function(){return this.serverUrl + '/company/saveCompany';};
     //=======================商品管理 结束====================
 
 
