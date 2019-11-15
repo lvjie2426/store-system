@@ -1,5 +1,5 @@
 function dateRange(dom,fixed) {
-    this.dom = $(dom);
+    this.dom = $(dom).eq(0);
     this.fixed = fixed?fixed:false;  //是否固定定位
     this.checkStart = '';  //确定的开始日期
     this.checkEnd = '';  //确定的结束日期

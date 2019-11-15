@@ -195,7 +195,7 @@
         }
 
         .goot-goot-huiyuan {
-            width: 360px;
+            width: 100%;
             height: 36px;
             box-sizing: border-box;
             padding: 0px 16px;
@@ -1035,8 +1035,12 @@
             line-height: 28px;
         }
 
-        .qyshow {
-            /* display: none; */
+        .qyshow1 {
+            display: none;
+        }
+
+        .qyshow2 {
+            display: none;
         }
 
         .s1 {
@@ -1297,195 +1301,6 @@
             </li>
         </ul>
     </div>
-    <!--新增企业弹窗-->
-    <!-- <div class="content-view content-view-addPros">
-        <div class="mainGoodList">
-            <div class="goot-select">
-                <div class="goot-items">企业名称</div>
-                <input type="text" placeholder="名称" id="qysname" class="proNames">
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">联系人</div>
-                <input type="text" placeholder="名称" id="lxsname" class="proNames">
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">联系电话</div>
-                <input type="text" placeholder="名称" id="lxphone" class="proNames">
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">经营范围</div>
-                <div class="goot-select-items"><span>选择范围</span><i class="iconfont icon-ico_arrow_down"></i></div>
-            </div>
-            <div class="goot-select1">
-                <div class="goot-items">详细地址</div>
-                <div class="goot-select-items"><span>浙江省</span><i class="iconfont icon-ico_arrow_down"></i></div>
-            </div>
-            <div class="goot-select1">
-                <div class="goot-items"></div>
-                <div class="goot-select-items g1"><span>杭州市</span><i class="iconfont icon-ico_arrow_down"></i></div>
-            </div>
-            <div class="goot-select1">
-                <div class="goot-items"></div>
-                <div class="goot-select-items g1"><span>西湖区</span><i class="iconfont icon-ico_arrow_down"></i></div>
-            </div>
-            <div class="showAddress">天目山路西溪天堂</div>
-            <div class="goot-select">
-                <div class="goot-items">营业执照编号</div>
-                <input type="text" placeholder="输入" id="yybh" class="proNames">
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">发证日期</div>
-                <div class="goot-select-items"><span id="yyzzDate">选择日期</span><i class="iconfont icon-ico_calendar"></i>
-                </div>
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">有效日期</div>
-                <div class="goot-select-items"><span id="zzyxDate">选择有效期</span><i
-                        class="iconfont icon-ico_calendar"></i></div>
-            </div>
-            <div class="goot-select">
-
-            </div>
-            <div>
-                <div class="yingyeTu">营业执照照片 <span>1-3 张</span></div>
-                <div>
-                    <div class="img1" onclick="setSupIcon()">
-                        <img src="../resource/img/a1.jpg" id="yyimg" alt="">
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <ul class="goot-goot-putong s1">
-            <li><input type="checkbox" name="生产商" value="" class="selectPro" id="shcheck"> 该企业为生产商
-            </li>
-        </ul>
-        <div class="checksc">
-            <div class="mainGoodList m1">
-                <div class="goot-select">
-                    <div class="goot-items">医疗器械注册证编号</div>
-                    <input type="text" placeholder="编号" id="ylnum" class="proNames">
-                </div>
-                <div class="goot-select">
-                    <div class="goot-items">发证日期</div>
-                    <div class="goot-select-items"><span id="ylqxDate">选择日期</span><i
-                            class="iconfont icon-ico_calendar"></i></div>
-                </div>
-                <div class="goot-select">
-                    <div class="goot-items">有效日期</div>
-                    <div class="goot-select-items"><span id="ylyxDate">选择有效期</span><i
-                            class="iconfont icon-ico_calendar"></i></div>
-                </div>
-                <div class="goot-select">
-
-                </div>
-                <div class="yingyeImg">
-                    <div class="yingyeTu">医疗器械注册证照片</div>
-                    <div>
-                        <div class="img1">
-                            <img src="../resource/img/a1.jpg" id="ylimg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="goot-select">
-
-                </div>
-            </div>
-            <div class="mainGoodList m1">
-                <div class="goot-select">
-                    <div class="goot-items">生产许可证</div>
-                    <input type="text" placeholder="编号" id="scxkNum" class="proNames">
-                </div>
-                <div class="goot-select">
-                    <div class="goot-items">发证日期</div>
-                    <div class="goot-select-items"><span id="scfzDate">选择日期</span><i
-                            class="iconfont icon-ico_calendar"></i></div>
-                </div>
-                <div class="goot-select">
-                    <div class="goot-items">有效日期</div>
-                    <div class="goot-select-items"><span id="scyxDate">选择有效期</span><i
-                            class="iconfont icon-ico_calendar"></i></div>
-                </div>
-                <div class="goot-select">
-
-                </div>
-                <div class="yingyeImg">
-                    <div class="yingyeTu">生产许可证照片</div>
-                    <div>
-                        <div class="img1">
-                            <img src="../resource/img/a1.jpg" id="scimg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="goot-select">
-
-                </div>
-            </div>
-            <div class="mainGoodList m1">
-                <div class="yingyeImg">
-                    <div class="yingyeTu">其它资料照片</div>
-                    <div>
-                        <div class="img1">
-                            <img src="../resource/img/a1.jpg" id="qtimg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="goot-select">
-
-                </div>
-            </div>
-        </div>
-
-
-        <ul class="goot-goot-putong s1">
-            <li><input type="checkbox" name="供应商" value="" class="selectPro"> 该企业为供应商</li>
-        </ul>
-        <div class="checksc">
-            <div class="mainGoodList m1">
-                <div class="goot-select">
-                    <div class="goot-items">医疗器械经营许可证</div>
-                    <input type="text" placeholder="编号" id="ylxkz" class="proNames">
-                </div>
-                <div class="goot-select">
-                    <div class="goot-items">批准日期</div>
-                    <div class="goot-select-items"><span id="ylpzDate">选择日期</span><i
-                            class="iconfont icon-ico_calendar"></i></div>
-                </div>
-                <div class="goot-select">
-                    <div class="goot-items">有效日期</div>
-                    <div class="goot-select-items"><span id="pzyxDate">选择有效期</span><i
-                            class="iconfont icon-ico_calendar"></i></div>
-                </div>
-                <div class="goot-select">
-
-                </div>
-                <div class="yingyeImg">
-                    <div class="yingyeTu">医疗器械经营许可证照片</div>
-                    <div>
-                        <div class="img1">
-                            <img src="../resource/img/a1.jpg" id="ylxkzimg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="goot-select">
-
-                </div>
-            </div>
-            <div class="mainGoodList m1">
-                <div class="yingyeImg">
-                    <div class="yingyeTu">其它资料照片</div>
-                    <div>
-                        <div class="img1">
-                            <img src="../resource/img/a1.jpg" id="qtzlimg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="goot-select">
-
-                </div>
-            </div>
-        </div>
-    </div> -->
     <!--员工列表培训记录弹窗-->
     <div class="content-view content-view-pxReload">
         <div class="qyHeader">
@@ -1795,31 +1610,18 @@
                         </li>
                         <li>
                             <p class="title">有效日期</p>
-                            <div>
-                                <%if(list.startTime){%>
-                                <input name="test" id="startTime2"
-                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                       placeholder="<%=list.startTime%>" data-type="day"/>
-                                <%}else{%>
-                                <input name="test" id="startTime2"
-                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                       placeholder="有效日期" data-type="day"/>
-                                <%}%>
-                    
-                                <i class="icon iconfont icon-ico_calendar icon10"></i>
-                                <div class="settings" style="display:none;">
-                                    <select name="demo" id="demo02">
-                                        <option value="date">日期</option>
-                                    </select>
-                                </div>
-                            </div>
+                                    <div class="yj-demo-time">
+                                            <div class="yj-date">
+                                                <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                                            </div>
+                                    </div>
                         </li>
                     </ul>
             </div>
 
         <div class="uploadPic">
             <p class="title">营业执照照片</p>
-            <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="yyimg">
+            <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="yyImg">
                 <%if(list.storeImg){%>
                 <%for(var i=0;i< list.storeImg.length;i++){%>
                 <div class="imgBox">
@@ -1832,9 +1634,9 @@
             </div>
         </div>
             <ul class="goot-goot-putong s1">
-                <li><input type="checkbox" name="生产商" value="" class="selectPro" id="shcheck2" onclick="shows(this)"> 该企业为生产商</li>
+                <li><input type="checkbox" name="生产商" value="" class="selectPro" id="shcheck1" onclick="shows1(this)"> 该企业为生产商</li>
             </ul>
-           <div class="qyshow">
+           <div class="qyshow1">
                 <div class="shopMsg">
                         <ul class="clearfix">
                             <li>
@@ -1845,11 +1647,11 @@
                                 <p class="title">批准日期</p>
                                 <div>
                                     <%if(list.startTime){%>
-                                    <input name="test" id="startTime3"
+                                    <input name="test" id="startTime2"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
                                            placeholder="<%=list.startTime%>" data-type="day"/>
                                     <%}else{%>
-                                    <input name="test" id="startTime3"
+                                    <input name="test" id="startTime2"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
                                            placeholder="批准日期" data-type="day"/>
                                     <%}%>
@@ -1864,34 +1666,23 @@
                             </li>
                             <li>
                                 <p class="title">有效日期</p>
-                                <div>
-                                    <%if(list.startTime){%>
-                                    <input name="test" id="startTime4"
-                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="<%=list.startTime%>" data-type="day"/>
-                                    <%}else{%>
-                                    <input name="test" id="startTime4"
-                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="有效日期" data-type="day"/>
-                                    <%}%>
-                        
-                                    <i class="icon iconfont icon-ico_calendar icon10"></i>
-                                    <div class="settings" style="display:none;">
-                                        <select name="demo" id="demo04">
-                                            <option value="date">日期</option>
-                                        </select>
-                                    </div>
+                                <div id="time02">
+                                        <div class="yj-demo-time">
+                                                <div class="yj-date">
+                                                    <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                                                </div>
+                                        </div>
                                 </div>
                             </li>
                         </ul>
                 </div>
                 <div class="uploadPic">
                         <p class="title">医疗器械注册证照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
+                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="ylImg">
                             <%if(list.storeImg){%>
                             <%for(var i=0;i< list.storeImg.length;i++){%>
                             <div class="imgBox">
-                                <img src="<%=list.storeImg[i]%>" id="ylimg" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                                <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
                                 <div class="del" onclick="delImg(this)"></div>
                             </div>
                             <%}%>
@@ -1909,11 +1700,11 @@
                                 <p class="title">发证日期</p>
                                 <div>
                                     <%if(list.startTime){%>
-                                    <input name="test" id="startTime5"
+                                    <input name="test" id="startTime3"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
                                            placeholder="<%=list.startTime%>" data-type="day"/>
                                     <%}else{%>
-                                    <input name="test" id="startTime5"
+                                    <input name="test" id="startTime3"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
                                            placeholder="发证日期" data-type="day"/>
                                     <%}%>
@@ -1928,34 +1719,23 @@
                             </li>
                             <li>
                                 <p class="title">有效日期</p>
-                                <div>
-                                    <%if(list.startTime){%>
-                                    <input name="test" id="startTime4"
-                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="<%=list.startTime%>" data-type="day"/>
-                                    <%}else{%>
-                                    <input name="test" id="startTime4"
-                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="选择有效期" data-type="day"/>
-                                    <%}%>
-                        
-                                    <i class="icon iconfont icon-ico_calendar icon10"></i>
-                                    <div class="settings" style="display:none;">
-                                        <select name="demo" id="demo08">
-                                            <option value="date">日期</option>
-                                        </select>
-                                    </div>
+                                <div id="time03">
+                                        <div class="yj-demo-time">
+                                                <div class="yj-date">
+                                                    <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                                                </div>
+                                        </div>
                                 </div>
                             </li>
                         </ul>
                 </div>
                 <div class="uploadPic">
                         <p class="title">生产许可证照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
+                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="scImg">
                             <%if(list.storeImg){%>
                             <%for(var i=0;i< list.storeImg.length;i++){%>
                             <div class="imgBox">
-                                <img src="<%=list.storeImg[i]%>" id="scImg" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                                <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
                                 <div class="del" onclick="delImg(this)"></div>
                             </div>
                             <%}%>
@@ -1966,11 +1746,11 @@
             
             <div class="uploadPic n1">
                 <p class="title" class="border1">其它资料照片</p>
-                <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
+                <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="qtImg">
                     <%if(list.storeImg){%>
                     <%for(var i=0;i< list.storeImg.length;i++){%>
                     <div class="imgBox">
-                        <img src="<%=list.storeImg[i]%>" id="qtimg" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                        <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
                         <div class="del" onclick="delImg(this)"></div>
                     </div>
                     <%}%>
@@ -1980,9 +1760,9 @@
             </div>
            </div>
             <ul class="goot-goot-putong s1">
-                    <li><input type="checkbox" name="供应商" value="" class="selectPro" onclick="shows(this)"> 该企业为供应商</li>
+                    <li><input type="checkbox" name="供应商" value="" id="shcheck2" class="selectPro"  onclick="shows2(this)"> 该企业为供应商</li>
                 </ul>
-                <div class="qyshow">
+                <div class="qyshow2">
                         <div class="shopMsg">
                                 <ul class="clearfix">
                                     <li>
@@ -1993,11 +1773,11 @@
                                         <p class="title">批准日期</p>
                                         <div>
                                             <%if(list.startTime){%>
-                                            <input name="test" id="startTime5"
+                                            <input name="test" id="startTime4"
                                                    class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
                                                    placeholder="<%=list.startTime%>" data-type="day"/>
                                             <%}else{%>
-                                            <input name="test" id="startTime5"
+                                            <input name="test" id="startTime4"
                                                    class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
                                                    placeholder="批准日期" data-type="day"/>
                                             <%}%>
@@ -2012,23 +1792,12 @@
                                     </li>
                                     <li>
                                         <p class="title">有效日期</p>
-                                        <div>
-                                            <%if(list.startTime){%>
-                                            <input name="test" id="startTime6"
-                                                   class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                                   placeholder="<%=list.startTime%>" data-type="day"/>
-                                            <%}else{%>
-                                            <input name="test" id="startTime6"
-                                                   class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                                   placeholder="有效日期" data-type="day"/>
-                                            <%}%>
-                                
-                                            <i class="icon iconfont icon-ico_calendar icon10"></i>
-                                            <div class="settings" style="display:none;">
-                                                <select name="demo" id="demo06">
-                                                    <option value="date">日期</option>
-                                                </select>
-                                            </div>
+                                        <div id="time04">
+                                                <div class="yj-demo-time">
+                                                        <div class="yj-date">
+                                                            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                                                        </div>
+                                                </div>
                                         </div>
                                     </li>
                                 </ul>
@@ -2036,11 +1805,11 @@
             
                     <div class="uploadPic">
                         <p class="title">医疗器械经营许可证照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
+                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="ylxkzimg">
                             <%if(list.storeImg){%>
                             <%for(var i=0;i< list.storeImg.length;i++){%>
                             <div class="imgBox">
-                                <img src="<%=list.storeImg[i]%>" id="ylxkzimg" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                                <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
                                 <div class="del" onclick="delImg(this)"></div>
                             </div>
                             <%}%>
@@ -2050,11 +1819,11 @@
                     </div>
                     <div class="uploadPic n1">
                         <p class="title" class="border1">其它资料照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
+                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="qtzlImg">
                             <%if(list.storeImg){%>
                             <%for(var i=0;i< list.storeImg.length;i++){%>
                             <div class="imgBox">
-                                <img src="<%=list.storeImg[i]%>" id="qtzlimg" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                                <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
                                 <div class="del" onclick="delImg(this)"></div>
                             </div>
                             <%}%>
@@ -2182,45 +1951,6 @@
             return oTableInit;
         };
 
-        /*所有商品*/
-        // var data3 = [
-        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult active">已验收</span>', quality: "2019.12.26", business: "张三" },
-        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-        //     { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
-        // ];
-        // $("#xsjl-table").bootstrapTable({
-        //     data: data3,                 //被加载的数据。
-        //     classes: "table",
-        //     pagination: true,            //是否显示分页
-        //     pageNumber: 1,               //初始化加载第一页，默认第一页
-        //     pageSize: 10,
-        //     pageList: [5, 10, 15, 20],
-        //     sortable: false,
-        //     sortOrder: "asc",
-        //     showColumns: true,
-        //     strictSearch: true,
-        //     locale: "zh-CN",
-        //     paginationHAlign: "center",
-        //     clickToSelect: true,
-        //     columns: [
-        //         { checkbox: true, valign: "middle" },
-        //         { field: "brand", title: "品牌", align: "left", valign: "middle" },
-        //         { field: "series", title: "系列", align: "left", valign: "middle" },
-        //         { field: "cycle", title: "生产企业", align: "left", valign: "middle" },
-        //         { field: "guoxie", title: "国械注准号", align: "left", valign: "middle" },
-        //         { field: "ysjieguo", title: "验收结果", align: "left", valign: "middle" },
-        //         { field: "quality", title: "验收日期", align: "left", valign: "middle" },
-        //         { field: "business", title: "质检人员", align: "center", valign: "middle" },
-        //         {
-        //             field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-        //                 return '<button class="btn btn-primary">编辑</button>';
-        //             }
-        //         }
-        //     ]
-        // });
         /*所有商品(需要补充说明商品)*/
         var data10 = [
             { brand: "品牌A", series: "系列A", cycle: "北京暴龙眼镜有限公司", guoxie: "国械注准20153400245", ysjieguo: '<span class="yanResult">未验收</span>', quality: "2019.12.26", business: "张三" },
@@ -2438,6 +2168,7 @@
             $(this).addClass('active').siblings().removeClass('active');
             $(".tab-items").hide().eq($(this).index()).show();
         });
+
         // 未补充说明产品
         function warnSP() {
             $("#table1").hide();
@@ -2449,24 +2180,6 @@
         selectTag($("#selectAllSalesStaff"), function (ret) {
             console.log(ret)
         });
-        /**
-         * 顾客姓名下拉框
-         * */
-        selectTag($(".selectCustomer"), function (ret) {
-            console.log(ret)
-        });
-        // /**
-        //  * 品牌1下拉框
-        //  * */
-        // selectTag($("#selectBrand1"), function (ret) {
-        //     console.log(ret)
-        // });
-        // /**
-        //  * 品牌2下拉框
-        //  * */
-        // selectTag($("#selectBrand2"), function (ret) {
-        //     console.log(ret)
-        // });
 
         // 底部表格显示
         $("table").click(function showBotBar() {
@@ -2676,13 +2389,11 @@
             $(this).toggleClass('active');
         })
 
-        //选择生产商/供应商
-        $('.selectPro').click(function () {
-            alert(111)
-            $('.checksc').eq($(this).index()).show();
-        });
-
         //创建门店弹窗
+        var date1,
+            date2,
+            date3,
+            date4;
         function shopDes(id) {
             shopInfo = {};
             if (id) {
@@ -2759,6 +2470,16 @@
                         shopInfo.area = ret2.value;
                     });
 
+                    //日期范围插件开始
+                    date1 = new dateRange(".yj-demo-time");
+                    date2 = new dateRange("#time02 .yj-demo-time");
+                    date3 = new dateRange("#time03 .yj-demo-time");
+                    date4 = new dateRange("#time04 .yj-demo-time");
+                    date1.init();
+                    date2.init();
+                    date3.init();
+                    date4.init();
+                    //日期范围插件结束
 
                     //营业时间
                     var opt = {};
@@ -2795,6 +2516,8 @@
                     $('#demo07').trigger('change');
                     $('#demo08').trigger('change');
                 }
+
+
             });
         }
         function delImg(self) {
@@ -2805,6 +2528,7 @@
         }
         //上传门店图片
         function uploadIcon(self) {
+            $('#uploadForm>input').val('');
             quakooImg.open(function (data) {
                 for (var i = 0; i < data.length; i++) {
                     if ($(self).prevAll('.imgBox').length < 9) {
@@ -2818,84 +2542,248 @@
                 }
             })
         }
+
         //新增企业
         function addSuppliers(index) {
             var param = {};
-            var name = $("#qysname").val(); //企业名称
-            var userName = $("#lxsname").val(); // 联系人
-            var phone = $("#lxphone").val(); //联系电话
-            var range = []; //经营范围
-            var storeImg = $.makeArray($('#yyimg .imgBox>img').map(function (index, item) {
-                console.log(item);
+            param.name = $("#qysname").val(); //企业名称
+            param.userName = $("#lxsname").val(); // 联系人
+            param.phone = $("#lxphone").val(); //联系电话
+            param.range = []; //经营范围
+            param.storeImg = $.makeArray($('#yyImg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //企业营业执照照片
-            var comBusinessNum = $("#yybh").val(); //企业营业执照编号
-            // var comBusinessDate = new Date($("#startTime1").val()).getTime(); //企业营业执照发证日期
-            // var comBusinessDateEnd = new Date($("#startTime2").val()).getTime(); //企业营业执照有效日期结束时间
-            // var comBusinessDateStart = new Date($("#startTime2").val()).getTime(); //企业营业执照有效日期开始时间
-            // var manufacturerProvider = ['1', '2']; //生产商/供应商 1//生产商；2//供应商
-            // var mfNum = $("#ylnum").val(); //医疗器械注册证编号
-            // var mfRegisterDate = new Date($("#startTime3").val()).getTime(); //医疗器械注册证批准日期
-            // var mfRegisterDateEnd = new Date($("#startTime4").val()).getTime(); //医疗器械注册证有效日期结束时间
-            // var mfRegisterDateStart = new Date($("#startTime4").val()).getTime(); //医疗器械注册证有效日期开始时间
-            // var mfRegisterImg = $("#ylimg").attr('src'); //医疗器械注册证照片
-            // var licenceNum = $("#scykCard").val(); //生产许可证编号
-            // var licenceDate = new Date($("#startTime5").val()).getTime(); //生产许可证发证日期
-            // var licenceDateEnd = new Date($("#startTime6").val()).getTime(); //生产许可证有效日期结束时间
-            // var licenceDateStart = new Date($("#startTime6").val()).getTime(); //生产许可证有效日期开始时间
-            // var licenceImg = $("#scimg").attr('src'); //生产许可证照片
-            // var licenceDescImg = $("#qtimg").attr('src'); //生产许可证其他资料照片
-            // var proNum = $("#ylxkz").val(); //医疗器械经营许可证
-            // var proDate = new Date($("#startTime1").val()).getTime(); //供应商经营许可证批准日期
-            // var proDateEnd = new Date($("#startTime1").val()).getTime(); //供应商经营许可证有效日期结束时间
-            // var proDateStart = new Date($("#startTime1").val()).getTime(); //供应商经营许可证批准日期
-            // var proImg = $("#ylxkzimg").attr('src'); //经营许可证照片
-            // var proDescImg = $("#qtzlimg").attr('src'); //经营许可证其他资料照片
-            // param.province=shopInfo.province*1;//省
-            // param.city=shopInfo.city*1;//市
-            // param.area=shopInfo.area*1;//区
-            // param.address = $('#address').val();
-            // if(quakooUtils.isBlack(param.province)||quakooUtils.isBlack(param.city)||quakooUtils.isBlack(param.area)){
-            // layer.msg('请选择地址');
-            // return;
+            param.comBusinessNum = $("#yybh").val(); //企业营业执照编号
+            param.comBusinessDate = isNotBlack($("#startTime1").val()) ? new Date($("#startTime1").val()).getTime() : ''; //企业营业执照发证日期
+            param.comBusinessDateEnd = date1 ? date1.getTime()[3] : ''; //企业营业执照有效日期结束时间
+            param.comBusinessDateStart = date1 ? date1.getTime()[2] : ''; //企业营业执照有效日期开始时间
+            param.mfNum = $("#ylnum").val(); //医疗器械注册证编号
+            param.mfRegisterDate = isNotBlack($("#startTime2").val()) ? new Date($("#startTime2").val()).getTime() : ''; //医疗器械注册证批准日期
+            param.mfRegisterDateEnd = date2 ? date2.getTime()[3] : ''; //医疗器械注册证有效日期结束时间
+            param.mfRegisterDateStart = date2 ? date2.getTime()[2] : ''; //医疗器械注册证有效日期开始时间
+            param.mfRegisterImg = $.makeArray($('#ylImg .imgBox>img').map(function (index, item) {
+                return $(item).attr('real-src');
+            })); //医疗器械注册证照片
+            param.licenceNum = $("#scykCard").val(); //生产许可证编号
+            param.licenceDate = isNotBlack($("#startTime3").val()) ? new Date($("#startTime3").val()).getTime() : ''; //生产许可证发证日期
+            param.licenceDateEnd = date3 ? date3.getTime()[3] : ''; //生产许可证有效日期结束时间
+            param.licenceDateStart = date3 ? date3.getTime()[2] : ''; //生产许可证有效日期开始时间
+            param.licenceImg = $.makeArray($('#scImg .imgBox>img').map(function (index, item) {
+                return $(item).attr('real-src');
+            })); //生产许可证照片
+            console.log($('#scImg .imgBox>img'))
+            param.licenceDescImg = $.makeArray($('#qtImg .imgBox>img').map(function (index, item) {
+                return $(item).attr('real-src');
+            })); //生产许可证其他资料照片
+            param.proNum = $("#ylxkz").val(); //医疗器械经营许可证
+            param.proDate = isNotBlack($("#startTime4").val()) ? new Date($("#startTime4").val()).getTime() : ''; //供应商经营许可证批准日期
+            param.proDateEnd = date4 ? date4.getTime()[3] : ''; //供应商经营许可证有效日期结束时间
+            param.proDateStart = date4 ? date4.getTime()[2] : ''; //供应商经营许可证有效日期开始时间
+            param.proImg = $.makeArray($('#ylxkzimg .imgBox>img').map(function (index, item) {
+                return $(item).attr('real-src');
+            })); //经营许可证照片
+            param.proDescImg = $.makeArray($('#qtzlImg .imgBox>img').map(function (index, item) {
+                return $(item).attr('real-src');
+            })); //经营许可证其他资料照片
+            param.province = shopInfo.province;//省
+            param.city = shopInfo.city;//市
+            param.area = shopInfo.area;//区
+            param.address = $('#address').val(); //选择详细地址
+            if ($('#shcheck1').is(':checked') === true && $('#shcheck2').is(':checked') !== true) {
+                param.manufacturerProvider = ['1']; //生产商/供应商 1//生产商；2//供应商
+                if (quakooUtils.isBlack(param.mfNum)) {
+                    layer.msg('医疗器械注册证编号');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.mfRegisterDate)) {
+                    layer.msg('医疗器械注册证批准日期');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.mfRegisterDateEnd)) {
+                    layer.msg('医疗器械注册证有效日期结束时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.mfRegisterDateStart)) {
+                    layer.msg('医疗器械注册证有效日期开始时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.mfRegisterImg)) {
+                    layer.msg('医疗器械注册证照片');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceNum)) {
+                    layer.msg('生产许可证编号');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceDate)) {
+                    layer.msg('生产许可证发证日期');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceDateEnd)) {
+                    layer.msg('生产许可证有效日期结束时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceDateStart)) {
+                    layer.msg('生产许可证有效日期开始时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceImg)) {
+                    layer.msg('生产许可证照片');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceDescImg)) {
+                    layer.msg('生产许可证其他资料照片');
+                    return;
+                }
+            } else if ($('#shcheck1').is(':checked') !== true && $('#shcheck2').is(':checked') === true) {
+                param.manufacturerProvider = ['2']; //生产商/供应商 1//生产商；2//供应商
+                if (quakooUtils.isBlack(param.proNum)) {
+                    layer.msg('医疗器械经营许可证');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proDate)) {
+                    layer.msg('供应商经营许可证批准日期');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proDateEnd)) {
+                    layer.msg('供应商经营许可证有效日期结束时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proDateStart)) {
+                    layer.msg('供应商经营许可证有效日期开始时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proImg)) {
+                    layer.msg('经营许可证照片');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proDescImg)) {
+                    layer.msg('经营许可证其他资料照片');
+                    return;
+                }
+            } else if ($('#shcheck1').is(':checked') === true && $('#shcheck2').is(':checked') === true) {
+                param.manufacturerProvider = ['1', '2']; //生产商/供应商 1//生产商；2//供应商
+                if (quakooUtils.isBlack(param.mfNum)) {
+                    layer.msg('医疗器械注册证编号');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.mfRegisterDate)) {
+                    layer.msg('医疗器械注册证批准日期');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.mfRegisterDateEnd)) {
+                    layer.msg('医疗器械注册证有效日期结束时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.mfRegisterDateStart)) {
+                    layer.msg('医疗器械注册证有效日期开始时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.mfRegisterImg)) {
+                    layer.msg('医疗器械注册证照片');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceNum)) {
+                    layer.msg('生产许可证编号');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceDate)) {
+                    layer.msg('生产许可证发证日期');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceDateEnd)) {
+                    layer.msg('生产许可证有效日期结束时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceDateStart)) {
+                    layer.msg('生产许可证有效日期开始时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceImg)) {
+                    layer.msg('生产许可证照片');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.licenceDescImg)) {
+                    layer.msg('生产许可证其他资料照片');
+                    return;
+                }
+
+                if (quakooUtils.isBlack(param.proNum)) {
+                    layer.msg('医疗器械经营许可证');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proDate)) {
+                    layer.msg('供应商经营许可证批准日期');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proDateEnd)) {
+                    layer.msg('供应商经营许可证有效日期结束时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proDateStart)) {
+                    layer.msg('供应商经营许可证有效日期开始时间');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proImg)) {
+                    layer.msg('经营许可证照片');
+                    return;
+                }
+                if (quakooUtils.isBlack(param.proDescImg)) {
+                    layer.msg('经营许可证其他资料照片');
+                    return;
+                }
+            } else {
+                param.manufacturerProvider = []; //生产商/供应商 1//生产商；2//供应商
+            }
+            if (quakooUtils.isBlack(param.name)) {
+                layer.msg('企业名称');
+                return;
+            }
+            if (quakooUtils.isBlack(param.userName)) {
+                layer.msg('联系人');
+                return;
+            }
+            if (quakooUtils.isBlack(param.phone)) {
+                layer.msg('联系电话');
+                return;
+            }
+            // if (quakooUtils.isBlack(param.range)) {
+            //     layer.msg('经营范围');
+            //     return;
             // }
-            // if(quakooUtils.isBlack(param.address)){
-            // layer.msg('请输入详细地址');
-            // return;
-            // }
-            // param.name = name;
-            // param.userName = userName;
-            // param.phone = phone;
-            // param.range = range;
-            // param.storeImg = [storeImg];
-            // param.comBusinessNum = comBusinessNum;
-            // param.comBusinessDate = comBusinessDate;
-            // param.comBusinessDateEnd = comBusinessDateEnd;
-            // param.comBusinessDateStart = comBusinessDateStart;
-            // param.manufacturerProvider = manufacturerProvider;
-            // param.mfNum = mfNum;
-            // param.mfRegisterDate = mfRegisterDate;
-            // param.mfRegisterDateStart = mfRegisterDateStart;
-            // param.mfRegisterImg = [mfRegisterImg];
-            // param.licenceNum = licenceNum;
-            // param.licenceDate = licenceDate;
-            // param.licenceDateEnd = licenceDateEnd;
-            // param.licenceDateStart = licenceDateStart;
-            // param.licenceImg = [licenceImg];
-            // param.licenceDescImg = [licenceDescImg];
-            // param.proNum = proNum;
-            // param.proDate = proDate;
-            // param.proDateEnd = proDateEnd;
-            // param.proDateStart = proDateStart;
-            // param.proImg = [proImg];
-            // param.proDescImg = [proDescImg];
-            // param.province = province;
-            // param.city = city;
-            // param.are = are;
-            // console.log(param)
+            if (quakooUtils.isBlack(param.province) || quakooUtils.isBlack(param.city) || quakooUtils.isBlack(param.area)) {
+                layer.msg('请选择地址');
+                return;
+            }
+            if (quakooUtils.isBlack(param.address)) {
+                layer.msg('请输入详细地址');
+                return;
+            }
+            if (quakooUtils.isBlack(param.storeImg)) {
+                layer.msg('企业营业执照照片');
+                return;
+            }
+            if (quakooUtils.isBlack(param.comBusinessNum)) {
+                layer.msg('企业营业执照编号');
+                return;
+            }
+            if (quakooUtils.isBlack(param.comBusinessDate)) {
+                layer.msg('企业营业执照发证日期');
+                return;
+            }
+            if (quakooUtils.isBlack(param.comBusinessDateEnd)) {
+                layer.msg('企业营业执照有效日期结束时间');
+                return;
+            }
+            if (quakooUtils.isBlack(param.comBusinessDateStart)) {
+                layer.msg('企业营业执照有效日期开始时间');
+                return;
+            }
+
+            console.log(param)
             // quakooData.ajaxGetData(config.getUrl_medicalAppliances_addgyshang(), param, function (ret) {
             //     if (ret.success) {
-            //         layer.msg("供应商设置成功", { icon: 1 });
+            //         layer.msg("新增企业成功", { icon: 1 });
             //         layer.close(index);
             //     } else {
             //         layer.msg(ret.data);
@@ -2903,9 +2791,11 @@
             // })
         }
 
-        function shows(_this) {
-
-            $('.qyshow').eq($(_this).index()).slideToggle();
+        function shows1(_this) {
+            $('.qyshow1').slideToggle();
+        }
+        function shows2(_this) {
+            $('.qyshow2').slideToggle();
         }
 
     </script>
