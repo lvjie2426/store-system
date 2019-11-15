@@ -7,7 +7,9 @@ import com.store.system.client.ClientAttendanceTemplate;
 import com.store.system.dao.AttendanceTemplateDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
+import com.store.system.model.attendance.AttendanceItem;
 import com.store.system.model.attendance.AttendanceTemplate;
+import com.store.system.model.attendance.AttendanceTimeItem;
 import com.store.system.service.AttendanceTemplateService;
 import com.store.system.service.UserService;
 import org.apache.commons.beanutils.BeanUtils;
@@ -16,10 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 节假日弄到后台输入所有节假日（包含周六日）
@@ -60,6 +59,24 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
         if(list.size()>1){
             throw new StoreSystemException("该用户已存在考勤规则！请勿重复添加！");
         }
+        List<AttendanceItem> turn = Lists.newArrayList();
+        Map<Long,AttendanceItem> map = attendanceTemplate.getTurnMap();
+        for(Map.Entry<Long,AttendanceItem> entry:map.entrySet()){
+            AttendanceItem item = entry.getValue();
+            Map<String,AttendanceTimeItem> itemMap = item.getItemMap();
+            List<Integer> times = Lists.newArrayList();
+            for(Map.Entry<String,AttendanceTimeItem> itemEntry:itemMap.entrySet()){
+                AttendanceTimeItem attendanceTimeItem = itemEntry.getValue();
+                times.add(getTime(attendanceTimeItem.getStartTime()));
+                times.add(getTime(attendanceTimeItem.getEndTime()));
+            }
+            int min = Collections.min(times);
+            int max = Collections.max(times);
+            item.setStart(min);
+            item.setEnd(max);
+            turn.add(item);
+        }
+        attendanceTemplate.setTurn(turn);
         attendanceTemplate = attendanceTemplateDao.insert(attendanceTemplate);
         User user = userService.load(attendanceTemplate.getUid());
         if(user!=null) {
@@ -67,6 +84,13 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
             userService.updateUser(user);
         }
         return attendanceTemplate;
+    }
+
+    private int getTime (String str) {
+        int res = 0;
+        String[] strings = str.split(":");
+        res = Integer.parseInt(strings[0]) * 60 + Integer.parseInt(strings[1]);
+        return res;
     }
 
     /**
