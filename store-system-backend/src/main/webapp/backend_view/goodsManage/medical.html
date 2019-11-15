@@ -2727,6 +2727,7 @@
             }
 
             param.range = JSON.stringify(param.range);
+            param.manufacturerProvider = JSON.stringify(param.manufacturerProvider);
             quakooData.ajaxGetData(config.getUrl_medicalAppliances_addgyshang(), param, function (ret) {
                 if (ret.success) {
                     layer.msg("新增企业成功");
