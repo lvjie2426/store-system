@@ -7,6 +7,9 @@ import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Company;
 import com.store.system.service.CompanyService;
+import com.store.system.service.DictionaryService;
+import com.store.system.util.DictionaryUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +29,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/company")
 public class CompanyController extends BaseController {
+
+
+
+    @Autowired
+    private DictionaryService dictionaryService;
 
     @Resource
     private CompanyService companyService;
@@ -106,6 +114,17 @@ public class CompanyController extends BaseController {
         }
 
     }
+    //获取经营范围
+    @RequestMapping("/getRange")
+    public ModelAndView getRange(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            String res [] = {};
+            res = dictionaryService.getStrings(DictionaryUtils.range,null);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
 
+    }
 
 }

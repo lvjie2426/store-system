@@ -808,6 +808,11 @@ public class UserServiceImpl implements UserService {
 
     private ClientUserOnLogin transformUser(User user) throws Exception {
         ClientUserOnLogin clientUserOnLogin = new ClientUserOnLogin(user);
+        Subordinate subordinate = subordinateDao.load(clientUserOnLogin.getSid());
+        Subordinate load = subordinateDao.load(clientUserOnLogin.getPsid());
+        clientUserOnLogin.setSubName(subordinate!=null?subordinate.getName():"");
+        clientUserOnLogin.setSName(load!=null?load.getName():"");
+
         return clientUserOnLogin;
     }
 
