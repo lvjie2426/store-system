@@ -2550,45 +2550,62 @@
             param.userName = $("#lxsname").val(); // 联系人
             param.phone = $("#lxphone").val(); //联系电话
             param.range = []; //经营范围
-            param.storeImg = $.makeArray($('#yyImg .imgBox>img').map(function (index, item) {
+            var storeImg = $.makeArray($('#yyImg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //企业营业执照照片
+            param.storeImg = JSON.stringify(storeImg)
             param.comBusinessNum = $("#yybh").val(); //企业营业执照编号
-            param.comBusinessDate = isNotBlack($("#startTime1").val()) ? new Date($("#startTime1").val()).getTime() : ''; //企业营业执照发证日期
-            param.comBusinessDateEnd = date1 ? date1.getTime()[3] : ''; //企业营业执照有效日期结束时间
-            param.comBusinessDateStart = date1 ? date1.getTime()[2] : ''; //企业营业执照有效日期开始时间
-            param.mfNum = $("#ylnum").val(); //医疗器械注册证编号
-            param.mfRegisterDate = isNotBlack($("#startTime2").val()) ? new Date($("#startTime2").val()).getTime() : ''; //医疗器械注册证批准日期
-            param.mfRegisterDateEnd = date2 ? date2.getTime()[3] : ''; //医疗器械注册证有效日期结束时间
-            param.mfRegisterDateStart = date2 ? date2.getTime()[2] : ''; //医疗器械注册证有效日期开始时间
-            param.mfRegisterImg = $.makeArray($('#ylImg .imgBox>img').map(function (index, item) {
+
+            
+
+            param.comBusinessDate = quakooUtils.isNotBlack($("#startTime1").val()) ? new Date($("#startTime1").val()).getTime() : ''; //企业营业执照发证日期
+            // timeStart = date1.getTime()[2] || '';      //开始时间
+            // timeEnd = date1.getTime()[3] || '';          //结束时间
+            // if (timeStart != '') param.startTime = timeStart;
+            // if (timeEnd != '') param.endTime = timeEnd;
+            param.comBusinessDateEnd = date1.getTime()[3] || ''; //企业营业执照有效日期结束时间
+            param.comBusinessDateStart = date1.getTime()[2] || ''; //企业营业执照有效日期开始时间
+            param.mfNum = $("#ylnum").val() ? $("#ylnum").val() : ''; //医疗器械注册证编号
+            param.mfRegisterDate = quakooUtils.isNotBlack($("#startTime2").val()) ? new Date($("#startTime2").val()).getTime() : ''; //医疗器械注册证批准日期
+            param.mfRegisterDateEnd = quakooUtils.isNotBlack(date2.getTime()[3]) ? date2.getTime()[3] : ''; //医疗器械注册证有效日期结束时间
+            param.mfRegisterDateStart = quakooUtils.isNotBlack(date2.getTime()[2]) ? date2.getTime()[2] : ''; //医疗器械注册证有效日期开始时间
+            var mfRegisterImg = $.makeArray($('#ylImg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //医疗器械注册证照片
+            param.mfRegisterImg = JSON.stringify(mfRegisterImg)
             param.licenceNum = $("#scykCard").val(); //生产许可证编号
-            param.licenceDate = isNotBlack($("#startTime3").val()) ? new Date($("#startTime3").val()).getTime() : ''; //生产许可证发证日期
-            param.licenceDateEnd = date3 ? date3.getTime()[3] : ''; //生产许可证有效日期结束时间
-            param.licenceDateStart = date3 ? date3.getTime()[2] : ''; //生产许可证有效日期开始时间
-            param.licenceImg = $.makeArray($('#scImg .imgBox>img').map(function (index, item) {
+            param.licenceDate = quakooUtils.isNotBlack($("#startTime3").val()) ? new Date($("#startTime3").val()).getTime() : ''; //生产许可证发证日期
+            console.log(date3.dom.val());
+            param.licenceDateEnd =  quakooUtils.isNotBlack(date3.dom.val()) ? date3.getTime()[3] : ''; //生产许可证有效日期结束时间
+            param.licenceDateStart = quakooUtils.isNotBlack(date3.dom.val()) ? date3.getTime()[2] : ''; //生产许可证有效日期开始时间
+            var licenceImg = $.makeArray($('#scImg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //生产许可证照片
-            console.log($('#scImg .imgBox>img'))
-            param.licenceDescImg = $.makeArray($('#qtImg .imgBox>img').map(function (index, item) {
+            param.licenceImg = JSON.stringify(licenceImg)
+            // console.log($('#scImg .imgBox>img'))
+            var licenceDescImg = $.makeArray($('#qtImg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //生产许可证其他资料照片
+            param.licenceDescImg = JSON.stringify(licenceDescImg)
             param.proNum = $("#ylxkz").val(); //医疗器械经营许可证
-            param.proDate = isNotBlack($("#startTime4").val()) ? new Date($("#startTime4").val()).getTime() : ''; //供应商经营许可证批准日期
-            param.proDateEnd = date4 ? date4.getTime()[3] : ''; //供应商经营许可证有效日期结束时间
-            param.proDateStart = date4 ? date4.getTime()[2] : ''; //供应商经营许可证有效日期开始时间
-            param.proImg = $.makeArray($('#ylxkzimg .imgBox>img').map(function (index, item) {
+            param.proDate = quakooUtils.isNotBlack($("#startTime4").val()) ? new Date($("#startTime4").val()).getTime() : ''; //供应商经营许可证批准日期
+            param.proDateEnd = quakooUtils.isNotBlack(date4.dom.val()) ? date4.getTime()[3] : ''; //供应商经营许可证有效日期结束时间
+            param.proDateStart = quakooUtils.isNotBlack(date4.dom.val()) ? date4.getTime()[2] : ''; //供应商经营许可证有效日期开始时间
+            // console.log(date4)
+            
+            var proImg = $.makeArray($('#ylxkzimg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //经营许可证照片
-            param.proDescImg = $.makeArray($('#qtzlImg .imgBox>img').map(function (index, item) {
+            param.proImg = JSON.stringify(proImg)
+            var proDescImg = $.makeArray($('#qtzlImg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //经营许可证其他资料照片
+            param.proDescImg = JSON.stringify(proDescImg)
             param.province = shopInfo.province;//省
             param.city = shopInfo.city;//市
             param.area = shopInfo.area;//区
             param.address = $('#address').val(); //选择详细地址
+            console.log(param.proDateEnd)
             if ($('#shcheck1').is(':checked') === true && $('#shcheck2').is(':checked') !== true) {
                 param.manufacturerProvider = ['1']; //生产商/供应商 1//生产商；2//供应商
                 if (quakooUtils.isBlack(param.mfNum)) {
@@ -2783,7 +2800,7 @@
             console.log(param)
             // quakooData.ajaxGetData(config.getUrl_medicalAppliances_addgyshang(), param, function (ret) {
             //     if (ret.success) {
-            //         layer.msg("新增企业成功", { icon: 1 });
+            //         layer.msg("新增企业成功");
             //         layer.close(index);
             //     } else {
             //         layer.msg(ret.data);
