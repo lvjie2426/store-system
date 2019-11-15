@@ -1778,11 +1778,11 @@
                                 <%if(list.startTime){%>
                                 <input name="test" id="startTime1"
                                        class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                       placeholder="<%=list.startTime%>" data-type="minute"/>
+                                       placeholder="<%=list.startTime%>" data-type="day"/>
                                 <%}else{%>
                                 <input name="test" id="startTime1"
                                        class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                       placeholder="发证日期" data-type="minute"/>
+                                       placeholder="发证日期" data-type="day"/>
                                 <%}%>
                 
                                 <i class="icon iconfont icon-ico_calendar icon10"></i>
@@ -1799,11 +1799,11 @@
                                 <%if(list.startTime){%>
                                 <input name="test" id="startTime2"
                                        class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                       placeholder="<%=list.startTime%>" data-type="minute"/>
+                                       placeholder="<%=list.startTime%>" data-type="day"/>
                                 <%}else{%>
                                 <input name="test" id="startTime2"
                                        class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                       placeholder="有效日期" data-type="minute"/>
+                                       placeholder="有效日期" data-type="day"/>
                                 <%}%>
                     
                                 <i class="icon iconfont icon-ico_calendar icon10"></i>
@@ -1819,11 +1819,11 @@
 
         <div class="uploadPic">
             <p class="title">营业执照照片</p>
-            <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+            <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="yyimg">
                 <%if(list.storeImg){%>
                 <%for(var i=0;i< list.storeImg.length;i++){%>
                 <div class="imgBox">
-                    <img src="<%=list.storeImg[i]%>" id="yyimg" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                    <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
                     <div class="del" onclick="delImg(this)"></div>
                 </div>
                 <%}%>
@@ -1845,13 +1845,13 @@
                                 <p class="title">批准日期</p>
                                 <div>
                                     <%if(list.startTime){%>
-                                    <input name="test" id="startTime7"
+                                    <input name="test" id="startTime3"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="<%=list.startTime%>" data-type="minute"  id="ylpzDate"/>
+                                           placeholder="<%=list.startTime%>" data-type="day"/>
                                     <%}else{%>
-                                    <input name="test" id="startTime7"
+                                    <input name="test" id="startTime3"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="批准日期" data-type="minute"  id="ylpzDate"/>
+                                           placeholder="批准日期" data-type="day"/>
                                     <%}%>
                     
                                     <i class="icon iconfont icon-ico_calendar icon10"></i>
@@ -1868,11 +1868,11 @@
                                     <%if(list.startTime){%>
                                     <input name="test" id="startTime4"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="<%=list.startTime%>" data-type="minute" id="ylyxDate"/>
+                                           placeholder="<%=list.startTime%>" data-type="day"/>
                                     <%}else{%>
                                     <input name="test" id="startTime4"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="有效日期" data-type="minute" id="ylyxDate"/>
+                                           placeholder="有效日期" data-type="day"/>
                                     <%}%>
                         
                                     <i class="icon iconfont icon-ico_calendar icon10"></i>
@@ -1887,7 +1887,7 @@
                 </div>
                 <div class="uploadPic">
                         <p class="title">医疗器械注册证照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
                             <%if(list.storeImg){%>
                             <%for(var i=0;i< list.storeImg.length;i++){%>
                             <div class="imgBox">
@@ -1909,13 +1909,13 @@
                                 <p class="title">发证日期</p>
                                 <div>
                                     <%if(list.startTime){%>
-                                    <input name="test" id="startTime3"
+                                    <input name="test" id="startTime5"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="<%=list.startTime%>" data-type="minute"  id="scykDate"/>
+                                           placeholder="<%=list.startTime%>" data-type="day"/>
                                     <%}else{%>
-                                    <input name="test" id="startTime3"
+                                    <input name="test" id="startTime5"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="发证日期" data-type="minute"  id="scykDate"/>
+                                           placeholder="发证日期" data-type="day"/>
                                     <%}%>
                     
                                     <i class="icon iconfont icon-ico_calendar icon10"></i>
@@ -1932,11 +1932,11 @@
                                     <%if(list.startTime){%>
                                     <input name="test" id="startTime4"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="<%=list.startTime%>" data-type="minute" id="scyxDate"/>
+                                           placeholder="<%=list.startTime%>" data-type="day"/>
                                     <%}else{%>
                                     <input name="test" id="startTime4"
                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="选择有效期" data-type="minute" id="scyxDate"/>
+                                           placeholder="选择有效期" data-type="day"/>
                                     <%}%>
                         
                                     <i class="icon iconfont icon-ico_calendar icon10"></i>
@@ -1951,7 +1951,7 @@
                 </div>
                 <div class="uploadPic">
                         <p class="title">生产许可证照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
                             <%if(list.storeImg){%>
                             <%for(var i=0;i< list.storeImg.length;i++){%>
                             <div class="imgBox">
@@ -1966,7 +1966,7 @@
             
             <div class="uploadPic n1">
                 <p class="title" class="border1">其它资料照片</p>
-                <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
                     <%if(list.storeImg){%>
                     <%for(var i=0;i< list.storeImg.length;i++){%>
                     <div class="imgBox">
@@ -1995,11 +1995,11 @@
                                             <%if(list.startTime){%>
                                             <input name="test" id="startTime5"
                                                    class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                                   placeholder="<%=list.startTime%>" data-type="minute" id="ylpzDate1"/>
+                                                   placeholder="<%=list.startTime%>" data-type="day"/>
                                             <%}else{%>
                                             <input name="test" id="startTime5"
                                                    class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                                   placeholder="批准日期" data-type="minute" id="ylpzDate1"/>
+                                                   placeholder="批准日期" data-type="day"/>
                                             <%}%>
                             
                                             <i class="icon iconfont icon-ico_calendar icon10"></i>
@@ -2016,11 +2016,11 @@
                                             <%if(list.startTime){%>
                                             <input name="test" id="startTime6"
                                                    class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                                   placeholder="<%=list.startTime%>" data-type="minute" id="pzyxDate"/>
+                                                   placeholder="<%=list.startTime%>" data-type="day"/>
                                             <%}else{%>
                                             <input name="test" id="startTime6"
                                                    class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                                   placeholder="有效日期" data-type="minute"  id="pzyxDate"/>
+                                                   placeholder="有效日期" data-type="day"/>
                                             <%}%>
                                 
                                             <i class="icon iconfont icon-ico_calendar icon10"></i>
@@ -2036,7 +2036,7 @@
             
                     <div class="uploadPic">
                         <p class="title">医疗器械经营许可证照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
                             <%if(list.storeImg){%>
                             <%for(var i=0;i< list.storeImg.length;i++){%>
                             <div class="imgBox">
@@ -2050,7 +2050,7 @@
                     </div>
                     <div class="uploadPic n1">
                         <p class="title" class="border1">其它资料照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" id="imgBox">
+                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox">
                             <%if(list.storeImg){%>
                             <%for(var i=0;i< list.storeImg.length;i++){%>
                             <div class="imgBox">
@@ -2799,11 +2799,25 @@
         }
         function delImg(self) {
             $(self).parent('.imgBox').remove()
-            if ($('#imgBox .imgBox').length < 9) {
+            if ($('.imgBox .imgBox').length < 9) {
                 $("#test2").show();
             }
         }
-
+        //上传门店图片
+        function uploadIcon(self) {
+            quakooImg.open(function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if ($(self).prevAll('.imgBox').length < 9) {
+                        var obj = quakooImg.processImg(data[i], 100, 100)
+                        var str = '<div class="imgBox"><img src="' + obj.url + '" real-src="' + data[i] + '" style="' + obj.style + '" alt=""><div class="del" onclick="delImg(this)"></div></div>'
+                        $(self).before(str)
+                    }
+                }
+                if ($(self).prevAll('.imgBox').length >= 9) {
+                    $(self).hide();
+                }
+            })
+        }
         //新增企业
         function addSuppliers(index) {
             var param = {};
@@ -2811,62 +2825,74 @@
             var userName = $("#lxsname").val(); // 联系人
             var phone = $("#lxphone").val(); //联系电话
             var range = []; //经营范围
-            var storeImg = $("#yyimg").attr('src'); //企业营业执照照片
+            var storeImg = $.makeArray($('#yyimg .imgBox>img').map(function (index, item) {
+                console.log(item);
+                return $(item).attr('real-src');
+            })); //企业营业执照照片
             var comBusinessNum = $("#yybh").val(); //企业营业执照编号
-            var comBusinessDate = new Date($("#yyzzDate").html()).getTime(); //企业营业执照发证日期
-            var comBusinessDateEnd = new Date($("#zzyxDate").html()).getTime(); //企业营业执照有效日期结束时间
-            var comBusinessDateStart = new Date($("#zzyxDate").html()).getTime(); //企业营业执照有效日期开始时间
-            var manufacturerProvider = ['1', '2']; //生产商/供应商 1//生产商；2//供应商
-            var mfNum = $("#ylnum").val(); //医疗器械注册证编号
-            var mfRegisterDate = new Date($("#ylpzDate").html()).getTime(); //医疗器械注册证批准日期
-            var mfRegisterDateEnd = new Date($("#ylyxDate").html()).getTime(); //医疗器械注册证有效日期结束时间
-            var mfRegisterDateStart = new Date($("#ylyxDate").html()).getTime(); //医疗器械注册证有效日期开始时间
-            var mfRegisterImg = $("#ylimg").attr('src'); //医疗器械注册证照片
-            var licenceNum = $("#scykCard").val(); //生产许可证编号
-            var licenceDate = new Date($("#scykDate").html()).getTime(); //生产许可证发证日期
-            var licenceDateEnd = new Date($("#scyxDate").html()).getTime(); //生产许可证有效日期结束时间
-            var licenceDateStart = new Date($("#scyxDate").html()).getTime(); //生产许可证有效日期开始时间
-            var licenceImg = $("#scimg").attr('src'); //生产许可证照片
-            var licenceDescImg = $("#qtimg").attr('src'); //生产许可证其他资料照片
-            var proNum = $("#ylxkz").val(); //医疗器械经营许可证
-            var proDate = new Date($("#ylpzDate1").html()).getTime(); //供应商经营许可证批准日期
-            var proDateEnd = new Date($("#pzyxDate").html()).getTime(); //供应商经营许可证有效日期结束时间
-            var proDateStart = new Date($("#pzyxDate").html()).getTime(); //供应商经营许可证批准日期
-            var proImg = $("#ylxkzimg").attr('src'); //经营许可证照片
-            var proDescImg = $("#qtzlimg").attr('src'); //经营许可证其他资料照片
-            var province = null; //省
-            var city = null; //城市
-            var are = null; //区
-            param.name = name;
-            param.userName = userName;
-            param.phone = phone;
-            param.range = range;
-            param.storeImg = [storeImg];
-            param.comBusinessNum = comBusinessNum;
-            param.comBusinessDate = comBusinessDate;
-            param.comBusinessDateEnd = comBusinessDateEnd;
-            param.comBusinessDateStart = comBusinessDateStart;
-            param.manufacturerProvider = manufacturerProvider;
-            param.mfNum = mfNum;
-            param.mfRegisterDate = mfRegisterDate;
-            param.mfRegisterDateStart = mfRegisterDateStart;
-            param.mfRegisterImg = [mfRegisterImg];
-            param.licenceNum = licenceNum;
-            param.licenceDate = licenceDate;
-            param.licenceDateEnd = licenceDateEnd;
-            param.licenceDateStart = licenceDateStart;
-            param.licenceImg = [licenceImg];
-            param.licenceDescImg = [licenceDescImg];
-            param.proNum = proNum;
-            param.proDate = proDate;
-            param.proDateEnd = proDateEnd;
-            param.proDateStart = proDateStart;
-            param.proImg = [proImg];
-            param.proDescImg = [proDescImg];
-            param.province = province;
-            param.city = city;
-            param.are = are;
-            console.log(param)
+            // var comBusinessDate = new Date($("#startTime1").val()).getTime(); //企业营业执照发证日期
+            // var comBusinessDateEnd = new Date($("#startTime2").val()).getTime(); //企业营业执照有效日期结束时间
+            // var comBusinessDateStart = new Date($("#startTime2").val()).getTime(); //企业营业执照有效日期开始时间
+            // var manufacturerProvider = ['1', '2']; //生产商/供应商 1//生产商；2//供应商
+            // var mfNum = $("#ylnum").val(); //医疗器械注册证编号
+            // var mfRegisterDate = new Date($("#startTime3").val()).getTime(); //医疗器械注册证批准日期
+            // var mfRegisterDateEnd = new Date($("#startTime4").val()).getTime(); //医疗器械注册证有效日期结束时间
+            // var mfRegisterDateStart = new Date($("#startTime4").val()).getTime(); //医疗器械注册证有效日期开始时间
+            // var mfRegisterImg = $("#ylimg").attr('src'); //医疗器械注册证照片
+            // var licenceNum = $("#scykCard").val(); //生产许可证编号
+            // var licenceDate = new Date($("#startTime5").val()).getTime(); //生产许可证发证日期
+            // var licenceDateEnd = new Date($("#startTime6").val()).getTime(); //生产许可证有效日期结束时间
+            // var licenceDateStart = new Date($("#startTime6").val()).getTime(); //生产许可证有效日期开始时间
+            // var licenceImg = $("#scimg").attr('src'); //生产许可证照片
+            // var licenceDescImg = $("#qtimg").attr('src'); //生产许可证其他资料照片
+            // var proNum = $("#ylxkz").val(); //医疗器械经营许可证
+            // var proDate = new Date($("#startTime1").val()).getTime(); //供应商经营许可证批准日期
+            // var proDateEnd = new Date($("#startTime1").val()).getTime(); //供应商经营许可证有效日期结束时间
+            // var proDateStart = new Date($("#startTime1").val()).getTime(); //供应商经营许可证批准日期
+            // var proImg = $("#ylxkzimg").attr('src'); //经营许可证照片
+            // var proDescImg = $("#qtzlimg").attr('src'); //经营许可证其他资料照片
+            // param.province=shopInfo.province*1;//省
+            // param.city=shopInfo.city*1;//市
+            // param.area=shopInfo.area*1;//区
+            // param.address = $('#address').val();
+            // if(quakooUtils.isBlack(param.province)||quakooUtils.isBlack(param.city)||quakooUtils.isBlack(param.area)){
+            // layer.msg('请选择地址');
+            // return;
+            // }
+            // if(quakooUtils.isBlack(param.address)){
+            // layer.msg('请输入详细地址');
+            // return;
+            // }
+            // param.name = name;
+            // param.userName = userName;
+            // param.phone = phone;
+            // param.range = range;
+            // param.storeImg = [storeImg];
+            // param.comBusinessNum = comBusinessNum;
+            // param.comBusinessDate = comBusinessDate;
+            // param.comBusinessDateEnd = comBusinessDateEnd;
+            // param.comBusinessDateStart = comBusinessDateStart;
+            // param.manufacturerProvider = manufacturerProvider;
+            // param.mfNum = mfNum;
+            // param.mfRegisterDate = mfRegisterDate;
+            // param.mfRegisterDateStart = mfRegisterDateStart;
+            // param.mfRegisterImg = [mfRegisterImg];
+            // param.licenceNum = licenceNum;
+            // param.licenceDate = licenceDate;
+            // param.licenceDateEnd = licenceDateEnd;
+            // param.licenceDateStart = licenceDateStart;
+            // param.licenceImg = [licenceImg];
+            // param.licenceDescImg = [licenceDescImg];
+            // param.proNum = proNum;
+            // param.proDate = proDate;
+            // param.proDateEnd = proDateEnd;
+            // param.proDateStart = proDateStart;
+            // param.proImg = [proImg];
+            // param.proDescImg = [proDescImg];
+            // param.province = province;
+            // param.city = city;
+            // param.are = are;
+            // console.log(param)
             // quakooData.ajaxGetData(config.getUrl_medicalAppliances_addgyshang(), param, function (ret) {
             //     if (ret.success) {
             //         layer.msg("供应商设置成功", { icon: 1 });
@@ -2876,114 +2902,6 @@
             //     }
             // })
         }
-        /**接口——企业下创建门店*/
-        // function createShop(id, index) {
-        //     var param = {};
-        //     if (id) {
-        //         param.pid = sid;
-        //         param.id = id;
-
-        //     } else {
-        //         param.pid = sid;
-        //     }
-        //     param.payType = shopInfo.payType;
-        //     param.processType = shopInfo.processType;
-        //     param.storedType = shopInfo.storedType;
-        //     param.province = shopInfo.province;
-        //     param.city = shopInfo.city;
-        //     param.area = shopInfo.area;
-        //     param.process = shopInfo.process;
-        //     param.name = $("#name").val();
-        //     param.storeCode = $("#storeCode").val();
-        //     param.phone = $("#phone").val();
-        //     param.storeImgJson = [];                  //门店照片
-        //     for (var i = 0; i < $('#imgBox .imgBox').length; i++) {
-        //         param.storeImgJson.push($('#imgBox .imgBox').eq(i).find('img').attr('real-src'))
-        //     }
-        //     param.storeImgJson = JSON.stringify(param.storeImgJson);
-        //     param.address = $("#address").val();
-        //     if ($("#startTime").val()) {
-        //         param.startTime = $("#startTime").val();
-        //     } else {
-        //         if ($("#startTime").attr('placeholder').indexOf(':') >= 0) {
-        //             param.startTime = $("#startTime").attr('placeholder');
-        //         }
-        //     }
-        //     if ($("#endTime").val()) {
-        //         param.endTime = $("#endTime").val();
-        //     } else {
-        //         if ($("#endTime").attr('placeholder').indexOf(':') >= 0) {
-        //             param.endTime = $("#endTime").attr('placeholder');
-        //         }
-        //     }
-        //     param.threePolicy = $("#threePolicy").val();
-
-        //     var url = '';
-        //     var str = '';
-        //     if (id) {
-        //         url = config.getUrl_subordinate_updateSubordinateStore();
-        //         str = '修改成功'
-        //     } else {
-        //         url = config.getUrl_subordinate_addSubordinateStore();
-        //         str = '添加成功'
-        //     }
-        //     console.log(param);
-        //     if (quakooUtils.isBlack(param.name)) {
-        //         layer.msg("请输入门店名称");
-        //         return;
-        //     }
-        //     if (quakooUtils.isBlack(param.storeCode)) {
-        //         layer.msg("请输入门店简码");
-        //         return;
-        //     }
-        //     if (quakooUtils.isBlack(param.phone)) {
-        //         layer.msg("请输入门店电话");
-        //         return;
-        //     }
-        //     if (!quakooUtils.isMobileNum(param.phone)) {
-        //         layer.msg('请输入正确的手机号');
-        //         return;
-        //     }
-        //     if (quakooUtils.isBlack(param.province) || quakooUtils.isBlack(param.city) || quakooUtils.isBlack(param.area)) {
-        //         layer.msg('请选择门店地址');
-        //         return;
-        //     }
-        //     if (quakooUtils.isBlack(param.address)) {
-        //         layer.msg('请输入门店详细地址');
-        //         return;
-        //     }
-        //     if (quakooUtils.isBlack(param.storeImgJson)) {
-        //         layer.msg('请上传门店照片');
-        //         return;
-        //     }
-        //     if (quakooUtils.isBlack(param.startTime) || quakooUtils.isBlack(param.startTime)) {
-        //         layer.msg('请选择门店营业时间');
-        //         return;
-        //     }
-        //     if (quakooUtils.isBlack(param.threePolicy)) {
-        //         layer.msg('请输入三包政策');
-        //         return;
-        //     }
-        //     if (quakooUtils.isBlack(param.payType)) {
-        //         layer.msg('请选择支付方式');
-        //         return;
-        //     }
-        //     if (param.processType == 1) {
-        //         if (quakooUtils.isBlack(param.process)) {
-        //             layer.msg('请选择加工中心');
-        //             return;
-        //         }
-        //     }
-        //     quakooData.ajaxGetData(url, param, function (ret) {
-        //         if (ret.success) {
-        //             layer.msg(str, { icon: 1 });
-        //             layer.close(index);
-        //             getShopList()
-        //         } else {
-        //             layer.msg(ret.data, { icon: 2 })
-        //         }
-        //     })
-        // }
 
         function shows(_this) {
 
