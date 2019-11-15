@@ -75,8 +75,9 @@ public class StatisticsSaleCategoryController extends BaseController{
                                                  @RequestParam(name = "startTime",required = false,defaultValue = "0") long startTime,
                                                  @RequestParam(name = "endTime",required = false,defaultValue = "0") long endTime)throws Exception{
         try {
-            ClientCategoryStatistics statistics = new ClientCategoryStatistics();
+            List<ClientCategoryStatistics> res = Lists.newArrayList();
             for(Long subId:subIds) {
+                ClientCategoryStatistics statistics = new ClientCategoryStatistics();
                 if (type == ClientSaleStatistics.type_week) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(System.currentTimeMillis());
@@ -93,8 +94,9 @@ public class StatisticsSaleCategoryController extends BaseController{
                 } else if (type == ClientSaleStatistics.type_search) {
                     statistics  = saleCategoryStatisticsService.searchSaleSum(startTime, endTime, subId);
                 }
+                res.add(statistics);
             }
-            return this.viewNegotiating(request,response,new ResultClient(true,statistics));
+            return this.viewNegotiating(request,response,new ResultClient(true,res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
         }

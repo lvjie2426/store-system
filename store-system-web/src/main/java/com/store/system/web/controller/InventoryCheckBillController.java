@@ -165,18 +165,7 @@ public class InventoryCheckBillController extends BaseController {
         }
     }
 
-    /**
-     * create by: zhangmeng
-     * description: 员工端获取全部盘点任务 包括已完成的。
-     * create time: 2019/09/02 0002 14:51:44
-     *
-     * @Param: subid
-     * @Param: pager
-     * @Param: request
-     * @Param: response
-     * @Param: model
-     * @return
-     */
+
     @RequestMapping("/getAll")
     public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -207,6 +196,18 @@ public class InventoryCheckBillController extends BaseController {
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/end")
+    public ModelAndView end(@RequestParam(value = "id") long id, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            long checkUid = user.getId();
+            boolean res = inventoryCheckBillService.end(id, checkUid);
+            return this.viewNegotiating(request,response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
 
