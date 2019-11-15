@@ -56,7 +56,7 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
             list.addAll(saleCategoryStatisticsDao.getSubList(subId, day));
         }
         Map<Long,List<ClientCategoryStatistics>> map = transformClientSale(list,subId);
-        return transformClientSum(map);
+        return transformClientSum(map,subId);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         sql = sql + " order  by `day` desc";
         List<SaleCategoryStatistics> saleStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleCategoryStatistics.class));
         Map<Long,List<ClientCategoryStatistics>> map = transformClientSale(saleStatistics,subId);
-        return transformClientSum(map);
+        return transformClientSum(map,subId);
     }
 
     @Override
@@ -189,7 +189,8 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         return client;
     }
 
-    private ClientCategoryStatistics transformClientSum(Map<Long,List<ClientCategoryStatistics>> map) throws Exception {
+    private ClientCategoryStatistics transformClientSum(Map<Long,List<ClientCategoryStatistics>> map, long subId) throws Exception {
+        Subordinate subordinate = subordinateService.load(subId);
         ClientCategoryStatistics res = new ClientCategoryStatistics();
         List<ClientCategoryStatistics> list = Lists.newArrayList();
         for(Map.Entry<Long,List<ClientCategoryStatistics>> entry:map.entrySet()){
@@ -209,7 +210,6 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         int num_500to1000=0;
         int num_1000to2000=0;
         int num_2000=0;
-
         for(ClientCategoryStatistics statistics:list){
             sale += statistics.getSale();
             perPrice += statistics.getPerPrice();
@@ -240,6 +240,7 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         res.setNum_500to1000(num_500to1000);
         res.setNum_1000to2000(num_1000to2000);
         res.setNum_2000(num_2000);
+        res.setSubName(subordinate.getName());
         return res;
     }
 
