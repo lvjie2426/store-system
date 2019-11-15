@@ -2,9 +2,12 @@ package com.store.system.dao.impl;
 
 import com.quakoo.space.CacheBaseDao;
 import com.quakoo.space.annotation.cache.CacheDaoMethod;
+import com.quakoo.space.annotation.cache.CacheSort;
 import com.quakoo.space.annotation.dao.HyperspaceDao;
+import com.quakoo.space.annotation.domain.SortKey;
 import com.quakoo.space.enums.HyperspaceType;
 import com.quakoo.space.enums.cache.CacheMethodEnum;
+import com.quakoo.space.enums.cache.CacheSortOrder;
 import com.store.system.dao.StatisticsCustomerJobDao;
 import com.store.system.model.StatisticsCustomerJob;
 import org.springframework.dao.DataAccessException;
@@ -39,6 +42,7 @@ public class StatisticsCustomerJobDaoImpl extends CacheBaseDao<StatisticsCustome
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllList)
+    @CacheSort(order = CacheSortOrder.asc)
     public List<StatisticsCustomerJob> getList(long subid) throws DataAccessException {
         return null;
     }
