@@ -720,7 +720,7 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
         payInfo.setUid(businessOrder.getUid());
         payInfo.setPrice(price);
         payInfo.setPayType(type);
-        payInfo.setStatus(PayInfo.status_refund);
+        payInfo.setStatus(PayInfo.status_pay);
         payInfo.setBoId(boId);
         return payInfoService.insert(payInfo);
     }
