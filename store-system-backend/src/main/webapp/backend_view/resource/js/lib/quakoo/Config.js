@@ -24,8 +24,8 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-        // this.serverUrl = "http://39.107.247.82:20005";
-        this.serverUrl = "http://192.168.1.20:20005";
+        this.serverUrl = "http://39.107.247.82:20005";
+        // this.serverUrl = "http://192.168.1.20:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
@@ -382,6 +382,12 @@ var Config = (function(_super){
     /**医疗器械*/
     /**添加供应商/生产商企业*/
     _proto.getUrl_medicalAppliances_addgyshang = function(){return this.serverUrl + '/company/saveCompany';};
+    /**获取经营范围*/
+    _proto.getUrl_medicalAppliances_getRange = function(){return this.serverUrl + '/company/getRange';};
+    /**获取供应商/生产商企业列表*/
+    _proto.getUrl_medicalAppliances_getgyshang = function(){return this.serverUrl + '/company/search';};
+    /**获取过期的生产/供应商企业*/
+    _proto.getUrl_medicalAppliances_getguoqiGshang = function(){return this.serverUrl + '/company/searchOverdue';};
     //=======================商品管理 结束====================
 
 
