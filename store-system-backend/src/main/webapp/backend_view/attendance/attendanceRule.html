@@ -480,7 +480,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="delThisBox">x</div>
+                    <div class="delThisBox" onclick="delColor(this)">x</div>
                 </li>
             </ul>
         </div>
@@ -655,10 +655,22 @@
             str+= '            </ul>'
             str+= '        </div>'
             str+= '    </div>'
-            str+= '    <div class="delThisBox">x</div>'
+            str+= '    <div class="delThisBox" onclick="delColor(this)">x</div>'
             str+= '</li>'
+        var addLength = 0;
     function addClasses(){
-        $('#colorList').append(str)
+        if(addLength<3){
+            $('.layui-layer-content').css('height',$('.eidtTimeDuanBox').height()+$('.timeDuanList').height())
+            $('#colorList').append(str)
+            addLength++
+        }else{
+            layer.msg('最多一次添加四个')
+        }
+    }
+
+    function delColor(dom){
+        $(dom).parent('li').hide()
+        addLength = addLength-1
     }
 </script>
 </body>
