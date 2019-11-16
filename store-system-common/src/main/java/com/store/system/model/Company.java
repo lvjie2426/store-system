@@ -40,8 +40,7 @@ public class Company implements Serializable {
     private String phone;
 
     //经营范围
-    @HyperspaceColumn(isJson = true)
-    private List<String> range = new ArrayList<>();
+    private String range;
 
     //企业营业执照照片
     @HyperspaceColumn(isJson = true)

@@ -56,7 +56,7 @@ public class CompanyServiceImpl implements CompanyService {
         long time=System.currentTimeMillis();
         sql=sql+" and  comBusinessDateEnd >"+time;
         sqlCount=sqlCount+" and  comBusinessDateEnd >"+time;
-        sql = sql + " order  by `sort` desc";
+        sql = sql + " order  by `ctime` desc";
         List<Company> companyList = this.jdbcTemplate.query(sql, spuRowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
         pager.setData(companyList);
@@ -94,7 +94,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (StringUtils.isBlank(company.getName())) throw new StoreSystemException("企业名称不能为空。");
         if (StringUtils.isBlank(company.getUserName())) throw new StoreSystemException("企业联系人不能为空。");
         if (StringUtils.isBlank(company.getPhone())) throw new StoreSystemException("企业联系人电话不能为空。");
-        if (company.getRange().size() == 0) throw new StoreSystemException("企业经营范围不能为空。");
+        if (StringUtils.isBlank(company.getRange())) throw new StoreSystemException("企业经营范围不能为空。");
 
         if (company.getStoreImg().size() == 0) throw new StoreSystemException("企业营业执照照片不能为空。");
         if (StringUtils.isBlank(company.getComBusinessNum())) throw new StoreSystemException("企业营业执照编号不能为空。");
