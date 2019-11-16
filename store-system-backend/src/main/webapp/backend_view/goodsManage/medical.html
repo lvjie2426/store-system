@@ -1078,7 +1078,7 @@
             padding: 0;
         }
 
-        .dayNum {
+        #dayNum {
             border: none;
         }
     </style>
@@ -2528,7 +2528,7 @@
                 title: '新增企业',
                 skin: 'content-view-shopDes-tan content-view-submit', //样式类名
                 anim: 0,
-                area: ['370px', '550px'],
+                area: ['360px', '550px'],
                 closeBtn: 0, //不显示关闭按钮
                 resize: false,
                 shadeClose: true, //开启遮罩关闭
@@ -2538,7 +2538,7 @@
                     layer.close(index);
                 },
                 btn2: function (index) {
-                    addSuppliers(id, index)
+                    addSuppliers(index, id)
                     return false
                 },
                 success: function (layero, index) {
@@ -2714,11 +2714,10 @@
             param.proDate = quakooUtils.isNotBlack($("#startTime4").val()) ? new Date($("#startTime4").val()).getTime() : ''; //供应商经营许可证批准日期
             param.proDateEnd = quakooUtils.isNotBlack(date4.checkStart) ? date4.getTime()[3] : ''; //供应商经营许可证有效日期结束时间
             param.proDateStart = quakooUtils.isNotBlack(date4.checkEnd) ? date4.getTime()[2] : ''; //供应商经营许可证有效日期开始时间
-            var proImg = $.makeArray($('#ylxkzimg .imgBox>img').map(function (index, item) {
+            param.proImg = $.makeArray($('#ylxkzimg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
-            })); //经营许可证照片
+            })).join(','); //经营许可证照片
             // param.proImg = JSON.stringify(proImg)
-            param.proImg = proImg
             var proDescImg = $.makeArray($('#qtzlImg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //经营许可证其他资料照片
