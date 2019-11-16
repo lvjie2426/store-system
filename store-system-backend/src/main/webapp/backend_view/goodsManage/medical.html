@@ -1047,23 +1047,18 @@
             border-top: 1px solid #eee;
         }
 
-        .ranges {
-            display: inline-block;
+
+
+        .selectBox {
             width: 156px;
+            height: 28px;
             line-height: 28px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            overflow: hidden;
-            text-align: left;
-            padding: 0px 8px;
-            font-size: 12px;
-            color: #828297;
-            font-family: PingFangSC-Medium;
         }
 
-        .ranges i {
-            float: right;
+        .optionBox .optionUL .optionItems {
+            width: 100%;
+            height: 28px;
+            line-height: 28px;
         }
     </style>
 </head>
@@ -1536,10 +1531,16 @@
                 </li>
                 <li>
                     <p class="title">经营范围</p>
-                    <span class="ranges">选择范围<i class="iconfont icon-ico_arrow_down"></i></span>
-                    <ul>
-                        <li></li>
-                    </ul>
+                    <div id="select1" class="selectBox">
+                        <span class="select-box-header">
+                            <span class="text">选择范围</span>
+                            <i class="iconfont icon-ico_arrow_down"></i>
+                        </span>
+                        <div class="optionBox">
+                            <ul class="optionUL" id="option1">
+                            </ul>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -1853,6 +1854,11 @@
                         </div>
                     </div>
                 </div>
+    </script>
+    <script type="text/html" id="option2">
+        <%for(var i = 0; i < list.length; i++){%>
+            <li class="optionItems" value="<%=i%>"><%=list[i]%></li>
+        <%}%>
     </script>
     <script type="text/html" id="selectTagTmp">
         <div class="select-box-header">
@@ -2401,34 +2407,6 @@
             });
         }
 
-        //新增企业
-        function addPros() {
-            //获取经营范围
-            quakooData.ajaxGetData(config.getRange(), { token: quakooUser.getUserInfo().token }, function (ret) {
-                console.log(ret)
-            })
-            layer.open({
-                type: 1, shade: 0.01,
-                title: ['<div style="float: left;font-size: 13px;">新增企业</div>', 'background-color: #fff;'],
-                skin: 'my-skin',
-                area: ['360px', '550px'],
-                anim: 0,
-                maxWidth: '360',
-                closeBtn: 0, //不显示关闭按钮
-                resize: false,
-                shadeClose: true, //开启遮罩关闭
-                content: $('.content-view-addPros'),
-                btn: ['取消', '新增'],
-                yes: function (index, layero) {
-                    layer.close(index)
-                },
-                btn2: function (index) {
-                    addSuppliers(index);
-                    return false;
-                }
-            });
-        }
-
         // 切换销售状态按钮
         $('#status1').click(function () {
             $(this).toggleClass('active');
@@ -2438,7 +2416,8 @@
         var date1,
             date2,
             date3,
-            date4;
+            date4,
+            rangeValue = [];
         function addPros(id) {
             shopInfo = {};
             if (id) {
@@ -2450,8 +2429,6 @@
                 shopInfo.processType = 0;
                 shopInfo.storedType = 0;
             }
-
-
             var index = layer.open({
                 type: 1,
                 shade: 0.01,
@@ -2526,6 +2503,17 @@
                     date4.init();
                     //日期范围插件结束
 
+                    //获取经营范围
+                    quakooData.ajaxGetData(config.getUrl_medicalAppliances_getRange(), { token: quakooUser.getUserInfo().token }, function (ret) {
+                        console.log(ret.data)
+                        var html = template('option2', { list: ret.data });
+                        $('#option1').html(html)
+                        //选择经营范围
+                        selectTag($("#select1"), function (ret) {
+                            rangeValue.push(ret.text);
+                        })
+                    })
+
                     //营业时间
                     var opt = {};
                     opt.date = { preset: 'date' };
@@ -2561,9 +2549,8 @@
                     $('#demo07').trigger('change');
                     $('#demo08').trigger('change');
                 }
-
-
             });
+
         }
         function delImg(self) {
             $(self).parent('.imgBox').remove()
@@ -2594,11 +2581,11 @@
             param.name = $("#qysname").val(); //企业名称
             param.userName = $("#lxsname").val(); // 联系人
             param.phone = $("#lxphone").val(); //联系电话
-            param.range = []; //经营范围
+            param.range = rangeValue.join(','); //经营范围
+            console.log(param.range)
             var storeImg = $.makeArray($('#yyImg .imgBox>img').map(function (index, item) {
                 return $(item).attr('real-src');
             })); //企业营业执照照片
-            // param.storeImg = JSON.stringify(storeImg)
             param.storeImg = storeImg.join(',')
             console.log(param.storeImg)
             param.comBusinessNum = $("#yybh").val(); //企业营业执照编号
@@ -2629,7 +2616,7 @@
                 return $(item).attr('real-src');
             })); //生产许可证其他资料照片
             // param.licenceDescImg = JSON.stringify(licenceDescImg)
-            param["licenceDescImg[]"] = licenceDescImg.join(',')
+            param.licenceDescImg = licenceDescImg.join(',')
             param.proNum = $("#ylxkz").val(); //医疗器械经营许可证
             param.proDate = quakooUtils.isNotBlack($("#startTime4").val()) ? new Date($("#startTime4").val()).getTime() : ''; //供应商经营许可证批准日期
             param.proDateEnd = quakooUtils.isNotBlack(date4.checkStart) ? date4.getTime()[3] : ''; //供应商经营许可证有效日期结束时间
@@ -2650,7 +2637,7 @@
             param.address = $('#address').val(); //选择详细地址
             console.log(param);
             if ($('#shcheck1').is(':checked') === true) {
-                param.manufacturerProvider = [1]; //生产商/供应商 1//生产商；2//供应商
+                param.manufacturerProvider = ['1'].join(','); //生产商/供应商 1//生产商；2//供应商
                 if (quakooUtils.isBlack(param.mfNum)) {
                     layer.msg('医疗器械注册证编号');
                     return;
@@ -2698,7 +2685,7 @@
             }
 
             if ($('#shcheck2').is(':checked') === true) {
-                param.manufacturerProvider = [2]; //生产商/供应商 1//生产商；2//供应商
+                param.manufacturerProvider = ['2'].join(','); //生产商/供应商 1//生产商；2//供应商
                 if (quakooUtils.isBlack(param.proNum)) {
                     layer.msg('医疗器械经营许可证');
                     return;
@@ -2726,7 +2713,7 @@
             }
 
             if ($('#shcheck1').is(':checked') === true && $('#shcheck2').is(':checked') === true) {
-                param.manufacturerProvider = [1, 2]; //生产商/供应商 1//生产商；2//供应商
+                param.manufacturerProvider = ['1', '2'].join(','); //生产商/供应商 1//生产商；2//供应商
             } else {
                 param.manufacturerProvider = null; //生产商/供应商 1//生产商；2//供应商
             }
@@ -2742,10 +2729,10 @@
                 layer.msg('联系电话');
                 return;
             }
-            // if (quakooUtils.isBlack(param.range)) {
-            //     layer.msg('经营范围');
-            //     return;
-            // }
+            if (quakooUtils.isBlack(param.range)) {
+                layer.msg('经营范围');
+                return;
+            }
             if (quakooUtils.isBlack(param.province) || quakooUtils.isBlack(param.city) || quakooUtils.isBlack(param.area)) {
                 layer.msg('请选择地址');
                 return;
@@ -2775,8 +2762,8 @@
                 return;
             }
 
-            param.range = JSON.stringify(param.range);
-            param.manufacturerProvider = param.manufacturerProvider.join(',');
+            // param.range = JSON.stringify(param.range);
+            // param.manufacturerProvider = param.manufacturerProvider;
 
             quakooData.ajaxGetData(config.getUrl_medicalAppliances_addgyshang(), param, function (ret) {
                 if (ret.success) {
@@ -2786,7 +2773,7 @@
                     layer.msg(ret.data);
                 }
             })
-        } manufacturerProvider
+        }
 
         function shows1(_this) {
             $('.qyshow1').slideToggle();
@@ -2795,6 +2782,7 @@
         function shows2(_this) {
             $('.qyshow2').slideToggle();
         }
+
 
 
     </script>
