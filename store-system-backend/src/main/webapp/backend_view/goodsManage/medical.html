@@ -163,6 +163,7 @@
             overflow: hidden;
             padding: 0px 16px;
             border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
         }
 
         .goot-goot-putong li {
@@ -174,9 +175,7 @@
             overflow: hidden;
         }
 
-        .zhekou {
-            background-color: rgba(244, 244, 248, 1);
-        }
+
 
         .goot-goot-putong li .select {
             width: 16px;
@@ -204,13 +203,21 @@
             font-weight: normal;
         }
 
-        .goot-goot-huiyuan {
+        .goot-goot-huiyuan .lingshou {
             width: 100%;
-            height: 36px;
             box-sizing: border-box;
             padding: 0px 16px;
             line-height: 36px;
+            box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
+            margin-top: 12px;
+        }
+
+        .zhekou {
+            width: 100%;
             background-color: rgba(244, 244, 248, 1);
+            padding: 0px 16px;
+            overflow: hidden;
+            line-height: 36px;
             box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
         }
 
@@ -229,28 +236,24 @@
             font-family: PingFangSC-Semibold;
         }
 
-        .goot-Right .yuan {
-            display: inline-block;
+        .yj-radio {
             width: 16px;
             height: 16px;
+            float: left;
+            margin-top: 10px;
             border-radius: 100px;
-            background-color: rgba(65, 134, 220, 1);
-            position: relative;
-            vertical-align: middle;
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(130, 130, 151, 0.2);
             margin-right: 4px;
         }
 
-        .goot-Right .yuan::after {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-top: -3px;
-            margin-left: -3px;
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 37px;
-            background-color: rgba(255, 255, 255, 1);
+        .yj-radio input {
+            width: 0;
+            height: 0;
+        }
+
+        .yj-radio.active {
+            border: 5px solid rgba(65, 134, 220, 1);
         }
 
         .goot-Right a {
@@ -269,10 +272,6 @@
             justify-content: space-between;
             flex-flow: row wrap;
             padding-top: 12px;
-        }
-
-        .goot-goot-putong.u2 {
-            margin-top: 62px;
         }
 
         #inNum {
@@ -1060,8 +1059,6 @@
             border-top: 1px solid #eee;
         }
 
-
-
         .selectBox {
             width: 156px;
             height: 28px;
@@ -1213,11 +1210,10 @@
     <div class="content-view"></div>
 
     <!--新增镜片-->
-    <div class="content-view content-view-addgoods" id="addGoodsDom">
 
+    <div class="content-view content-view-addgoods" id="addGoodsDom">
         <div class="mainGoodList">
             <div class="goot-select">
-                <div class="goot-items">品牌</div>
                 <div class="selectBox goot-select-items" id="yj-add-brand">
                     <div class="select-box-header">
                         <input type="text" id="brandName" value="" placeholder="品牌" autocomplete="off">
@@ -1225,15 +1221,16 @@
                     </div>
                     <div class="optionBox">
                         <ul class="optionUL">
-                            <!-- <li value="<%=brandData[i].id%>"><%=brandData[i].name%></li> -->
                         </ul>
                     </div>
                 </div>
-                <!-- <div class="goot-select-items"><span>品牌</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <div class="goot-select">
                 <div class="goot-items">系列</div>
-                <div class="selectBox goot-select-items" id="yj-add-series">
+                <div class="selectBox" id="select-series">
+
+                </div>
+                <!-- <div class="selectBox goot-select-items" id="yj-add-series">
                     <div class="select-box-header">
                         <input type="text" id="seriesName" value="" placeholder="系列" autocomplete="off">
                         <i class="iconfont icon-ico_arrow_down"></i>
@@ -1241,7 +1238,7 @@
                     <div class="optionBox">
                         <ul class="optionUL"></ul>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="goot-select-items"><span>系列</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <div class="goot-select">
@@ -1328,14 +1325,13 @@
             </div>
         </div>
         <ul class="goot-goot-putong">
-            <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 常规商品</li>
+            <li><span class="select s1"><i class="iconfont icon-ico_check"></i></span> 常规商品</li>
         </ul>
         <ul class="goot-goot-huiyuan">
             <li class="zhekou">
                 <span class="goot-left">会员折扣</span>
                 <span class="goot-Right">
-                    <span class="yuan"></span>参与会员折扣
-                    <!-- <a href="">设置</a> -->
+                    <div class="yj-radio"></div> 参与会员折扣
                 </span>
             </li>
             <li class="lingshou">
@@ -1350,9 +1346,9 @@
             </li>
         </ul>
         <ul class="goot-goot-putong u2">
-            <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 积分商品</li>
+            <li><span class="select s2"><i class="iconfont icon-ico_check"></i></span> 积分商品</li>
         </ul>
-        <ul class="goot-goot-putong">
+        <ul class="goot-goot-putong uItem">
             <li class="lingshou">
                 <div class="goot-select">
                     <div class="goot-items">积分价</div>
@@ -1367,7 +1363,7 @@
                 <div>有效期</div>
                 <div class="uTime"><span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i></div>
             </div>
-            <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 当库存低于 <input type="text"
+            <li><span class="select s3"><i class="iconfont icon-ico_check"></i></span> 当库存低于 <input type="text"
                     placeholder="数量" id="warnInput"> 触发警报</li>
         </ul>
 
@@ -1969,6 +1965,19 @@
                     </div>
                 </div>
     </script>
+    <script type="text/html" id="selectTagTmpAll">
+        <div class="select-box-header">
+                <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+            </div>
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <li value="-1">全部</li>
+                    <%for(var i=0;i< list.length;i++){%>
+                    <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
+                    <%}%>
+                </ul>
+            </div>
+    </script>
     <script type="text/html" id="option2">
         <%for(var i = 0; i < list.length; i++){%>
             <li class="optionItems" value="<%=i%>"><%=list[i]%></li>
@@ -2505,6 +2514,34 @@
             });
         }
 
+        //获取品牌（页面及弹窗）
+        var brandData = '';  //品牌数据
+        quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(), {}, function (ret) {
+            if (ret && ret.success) {
+                brandData = ret.data;
+                var html = template('selectTagTmpAll', { title: '全部商品类型', list: ret.data });
+                //商品列表的筛选
+                $('#select-type').html(html);
+                selectTag($("#select-type"), function (data) {
+                    if (data.value) {
+                        bid = data.value;
+                        //获取品牌下的系列列表
+                        quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(), { bid: data.value }, function (ret1) {
+                            if (ret1 && ret1.success) {
+                                if (ret1.data.length > 0) {
+                                    var html2 = template('selectTagTmpAll', { title: '系列', list: ret1.data });
+                                    selectTag($("#select-series"), function (series) {
+                                        sid = series.value;
+                                    })
+                                } else {
+                                }
+                            }
+                        })
+                    } else {
+                    }
+                })
+            }
+        })
         //创建企业弹窗
         var date1,
             date2,
@@ -2874,9 +2911,6 @@
         function shows2(_this) {
             $('.qyshow2').slideToggle();
         }
-
-
-
     </script>
     <script src="./medical.js"></script>
 </body>

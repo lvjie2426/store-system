@@ -23,5 +23,44 @@ function addGoods() {
 
         }
     });
-    
 };
+
+$('.select.s1').click(function () {
+    if ($('.select.s1').hasClass('active')) {
+        $('.select.s1').removeClass('active')
+        $('.goot-goot-huiyuan').slideToggle()
+    } else {
+        $('.select.s1').addClass('active')
+        $('.goot-goot-huiyuan').slideToggle();
+    }
+})
+$('.select.s2').click(function () {
+    if ($('.select.s2').hasClass('active')) {
+        $('.select.s2').removeClass('active')
+        $('.goot-goot-putong.uItem').slideToggle()
+    } else {
+        $('.select.s2').addClass('active')
+        $('.goot-goot-putong.uItem').slideToggle();
+    }
+})
+$('.zhuceInfo-first').click(function () {
+    $('.zhuceUl').slideToggle();
+    $('.zhuceInfo-first').find('i').toggleClass('icon-ico_arrow_down').toggleClass('icon-ico_arrow_up');
+})
+$('.select.s3').click(function () {
+    if ($('.select.s3').hasClass('active')) {
+        $('.select.s3').removeClass('active')
+        $('#warnInput').attr('disabled', true)
+    } else {
+        $('.select.s3').addClass('active')
+        $('#warnInput').attr('disabled', false)
+    }
+})
+//选择会员折扣
+$('.yj-radio').click(function () {
+    if ($('.yj-radio').hasClass('active')) {
+        $('.yj-radio').removeClass('active')
+    } else {
+        $('.yj-radio').addClass('active')
+    }
+})
