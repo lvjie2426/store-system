@@ -185,6 +185,16 @@
             text-align: center;
             border-radius: 2px;
             padding: 0px 2px;
+            background: #fff;
+            border: 1px solid #d2d2d2;
+            cursor: pointer;
+        }
+
+        .goot-goot-putong li .select:hover {
+            border: 1px solid rgba(65, 134, 220, 1);
+        }
+
+        .goot-goot-putong li .select.active {
             background-color: rgba(65, 134, 220, 1);
         }
 
@@ -864,8 +874,10 @@
             overflow: hidden;
         }
 
-        #edit-name {
+        #addPopupName {
             float: left;
+            cursor: move;
+            width: 70%;
         }
 
         #removeStaff {
@@ -883,6 +895,7 @@
             position: relative;
             vertical-align: middle;
             margin-left: 6px;
+            cursor: pointer;
         }
 
         #status1::after {
@@ -1065,6 +1078,14 @@
         .ranges i {
             float: right;
         }
+
+        .addGoods.layui-layer .layui-layer-title {
+            padding: 0;
+        }
+
+        .dayNum {
+            border: none;
+        }
     </style>
 </head>
 
@@ -1198,51 +1219,117 @@
 
     <!--新增镜片-->
     <div class="content-view content-view-addgoods" id="addGoodsDom">
-        <div class="toastHead">
-            <span id="edit-name">新增隐形眼镜</span>
-            <span id="removeStaff">销售状态 <span id="status1"></span></span>
-        </div>
+
         <div class="mainGoodList">
             <div class="goot-select">
                 <div class="goot-items">品牌</div>
-                <div class="goot-select-items"><span>品牌</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="selectBox goot-select-items" id="yj-add-brand">
+                    <div class="select-box-header">
+                        <input type="text" id="brandName" value="" placeholder="品牌" autocomplete="off">
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <!-- <li value="<%=brandData[i].id%>"><%=brandData[i].name%></li> -->
+                        </ul>
+                    </div>
+                </div>
+                <!-- <div class="goot-select-items"><span>品牌</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <div class="goot-select">
                 <div class="goot-items">系列</div>
-                <div class="goot-select-items"><span>系列</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="selectBox goot-select-items" id="yj-add-series">
+                    <div class="select-box-header">
+                        <input type="text" id="seriesName" value="" placeholder="系列" autocomplete="off">
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL"></ul>
+                    </div>
+                </div>
+                <!-- <div class="goot-select-items"><span>系列</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <div class="goot-select">
                 <div class="goot-items">类型</div>
-                <div class="goot-select-items"><span>类型</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="selectBox goot-select-items" id="yj-add-type">
+                    <div class="select-box-header">
+                        <span class="text">类别</span>
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL"></ul>
+                    </div>
+                </div>
+                <!-- <div class="goot-select-items"><span>类型</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <div class="goot-select">
                 <div class="goot-items">更换周期</div>
-                <div class="goot-select-items"><span>更换周期</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="selectBox goot-select-items" id="yj-add-jiaodian">
+                    <div class="select-box-header">
+                        <span class="text">更换周期</span>
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL"></ul>
+                    </div>
+                </div>
+                <!-- <div class="goot-select-items"><span>更换周期</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <div class="goot-select">
                 <div class="goot-items">包装</div>
-                <div class="goot-select-items"><span>包装</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="selectBox goot-select-items" id="yj-add-baozhuang">
+                    <div class="select-box-header">
+                        <span class="text">包装</span>
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL"></ul>
+                    </div>
+                </div>
             </div>
             <div class="goot-select">
                 <div class="goot-items">质保时长/天*</div>
-                <div class="goot-select-items"><span>天数</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="goot-select-items"><input type="number" placeholder="天数" autocomplete="off" id="dayNum">
+                </div>
                 <div class="zhibaoTime">*设定后会短信自动提醒顾客</div>
             </div>
             <div class="goot-select">
                 <div class="goot-items">供应商</div>
-                <div class="goot-select-items"><span>供应商</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="selectBox goot-select-items" id="yj-add-provider">
+                    <div class="select-box-header">
+                        <span class="text">供应商</span>
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <!-- <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li> -->
+                        </ul>
+                    </div>
+                </div>
+                <!-- <div class="goot-select-items"><span>供应商</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <div class="goot-select">
                 <div class="goot-items">生产商</div>
-                <div class="goot-select-items"><span>生产商</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="selectBox goot-select-items" id="yj-add-manufacturer">
+                    <div class="select-box-header">
+                        <span class="text">供应商</span>
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <!-- <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li> -->
+                        </ul>
+                    </div>
+                </div>
+                <!-- <div class="goot-select-items"><span>生产商</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <div class="goot-select f1">
                 <div class="goot-items">现货范围</div>
-                <div class="goot-items1"><a href="">设定现货范围</a></div>
+                <div class="goot-items1"><a href="javascript:;">设定现货范围</a></div>
             </div>
             <div class="goot-select f1">
                 <div class="goot-items">定制单范围</div>
-                <div class="goot-items1"><a href="">设定定制范围</a></div>
+                <div class="goot-items1"><a href="javascript:;">设定定制范围</a></div>
             </div>
         </div>
         <ul class="goot-goot-putong">
@@ -1253,7 +1340,7 @@
                 <span class="goot-left">会员折扣</span>
                 <span class="goot-Right">
                     <span class="yuan"></span>参与会员折扣
-                    <a href="">设置</a>
+                    <!-- <a href="">设置</a> -->
                 </span>
             </li>
             <li class="lingshou">
@@ -1525,101 +1612,107 @@
                 <li class="clearfix">
                     <p class="title">企业名称</p>
                     <input type="text" value="<%=list.name%>" id="qysname" placeholder="名称">
-                </li>
-                <li>
-                    <p class="title">联系人</p>
-                    <input type="text" value="<%=list.storeCode%>" id="lxsname" placeholder="输入">
-                </li>
-                <li>
-                    <p class="title">联系电话</p>
-                    <input type="number" value="<%=list.phone%>" id="lxphone" placeholder="电话">
-                </li>
-                <li>
-                    <p class="title">经营范围</p>
-                    <span class="ranges">选择范围<i class="iconfont icon-ico_arrow_down"></i></span>
-                    <ul>
-                        <li></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="address">
-            <p class="title">详细地址</p>
-            <!--<div class="mapDiv" id="mapDiv"></div>-->
-            <div class="inputBox">
-                <div class="selectBox" id="province">
-                    <div class="select-box-header">
-                        <%if(list.provinceName){%>
-                        <span class="text"><%=list.provinceName%></span> <i class="iconfont icon-ico_arrow_down"></i>
-                        <%}else{%>
-                        <span class="text t1">选择省</span> <i class="iconfont icon-ico_arrow_down t1"></i>
-                        <%}%>
+                            </li>
+                            <li>
+                                <p class="title">联系人</p>
+                                <input type="text" value="<%=list.storeCode%>" id="lxsname" placeholder="输入">
+                            </li>
+                            <li>
+                                <p class="title">联系电话</p>
+                                <input type="number" value="<%=list.phone%>" id="lxphone" placeholder="电话">
+                            </li>
+                            <li>
+                                <p class="title">经营范围</p>
+                                <span class="ranges">选择范围<i class="iconfont icon-ico_arrow_down"></i></span>
+                                <ul>
+                                    <li></li>
+                                </ul>
+                            </li>
+                            </ul>
+                    </div>
+                    <div class="address">
+                        <p class="title">详细地址</p>
+                        <!--<div class="mapDiv" id="mapDiv"></div>-->
+                        <div class="inputBox">
+                            <div class="selectBox" id="province">
+                                <div class="select-box-header">
+                                    <%if(list.provinceName){%>
+                                    <span class="text"><%=list.provinceName%></span> <i
+                                        class="iconfont icon-ico_arrow_down"></i>
+                                    <%}else{%>
+                                    <span class="text t1">选择省</span> <i class="iconfont icon-ico_arrow_down t1"></i>
+                                    <%}%>
                     </div>
                     <div class="optionBox">
                         <ul class="optionUL">
                             <%for(var i in oneArea){%>
-                            <li value="<%=oneArea[i].id%>"><%=oneArea[i].name%></li>
-                            <%}%>
+                                    <li value="<%=oneArea[i].id%>"><%=oneArea[i].name%></li>
+                                    <%}%>
                         </ul>
                     </div>
                 </div>
                 <div class="selectBox" id="city">
                     <div class="select-box-header">
                         <%if(list.cityName){%>
-                        <span class="text"><%=list.cityName%></span> <i class="iconfont icon-ico_arrow_down"></i>
-                        <%}else{%>
-                        <span class="text t1">选择市</span> <i class="iconfont icon-ico_arrow_down t1"></i>
-                        <%}%>
+                                    <span class="text"><%=list.cityName%></span> <i
+                                        class="iconfont icon-ico_arrow_down"></i>
+                                    <%}else{%>
+                                    <span class="text t1">选择市</span> <i class="iconfont icon-ico_arrow_down t1"></i>
+                                    <%}%>
                     </div>
                     <%if(twoArea.length>0){%>
-                    <div class="optionBox">
-                        <ul class="optionUL">
-                            <%for(var i in twoArea){%>
-                            <li value="<%=twoArea[i].id%>"><%=twoArea[i].name%></li>
-                            <%}%>
+                                    <div class="optionBox">
+                                        <ul class="optionUL">
+                                            <%for(var i in twoArea){%>
+                                            <li value="<%=twoArea[i].id%>"><%=twoArea[i].name%></li>
+                                            <%}%>
                         </ul>
                     </div>
                     <%}%>
-                </div>
-                <div class="selectBox" id="area" style="width: 32%">
-                    <div class="select-box-header">
-                        <%if(list.areaName){%>
-                        <span class="text"><%=list.areaName%></span> <i class="iconfont icon-ico_arrow_down"></i>
-                        <%}else{%>
-                        <span class="text t1">选择区/县</span> <i class="iconfont icon-ico_arrow_down t1"></i>
-                        <%}%>
+                                    </div>
+                                    <div class="selectBox" id="area" style="width: 32%">
+                                        <div class="select-box-header">
+                                            <%if(list.areaName){%>
+                                            <span class="text"><%=list.areaName%></span> <i
+                                                class="iconfont icon-ico_arrow_down"></i>
+                                            <%}else{%>
+                                            <span class="text t1">选择区/县</span> <i
+                                                class="iconfont icon-ico_arrow_down t1"></i>
+                                            <%}%>
                     </div>
                     <%if(threeArea.length>0){%>
-                        <div class="optionBox">
-                            <ul class="optionUL">
-                                <%for(var i in threeArea){%>
-                                <li value="<%=threeArea[i].id%>"><%=threeArea[i].name%></li>
-                                <%}%>
+                                            <div class="optionBox">
+                                                <ul class="optionUL">
+                                                    <%for(var i in threeArea){%>
+                                                    <li value="<%=threeArea[i].id%>"><%=threeArea[i].name%></li>
+                                                    <%}%>
                             </ul>
                         </div>
                     <%}%>
-                </div>
-            </div>
-            <input type="text" placeholder="请输入具体门牌号" id="address" value="<%=list.address%>">
-        </div>
-            <div class="shopMsg">
-                    <ul class="clearfix">
-                        <li>
-                            <p class="title">营业执照编号</p>
-                            <input type="number" value="<%=list.phone%>" id="yybh" placeholder="营业执照编号">
-                        </li>
-                        <li>
-                            <p class="title">发证日期</p>
-                            <div>
-                                <%if(list.startTime){%>
-                                <input name="test" id="startTime1"
-                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                       placeholder="<%=list.startTime%>" data-type="day"/>
-                                <%}else{%>
-                                <input name="test" id="startTime1"
-                                       class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                       placeholder="发证日期" data-type="day"/>
-                                <%}%>
+                                            </div>
+                                        </div>
+                                        <input type="text" placeholder="请输入具体门牌号" id="address"
+                                            value="<%=list.address%>">
+                                    </div>
+                                    <div class="shopMsg">
+                                        <ul class="clearfix">
+                                            <li>
+                                                <p class="title">营业执照编号</p>
+                                                <input type="number" value="<%=list.phone%>" id="yybh"
+                                                    placeholder="营业执照编号">
+                                            </li>
+                                            <li>
+                                                <p class="title">发证日期</p>
+                                                <div>
+                                                    <%if(list.startTime){%>
+                                                    <input name="test" id="startTime1"
+                                                        class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                                        placeholder="<%=list.startTime%>" data-type="day" />
+                                                    <%}else{%>
+                                                    <input name="test" id="startTime1"
+                                                        class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                                        placeholder="发证日期" data-type="day" />
+                                                    <%}%>
                 
                                 <i class="icon iconfont icon-ico_calendar icon10"></i>
                                 <div class="settings" style="display:none;">
@@ -1644,38 +1737,43 @@
             <p class="title">营业执照照片</p>
             <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="yyImg">
                 <%if(list.storeImg){%>
-                <%for(var i=0;i< list.storeImg.length;i++){%>
-                <div class="imgBox">
-                    <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
-                    <div class="del" onclick="delImg(this)"></div>
-                </div>
+                                                    <%for(var i=0;i< list.storeImg.length;i++){%>
+                                                    <div class="imgBox">
+                                                        <img src="<%=list.storeImg[i]%>"
+                                                            real-src="<%=list.storeImg[i]%>"
+                                                            style="width: 100%;height: 100%" alt="">
+                                                        <div class="del" onclick="delImg(this)"></div>
+                                                    </div>
+                                                    <%}%>
                 <%}%>
-                <%}%>
-                <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
-            </div>
-        </div>
-            <ul class="goot-goot-putong s1">
-                <li><input type="checkbox" name="生产商" value="" class="selectPro" id="shcheck1" onclick="shows1(this)"> 该企业为生产商</li>
-            </ul>
-           <div class="qyshow1">
-                <div class="shopMsg">
-                        <ul class="clearfix">
-                            <li>
-                                <p class="title">医疗器械注册证编号</p>
-                                <input type="number" value="<%=list.phone%>"  id="ylnum" placeholder="医疗器械注册证编号">
-                            </li>
-                            <li>
-                                <p class="title">批准日期</p>
-                                <div>
-                                    <%if(list.startTime){%>
-                                    <input name="test" id="startTime2"
-                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="<%=list.startTime%>" data-type="day"/>
-                                    <%}else{%>
-                                    <input name="test" id="startTime2"
-                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="批准日期" data-type="day"/>
-                                    <%}%>
+                                                    <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i
+                                                            class="icon iconfont icon-ico_plus"></i></span>
+                                                </div>
+                                    </div>
+                                    <ul class="goot-goot-putong s1">
+                                        <li><input type="checkbox" name="生产商" value="" class="selectPro" id="shcheck1"
+                                                onclick="shows1(this)"> 该企业为生产商</li>
+                                    </ul>
+                                    <div class="qyshow1">
+                                        <div class="shopMsg">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <p class="title">医疗器械注册证编号</p>
+                                                    <input type="number" value="<%=list.phone%>" id="ylnum"
+                                                        placeholder="医疗器械注册证编号">
+                                                </li>
+                                                <li>
+                                                    <p class="title">批准日期</p>
+                                                    <div>
+                                                        <%if(list.startTime){%>
+                                                        <input name="test" id="startTime2"
+                                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                                            placeholder="<%=list.startTime%>" data-type="day" />
+                                                        <%}else{%>
+                                                        <input name="test" id="startTime2"
+                                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                                            placeholder="批准日期" data-type="day" />
+                                                        <%}%>
                     
                                     <i class="icon iconfont icon-ico_calendar icon10"></i>
                                     <div class="settings" style="display:none;">
@@ -1701,34 +1799,38 @@
                         <p class="title">医疗器械注册证照片</p>
                         <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="ylImg">
                             <%if(list.storeImg){%>
-                            <%for(var i=0;i< list.storeImg.length;i++){%>
-                            <div class="imgBox">
-                                <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
-                                <div class="del" onclick="delImg(this)"></div>
-                            </div>
+                                                        <%for(var i=0;i< list.storeImg.length;i++){%>
+                                                        <div class="imgBox">
+                                                            <img src="<%=list.storeImg[i]%>"
+                                                                real-src="<%=list.storeImg[i]%>"
+                                                                style="width: 100%;height: 100%" alt="">
+                                                            <div class="del" onclick="delImg(this)"></div>
+                                                        </div>
+                                                        <%}%>
                             <%}%>
-                            <%}%>
-                            <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
-                        </div>
-                    </div>
-                <div class="shopMsg s1">
-                        <ul class="clearfix">
-                            <li>
-                                <p class="title">生产许可证</p>
-                                <input type="number" value="<%=list.phone%>"  id="scykCard" placeholder="编号">
-                            </li>
-                            <li>
-                                <p class="title">发证日期</p>
-                                <div>
-                                    <%if(list.startTime){%>
-                                    <input name="test" id="startTime3"
-                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="<%=list.startTime%>" data-type="day"/>
-                                    <%}else{%>
-                                    <input name="test" id="startTime3"
-                                           class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                           placeholder="发证日期" data-type="day"/>
-                                    <%}%>
+                                                        <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i
+                                                                class="icon iconfont icon-ico_plus"></i></span>
+                                                    </div>
+                                        </div>
+                                        <div class="shopMsg s1">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <p class="title">生产许可证</p>
+                                                    <input type="number" value="<%=list.phone%>" id="scykCard"
+                                                        placeholder="编号">
+                                                </li>
+                                                <li>
+                                                    <p class="title">发证日期</p>
+                                                    <div>
+                                                        <%if(list.startTime){%>
+                                                        <input name="test" id="startTime3"
+                                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                                            placeholder="<%=list.startTime%>" data-type="day" />
+                                                        <%}else{%>
+                                                        <input name="test" id="startTime3"
+                                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                                            placeholder="发证日期" data-type="day" />
+                                                        <%}%>
                     
                                     <i class="icon iconfont icon-ico_calendar icon10"></i>
                                     <div class="settings" style="display:none;">
@@ -1754,54 +1856,62 @@
                         <p class="title">生产许可证照片</p>
                         <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="scImg">
                             <%if(list.storeImg){%>
-                            <%for(var i=0;i< list.storeImg.length;i++){%>
-                            <div class="imgBox">
-                                <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
-                                <div class="del" onclick="delImg(this)"></div>
-                            </div>
+                                                        <%for(var i=0;i< list.storeImg.length;i++){%>
+                                                        <div class="imgBox">
+                                                            <img src="<%=list.storeImg[i]%>"
+                                                                real-src="<%=list.storeImg[i]%>"
+                                                                style="width: 100%;height: 100%" alt="">
+                                                            <div class="del" onclick="delImg(this)"></div>
+                                                        </div>
+                                                        <%}%>
                             <%}%>
-                            <%}%>
-                            <span onclick="uploadIcon(this)" class="layui-btn" id="test1"><i class="icon iconfont icon-ico_plus"></i></span>
-                        </div>
-                    </div>
-            
-            <div class="uploadPic n1">
-                <p class="title" class="border1">其它资料照片</p>
-                <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="qtImg">
-                    <%if(list.storeImg){%>
-                    <%for(var i=0;i< list.storeImg.length;i++){%>
-                    <div class="imgBox">
-                        <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
-                        <div class="del" onclick="delImg(this)"></div>
-                    </div>
+                                                        <span onclick="uploadIcon(this)" class="layui-btn" id="test1"><i
+                                                                class="icon iconfont icon-ico_plus"></i></span>
+                                                    </div>
+                                        </div>
+
+                                        <div class="uploadPic n1">
+                                            <p class="title" class="border1">其它资料照片</p>
+                                            <div class="cont layui-upload" style="overflow: hidden" class="imgBox"
+                                                id="qtImg">
+                                                <%if(list.storeImg){%>
+                                                <%for(var i=0;i< list.storeImg.length;i++){%>
+                                                <div class="imgBox">
+                                                    <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>"
+                                                        style="width: 100%;height: 100%" alt="">
+                                                    <div class="del" onclick="delImg(this)"></div>
+                                                </div>
+                                                <%}%>
                     <%}%>
-                    <%}%>
-                    <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
-                </div>
-            </div>
-           </div>
-            <ul class="goot-goot-putong s1">
-                    <li><input type="checkbox" name="供应商" value="" id="shcheck2" class="selectPro"  onclick="shows2(this)"> 该企业为供应商</li>
-                </ul>
-                <div class="qyshow2">
-                        <div class="shopMsg">
-                                <ul class="clearfix">
-                                    <li>
-                                        <p class="title">医疗器械经营许可证</p>
-                                        <input type="number" value="<%=list.phone%>" id="ylxkz" placeholder="医疗器械经营许可证">
-                                    </li>
-                                    <li>
-                                        <p class="title">批准日期</p>
-                                        <div>
-                                            <%if(list.startTime){%>
-                                            <input name="test" id="startTime4"
-                                                   class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                                   placeholder="<%=list.startTime%>" data-type="day"/>
-                                            <%}else{%>
-                                            <input name="test" id="startTime4"
-                                                   class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                                   placeholder="批准日期" data-type="day"/>
-                                            <%}%>
+                                                <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i
+                                                        class="icon iconfont icon-ico_plus"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="goot-goot-putong s1">
+                                        <li><input type="checkbox" name="供应商" value="" id="shcheck2" class="selectPro"
+                                                onclick="shows2(this)"> 该企业为供应商</li>
+                                    </ul>
+                                    <div class="qyshow2">
+                                        <div class="shopMsg">
+                                            <ul class="clearfix">
+                                                <li>
+                                                    <p class="title">医疗器械经营许可证</p>
+                                                    <input type="number" value="<%=list.phone%>" id="ylxkz"
+                                                        placeholder="医疗器械经营许可证">
+                                                </li>
+                                                <li>
+                                                    <p class="title">批准日期</p>
+                                                    <div>
+                                                        <%if(list.startTime){%>
+                                                        <input name="test" id="startTime4"
+                                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                                            placeholder="<%=list.startTime%>" data-type="day" />
+                                                        <%}else{%>
+                                                        <input name="test" id="startTime4"
+                                                            class="demo-test-date demo-test-datetime demo-test-time demo-test-credit"
+                                                            placeholder="批准日期" data-type="day" />
+                                                        <%}%>
                             
                                             <i class="icon iconfont icon-ico_calendar icon10"></i>
                                             <div class="settings" style="display:none;">
@@ -1828,32 +1938,38 @@
                         <p class="title">医疗器械经营许可证照片</p>
                         <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="ylxkzimg">
                             <%if(list.storeImg){%>
-                            <%for(var i=0;i< list.storeImg.length;i++){%>
-                            <div class="imgBox">
-                                <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
-                                <div class="del" onclick="delImg(this)"></div>
-                            </div>
+                                                        <%for(var i=0;i< list.storeImg.length;i++){%>
+                                                        <div class="imgBox">
+                                                            <img src="<%=list.storeImg[i]%>"
+                                                                real-src="<%=list.storeImg[i]%>"
+                                                                style="width: 100%;height: 100%" alt="">
+                                                            <div class="del" onclick="delImg(this)"></div>
+                                                        </div>
+                                                        <%}%>
                             <%}%>
+                                                        <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i
+                                                                class="icon iconfont icon-ico_plus"></i></span>
+                                                    </div>
+                                        </div>
+                                        <div class="uploadPic n1">
+                                            <p class="title" class="border1">其它资料照片</p>
+                                            <div class="cont layui-upload" style="overflow: hidden" class="imgBox"
+                                                id="qtzlImg">
+                                                <%if(list.storeImg){%>
+                                                <%for(var i=0;i< list.storeImg.length;i++){%>
+                                                <div class="imgBox">
+                                                    <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>"
+                                                        style="width: 100%;height: 100%" alt="">
+                                                    <div class="del" onclick="delImg(this)"></div>
+                                                </div>
+                                                <%}%>
                             <%}%>
-                            <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
-                        </div>
-                    </div>
-                    <div class="uploadPic n1">
-                        <p class="title" class="border1">其它资料照片</p>
-                        <div class="cont layui-upload" style="overflow: hidden" class="imgBox" id="qtzlImg">
-                            <%if(list.storeImg){%>
-                            <%for(var i=0;i< list.storeImg.length;i++){%>
-                            <div class="imgBox">
-                                <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
-                                <div class="del" onclick="delImg(this)"></div>
-                            </div>
-                            <%}%>
-                            <%}%>
-                            <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
-                        </div>
-                    </div>
-                </div>
-    </script>
+                                                <span onclick="uploadIcon(this)" class="layui-btn" id="test2"><i
+                                                        class="icon iconfont icon-ico_plus"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </script>
     <script type="text/html" id="selectTagTmp">
         <div class="select-box-header">
             <span class="text"><%=title%></span> <i class="iconfont icon-ico_arrow_down"></i>
@@ -2279,22 +2395,6 @@
             }
         });
 
-        //添加商品
-        function addGoods() {
-            layer.open({
-                type: 1, shade: 0.01,
-                title: null,
-                skin: 'my-skin',
-                area: ['360px', '550px'],
-                anim: 0,
-                maxWidth: '360',
-                closeBtn: 0, //不显示关闭按钮
-                resize: false,
-                shadeClose: true, //开启遮罩关闭
-                content: $('.content-view-addgoods'),
-                btn: ['取消', '新增']
-            });
-        }
         // 企业列表
         function proLists() {
             //获取所有供应商/生产商列表
@@ -2428,11 +2528,6 @@
                 }
             });
         }
-
-        // 切换销售状态按钮
-        $('#status1').click(function () {
-            $(this).toggleClass('active');
-        })
 
         //创建企业弹窗
         var date1,
@@ -2798,6 +2893,7 @@
 
 
     </script>
+    <script src="./medical.js"></script>
 </body>
 
 </html>
