@@ -163,6 +163,7 @@
             overflow: hidden;
             padding: 0px 16px;
             border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
         }
         
         .goot-goot-putong li {
@@ -173,11 +174,9 @@
             font-family: PingFangSC-Semibold;
             overflow: hidden;
         }
-        
-        .zhekou {
-            background-color: rgba(244, 244, 248, 1);
-        }
-        
+
+
+
         .goot-goot-putong li .select {
             width: 16px;
             height: 16px;
@@ -203,14 +202,22 @@
             color: rgba(255, 255, 255, 1);
             font-weight: normal;
         }
-        
-        .goot-goot-huiyuan {
+
+        .goot-goot-huiyuan .lingshou {
             width: 100%;
-            height: 36px;
             box-sizing: border-box;
             padding: 0px 16px;
             line-height: 36px;
+            box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
+            margin-top: 12px;
+        }
+
+        .zhekou {
+            width: 100%;
             background-color: rgba(244, 244, 248, 1);
+            padding: 0px 16px;
+            overflow: hidden;
+            line-height: 36px;
             box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
         }
         
@@ -228,29 +235,25 @@
             font-size: 12px;
             font-family: PingFangSC-Semibold;
         }
-        
-        .goot-Right .yuan {
-            display: inline-block;
+
+        .yj-radio {
             width: 16px;
             height: 16px;
+            float: left;
+            margin-top: 10px;
             border-radius: 100px;
-            background-color: rgba(65, 134, 220, 1);
-            position: relative;
-            vertical-align: middle;
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(130, 130, 151, 0.2);
             margin-right: 4px;
         }
-        
-        .goot-Right .yuan::after {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-top: -3px;
-            margin-left: -3px;
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 37px;
-            background-color: rgba(255, 255, 255, 1);
+
+        .yj-radio input {
+            width: 0;
+            height: 0;
+        }
+
+        .yj-radio.active {
+            border: 5px solid rgba(65, 134, 220, 1);
         }
         
         .goot-Right a {
@@ -270,11 +273,6 @@
             flex-flow: row wrap;
             padding-top: 12px;
         }
-        
-        .goot-goot-putong.u2 {
-            margin-top: 62px;
-        }
-        
         #inNum {
             width: 156px;
             height: 28px;
@@ -1058,8 +1056,6 @@
         .s1 {
             border-top: 1px solid #eee;
         }
-        
-        
         .selectBox {
             width: 156px;
             height: 28px;
@@ -1193,39 +1189,39 @@
     <div class="content3_1 tab-items active">
         <table id="xsReload-table" data-toggle="table" class="table table-border"></table>
     </div>
-    <div class="content3_2 tab-items">
-        <table id="thReload-table" data-toggle="table" class="table table-border"></table>
-    </div>
-    <div class="content3_3 tab-items">
-        <table id="xhReload-table" data-toggle="table" class="table table-border"></table>
-    </div>
-</div>
-<div id="bottom-bar">
-    <span>已选中2项</span>
-    <input type="button" class="print btn btn-primary" value="审核通过">
-    <input type="button" class="print cancel btn btn-danger" value="销毁">
-    <input type="button" class="print cancel btn btn-warning" value="退货">
-    <input type="button" class="print cancel btn btn-info" value="批量打印">
-    <input type="button" class="print cancel btn btn-gray" value="取消选中">
-</div>
-<div class="content-view"></div>
+    <div class="content-view"></div>
 
-<!--新增镜片-->
-<div class="content-view content-view-addgoods" id="addGoodsDom">
-    
-    <div class="mainGoodList">
-        <div class="goot-select">
-            <div class="goot-items">品牌</div>
-            <div class="selectBox goot-select-items" id="yj-add-brand">
-                <div class="select-box-header">
-                    <input type="text" id="brandName" value="" placeholder="品牌" autocomplete="off">
-                    <i class="iconfont icon-ico_arrow_down"></i>
+    <!--新增镜片-->
+
+    <div class="content-view content-view-addgoods" id="addGoodsDom">
+        <div class="mainGoodList">
+            <div class="goot-select">
+                <div class="selectBox goot-select-items" id="yj-add-brand">
+                    <div class="select-box-header">
+                        <input type="text" id="brandName" value="" placeholder="品牌" autocomplete="off">
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                        </ul>
+                    </div>
                 </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <!-- <li value="<%=brandData[i].id%>"><%=brandData[i].name%></li> -->
-                    </ul>
+            </div>
+            <div class="goot-select">
+                <div class="goot-items">系列</div>
+                <div class="selectBox" id="select-series">
+
                 </div>
+                <!-- <div class="selectBox goot-select-items" id="yj-add-series">
+                    <div class="select-box-header">
+                        <input type="text" id="seriesName" value="" placeholder="系列" autocomplete="off">
+                        <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL"></ul>
+                    </div>
+                </div> -->
+                <!-- <div class="goot-select-items"><span>系列</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
             </div>
             <!-- <div class="goot-select-items"><span>品牌</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
         </div>
@@ -1286,12 +1282,36 @@
             </div>
             <div class="zhibaoTime">*设定后会短信自动提醒顾客</div>
         </div>
-        <div class="goot-select">
-            <div class="goot-items">供应商</div>
-            <div class="selectBox goot-select-items" id="yj-add-provider">
-                <div class="select-box-header">
-                    <span class="text">供应商</span>
-                    <i class="iconfont icon-ico_arrow_down"></i>
+        <ul class="goot-goot-putong">
+            <li><span class="select s1"><i class="iconfont icon-ico_check"></i></span> 常规商品</li>
+        </ul>
+        <ul class="goot-goot-huiyuan">
+            <li class="zhekou">
+                <span class="goot-left">会员折扣</span>
+                <span class="goot-Right">
+                    <div class="yj-radio"></div> 参与会员折扣
+                </span>
+            </li>
+            <li class="lingshou">
+                <div class="goot-select">
+                    <div class="goot-items">零售价</div>
+                    <div class="goot-items1"><a href="">设定零售价</a></div>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <!-- <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li> -->
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <ul class="goot-goot-putong u2">
+            <li><span class="select s2"><i class="iconfont icon-ico_check"></i></span> 积分商品</li>
+        </ul>
+        <ul class="goot-goot-putong uItem">
+            <li class="lingshou">
+                <div class="goot-select">
+                    <div class="goot-items">积分价</div>
+                    <div class="goot-items1"><a href="">设定积分价</a></div>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
@@ -1299,22 +1319,47 @@
                     </ul>
                 </div>
             </div>
-            <!-- <div class="goot-select-items"><span>供应商</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">生产商</div>
-            <div class="selectBox goot-select-items" id="yj-add-manufacturer">
-                <div class="select-box-header">
-                    <span class="text">供应商</span>
-                    <i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <!-- <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li> -->
-                    </ul>
-                </div>
-            </div>
-            <!-- <div class="goot-select-items"><span>生产商</span><i class="iconfont icon-ico_arrow_down"></i></div> -->
+            <li><span class="select s3"><i class="iconfont icon-ico_check"></i></span> 当库存低于 <input type="text"
+                    placeholder="数量" id="warnInput"> 触发警报</li>
+        </ul>
+
+        <!-- 注册医疗信息 -->
+        <ul class="zhuceInfo">
+            <li class="zhuceInfo-first">
+                <span class="zhuceInfo-items">医疗器械注册信息</span>
+                <i class="iconfont icon-ico_arrow_down"></i>
+            </li>
+            <li>
+                <ul class="zhuceUl">
+                    <li class="lingshou">
+                        <div class="goot-select">
+                            <div class="goot-items">注册证号</div>
+                            <div class="goot-items1"><span class="guoxie">国械注准</span><input type="text" placeholder="输入"
+                                    id="guoInput"></div>
+                        </div>
+                        <div class="goot-select">
+                            <div class="goot-items">注册时间</div>
+                            <div class="guoTime"><span>选择时间</span><i class="iconfont icon-ico_calendar"></i></div>
+                        </div>
+                    </li>
+                    <li class="guoxieLast">
+                        <div>注册证图片 <span>1-3 张</span></div>
+                        <div class="guoImgs">
+                            <div class="imgs">
+                                <img src="../resource/img/a1.jpg" alt="">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!--员工列表培训记录弹窗-->
+    <div class="content-view content-view-pxReload">
+        <div class="qyHeader">
+            <div class="ygDetail1">培训记录</div>
+            <div class="ygDetail3">夏世翔 <i class="iconfont icon-ico_arrow_down"></i></div>
+            <div class="ygDetail2">精益眼镜机场大道店 <i class="iconfont icon-ico_arrow_down"></i></div>
         </div>
         <div class="goot-select f1">
             <div class="goot-items">现货范围</div>
