@@ -12,12 +12,15 @@ import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.bean.CalculateOrder;
 import com.store.system.client.*;
 import com.store.system.dao.*;
+import com.store.system.dao.impl.UserDaoImpl;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.*;
 import com.store.system.util.ArithUtils;
 import com.store.system.util.FilterStringUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,8 @@ import java.util.Set;
  **/
 @Service
 public class BusinessOrderServiceImpl implements BusinessOrderService {
+
+    Logger logger= LoggerFactory.getLogger(BusinessOrderServiceImpl.class);
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -57,6 +62,8 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     private ProductSKUDao productSKUDao;
     @Resource
     private ProductSPUDao productSPUDao;
+    @Resource
+    private InventoryDetailDao inventoryDetailDao;
     @Resource
     private ProductProviderDao productProviderDao;
     @Resource
@@ -437,17 +444,17 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             boolean flag = FilterStringUtil.checkDiscount(businessOrder.getDiscount());
             if (!flag) throw new StoreSystemException("折扣输入有误！");
         }
-        if(businessOrder.getSkuList().size()<=0 && businessOrder.getSurcharges().size()<=0 && businessOrder.getRechargePrice()<=0) {
-            throw new StoreSystemException("请选择需要购买的商品或单独收取的附加费用！");
-        }
+//        if(businessOrder.getSkuList().size()<=0 && businessOrder.getSurcharges().size()<=0 && businessOrder.getRechargePrice()<=0) {
+//            throw new StoreSystemException("请选择需要购买的商品或单独收取的附加费用！");
+//        }
         for(OrderSku sku:businessOrder.getSkuList()){
             if(sku.getSkuId()<=0) throw new StoreSystemException("缺少关键属性SKU！");
             if(sku.getSpuId()<=0) throw new StoreSystemException("缺少关键属性SPU！");
             if(sku.getNum()<=0) throw new StoreSystemException("购买数量输入有误！");
-            if(sku.getDiscount()!=null) {
-                boolean b = FilterStringUtil.checkDiscount(sku.getDiscount());
-                if (!b) throw new StoreSystemException("折扣输入有误！");
-            }
+//            if(sku.getDiscount()!=null) {
+//                boolean b = FilterStringUtil.checkDiscount(sku.getDiscount());
+//                if (!b) throw new StoreSystemException("折扣输入有误！");
+//            }
         }
     }
 
@@ -456,19 +463,19 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         check(businessOrder);
         List<Long> skuIds = Lists.newArrayList();
         List<Long> spuIds = Lists.newArrayList();
-//        Map<Long, Integer> inventoryMap = Maps.newHashMap();
+        Map<Long, Integer> inventoryMap = Maps.newHashMap();
         for (OrderSku sku : businessOrder.getSkuList()) {
             skuIds.add(sku.getSkuId());
             spuIds.add(sku.getSpuId());
 
-/*            int inventoryNum = 0;//库存量
+            int inventoryNum = 0;//库存量
             List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(sku.getSkuId());
             for (InventoryDetail detail : allDetails) {
                 if (detail.getSubid() == businessOrder.getSubId()) {
                     inventoryNum += detail.getNum();
                 }
             }
-            inventoryMap.put(sku.getSkuId(), inventoryNum);*/
+            inventoryMap.put(sku.getSkuId(), inventoryNum);
         }
 
         List<ProductSKU> skuList = productSKUDao.load(skuIds);
@@ -503,7 +510,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             long cid=spu.getCid();
             int num=sku.getNum();
             int retailPrice=skuMap.get(skuId).getRetailPrice();
-            double discount=10;
+            double discount=10.0;
             double subtotal=0;
             if (StringUtils.isNotBlank(sku.getDiscount())) {
                 discount = Double.parseDouble(sku.getDiscount());
@@ -518,9 +525,9 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
 
             //常规商品
 //            if (spu.getType() == ProductSPU.type_common) {
-/*                if(num>inventoryMap.get(skuId)) {
+                if(num>inventoryMap.get(skuId)) {
                     throw new StoreSystemException("当前购买的商品库存数量不足！");
-                }*/
+                }
                 if (discount > 0) {
                     subtotal = num * retailPrice * (ArithUtils.div(discount, 10.0, 1));
                     sku.setSubtotal(subtotal);
@@ -605,6 +612,10 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         client.setDiscountPrice(discountPrice);
         totalPrice = discountPrice;
         client.setTotalPrice(totalPrice);
+
+        List<ClientOrderSku> clientOrderSkus = transformSKUClient(businessOrder.getSkuList());
+        client.setSkuInfo(clientOrderSkus);
+        logger.info("结算：" + client);
         return new ResultClient(client);
     }
 
@@ -925,10 +936,12 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             skuIds.add(sku.getSkuId());
             spuIds.add(sku.getSpuId());
             ProductSPU spu = productSPUDao.load(sku.getSpuId());
-            pids.add(spu.getPid());
-            cids.add(spu.getCid());
-            bids.add(spu.getBid());
-            sids.add(spu.getSid());
+            if(spu!=null) {
+                pids.add(spu.getPid());
+                cids.add(spu.getCid());
+                bids.add(spu.getBid());
+                sids.add(spu.getSid());
+            }
         }
         List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuIds));
         Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
