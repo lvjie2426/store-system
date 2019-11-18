@@ -234,7 +234,7 @@ input{
     display: none;
 }
 .fixed-table-body{
-    height: 280px;
+    /*height: 280px;*/
 }
 #yj-table th{
     height: 40px;

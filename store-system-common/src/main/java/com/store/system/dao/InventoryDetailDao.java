@@ -31,4 +31,8 @@ public interface InventoryDetailDao extends HDao<InventoryDetail> {
     public List<InventoryDetail> getAllListByWidAndCid(long wid, long p_cid) throws DataAccessException;
 
     public List<InventoryDetail> selectDetails(long wid, String search) throws Exception;
+
+    public List<InventoryDetail> getAllListBySubId(long subid, int status) throws DataAccessException;
+
+    public List<InventoryDetail> getAllListByWidAndCid(long wid, long p_cid, int status) throws DataAccessException;
 }
