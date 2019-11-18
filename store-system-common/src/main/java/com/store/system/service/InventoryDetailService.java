@@ -34,4 +34,6 @@ public interface InventoryDetailService {
 
     public Map<Long,List<ClientInventoryDetail>> selectDetails(long wid, String search) throws Exception;
 
+    public boolean updateStatus(long id) throws Exception;
+
 }

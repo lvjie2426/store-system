@@ -22,6 +22,9 @@ import java.io.Serializable;
 @Data
 public class InventoryDetail implements Serializable {
 
+    public static final int status_normal = 0; //正常
+    public static final int status_past = 1; //过期
+
     @PrimaryKey
     private long id;
 
@@ -36,6 +39,8 @@ public class InventoryDetail implements Serializable {
     private long p_skuid; //产品SKU的id
 
     private int num;
+
+    private int status;
 
     @SortKey
     @PagerCursor

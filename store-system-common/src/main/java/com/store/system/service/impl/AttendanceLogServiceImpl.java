@@ -668,11 +668,11 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 					return item;
 				}else {
 					//取出轮班表（跟日期对应上）(轮换的时候去掉节假日)
-					List<AttendanceItem> items = Lists.newArrayList();
-					for(Map.Entry<Long,AttendanceItem> entry:attendanceTemplate.getTurnMap().entrySet()){
-						items.add(entry.getValue());
-					}
-//					List<AttendanceItem> items = attendanceTemplate.getTurn();
+//					List<AttendanceItem> items = Lists.newArrayList();
+//					for(Map.Entry<Long,AttendanceItem> entry:attendanceTemplate.getTurnMap().entrySet()){
+//						items.add(entry.getValue());
+//					}
+					List<AttendanceItem> items = attendanceTemplate.getTurn();
 					int workDay = 0;
 					//当前时间 和轮换开始时间 其中的假期日 特殊的时间
 					for(long oneDay=attendanceTemplate.getTurnStartDay();oneDay<=day;oneDay++){
@@ -703,11 +703,11 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 					return item;
 				}else{
 					//取出轮班表（跟日期对应上）(轮换的时候去掉节假日)
-					List<AttendanceItem> items = Lists.newArrayList();
-					for(Map.Entry<Long,AttendanceItem> entry:attendanceTemplate.getTurnMap().entrySet()){
-						items.add(entry.getValue());
-					}
-//					List<AttendanceItem> items = attendanceTemplate.getTurn();
+//					List<AttendanceItem> items = Lists.newArrayList();
+//					for(Map.Entry<Long,AttendanceItem> entry:attendanceTemplate.getTurnMap().entrySet()){
+//						items.add(entry.getValue());
+//					}
+					List<AttendanceItem> items = attendanceTemplate.getTurn();
 					int workDay = 0;
 					//当前时间 和轮换开始时间 其中的假期日 特殊的时间
 					for(long oneDay=attendanceTemplate.getTurnStartDay();oneDay<=day;oneDay++){

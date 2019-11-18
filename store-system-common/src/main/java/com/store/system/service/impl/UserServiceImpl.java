@@ -749,7 +749,7 @@ public class UserServiceImpl implements UserService {
     public ClientUserOnLogin loginForCode(String phone) throws Exception {
         LoginUserPool loginUserPool = new LoginUserPool();
         loginUserPool.setAccount(phone);
-        loginUserPool.setLoginType(LoginUserPool.loginType_phone);
+        loginUserPool.setLoginType(LoginUserPool.loginType_userName);
         loginUserPool.setUserType(User.userType_backendUser);
         LoginUserPool load = loginUserPoolDao.load(loginUserPool);
 

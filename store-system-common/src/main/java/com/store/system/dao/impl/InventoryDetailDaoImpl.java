@@ -118,4 +118,16 @@ public class InventoryDetailDaoImpl extends CacheBaseDao<InventoryDetail> implem
         }
     }
 
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryDetail> getAllListBySubId(long subid,  int status) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryDetail> getAllListByWidAndCid(long wid, long p_cid, int status) throws DataAccessException {
+        return null;
+    }
+
 }
