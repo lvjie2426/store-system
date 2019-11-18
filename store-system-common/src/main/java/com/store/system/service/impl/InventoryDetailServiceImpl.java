@@ -300,37 +300,8 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 
     @Override
     public List<ClientInventoryDetail> getExpireList(long wid, long cid) throws Exception {
-        List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndCid(wid, cid);
-        Set<Long> p_skuids = fieldSetUtils.fieldList(details, "p_skuid");
-        List<ProductSKU> productSKUList = productSKUDao.load(Lists.newArrayList(p_skuids));
-        Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(productSKUList, "id");
-
-        List<InventoryDetail> res = Lists.newArrayList();
-        //sku保质期
-        for (InventoryDetail detail : details) {
-            ProductSKU sku = skuMap.get(detail.getP_skuid());
-            if(sku!=null) {
-                long current = System.currentTimeMillis();
-                //护理产品的保质期结束时间
-                long nurseEndTime=0;
-                long endTime=0;
-
-//                if(sku.getProperties().containsKey(33L)){
-//                    nurseEndTime = Long.parseLong((String) sku.getProperties().get(33L));
-//                }
-                //隐形眼镜的保质期
-//                if(sku.getProperties().containsKey(35L)) {
-//                    endTime = Long.parseLong((String)  sku.getProperties().get(35L));
-//                }
-                //若到期时间在三天之内，则为到期产品
-                if (nurseEndTime - current <= 3 * 60 * 60 * 24 * 1000) {
-                    res.add(detail);
-                } else if (endTime - current <= 3 * 60 * 60 * 24 * 1000) {
-                    res.add(detail);
-                }
-            }
-        }
-        return transformClients(res,false);
+        List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndCid(wid, cid, InventoryDetail.status_past);
+        return transformClients(details,false);
     }
 
     @Override
@@ -345,5 +316,11 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         return res;
     }
 
+    @Override
+    public  boolean updateStatus(long id) throws Exception {
+        InventoryDetail detail = inventoryDetailDao.load(id);
+        detail.setStatus(InventoryDetail.status_normal);
+        return inventoryDetailDao.update(detail);
+    }
 
 }

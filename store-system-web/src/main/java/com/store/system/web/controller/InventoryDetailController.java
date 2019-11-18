@@ -179,6 +179,22 @@ public class InventoryDetailController extends BaseController {
         }
     }
 
+    /***
+    * 继续销售
+    * @Param: [request, response, model, id]
+    * @return: org.springframework.web.servlet.ModelAndView
+    */
+    @RequestMapping("/updateStatus")
+    public ModelAndView updateStatus(HttpServletRequest request, HttpServletResponse response, Model model,
+                                     long id) throws Exception {
+        try {
+            boolean res = inventoryDetailService.updateStatus(id);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
 
 
 }
