@@ -1221,7 +1221,7 @@
             <input type="search" class="search-box" placeholder="搜索生产批号">
             <span class="addbtn" onclick="addGoods()">新增商品</span>
         </li>
-        
+    
     </ol>
 </div>
 <div id="second-bar">
@@ -2208,7 +2208,6 @@
     var sid = quakooUser.getUserInfo().psid;//企业/公司id
     var areaJson = new areaJson();
     var oneArea = areaJson.oneList;//省数据
-    var allShopData = {};// 所有门店信息
     var winObj = {
         //首页所有商品
         shopAll: [
@@ -2321,25 +2320,10 @@
     var bid = '';//品牌ID
     var sid = '';//系列ID
     var name = '';//搜索关键字
-    var saleStatus = -1;//筛选条件的销售状态0开启1关闭
-    var supplierLocData = {};//供应商数据
-    
-    var priceCheck = [];//设定价格选中的单元格
     var params = {};//添加商品所需要的参数    key    类目id；value：所需参数
-    var updateParams;//当前被编辑的数据
     var ballData = '';//球数据
     var columnData = '';//柱数据
-    var brandData = '';//品牌数据
-    var providerData = '';//供应商数据
-    var jiaodianData;//焦点数据1
-    var zheshelvData;//折射率数据2
-    var gongnengData;//功能数据3
     var typeData;//隐形眼镜类型数据5
-    var zhouqiData;//更换周期6数据
-    var baozhuangData;//更换周期包装7数据
-    var type10Data;//护理产品类型数据10
-    var baozhuang11Data;//护理产品包装11数据
-    var shopData;              //门店数据
     $(function () {
         initPage();
         //获取品牌（页面及弹窗）
@@ -3139,7 +3123,7 @@
                 layer.close(index);
             },
             btn2: function (index) {
-                addSuppliers(index)
+                addSuppliers(index, data ? data.id : false);
                 return false
             },
             success: function (layero, index) {
@@ -3293,8 +3277,9 @@
     }
     
     //新增企业
-    function addSuppliers(index) {
+    function addSuppliers(index, id) {
         var param = {};
+        if (id) param.id = id;
         param.name = $("#qysname").val(); //企业名称
         param.userName = $("#lxsname").val(); // 联系人
         param.phone = $("#lxphone").val(); //联系电话
@@ -3477,11 +3462,9 @@
             layer.msg('企业营业执照有效日期开始时间');
             return;
         }
+        var url = id ? config.getUrl_medicalAppliances_update() : config.getUrl_medicalAppliances_addgyshang();
         
-        // param.range = JSON.stringify(param.range);
-        // param.manufacturerProvider = param.manufacturerProvider;
-        
-        quakooData.ajaxGetData(config.getUrl_medicalAppliances_addgyshang(), param, function (ret) {
+        quakooData.ajaxGetData(url, param, function (ret) {
             if (ret.success) {
                 layer.msg("保存成功");
                 $('#qyxx-table').bootstrapTable('refreshOptions', {

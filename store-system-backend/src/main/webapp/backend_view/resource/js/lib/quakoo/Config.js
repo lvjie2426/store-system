@@ -382,6 +382,8 @@ var Config = (function(_super){
     /**医疗器械*/
     /**添加供应商/生产商企业*/
     _proto.getUrl_medicalAppliances_addgyshang = function(){return this.serverUrl + '/company/saveCompany';};
+    /**编辑供应商/生产商企业*/
+    _proto.getUrl_medicalAppliances_update = function(){return this.serverUrl + '/company/update';};
     /**获取经营范围*/
     _proto.getUrl_medicalAppliances_getRange = function(){return this.serverUrl + '/company/getRange';};
     /**获取供应商/生产商企业列表*/
