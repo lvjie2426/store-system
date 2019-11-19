@@ -21,9 +21,10 @@ public class FinanceLogDaoImpl implements FinanceLogDao {
 
     @Override
     public void insert(FinanceLog financeLog) throws DataAccessException {
-        String sql = "insert into finance_log (ownType, ownId, `mode`, `type`, subType, money, `desc`, `day`, `time`) values (?, ?, ?, ?, ?, ?, ?, ?. ?)";
-        jdbcTemplate.update(sql, financeLog.getOwnType(), financeLog.getOwnId(), financeLog.getMode(), financeLog.getType(),
-                financeLog.getSubType(), financeLog.getMoney(), financeLog.getDesc(), financeLog.getTime());
+        String sql = "insert into finance_log (`ownType`, `subId`, `ownId`, `mode`, `type`, `subType`, `money`, `desc`, `day`, `time`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        System.err.println(sql);
+        jdbcTemplate.update(sql, financeLog.getOwnType(), financeLog.getSubId(), financeLog.getOwnId(), financeLog.getMode(), financeLog.getType(),
+                financeLog.getSubType(), financeLog.getMoney(), financeLog.getDesc(), financeLog.getDay(), financeLog.getTime());
     }
 
     @Override

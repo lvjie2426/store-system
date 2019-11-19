@@ -2,10 +2,12 @@ package com.store.system.service.ext.impl;
 
 import com.google.common.collect.Lists;
 import com.store.system.bean.OrderTypeInfo;
+import com.store.system.client.ResultClient;
 import com.store.system.dao.*;
 import com.store.system.model.*;
 import com.store.system.service.*;
 import com.store.system.service.ext.OrderPayService;
+import com.store.system.util.ArithUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -40,28 +42,61 @@ public class OrderPayServiceImpl implements OrderPayService {
     private BusinessOrderService businessOrderService;
 
     @Override
-    public void successHandleBusiness(Order order,long boId) throws Exception {
+    public ResultClient successHandleBusiness(Order order, long boId) throws Exception {
 
         BusinessOrder businessOrder = businessOrderService.load(boId);
-        PayInfo payInfo = new PayInfo();
-        payInfo.setSubId(businessOrder.getSubId());
-        payInfo.setUid(businessOrder.getUid());
-        payInfo.setPrice(order.getPrice());
-        payInfo.setPayType(order.getPayType());
-        payInfo.setStatus(PayInfo.status_pay);
-        payInfo.setBoId(boId);
-        payInfoService.insert(payInfo);
-
-        businessOrder.setMakeStatus(BusinessOrder.makeStatus_qu_yes);
         //若所有不同支付方式的支付总金额等于订单应付金额
-        // 则认为此订单已缴费 否则未缴费
-        List<PayInfo> payInfos = payInfoService.getAllList(boId,PayInfo.status_pay);
+        // 则认为此订单已缴费 否则为 未缴费 欠款
+        List<PayInfo> payInfos = payInfoService.getAllList(boId, PayInfo.status_pay);
         long total = 0;
         for (PayInfo info : payInfos) {
             total += info.getPrice();
         }
-        if (total == businessOrder.getRealPrice()) {
+
+        if (total >= businessOrder.getTotalPrice()) {
             businessOrder.setStatus(BusinessOrder.status_pay);
+            businessOrder.setMakeStatus(BusinessOrder.makeStatus_qu_yes);
+            businessOrderService.update(businessOrder);
+            return new ResultClient(true, businessOrder, "订单金额已全部支付完成！");
+        } else {
+            PayInfo payInfo = new PayInfo();
+            payInfo.setSubId(businessOrder.getSubId());
+            payInfo.setUid(businessOrder.getUid());
+            payInfo.setPrice(order.getPrice());
+            payInfo.setPayType(order.getPayType());
+            payInfo.setStatus(PayInfo.status_pay);
+            payInfo.setBoId(boId);
+            payInfoService.insert(payInfo);
+
+            if(StringUtils.isNotBlank(order.getTypeInfo())) {
+                OrderTypeInfo orderTypeInfo = OrderTypeInfo.getObject(order.getTypeInfo());
+                long uid = orderTypeInfo.getUid();
+                int payType = orderTypeInfo.getPayType();
+                long money = orderTypeInfo.getMoney();
+                financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), uid, payType , FinanceLog.type_in, 0, money,
+                        "用户支付", true);
+            }
+
+            if (order.getPrice() == businessOrder.getTotalPrice()) {
+                businessOrder.setStatus(BusinessOrder.status_pay);
+                businessOrder.setMakeStatus(BusinessOrder.makeStatus_qu_yes);
+                businessOrderService.update(businessOrder);
+            } else {
+                List<PayInfo> payInfoList = payInfoService.getAllList(boId, PayInfo.status_pay);
+                long totalPrice = 0;
+                for (PayInfo info : payInfoList) {
+                    totalPrice += info.getPrice();
+                }
+                businessOrder.setStatus(BusinessOrder.status_no_pay);
+                businessOrder.setMakeStatus(BusinessOrder.makeStatus_no_pay);
+                businessOrderService.update(businessOrder);
+                if (businessOrder.getTotalPrice() == totalPrice) {
+                    return new ResultClient(true, businessOrder, "订单金额已全部支付完成！");
+                } else {
+                    double money = ArithUtils.div(businessOrder.getTotalPrice() - totalPrice, 100, 2);
+                    return new ResultClient(false, businessOrder, "此订单尚有" + money + "元未进行支付！");
+                }
+            }
         }
         if(businessOrder.getRechargePrice()>0){
             User user = userDao.load(businessOrder.getUid());
@@ -70,12 +105,12 @@ public class OrderPayServiceImpl implements OrderPayService {
                 userDao.update(user);
             }
         }
-        businessOrderService.update(businessOrder);
+
 
         /**
          * 任务进度修改
          */
-        User user = userDao.load(order.getId());
+        User user = userDao.load(businessOrder.getId());
         if(user != null) {
             long userId = user.getId();
             long subid = user.getSid();
@@ -106,7 +141,7 @@ public class OrderPayServiceImpl implements OrderPayService {
                                 subordinateMissionPool.setProgress(getProgress(subordinateMissionPool.getPrice(), mission.getTarget()));
                             }
                             /**保存订单ID**/
-                            subordinateMissionPool.getOids().add(order.getId());
+                            subordinateMissionPool.getOids().add(businessOrder.getId());
                             boolean flag = subordinateMissionPoolDao.update(subordinateMissionPool);
                             /**任务完成修改状态**/
                             if (flag && subordinateMissionPool.getNumber() >= mission.getTarget() || subordinateMissionPool.getPrice() >= mission.getTarget()) {
@@ -130,7 +165,7 @@ public class OrderPayServiceImpl implements OrderPayService {
                                 userMissionPool.setProgress(getProgress(userMissionPool.getPrice(), mission.getTarget()));
                             }
                             /**保存订单ID**/
-                            userMissionPool.getOids().add(order.getId());
+                            userMissionPool.getOids().add(businessOrder.getId());
                             boolean flag = userMissionPoolDao.update(userMissionPool);
                             /**任务完成修改状态**/
                             if (flag && userMissionPool.getNumber() >= mission.getTarget() || userMissionPool.getPrice() >= mission.getTarget()) {
@@ -174,15 +209,7 @@ public class OrderPayServiceImpl implements OrderPayService {
             }
         }
 
-
-        // TODO: 2019/7/24
-        if(StringUtils.isNotBlank(order.getTypeInfo())) {
-            OrderTypeInfo orderTypeInfo = OrderTypeInfo.getObject(order.getTypeInfo());
-            long uid = orderTypeInfo.getUid();
-            long money = orderTypeInfo.getMoney();
-            financeLogService.insertLog(FinanceLog.ownType_user, businessOrder.getSubId(), uid, order.getPayType() , FinanceLog.type_in, 0, money,
-                    "用户支付", true);
-        }
+        return new ResultClient(true, businessOrder, "订单金额已全部支付完成！");
     }
 
     private int getProgress(int now,int target)throws Exception{

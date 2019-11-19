@@ -118,8 +118,8 @@ public class OrderController extends BaseController {
     public ModelAndView handleOtherPay(HttpServletRequest request,HttpServletResponse response,
                                        int type, int price, long boId) throws Exception {
         try {
-            orderService.handleOtherPay(type, price, boId);
-            return this.viewNegotiating(request, response, new ResultClient());
+            ResultClient res = orderService.handleOtherPay(type, price, boId);
+            return this.viewNegotiating(request, response, res);
         } catch (StoreSystemException s) {
             return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
         }

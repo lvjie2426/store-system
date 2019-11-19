@@ -32,6 +32,8 @@ public interface BusinessOrderService {
 
     public Pager getPager(Pager pager, long staffId, int status, int makeStatus) throws Exception;
 
+    public Pager getPager(Pager pager, long staffId) throws Exception;
+
     public Pager getPager(Pager pager, long subId, long day, int status, int makeStatus) throws Exception;
 
     public Pager getPager(Pager pager, long subId, long startTime, long endTime, int status, int makeStatus) throws Exception;
