@@ -392,6 +392,8 @@ var Config = (function(_super){
     _proto.getUrl_medicalAppliances_getguoqiGshang = function(){return this.serverUrl + '/company/searchOverdue';};
     /**获取生产商/供应商(添加商品下拉框)*/
     _proto.getUrl_medicalAppliances_getgongSheng = function(){return this.serverUrl + '/company/getMp';};
+    /**保存员工培训/体检记录*/
+    _proto.getUrl_medicalAppliances_addtjReload = function(){return this.serverUrl + '/userLog/add';};
     //=======================商品管理 结束====================
 
 

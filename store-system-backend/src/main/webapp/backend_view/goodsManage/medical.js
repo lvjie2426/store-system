@@ -1,70 +1,68 @@
-
-
 //添加商品
-function  addGoods()  {
+function addGoods() {
     console.log($('#addGoodsDom'));
-    var  title  =  '<div  class="toastHead">'  +
-        '<span  id="addPopupName">新增隐形眼镜</span>'  +
-        '<span  id="removeStaff">销售状态  '  +
-        '<span  id="status1"  onclick="$(this).toggleClass(\'active\')"></span>'  +
+    var title = '<div  class="toastHead">' +
+        '<span  id="addPopupName">新增隐形眼镜</span>' +
+        '<span  id="removeStaff">销售状态  ' +
+        '<span  id="status1"  onclick="$(this).toggleClass(\'active\')"></span>' +
         '</span></div>';
     layer.open({
-        type:  1,
-        shade:  0.01,
-        title:  title,
-        move:  '#addPopupName',
-        skin:  'addGoods',
-        area:  ['360px',  '550px'],
-        anim:  0,
-        maxWidth:  '360',
-        closeBtn:  0,  //不显示关闭按钮
-        resize:  false,
-        shadeClose:  true,  //开启遮罩关闭
-        content:  $('.content-view-addgoods'),
-        btn:  ['取消',  '新增'],
-        yes:  function  ()  {
-        
+        type: 1,
+        shade: 0.01,
+        title: title,
+        move: '#addPopupName',
+        skin: 'addGoods',
+        area: ['360px', '550px'],
+        anim: 0,
+        maxWidth: '360',
+        closeBtn: 0,  //不显示关闭按钮
+        resize: false,
+        shadeClose: true,  //开启遮罩关闭
+        content: $('.content-view-addgoods'),
+        btn: ['取消', '新增'],
+        yes: function () {
+
         },
-        success:  function  ()  {
+        success: function () {
             openYjGoods();
         }
     });
-    $('.select.s1').click(function  ()  {
-        if  ($('.select.s1').hasClass('active'))  {
+    $('.select.s1').click(function () {
+        if ($('.select.s1').hasClass('active')) {
             $('.select.s1').removeClass('active')
             $('.goot-goot-huiyuan').slideToggle()
-        }  else  {
+        } else {
             $('.select.s1').addClass('active')
             $('.goot-goot-huiyuan').slideToggle();
         }
     })
-    $('.select.s2').click(function  ()  {
-        if  ($('.select.s2').hasClass('active'))  {
+    $('.select.s2').click(function () {
+        if ($('.select.s2').hasClass('active')) {
             $('.select.s2').removeClass('active')
             $('.goot-goot-putong.uItem').slideToggle()
-        }  else  {
+        } else {
             $('.select.s2').addClass('active')
             $('.goot-goot-putong.uItem').slideToggle();
         }
     })
-    $('.zhuceInfo-first').click(function  ()  {
+    $('.zhuceInfo-first').click(function () {
         $('.zhuceUl').slideToggle();
         $('.zhuceInfo-first').find('i').toggleClass('icon-ico_arrow_down').toggleClass('icon-ico_arrow_up');
     })
-    $('.select.s3').click(function  ()  {
-        if  ($('.select.s3').hasClass('active'))  {
+    $('.select.s3').click(function () {
+        if ($('.select.s3').hasClass('active')) {
             $('.select.s3').removeClass('active')
-            $('#warn1').attr('disabled',  true)
-        }  else  {
+            $('#warn1').attr('disabled', true)
+        } else {
             $('.select.s3').addClass('active')
-            $('#warn1').attr('disabled',  false)
+            $('#warn1').attr('disabled', false)
         }
     })
     //选择会员折扣
-    $('.yj-radio').click(function  ()  {
-        if  ($('.yj-radio').hasClass('active'))  {
+    $('.yj-radio').click(function () {
+        if ($('.yj-radio').hasClass('active')) {
             $('.yj-radio').removeClass('active')
-        }  else  {
+        } else {
             $('.yj-radio').addClass('active')
         }
     })
@@ -72,30 +70,29 @@ function  addGoods()  {
 
 
 //新增商品弹出框
-function  openYjGoods()  {
-    console.log(typeData)
-    var  data  =  {
-        typeData:  typeData,
-        shengS:  shengS,
-        gongS:  gongS
+function openYjGoods() {
+    var data = {
+        typeData: typeData,
+        shengS: shengS,
+        gongS: gongS
     };
-    var  html  =  template('addGoodsTmp',  data);
-    document.getElementById('addGoodsDom').innerHTML  =  html;
-    selectTag($("#yj-add-type"),  function  (value)  {  //  类型下拉框
+    var html = template('addGoodsTmp', data);
+    document.getElementById('addGoodsDom').innerHTML = html;
+    selectTag($("#yj-add-type"), function (value) {  //  类型下拉框
     })
-    selectTag($("#yj-gongS"),  function  (value)  {  //  供应商下拉框
+    selectTag($("#yj-gongS"), function (value) {  //  供应商下拉框
     })
-    selectTag($("#yj-shengS"),  function  (value)  {  //  生产商下拉框
+    selectTag($("#yj-shengS"), function (value) {  //  生产商下拉框
     })
-    var  html  =  template('selectTagTmpAll',  {
-        title:  '品牌',
-        list:  brand
+    var html1 = template('selectTagTmpAll', {
+        title: '品牌',
+        list: brand
     });
     //商品列表的筛选
-    $('#select-type').html(html);
-    selectTag($("#select-type"),  function  (data)  {
-        if  (data.value)  {
-            bid  =  data. value;
+    $('#select-type').html(html1);
+    selectTag($("#select-type"), function (data) {
+        if (data.value) {
+            bid = data.value;
             //获取品牌下的系列列表
             quakooData.ajaxGetData(config.getUrl_productSeries_getSubAllList(), {
                 bid: data.value
@@ -134,7 +131,7 @@ function  openYjGoods()  {
     opt.time = {
         preset: 'time'
     };
-    
+
     opt.default = {
         theme: 'mbsc-android-holo', //皮肤样式
         display: 'bubble', //显示方式
@@ -154,7 +151,7 @@ function  openYjGoods()  {
         $('.demo').hide();
         $('.demo-' + demo).show();
     });
-    
+
     $('#yjdemo').trigger('change');
 }
 
@@ -193,13 +190,14 @@ function openGoodsRange(title, isUpdate) {
                 }
             }
             momentRangeData = {};
-            
+
         },
         success: function (layero, index) {
             setRange(title, isUpdate)
         }
     });
 }
+
 //初始化范围表格
 function setRange(title, isUpdate) {
     //现货数据
@@ -329,7 +327,7 @@ function initTableDrag(title) {
                     if (dom.hasClass('activenow')) {
                         momentNowRangeData[dom.attr('data-ballId') + '' + dom.attr('data-columnId')] = '';
                     } else {
-                        
+
                         momentNowRangeData[dom.attr('data-ballId') + '' + dom.attr('data-columnId')] = {
                             ballId: dom.attr('data-ballId'),
                             columnId: dom.attr('data-columnId')
