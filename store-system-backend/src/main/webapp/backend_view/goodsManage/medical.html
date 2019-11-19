@@ -135,6 +135,7 @@
             text-align: left;
             font-family: PingFangSC-Semibold;
             margin-top: -1px;
+            overflow: hidden;
         }
         
         .goot-items1 a {
@@ -418,11 +419,13 @@
             display: inline-block;
             width: 64px;
             height: 28px;
+            line-height: 27px;
+            text-align: center;
             border-radius: 2px;
             background-color: rgba(255, 255, 255, 1);
             border: 1px solid rgba(236, 236, 244, 1);
-            padding-left: 8px;
-            padding-top: 5px;
+            border-right: none;
+            float: left;
             vertical-align: top;
         }
         
@@ -1191,6 +1194,16 @@
             bottom: 18px;
             left: -5px;
             background: #ECECF4;
+        }
+        .guoxieLast .imgBox{
+            width: 100px;
+            height: 100px;
+            float: left;
+            overflow: hidden;
+            border-radius: 2px;
+            margin-right: 8px;
+            margin-top: 6px;
+            position: relative;
         }
     </style>
 </head>
@@ -1962,7 +1975,6 @@
     </div>
     <div class="optionBox">
         <ul class="optionUL">
-            <li value="-1">全部</li>
             <%for(var i=0;i< list.length;i++){%>
             <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>">
                 <%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%>
