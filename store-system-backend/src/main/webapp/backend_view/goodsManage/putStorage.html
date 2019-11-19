@@ -1086,13 +1086,13 @@
                         column = [
                             { field: 'code', title: '产品编码' },
                             {
-                                field: '', title: '型号', formatter: function (value, row, index) {
-                                    return '<input type="text" style="width: 50px" class="in-yj-input-xinghao" data-index="' + index + '" value="' + (row.xinghao ? row.xinghao : '') + '" placeholder="型号" readonly="readonly">';
+                                field: 'p_properties_value', title: '型号', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input-xinghao" data-index="' + index + '" value="' + value['型号'] + '" placeholder="型号" readonly="readonly">';
                                 }
                             },
                             {
-                                field: '', title: '色号', formatter: function (value, row, index) {
-                                    return '<input type="text" style="width: 50px" class="in-yj-input-sehao" data-index="' + index + '" value="' + (row.sehao ? row.sehao : '') + '" placeholder="色号" readonly="readonly">';
+                                field: 'p_properties_value', title: '色号', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input-sehao" data-index="' + index + '" value="' + value['色号'] + '" placeholder="色号" readonly="readonly">';
                                 }
                             },
                             {
@@ -1110,13 +1110,13 @@
                         column = [
                             { field: 'code', title: '产品编码' },
                             {
-                                field: '', title: '型号', formatter: function (value, row, index) {
-                                    return '<input type="text" style="width: 50px" class="in-yj-input-xinghao" data-index="' + index + '" value="' + (row.xinghao ? row.xinghao : '') + '" placeholder="型号">';
+                                field: 'p_properties_value', title: '型号', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input-xinghao" data-index="' + index + '" value="' + value['型号'] + '" placeholder="型号">';
                                 }
                             },
                             {
-                                field: '', title: '色号', formatter: function (value, row, index) {
-                                    return '<input type="text" style="width: 50px" class="in-yj-input-sehao" data-index="' + index + '" value="' + (row.sehao ? row.sehao : '') + '" placeholder="色号">';
+                                field: 'p_properties_value', title: '色号', formatter: function (value, row, index) {
+                                    return '<input type="text" style="width: 50px" class="in-yj-input-sehao" data-index="' + index + '" value="' + value['色号'] + '" placeholder="色号">';
                                 }
                             },
                             {
