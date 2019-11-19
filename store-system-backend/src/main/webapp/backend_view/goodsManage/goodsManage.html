@@ -1245,6 +1245,13 @@
                 Table = new TableInit(columns);
                 Table.Init();
             }
+            if($('#category'+cid).text()=='镜片'){
+                config.qiuId = 15;
+                config.zhuId = 16;
+            }else if($('#category'+cid).text()=='隐形眼镜'){
+                config.qiuId = 41;
+                config.zhuId = 42;
+            }
             $('#category'+cid).addClass('active').siblings().removeClass('active');
         }
 
@@ -1695,7 +1702,6 @@
                 },
                 btn2: function(){
                     params[cid].skuJson = [];
-                    console.log(params[cid].skuJson);
                     for(var i in momentPriceData){
                         if(momentPriceData[i].eyeTypeArr){
                             for(var j=0;j<momentPriceData[i].eyeTypeArr.length;j++){
@@ -1710,7 +1716,6 @@
                             }
                         }
                     }
-                    console.log(params[cid].skuJson);
                     momentPriceData = {};
                 },
                 success: function(layero, index){
@@ -2158,24 +2163,26 @@
                     for(var j=startTd;j<=endTd;j++){
                         var dom = $("#priceEvent").next().find('.layui-table-body tbody tr').eq(i).find('td').eq(j).find('div div');
                         if(type==5 || type==6){
-                            var ballId = $(dom).attr('data-ballId');
-                            var columnId = $(dom).attr('data-columnId');
-                            if(dom.hasClass('ico_check')){
-                                momentPriceData[ballId+''+columnId].eyeTypeArr.remove(type-4);
-                            }else{
-                                if(momentPriceData[ballId+''+columnId]){
-                                    momentPriceData[ballId+''+columnId].eyeTypeArr.push(type-4);
+                            if(dom.length>0){
+                                var ballId = $(dom).attr('data-ballId');
+                                var columnId = $(dom).attr('data-columnId');
+                                if(dom.hasClass('ico_check')){
+                                    momentPriceData[ballId+''+columnId].eyeTypeArr.remove(type-4);
                                 }else{
-                                    var param = {};
-                                    param.properties = {};
-                                    param.properties[config.qiuId] = ballId;
-                                    param.properties[config.zhuId] = columnId;
-                                    param.eyeTypeArr = [type-4];
-                                    momentPriceData[ballId+''+columnId] = param;
+                                    if(momentPriceData[ballId+''+columnId]){
+                                        momentPriceData[ballId+''+columnId].eyeTypeArr.push(type-4);
+                                    }else{
+                                        var param = {};
+                                        param.properties = {};
+                                        param.properties[config.qiuId] = ballId;
+                                        param.properties[config.zhuId] = columnId;
+                                        param.eyeTypeArr = [type-4];
+                                        momentPriceData[ballId+''+columnId] = param;
+                                    }
                                 }
+                                dom.toggleClass('ico_check')
+                                dom.toggleClass('icon-ico_check')
                             }
-                            dom.toggleClass('ico_check')
-                            dom.toggleClass('icon-ico_check')
                         }else{
                             if(startTr==endTr && startTd==endTd){
                                 $("#priceEvent").next().find('.layui-table-body tbody tr').eq(startTr).find('td').eq(startTd).find('input').focus();
