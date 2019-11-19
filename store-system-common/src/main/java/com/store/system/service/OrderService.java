@@ -35,7 +35,7 @@ public interface OrderService {
     public boolean handleWxRefundOrder(HttpServletRequest request, long roid) throws Exception;
 
 
-    public PayInfo handleOtherPay(int type, int price, long boId) throws Exception;
+    public ResultClient handleOtherPay(int type, int price, long boId) throws Exception;
 
 
     public Pager getAll(Pager pager, long startTime, long endTime, long personnelid, int status, long uid, String name, int makeStatus, long subid) throws Exception;

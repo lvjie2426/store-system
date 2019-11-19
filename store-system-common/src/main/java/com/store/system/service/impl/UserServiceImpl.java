@@ -347,7 +347,7 @@ public class UserServiceImpl implements UserService {
 
             LoginUserPool phonePool = new LoginUserPool();
             phonePool.setUserType(user.getUserType());
-            phonePool.setLoginType(LoginUserPool.loginType_phone);
+            phonePool.setLoginType(LoginUserPool.loginType_userName);
             phonePool.setAccount(user.getPhone());
             phonePool = loginUserPoolDao.load(phonePool);
             if (null != phonePool) {

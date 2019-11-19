@@ -35,7 +35,7 @@ public class FinanceLogServiceImpl implements FinanceLogService {
         log.setSubType(subType);
         log.setMoney(money);
         log.setDesc(desc);
-        log.setTime(TimeUtils.getDayFormTime(System.currentTimeMillis()));
+        log.setDay(TimeUtils.getDayFormTime(System.currentTimeMillis()));
         log.setTime(System.currentTimeMillis());
         financeLogDao.insert(log);
     }

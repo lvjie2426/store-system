@@ -1,6 +1,7 @@
 package com.store.system.bean;
 
 import com.quakoo.baseFramework.jackson.JsonUtils;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -11,20 +12,27 @@ import java.io.Serializable;
  * @Date 2019/3/25 19:10
  * @Version 1.0
  **/
+@Data
 public class OrderTypeInfo implements Serializable{
 
     private long uid;
 
-    private long buyId;
+    private int payType;
 
-    private long money;
+    private int money;
+
+    private long boId;
+
+    private int payModel;
 
     public OrderTypeInfo() {}
 
-    public OrderTypeInfo(long uid, long buyId, long money) {
+    public OrderTypeInfo(long uid, int payType, int money, long boId, int payModel) {
         this.uid = uid;
-        this.buyId = buyId;
+        this.payType = payType;
         this.money = money;
+        this.boId = boId;
+        this.payModel = payModel;
     }
 
     public static String getJsonStr(OrderTypeInfo orderTypeInfo) {
@@ -35,27 +43,4 @@ public class OrderTypeInfo implements Serializable{
         return JsonUtils.fromJson(jsonStr, OrderTypeInfo.class);
     }
 
-    public long getUid() {
-        return uid;
-    }
-
-    public void setUid(long uid) {
-        this.uid = uid;
-    }
-
-    public long getBuyId() {
-        return buyId;
-    }
-
-    public void setBuyId(long buyId) {
-        this.buyId = buyId;
-    }
-
-    public long getMoney() {
-        return money;
-    }
-
-    public void setMoney(long money) {
-        this.money = money;
-    }
 }

@@ -11,6 +11,7 @@ public class SimpleUser {
     private String name;
     private String icon;
     private String phone;
+    private String cover;
 
     public SimpleUser(){
     }
@@ -21,6 +22,7 @@ public class SimpleUser {
             this.name = user.getName();
             this.icon = user.getIcon();
             this.phone = user.getPhone();
+            this.cover = user.getCover();
         }
     }
 

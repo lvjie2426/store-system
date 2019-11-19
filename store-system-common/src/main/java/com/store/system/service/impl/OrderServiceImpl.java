@@ -11,9 +11,7 @@ import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
-import com.store.system.bean.CalculateOrder;
-import com.store.system.bean.OrderExpireUnit;
-import com.store.system.bean.SaleReward;
+import com.store.system.bean.*;
 import com.store.system.client.ClientAfterSaleDetail;
 import com.store.system.client.ClientOrder;
 import com.store.system.client.ResultClient;
@@ -196,12 +194,13 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 pay_time = DateUtils.parseDate(paymentStr, "yyyy-MM-dd HH:mm:ss").getTime();
             order.setPayTime(pay_time);
         }
+        ResultClient result = new ResultClient();
         if (order.getStatus() == Order.status_pay) {
-            orderPayService.successHandleBusiness(order, boId);
+            result = orderPayService.successHandleBusiness(order, boId);
         }
         orderDao.update(order);
         if (res) {
-            return new ResultClient(true, transformClient(order));
+            return result;
         } else {
             return new ResultClient(false);
         }
@@ -493,13 +492,14 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                 waitWxBarcodeOrderRes(file, payPassport, out_trade_no, order);
             }
         }
+        ResultClient result = new ResultClient();
         if (order.getStatus() == Order.status_pay) {
             res = true;
-            orderPayService.successHandleBusiness(order, boId);
+            result = orderPayService.successHandleBusiness(order, boId);
         }
         orderDao.update(order);
         if (res) {
-            return new ResultClient(true, transformClient(order));
+            return result;
         } else {
             return new ResultClient(false);
         }
@@ -713,16 +713,21 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
     }
 
     @Override
-    public PayInfo handleOtherPay(int type, int price, long boId) throws Exception {
+    public ResultClient handleOtherPay(int type, int price, long boId) throws Exception {
         BusinessOrder businessOrder = businessOrderService.load(boId);
-        PayInfo payInfo = new PayInfo();
-        payInfo.setSubId(businessOrder.getSubId());
-        payInfo.setUid(businessOrder.getUid());
-        payInfo.setPrice(price);
-        payInfo.setPayType(type);
-        payInfo.setStatus(PayInfo.status_pay);
-        payInfo.setBoId(boId);
-        return payInfoService.insert(payInfo);
+        Order order = new Order();
+        order.setPrice(price);
+        order.setPayType(type);
+        Map<String, Object> info = Maps.newHashMap();
+        info.put("uid", String.valueOf(businessOrder.getUid()));
+        info.put("payType", type);
+        info.put("money", price);
+        info.put("boId", businessOrder.getId());
+        info.put("payModel", Order.pay_mode_barcode);
+        order.setTypeInfo(JsonUtils.toJson(info));
+        ResultClient res = orderPayService.successHandleBusiness(order, boId);
+        return res;
+
     }
 
     @Override

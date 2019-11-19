@@ -61,6 +61,15 @@ public class BusinessDaoImpl extends CacheBaseDao<BusinessOrder> implements Busi
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    @CacheSort(order = CacheSortOrder.desc)
+    public List<BusinessOrder> getUserList(long staffId,
+                                           @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor) double cursor,
+                                           @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
     public List<BusinessOrder> getPageList(long subId, int status, int makeStatus, long day,
                                            @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor) double cursor,
                                            @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
@@ -78,6 +87,12 @@ public class BusinessDaoImpl extends CacheBaseDao<BusinessOrder> implements Busi
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
     public int getUserCount(long staffId, int status, int makeStatus) throws DataAccessException {
+        return 0;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
+    public int getUserCount(long staffId) throws DataAccessException {
         return 0;
     }
 
