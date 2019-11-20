@@ -135,11 +135,13 @@ public class WorkOverTimeServiceImpl implements WorkOverTimeService {
         User load = userDao.load(workOverTime.getCheckUid());
         if(load!=null){
             clientWorkOverTime.setCheckName(load.getName());
-
         }
         User load1 = userDao.load(workOverTime.getCopyUid());
         if(load1!=null){
             clientWorkOverTime.setCopyName(load1.getName());
+        }User load2 = userDao.load(workOverTime.getAskUid());
+        if(load1!=null){
+            clientWorkOverTime.setAskName(load2.getName());
         }
         return clientWorkOverTime;
     }

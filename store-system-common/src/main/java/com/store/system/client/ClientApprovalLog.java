@@ -18,6 +18,8 @@ public class ClientApprovalLog extends ApprovalLog {
     private String checkName;//审批人
     private int status;//审批状态
 
+    private int replaceStatus;//被调班人状态
+
     public ClientApprovalLog(ApprovalLog approvalLog){
         try {
             BeanUtils.copyProperties(this, approvalLog);

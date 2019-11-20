@@ -167,4 +167,6 @@ public interface UserService {
     public Pager getStaffUserBySid(Pager pager,Long sid)throws Exception;
 
     public Pager getAllStaffUserBySid(Pager pager,Long sid)throws Exception;
+
+    public  Map<Long,List<ClientUser>> getAllUserByPsid(long psid)throws Exception;
 }

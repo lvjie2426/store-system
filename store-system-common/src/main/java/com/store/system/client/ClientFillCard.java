@@ -17,6 +17,8 @@ import java.lang.reflect.InvocationTargetException;
 public class ClientFillCard extends FillCard {
 
     private String checkName;
+    private String askName;
+
 
     public  ClientFillCard(FillCard fillCard){
         try {

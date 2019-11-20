@@ -76,6 +76,10 @@ public class FillCardServiceImpl implements FillCardService {
             if(user!=null){
                 clientFillCard.setCheckName(user.getName());
             }
+            User load1 = userDao.load(load.getAskUid());
+            if(load1!=null){
+                clientFillCard.setAskName(load1.getName());
+            }
         }
         return clientFillCard;
     }

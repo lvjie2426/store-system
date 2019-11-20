@@ -26,6 +26,10 @@ public class ChangeShift implements Serializable{
     public static final int status_success=1;//审核通过
     public static final int status_fail=2;//审核不通过
 
+    public static final int replace_yes=1;//被调班人接受
+    public static final int replace_no=2;//被调班人拒绝
+    public static final int replace_wait=0;//等待中
+
     @PrimaryKey
     private long id;
     /***
@@ -65,6 +69,11 @@ public class ChangeShift implements Serializable{
      * 请假状态
      */
     private int status;
+
+    /**
+     * 被调班人态度
+     */
+    private int replaceStatus;
     /**
      * 公司ID
      */

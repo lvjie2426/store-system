@@ -73,13 +73,13 @@ public class UserController extends BaseController {
         long uid = user.getId();
         List<Permission> permissions = userService.getUserPermissions(uid);
         Map<Long, List<Permission>> res = Maps.newHashMap();
-        for(Permission permission : permissions) {
-            if(permission.getMenu()==Permission.menu_no){
+        for (Permission permission : permissions) {
+            if (permission.getMenu() == Permission.menu_no) {
                 continue;
             }
             long pid = permission.getPid();
             List<Permission> subPermissions = res.get(pid);
-            if(null == subPermissions) {
+            if (null == subPermissions) {
                 subPermissions = Lists.newArrayList();
                 res.put(pid, subPermissions);
             }
@@ -91,7 +91,7 @@ public class UserController extends BaseController {
 //                if(!res.keySet().contains(it.next().getId())) it.remove();
 //            }
 //        }
-        for(List<Permission> one : res.values()) {
+        for (List<Permission> one : res.values()) {
             Collections.sort(one);
         }
         return this.viewNegotiating(request, response, new ResultClient(res));
@@ -107,37 +107,37 @@ public class UserController extends BaseController {
     @RequestMapping("/searchUser")
     public ModelAndView searchUser(HttpServletRequest request, HttpServletResponse response,
                                    Pager pager,
-                                   @RequestParam(required = false,value = "startTime",defaultValue = "-1") long startTime,
-                                   @RequestParam(required = false,value = "endTime",defaultValue = "-1") long endTime,
-                                   @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
-                                   @RequestParam(required = false, value = "name",defaultValue = "") String name,
-                                   @RequestParam(required = false, value = "userName",defaultValue = "") String userName,
-                                   @RequestParam(required = false, value = "sid",defaultValue = "-1") long sid,
-                                   @RequestParam(required = false, value = "subid",defaultValue = "-1") long subid,
-                                   @RequestParam(required = false, value = "userType",defaultValue = "-1") int userType,
-                                   @RequestParam(required = false, value = "rid",defaultValue = "0") long rid,
-                                   @RequestParam(required = false, value = "status",defaultValue = "-1") int status,
+                                   @RequestParam(required = false, value = "startTime", defaultValue = "-1") long startTime,
+                                   @RequestParam(required = false, value = "endTime", defaultValue = "-1") long endTime,
+                                   @RequestParam(required = false, value = "phone", defaultValue = "") String phone,
+                                   @RequestParam(required = false, value = "name", defaultValue = "") String name,
+                                   @RequestParam(required = false, value = "userName", defaultValue = "") String userName,
+                                   @RequestParam(required = false, value = "sid", defaultValue = "-1") long sid,
+                                   @RequestParam(required = false, value = "subid", defaultValue = "-1") long subid,
+                                   @RequestParam(required = false, value = "userType", defaultValue = "-1") int userType,
+                                   @RequestParam(required = false, value = "rid", defaultValue = "0") long rid,
+                                   @RequestParam(required = false, value = "status", defaultValue = "-1") int status,
                                    Model model) throws Exception {
-        pager= userService.searchUser(pager,sid,subid,userType,name,phone,userName,rid,status,startTime,endTime);
-        return this.viewNegotiating(request,response,new PagerResult<>(pager));
+        pager = userService.searchUser(pager, sid, subid, userType, name, phone, userName, rid, status, startTime, endTime);
+        return this.viewNegotiating(request, response, new PagerResult<>(pager));
     }
 
     @RequestMapping("/searchBackendUser")
     public ModelAndView searchBackendUser(HttpServletRequest request, HttpServletResponse response,
-                                   Pager pager,
-                                   @RequestParam(required = false,value = "startTime",defaultValue = "-1") long startTime,
-                                   @RequestParam(required = false,value = "endTime",defaultValue = "-1") long endTime,
-                                   @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
-                                   @RequestParam(required = false, value = "name",defaultValue = "") String name,
-                                   @RequestParam(required = false, value = "userName",defaultValue = "") String userName,
-                                   @RequestParam(required = false, value = "sid",defaultValue = "-1") long sid,
-                                   @RequestParam(required = false, value = "psid",defaultValue = "-1") long psid,
-                                   @RequestParam(required = false, value = "userType",defaultValue = "-1") int userType,
-                                   @RequestParam(required = false, value = "rid",defaultValue = "0") long rid,
-                                   @RequestParam(required = false, value = "status",defaultValue = "-1") int status,
-                                   Model model) throws Exception {
-        pager= userService.searchBackendUser(pager,sid,psid,userType,name,phone,userName,rid,status,startTime,endTime);
-        return this.viewNegotiating(request,response,new PagerResult<>(pager));
+                                          Pager pager,
+                                          @RequestParam(required = false, value = "startTime", defaultValue = "-1") long startTime,
+                                          @RequestParam(required = false, value = "endTime", defaultValue = "-1") long endTime,
+                                          @RequestParam(required = false, value = "phone", defaultValue = "") String phone,
+                                          @RequestParam(required = false, value = "name", defaultValue = "") String name,
+                                          @RequestParam(required = false, value = "userName", defaultValue = "") String userName,
+                                          @RequestParam(required = false, value = "sid", defaultValue = "-1") long sid,
+                                          @RequestParam(required = false, value = "psid", defaultValue = "-1") long psid,
+                                          @RequestParam(required = false, value = "userType", defaultValue = "-1") int userType,
+                                          @RequestParam(required = false, value = "rid", defaultValue = "0") long rid,
+                                          @RequestParam(required = false, value = "status", defaultValue = "-1") int status,
+                                          Model model) throws Exception {
+        pager = userService.searchBackendUser(pager, sid, psid, userType, name, phone, userName, rid, status, startTime, endTime);
+        return this.viewNegotiating(request, response, new PagerResult<>(pager));
     }
 
     @RequestMapping("/add")
@@ -147,8 +147,8 @@ public class UserController extends BaseController {
             user.setContactPhone(user.getPhone());
             ClientUserOnLogin clientUserOnLogin = userService.register(user);
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
-        }catch (StoreSystemException e){
-            return this.viewNegotiating(request,response,new ResultClient(false,"",e.getMessage()));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, "", e.getMessage()));
         }
     }
 
@@ -156,15 +156,15 @@ public class UserController extends BaseController {
     public ModelAndView update(User user,
                                @RequestParam(value = "updateRids[]", required = false, defaultValue = "") List<Long> updateRids,
                                HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        boolean res = userService.update(user,updateRids);
+        boolean res = userService.update(user, updateRids);
         return this.viewNegotiating(request, response, new ResultClient(res));
     }
 
     @RequestMapping("/updateUserPermissions")
     public ModelAndView updateUserPermissions(@RequestParam(value = "uid", required = false) long uid,
                                               @RequestParam(value = "pids[]", required = false, defaultValue = "") List<Long> pids,
-                                              HttpServletRequest request, HttpServletResponse response,Model model) throws Exception {
-        if(uid == 0) return super.viewNegotiating(request, response, new ResultClient("用户ID不能为空"));
+                                              HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        if (uid == 0) return super.viewNegotiating(request, response, new ResultClient("用户ID不能为空"));
         boolean res = userService.updateUserPermission(uid, pids);
         return this.viewNegotiating(request, response, new ResultClient(res));
     }
@@ -177,9 +177,9 @@ public class UserController extends BaseController {
         try {
             user.setContactPhone(user.getPhone());
             user = userService.addCustomer(user);
-            return this.viewNegotiating(request,response, new ResultClient(user));
+            return this.viewNegotiating(request, response, new ResultClient(user));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
@@ -187,20 +187,20 @@ public class UserController extends BaseController {
     public ModelAndView updateCustomer(User user, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             boolean res = userService.updateCustomer(user);
-            return this.viewNegotiating(request,response, new ResultClient(true, res));
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
     @RequestMapping("/delCustomer")
     public ModelAndView delCustomer(@RequestParam(value = "id") long id,
-                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             boolean res = userService.delCustomer(id);
-            return this.viewNegotiating(request,response, new ResultClient(true, res));
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
@@ -211,75 +211,75 @@ public class UserController extends BaseController {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
-            if(pSubid != 0) throw new StoreSystemException("公司ID错误");
+            if (pSubid != 0) throw new StoreSystemException("公司ID错误");
             pager = userService.getBackCustomerPager(pager, subid, userType);
-            return this.viewNegotiating(request,response, new PagerResult<>(pager));
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
     @RequestMapping("/getSubCustomerPager")
     public ModelAndView getSubCustomerPager(Pager pager, @RequestParam(value = "subid") long subid,
                                             @RequestParam(value = "userType") int userType,
-                                            @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
-                                            @RequestParam(required = false, value = "phone1",defaultValue = "") String phone1,
-                                            @RequestParam(required = false, value = "name",defaultValue = "") String name,
-                                            @RequestParam(required = false, value = "name1",defaultValue = "") String name1,
-                                            @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
-                                            @RequestParam(required = false,value = "job",defaultValue = "") String job,
-                                            @RequestParam(required = false,value = "cardNumber",defaultValue = "-1") int cardNumber,
-                                            @RequestParam(required = false,value = "userGradeId",defaultValue = "0") long userGradeId,
-                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+                                            @RequestParam(required = false, value = "phone", defaultValue = "") String phone,
+                                            @RequestParam(required = false, value = "phone1", defaultValue = "") String phone1,
+                                            @RequestParam(required = false, value = "name", defaultValue = "") String name,
+                                            @RequestParam(required = false, value = "name1", defaultValue = "") String name1,
+                                            @RequestParam(required = false, value = "sex", defaultValue = "-1") int sex,
+                                            @RequestParam(required = false, value = "job", defaultValue = "") String job,
+                                            @RequestParam(required = false, value = "cardNumber", defaultValue = "-1") int cardNumber,
+                                            @RequestParam(required = false, value = "userGradeId", defaultValue = "0") long userGradeId,
+                                            HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long pSubid = subordinate.getPid();
-            if(pSubid == 0) throw new StoreSystemException("分店ID错误");
-            pager = userService.getBackSubCustomerPager(pager, subid,phone,phone1,name,name1,sex,userType,job,userGradeId,cardNumber);
-            return this.viewNegotiating(request,response, new PagerResult<>(pager));
+            if (pSubid == 0) throw new StoreSystemException("分店ID错误");
+            pager = userService.getBackSubCustomerPager(pager, subid, phone, phone1, name, name1, sex, userType, job, userGradeId, cardNumber);
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
         } catch (StoreSystemException e) {
-            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
     //获取所有 顾客/员工 的职业
     @RequestMapping("/getAllUserJob")
-    public ModelAndView getAllUserJob(HttpServletRequest request,HttpServletResponse response,
+    public ModelAndView getAllUserJob(HttpServletRequest request, HttpServletResponse response,
                                       @RequestParam(value = "sid") long sid,
-                                      @RequestParam(value = "userType",defaultValue = "0") int userType)throws Exception{
-        try{
+                                      @RequestParam(value = "userType", defaultValue = "0") int userType) throws Exception {
+        try {
             Subordinate subordinate = subordinateService.load(sid);
             long pSubid = subordinate.getPid();
-            if(pSubid == 0) throw new StoreSystemException("门店ID错误");
-            return this.viewNegotiating(request,response,new ResultClient(true,userService.getAllUserJob(sid,userType)));
-        }catch (StoreSystemException e){
-            return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
+            if (pSubid == 0) throw new StoreSystemException("门店ID错误");
+            return this.viewNegotiating(request, response, new ResultClient(true, userService.getAllUserJob(sid, userType)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
     //获取门店下所有 顾客/员工 下拉列表
     @RequestMapping("/getAllUser")
-    public ModelAndView getAllUser(HttpServletRequest request,HttpServletResponse response,
-                                  @RequestParam(value = "sid") long sid,
-                                  @RequestParam(value = "userType",required = false,defaultValue = "0") int userType)throws Exception{
+    public ModelAndView getAllUser(HttpServletRequest request, HttpServletResponse response,
+                                   @RequestParam(value = "sid") long sid,
+                                   @RequestParam(value = "userType", required = false, defaultValue = "0") int userType) throws Exception {
         try {
             Subordinate subordiante = subordinateService.load(sid);
             long subid = subordiante.getPid();
-            if(subid==0)throw new StoreSystemException("门店ID错误!");
-            return this.viewNegotiating(request,response,new ResultClient(userService.getAllUser(sid,userType)));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
+            if (subid == 0) throw new StoreSystemException("门店ID错误!");
+            return this.viewNegotiating(request, response, new ResultClient(userService.getAllUser(sid, userType)));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
         }
     }
 
     /////////////////////员工相关////////////////////////
     @RequestMapping("/updateUser")
-    public ModelAndView updateUser(HttpServletRequest request,HttpServletResponse response,
-                                   User user)throws Exception{
+    public ModelAndView updateUser(HttpServletRequest request, HttpServletResponse response,
+                                   User user) throws Exception {
         try {
-            return this.viewNegotiating(request,response,new ResultClient(true,userService.updateUser(user)));
-        }catch (StoreSystemException e){
-            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(true, userService.updateUser(user)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
@@ -287,22 +287,23 @@ public class UserController extends BaseController {
     public ModelAndView del(@RequestParam(required = true, value = "id") long id,
                             int status,
                             HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        boolean res = userService.updateStatus(id,status);
+        boolean res = userService.updateStatus(id, status);
         return this.viewNegotiating(request, response, new ResultClient(res));
     }
 
     /////////////////////批量导入顾客信息////////////////////////
     @RequestMapping("/importUserInfo")
     public ModelAndView importUserInfo(HttpServletRequest request, HttpServletResponse response,
-                                       @RequestParam(required = false,value = "file") MultipartFile file)throws Exception{
+                                       @RequestParam(required = false, value = "file") MultipartFile file) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            ResultClient res = importFileService.importUserInFo(file,user);
-            return this.viewNegotiating(request,response,new ResultClient(true,res));
-        }catch (StoreSystemException e){
-            return this.viewNegotiating(request,response,new ResultClient(false,e.getMessage()));
+            ResultClient res = importFileService.importUserInFo(file, user);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
+
     /////////////////////导入模板下载////////////////////////
     @RequestMapping("/downloadTemplatesExcel")
     public ModelAndView downloadTemplatesExcel(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -310,60 +311,64 @@ public class UserController extends BaseController {
         download.downloadFile(request, response, fileName);
         return this.viewNegotiating(request, response, new ResultClient(true));
     }
+
     /////////////////////批量导出顾客信息////////////////////////
     @RequestMapping("/exportUserInfo")
-    public ModelAndView exportUserInfo(HttpServletRequest request,HttpServletResponse response,
+    public ModelAndView exportUserInfo(HttpServletRequest request, HttpServletResponse response,
                                        @RequestParam(value = "sid") long sid,
-                                       @RequestParam(required = false, value = "phone",defaultValue = "") String phone,
-                                       @RequestParam(required = false,value = "sex",defaultValue = "-1") int sex,
-                                       @RequestParam(required = false,value = "job",defaultValue = "") String job
-                                        )throws Exception{
+                                       @RequestParam(required = false, value = "phone", defaultValue = "") String phone,
+                                       @RequestParam(required = false, value = "sex", defaultValue = "-1") int sex,
+                                       @RequestParam(required = false, value = "job", defaultValue = "") String job
+    ) throws Exception {
         try {
-            List<ExportUser> users = userService.getExportUserInfo(sid,phone,sex,job);
+            List<ExportUser> users = userService.getExportUserInfo(sid, phone, sex, job);
             Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("顾客信息", "顾客信息"), ExportUser.class, users);
-            if (workbook == null) { throw new StoreSystemException("无可查询的顾客信息的数据！"); }
+            if (workbook == null) {
+                throw new StoreSystemException("无可查询的顾客信息的数据！");
+            }
             //导出excel
-            download.exportInfoTemplate(request,response,workbook,"顾客信息");
+            download.exportInfoTemplate(request, response, workbook, "顾客信息");
             return this.viewNegotiating(request, response, new ResultClient("导出成功！"));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
         }
     }
 
     /////////////////////日常任务和奖励////////////////////////
     @RequestMapping("/taskReward")
-    public ModelAndView taskReward(HttpServletRequest request,HttpServletResponse response,
+    public ModelAndView taskReward(HttpServletRequest request, HttpServletResponse response,
                                    @RequestParam(value = "date") String date,//date格式201905
-                                   @RequestParam(value = "sid") long sid)throws Exception{
-        try{
+                                   @RequestParam(value = "sid") long sid) throws Exception {
+        try {
             Subordinate subordinate = subordinateService.load(sid);
             long pSubid = subordinate.getPid();
-            if(pSubid == 0) throw new StoreSystemException("门店ID错误");
-            Map<String,Object> res =  userService.taskReward(date,sid);
-            return this.viewNegotiating(request,response,new ResultClient(res));
-        }catch (StoreSystemException e){
-            return this.viewNegotiating(request,response, new ResultClient(false,e.getMessage()));
+            if (pSubid == 0) throw new StoreSystemException("门店ID错误");
+            Map<String, Object> res = userService.taskReward(date, sid);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
     //销售开单 -- 手机号精确查询
     @RequestMapping("/getUserByPhone")
-    public ModelAndView getUserByPhone(HttpServletRequest request,HttpServletResponse response,
-                                       @RequestParam("phone") String phone)throws Exception{
+    public ModelAndView getUserByPhone(HttpServletRequest request, HttpServletResponse response,
+                                       @RequestParam("phone") String phone) throws Exception {
         try {
-             ClientUser clientUser = userService.getUser(phone);
-            return this.viewNegotiating(request,response,new ResultClient(true,clientUser));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+            ClientUser clientUser = userService.getUser(phone);
+            return this.viewNegotiating(request, response, new ResultClient(true, clientUser));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
         }
     }
+
     //销售开单 -- 会员信息认证
     @RequestMapping("/becomeVip")
-    public ModelAndView becomeVip(HttpServletRequest request,HttpServletResponse response,User user)throws Exception{
+    public ModelAndView becomeVip(HttpServletRequest request, HttpServletResponse response, User user) throws Exception {
         try {
-            return this.viewNegotiating(request,response,new ResultClient(userService.checkUserGradeInfo(user)));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(s.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(userService.checkUserGradeInfo(user)));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
         }
     }
 
@@ -383,7 +388,7 @@ public class UserController extends BaseController {
         String res = userService.getAuthCode(loginUser.getPhone());
         if (StringUtils.isNotBlank(code)) {
             if (!code.equals(res)) {
-                return this.viewNegotiating(request, response, new ResultClient(false,null,"验证码不正确!"));
+                return this.viewNegotiating(request, response, new ResultClient(false, null, "验证码不正确!"));
             }
         }
         return this.viewNegotiating(request, response, new ResultClient(true));
@@ -391,41 +396,43 @@ public class UserController extends BaseController {
 
     //根据职业获取员工列表
     @RequestMapping("/getUsersByJob")
-    public ModelAndView getUsersByJob(HttpServletRequest request,HttpServletResponse response,
+    public ModelAndView getUsersByJob(HttpServletRequest request, HttpServletResponse response,
                                       @RequestParam(name = "job") String job,
-                                      @RequestParam(name = "userType") int userType)throws Exception{
+                                      @RequestParam(name = "userType") int userType) throws Exception {
         try {
             User user = UserUtils.getUser(request);
             long sid = user.getSid();
-            return this.viewNegotiating(request,response,new ResultClient(true,userService.getUserByJob(job,sid,userType)));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+            return this.viewNegotiating(request, response, new ResultClient(true, userService.getUserByJob(job, sid, userType)));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
         }
     }
 
 
     //顾客管理--人数统计
     @RequestMapping("/statisticsOrderUser")
-    public ModelAndView statisticsOrderUser(HttpServletRequest request,HttpServletResponse response,long sid,
-                                            @RequestParam(required = false,name = "status",defaultValue = "-1") int status,
-                                            @RequestParam(required = false,name = "startTime",defaultValue = "0") long startTime,
-                                            @RequestParam(required = false,name = "endTime",defaultValue = "0") long endTime)throws Exception{
+    public ModelAndView statisticsOrderUser(HttpServletRequest request, HttpServletResponse response, long sid,
+                                            @RequestParam(required = false, name = "status", defaultValue = "-1") int status,
+                                            @RequestParam(required = false, name = "startTime", defaultValue = "0") long startTime,
+                                            @RequestParam(required = false, name = "endTime", defaultValue = "0") long endTime) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(sid);
-            if(subordinate.getPid()==0){throw new StoreSystemException("门店ID错误！");}
-            return this.viewNegotiating(request,response,new ResultClient(userService.statisticsOrderUser(sid,status,startTime,endTime)));
-        }catch (StoreSystemException s){
-            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+            if (subordinate.getPid() == 0) {
+                throw new StoreSystemException("门店ID错误！");
+            }
+            return this.viewNegotiating(request, response, new ResultClient(userService.statisticsOrderUser(sid, status, startTime, endTime)));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(false, s.getMessage()));
         }
     }
 
     /***
-    * 根据手机和姓名 查找门店下的推荐人
-    * @Param: [request, response, subId, search]
-    * @return: org.springframework.web.servlet.ModelAndView
-    * @Author: LaoMa
-    * @Date: 2019/7/10
-    */
+     * 根据手机和姓名 查找门店下的推荐人
+     * @Param: [request, response, subId, search]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/7/10
+     */
     @RequestMapping("/getUserByNamePhone")
     public ModelAndView getUserByNamePhone(HttpServletRequest request, HttpServletResponse response,
                                            long subId, String search) throws Exception {
@@ -458,31 +465,48 @@ public class UserController extends BaseController {
 
 
     @RequestMapping("/getUserListByPhone")
-    public ModelAndView getUserListByPhone(HttpServletRequest request,HttpServletResponse response,long subid,
-                                           @RequestParam(required = false,name = "phone",defaultValue = "") String phone,
-                                           @RequestParam(required = false,name = "name",defaultValue = "") String name,
-                                           @RequestParam(required = false,name = "userType",defaultValue = "0") int userType)throws Exception{
+    public ModelAndView getUserListByPhone(HttpServletRequest request, HttpServletResponse response, long subid,
+                                           @RequestParam(required = false, name = "phone", defaultValue = "") String phone,
+                                           @RequestParam(required = false, name = "name", defaultValue = "") String name,
+                                           @RequestParam(required = false, name = "userType", defaultValue = "0") int userType) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long psid = subordinate.getPid();
             if (psid == 0) throw new StoreSystemException("门店ID错误!");
-            return this.viewNegotiating(request,response,new ResultClient(userService.getUserListByPhone(subid,userType,phone,name)));
-        }catch (StoreSystemException s){
+            return this.viewNegotiating(request, response, new ResultClient(userService.getUserListByPhone(subid, userType, phone, name)));
+        } catch (StoreSystemException s) {
             return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
         }
     }
 
     @RequestMapping("/searchUserList")
-    public ModelAndView searchUserList(HttpServletRequest request,HttpServletResponse response,long subid,
-                                           @RequestParam(required = false,name = "phone",defaultValue = "") String phone,
-                                           @RequestParam(required = false,name = "name",defaultValue = "") String name,
-                                           @RequestParam(required = false,name = "userType",defaultValue = "-1") int userType)throws Exception{
+    public ModelAndView searchUserList(HttpServletRequest request, HttpServletResponse response, long subid,
+                                       @RequestParam(required = false, name = "phone", defaultValue = "") String phone,
+                                       @RequestParam(required = false, name = "name", defaultValue = "") String name,
+                                       @RequestParam(required = false, name = "userType", defaultValue = "-1") int userType) throws Exception {
         try {
             Subordinate subordinate = subordinateService.load(subid);
             long psid = subordinate.getPid();
             if (psid == 0) throw new StoreSystemException("门店ID错误!");
-            return this.viewNegotiating(request,response,new ResultClient(userService.searchUserList(subid,userType,phone,name)));
-        }catch (StoreSystemException s){
+            return this.viewNegotiating(request, response, new ResultClient(userService.searchUserList(subid, userType, phone, name)));
+        } catch (StoreSystemException s) {
+            return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
+        }
+    }
+
+    /**
+     * 根据企业id 获取所有员工并按照门店id 区分，返回map《门店id，员工list》
+     */
+    @RequestMapping("/getUserByPsid")
+    public ModelAndView getUserByPsid(HttpServletRequest request, HttpServletResponse response, long psid) throws Exception {
+        try {
+            User user = UserUtils.getUser(request);
+            if (user.getPsid() != psid) {
+                throw new StoreSystemException("企业ID错误!");
+            }
+            Map map = userService.getAllUserByPsid(psid);
+            return this.viewNegotiating(request, response, new ResultClient(map));
+        } catch (StoreSystemException s) {
             return this.viewNegotiating(request, response, new ResultClient(s.getMessage()));
         }
     }
