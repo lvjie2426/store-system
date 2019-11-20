@@ -3,6 +3,8 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.baseFramework.model.pagination.Pager;
+import com.quakoo.baseFramework.model.pagination.PagerSession;
+import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientMission;
@@ -16,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -266,8 +269,6 @@ public class MissionServiceImpl implements MissionService {
     }
 
 
-
-
     //检查当前订单满足那些任务的完成条件并返回任务
     @Override
     public List<Mission> checkMission(long skuId, long sid, long subid, long uid) throws Exception {
@@ -296,101 +297,128 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public Pager getWebByPager(Pager pager, long psid, int missionStatus, int type, int isNow) throws Exception {
-        String sql = "SELECT * FROM `mission` where sid = " + psid + " AND status = " + Mission.status_yes;
-        String sqlCount = "SELECT COUNT(id) FROM `mission` where sid = " + psid + " AND status = " + Mission.status_yes;
-        String limit = " limit %d , %d ";
+    public Pager getWebByPager(Pager pager,final long psid, final int missionStatus,final int type, final int isNow) throws Exception {
+        return new PagerRequestService<Mission>(pager, 0) {
 
-        if (missionStatus > 0) {
-            //完成/未完成
-            sql = sql + " and `missionStatus` = " + missionStatus;
-            sqlCount = sqlCount + " and `missionStatus` = " + missionStatus;
+            @Override
+            public List<Mission> step1GetPageResult(String cursor, int size) throws Exception {
+                String sql = "SELECT * FROM `mission` where sid = " + psid + " AND status = " + Mission.status_yes;
 
-        }
-        if (type > 0) {
-            // 团队/个人
-            sql = sql + " and `type` = " + type;
-            sqlCount = sqlCount + " and `type` = " + type;
+                if (missionStatus > 0) {
+                    //完成/未完成
+                    sql = sql + " and `missionStatus` = " + missionStatus;
 
-        }
-        if (isNow == 0) {
-            //任务进行中
-            sql = sql + " and `endTime` > " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
-            sqlCount = sqlCount + " and `endTime` > " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
-        }
-        if (isNow == 1) {
-            //任务已经结束
-            sql = sql + " and `endTime` < " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
-            sqlCount = sqlCount + " and `endTime` < " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
-        }
+                }
+                if (type > 0) {
+                    // 团队/个人
+                    sql = sql + " and `type` = " + type;
+
+                }
+                if (isNow == 0) {
+                    //任务进行中
+                    sql = sql + " and `endTime` > " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
+                }
+                if (isNow == 1) {
+                    //任务已经结束
+                    sql = sql + " and `endTime` < " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
+                }
+
+                long ctimeCursor = Long.parseLong(cursor);
+                if (ctimeCursor == 0) ctimeCursor = Long.MAX_VALUE;
+                sql = sql + " and `ctime` <= " + ctimeCursor + " order by ctime desc limit " + size;
+                List<Mission> missions = jdbcTemplate.query(sql, new RowMapperHelp<Mission>(Mission.class));
+                return missions;
+            }
+
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
+            }
+
+            @Override
+            public List<Mission> step3FilterResult(List<Mission> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<Mission> list, PagerSession pagerSession) throws Exception {
+                return transformClient(list);
+            }
+        }.getPager();
 
 
-        sql = sql + " order  by `ctime` desc";
-        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
-        int count = 0;
-        List<Mission> missions = jdbcTemplate.query(sql, new RowMapperHelp<Mission>(Mission.class));
-        count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
-        pager.setData(transformClient(missions));
-        pager.setTotalCount(count);
-        return pager;
     }
 
     @Override
-    public Pager getUserWebByPager(Pager pager, long psid, int missionStatus, int type, int isNow, User user) throws Exception {
-        String sql = "SELECT * FROM `mission` where sid = " + psid + " AND status = " + Mission.status_yes;
-        String sqlCount = "SELECT COUNT(id) FROM `mission` where sid = " + psid + " AND status = " + Mission.status_yes;
-        String limit = " limit %d , %d ";
-        if (missionStatus > 0) {
-            //完成/未完成
-            sql = sql + " and `missionStatus` = " + missionStatus;
-            sqlCount = sqlCount + " and `missionStatus` = " + missionStatus;
-        }
-        if (type > 0) {
-            // 团队/个人
-            sql = sql + " and `type` = " + type;
-            sqlCount = sqlCount + " and `type` = " + type;
-        }
-        if (isNow == 0) {
-            //任务进行中
-            sql = sql + " and `endTime` > " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
-            sqlCount = sqlCount + " and `endTime` > " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
-        }
-        if (isNow == 1) {
-            //任务已经结束
-            sql = sql + " and `endTime` < " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
-            sqlCount = sqlCount + " and `endTime` < " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
-        }
+    public Pager getUserWebByPager(Pager pager, final long psid, final int missionStatus, final int type, final int isNow, User user) throws Exception {
+        return new PagerRequestService<Mission>(pager, 0) {
 
-        sql = sql + " order  by `ctime` desc";
-        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
-        List<Mission> missions = jdbcTemplate.query(sql, new RowMapperHelp<Mission>(Mission.class));
-        List<ClientMission> clientMissionPoolList = new ArrayList<>();
-        for (Mission mission : missions) {
-            UserMissionPool userMissionPool = new UserMissionPool();
-            userMissionPool.setMid(mission.getId());
-            userMissionPool.setUid(user.getId());
-            UserMissionPool userMissionPoolDaoList = userMissionPoolDao.load(userMissionPool);
-            if (userMissionPoolDaoList != null) {
-                ClientMission clientMission = new ClientMission(mission);
-                clientMission.setAllAmount(userMissionPoolDaoList.getNumber());
-                clientMission.setAllProgress(userMissionPoolDaoList.getProgress());
-                clientMissionPoolList.add(clientMission);
+            @Override
+            public List<Mission> step1GetPageResult(String cursor, int size) throws Exception {
+                String sql = "SELECT * FROM `mission` where sid = " + psid + " AND status = " + Mission.status_yes;
+                if (missionStatus > 0) {
+                    //完成/未完成
+                    sql = sql + " and `missionStatus` = " + missionStatus;
+                }
+                if (type > 0) {
+                    // 团队/个人
+                    sql = sql + " and `type` = " + type;
+                }
+                if (isNow == 0) {
+                    //任务进行中
+                    sql = sql + " and `endTime` > " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
+                }
+                if (isNow == 1) {
+                    //任务已经结束
+                    sql = sql + " and `endTime` < " + System.currentTimeMillis() + " and `startTime` <" + System.currentTimeMillis();
+                }
+
+                long ctimeCursor = Long.parseLong(cursor);
+                if (ctimeCursor == 0) ctimeCursor = Long.MAX_VALUE;
+                sql = sql + " and `ctime` <= " + ctimeCursor + " order by ctime desc limit " + size;
+                List<Mission> missions = jdbcTemplate.query(sql, new RowMapperHelp<Mission>(Mission.class));
+                return missions;
             }
 
-            SubordinateMissionPool subordinateMissionPool = new SubordinateMissionPool();
-            subordinateMissionPool.setMid(mission.getId());
-            subordinateMissionPool.setSid(user.getSid());
-            SubordinateMissionPool subordinateMissionPoolDaoList = subordinateMissionPoolDao.load(subordinateMissionPool);
-            if (subordinateMissionPoolDaoList != null) {
-                ClientMission clientMission = new ClientMission(mission);
-                clientMission.setAllAmount(subordinateMissionPoolDaoList.getNumber());
-                clientMission.setAllProgress(subordinateMissionPoolDaoList.getProgress());
-                clientMissionPoolList.add(clientMission);
+            @Override
+            public int step2GetTotalCount() throws Exception {
+                return 0;
             }
-        }
-        pager.setTotalCount(clientMissionPoolList.size());
-        pager.setData(clientMissionPoolList);
-        return pager;
+
+            @Override
+            public List<Mission> step3FilterResult(List<Mission> list, PagerSession pagerSession) throws Exception {
+                return list;
+            }
+
+            @Override
+            public List<?> step4TransformData(List<Mission> list, PagerSession pagerSession) throws Exception {
+                List<ClientMission> clientMissionPoolList = new ArrayList<>();
+                for (Mission mission : list) {
+                    UserMissionPool userMissionPool = new UserMissionPool();
+                    userMissionPool.setMid(mission.getId());
+                    userMissionPool.setUid(user.getId());
+                    UserMissionPool userMissionPoolDaoList = userMissionPoolDao.load(userMissionPool);
+                    if (userMissionPoolDaoList != null) {
+                        ClientMission clientMission = new ClientMission(mission);
+                        clientMission.setAllAmount(userMissionPoolDaoList.getNumber());
+                        clientMission.setAllProgress(userMissionPoolDaoList.getProgress());
+                        clientMissionPoolList.add(clientMission);
+                    }
+
+                    SubordinateMissionPool subordinateMissionPool = new SubordinateMissionPool();
+                    subordinateMissionPool.setMid(mission.getId());
+                    subordinateMissionPool.setSid(user.getSid());
+                    SubordinateMissionPool subordinateMissionPoolDaoList = subordinateMissionPoolDao.load(subordinateMissionPool);
+                    if (subordinateMissionPoolDaoList != null) {
+                        ClientMission clientMission = new ClientMission(mission);
+                        clientMission.setAllAmount(subordinateMissionPoolDaoList.getNumber());
+                        clientMission.setAllProgress(subordinateMissionPoolDaoList.getProgress());
+                        clientMissionPoolList.add(clientMission);
+                    }
+                }
+                return clientMissionPoolList;
+            }
+        }.getPager();
     }
 
     private ClientMission transformClient(Mission mission) throws Exception {
