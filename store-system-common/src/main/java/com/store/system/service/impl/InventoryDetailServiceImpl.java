@@ -292,9 +292,26 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
         Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(productSPUList, "id");
         List<InventoryDetail> res = Lists.newArrayList();
         //sku库存数量低于预警设置数量
+        Map<Long,List<InventoryDetail>> map = Maps.newHashMap();
         for (InventoryDetail detail : details) {
+            List<InventoryDetail> detailList = map.get(detail.getP_spuid());
+            if(detailList == null){
+                detailList = Lists.newArrayList();
+                map.put(detail.getP_spuid(),detailList);
+            }
+            if(detail.getNum()==0) {
+                detailList.add(detail);
+            }
+        }
+
+        List<ClientInventoryDetail> detailList = transformClients(details,true);
+        for (InventoryDetail detail : detailList) {
             ProductSPU spu = spuMap.get(detail.getP_spuid());
             if(spu!=null) {
+                List<InventoryDetail> list = map.get(spu.getId());
+                if(list.size() == spu.getNowRemind()){
+                    res.add(detail);
+                }
                 if (detail.getNum() <= spu.getUnderRemind()) {
                     res.add(detail);
                 }

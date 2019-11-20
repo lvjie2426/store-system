@@ -30,6 +30,6 @@ public interface InventoryInBillService {
 
     public Pager getCheckWebPager(Pager pager, long psid, long subid) throws Exception;
 
-    public List<InventoryInBill> getListByStatus(long subid, int status) throws Exception;
+    public List<InventoryInBill> getListByStatus(long psid, long subid, int status) throws Exception;
 
 }

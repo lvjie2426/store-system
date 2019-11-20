@@ -465,8 +465,17 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     }
 
     @Override
-    public List<InventoryInBill> getListByStatus(long subid, int status) throws Exception {
-        List<InventoryInBill> bills =  inventoryInBillDao.getAllList(subid,status);
+    public List<InventoryInBill> getListByStatus(long psid, long subid, int status) throws Exception {
+        List<InventoryInBill> bills = Lists.newArrayList();
+        if (psid > 0 && subid == 0) {
+            List<ClientSubordinate> subordinates = subordinateService.getTwoLevelAllList(psid);
+            Set<Long> sids = sidFieldSetUtils.fieldList(subordinates, "id");
+            for (Long sid : sids) {
+                bills.addAll(inventoryInBillDao.getAllList(sid,status));
+            }
+        } else if (psid > 0 && subid > 0) {
+            bills.addAll(inventoryInBillDao.getAllList(subid,status));
+        }
         return bills;
     }
 

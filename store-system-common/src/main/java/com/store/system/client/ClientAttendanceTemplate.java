@@ -9,4 +9,6 @@ public class ClientAttendanceTemplate extends AttendanceTemplate {
 
     private SimpleUser user;
 
+    private String turnDay;
+
 }

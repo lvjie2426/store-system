@@ -14,6 +14,7 @@ import com.store.system.model.attendance.AttendanceItem;
 import com.store.system.model.attendance.AttendanceTemplate;
 import com.store.system.service.AttendanceTemplateService;
 import com.store.system.service.UserService;
+import com.store.system.util.TimeUtils;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -64,6 +65,7 @@ public class AttendanceTemplateController extends BaseController {
             }
             attendanceTemplate.setWorkWeekDay(days);
             attendanceTemplate.setTurnMap(turnMap);
+            attendanceTemplate.setTurnStartDay(TimeUtils.getDayFormTime(attendanceTemplate.getTurnStartDay()));
             AttendanceTemplate template = attendanceTemplateService.add(attendanceTemplate);
             return this.viewNegotiating(request, response, new ResultClient(true, template));
         } catch (StoreSystemException e) {
