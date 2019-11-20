@@ -167,10 +167,11 @@ public class InventoryCheckBillController extends BaseController {
 
 
     @RequestMapping("/getAll")
-    public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
+    public ModelAndView getCheckPager(@RequestParam(value = "subid",defaultValue = "0") long subid,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            pager = inventoryCheckBillService.getWebCheckPager(pager, subid);
+            User user = UserUtils.getUser(request);
+            pager = inventoryCheckBillService.getWebCreatePager(pager, user.getId());
             return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

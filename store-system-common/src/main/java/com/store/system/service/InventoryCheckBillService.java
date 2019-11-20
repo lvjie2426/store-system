@@ -31,7 +31,7 @@ public interface InventoryCheckBillService {
     public  InventoryCheckBill getEndById(long id)throws Exception;
 
     // app盘点任务列表
-    public Pager getWebCheckPager(Pager pager, long subid)throws Exception;
+    public Pager getWebCheckPager(Pager pager, long psid, long subid)throws Exception;
 
     public Pager getWebCreatePager(Pager pager, long createUid) throws Exception;
 

@@ -19,6 +19,7 @@ import com.store.system.model.*;
 import com.store.system.service.InventoryCheckBillService;
 import com.store.system.service.InventoryDetailService;
 import com.store.system.service.ProductService;
+import com.store.system.service.SubordinateService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,8 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     private TransformMapUtils detailMapUtils = new TransformMapUtils(InventoryDetail.class);
 
     private TransformMapUtils itemMapUtils = new TransformMapUtils(InventoryCheckBillItem.class);
+
+    private TransformFieldSetUtils sidFieldSetUtils = new TransformFieldSetUtils(Subordinate.class);
 
     private TransformFieldSetUtils itemFieldSetUtils = new TransformFieldSetUtils(InventoryCheckBillItem.class);
 
@@ -66,7 +69,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     private InventoryDetailDao inventoryDetailDao;
 
     @Resource
-    private InventoryDetailService inventoryDetailService;
+    private SubordinateService subordinateService;
 
     @Resource
     private InventoryCheckBillDao inventoryCheckBillDao;
@@ -236,11 +239,21 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public Pager getWebCheckPager(Pager pager, final long subid) throws Exception {
+    public Pager getWebCheckPager(Pager pager, final long psid, final long subid) throws Exception {
         return new PagerRequestService<InventoryCheckBill>(pager,0) {
             @Override
-            public List<InventoryCheckBill> step1GetPageResult(String s, int i) throws Exception {
-                return  inventoryCheckBillDao.getAll(subid,Double.parseDouble(s),i);
+            public List<InventoryCheckBill> step1GetPageResult(String cursor, int size) throws Exception {
+                List<InventoryCheckBill> bills = Lists.newArrayList();
+                if (psid > 0 && subid == 0) {
+                    List<ClientSubordinate> subordinates = subordinateService.getTwoLevelAllList(psid);
+                    Set<Long> sids = sidFieldSetUtils.fieldList(subordinates, "id");
+                    for (Long subid : sids) {
+                        bills.addAll(inventoryCheckBillDao.getPageList(subid, InventoryCheckBill.status_wait_check, Double.parseDouble(cursor), size));
+                    }
+                } else if (psid > 0 && subid > 0) {
+                    bills.addAll(inventoryCheckBillDao.getPageList(subid, InventoryCheckBill.status_wait_check, Double.parseDouble(cursor), size));
+                }
+                return bills;
             }
 
             @Override
@@ -265,7 +278,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         return new PagerRequestService<InventoryCheckBill>(pager,0) {
             @Override
             public List<InventoryCheckBill> step1GetPageResult(String cursor, int size) throws Exception {
-                return  inventoryCheckBillDao.getPageList(createUid,Double.parseDouble(cursor),size);
+                return  inventoryCheckBillDao.getPageList(createUid,InventoryCheckBill.status_wait_check,Double.parseDouble(cursor),size);
             }
 
             @Override

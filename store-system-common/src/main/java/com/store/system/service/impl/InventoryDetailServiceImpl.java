@@ -281,7 +281,12 @@ public class InventoryDetailServiceImpl implements InventoryDetailService {
 
     @Override
     public List<ClientInventoryDetail> getWaringList(long wid, long cid) throws Exception {
-        List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndCid(wid, cid);
+        List<InventoryDetail> details = Lists.newArrayList();
+        if(cid==0){
+            details = inventoryDetailDao.getAllListByWidAndCid(wid);
+        }else{
+            details = inventoryDetailDao.getAllListByWidAndCid(wid, cid);
+        }
         Set<Long> p_spuids = fieldSetUtils.fieldList(details, "p_spuid");
         List<ProductSPU> productSPUList = productSPUDao.load(Lists.newArrayList(p_spuids));
         Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(productSPUList, "id");

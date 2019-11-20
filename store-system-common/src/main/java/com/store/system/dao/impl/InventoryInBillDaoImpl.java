@@ -40,18 +40,6 @@ public class InventoryInBillDaoImpl extends CacheBaseDao<InventoryInBill> implem
     }
 
     @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
-    public int getCheckCount(long subid, int status) throws DataAccessException {
-        return 0;
-    }
-
-    @Override
-    @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
-    public int getCreateCount(long subid) throws DataAccessException {
-        return 0;
-    }
-
-    @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
     public List<InventoryInBill> getAllList(long subid, int status) throws DataAccessException {
         return null;

@@ -1,10 +1,8 @@
 package com.store.system.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
@@ -14,11 +12,13 @@ import com.quakoo.ext.RowMapperHelp;
 import com.store.system.bean.InventoryInBillItem;
 import com.store.system.client.ClientInventoryInBill;
 import com.store.system.client.ClientInventoryInBillItem;
+import com.store.system.client.ClientSubordinate;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.InventoryInBillService;
 import com.store.system.service.ProductService;
+import com.store.system.service.SubordinateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -41,6 +41,8 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     private TransformFieldSetUtils skuFieldSetUtils = new TransformFieldSetUtils(ProductSKU.class);
 
     private TransformFieldSetUtils spuFieldSetUtils = new TransformFieldSetUtils(ProductSPU.class);
+
+    private TransformFieldSetUtils sidFieldSetUtils = new TransformFieldSetUtils(Subordinate.class);
 
     private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
 
@@ -78,6 +80,9 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     private InventoryInBillDao inventoryInBillDao;
 
     @Resource
+    private SubordinateService subordinateService;
+
+    @Resource
     private ProductSPUDao productSPUDao;
 
     @Resource
@@ -103,6 +108,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
+
 
     @Override
     public void noPass(long id, long checkUid) throws Exception {
@@ -153,9 +159,43 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 productSKU.setSpuid(item.getSpuid());
                 productSKU.setCode(item.getCode());
                 productSKU.setProperties(item.getProperties());
-                productSKU.setRetailPrice(item.getRetailPrice());
-                productSKU.setCostPrice(item.getCostPrice());
-                productSKU.setIntegralPrice(item.getIntegralPrice());
+                ProductSPU productSPU = spuMap.get(productSKU.getSpuid());
+                if(productSPU.getCid()==2){
+                    productSKU.setRetailPrice(Integer.parseInt(productSPU.getProperties().get(19L).toString()));
+                    productSKU.setCostPrice(Integer.parseInt(productSPU.getProperties().get(20L).toString()));
+                    if(productSPU.getProperties().get(43L)!=null){
+                        productSKU.setIntegralPrice(Integer.parseInt(productSPU.getProperties().get(43L).toString()));
+                    }
+                } else if(productSPU.getCid()==4){
+                    productSKU.setRetailPrice(Integer.parseInt(productSPU.getProperties().get(21L).toString()));
+                    productSKU.setCostPrice(Integer.parseInt(productSPU.getProperties().get(22L).toString()));
+                    if(productSPU.getProperties().get(44L)!=null){
+                        productSKU.setIntegralPrice(Integer.parseInt(productSPU.getProperties().get(44L).toString()));
+                    }
+                } else if(productSPU.getCid()==5){
+                    productSKU.setRetailPrice(Integer.parseInt(productSPU.getProperties().get(23L).toString()));
+                    productSKU.setCostPrice(Integer.parseInt(productSPU.getProperties().get(24L).toString()));
+                    if(productSPU.getProperties().get(45L)!=null){
+                        productSKU.setIntegralPrice(Integer.parseInt(productSPU.getProperties().get(45L).toString()));
+                    }
+                } else if(productSPU.getCid()==6){
+                    productSKU.setRetailPrice(Integer.parseInt(productSPU.getProperties().get(27L).toString()));
+                    productSKU.setCostPrice(Integer.parseInt(productSPU.getProperties().get(28L).toString()));
+                    if(productSPU.getProperties().get(46L)!=null){
+                        productSKU.setIntegralPrice(Integer.parseInt(productSPU.getProperties().get(46L).toString()));
+                    }
+                } else if(productSPU.getCid()==7){
+//                    productSKU.setRetailPrice(Integer.parseInt(productSPU.getProperties().get(27L).toString()));
+                    productSKU.setCostPrice(Integer.parseInt(productSPU.getProperties().get(30L).toString()));
+                    if(productSPU.getProperties().get(47L)!=null){
+                        productSKU.setIntegralPrice(Integer.parseInt(productSPU.getProperties().get(47L).toString()));
+                    }
+                } else {
+                    productSKU.setRetailPrice(item.getRetailPrice());
+                    productSKU.setCostPrice(item.getCostPrice());
+                    productSKU.setIntegralPrice(item.getIntegralPrice());
+                }
+
                 productSKU = productSKUDao.insert(productSKU); //SKU不存在先存sku
                 if(null != productSKU) {
                     long skuid = productSKU.getId();
@@ -372,7 +412,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
             }
             @Override
             public int step2GetTotalCount() throws Exception {
-                return inventoryInBillDao.getCreateCount(createUid);
+                return 0;
             }
 
             @Override
@@ -390,15 +430,25 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
 
     @Override
-    public Pager getCheckWebPager(final Pager pager, final long subid) throws Exception {
+    public Pager getCheckWebPager(final Pager pager, final long psid, final long subid) throws Exception {
         return new PagerRequestService<InventoryInBill>(pager, 0) {
             @Override
             public List<InventoryInBill> step1GetPageResult(String cursor, int size) throws Exception {
-                return inventoryInBillDao.getCheckPageList(subid, InventoryInBill.status_wait_check, Double.parseDouble(cursor),size);
+                List<InventoryInBill> bills = Lists.newArrayList();
+                if (psid > 0 && subid == 0) {
+                    List<ClientSubordinate> subordinates = subordinateService.getTwoLevelAllList(psid);
+                    Set<Long> sids = sidFieldSetUtils.fieldList(subordinates, "id");
+                    for (Long subid : sids) {
+                        bills.addAll(inventoryInBillDao.getCheckPageList(subid, InventoryInBill.status_wait_check, Double.parseDouble(cursor), size));
+                    }
+                } else if (psid > 0 && subid > 0) {
+                    bills.addAll(inventoryInBillDao.getCheckPageList(subid, InventoryInBill.status_wait_check, Double.parseDouble(cursor), size));
+                }
+                return bills;
             }
             @Override
             public int step2GetTotalCount() throws Exception {
-                return inventoryInBillDao.getCheckCount(subid,InventoryInBill.status_wait_check);
+                return 0;
             }
 
             @Override

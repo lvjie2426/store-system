@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface InventoryCheckBillDao extends HDao<InventoryCheckBill> {
 
-    List<InventoryCheckBill> getAll(long subid, double cursor, int size);
-
-    List<InventoryCheckBill> getPageList(long subid, double cursor, int size);
+    List<InventoryCheckBill> getPageList(long subid, int status, double cursor, int size);
 
     List<InventoryCheckBill> getAllList(long subid, int status);
 }

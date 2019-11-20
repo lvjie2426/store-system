@@ -100,6 +100,12 @@ public class InventoryDetailDaoImpl extends CacheBaseDao<InventoryDetail> implem
     }
 
     @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryDetail> getAllListByWidAndCid(long wid) throws DataAccessException {
+        return null;
+    }
+
+    @Override
     public List<InventoryDetail> selectDetails(long wid, String search) throws Exception {
         long startTime=System.currentTimeMillis();
         String sql=" SELECT d.* FROM `inventory_detail` AS d JOIN `product_spu` AS p ON d.p_spuid = p.id " +

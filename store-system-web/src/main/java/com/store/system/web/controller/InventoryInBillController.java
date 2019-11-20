@@ -11,7 +11,6 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.InventoryInBill;
 import com.store.system.model.User;
 import com.store.system.service.*;
-import com.store.system.util.CodeUtil;
 import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -40,6 +39,9 @@ public class InventoryInBillController extends BaseController {
 
     @Resource
     private InventoryWarehouseService inventoryWarehouseService;
+
+    @Resource
+    private CodeService codeService;
 
     /**
      * 获取一个商品的SPU，返回需要确定的所有SKU属性
@@ -92,7 +94,9 @@ public class InventoryInBillController extends BaseController {
             if(warehouses.size()>0)
                 inventoryInBill.setWid(warehouses.get(0).getId());
             for(InventoryInBillItem bill:billItems){
-                bill.setCode(String.valueOf(CodeUtil.getRandom(10)));
+                if(StringUtils.isBlank(bill.getCode())) {
+                    bill.setCode(codeService.getSkuCode());
+                }
             }
             inventoryInBill.setItems(billItems);
             inventoryInBill = inventoryInBillService.add(inventoryInBill);
@@ -162,7 +166,8 @@ public class InventoryInBillController extends BaseController {
         try {
             User user = UserUtils.getUser(request);
             long subid = user.getSid();
-            pager = inventoryInBillService.getCheckWebPager(pager, subid);
+            long psid = user.getPsid();
+            pager = inventoryInBillService.getCheckWebPager(pager, psid, subid);
             return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
