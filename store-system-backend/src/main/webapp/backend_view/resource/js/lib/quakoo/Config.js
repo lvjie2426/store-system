@@ -29,7 +29,7 @@ var Config = (function(_super){
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
-        // this.serverUrl = "http://192.168.1.7:20005";
+        // this.serverUrl = "http://192.168.1.21:20005";
         /**马文军*/
          // this.serverUrl = "http://127.0.0.1:20005";
         /**聊天服务地址*/
@@ -394,6 +394,10 @@ var Config = (function(_super){
     _proto.getUrl_medicalAppliances_getgongSheng = function(){return this.serverUrl + '/company/getMp';};
     /**保存员工培训/体检记录*/
     _proto.getUrl_medicalAppliances_addtjReload = function(){return this.serverUrl + '/userLog/add';};
+    /**获取员工体检/培训记录*/
+    _proto.getUrl_medicalAppliances_getPtReload = function(){return this.serverUrl + '/userLog/getInfo';};
+    /**获取所有公司和公司下所有的员工*/
+    _proto.getUrl_medicalAppliances_getAllGongSiInfo = function(){return this.serverUrl + '/user/getUserByPsid';};
     //=======================商品管理 结束====================
 
 

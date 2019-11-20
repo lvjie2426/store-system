@@ -605,9 +605,8 @@
             background-color: rgba(130, 130, 151, 0.1);
         }
 
-        .yuangongUl .others {
+        .yuangongUl .hideBorder .others {
             width: 100%;
-            height: 28px;
             padding: 0px 12px;
             line-height: 28px;
             background-color: rgba(255, 255, 255, 1);
@@ -615,6 +614,8 @@
             color: rgba(130, 130, 151, 1);
             font-size: 12px;
             font-family: PingFangSC-Medium;
+            border: 1px solid #eee;
+            border-top: 0px;
         }
 
         .yuangongUl .others .yuanLeft {
@@ -1265,11 +1266,13 @@
             font-size: 12px;
             font-family: PingFangSC-Semibold;
         }
+
         .my-skin1 .layui-layer-btn .layui-layer-btn1 {
             background-color: rgba(65, 134, 220, 1);
             color: rgba(255, 255, 255, 1);
             margin-left: 8px;
         }
+
         .my-skin1 .layui-layer-btn .layui-layer-btn0 {
             background-color: rgba(244, 244, 248, 1);
             border: 1px solid rgba(236, 236, 244, 1);
@@ -1355,87 +1358,11 @@
         <table id="xsReload-table" data-toggle="table" class="table table-border"></table>
     </div>
     <div class="content-view"></div>
-    <ul class="goot-goot-putong">
-        <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 常规商品</li>
-    </ul>
-    <ul class="goot-goot-huiyuan">
-        <li class="zhekou">
-            <span class="goot-left">会员折扣</span>
-            <span class="goot-Right">
-                    <span class="yuan"></span>参与会员折扣
-                <!-- <a href="">设置</a> -->
-                </span>
-        </li>
-        <li class="lingshou">
-            <div class="goot-select">
-                <div class="goot-items">零售价</div>
-                <div class="goot-items1"><a href="">设定零售价</a></div>
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">提成</div>
-                <div class="goot-items1"><a href="">设定提成</a></div>
-            </div>
-        </li>
-    </ul>
-    <ul class="goot-goot-putong u2">
-        <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 积分商品</li>
-    </ul>
-    <ul class="goot-goot-putong">
-        <li class="lingshou">
-            <div class="goot-select">
-                <div class="goot-items">积分价</div>
-                <div class="goot-items1"><a href="">设定积分价</a></div>
-            </div>
-            <div class="goot-select">
-                <div class="goot-items">兑换数量上限</div>
-                <div class="goot-items1"><input type="text" value="100" placeholder="输入数量" id="inNum"></div>
-            </div>
-        </li>
-        <div class="useTime">
-            <div>有效期</div>
-            <div class="uTime"><span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i></div>
-        </div>
-        <li><span class="select"><i class="iconfont icon-ico_check"></i></span> 当库存低于
-            <input type="text" placeholder="数量" class="warnInput"> 触发警报
-        </li>
-    </ul>
-    <!-- 注册医疗信息 -->
-    <ul class="zhuceInfo">
-        <li class="zhuceInfo-first">
-            <span class="zhuceInfo-items">医疗器械注册信息</span>
-            <i class="iconfont icon-ico_arrow_down"></i>
-        </li>
-        <li>
-            <ul class="zhuceUl">
-                <li class="lingshou">
-                    <div class="goot-select">
-                        <div class="goot-items">注册证号</div>
-                        <div class="goot-items1"><span class="guoxie">国械注准</span>
-                            <input type="text" placeholder="输入" class="guoInput"></div>
-                    </div>
-                    <div class="goot-select">
-                        <div class="goot-items">注册时间</div>
-                        <div class="guoTime"><span>选择时间</span><i class="iconfont icon-ico_calendar"></i></div>
-                    </div>
-                </li>
-                <li class="guoxieLast">
-                    <div>注册证图片 <span>1-3 张</span></div>
-                    <div class="guoImgs">
-                        <div class="imgs">
-                            <img src="../resource/img/a1.jpg" alt="">
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </li>
-    </ul>
 </div>
 
 <!--员工列表体检/培训记录弹窗-->
 <div class="content-view content-view-tjReload" id="ygTjReloadList1">
-
 </div>
-
 <!-- 企业列表 -->
 <div class="content-view content-view-proLists">
     <div class="qyHeader">
@@ -1485,49 +1412,7 @@
         <span id="ygLi2" onclick="tjReload(id)">培训记录</span>
         <span id="ygLi3" onclick="tjReload(id)">体检记录</span>
     </div>
-    <ul class="yuangongUl">
-        <li class="first">
-            <div class="ygList1">姓名</div>
-            <div class="ygList2">职位</div>
-            <div class="ygList3">性别</div>
-            <div class="ygList4">手机号</div>
-            <div class="ygList5">权限设置</div>
-        </li>
-        <li class="others">
-            <span class="yuanLeft">精益眼镜机场大道店</span>
-            <i class="iconfont icon-ico_arrow_down yuanRight"></i>
-        </li>
-        <li class="hideBorder">
-            <ul class="showYuanList">
-                <li>
-                    <div class="ygList1">张浩博</div>
-                    <div class="ygList2">验光师</div>
-                    <div class="ygList3">男</div>
-                    <div class="ygList4">11111111111</div>
-                    <div class="ygList5"><input type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人 <input
-                            type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人
-                    </div>
-                </li>
-                <li>
-                    <div class="ygList1">李雪</div>
-                    <div class="ygList2">店长</div>
-                    <div class="ygList3">女</div>
-                    <div class="ygList4">11111111111</div>
-                    <div class="ygList5"><input type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人 <input
-                            type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人
-                    </div>
-                </li>
-                <li>
-                    <div class="ygList1">王娜</div>
-                    <div class="ygList2">店员</div>
-                    <div class="ygList3">女</div>
-                    <div class="ygList4">11111111111</div>
-                    <div class="ygList5"><input type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人 <input
-                            type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人
-                    </div>
-                </li>
-            </ul>
-        </li>
+    <ul class="yuangongUl" id="yuangongList1">
     </ul>
 </div>
 <!-- 证件有效期到期弹窗 -->
@@ -2165,9 +2050,44 @@
     </ul>
 </script>
 <script src="./medical.js"></script>
+<!--员工列表开始时列表-->
+<script type="text/html" id="yuangongList">
+    <li class="first">
+        <div class="ygList1">姓名</div>
+        <div class="ygList2">职位</div>
+        <div class="ygList3">性别</div>
+        <div class="ygList4">手机号</div>
+        <div class="ygList5">权限设置</div>
+    </li>
+    <%for(var i = 0;i < list.length; i++){%>
+    <li class="hideBorder">
+        <div class="others selectAllXiaLa">
+            <span class="yuanLeft"><%=list[i][i].subName%></span>
+            <i class="iconfont icon-ico_arrow_down yuanRight"></i>
+        </div>
+        <ul class="showYuanList showAllXiaLa">
+            <%for(var key = 0; key < list[i].length; key++){%>
+            <li>
+                <div class="ygList1"><%=list[i][key].name%></div>
+                <div class="ygList2"><%=list[i][key].job%></div>
+                <%if(list[i][key].sex && list[i][key].sex == 0)%>
+                <div class="ygList3">男</div>
+                <%else if(list[i][key].sex == 1){%>
+                <div class="ygList3">女</div>
+                <%}%>
+                <div class="ygList4"><%=list[i][key].phone%></div>
+                <div class="ygList5"><input type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人 <input
+                        type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人
+                </div>
+            </li>
+            <%}%>
+        </ul>
+    </li>
+    <%}%>
+</script>
 <!--员工列表体检/培训记录模板-->
-<script type="text/html" id="ygTjReloadList">
-
+<!--头部模板-->
+<script type="text/html" id="ygTjReloadListHead">
     <div class="tjHeader">
         <%if(id == 'ygLi3'){%>
         <div class="tjLeft clearfix">体检记录</div>
@@ -2180,23 +2100,29 @@
             </div>
             <div class="selectBox tj3" id="selectShopEmployer">
                 <div class="select-box-header">
+                    <%if(list2){%>
+                    <span class="text"><%=yuangong%></span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <%}else{%>
                     <span class="text">员工</span> <i class="iconfont icon-ico_arrow_down"></i>
+                    <%}%>
                 </div>
             </div>
         </div>
     </div>
-
+</script>
+<script type="text/html" id="ygTjReloadList">
     <div class="mainGoodList">
         <div class="goot-select">
             <div class="goot-items">编号</div>
-            <input type="text" placeholder="编号" id="ygTjReloadNum" class="proNames">
+            <input type="text" placeholder="编号" id="ygTjReloadNum" class="proNames"
+                   value='<%if(list2 && list2.length > 0 && list2[0].num){%><%=list2[0].num%><%}%>'>
         </div>
         <%if(id == 'ygLi3'){%>
         <div class="goot-select">
             <div class="goot-items">文化程度</div>
             <div class="selectBox" id="ygTjReloadLeval">
                 <div class="select-box-header">
-                    <span class="text">文化程度</span>
+                    <span class="text"><%if(list2 && list2.length > 0){%><%=list2[0].education%><%}else{%>文化程度<%}%></span>
                     <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
@@ -2214,7 +2140,7 @@
             <div class="goot-items">职位</div>
             <div class="selectBox" id="ygTjReloadJob">
                 <div class="select-box-header">
-                    <span class="text">职位</span>
+                    <span class="text"><%if(list2 && list2.length > 0 && list2[0].job){%><%=list2[0].job%><%}else{%>职位<%}%></span>
                     <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
@@ -2228,13 +2154,16 @@
         </div>
         <div class="goot-select">
             <div class="goot-items">从业年限</div>
-            <input type="text" placeholder="输入" class="proNames" id="ygTjReloadYear">
+
+            <input type="text" placeholder="输入" class="proNames" id="ygTjReloadYear"
+                   value='<%if(list2 && list2.length > 0){%><%=list2[0].workYear%><%}%>'>
         </div>
         <div class="goot-select">
             <div class="goot-items">体检日期</div>
             <div class="goot-items1">
                 <input class="guoTime g1 demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                       data-type="day" placeholder="选择日期" id="ygTjDate1"/>
+                       data-type="day" placeholder="选择日期" id="ygTjDate1"
+                       value='<%if(list2 && list2.length > 0){%><%=date%><%}%>' autocomplete="off" readonly/>
                 <i class="iconfont icon-ico_calendar icon11"></i>
             </div>
             <div class="settings" style="display:none;">
@@ -2245,58 +2174,65 @@
         </div>
         <div class="goot-select">
             <div class="goot-items">体检医院</div>
-            <input type="text" placeholder="输入" class="proNames" id="ygTjReloadYy">
+            <input type="text" placeholder="输入" class="proNames" id="ygTjReloadYy"
+                   value='<%if(list2 && list2.length > 0){%><%=list2[0].trainUnit%><%}%>'>
         </div>
     </div>
-        <div class="pxInput">
-            <div class="pxDanwei">体检内容</div>
-            <textarea name="pxIn" class="pxIn" id="ygTpNeiRong"></textarea>
-            <div class="pxDanwei">体检结果</div>
-            <textarea name="pxIn" class="pxIn" id="tjieguo"></textarea>
-            <div class="pxDanwei">备注</div>
-            <input type="text" class="beizhu" placeholder="备注" id="tjbeizhu">
-        </div>
-        <%}else if(id == 'ygLi2'){%>
-        <div class="goot-select">
-            <div class="goot-items">职位</div>
-            <div class="selectBox" id="ygTjReloadJob">
-                <div class="select-box-header">
-                    <span class="text">职位</span>
-                    <i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <%for(var i = 0; i < list.length; i++){%>
-                        <li><%=list[i]%></li>
-                        <%}%>
-                    </ul>
-                </div>
+    <div class="pxInput">
+        <div class="pxDanwei">体检内容</div>
+        <textarea name="pxIn" class="pxIn" id="ygTpNeiRong"><%if(list2 && list2.length > 0){%><%=list2[0].trainContent%><%}else{%><%}%></textarea>
+        <div class="pxDanwei">体检结果</div>
+        <textarea name="pxIn" class="pxIn" id="tjieguo"><%if(list2 && list2.length > 0){%><%=list2[0].examinationOrder%><%}else{%><%}%></textarea>
+        <div class="pxDanwei">备注</div>
+        <input type="text" class="beizhu" placeholder="备注" id="tjbeizhu"
+               value='<%if(list2 && list2.length > 0){%><%=list2[0].desc%><%}%>'>
+    </div>
+    <%}else if(id == 'ygLi2'){%>
+    <div class="goot-select">
+        <div class="goot-items">职位</div>
+        <div class="selectBox" id="ygTjReloadJob">
+            <div class="select-box-header">
+                <span class="text"><%if(list2 && list2.length > 0 && list2[0].job){%><%=list2[0].job%><%}else{%>职位<%}%></span>
+                <i class="iconfont icon-ico_arrow_down"></i>
+            </div>
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <%for(var i = 0; i < list.length; i++){%>
+                    <li><%=list[i]%></li>
+                    <%}%>
+                </ul>
             </div>
         </div>
-        <div class="goot-select">
-            <div class="goot-items">考试成绩</div>
-            <input type="text" placeholder="输入" class="proNames" id="ygPxReloadSch">
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">授课人</div>
-            <input type="text" placeholder="输入" class="proNames" id="ygPxReloadSkr">
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">培训形式</div>
-            <input type="text" placeholder="输入" class="proNames" id="ygPxReloadXs">
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">培训单位</div>
-            <input type="text" placeholder="输入" class="proNames" id="ygTjReloadYy">
-        </div>
     </div>
-        <div class="pxInput">
-            <div class="pxDanwei">培训内容</div>
-            <textarea name="pxIn" class="pxIn"  id="ygTpNeiRong"></textarea>
-            <div class="pxDanwei">备注</div>
-            <input type="text" class="beizhu" placeholder="备注" id="tjbeizhu">
-        </div>
-        <%}%>
+    <div class="goot-select">
+        <div class="goot-items">考试成绩</div>
+        <input type="text" placeholder="输入" class="proNames" id="ygPxReloadSch"
+               value='<%if(list2 && list2.length > 0){%><%=list2[0].tests%><%}%>'>
+    </div>
+    <div class="goot-select">
+        <div class="goot-items">授课人</div>
+        <input type="text" placeholder="输入" class="proNames" id="ygPxReloadSkr"
+               value='<%if(list2 && list2.length > 0){%><%=list2[0].lecturer%><%}%>'>
+    </div>
+    <div class="goot-select">
+        <div class="goot-items">培训形式</div>
+        <input type="text" placeholder="输入" class="proNames" id="ygPxReloadXs"
+               value='<%if(list2 && list2.length > 0){%><%=list2[0].trainForm%><%}%>'>
+    </div>
+    <div class="goot-select">
+        <div class="goot-items">培训单位</div>
+        <input type="text" placeholder="输入" class="proNames" id="ygTjReloadYy"
+               value='<%if(list2 && list2.length > 0){%><%=list2[0].trainUnit%><%}%>'>
+    </div>
+    </div>
+    <div class="pxInput">
+        <div class="pxDanwei">培训内容</div>
+        <textarea name="pxIn" class="pxIn" id="ygTpNeiRong"><%if(list2 && list2.length > 0){%><%=list2[0].trainContent%><%}else{%><%}%></textarea>
+        <div class="pxDanwei">备注</div>
+        <input type="text" class="beizhu" placeholder="备注" id="tjbeizhu"
+               value='<%if(list2 && list2.length > 0){%><%=list2[0].desc%><%}%>'>
+    </div>
+    <%}%>
 
 </script>
 
@@ -2431,152 +2367,178 @@
     var typeData;//隐形眼镜类型数据5
 
 
-
-
-
-
-
     /*员工列表开始*/
+    function selectTimes(date) {
+        //营业时间
+        var opt = {};
+        opt.date = {
+            preset: 'date'
+        };
+        opt.datetime = {
+            preset: 'datetime'
+        };
+        opt.time = {
+            preset: 'time'
+        };
+
+        opt.default = {
+            theme: 'mbsc-android-holo', //皮肤样式
+            display: 'bubble', //显示方式
+            mode: 'scroller', //日期选择模式
+            dateFormat: 'yyyy-mm-dd',
+            lang: 'zh',
+            showNow: true,
+            nowText: "今天",
+            typeNum: 'day', //day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+        };
+        $('.settings').bind('change', function () {
+            var demo = 'datetime';
+            if (!demo.match(/select/i) && !date) {
+                $('.demo-test-' + demo).val('');
+            }
+            $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+            $('.demo').hide();
+            $('.demo-' + demo).show();
+        });
+    }
     // start();
     var subids, //该员工的门店id
         suid, //员工的id
         job,
-        education; //文化程度
-    function start(id) {
+        education, //文化程度
+        mendian, //记录门店
+        yuangong, //记录员工
+        zhiWeiData; //职位
+    // 员工列表（体检记录弹窗）
+    function tjReload(id) {
         //门店员工列表的筛选
         quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(), {
             sid: quakooUser.getUserInfo().psid,
             token: quakooUser.getUserInfo().token
         }, function (ret1) {
-            quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {
-                sid: quakooUser.getUserInfo().sid,
-                userType: 1
-            }, function (ret) {
-                var data = {list: ret.data, list1: ret1.data, id: id};
+            var html = template('ygTjReloadListHead', {list1: ret1.data, id: id});
+            var index2 = layer.open({
+                type: 1,
+                shade: 0.01,
+                title: html,
+                move: '#ygTitle',
+                skin: 'ygPopup my-skin1',
+                area: ['360px', '550px'],
+                anim: 0,
+                maxWidth: '360',
+                closeBtn: 0, //显示关闭按钮
+                resize: false,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view-tjReload'),
+                btn: ['取消', '保存'],
+                yes: function (index2) {
+                    layer.close(index2)
+                },
+                btn2: function (index2) {
+                    baoCun(id)
+                    return false;
+                },
+                success: function () {
+                    $('#ygTjReloadList1').html(template('ygTjReloadList', {
+                        list: [],
+                        id: id,
+                        list2: [],
+                        date: '选择日期'
+                    }));
+                    $('.ygPopup').find('.layui-layer-title').css({
+                        "padding": 0,
+                        "overflow": 'inherit'
+                    }).next().css('width', '100%');
+                    //选择门店下拉框
+                    var html1 = template('selectTagTmpAll', {
+                        title: '选择门店',
+                        list: ret1.data
+                    });
+                    $('#selectShop').html(html1)
+                    selectTag($("#selectShop"), function (data) { //门店列表下拉框
+                        yuanGong(data.value, id)
+                        subids = data.value
+                    })
+                    $('.layui-layer .layui-layer-title span').css("marginLeft", "0px")
+                }
+            });
+        })
+        //获取职位
+        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {
+            sid: quakooUser.getUserInfo().sid,
+            userType: 1
+        }, function (ret) {
+            zhiWeiData = ret.data;
+        })
+    }
+    function yuanGong(id, type) {
+        quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {
+            sid: id, //门店id
+            userType: 1
+        }, function (ret2) {
+            if (ret2 && ret2.success) {
+                if (ret2.data && ret2.data.length > 0) {
+                    var html2 = template('selectTagTmpAll', {
+                        title: '选择员工',
+                        list: ret2.data
+                    });
+                    $('#selectShopEmployer').html(html2).show();
+                    //员工的下拉框
+                    selectTag($("#selectShopEmployer"), function (data) {
+                        suid = data.value;
+                        selectEmployer(type); //选择员工
+                    })
+                } else {
+                    $('#selectShopEmployer').hide();
+                }
+            }
+        })
+
+    }
+    function selectEmployer(type) {
+        //获取员工体检记录
+        if (type == 'ygLi3') {
+            quakooData.ajaxGetData(config.getUrl_medicalAppliances_getPtReload(), {
+                uid: suid,
+                type: 1
+            }, function (ret2) {
+                console.log(ret2)
+                if (ret2.data.length) {
+                    var date = quakooUtils.formatTimeToDay(parseInt(ret2.data[0].examinationDate))
+                }
+                var data = {
+                    list: zhiWeiData,
+                    id: type,
+                    list2: ret2.data,
+                    date: date
+                };
                 var html = template('ygTjReloadList', data);
                 $('#ygTjReloadList1').html(html);
-
-                //选择门店下拉框
-                var html1 = template('selectTagTmpAll', {
-                    title: '选择门店',
-                    list: ret1.data
-                });
-                $('#selectShop').html(html1);
-                selectTag($("#selectShop"), function (data) { //门店列表下拉框
-                    if (data.value) {
-                        subids = data.value;
-                        //获取门店下的员工列表
-                        quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {
-                            sid: data.value, //门店id
-                            userType: 1
-                        }, function (ret2) {
-                            console.log(ret2)
-                            if (ret2 && ret2.success) {
-                                if (ret2.data.length > 0) {
-                                    var html2 = template('selectTagTmpAll', {
-                                        title: '选择员工',
-                                        list: ret2.data
-                                    });
-                                    $('#selectShopEmployer').html(html2).show();
-                                    selectTag($("#selectShopEmployer"), function (employ) { //选择员工
-                                        suid = employ.value;
-                                    })
-                                } else {
-                                    $('#selectShopEmployer').hide();
-                                }
-                            }
-                        })
-                    } else {
-                        $('#selectShopEmployer').hide();
-                    }
-                })
-                if(id == 'ygLi3'){
-                    selectTag($("#ygTjReloadLeval"), function (value) {  //  文化程度下拉框
-                        education = value.text
-                    })
-                }
                 selectTag($("#ygTjReloadJob"), function (value) {  //  职位下拉框
                     job = value.text
                 })
-                //营业时间
-                var opt = {};
-                opt.date = {
-                    preset: 'date'
-                };
-                opt.datetime = {
-                    preset: 'datetime'
-                };
-                opt.time = {
-                    preset: 'time'
-                };
-
-                opt.default = {
-                    theme: 'mbsc-android-holo', //皮肤样式
-                    display: 'bubble', //显示方式
-                    mode: 'scroller', //日期选择模式
-                    dateFormat: 'yyyy-mm-dd',
-                    lang: 'zh',
-                    showNow: true,
-                    nowText: "今天",
-                    typeNum: 'day', //day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
-                };
-                $('.settings').bind('change', function () {
-                    var demo = 'datetime';
-                    if (!demo.match(/select/i)) {
-                        $('.demo-test-' + demo).val('');
-                    }
-                    $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
-                    $('.demo').hide();
-                    $('.demo-' + demo).show();
-                });
-
+                selectTag($("#ygTjReloadLeval"), function (value) {  //  文化程度下拉框
+                    education = value.text
+                })
+                selectTimes(date);
                 $('#ygTjDate').trigger('change');
-                $('#ygPxDate').trigger('change');
             })
-        })
+        } else if (type == 'ygLi2') { //获取员工培训记录
+            quakooData.ajaxGetData(config.getUrl_medicalAppliances_getPtReload(), {
+                uid: suid,
+                type: 2
+            }, function (ret2) {
+                console.log(ret2)
+                var data = {list: zhiWeiData, id: type, list2: ret2.data, yuangong: yuangong};
+                var html = template('ygTjReloadList', data);
+                $('#ygTjReloadList1').html(html);
+                selectTag($("#ygTjReloadJob"), function (value) {  //  职位下拉框
+                    job = value.text
+                })
+            })
+        }
     }
-
-    // 员工列表（体检记录弹窗）
-    function tjReload(id) {
-        console.log(id)
-        // var title = '<div class="tjHeader clearfix">' +
-        //     '<div class="tjLeft clearfix">培训记录</div>' +
-        //     '<div class="tjRight clearfix">' +
-        //     '<div class="selectBox tj2" id="selectShop"></div>' +
-        //     '<div class="selectBox tj3" id="selectShopEmployer"></div>' +
-        //     '<div class="select-box-header">' +
-        //     '<span class="text">选择员工</span>' +
-        //     '<i class="iconfont icon-ico_arrow_down"></i>' +
-        //     '</div>' +
-        //     '</div>';
-        var index2 = layer.open({
-            type: 1,
-            shade: 0.01,
-            title: null,
-            skin: 'my-skin1',
-            area: ['360px', '550px'],
-            anim: 0,
-            maxWidth: '360',
-            closeBtn: 0, //显示关闭按钮
-            resize: false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-tjReload'),
-            btn: ['取消', '保存'],
-            yes: function (index2) {
-                layer.close(index2)
-            },
-            btn2: function (index2) {
-                baoCun(id)
-                return false;
-            },
-            success: function () {
-                start(id);
-            }
-        });
-    }
-
     function baoCun(id) {
-        console.log(id)
         var param1 = {};
         param1.subid = subids; //员工门店id
         param1.uid = suid; //员工id
@@ -2588,11 +2550,11 @@
         //体检独有
         param1.examinationOrder = $('#tjieguo').val(); //体检结果
         param1.workYear = quakooUtils.isNotBlack($('#ygTjReloadYear')) ? $('#ygTjReloadYear').val() : ''; //从业年限
-        if(id == 'ygLi3'){
+        if (id == 'ygLi3') {
             param1.type = 1;
-            param1.examinationDate = quakooUtils.isNotBlack($('#ygTjDate1')) ? new Date($("#ygTjDate1").val()).getTime() : ''; //体检日期
-            param1.education = education; //文化程度
-        }else if(id == 'ygLi2'){
+            param1.examinationDate = quakooUtils.isNotBlack($('#ygTjDate1').val()) ? new Date($("#ygTjDate1").val()).getTime() : ''; //体检日期
+            param1.education = quakooUtils.isNotBlack(education) ? education : ''; //文化程度
+        } else if (id == 'ygLi2') {
             param1.type = 2;
             param1.education = ''; //文化程度
         }
@@ -2600,7 +2562,6 @@
         param1.tests = quakooUtils.isNotBlack($('#ygPxReloadSch')) ? $('#ygPxReloadSch').val() : '';  //成绩考试
         param1.trainForm = quakooUtils.isNotBlack($('#ygPxReloadXs')) ? $('#ygPxReloadXs').val() : '';  //培训形式
         param1.lecturer = quakooUtils.isNotBlack($('#ygPxReloadSkr')) ? $('#ygPxReloadSkr').val() : '';  //授课人
-        console.log(param1)
         if (quakooUtils.isBlack(param1.subid)) {
             layer.msg('选择门店');
             return;
@@ -2613,7 +2574,7 @@
             layer.msg('填写编号');
             return;
         }
-        if(id == 'ygLi3'){
+        if (id == 'ygLi3') {
             if (quakooUtils.isBlack(param1.examinationDate)) {
                 layer.msg('体检日期');
                 return;
@@ -2630,7 +2591,7 @@
                 layer.msg('填写体检结果');
                 return;
             }
-        }else if(id == 'ygLi2'){
+        } else if (id == 'ygLi2') {
             if (quakooUtils.isBlack(param1.tests)) {
                 layer.msg('成绩考试');
                 return;
@@ -2645,31 +2606,27 @@
             }
         }
         if (quakooUtils.isBlack(param1.trainUnit)) {
-            if(id == 'ygLi3'){
+            if (id == 'ygLi3') {
                 layer.msg('体检医院');
-            }else if(id == 'ygLi2'){
+            } else if (id == 'ygLi2') {
                 layer.msg('培训单位');
             }
             return;
         }
         if (quakooUtils.isBlack(param1.trainContent)) {
-            if(id == 'ygLi3'){
+            if (id == 'ygLi3') {
                 layer.msg('体检内容');
-            }else if(id == 'ygLi2'){
+            } else if (id == 'ygLi2') {
                 layer.msg('培训内容');
             }
             return;
         }
+        console.log(param1)
         quakooData.ajaxGetData(config.getUrl_medicalAppliances_addtjReload(), param1, function (ret) {
             layer.msg('保存成功')
         })
     }
-
-    /*员工列表开始*/
-
-
-
-
+    /*员工列表结束*/
 
 
     $(function () {
@@ -2695,7 +2652,6 @@
             console.log(gongS)
         })
     })
-
     //初始化函数
     function initPage() {
         // quakooData.ajaxGetData(config.getUrl_product_getSPUPager(), { subid: quakooUser.getUserInfo().psid, type: 1 }, function (ret) {
@@ -2726,7 +2682,6 @@
         });
         tabTwo.Init();
     }
-
     //初始化
     var TableInit = function (tabObj) {
         var oTableInit = new Object();
@@ -2774,7 +2729,6 @@
         };
         return oTableInit;
     };
-
     /*所有商品(需要补充说明商品)*/
     var data10 = [
         {
@@ -2837,7 +2791,6 @@
         ]
 
     });
-
     /*新改的入库记录*/
     var data4 = [
         {
@@ -2960,7 +2913,6 @@
             {field: "num", title: "单据编号", align: "left", valign: "middle"},
         ]
     });
-
     /*销售记录*/
     var data5 = [
         {
@@ -3387,6 +3339,15 @@
     }
 
     // 员工列表
+    var obj = [];
+    quakooData.ajaxGetData(config.getUrl_medicalAppliances_getAllGongSiInfo(), {psid: quakooUser.getUserInfo().psid}, function (ret) {
+        for (var k in ret.data) {
+            obj.push(ret.data[k])
+        }
+        obj.shift()
+        console.log(obj[0][0].name)
+    })
+
     function employList() {
         layer.open({
             type: 1, shade: 0.01,
@@ -3401,46 +3362,10 @@
             content: $('.content-view-employList'),
             btn: '关闭窗口'
         });
+        var html = template('yuangongList', { list: obj })
+        $('#yuangongList1').html(html);
+        console.log(obj[0][0].subName)
     }
-
-    // 员工列表（培训记录弹窗）
-    function pxReload() {
-        console.log(1111111);
-        // var title = '<div class="tjHeader">' +
-        //     '<div class="tj1">培训记录</div>' +
-        //     '<div class="selectBox tj2" id="selectShop"></div>' +
-        //     '<div class="selectBox tj3" id="selectShopEmployer"></div>' +
-        //     '</div>';
-        var index1 = layer.open({
-            type: 1, shade: 0.01,
-            title: null,
-            area: ['360px', '550px'],
-            anim: 0,
-            maxWidth: '360',
-            closeBtn: 0, //显示关闭按钮
-            resize: false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-pxReload'),
-            btn: ['取消', '保存'],
-            yes: function (index1) {
-                debugger
-                layer.close(index1);
-            },
-            btn2: function (index1) {
-                debugger
-                baoCun(index1);
-                return false
-            },
-            btn: ['取消', '保存'],
-            yes: function (index) {
-                layer.close(index);
-            },
-            btn2: function (index) {
-                return false
-            }
-        });
-    }
-
 
     //创建企业弹窗
     var date1,
@@ -3839,9 +3764,6 @@
     function shows2(_this) {
         $('.qyshow2').slideToggle();
     }
-
-
 </script>
 </body>
-
 </html>
