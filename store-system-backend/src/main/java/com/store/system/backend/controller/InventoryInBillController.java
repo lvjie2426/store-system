@@ -36,6 +36,9 @@ public class InventoryInBillController extends BaseController {
     private SubordinateService subordinateService;
 
     @Resource
+    private CodeService codeService;
+
+    @Resource
     private ProductPropertyNameService productPropertyNameService;
 
     @Resource
@@ -130,7 +133,7 @@ public class InventoryInBillController extends BaseController {
                 inventoryInBill.setWid(warehouses.get(0).getId());
             for(InventoryInBillItem bill:billItems){
                 if(StringUtils.isBlank(bill.getCode())) {
-                    bill.setCode(String.valueOf(CodeUtil.getRandom(10)));
+                    bill.setCode(codeService.getSkuCode());
                 }
             }
             inventoryInBill.setItems(billItems);

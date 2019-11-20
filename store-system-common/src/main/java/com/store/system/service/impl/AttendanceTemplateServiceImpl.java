@@ -12,12 +12,14 @@ import com.store.system.model.attendance.AttendanceTemplate;
 import com.store.system.model.attendance.AttendanceTimeItem;
 import com.store.system.service.AttendanceTemplateService;
 import com.store.system.service.UserService;
+import com.store.system.util.TimeUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.omg.CORBA.SystemException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -132,17 +134,19 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
 
     @Override
     public ClientAttendanceTemplate getUserList(long id) throws Exception {
-
         List<AttendanceTemplate> allList = attendanceTemplateDao.getUserList(id);
         if(allList.size()>0){
             User user=userService.load(id);
-            ClientAttendanceTemplate clientAttendanceTemplate=new ClientAttendanceTemplate();
-            BeanUtils.copyProperties(clientAttendanceTemplate,allList.get(0));
-            clientAttendanceTemplate.setUser(new SimpleUser(user));
-            return  clientAttendanceTemplate;
+            ClientAttendanceTemplate client=new ClientAttendanceTemplate();
+            BeanUtils.copyProperties(client,allList.get(0));
+            client.setUser(new SimpleUser(user));
+            if(allList.get(0).getTurnStartDay()>0) {
+                long time = TimeUtils.getTimeFormDay(allList.get(0).getTurnStartDay());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+                client.setTurnDay(sdf.format(time));
+            }
+            return client;
         }
-
-
         return new ClientAttendanceTemplate();
 
     }
@@ -154,6 +158,11 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
             ClientAttendanceTemplate clientAttendanceTemplate = new ClientAttendanceTemplate();
             BeanUtils.copyProperties(clientAttendanceTemplate, attendanceTemplate);
             clientAttendanceTemplate.setUser(new SimpleUser(userMap.get(clientAttendanceTemplate.getUid())));
+            if(attendanceTemplate.getTurnStartDay()>0) {
+                long time = TimeUtils.getTimeFormDay(attendanceTemplate.getTurnStartDay());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+                clientAttendanceTemplate.setTurnDay(sdf.format(time));
+            }
             result.add(clientAttendanceTemplate);
         }
         return result;

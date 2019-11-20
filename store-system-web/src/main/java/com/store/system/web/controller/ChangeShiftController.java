@@ -120,6 +120,7 @@ public class ChangeShiftController extends BaseController {
     public ModelAndView pass(HttpServletRequest request, HttpServletResponse response,
                              long id) throws Exception {
         try {
+            User user=UserUtils.getUser(request);
            boolean flag = changeShiftService.pass(id);
             return this.viewNegotiating(request, response, new ResultClient(flag));
         } catch (StoreSystemException e) {
@@ -128,7 +129,7 @@ public class ChangeShiftController extends BaseController {
     }
 
     /**
-     * 拒绝
+     * 拒绝  审核人
      * @param request
      * @param response
      * @param id
@@ -142,6 +143,44 @@ public class ChangeShiftController extends BaseController {
                                @RequestParam(value = "reason",defaultValue = "") String reason) throws Exception {
         try {
            boolean flag = changeShiftService.nopass(id,reason);
+            return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /**
+     * 拒绝  被调班人
+     * @param request
+     * @param response
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/replaceNopass")
+    public ModelAndView replaceNopass(HttpServletRequest request, HttpServletResponse response,
+                             long id) throws Exception {
+        try {
+           boolean flag = changeShiftService.replaceNopass(id);
+            return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /**
+     * 接受  被调班人
+     * @param request
+     * @param response
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/replacePass")
+    public ModelAndView replacePass(HttpServletRequest request, HttpServletResponse response,
+                             long id) throws Exception {
+        try {
+           boolean flag = changeShiftService.replacePass(id);
             return this.viewNegotiating(request, response, new ResultClient(flag));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

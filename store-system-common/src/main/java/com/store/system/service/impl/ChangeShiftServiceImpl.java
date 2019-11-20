@@ -31,22 +31,22 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
     @Autowired
     private ChangeShiftDao changeShiftDao;
     @Autowired
-    private UserDao  userDao;
+    private UserDao userDao;
     @Autowired
     private ApprovalLogDao approvalLogDao;
 
     private void check(ChangeShift changeShift) {
-        if(changeShift.getDate()==0)throw new StoreSystemException("调班日期不能为空！");
-        if(changeShift.getFlightStart()==0)throw new StoreSystemException("班次开始时间不能为空");
-        if(changeShift.getFlightEnd()==0)throw new StoreSystemException("班次结束时间不能为空");
-        if(changeShift.getChangeStart()==0)throw new StoreSystemException("调班开始时间不能为空！");
-        if(changeShift.getChangeEnd()==0)throw new StoreSystemException("调班结束时间不能为空！");
-        if(changeShift.getReplaceUid()==0)throw new StoreSystemException("被调班人不能为空！");
-        if(changeShift.getAskUid()==0)throw new StoreSystemException("申请人不能为空！");
-        if(changeShift.getCheckUid()==0)throw new StoreSystemException("审核人不能为空！");
-        if(changeShift.getCopyUid()==0)throw new StoreSystemException("抄送人不能为空！");
-        if(changeShift.getSid()==0)throw new StoreSystemException("企业不能为空！");
-        if(changeShift.getSubId()==0)throw new StoreSystemException("门店不能为空！");
+        if (changeShift.getDate() == 0) throw new StoreSystemException("调班日期不能为空！");
+        if (changeShift.getFlightStart() == 0) throw new StoreSystemException("班次开始时间不能为空");
+        if (changeShift.getFlightEnd() == 0) throw new StoreSystemException("班次结束时间不能为空");
+        if (changeShift.getChangeStart() == 0) throw new StoreSystemException("调班开始时间不能为空！");
+        if (changeShift.getChangeEnd() == 0) throw new StoreSystemException("调班结束时间不能为空！");
+        if (changeShift.getReplaceUid() == 0) throw new StoreSystemException("被调班人不能为空！");
+        if (changeShift.getAskUid() == 0) throw new StoreSystemException("申请人不能为空！");
+        if (changeShift.getCheckUid() == 0) throw new StoreSystemException("审核人不能为空！");
+        if (changeShift.getCopyUid() == 0) throw new StoreSystemException("抄送人不能为空！");
+        if (changeShift.getSid() == 0) throw new StoreSystemException("企业不能为空！");
+        if (changeShift.getSubId() == 0) throw new StoreSystemException("门店不能为空！");
     }
 
 
@@ -54,12 +54,12 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
     public ChangeShift add(ChangeShift changeShift) throws Exception {
         check(changeShift);
         ChangeShift insert = changeShiftDao.insert(changeShift);
-        if(insert!=null&&insert.getCheckUid()>0){
-            ApprovalLog approvalLog=new ApprovalLog();
+        if (insert != null && insert.getCheckUid() > 0) {
+            ApprovalLog approvalLog = new ApprovalLog();
             approvalLog.setCheckUid(insert.getCheckUid());
             approvalLog.setSid(insert.getSid());
             approvalLog.setSubId(insert.getSubId());
-            approvalLog.setType(ApprovalLog.type_work);
+            approvalLog.setType(ApprovalLog.type_change);
             approvalLog.setTypeId(insert.getId());
             approvalLogDao.insert(approvalLog);
         }
@@ -76,7 +76,7 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
         return new PagerRequestService<ChangeShift>(pager, 0) {
             @Override
             public List<ChangeShift> step1GetPageResult(String s, int i) throws Exception {
-                List<ChangeShift> listByUid = changeShiftDao.getListByUid(uid,Double.parseDouble(s),i);
+                List<ChangeShift> listByUid = changeShiftDao.getListByUid(uid, Double.parseDouble(s), i);
                 return listByUid;
             }
 
@@ -92,9 +92,9 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
 
             @Override
             public List<?> step4TransformData(List<ChangeShift> list, PagerSession pagerSession) throws Exception {
-                List<ClientChangeShift> clientChangeShifts=new ArrayList<>(list.size());
-                for(ChangeShift changeShift:list){
-                    ClientChangeShift clientChangeShift=TransFormCliens(changeShift);
+                List<ClientChangeShift> clientChangeShifts = new ArrayList<>(list.size());
+                for (ChangeShift changeShift : list) {
+                    ClientChangeShift clientChangeShift = TransFormCliens(changeShift);
                     clientChangeShifts.add(clientChangeShift);
                 }
                 return clientChangeShifts;
@@ -106,9 +106,9 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
     @Override
     public List<ClientChangeShift> getListByReplaceUid(long replaceUid) throws Exception {
         List<ChangeShift> listByUid = changeShiftDao.getListByReplaceUid(replaceUid);
-        List<ClientChangeShift> clientChangeShifts=new ArrayList<>(listByUid.size());
-        for(ChangeShift changeShift:listByUid){
-            ClientChangeShift clientChangeShift=TransFormCliens(changeShift);
+        List<ClientChangeShift> clientChangeShifts = new ArrayList<>(listByUid.size());
+        for (ChangeShift changeShift : listByUid) {
+            ClientChangeShift clientChangeShift = TransFormCliens(changeShift);
             clientChangeShifts.add(clientChangeShift);
         }
         return clientChangeShifts;
@@ -117,7 +117,7 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
     @Override
     public boolean nopass(long id, String reason) throws Exception {
         ChangeShift load = changeShiftDao.load(id);
-        if(load!=null){
+        if (load != null) {
             load.setStatus(ChangeShift.status_fail);
         }
         return changeShiftDao.update(load);
@@ -126,25 +126,47 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
     @Override
     public boolean pass(long id) throws Exception {
         ChangeShift load = changeShiftDao.load(id);
-        if(load!=null){
+        if (load != null) {
             load.setStatus(ChangeShift.status_success);
         }
         return changeShiftDao.update(load);
     }
 
-    public ClientChangeShift TransFormCliens(ChangeShift changeShift){
-        ClientChangeShift clientChangeShift=new ClientChangeShift(changeShift);
+    @Override
+    public boolean replaceNopass(long id) throws Exception {
+        ChangeShift load = changeShiftDao.load(id);
+        if (load != null) {
+            load.setReplaceStatus(ChangeShift.replace_no);
+        }
+        return changeShiftDao.update(load);
+    }
+
+    @Override
+    public boolean replacePass(long id) throws Exception {
+        ChangeShift load = changeShiftDao.load(id);
+        if (load != null) {
+            load.setReplaceStatus(ChangeShift.replace_yes);
+        }
+
+        return changeShiftDao.update(load);
+    }
+
+    public ClientChangeShift TransFormCliens(ChangeShift changeShift) {
+        ClientChangeShift clientChangeShift = new ClientChangeShift(changeShift);
         User load = userDao.load(changeShift.getReplaceUid());
-        if(load!=null){
+        if (load != null) {
             clientChangeShift.setReplaceName(load.getName());
         }
         User load1 = userDao.load(changeShift.getCopyUid());
-        if(load1!=null){
+        if (load1 != null) {
             clientChangeShift.setCopyName(load1.getName());
         }
         User load2 = userDao.load(changeShift.getCheckUid());
-        if(load1!=null){
-            clientChangeShift.setCheckName(load1.getName());
+        if (load2 != null) {
+            clientChangeShift.setCheckName(load2.getName());
+        } User load3 = userDao.load(changeShift.getAskUid());
+        if (load3 != null) {
+            clientChangeShift.setAskName(load3.getName());
         }
         return clientChangeShift;
     }

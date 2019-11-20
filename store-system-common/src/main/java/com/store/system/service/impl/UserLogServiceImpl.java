@@ -42,6 +42,8 @@ private UserLogDao  userLogDao;
         dbUserLog.setTrainUnit(userLog.getTrainUnit());
         dbUserLog.setType(userLog.getType());
         dbUserLog.setWorkYear(userLog.getWorkYear());
+        dbUserLog.setNum(userLog.getNum());
+        dbUserLog.setJob(userLog.getJob());
         if(update){
             userLogDao.update(dbUserLog);
         }else{

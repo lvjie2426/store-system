@@ -52,4 +52,19 @@ public interface ChangeShiftService {
      * @throws Exception
      */
     public boolean pass(long id)throws Exception;
+
+    /**
+     * 被调班人拒绝
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean replaceNopass(long id)throws Exception;
+    /**
+     * 被调班人接受
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean replacePass(long id)throws Exception;
 }

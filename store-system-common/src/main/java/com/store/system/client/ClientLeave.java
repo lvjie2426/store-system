@@ -16,6 +16,10 @@ public class ClientLeave extends Leave {
 
     private String checkName;
 
+    private String askName;
+
+    private String copyName;
+
 
     public ClientLeave(Leave leave) {
         try {

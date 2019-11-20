@@ -165,23 +165,33 @@ public class InventoryCheckBillController extends BaseController {
         }
     }
 
-
+    /***
+    * 管理端获取管理员自己创建的盘点单列表
+    * @Param: [subid, pager, request, response, model]
+    * @return: org.springframework.web.servlet.ModelAndView
+    */
     @RequestMapping("/getAll")
-    public ModelAndView getCheckPager(@RequestParam(value = "subid") long subid,
+    public ModelAndView getCheckPager(@RequestParam(value = "subid",defaultValue = "0") long subid,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
-            pager = inventoryCheckBillService.getWebCheckPager(pager, subid);
+            User user = UserUtils.getUser(request);
+            pager = inventoryCheckBillService.getWebCreatePager(pager, user.getId());
             return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
+    /***
+    *  员工端获取门店下 待盘点的盘点单列表
+    * @Param: [pager, request, response, model]
+    * @return: org.springframework.web.servlet.ModelAndView
+    */
     @RequestMapping("/getWebCreatePager")
     public ModelAndView getWebCreatePager(Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            pager = inventoryCheckBillService.getWebCreatePager(pager, user.getId());
+            pager = inventoryCheckBillService.getWebCheckPager(pager, user.getPsid(), user.getSid());
             return this.viewNegotiating(request, response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -192,7 +202,9 @@ public class InventoryCheckBillController extends BaseController {
     public ModelAndView getListByStatus(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         try {
             User user = UserUtils.getUser(request);
-            List<InventoryCheckBill> res = inventoryCheckBillService.getListByStatus(user.getSid(),InventoryCheckBill.status_wait_check);
+            long sid = user.getSid();
+            long psid = user.getPsid();
+            List<InventoryCheckBill> res = inventoryCheckBillService.getListByStatus(psid, sid, InventoryCheckBill.status_wait_check);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

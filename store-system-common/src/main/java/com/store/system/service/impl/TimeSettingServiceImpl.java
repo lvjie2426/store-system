@@ -47,8 +47,8 @@ public class TimeSettingServiceImpl implements TimeSettingService{
     }
 
     @Override
-    public boolean update(TimeSetting city) throws Exception {
-        return timeSettingDao.update(city);
+    public boolean update(TimeSetting timeSetting) throws Exception {
+        return timeSettingDao.update(timeSetting);
     }
 
     @Override

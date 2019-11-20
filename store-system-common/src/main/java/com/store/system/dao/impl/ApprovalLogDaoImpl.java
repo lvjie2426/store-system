@@ -38,4 +38,10 @@ public class ApprovalLogDaoImpl extends CacheBaseDao<ApprovalLog> implements App
                                      @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
         return null;
     }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<ApprovalLog> getList(long typeId) throws DataAccessException {
+        return null;
+    }
 }

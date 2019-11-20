@@ -115,17 +115,18 @@ public class MissionController extends BaseController {
      * @return
      */
     @RequestMapping("/getWebByPager")
-    public ModelAndView getWebByPager(@RequestParam(value = "sid") long sid,
+    public ModelAndView getWebByPager(
                                    @RequestParam(value = "missionStatus",defaultValue = "0") int missionStatus,
                                    @RequestParam(value = "type",defaultValue = "0") int type,
                                    @RequestParam(value = "isNow",defaultValue = "0") int isNow,
                                    HttpServletRequest request, HttpServletResponse response, Model model, Pager pager) throws Exception {
 
         try {
-            Subordinate subordinate = subordinateService.load(sid);
-            long psid = subordinate.getPid();
-            if(psid==0){ throw new StoreSystemException("门店ID错误");}
-            pager = missionService.getWebByPager(pager,psid,missionStatus,type,isNow);
+          User user=UserUtils.getUser(request);
+          if(user.getPsid()>0&&user.getSid()!=0){
+              throw new StoreSystemException("用户无权限访问");
+          }
+            pager = missionService.getWebByPager(pager,user.getPsid(),missionStatus,type,isNow);
             return this.viewNegotiating(request,response, pager.toModelAttribute());
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
@@ -166,15 +167,16 @@ public class MissionController extends BaseController {
      * @return
      */
     @RequestMapping("/getUserWebByPager")
-    public ModelAndView getUserWebByPager(@RequestParam(value = "sid") long sid,
+    public ModelAndView getUserWebByPager(
                                       @RequestParam(value = "missionStatus",defaultValue = "0") int missionStatus,
                                       @RequestParam(value = "type",defaultValue = "0") int type,
                                       @RequestParam(value = "isNow",defaultValue = "0") int isNow,
                                       HttpServletRequest request, HttpServletResponse response, Model model, Pager pager) throws Exception {
 
         try {
+
             User user= UserUtils.getUser(request);
-            Subordinate subordinate = subordinateService.load(sid);
+            Subordinate subordinate = subordinateService.load(user.getSid());
             long psid = subordinate.getPid();
             if(psid==0){ throw new StoreSystemException("门店ID错误");}
             pager = missionService.getUserWebByPager(pager,psid,missionStatus,type,isNow,user);

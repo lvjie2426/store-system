@@ -16,4 +16,12 @@ import java.util.List;
 public interface ApprovalLogDao extends HDao<ApprovalLog> {
 
     public List<ApprovalLog> getList(long checkUid,double cursor,int size) throws DataAccessException;
+
+    /**
+     * 获取对应的typeid
+     * @param typeId
+     * @return
+     * @throws DataAccessException
+     */
+    public List<ApprovalLog> getList(long typeId) throws DataAccessException;
 }

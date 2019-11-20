@@ -17,13 +17,14 @@ public class ClientChangeShift extends ChangeShift {
     private String copyName;
     private String replaceName;
     private String checkName;
+    private String askName;
 
 
     public ClientChangeShift(ChangeShift changeShift){
         try {
             BeanUtils.copyProperties(this, changeShift);
         } catch (Exception e) {
-            throw new IllegalStateException("ClientLeave construction error!");
+            throw new IllegalStateException("ChangeShift construction error!");
         }
     }
 }

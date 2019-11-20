@@ -12,9 +12,5 @@ public interface InventoryInBillDao extends HDao<InventoryInBill> {
 
     public List<InventoryInBill> getCreatePageList(long createUid, double cursor, int size) throws DataAccessException;
 
-    public int getCheckCount(long subid, int status) throws DataAccessException;
-
-    public int getCreateCount(long subid) throws DataAccessException;
-
     public List<InventoryInBill> getAllList(long subid, int status) throws DataAccessException;
 }

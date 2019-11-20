@@ -50,7 +50,7 @@ public class ApprovalLogServiceImpl implements ApprovalLogService {
         return new PagerRequestService<ApprovalLog>(pager, 0) {
             @Override
             public List<ApprovalLog> step1GetPageResult(String cursor, int size) throws Exception {
-                List<ApprovalLog> list = approvalLogDao.getList(id,Double.parseDouble(cursor),size);
+                List<ApprovalLog> list = approvalLogDao.getList(id, Double.parseDouble(cursor), size);
                 return list;
             }
 
@@ -88,6 +88,11 @@ public class ApprovalLogServiceImpl implements ApprovalLogService {
                             clientApprovalLog.setData(changeShift.getDate());
                             clientApprovalLog.setCheckName(getName(changeShift.getCheckUid()));
                             clientApprovalLog.setStatus(changeShift.getStatus());
+                            if(changeShift.getReplaceStatus()==ChangeShift.replace_no){
+                                clientApprovalLog.setStatus(ChangeShift.status_fail);
+                            }
+                            clientApprovalLog.setReplaceStatus(changeShift.getReplaceStatus());
+
                         }
                     } else {
                         //加班
@@ -102,8 +107,9 @@ public class ApprovalLogServiceImpl implements ApprovalLogService {
                 }
                 return clientApprovalLogList;
             }
-        }.getPager();
+        }.
 
+                getPager();
 
 
     }

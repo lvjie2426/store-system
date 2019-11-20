@@ -27,6 +27,7 @@ import com.store.system.service.UserService;
 import com.store.system.util.DateUtils;
 import com.store.system.util.NumberUtils;
 import com.store.system.util.SmsUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,8 +104,8 @@ public class UserServiceImpl implements UserService {
     String appId = loader.getProperty("appId");
     String appsecret = loader.getProperty("appsecret");
 
-    String QrCodeAppId = loader.getProperty("QrCodeAppId","");
-    String QrCodeAppsecret = loader.getProperty("QrCodeAppsecret","");
+    String QrCodeAppId = loader.getProperty("QrCodeAppId", "");
+    String QrCodeAppsecret = loader.getProperty("QrCodeAppsecret", "");
 
     @Autowired(required = true)
     @Qualifier("cachePool")
@@ -510,7 +511,7 @@ public class UserServiceImpl implements UserService {
                 clientUserOnLogin.setSubName(pSubordinate.getName());//门店名称
             }
         }
-        if( clientUserOnLogin.getBankCard().size()==0){
+        if (clientUserOnLogin.getBankCard().size() == 0) {
             clientUserOnLogin.setBankCard(null);
         }
         return clientUserOnLogin;
@@ -730,11 +731,11 @@ public class UserServiceImpl implements UserService {
         int num = random.nextInt(9999);
         String code = String.format("%04d", num);
         String temCode = "{\"code\":\"" + code + "\"}";
-        boolean sign = SmsUtils.sendConfigMessge(phone, templateId,temCode,messageAccessKeyId,messageAccessKeySecret,company);
+        boolean sign = SmsUtils.sendConfigMessge(phone, templateId, temCode, messageAccessKeyId, messageAccessKeySecret, company);
         if (sign) {
             cache.setString("exists_login_code_" + auth_code_key(phone), 58, "true");
             cache.setString("login_code_" + auth_code_key(phone), 5 * 60, code);
-            cache.setString("login_code_time_" + phone, 10 * 60, System.currentTimeMillis()+"");
+            cache.setString("login_code_time_" + phone, 10 * 60, System.currentTimeMillis() + "");
 
         }
         return true;
@@ -755,7 +756,7 @@ public class UserServiceImpl implements UserService {
 
         //验证码登录：两种情况
         //一:提示未注册  这个一般在发送登录验证码时就进行了判断,这里第二次验证
-        if(load == null){
+        if (load == null) {
             throw new StoreSystemException("你还没有注册账号");
         }
 
@@ -764,7 +765,7 @@ public class UserServiceImpl implements UserService {
             throw new StoreSystemException("用户不存在");
         }
 
-        if (dbUser.getStatus() == User.status_delete){
+        if (dbUser.getStatus() == User.status_delete) {
             throw new StoreSystemException("用户已被冻结");
         }
         Random rand = new Random();
@@ -782,7 +783,7 @@ public class UserServiceImpl implements UserService {
         Random random = new Random();
         int num = random.nextInt(9999);
         String code = String.format("%04d", num);
-        boolean sign = SmsUtils.sendConfigMessge(phone, template,code,messageAccessKeyId,messageAccessKeySecret,company);
+        boolean sign = SmsUtils.sendConfigMessge(phone, template, code, messageAccessKeyId, messageAccessKeySecret, company);
 //        boolean sign = SmsUtils.sendSms(phone, template, code);
         if (sign) {
             cache.setString("exists_auth_common_user_" + (phone), 58, "true");
@@ -810,8 +811,8 @@ public class UserServiceImpl implements UserService {
         ClientUserOnLogin clientUserOnLogin = new ClientUserOnLogin(user);
         Subordinate subordinate = subordinateDao.load(clientUserOnLogin.getSid());
         Subordinate load = subordinateDao.load(clientUserOnLogin.getPsid());
-        clientUserOnLogin.setSubName(subordinate!=null?subordinate.getName():"");
-        clientUserOnLogin.setSName(load!=null?load.getName():"");
+        clientUserOnLogin.setSubName(subordinate != null ? subordinate.getName() : "");
+        clientUserOnLogin.setSName(load != null ? load.getName() : "");
 
         return clientUserOnLogin;
     }
@@ -858,7 +859,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         //消费次数
-        List<BusinessOrder> orders = businessOrderDao.getUserList(user.getId(),BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
+        List<BusinessOrder> orders = businessOrderDao.getUserList(user.getId(), BusinessOrder.status_pay, BusinessOrder.makeStatus_qu_yes);
         if (orders.size() > 0) {
             clientUser.setPayCount(orders.size());
             // TODO: 2019/7/24
@@ -900,6 +901,10 @@ public class UserServiceImpl implements UserService {
         if (user.getSex() != 0) {
             olduser.setSex(user.getSex());
         }
+        //生日
+        if (user.getBirthdate() != 0) {
+            olduser.setBirthdate(user.getBirthdate());
+        }
         //年龄
         if (user.getAge() != 0) {
             olduser.setAge(user.getAge());
@@ -939,12 +944,12 @@ public class UserServiceImpl implements UserService {
         if (user.getAid() != 0) {
             olduser.setAid(user.getAid());
         }
-        if (user.getSid() != 0){
+        if (user.getSid() != 0) {
             SubordinateUserPool subordinateUserPool = new SubordinateUserPool();
             subordinateUserPool.setUid(olduser.getId());
             subordinateUserPool.setSid(olduser.getSid());
             subordinateUserPool = subordinateUserPoolDao.load(subordinateUserPool);
-            if(subordinateUserPool != null){
+            if (subordinateUserPool != null) {
                 subordinateUserPool.setStatus(User.status_delete);
                 subordinateUserPoolDao.update(subordinateUserPool);
             }
@@ -952,17 +957,17 @@ public class UserServiceImpl implements UserService {
             newPool.setUid(user.getId());
             newPool.setSid(user.getSid());
             SubordinateUserPool dbInfo = subordinateUserPoolDao.load(newPool);
-            if(dbInfo != null){
+            if (dbInfo != null) {
                 newPool.setStatus(User.status_delete);
                 subordinateUserPoolDao.update(dbInfo);
-            }else{
+            } else {
                 newPool.setStatus(User.status_nomore);
                 subordinateUserPoolDao.insert(newPool);
             }
             olduser.setSid(user.getSid());
         }
         // 禁用开启
-        if (user.getStatus()!=olduser.getStatus()) {
+        if (user.getStatus() != olduser.getStatus()) {
             olduser.setStatus(user.getStatus());
         }
         boolean res = userDao.update(olduser);
@@ -1563,7 +1568,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ClientMissForUser taskRewardApp( String date,  long sid) throws Exception {
+    public ClientMissForUser taskRewardApp(String date, long sid) throws Exception {
         ClientMissForUser clientMissForUser = new ClientMissForUser();
         List<User> users = userDao.getAllList(sid, User.userType_backendUser, User.status_nomore);
         List<ClientUser> clientUsers = Lists.newArrayList();
@@ -1576,7 +1581,7 @@ public class UserServiceImpl implements UserService {
                 long ctime = userMissionPool.getCtime();
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(ctime);
-                int month = cal.get(Calendar.MONTH)+1;
+                int month = cal.get(Calendar.MONTH) + 1;
                 int year = cal.get(Calendar.YEAR);
                 String o = "";
                 if (month < 10) {
@@ -1606,11 +1611,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager getStaffUserBySid(Pager pager,final Long sid) throws Exception {
+    public Pager getStaffUserBySid(Pager pager, final Long sid) throws Exception {
         return new PagerRequestService<User>(pager, 0) {
             @Override
             public List<User> step1GetPageResult(String s, int i) throws Exception {
-                List<User> allList = userDao.getPagerAllList(sid, User.userType_backendUser, User.status_nomore,Double.parseDouble(s),i);
+                List<User> allList = userDao.getPagerAllList(sid, User.userType_backendUser, User.status_nomore, Double.parseDouble(s), i);
                 return allList;
             }
 
@@ -1638,12 +1643,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager getAllStaffUserBySid(Pager pager,final Long sid) throws Exception {
+    public Pager getAllStaffUserBySid(Pager pager, final Long sid) throws Exception {
         return new PagerRequestService<User>(pager, 0) {
 
             @Override
             public List<User> step1GetPageResult(String s, int i) throws Exception {
-                List<User> allList = userDao.getAllUserList(sid, User.userType_backendUser,Double.parseDouble(s),i);
+                List<User> allList = userDao.getAllUserList(sid, User.userType_backendUser, Double.parseDouble(s), i);
                 return allList;
             }
 
@@ -1668,6 +1673,25 @@ public class UserServiceImpl implements UserService {
                 return clientUserList;
             }
         }.getPager();
+    }
+
+    @Override
+    public Map<Long, List<ClientUser>> getAllUserByPsid(long psid) throws Exception {
+        Map<Long, List<ClientUser>> map = new HashedMap();
+        List<User> allListByPsid = userDao.getAllListByPsid(psid, User.userType_backendUser, User.status_nomore);
+        for (User li : allListByPsid) {
+            ClientUser clientUser = new ClientUser(li);
+            Subordinate subordinates = subordinateDao.load(clientUser.getSid());
+            if (subordinates != null) clientUser.setSubName(subordinates.getName());
+            if (!map.containsKey(li.getSid())) {
+                List<ClientUser> clientUserList = new ArrayList<>();
+                clientUserList.add(clientUser);
+                map.put(clientUser.getSid(), clientUserList);
+            } else {
+                map.get(li.getSid()).add(clientUser);
+            }
+        }
+        return map;
     }
 
     //传入年月 判断是否当前月

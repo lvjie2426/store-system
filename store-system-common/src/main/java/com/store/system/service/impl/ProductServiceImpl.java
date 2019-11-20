@@ -16,9 +16,7 @@ import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.*;
-import com.store.system.util.CodeUtil;
 import com.store.system.util.Reflections;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -72,6 +70,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private ProductSKUDao productSKUDao;
+
+    @Resource
+    private CodeService codeService;
 
     @Resource
     private ProductProviderDao productProviderDao;
@@ -348,7 +349,7 @@ public class ProductServiceImpl implements ProductService {
         if (productSKUList.size() > 0) {
             for (ProductSKU productSKU : productSKUList) {
                 productSKU.setSpuid(spuid);
-                productSKU.setCode(String.valueOf(CodeUtil.getRandom(10)));
+                productSKU.setCode(codeService.getSkuCode());
                 productSKUDao.insert(productSKU);
             }
         }

@@ -25,6 +25,11 @@ public class UserLog implements Serializable {
 
     private int type;// 1 体检 2培训
 
+    private String num;// 编号
+
+    private String job;// 职位
+
+
     private String examinationDate;//体检日期
     private String workYear; //从业年限
     private String examinationOrder; //体检结果

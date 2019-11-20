@@ -1,10 +1,8 @@
 package com.store.system.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
@@ -17,8 +15,8 @@ import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
 import com.store.system.service.InventoryCheckBillService;
-import com.store.system.service.InventoryDetailService;
 import com.store.system.service.ProductService;
+import com.store.system.service.SubordinateService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,10 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.apache.poi.hssf.record.chart.ChartTitleFormatRecord.sid;
-
 @Service
 public class InventoryCheckBillServiceImpl implements InventoryCheckBillService {
+
+    private TransformFieldSetUtils sidFieldSetUtils = new TransformFieldSetUtils(Subordinate.class);
 
     private TransformMapUtils detailMapUtils = new TransformMapUtils(InventoryDetail.class);
 
@@ -63,10 +61,10 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     private RowMapperHelp rowMapper = new RowMapperHelp(InventoryCheckBill.class);
 
     @Resource
-    private InventoryDetailDao inventoryDetailDao;
+    private SubordinateService subordinateService;
 
     @Resource
-    private InventoryDetailService inventoryDetailService;
+    private InventoryDetailDao inventoryDetailDao;
 
     @Resource
     private InventoryCheckBillDao inventoryCheckBillDao;
@@ -236,11 +234,11 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public Pager getWebCheckPager(Pager pager, final long subid) throws Exception {
+    public Pager getWebCheckPager(Pager pager, final long psid, final long subid) throws Exception {
         return new PagerRequestService<InventoryCheckBill>(pager,0) {
             @Override
-            public List<InventoryCheckBill> step1GetPageResult(String s, int i) throws Exception {
-                return  inventoryCheckBillDao.getAll(subid,Double.parseDouble(s),i);
+            public List<InventoryCheckBill> step1GetPageResult(String cursor, int size) throws Exception {
+                return inventoryCheckBillDao.getPageList(subid, InventoryCheckBill.status_wait_check, Double.parseDouble(cursor), size);
             }
 
             @Override
@@ -265,7 +263,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         return new PagerRequestService<InventoryCheckBill>(pager,0) {
             @Override
             public List<InventoryCheckBill> step1GetPageResult(String cursor, int size) throws Exception {
-                return  inventoryCheckBillDao.getPageList(createUid,Double.parseDouble(cursor),size);
+                return  inventoryCheckBillDao.getCreatePageList(createUid,InventoryCheckBill.status_wait_check,Double.parseDouble(cursor),size);
             }
 
             @Override
@@ -286,8 +284,18 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public List<InventoryCheckBill> getListByStatus(long subid, int status) throws Exception {
-        return inventoryCheckBillDao.getAllList(subid,status);
+    public List<InventoryCheckBill> getListByStatus(long psid, long subid, int status) throws Exception {
+        List<InventoryCheckBill> bills = Lists.newArrayList();
+        if (psid > 0 && subid == 0) {
+            List<ClientSubordinate> subordinates = subordinateService.getTwoLevelAllList(psid);
+            Set<Long> sids = sidFieldSetUtils.fieldList(subordinates, "id");
+            for (Long sid : sids) {
+                bills.addAll(inventoryCheckBillDao.getAllList(sid, status));
+            }
+        } else if (psid > 0 && subid > 0) {
+            bills.addAll(inventoryCheckBillDao.getAllList(subid, status));
+        }
+        return bills;
     }
 
     private List<ClientInventoryCheckBill> transformClient(List<InventoryCheckBill> list) {
