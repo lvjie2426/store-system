@@ -697,13 +697,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean checkStatus(List<Long> ids) throws Exception {
+    public boolean checkStatus(List<Long> ids,User user) throws Exception {
 
         List<ProductSPU> load = productSPUDao.load(ids);
         if (load.size() > 0) {
             for (ProductSPU productSPU : load) {
                 productSPU.setCheckStatus(ProductSPU.checkStatus_yes);
                 productSPU.setCheckStatusDate(System.currentTimeMillis());
+                //存放质检人名字
+                productSPU.setExt(user.getName());
+                productSPU.setSaleStatus(ProductSPU.sale_status_open);
                 productSPUDao.update(productSPU);
             }
             return true;
@@ -726,8 +729,8 @@ public class ProductServiceImpl implements ProductService {
         sqlCount = sqlCount + " and (nirNum=''";
         sql = sql + " or nirNumDate=0";
         sqlCount = sqlCount + " or nirNumDate=0";
-        sql = sql + " or nirImg=[])";
-        sqlCount = sqlCount + " or nirImg=[])";
+        sql = sql + " or nirImg='[]')";
+        sqlCount = sqlCount + " or nirImg='[]')";
 
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());

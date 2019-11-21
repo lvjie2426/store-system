@@ -69,7 +69,7 @@ public class ProductSPU implements Serializable {
 
     private String other; //附加属性
 
-    private String ext; //扩展字段
+    private String ext; //扩展字段/存放质检人
 
     private int saleStatus;// 销售状态
 

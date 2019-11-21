@@ -18,6 +18,7 @@ import com.store.system.service.CommissionService;
 import com.store.system.service.OrderService;
 import com.store.system.service.ProductService;
 import com.store.system.service.SubordinateService;
+import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -355,8 +356,8 @@ public class ProductController extends BaseController {
     public ModelAndView checkStatus(HttpServletRequest request, HttpServletResponse response,
                                     @RequestParam(required = true, value = "ids[]", defaultValue = "") List<Long> ids) throws Exception {
         try {
-
-            boolean flag= productService.checkStatus(ids);
+            User user= UserUtils.getUser(request);
+            boolean flag= productService.checkStatus(ids,user);
             return this.viewNegotiating(request, response, new ResultClient(flag));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
