@@ -24,12 +24,12 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-        this.serverUrl = "http://39.107.247.82:20005";
+        // this.serverUrl = "http://39.107.247.82:20005";
         // this.serverUrl = "http://192.168.1.20:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
-        // this.serverUrl = "http://192.168.1.21:20005";
+        this.serverUrl = "http://192.168.1.7:20005";
         /**马文军*/
          // this.serverUrl = "http://127.0.0.1:20005";
         /**聊天服务地址*/
@@ -398,6 +398,10 @@ var Config = (function(_super){
     _proto.getUrl_medicalAppliances_getPtReload = function(){return this.serverUrl + '/userLog/getInfo';};
     /**获取所有公司和公司下所有的员工*/
     _proto.getUrl_medicalAppliances_getAllGongSiInfo = function(){return this.serverUrl + '/user/getUserByPsid';};
+    /**获取审核状态*/
+    _proto.getUrl_medicalAppliances_sHeTongGuo = function(){return this.serverUrl + '/company/checkStatus';};
+    /**获取未补充证明的商品*/
+    _proto.getUrl_medicalAppliances_getNotBuCSMShop = function(){return this.serverUrl + '/product/getNoNirNum';};
     //=======================商品管理 结束====================
 
 

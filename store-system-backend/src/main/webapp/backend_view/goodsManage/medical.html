@@ -686,20 +686,6 @@
             border: 0px;
         }
 
-        .duoXuans {
-            vertical-align: sub;
-            width: 16px;
-            height: 16px;
-            border-radius: 2px;
-            background-color: rgba(244, 244, 248, 1);
-            border: 1px solid rgba(130, 130, 151, 0.2);
-        }
-
-        .duoXuans:checked {
-            background-color: rgba(65, 134, 220, 1);
-            color: #fff;
-        }
-
         /* 员工列表(培训记录) */
         .pxInput {
             width: 100%;
@@ -1240,7 +1226,8 @@
             width: 76px;
         }
 
-        .selectBox.tj2, .selectBox.tj3 {
+        .selectBox.tj2,
+        .selectBox.tj3 {
             vertical-align: middle;
         }
 
@@ -1278,6 +1265,147 @@
             border: 1px solid rgba(236, 236, 244, 1);
             color: rgba(130, 130, 151, 1);
         }
+
+        .duoXuans {
+            display: inline-block;
+            vertical-align: middle;
+            width: 16px;
+            height: 16px;
+            padding: 0px 2px;
+            line-height: 16px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: #F4F4F8;
+            border: 1px solid rgba(130, 130, 151, 0.2);
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .duoXuans i {
+            display: none;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .duoXuans.active i {
+            display: inline-block;
+        }
+
+        .duoXuans.active {
+            background-color: rgba(65, 134, 220, 1);
+        }
+
+        .ygList1,
+        .ygList2 {
+            width: 120px;
+        }
+
+        .ygList4 {
+            width: 128px;
+        }
+
+        .ygList5 {
+            width: 240px;
+        }
+
+        .ygList1,
+        .ygList2,
+        .ygList3,
+        .ygList4,
+        .ygList5 {
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .winFooterBox {
+            background-color: #fff;
+            width: 100%;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        #numLen {
+            display: inline-block;
+            line-height: 34px;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: Roboto-Medium;
+            padding-left: 10px;
+        }
+
+        .winFooterLast {
+            float: right;
+        }
+
+        .btnPreservation, .btnSubmission {
+            display: inline-block;
+            width: 68px;
+            text-align: center;
+            line-height: 32px;
+            border-radius: 2px;
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+
+        .btnSubmission {
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+        }
+
+        .btnPreservation {
+            background-color: rgba(65, 134, 220, 1);
+            color: rgba(255, 255, 255, 1);
+            margin-left: 6px;
+        }
+        /*首页底部*/
+        .showShouyeFooter {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 52px;
+            line-height: 52px;
+            background-color: #fff;
+            padding: 0px 12px 0px 16px;
+        }
+        .xuanZhongXiang {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Medium;
+        }
+        .xuanRight {
+            float: right;
+        }
+        .quXiaoXuanZhong, .shenHeTongguo, .piLiangDaYin {
+            display: inline-block;
+            width: 84px;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 2px;
+            font-size: 13px;
+            text-align: center;
+            font-family: PingFangSC-Semibold;
+            margin-left: 8px;
+        }
+        .quXiaoXuanZhong {
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+        }
+        .piLiangDaYin {
+            background-color: rgba(65, 134, 220, 0.1);
+            border: 1px solid rgba(65, 134, 220, 0.1);
+            color: rgba(65, 134, 220, 1);
+
+        }
+        .shenHeTongguo {
+            background-color: rgba(65, 134, 220, 1);
+            color: rgba(255, 255, 255, 1);
+        }
     </style>
 </head>
 
@@ -1292,18 +1420,6 @@
         <li class="right-info active">
             <span class="btn1" onclick="proLists()">企业列表</span>
             <span class="btn2" onclick="employList()">员工列表</span>
-            <div class="selectBox selectCustomer">
-                <div class="select-box-header">
-                    <span class="text">生产批号</span><i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL">
-                        <li value="01">1</li>
-                        <li value="02">2</li>
-                        <li value="03">3</li>
-                    </ul>
-                </div>
-            </div>
             <input type="search" class="search-box" placeholder="搜索生产批号">
             <span class="addbtn" onclick="addGoods()">新增商品</span>
         </li>
@@ -1378,13 +1494,15 @@
             <i class="iconfont icon-ico_arrow_right warnRight"></i>
         </div>
         <table id="qyxx-table" data-toggle="table" class="table table-border"></table>
+
     </div>
 </div>
 
-<!--门店详细弹窗-->
+<!--企业详细弹窗-->
 <div class="content-view content-view-shopDes" id="shopDom">
 
 </div>
+
 
 <!--新增镜片-->
 <div class="content-view  content-view-addgoods" id="addGoodsDom">
@@ -2059,10 +2177,10 @@
         <div class="ygList4">手机号</div>
         <div class="ygList5">权限设置</div>
     </li>
-    <%for(var i = 0;i < list.length; i++){%>
+    <%for(var i = 0; i < list.length; i++){%>
     <li class="hideBorder">
         <div class="others selectAllXiaLa">
-            <span class="yuanLeft"><%=list[i][i].subName%></span>
+            <span class="yuanLeft"><%if(list[i][0].subName)%><%=list[i][0].subName%><%else{%>无门店信息<%}%></span>
             <i class="iconfont icon-ico_arrow_down yuanRight"></i>
         </div>
         <ul class="showYuanList showAllXiaLa">
@@ -2070,14 +2188,17 @@
             <li>
                 <div class="ygList1"><%=list[i][key].name%></div>
                 <div class="ygList2"><%=list[i][key].job%></div>
-                <%if(list[i][key].sex && list[i][key].sex == 0)%>
+                <%if(list[i][key].sex == 0)%>
                 <div class="ygList3">男</div>
                 <%else if(list[i][key].sex == 1){%>
                 <div class="ygList3">女</div>
+                <%}else{%>
+                <div class="ygList3">-</div>
                 <%}%>
                 <div class="ygList4"><%=list[i][key].phone%></div>
-                <div class="ygList5"><input type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人 <input
-                        type="checkbox" name="ygSelect" class="duoXuans"> 医疗器械负责人
+                <div class="ygList5">
+                    <span class="duoXuans"><i class="iconfont icon-ico_check"></i></span> 医疗器械负责人
+                    <span class="duoXuans"><i class="iconfont icon-ico_check"></i></span> 质量管理人
                 </div>
             </li>
             <%}%>
@@ -2256,13 +2377,17 @@
             {field: "brandName", title: "品牌", align: "left", valign: "middle"},
             {field: "seriesName", title: "系列", align: "left", valign: "middle"},
             {field: "providerName", title: "生产企业", align: "left", valign: "middle"},
-            {field: "guoxie", title: "国械注准号", align: "left", valign: "middle"},
-            {field: "ysjieguo", title: "验收结果", align: "left", valign: "middle"},
+            {field: "nirNum", title: "国械注准号", align: "left", valign: "middle"},
+            {field: "checkStatus", title: "验收结果", align: "left", valign: "middle"},
             {field: "quality", title: "验收日期", align: "left", valign: "middle"},
-            {field: "business", title: "质检人员", align: "center", valign: "middle"},
+            {field: "business", title: "质检人员", align: "center", valign: "middle", formatter: function (value, row, index) {
+                    return quakooUser.getUserInfo().name;
+                }
+            },
             {
                 field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
                     return '<button class="btn btn-primary">编辑</button>';
+                    console.log(row)
                 }
             }
         ],
@@ -2290,6 +2415,17 @@
                 }
             },
             {field: "userName", title: "联系人", align: "left", valign: "middle"},
+            {field: "checkStatus", title: "审核状态", align: "left", valign: "middle",
+                formatter: function (value, row, index) {
+                if(value) {
+                    if (value == 1) {
+                        return '通过审核';
+                    } else if (value == 0) {
+                        return '未通过'
+                    }
+                }
+                }
+            },
             {field: "phone", title: "联系电话", align: "left", valign: "middle"},
             {field: "comBusinessNum", title: "营业执照编号", align: "left", valign: "middle"},
             {
@@ -2302,7 +2438,7 @@
                 }
             },
             {
-                field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index, e) {
                     return '<button class="btn btn-primary" onclick=\'addPros(' + JSON.stringify(row) + ')\'>编辑</button>';
                 }
             }
@@ -2347,6 +2483,21 @@
                     return '<button class="btn btn-primary">编辑</button>';
                 }
             }
+        ],
+        warnSPList: [
+            {checkbox: true, valign: "middle"},
+            {field: "brand", title: "品牌", align: "left", valign: "middle"},
+            {field: "series", title: "系列", align: "left", valign: "middle"},
+            {field: "cycle", title: "生产企业", align: "left", valign: "middle"},
+            {field: "guoxie", title: "国械注准号", align: "left", valign: "middle"},
+            {field: "ysjieguo", title: "验收结果", align: "left", valign: "middle"},
+            {field: "quality", title: "验收日期", align: "left", valign: "middle"},
+            {field: "name", title: "质检人员", align: "center", valign: "middle"},
+            {
+                field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                    return '<button class="btn btn-primary">编辑</button>';
+                }
+            }
         ]
     };
     var brand,//品牌
@@ -2368,6 +2519,44 @@
 
 
     /*员工列表开始*/
+    // 员工列表开始时首页表
+
+    // 员工列表
+    var obj = [];
+    quakooData.ajaxGetData(config.getUrl_medicalAppliances_getAllGongSiInfo(), {psid: quakooUser.getUserInfo().psid}, function (ret) {
+        for (var k in ret.data) {
+            obj.push(ret.data[k])
+        }
+        obj.shift()
+        console.log(obj[0][0].name)
+    })
+
+    function employList() {
+        layer.open({
+            type: 1, shade: 0.01,
+            title: null,
+            skin: 'my-skin',
+            area: ['720px', '550px'],
+            anim: 0,
+            maxWidth: '720',
+            closeBtn: 0, //显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-employList'),
+            btn: '关闭窗口'
+        });
+        var html = template('yuangongList', {list: obj})
+        $('#yuangongList1').html(html);
+        $('.selectAllXiaLa').click(function () {
+            var index = $(".selectAllXiaLa").index($(this));
+            $(this).find('i').toggleClass('icon-ico_arrow_down').toggleClass('icon-ico_arrow_up')
+            $('.showAllXiaLa').eq(index).slideToggle();
+        })
+        $('.duoXuans').click(function () {
+            $(this).toggleClass('active')
+        })
+    }
+
     function selectTimes(date) {
         //营业时间
         var opt = {};
@@ -2401,6 +2590,7 @@
             $('.demo-' + demo).show();
         });
     }
+
     // start();
     var subids, //该员工的门店id
         suid, //员工的id
@@ -2471,6 +2661,7 @@
             zhiWeiData = ret.data;
         })
     }
+
     function yuanGong(id, type) {
         quakooData.ajaxGetData(config.getUrl_user_getAllUser(), {
             sid: id, //门店id
@@ -2495,6 +2686,7 @@
         })
 
     }
+
     function selectEmployer(type) {
         //获取员工体检记录
         if (type == 'ygLi3') {
@@ -2538,6 +2730,7 @@
             })
         }
     }
+
     function baoCun(id) {
         var param1 = {};
         param1.subid = subids; //员工门店id
@@ -2548,15 +2741,15 @@
         param1.desc = $('#tjbeizhu').val(); //备注
         param1.job = job; //职位
         //体检独有
-        param1.examinationOrder = $('#tjieguo').val(); //体检结果
-        param1.workYear = quakooUtils.isNotBlack($('#ygTjReloadYear')) ? $('#ygTjReloadYear').val() : ''; //从业年限
+
         if (id == 'ygLi3') {
+            param1.examinationOrder = $('#tjieguo').val(); //体检结果
+            param1.workYear = quakooUtils.isNotBlack($('#ygTjReloadYear')) ? $('#ygTjReloadYear').val() : ''; //从业年限
             param1.type = 1;
             param1.examinationDate = quakooUtils.isNotBlack($('#ygTjDate1').val()) ? new Date($("#ygTjDate1").val()).getTime() : ''; //体检日期
             param1.education = quakooUtils.isNotBlack(education) ? education : ''; //文化程度
         } else if (id == 'ygLi2') {
             param1.type = 2;
-            param1.education = ''; //文化程度
         }
         //培训独有
         param1.tests = quakooUtils.isNotBlack($('#ygPxReloadSch')) ? $('#ygPxReloadSch').val() : '';  //成绩考试
@@ -2626,6 +2819,7 @@
             layer.msg('保存成功')
         })
     }
+
     /*员工列表结束*/
 
 
@@ -2652,9 +2846,11 @@
             console.log(gongS)
         })
     })
+
     //初始化函数
     function initPage() {
         // quakooData.ajaxGetData(config.getUrl_product_getSPUPager(), { subid: quakooUser.getUserInfo().psid, type: 1 }, function (ret) {
+        //     console.log(ret)
         //     var tabTwo = new TableInit({
         //         data: ret.data,
         //         method: false,
@@ -2663,10 +2859,25 @@
         //         columns: winObj.shopAll
         //     });
         // })
-
         // tabTwo.Init();
 
         //获取所有商品首页展示的列表
+        function shouyeShowFooter(num) {
+            var botBar = '<div class="showShouyeFooter">' +
+                '<span class="xuanZhongXiang">已选中3项</span>' +
+                '<div class="xuanRight">' +
+                '<span class="quXiaoXuanZhong">取消选中</span>' +
+                '<span class="piLiangDaYin">批量打印</span>' +
+                '<span class="shenHeTongguo">审核通过</span>' +
+                '</div>' +
+                '</div>';
+            if (num > 0) {
+                $('.body-bg').append(botBar)
+                $('.showShouyeFooter').show();
+            } else {
+                $('.showShouyeFooter').hide();
+            }
+        }
         var tabTwo = new TableInit({
             dom: '#xsjl-table',
             data: false,
@@ -2674,6 +2885,22 @@
             type: 'server',
             url: config.getUrl_product_getSPUPager(),
             columns: winObj.shopAll,
+            onCheckAll: function (data) {
+                var len = data.length;
+                shouyeShowFooter(len)
+            },
+            onUncheckAll: function (data) {
+                var len = 0;
+                shouyeShowFooter(len)
+            },
+            onCheck: function (data) {
+                var len = $('#qyxx-table').find('tr.selected').length;
+                shouyeShowFooter(len)
+            },
+            onUncheck: function (data) {
+                var len = $('#qyxx-table').find('tr.selected').length;
+                shouyeShowFooter(len)
+            },
             callBack: function (row) {
                 subid: quakooUser.getUserInfo().psid
                 type: 1
@@ -2682,115 +2909,8 @@
         });
         tabTwo.Init();
     }
-    //初始化
-    var TableInit = function (tabObj) {
-        var oTableInit = new Object();
-        //初始化Table
-        oTableInit.Init = function () {
-            console.log(tabObj);
-            $(tabObj.dom).bootstrapTable('destroy');
-            $(tabObj.dom).bootstrapTable({
-                url: tabObj.url,         //请求后台的URL（*）
-                method: tabObj.method,                      //请求方式（*）
-                data: tabObj.data,
-                toolbar: '#toolbar',                //工具按钮用哪个容器
-                //                    striped: true,                      //是否显示行间隔色
-                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-                pagination: true,                   //是否显示分页（*）
-                sortable: false,                     //是否启用排序
-                sortOrder: "asc",                   //排序方式
-                sidePagination: tabObj.type,           //分页方式：client客户端分页，server服务端分页（*）
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 10,                       //每页的记录行数（*）
-                pageList: [10, 20, 30],        //可供选择的每页的行数（*）
-                //                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-                strictSearch: true,
-                showColumns: true,                  //是否显示所有的列
-                //              showRefresh: true,                  //是否显示刷新按钮
-                minimumCountColumns: 2,             //最少允许的列数
-                clickToSelect: true,                //是否启用点击选中行
-                //              height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
-                //                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
-                cardView: false,                    //是否显示详细视图
-                detailView: false,                   //是否显示父子表
-                columns: tabObj.columns,
-                //                    showFooter:true,            //表格底部
-                onClickRow: function (row) {
-                },
-                queryParamsType: 'limit',
-                queryParams: function (params) {
-                    params.token = quakooUser.getUserInfo().token;
-                    params.page = (params.offset / params.limit) + 1;
-                    params.size = params.limit;
-                    return typeof tabObj.callBack == 'function' ? tabObj.callBack(params) : false;
-                },
-            });
-        };
-        return oTableInit;
-    };
-    /*所有商品(需要补充说明商品)*/
-    var data10 = [
-        {
-            brand: "品牌A",
-            series: "系列A",
-            cycle: "北京暴龙眼镜有限公司",
-            guoxie: "国械注准20153400245",
-            ysjieguo: '<span class="yanResult">未验收</span>',
-            quality: "2019.12.26",
-            business: "张三"
-        },
-        {
-            brand: "品牌A",
-            series: "系列A",
-            cycle: "北京暴龙眼镜有限公司",
-            guoxie: "国械注准20153400245",
-            ysjieguo: '<span class="yanResult">未验收</span>',
-            quality: "2019.12.26",
-            business: "张三"
-        },
-        {
-            brand: "品牌A",
-            series: "系列A",
-            cycle: "北京暴龙眼镜有限公司",
-            guoxie: "国械注准20153400245",
-            ysjieguo: '<span class="yanResult">未验收</span>',
-            quality: "2019.12.26",
-            business: "张三"
-        }
-    ];
-    $("#xsjl-table1").bootstrapTable({
-        data: data10,                 //被加载的数据。
-        classes: "table",
-        pagination: true,            //是否显示分页
-        pageNumber: 1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: [
-            {checkbox: true, valign: "middle"},
-            {field: "brand", title: "品牌", align: "left", valign: "middle"},
-            {field: "series", title: "系列", align: "left", valign: "middle"},
-            {field: "cycle", title: "生产企业", align: "left", valign: "middle"},
-            {field: "guoxie", title: "国械注准号", align: "left", valign: "middle"},
-            {field: "ysjieguo", title: "验收结果", align: "left", valign: "middle"},
-            {field: "quality", title: "验收日期", align: "left", valign: "middle"},
-            {field: "business", title: "质检人员", align: "center", valign: "middle"},
-            {
-                field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">编辑</button>';
-                }
-            }
 
-        ]
 
-    });
     /*新改的入库记录*/
     var data4 = [
         {
@@ -3251,11 +3371,78 @@
         $(this).addClass('active').siblings().removeClass('active');
         $(".tab-items").hide().eq($(this).index()).show();
     });
-
+    //初始化
+    var TableInit = function (tabObj) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            console.log(tabObj);
+            $(tabObj.dom).bootstrapTable('destroy');
+            $(tabObj.dom).bootstrapTable({
+                url: tabObj.url,         //请求后台的URL（*）
+                method: tabObj.method,                      //请求方式（*）
+                data: tabObj.data,
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                //                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: tabObj.type,           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+                //                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                //              showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                //              height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                //                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: tabObj.columns,
+                //                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+                },
+                queryParamsType: 'limit',
+                queryParams: function (params) {
+                    params.token = quakooUser.getUserInfo().token;
+                    params.page = (params.offset / params.limit) + 1;
+                    params.size = params.limit;
+                    return typeof tabObj.callBack == 'function' ? tabObj.callBack(params) : false;
+                },
+                onCheckAll: tabObj.onCheckAll,
+                onUncheckAll: tabObj.onUncheckAll,
+                onCheck: tabObj.onCheck,
+                onUncheck: tabObj.onUncheck,
+            });
+        };
+        return oTableInit;
+    };
     // 未补充说明产品
     function warnSP() {
         $("#table1").hide();
+        $(".warn1").hide();
         $("#table2").show();
+        /*所有商品(需要补充说明商品)*/
+        //企业证件有效期到期列表
+        var tabThree = new TableInit({
+            dom: '#xsjl-table1',
+            data: false,
+            method: 'get',
+            type: 'server',
+            url: config.getUrl_medicalAppliances_getNotBuCSMShop(),
+            columns: winObj.warnSPList,
+            callBack: function (row) {
+                subid: quakooUser.getUserInfo().sid;
+                token: quakooUser.getUserInfo().token;
+                return row
+            }
+        });
+        tabThree.Init();
     }
 
     /**
@@ -3265,18 +3452,64 @@
         console.log(ret)
     });
 
-    // 底部表格显示
-    $("table").click(function showBotBar() {
-        var botBar = $("#bottom-bar");
-        if ($(".table tbody tr").hasClass("selected")) {
-            botBar.css("display", "block");
+
+    function tabListFooter(num, ids) {
+        var botBar = '<div class="winFooterBox">' +
+            '<span id="numLen"> 选中' + num + '项</span>' +
+            '<div class="winFooterLast">' +
+            '<span class="btnSubmission">取消选中</span>' +
+            '<span class="btnPreservation">审核通过</span>' +
+            '</div>' +
+            '</div>';
+        if (num > 0) {
+            $('.qiyeListToast .layui-layer-btn').html(botBar)
+            //取消选中
+            $('.btnSubmission').click(function () {
+                $('#qyxx-table').find('tr.selected input').removeAttr('checked')
+                $('#qyxx-table').find('tr.selected').removeClass('selected')
+                $('.qiyeListToast .layui-layer-btn').html('<a class="layui-layer-btn0">关闭窗口</a>')
+            })
+            //审核通过
+            $('.btnPreservation').click(function () {
+                var idss = [];
+                //转换成数组
+                Object.keys(ids).forEach(function(key){
+                    idss.push(key)
+                });
+                console.log(idss)
+                quakooData.ajaxGetData(config.getUrl_medicalAppliances_sHeTongGuo(), {ids: ids}, function (ret) {
+                    if(ret && ret.success){
+                        layer.msg('审核成功')
+                    }
+                })
+            })
         } else {
-            botBar.css("display", "none")
+            $('.qiyeListToast .layui-layer-btn').html('<a class="layui-layer-btn0">关闭窗口</a>')
+            $('.qiyeListToast .layui-layer-btn .layui-layer-btn0').click(function () {
+                layer.close(qyToast)
+            })
         }
-    });
+    }
 
     // 企业列表
     function proLists() {
+        var arrOnly = {};
+        var qyToast = layer.open({
+            type: 1, shade: 0.01,
+            title: null,
+            skin: 'my-skin qiyeListToast',
+            area: ['820px', '550px'],
+            anim: 0,
+            maxWidth: '720',
+            closeBtn: 0, //显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-proLists'),
+            btn: '关闭窗口',
+            success: function () {
+
+            }
+        });
         //获取所有供应商/生产商列表
         var tabOne = new TableInit({
             dom: '#qyxx-table',
@@ -3285,25 +3518,34 @@
             type: 'server',
             url: config.getUrl_medicalAppliances_getgyshang(),
             columns: winObj.gsListAll,
+            onCheckAll: function (data) {
+                arrOnly = {};
+                var len = data.length;
+                for (var i = 0; i < data.length; i++) {
+                    arrOnly[data[i].id] = data[i].id
+                }
+                tabListFooter(len, arrOnly)
+            },
+            onUncheckAll: function (data) {
+                var arrAll = {};
+                tabListFooter(0, arrAll)
+            },
+            onCheck: function (data) {
+                var len = $('#qyxx-table').find('tr.selected').length;
+                arrOnly[data.id] = data.id
+                tabListFooter(len, arrOnly)
+            },
+            onUncheck: function (data) {
+                delete arrOnly[data.id]
+                var len = $('#qyxx-table').find('tr.selected').length;
+                tabListFooter(len, arrOnly)
+            },
             callBack: function (row) {
                 token: quakooUser.getUserInfo().token;
                 return row
             }
         });
         tabOne.Init();
-        layer.open({
-            type: 1, shade: 0.01,
-            title: null,
-            skin: 'my-skin',
-            area: ['720px', '550px'],
-            anim: 0,
-            maxWidth: '720',
-            closeBtn: 0, //显示关闭按钮
-            resize: false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-proLists'),
-            btn: '关闭窗口'
-        });
     }
 
     // 证件有效期到期弹窗
@@ -3338,34 +3580,6 @@
         });
     }
 
-    // 员工列表
-    var obj = [];
-    quakooData.ajaxGetData(config.getUrl_medicalAppliances_getAllGongSiInfo(), {psid: quakooUser.getUserInfo().psid}, function (ret) {
-        for (var k in ret.data) {
-            obj.push(ret.data[k])
-        }
-        obj.shift()
-        console.log(obj[0][0].name)
-    })
-
-    function employList() {
-        layer.open({
-            type: 1, shade: 0.01,
-            title: null,
-            skin: 'my-skin',
-            area: ['720px', '550px'],
-            anim: 0,
-            maxWidth: '720',
-            closeBtn: 0, //显示关闭按钮
-            resize: false,
-            shadeClose: true, //开启遮罩关闭
-            content: $('.content-view-employList'),
-            btn: '关闭窗口'
-        });
-        var html = template('yuangongList', { list: obj })
-        $('#yuangongList1').html(html);
-        console.log(obj[0][0].subName)
-    }
 
     //创建企业弹窗
     var date1,
@@ -3766,4 +3980,5 @@
     }
 </script>
 </body>
+
 </html>
