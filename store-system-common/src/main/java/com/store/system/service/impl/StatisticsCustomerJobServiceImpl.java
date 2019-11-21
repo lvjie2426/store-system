@@ -104,7 +104,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
                 oldNum+=customer.getOldNum();
                 returnNum+=customer.getReturnNum();
                 woman+=customer.getWoman();
-                total+=man+woman;
+                total=man+woman;
                 details.add(customer);
             }
             res.setAge(ages);

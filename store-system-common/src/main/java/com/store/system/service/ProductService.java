@@ -8,6 +8,7 @@ import com.store.system.client.ClientProductSPU;
 import com.store.system.model.Commission;
 import com.store.system.model.ProductSKU;
 import com.store.system.model.ProductSPU;
+import com.store.system.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public interface ProductService {
 
     public List<ProductSKU> getSkuBySubid(long subid,int type)throws Exception;
 
-    public boolean checkStatus(List<Long> ids) throws Exception;
+    public boolean checkStatus(List<Long> ids,User user) throws Exception;
 
     public Pager getSPUNoNirNumPager(Pager pager, long subid)throws Exception;
 
