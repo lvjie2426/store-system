@@ -4,10 +4,12 @@ import com.quakoo.space.annotation.domain.*;
 import com.quakoo.space.enums.HyperspaceDomainType;
 import com.quakoo.space.enums.IdentityType;
 import lombok.Data;
+import org.apache.commons.collections.map.HashedMap;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: store-system
@@ -46,6 +48,13 @@ public class StatisticsCustomerJob implements Serializable{
 
     @HyperspaceColumn(isJson = true)
     private List<Integer> age = new ArrayList<>();//年龄
+
+    //男 年龄数组
+    @HyperspaceColumn(isJson = true)
+    private Map<String,Object> manAge = new HashedMap();
+    //女 年龄数组
+    @HyperspaceColumn(isJson = true)
+    private Map<String,Object> womanAge = new HashedMap();
 
     @SortKey
     private long ctime;
