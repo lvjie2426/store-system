@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.quakoo.webframework.BaseController;
 import com.store.system.client.ClientCategoryStatistics;
+import com.store.system.client.ClientOrderSku;
 import com.store.system.client.ClientSaleStatistics;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
@@ -101,4 +102,24 @@ public class StatisticsSaleCategoryController extends BaseController{
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
         }
     }
+
+
+    @RequestMapping("/detail")
+    public ModelAndView detail(HttpServletRequest request, HttpServletResponse response,
+                               @RequestParam(name = "subIds[]") List<Long> subIds,
+                               @RequestParam(name = "cid", required = false, defaultValue = "0") long cid,
+                               @RequestParam(name = "startDay", required = false, defaultValue = "0") long startDay,
+                               @RequestParam(name = "endDay", required = false, defaultValue = "0") long endDay) throws Exception {
+        try {
+            List<ClientOrderSku> res = saleCategoryStatisticsService.getDetail(startDay, endDay, subIds, cid);
+            return this.viewNegotiating(request,response,new ResultClient(true,res));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
+
+
+
+
+
 }

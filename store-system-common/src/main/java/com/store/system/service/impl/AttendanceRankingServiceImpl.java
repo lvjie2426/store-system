@@ -222,66 +222,67 @@ public class AttendanceRankingServiceImpl implements AttendanceRankingService {
             ClientWorkingHour client = new ClientWorkingHour();
             User user = userService.load(entry.getKey());
             client.setUser(new SimpleUser(user));
-            for (AttendanceLog log : entry.getValue()) {
-                //排除今天的工时
-                if(log.getEndTime()>0){
-                    double time = ArithUtils.div((double) (log.getEndTime() - log.getStartTime()), (double) 1000 * 60 * 60, 1);
-                    hours =  ArithUtils.add(hours, time);
-                    if (time > 0) {
-                        int day = 1;
-                        days += day;
+            if(user!=null) {
+                for (AttendanceLog log : entry.getValue()) {
+                    //排除今天的工时
+                    if (log.getEndTime() > 0) {
+                        double time = ArithUtils.div((double) (log.getEndTime() - log.getStartTime()), (double) 1000 * 60 * 60, 1);
+                        hours = ArithUtils.add(hours, time);
+                        if (time > 0) {
+                            int day = 1;
+                            days += day;
+                        }
                     }
                 }
-            }
-            //加上时间区间内的加班时间
-            int workHours = 0;
-            List<WorkOverTime> workOverTimes = new ArrayList<>();
-            if (type == 1) {
-                //天
-                workOverTimes = workOverTimeDao.getAllListByDay(user.getId(), WorkOverTime.status_success, date);
+                //加上时间区间内的加班时间
+                int workHours = 0;
+                List<WorkOverTime> workOverTimes = new ArrayList<>();
+                if (type == 1) {
+                    //天
+                    workOverTimes.addAll(workOverTimeDao.getAllListByDay(user.getId(), WorkOverTime.status_success, date));
 
-            } else if (type == 2) {
-                //月
-                workOverTimes = workOverTimeDao.getAllListByMonth(user.getId(), WorkOverTime.status_success, date);
+                } else if (type == 2) {
+                    //月
+                    workOverTimes.addAll(workOverTimeDao.getAllListByMonth(user.getId(), WorkOverTime.status_success, date));
 
-            } else if (type == 3) {
-                // 年
-                workOverTimes = workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, date);
-            } else if (type == 4) {
-                //上半年
-                List<Long> dates = Lists.newArrayList();
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 1));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 2));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 3));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 4));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 5));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 6));
-                for (Long da : dates) {
-                    workOverTimes.addAll(workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, da));
+                } else if (type == 3) {
+                    // 年
+                    workOverTimes.addAll(workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, date));
+                } else if (type == 4) {
+                    //上半年
+                    List<Long> dates = Lists.newArrayList();
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 1));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 2));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 3));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 4));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 5));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 6));
+                    for (Long da : dates) {
+                        workOverTimes.addAll(workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, da));
+                    }
+
+                } else {
+                    //下半年
+                    List<Long> dates = Lists.newArrayList();
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 7));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 8));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 9));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 10));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 11));
+                    dates.addAll(TimeUtils.getMonthFullDay((int) date, 12));
+                    for (Long da : dates) {
+                        workOverTimes.addAll(workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, da));
+                    }
+
                 }
 
-            } else {
-                //下半年
-                List<Long> dates = Lists.newArrayList();
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 7));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 8));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 9));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 10));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 11));
-                dates.addAll(TimeUtils.getMonthFullDay((int) date, 12));
-                for (Long da : dates) {
-                    workOverTimes.addAll(workOverTimeDao.getAllListByYear(user.getId(), WorkOverTime.status_success, da));
+                for (WorkOverTime workOverTime : workOverTimes) {
+                    workHours += workOverTime.getWorkTime();
                 }
-
+                client.setHours(hours + workHours);
+                client.setDays(days);
+                res.add(client);
             }
-
-
-            for (WorkOverTime workOverTime : workOverTimes) {
-                workHours += workOverTime.getWorkTime();
-            }
-            client.setHours(hours+workHours);
-            client.setDays(days);
-            res.add(client);
         }
         sortWorking(res);
         return res;

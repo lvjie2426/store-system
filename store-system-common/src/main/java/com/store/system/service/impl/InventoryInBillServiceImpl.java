@@ -19,6 +19,8 @@ import com.store.system.model.*;
 import com.store.system.service.InventoryInBillService;
 import com.store.system.service.ProductService;
 import com.store.system.service.SubordinateService;
+import com.store.system.service.UserService;
+import com.store.system.util.WebPermissionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -74,7 +76,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     private ProductPropertyNameDao productPropertyNameDao;
 
     @Resource
-    private ProductPropertyValueDao productPropertyValueDao;
+    private UserService userService;
 
     @Resource
     private InventoryInBillDao inventoryInBillDao;
@@ -439,10 +441,10 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                     List<ClientSubordinate> subordinates = subordinateService.getTwoLevelAllList(psid);
                     Set<Long> sids = sidFieldSetUtils.fieldList(subordinates, "id");
                     for (Long subid : sids) {
-                        bills.addAll(inventoryInBillDao.getCheckPageList(subid, InventoryInBill.status_wait_check, Double.parseDouble(cursor), size));
+                        bills.addAll(inventoryInBillDao.getCheckPageList(subid, Double.parseDouble(cursor), size));
                     }
                 } else if (psid > 0 && subid > 0) {
-                    bills.addAll(inventoryInBillDao.getCheckPageList(subid, InventoryInBill.status_wait_check, Double.parseDouble(cursor), size));
+                    bills.addAll(inventoryInBillDao.getCheckPageList(subid, Double.parseDouble(cursor), size));
                 }
                 return bills;
             }
@@ -465,16 +467,22 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     }
 
     @Override
-    public List<InventoryInBill> getListByStatus(long psid, long subid, int status) throws Exception {
+    public List<InventoryInBill> getListByStatus(long psid, long subid, long uid) throws Exception {
         List<InventoryInBill> bills = Lists.newArrayList();
-        if (psid > 0 && subid == 0) {
-            List<ClientSubordinate> subordinates = subordinateService.getTwoLevelAllList(psid);
-            Set<Long> sids = sidFieldSetUtils.fieldList(subordinates, "id");
-            for (Long sid : sids) {
-                bills.addAll(inventoryInBillDao.getAllList(sid,status));
+        List<Permission> permissions = userService.getUserPermissions(uid);
+        boolean flag = WebPermissionUtil.hasSchoolLoginPermission(permissions);
+        if(flag) {
+            if (psid > 0 && subid == 0) {
+                List<ClientSubordinate> subordinates = subordinateService.getTwoLevelAllList(psid);
+                Set<Long> sids = sidFieldSetUtils.fieldList(subordinates, "id");
+                for (Long sid : sids) {
+                    bills.addAll(inventoryInBillDao.getAllList(sid, InventoryInBill.status_wait_check));
+                }
+            } else if (psid > 0 && subid > 0) {
+                bills.addAll(inventoryInBillDao.getAllList(subid, InventoryInBill.status_wait_check));
             }
-        } else if (psid > 0 && subid > 0) {
-            bills.addAll(inventoryInBillDao.getAllList(subid,status));
+        }else{
+            bills.addAll(inventoryInBillDao.getCreateList(uid, InventoryInBill.status_wait_check));
         }
         return bills;
     }

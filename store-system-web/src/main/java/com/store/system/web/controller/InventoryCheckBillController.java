@@ -204,7 +204,8 @@ public class InventoryCheckBillController extends BaseController {
             User user = UserUtils.getUser(request);
             long sid = user.getSid();
             long psid = user.getPsid();
-            List<InventoryCheckBill> res = inventoryCheckBillService.getListByStatus(psid, sid, InventoryCheckBill.status_wait_check);
+            long uid = user.getId();
+            List<InventoryCheckBill> res = inventoryCheckBillService.getListByStatus(psid, sid, uid);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

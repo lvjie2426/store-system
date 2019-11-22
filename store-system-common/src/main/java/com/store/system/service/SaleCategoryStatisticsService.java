@@ -1,6 +1,7 @@
 package com.store.system.service;
 
 import com.store.system.client.ClientCategoryStatistics;
+import com.store.system.client.ClientOrderSku;
 import com.store.system.client.ClientSaleStatistics;
 
 import java.util.List;
@@ -22,5 +23,7 @@ public interface SaleCategoryStatisticsService {
     public ClientCategoryStatistics getDayListSum(long subId, List<Long> days) throws Exception;
 
     public ClientCategoryStatistics searchSaleSum(long startTime, long endTime, long subId) throws Exception;
+
+    public List<ClientOrderSku> getDetail(long startTime, long endTime, List<Long> subIds, long cid) throws Exception;
 
 }

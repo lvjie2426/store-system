@@ -35,5 +35,5 @@ public interface InventoryCheckBillService {
 
     public Pager getWebCreatePager(Pager pager, long createUid) throws Exception;
 
-    public List<InventoryCheckBill> getListByStatus(long psid, long subid, int status) throws Exception;
+    public List<InventoryCheckBill> getListByStatus(long psid, long subid, long uid) throws Exception;
 }

@@ -15,6 +15,7 @@ import com.store.system.client.ResultClient;
 import com.store.system.dao.OptometryInfoDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.*;
+import com.store.system.service.OptometryInfoService;
 import com.store.system.service.SubordinateService;
 import com.store.system.service.UserService;
 import com.store.system.util.UserUtils;
@@ -49,7 +50,7 @@ public class WebUserController extends BaseController {
     @Autowired
     private UserService userService;
     @Autowired
-    private OptometryInfoDao optometryInfoDao;
+    private OptometryInfoService optometryInfoService;
     @Autowired
     private SubordinateService subordinateService;
     PropertyLoader loader = PropertyLoader.getInstance("dao.properties");
@@ -376,7 +377,7 @@ public class WebUserController extends BaseController {
                     optometryInfo.setJianJinDuoJiaoDianRes(jianJinDuoJiaoDianRes);
                 }
                 optometryInfo.setUid(user.getId());
-                optometryInfoDao.insert(optometryInfo);
+                optometryInfoService.add(optometryInfo);
             }
             return this.viewNegotiating(request,response, new ResultClient(user));
         } catch (StoreSystemException e) {
@@ -419,7 +420,7 @@ public class WebUserController extends BaseController {
                     optometryInfo.setJianJinDuoJiaoDianRes(jianJinDuoJiaoDianRes);
                 }
                 optometryInfo.setUid(user.getId());
-                optometryInfoDao.update(optometryInfo);
+                optometryInfoService.update(optometryInfo);
             }else{
                 return this.viewNegotiating(request,response, new ResultClient("会员信息更新失败"));
 

@@ -11,7 +11,7 @@ import com.store.system.model.attendance.SubSettings;
  **/
 public interface SubSettingsService {
 
-    public void update(SubSettings subSettings) throws Exception;
+    public void update(SubSettings subSettings, String placeJson, String netJson) throws Exception;
 
     public SubSettings load(long subId) throws Exception;
 }

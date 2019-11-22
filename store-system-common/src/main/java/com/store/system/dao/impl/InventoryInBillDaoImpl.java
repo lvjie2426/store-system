@@ -33,6 +33,14 @@ public class InventoryInBillDaoImpl extends CacheBaseDao<InventoryInBill> implem
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
+    public List<InventoryInBill> getCheckPageList(long subid,
+                                                  @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor) double cursor,
+                                                  @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getPageListWithoutSharding)
     public List<InventoryInBill> getCreatePageList(long createUid,
                                              @CacheMethodParam(paramEnum = CacheMethodParamEnum.cursor) double cursor,
                                              @CacheMethodParam(paramEnum = CacheMethodParamEnum.size) int size) throws DataAccessException {
@@ -42,6 +50,24 @@ public class InventoryInBillDaoImpl extends CacheBaseDao<InventoryInBill> implem
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
     public List<InventoryInBill> getAllList(long subid, int status) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryInBill> getAllList(long subid) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryInBill> getCreateList(long createUid) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<InventoryInBill> getCreateList(long createUid, int status) throws DataAccessException {
         return null;
     }
 }

@@ -3,11 +3,11 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
 import com.store.system.client.ClientCategoryStatistics;
+import com.store.system.client.ClientInventoryDetail;
+import com.store.system.client.ClientOrderSku;
 import com.store.system.dao.SaleCategoryStatisticsDao;
-import com.store.system.model.OrderSku;
-import com.store.system.model.ProductCategory;
-import com.store.system.model.SaleCategoryStatistics;
-import com.store.system.model.Subordinate;
+import com.store.system.model.*;
+import com.store.system.service.BusinessOrderService;
 import com.store.system.service.ProductCategoryService;
 import com.store.system.service.SaleCategoryStatisticsService;
 import com.store.system.util.ArithUtils;
@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,8 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
     private ProductCategoryService productCategoryService;
     @Resource
     private JdbcTemplate jdbcTemplate;
+    @Resource
+    private BusinessOrderService businessOrderService;
     @Resource
     private SubordinateServiceImpl subordinateService;
 
@@ -77,6 +80,87 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         Map<Long,List<ClientCategoryStatistics>> map = transformClientSale(saleStatistics,subId);
         return transformClientSum(map,subId);
     }
+
+    @Override
+    public List<ClientOrderSku> getDetail(long startTime, long endTime, List<Long> subIds, long cid) throws Exception {
+        List<SaleCategoryStatistics> saleStatistics = Lists.newArrayList();
+        for(Long subId:subIds) {
+            String sql = "SELECT  *  FROM `sale_category_statistics` where  1=1 ";
+            if (subId > 0) {
+                sql = sql + " and `subId` = " + subId;
+            }
+            if (cid > 0) {
+                sql = sql + " and `cid` = " + cid;
+            }
+            if (startTime > 0) {
+                sql = sql + " and `day` > " + startTime;
+            }
+            if (endTime > 0) {
+                sql = sql + " and `day` < " + endTime;
+            }
+
+            sql = sql + " order  by `day` desc";
+            saleStatistics.addAll(jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleCategoryStatistics.class)));
+
+        }
+        List<OrderSku> skuList = Lists.newArrayList();
+        for (SaleCategoryStatistics statistics : saleStatistics) {
+            skuList.addAll(statistics.getSalesLog());
+        }
+        List<ClientOrderSku> clientOrderSkus=businessOrderService.transformSKUClient(skuList);
+        int total=0;
+        for(ClientOrderSku sku:clientOrderSkus){
+            total += sku.getNum();
+        }
+        List<ClientOrderSku> res = getNewList(clientOrderSkus,total);
+        return res;
+    }
+
+    private List<ClientOrderSku> getNewList(List<ClientOrderSku> oldList,int total) throws IllegalAccessException {
+        HashMap<Long,ClientOrderSku> tempMap = new HashMap<Long,ClientOrderSku>();
+        //去掉重复的key
+        for(ClientOrderSku sku : oldList){
+            long spuid = sku.getSpuId();
+            //containsKey(Object key)该方法判断Map集合中是否包含指定的键名，如果包含返回true，不包含返回false
+            //containsValue(Object value)该方法判断Map集合中是否包含指定的键值，如果包含返回true，不包含返回false
+            if(tempMap.containsKey(spuid)){
+                ClientOrderSku newSku = new ClientOrderSku();
+                newSku.setSkuId(sku.getSkuId());
+                newSku.setSpuId(sku.getSpuId());
+                newSku.setNum(tempMap.get(spuid).getNum()+sku.getNum());
+                newSku.setCode(sku.getCode());
+                newSku.setName(sku.getName());
+                newSku.setPrice(sku.getPrice());
+                newSku.setIntegralPrice(sku.getIntegralPrice());
+                newSku.setDiscount(sku.getDiscount());
+                newSku.setSubtotal(sku.getSubtotal());
+                newSku.setLastSubtotal(tempMap.get(spuid).getLastSubtotal()+sku.getLastSubtotal());
+                newSku.setQualityType(sku.getQualityType());
+                newSku.setOptStatus(sku.getOptStatus());
+                newSku.setP_properties_value(sku.getP_properties_value());
+                newSku.setK_properties_value(sku.getK_properties_value());
+                newSku.setProviderName(sku.getProviderName());
+                newSku.setCategoryName(sku.getCategoryName());
+                newSku.setBrandName(sku.getBrandName());
+                newSku.setSeriesName(sku.getSeriesName());
+                //占比计算 是按照数量计算的
+                if(total>0) {
+                    double rate = ArithUtils.div((double) sku.getNum(), (double) total, 3);
+                    newSku.setRate(rate * 100);
+                }
+                tempMap.put(spuid,newSku);
+            }else{
+                tempMap.put(spuid,sku);
+            }
+        }
+        //去除重复key的list
+        List<ClientOrderSku> newList = new ArrayList<ClientOrderSku>();
+        for(Long temp:tempMap.keySet()){
+            newList.add(tempMap.get(temp));
+        }
+        return newList;
+    }
+
 
     @Override
     public Map<Long,List<ClientCategoryStatistics>> searchSale(long startTime, long endTime, long subId) throws Exception {

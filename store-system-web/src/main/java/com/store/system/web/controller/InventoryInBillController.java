@@ -180,7 +180,8 @@ public class InventoryInBillController extends BaseController {
             User user = UserUtils.getUser(request);
             long subid = user.getSid();
             long psid = user.getPsid();
-            List<InventoryInBill> res = inventoryInBillService.getListByStatus(psid,subid, InventoryInBill.status_wait_check);
+            long uid = user.getId();
+            List<InventoryInBill> res = inventoryInBillService.getListByStatus(psid,subid,uid);
             return this.viewNegotiating(request, response, new ResultClient(res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
