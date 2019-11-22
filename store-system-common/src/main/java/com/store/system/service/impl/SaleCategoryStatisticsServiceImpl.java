@@ -2,9 +2,7 @@ package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
-import com.store.system.client.ClientCategoryStatistics;
-import com.store.system.client.ClientInventoryDetail;
-import com.store.system.client.ClientOrderSku;
+import com.store.system.client.*;
 import com.store.system.dao.SaleCategoryStatisticsDao;
 import com.store.system.model.*;
 import com.store.system.service.BusinessOrderService;
@@ -15,10 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName SaleCategoryStatisticsServiceImpl
@@ -113,7 +108,22 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
             total += sku.getNum();
         }
         List<ClientOrderSku> res = getNewList(clientOrderSkus,total);
+        sort(res);
         return res;
+    }
+
+    private void sort(List<ClientOrderSku> list){
+        Collections.sort(list, new Comparator<ClientOrderSku>(){
+            public int compare(ClientOrderSku p1, ClientOrderSku p2) {
+                if(p1.getLastSubtotal() < p2.getLastSubtotal()){
+                    return 1;
+                }
+                if(p1.getLastSubtotal() == p2.getLastSubtotal()){
+                    return 0;
+                }
+                return -1;
+            }
+        });
     }
 
     private List<ClientOrderSku> getNewList(List<ClientOrderSku> oldList,int total) throws IllegalAccessException {

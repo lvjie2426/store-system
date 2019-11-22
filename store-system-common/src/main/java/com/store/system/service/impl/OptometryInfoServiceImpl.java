@@ -54,7 +54,7 @@ public class OptometryInfoServiceImpl implements OptometryInfoService {
 
     @Override
     public boolean update(OptometryInfo optometryInfo) throws Exception {
-        check(optometryInfo);
+//        check(optometryInfo);
         long subid = optometryInfo.getSubid();
         Subordinate subordinate = subordinateDao.load(subid);
         if(subordinate.getPid() == 0) throw new StoreSystemException("公司ID错误");

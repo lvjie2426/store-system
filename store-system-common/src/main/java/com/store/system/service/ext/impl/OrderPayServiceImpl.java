@@ -2,6 +2,7 @@ package com.store.system.service.ext.impl;
 
 import com.google.common.collect.Lists;
 import com.store.system.bean.OrderTypeInfo;
+import com.store.system.client.ClientInventoryWarehouse;
 import com.store.system.client.ResultClient;
 import com.store.system.dao.*;
 import com.store.system.model.*;
@@ -40,6 +41,10 @@ public class OrderPayServiceImpl implements OrderPayService {
     private PayInfoService payInfoService;
     @Resource
     private BusinessOrderService businessOrderService;
+    @Resource
+    private InventoryDetailDao inventoryDetailDao;
+    @Resource
+    private InventoryWarehouseService inventoryWarehouseService;
 
     @Override
     public ResultClient successHandleBusiness(Order order, long boId) throws Exception {
@@ -87,12 +92,15 @@ public class OrderPayServiceImpl implements OrderPayService {
                 for (PayInfo info : payInfoList) {
                     totalPrice += info.getPrice();
                 }
-                businessOrder.setStatus(BusinessOrder.status_no_pay);
-                businessOrder.setMakeStatus(BusinessOrder.makeStatus_no_pay);
-                businessOrderService.update(businessOrder);
                 if (businessOrder.getTotalPrice() == totalPrice) {
+                    businessOrder.setStatus(BusinessOrder.status_pay);
+                    businessOrder.setMakeStatus(BusinessOrder.makeStatus_qu_yes);
+                    businessOrderService.update(businessOrder);
                     return new ResultClient(true, businessOrder, "订单金额已全部支付完成！");
                 } else {
+                    businessOrder.setStatus(BusinessOrder.status_no_pay);
+                    businessOrder.setMakeStatus(BusinessOrder.makeStatus_no_pay);
+                    businessOrderService.update(businessOrder);
                     double money = ArithUtils.div(businessOrder.getTotalPrice() - totalPrice, 100, 2);
                     return new ResultClient(false, businessOrder, "此订单尚有" + money + "元未进行支付！");
                 }
@@ -208,7 +216,22 @@ public class OrderPayServiceImpl implements OrderPayService {
                 }
             }
         }
-
+        List<ClientInventoryWarehouse> warehouses = inventoryWarehouseService.getAllList(businessOrder.getSubId());
+        long wid = 0;
+        if (warehouses.size() > 0)
+            wid = warehouses.get(0).getId();
+        for (OrderSku sku : businessOrder.getSkuList()) {
+            List<InventoryDetail> details = inventoryDetailDao.getAllListByWidAndSKU(wid, sku.getSkuId());
+            if (details.size() > 0) { //如果有这个库存明细，做更新
+                InventoryDetail detail = details.get(0);
+                if (detail.getNum() == 0)
+                    return new ResultClient(true, businessOrder, "sku库存不足！");
+                detail.setNum(detail.getNum() - sku.getNum());
+                inventoryDetailDao.update(detail);
+            } else {
+                return new ResultClient(true, businessOrder, "sku库存不足！");
+            }
+        }
         return new ResultClient(true, businessOrder, "订单金额已全部支付完成！");
     }
 

@@ -18,6 +18,7 @@ import com.store.system.model.*;
 import com.store.system.service.*;
 import com.store.system.util.ArithUtils;
 import com.store.system.util.FilterStringUtil;
+import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -401,6 +402,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
 
     @Override
     public ClientBusinessOrder add(BusinessOrder businessOrder) throws Exception {
+        businessOrder.setDay(TimeUtils.getDayFormTime(System.currentTimeMillis()));
         return transformClient(businessOrderDao.insert(businessOrder));
     }
 
