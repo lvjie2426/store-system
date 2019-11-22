@@ -1449,7 +1449,7 @@
         <div class="daoqiWarn" onclick="warnSP()">
                 <span class="warnLeft">
                     <i class="iconfont icon-ico_contact_lens "></i>
-                    有 <span>5</span> 家企业证件有效期到期
+                    有 <span class="notBuChongNum"></span> 家企业证件有效期到期
                 </span>
             <i class="iconfont icon-ico_arrow_right warnRight"></i>
         </div>
@@ -1489,7 +1489,7 @@
         <div class="daoqiWarn" onclick="cardGuoqi()">
                 <span class="warnLeft">
                     <i class="iconfont icon-ico_contact_lens "></i>
-                    有 <span>5</span> 家企业证件有效期到期
+                    有 <span class="daoNum"></span> 家企业证件有效期到期
                 </span>
             <i class="iconfont icon-ico_arrow_right warnRight"></i>
         </div>
@@ -1503,24 +1503,9 @@
 
 </div>
 
-
 <!--新增镜片-->
 <div class="content-view  content-view-addgoods" id="addGoodsDom">
 
-</div>
-<!--设置现货范围-->
-<div class="content-view content-view-range">
-    <div class="yj-content-body">
-        <div class="range-header">
-            <div class="now-goods-range">
-                <em></em>现货范围
-            </div>
-            <div class="dingzhi-range">
-                <em></em>定制范围
-            </div>
-        </div>
-        <table class="layui-hide yj-layui-table" id="rangeEvent" lay-filter="rangeEvent"></table>
-    </div>
 </div>
 
 <!-- 员工列表 -->
@@ -1547,6 +1532,7 @@
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
 <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
 <script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
 <script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
 <!--//日期范围插件开始-->
 <script src="../resource/js/yanjing/daterange.js"></script>
@@ -2167,6 +2153,11 @@
         </li>
     </ul>
 </script>
+
+
+
+
+
 <script src="./medical.js"></script>
 <!--员工列表开始时列表-->
 <script type="text/html" id="yuangongList">
@@ -2378,8 +2369,14 @@
             {field: "seriesName", title: "系列", align: "left", valign: "middle"},
             {field: "providerName", title: "生产企业", align: "left", valign: "middle"},
             {field: "nirNum", title: "国械注准号", align: "left", valign: "middle"},
-            {field: "checkStatus", title: "验收结果", align: "left", valign: "middle"},
-            {field: "quality", title: "验收日期", align: "left", valign: "middle"},
+            {field: "checkStatus", title: "验收结果", align: "left", valign: "middle", formatter: function (value, row, index) {
+                if(value == 0){
+                    return '未通过'
+                }else if(value == 1){
+                    return '审核通过'
+                }}
+            },
+            {field: "checkStatusDate", title: "验收日期", align: "left", valign: "middle"},
             {field: "business", title: "质检人员", align: "center", valign: "middle", formatter: function (value, row, index) {
                     return quakooUser.getUserInfo().name;
                 }
@@ -2480,19 +2477,28 @@
             },
             {
                 field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">编辑</button>';
+                    return '<button class="btn btn-primary" onclick=\'addPros(' + JSON.stringify(row) + ')\'>编辑</button>';
                 }
             }
         ],
         warnSPList: [
             {checkbox: true, valign: "middle"},
-            {field: "brand", title: "品牌", align: "left", valign: "middle"},
-            {field: "series", title: "系列", align: "left", valign: "middle"},
-            {field: "cycle", title: "生产企业", align: "left", valign: "middle"},
-            {field: "guoxie", title: "国械注准号", align: "left", valign: "middle"},
-            {field: "ysjieguo", title: "验收结果", align: "left", valign: "middle"},
-            {field: "quality", title: "验收日期", align: "left", valign: "middle"},
-            {field: "name", title: "质检人员", align: "center", valign: "middle"},
+            {field: "brandName", title: "品牌", align: "left", valign: "middle"},
+            {field: "seriesName", title: "系列", align: "left", valign: "middle"},
+            {field: "providerName", title: "生产企业", align: "left", valign: "middle"},
+            {field: "nirNum", title: "国械注准号", align: "left", valign: "middle"},
+            {field: "checkStatus", title: "验收结果", align: "left", valign: "middle", formatter: function (value, row, index) {
+                    if(value == 0){
+                        return '未通过'
+                    }else if(value == 1){
+                        return '审核通过'
+                    }}
+            },
+            {field: "checkStatusDate", title: "验收日期", align: "left", valign: "middle"},
+            {field: "name", title: "质检人员", align: "center", valign: "middle", formatter: function (value, row, index) {
+                    return quakooUser.getUserInfo().name;
+                }
+            },
             {
                 field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
                     return '<button class="btn btn-primary">编辑</button>';
@@ -2838,12 +2844,10 @@
         //获取生产商
         quakooData.ajaxGetData(config.getUrl_medicalAppliances_getgongSheng(), {mpId: 1}, function (ret) {
             shengS = ret.data
-            console.log(shengS)
         })
         //获取供应商
         quakooData.ajaxGetData(config.getUrl_medicalAppliances_getgongSheng(), {mpId: 2}, function (ret) {
             gongS = ret.data
-            console.log(gongS)
         })
     })
 
@@ -2860,24 +2864,7 @@
         //     });
         // })
         // tabTwo.Init();
-
-        //获取所有商品首页展示的列表
-        function shouyeShowFooter(num) {
-            var botBar = '<div class="showShouyeFooter">' +
-                '<span class="xuanZhongXiang">已选中3项</span>' +
-                '<div class="xuanRight">' +
-                '<span class="quXiaoXuanZhong">取消选中</span>' +
-                '<span class="piLiangDaYin">批量打印</span>' +
-                '<span class="shenHeTongguo">审核通过</span>' +
-                '</div>' +
-                '</div>';
-            if (num > 0) {
-                $('.body-bg').append(botBar)
-                $('.showShouyeFooter').show();
-            } else {
-                $('.showShouyeFooter').hide();
-            }
-        }
+        var checkArray = {};
         var tabTwo = new TableInit({
             dom: '#xsjl-table',
             data: false,
@@ -2887,19 +2874,25 @@
             columns: winObj.shopAll,
             onCheckAll: function (data) {
                 var len = data.length;
-                shouyeShowFooter(len)
+                for (var i = 0; i < data.length; i++) {
+                    checkArray[data[i].id] = data[i].id
+                }
+                shouyeShowFooter(len, checkArray)
             },
             onUncheckAll: function (data) {
                 var len = 0;
-                shouyeShowFooter(len)
+                checkArray = {};
+                shouyeShowFooter(len, checkArray)
             },
             onCheck: function (data) {
-                var len = $('#qyxx-table').find('tr.selected').length;
-                shouyeShowFooter(len)
+                var len = $('#xsjl-table').find('tr.selected').length;
+                checkArray[data.id] = data.id;
+                shouyeShowFooter(len, checkArray)
             },
             onUncheck: function (data) {
-                var len = $('#qyxx-table').find('tr.selected').length;
-                shouyeShowFooter(len)
+                delete checkArray[data.id]
+                var len = $('#xsjl-table').find('tr.selected').length;
+                shouyeShowFooter(len, checkArray)
             },
             callBack: function (row) {
                 subid: quakooUser.getUserInfo().psid
@@ -2908,8 +2901,48 @@
             }
         });
         tabTwo.Init();
-    }
 
+        //获取为补充说明商品的数量
+        quakooData.ajaxGetData(config.getUrl_medicalAppliances_getNotBuCSMShop(),
+            {
+                subid: quakooUser.getUserInfo().sid,
+                token: quakooUser.getUserInfo().token
+            },
+            function (ret) {
+            $('.daoqiWarn').find('.notBuChongNum').html(ret.rows.length)
+        })
+    }
+    //获取所有商品首页展示的列表
+    function shouyeShowFooter(num, obj) {
+        var botBar = '<div class="showShouyeFooter">' +
+            '<span class="xuanZhongXiang">已选中' + num + '项</span>' +
+            '<div class="xuanRight">' +
+            '<span class="quXiaoXuanZhong">取消选中</span>' +
+            '<span class="piLiangDaYin">批量打印</span>' +
+            '<span class="shenHeTongguo">审核通过</span>' +
+            '</div>' +
+            '</div>';
+        if (num > 0) {
+            $('.body-bg').append(botBar)
+            $('.showShouyeFooter').show();
+            //审核通过
+            $('.shenHeTongguo').click(function () {
+                var ids = [];
+                //转换成数组
+                Object.keys(obj).forEach(function(key){
+                    ids.push(key)
+                });
+                console.log(ids)
+                // quakooData.ajaxGetData(config.getUrl_medicalAppliances_checkAddStatus(), {ids: ids}, function (ret) {
+                //     if(ret && ret.success){
+                //         layer.msg('审核成功')
+                //     }
+                // })
+            })
+        } else {
+            $('.showShouyeFooter').hide();
+        }
+    }
 
     /*新改的入库记录*/
     var data4 = [
@@ -3000,7 +3033,6 @@
         },
     ];
     $("#rkjl-table").bootstrapTable({
-
         data: data4,                 //被加载的数据。
         classes: "table",
         pagination: true,            //是否显示分页
@@ -3376,7 +3408,6 @@
         var oTableInit = new Object();
         //初始化Table
         oTableInit.Init = function () {
-            console.log(tabObj);
             $(tabObj.dom).bootstrapTable('destroy');
             $(tabObj.dom).bootstrapTable({
                 url: tabObj.url,         //请求后台的URL（*）
@@ -3443,6 +3474,21 @@
             }
         });
         tabThree.Init();
+        // quakooData.ajaxGetData(config.getUrl_medicalAppliances_getNotBuCSMShop(), {
+        //     subid: quakooUser.getUserInfo().sid,
+        //     token: quakooUser.getUserInfo().token
+        // }, function (ret) {
+        //     console.log(ret)
+        //     var tabTwo = new TableInit({
+        //         dom: '#xsjl-table1',
+        //         data: ret.rows,
+        //         method: false,
+        //         type: 'client',
+        //         url: false,
+        //         columns: winObj.warnSPList
+        //     });
+        // tabTwo.Init();
+        // })
     }
 
     /**
@@ -3477,7 +3523,7 @@
                     idss.push(key)
                 });
                 console.log(idss)
-                quakooData.ajaxGetData(config.getUrl_medicalAppliances_sHeTongGuo(), {ids: ids}, function (ret) {
+                quakooData.ajaxGetData(config.getUrl_medicalAppliances_sHeTongGuo(), {ids: idss}, function (ret) {
                     if(ret && ret.success){
                         layer.msg('审核成功')
                     }
@@ -3546,6 +3592,11 @@
             }
         });
         tabOne.Init();
+
+        //获取证件有效期到期企业数量
+        quakooData.ajaxGetData(config.getUrl_medicalAppliances_getguoqiGshang(), {token: quakooUser.getUserInfo().token}, function (ret) {
+            $('.daoqiWarn .warnLeft').find('.daoNum').html(ret.rows.length);
+        })
     }
 
     // 证件有效期到期弹窗
