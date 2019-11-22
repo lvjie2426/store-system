@@ -17,6 +17,7 @@ import com.store.system.model.*;
 import com.store.system.service.InventoryCheckBillService;
 import com.store.system.service.ProductService;
 import com.store.system.service.SubordinateService;
+import com.store.system.util.WebPermissionUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +63,9 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
 
     @Resource
     private SubordinateService subordinateService;
+
+    @Resource
+    private UserServiceImpl userService;
 
     @Resource
     private InventoryDetailDao inventoryDetailDao;
@@ -238,7 +242,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         return new PagerRequestService<InventoryCheckBill>(pager,0) {
             @Override
             public List<InventoryCheckBill> step1GetPageResult(String cursor, int size) throws Exception {
-                return inventoryCheckBillDao.getPageList(subid, InventoryCheckBill.status_wait_check, Double.parseDouble(cursor), size);
+                return inventoryCheckBillDao.getPageList(subid, Double.parseDouble(cursor), size);
             }
 
             @Override
@@ -263,7 +267,7 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
         return new PagerRequestService<InventoryCheckBill>(pager,0) {
             @Override
             public List<InventoryCheckBill> step1GetPageResult(String cursor, int size) throws Exception {
-                return  inventoryCheckBillDao.getCreatePageList(createUid,InventoryCheckBill.status_wait_check,Double.parseDouble(cursor),size);
+                return  inventoryCheckBillDao.getCreatePageList(createUid, Double.parseDouble(cursor),size);
             }
 
             @Override
@@ -284,16 +288,16 @@ public class InventoryCheckBillServiceImpl implements InventoryCheckBillService 
     }
 
     @Override
-    public List<InventoryCheckBill> getListByStatus(long psid, long subid, int status) throws Exception {
+    public List<InventoryCheckBill> getListByStatus(long psid, long subid, long uid) throws Exception {
         List<InventoryCheckBill> bills = Lists.newArrayList();
-        if (psid > 0 && subid == 0) {
-            List<ClientSubordinate> subordinates = subordinateService.getTwoLevelAllList(psid);
-            Set<Long> sids = sidFieldSetUtils.fieldList(subordinates, "id");
-            for (Long sid : sids) {
-                bills.addAll(inventoryCheckBillDao.getAllList(sid, status));
+        List<Permission> permissions = userService.getUserPermissions(uid);
+        boolean flag = WebPermissionUtil.hasSchoolLoginPermission(permissions);
+        if(flag){
+            bills.addAll(inventoryCheckBillDao.getCreateList(uid, InventoryCheckBill.status_wait_check));
+        }else{
+            if (psid > 0 && subid > 0) {
+                bills.addAll(inventoryCheckBillDao.getAllList(subid, InventoryCheckBill.status_wait_check));
             }
-        } else if (psid > 0 && subid > 0) {
-            bills.addAll(inventoryCheckBillDao.getAllList(subid, status));
         }
         return bills;
     }

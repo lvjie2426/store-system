@@ -9,10 +9,7 @@ import com.store.system.dao.*;
 import com.store.system.model.Subordinate;
 import com.store.system.model.User;
 import com.store.system.model.attendance.*;
-import com.store.system.service.AttendanceLogService;
-import com.store.system.service.HolidayService;
-import com.store.system.service.SubordinateService;
-import com.store.system.service.UserService;
+import com.store.system.service.*;
 import com.store.system.util.TimeUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +42,9 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 
 	@Resource
 	private AttendanceTemplateDao attendanceTemplateDao;
+
+	@Resource
+	private AttendanceRankingService attendanceRankingService;
 
 	@Resource
 	private PunchCardDao punchCardDao;
@@ -175,6 +175,32 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		} else {
 			dblog.setStartTime(time);
 			dblog.setStartImg(img);
+
+			//排行榜数据插入
+			AttendanceRanking attendanceRanking = new AttendanceRanking();
+			attendanceRanking.setSid(dblog.getSid());
+			attendanceRanking.setSubId(dblog.getSubId());
+			attendanceRanking.setUid(uid);
+			attendanceRanking.setDay(dblog.getDay());
+			attendanceRanking.setWeek(TimeUtils.getWeekFormTime(time));
+			attendanceRanking.setMonth(TimeUtils.getMonthFormTime(time));
+			attendanceRanking.setYear(TimeUtils.getYearFormTime(time));
+			attendanceRanking.setStart(dblog.getStart());
+			attendanceRanking.setStartTime(dblog.getStartTime());
+
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+			String str = sdf.format(dblog.getStartTime());
+			int start = getTime(str);
+			if(start>dblog.getStart()){
+				int late = start - dblog.getStart();
+				attendanceRanking.setLateTime(late);
+			}
+			if(start<dblog.getStart()){
+				int lead = dblog.getStart() - start;
+				attendanceRanking.setLeadTime(lead);
+			}
+			attendanceRankingService.add(attendanceRanking);
+
 		}
 		//存储打卡log记录
 		PunchCardLog punchCardLog = new PunchCardLog();
@@ -197,6 +223,12 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		return punchCardLog;
 	}
 
+	private int getTime (String str) {
+		int res = 0;
+		String[] strings = str.split(":");
+		res = Integer.parseInt(strings[0]) * 60 + Integer.parseInt(strings[1]);
+		return res;
+	}
 
 	/**
 	 * 获取一条数据

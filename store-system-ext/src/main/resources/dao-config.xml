@@ -510,6 +510,67 @@
         </property>
     </bean>
 
+    <bean id="leaveDao" class="com.store.system.dao.impl.LeaveDaoImpl">
+        <property name="tableName" value="leave"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="payInfoDao" class="com.store.system.dao.impl.PayInfoDaoImpl">
+        <property name="tableName" value="payInfo" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="workOverTimeDao" class="com.store.system.dao.impl.WorkOverTimeDaoImpl">
+        <property name="tableName" value="work_overtime"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="changeShiftDao" class="com.store.system.dao.impl.ChangeShiftDaoImpl">
+        <property name="tableName" value="change_shift"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="approvalLogDao" class="com.store.system.dao.impl.ApprovalLogDaoImpl">
+        <property name="tableName" value="approval_log"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="commissionRewardDao" class="com.store.system.dao.impl.CommissionRewardDaoImpl">
+        <property name="tableName" value="commission_reward" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="businessOrderDao" class="com.store.system.dao.impl.BusinessDaoImpl">
+        <property name="tableName" value="business_order" />
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource" />
+            </list>
+        </property>
+    </bean>
+
     <bean id="staticticsCustomerJobDao" class="com.store.system.dao.impl.StatisticsCustomerJobDaoImpl">
         <property name="tableName" value="statistics_customer_job" />
         <property name="dataSources">

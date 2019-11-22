@@ -28,6 +28,8 @@ public class ClientOrderSku extends OrderSku{
 
     private String seriesName;
 
+    private double rate;
+
     public ClientOrderSku(){}
     public ClientOrderSku(OrderSku orderSku){
         try {

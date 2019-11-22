@@ -1,11 +1,18 @@
 package com.store.system.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.store.system.dao.SubSettingsDao;
+import com.store.system.model.attendance.PunchCardPlace;
 import com.store.system.model.attendance.SubSettings;
+import com.store.system.model.attendance.WirelessNetwork;
 import com.store.system.service.SubSettingsService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @ClassName SubSettingsServiceImpl
@@ -22,7 +29,28 @@ public class SubSettingsServiceImpl implements SubSettingsService {
 
 
     @Override
-    public void update(SubSettings subSettings) throws Exception {
+    public void update(SubSettings subSettings, String placeJson, String netJson) throws Exception {
+        List<PunchCardPlace> placeList = Lists.newArrayList();
+        if (StringUtils.isNotBlank(placeJson)) {
+            if(placeJson.contains("-1")){
+                placeList = Lists.newArrayList();
+            }else {
+                placeList = JsonUtils.fromJson(placeJson, new TypeReference<List<PunchCardPlace>>() {
+                });
+            }
+        }
+        subSettings.setPunchCardPlaces(placeList);
+        List<WirelessNetwork> netList = Lists.newArrayList();
+        if (StringUtils.isNotBlank(netJson) && !netJson.contains("-1")) {
+            if(netJson.contains("-1")){
+                netList = Lists.newArrayList();
+            }else {
+                netList = JsonUtils.fromJson(netJson, new TypeReference<List<WirelessNetwork>>() {
+                });
+            }
+        }
+        subSettings.setWirelessNetworks(netList);
+
         SubSettings dbInfo = subSettingsDao.load(subSettings.getSubId());
         if (dbInfo == null) {
             subSettings.setSubId(subSettings.getSubId());
@@ -58,9 +86,13 @@ public class SubSettingsServiceImpl implements SubSettingsService {
             }
             if (subSettings.getPunchCardPlaces().size() > 0) {
                 dbInfo.setPunchCardPlaces(subSettings.getPunchCardPlaces());
+            } else if (StringUtils.isNotBlank(placeJson) && netJson.contains("-1")) {
+                dbInfo.setPunchCardPlaces(Lists.newArrayList());
             }
             if (subSettings.getWirelessNetworks().size() > 0) {
                 dbInfo.setWirelessNetworks(subSettings.getWirelessNetworks());
+            } else if (StringUtils.isNotBlank(netJson) && netJson.contains("-1")) {
+                dbInfo.setWirelessNetworks(Lists.newArrayList());
             }
             if (subSettings.getPlaceStatus() > 0) {
                 dbInfo.setPlaceStatus(subSettings.getPlaceStatus());

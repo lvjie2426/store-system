@@ -951,7 +951,8 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         return clients;
     }
 
-    private List<ClientOrderSku> transformSKUClient(List<OrderSku> skuList) throws Exception {
+    @Override
+    public List<ClientOrderSku> transformSKUClient(List<OrderSku> skuList) throws Exception {
         Set<Long> skuIds = Sets.newHashSet();
         Set<Long> spuIds = Sets.newHashSet();
         Set<Long> pids = Sets.newHashSet();

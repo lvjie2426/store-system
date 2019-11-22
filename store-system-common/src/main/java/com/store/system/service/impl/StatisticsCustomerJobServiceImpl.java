@@ -91,6 +91,7 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
     private ClientStatisticsCustomer statisticsCustomer(List<StatisticsCustomerJob> customers,long subid)throws Exception{
         ClientStatisticsCustomer res = new ClientStatisticsCustomer(new StatisticsCustomerJob());
         List<StatisticsCustomerJob> details = Lists.newArrayList();
+
         int man =  0;
         int woman = 0;
         int total = 0;
@@ -113,11 +114,13 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
             res.setTotal(total);
             res.setManProportion(calculator(man,total));
             res.setWomanProportion(calculator(woman,total));
+
             res.setTen(getCount(ages,0,10));//年龄 0 - 10人数
             res.setTwenty(getCount(ages,11,20));
             res.setForty(getCount(ages,21,40));
             res.setSixty(getCount(ages,41,60));
             res.setMore(getCount(ages,61,999));
+
             res.setSubid(subid);
             res.setDetails(details);
 

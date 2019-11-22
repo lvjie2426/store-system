@@ -72,17 +72,7 @@ public class SubSettingsController extends BaseController {
     public ModelAndView update(HttpServletRequest request, HttpServletResponse response, Model model,
                                SubSettings subSettings,String placeJson,String netJson) throws Exception {
         try {
-            List<PunchCardPlace> placeList = Lists.newArrayList();
-            if(StringUtils.isNotBlank(placeJson)) {
-                placeList = JsonUtils.fromJson(placeJson, new TypeReference<List<PunchCardPlace>>() {});
-            }
-            subSettings.setPunchCardPlaces(placeList);
-            List<WirelessNetwork> netList = Lists.newArrayList();
-            if(StringUtils.isNotBlank(netJson)) {
-                netList = JsonUtils.fromJson(netJson, new TypeReference<List<WirelessNetwork>>() {});
-            }
-            subSettings.setWirelessNetworks(netList);
-            subSettingsService.update(subSettings);
+            subSettingsService.update(subSettings,placeJson,netJson);
             return this.viewNegotiating(request, response, new ResultClient(true));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
