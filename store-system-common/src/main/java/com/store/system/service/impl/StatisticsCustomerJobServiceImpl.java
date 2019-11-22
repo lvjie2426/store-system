@@ -10,6 +10,7 @@ import com.store.system.model.Subordinate;
 import com.store.system.service.StatisticsCustomerJobService;
 import com.store.system.util.DateUtils;
 import com.store.system.util.TimeUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +99,8 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
         int oldNum = 0;
         int returnNum = 0;
         List<Integer> ages = Lists.newArrayList();
+       List<Map<String,Object>> ListMap=new ArrayList<>();
+       List<Map<String,Object>> wListMap=new ArrayList<>();
         if(customers.size()>0){
             for(StatisticsCustomerJob customer:customers){
                 ages.addAll(customer.getAge());
@@ -107,6 +110,9 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
                 woman+=customer.getWoman();
                 total=man+woman;
                 details.add(customer);
+                ListMap.add(customer.getManAge());
+                wListMap.add(customer.getWomanAge());
+
             }
             res.setAge(ages);
             res.setMan(man);
@@ -127,11 +133,34 @@ public class StatisticsCustomerJobServiceImpl implements StatisticsCustomerJobSe
             res.setOldNum(oldNum);
             res.setReturnNum(returnNum);
 
+            res.setManAge(countMap(ListMap));
+            res.setWomanAge(countMap(wListMap));
+
         }
         Subordinate subordinate = subordinateDao.load(subid);
         if(subordinate!=null){ res.setSubName(subordinate.getName()); }
         return res;
     }
+
+    public Map<String,Object>  countMap( List<Map<String,Object>> ListMap){
+
+        Map<String,Object> mapAll = new HashMap<>();
+        for(Map<String,Object> map:ListMap){
+            for(Map.Entry<String, Object> entry:map.entrySet()){
+                String name = entry.getKey();
+                Object score = entry.getValue();
+                Object scoreAll = mapAll.get(entry.getKey());
+                if(scoreAll == null){
+                    mapAll.put(name, score);
+                }else{
+                    scoreAll = new Integer((((Integer)scoreAll).intValue() + ((Integer)score).intValue()));
+                    mapAll.put(name, scoreAll);
+                }
+            }
+        }
+        return mapAll;
+    }
+
 
         //计算 某个年龄段的人数
     private int getCount(List<Integer> ages,int start,int end)throws Exception{

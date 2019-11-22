@@ -9,6 +9,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: store-system
@@ -33,6 +34,10 @@ public class ClientStatisticsCustomer extends StatisticsCustomerJob implements S
     private int manProportion;//男比例
 
     private int womanProportion;//女比例
+
+    private Map<String,Object> manAge;//男详细比例
+
+    private Map<String,Object> womanAge;//女比例
 
     private String subName;//店铺名称
 

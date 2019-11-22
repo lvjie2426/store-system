@@ -1527,7 +1527,9 @@ public class OrderServiceImpl implements OrderService, InitializingBean {
                                 saleReward.setNumber(number);
                                 saleReward.setRoyaltyPersonal(royaltyPersonal);//*个人奖励*
                                 saleReward.setRoyaltyTeam(royaltyTeam);//*团队奖励*
-                                saleRewards.add(saleReward);
+                                if(saleReward.getNumber()>0&&saleReward.getRoyaltyPersonal()>0&&saleReward.getRoyaltyTeam()>0){
+                                    saleRewards.add(saleReward);
+                                }
                                 totalP += royaltyPersonal;
                                 totalT += royaltyTeam;
                             }
