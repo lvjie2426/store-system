@@ -11,11 +11,14 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
 import com.store.system.model.attendance.ApprovalLog;
 import com.store.system.model.attendance.FillCard;
+import com.store.system.service.AttendanceLogService;
 import com.store.system.service.FillCardService;
+import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -33,6 +36,8 @@ public class FillCardServiceImpl implements FillCardService {
     private UserDao userDao;
     @Autowired
     private ApprovalLogDao approvalLogDao;
+    @Resource
+    private AttendanceLogService attendanceLogService;
 
     private void check(FillCard fillCard) {
         if(fillCard.getAskUid()==0)throw  new StoreSystemException("申请人不能为空！");
@@ -55,11 +60,15 @@ public class FillCardServiceImpl implements FillCardService {
 
     @Override
     public boolean pass(long id) throws Exception {
+        boolean res = false;
         FillCard load = fillCardDao.load(id);
-        if(load!=null){
+        if (load != null) {
             load.setStatus(FillCard.status_success);
+            res = fillCardDao.update(load);
+            attendanceLogService.fixAttendanceLog(load.getCheckUid(), load.getAskUid(), TimeUtils.getDayFormTime(load.getTime()),
+                    load.getType(), load.getReason());
         }
-        return fillCardDao.update(load);
+        return res;
     }
 
     @Override

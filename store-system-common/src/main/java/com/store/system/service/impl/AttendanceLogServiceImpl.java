@@ -358,7 +358,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	 *
 	 * 补卡一条考勤记录
 	 */
-	public void fixAttendanceLog(long optUid,long uid,int type,long day,int fixType,String reason) throws Exception{
+	public void fixAttendanceLog(long optUid,long uid, long day,int fixType,String reason) throws Exception{
 		long time=TimeUtils.getTimeFormDay(day);
 		User user=userService.load(uid);
 		AttendanceLog dblog=loadOrCreateLog(user,time);
@@ -369,6 +369,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		orgInfoMap.put("optUid",""+optUid);
 		orgInfoMap.put("startTime",""+dblog.getStartTime());
 		orgInfoMap.put("endTime",""+dblog.getEndTime());
+		orgInfoMap.put("reason",reason);
 		dblog.setOrgInfo(JsonUtils.format(orgInfoMap));
 		startDate.setMinutes(startDate.getMinutes()+dblog.getStart());
 		endDate.setMinutes(endDate.getMinutes()+dblog.getEnd());

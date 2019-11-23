@@ -52,7 +52,7 @@ public interface AttendanceLogService {
 	 *
 	 * 补卡
 	 */
-	public void fixAttendanceLog(long optUid, long uid, int type, long day, int fixType, String reason) throws Exception;
+	public void fixAttendanceLog(long optUid, long uid, long day, int fixType, String reason) throws Exception;
 
 
 	public boolean update(AttendanceLog attendanceLog) throws Exception;
