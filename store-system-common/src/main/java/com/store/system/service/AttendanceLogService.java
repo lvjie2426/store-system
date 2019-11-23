@@ -2,6 +2,7 @@ package com.store.system.service;
 
 import com.store.system.client.ClientAttendanceInfo;
 import com.store.system.client.ClientAttendanceLog;
+import com.store.system.model.User;
 import com.store.system.model.attendance.AttendanceItem;
 import com.store.system.model.attendance.AttendanceLog;
 import com.store.system.model.attendance.AttendanceTemplate;
@@ -30,6 +31,7 @@ public interface AttendanceLogService {
 	 */
 	public ClientAttendanceLog loadAttendanceLog(long uid, long day) throws Exception;
 
+	public AttendanceLog loadOrCreateLog(User user, long time) throws Exception;
 	/**
 	 * 获取用户一月的考勤日志数据和统计数据
 	 * @param sid

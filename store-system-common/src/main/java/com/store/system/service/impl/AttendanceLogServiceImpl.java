@@ -78,7 +78,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	protected JedisX cache;
 
 
-	private AttendanceLog loadOrCreateLog(User user, long time)throws Exception{
+	public AttendanceLog loadOrCreateLog(User user, long time)throws Exception{
 		long uid=user.getId();
 		long aid=user.getAid();
 		AttendanceLog attendanceLog=new AttendanceLog();

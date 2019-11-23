@@ -10,6 +10,7 @@ import com.store.system.model.User;
 import com.store.system.model.attendance.AttendanceItem;
 import com.store.system.model.attendance.AttendanceTemplate;
 import com.store.system.model.attendance.AttendanceTimeItem;
+import com.store.system.service.AttendanceLogService;
 import com.store.system.service.AttendanceTemplateService;
 import com.store.system.service.UserService;
 import com.store.system.util.TimeUtils;
@@ -32,6 +33,8 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
     private UserService userService;
     @Resource
     private AttendanceTemplateDao attendanceTemplateDao;
+    @Resource
+    private AttendanceLogService attendanceLogService;
 
     public static final int fixType_all = 0;
     public static final int fixType_in = 1;
@@ -85,6 +88,8 @@ public class AttendanceTemplateServiceImpl implements AttendanceTemplateService 
             user.setAid(attendanceTemplate.getId());
             userService.updateUser(user);
         }
+
+        attendanceLogService.loadOrCreateLog(user,System.currentTimeMillis());
         return attendanceTemplate;
     }
 
