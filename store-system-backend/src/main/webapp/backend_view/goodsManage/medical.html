@@ -2886,11 +2886,15 @@
     })
 
     // 首页时间
+    var startTime,
+        endTime;
     date5 = new dateRange("#select-time-header .yj-demo-time");
     date5.init();
     $('#select-time-header button').click(function () {
         startTime = date5.getTime()[2];
         endTime = date5.getTime()[3];
+        console.log(startTime)
+        console.log(endTime)
         initPage()
     })
     //初始化函数
@@ -3497,6 +3501,12 @@
                     params.token = quakooUser.getUserInfo().token;
                     params.page = (params.offset / params.limit) + 1;
                     params.size = params.limit;
+                    if (startTime) {
+                        params.ctime = startTime;
+                    }
+                    if (endTime) {
+                        params.utime = endTime;
+                    }
                     return typeof tabObj.callBack == 'function' ? tabObj.callBack(params) : false;
                 },
                 onCheckAll: tabObj.onCheckAll,
@@ -3545,14 +3555,6 @@
         // tabTwo.Init();
         // })
     }
-
-    /**
-     * 所有时间下拉框
-     * */
-    selectTag($("#selectAllSalesStaff"), function (ret) {
-        console.log(ret)
-    });
-
 
     function tabListFooter(num, ids) {
         var botBar = '<div class="winFooterBox">' +
