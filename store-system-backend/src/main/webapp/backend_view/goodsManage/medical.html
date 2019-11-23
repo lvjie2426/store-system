@@ -1429,13 +1429,29 @@
             background-color: rgba(255, 255, 255, 0);
             box-shadow: 1px 0px 0px 0px rgba(236, 236, 244, 1);
         }
+        .xiaoShouShenHe {
+            display: inline-block;
+            width: 45px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(244, 244, 248, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 11px;
+            font-family: PingFangSC-Semibold;
+        }
+        .xiaoShouShenHe.suc {
+            background-color: #4186DC;
+            color: #fff;
+        }
     </style>
 </head>
 
 <body class="body-bg">
 <div class="header clear">
     <ul class="tab-ul clear">
-        <li class="active">所有商品</li>
+        <li class="active">产品列表</li>
         <li>入库记录</li>
         <li>出库记录</li>
     </ul>
@@ -2377,18 +2393,18 @@
             {checkbox: true, valign: "middle"},
             {field: "brandName", title: "品牌", align: "left", valign: "middle"},
             {field: "seriesName", title: "系列", align: "left", valign: "middle"},
-            {field: "providerName", title: "生产企业", align: "left", valign: "middle"},
+            // {field: "providerName", title: "生产企业", align: "left", valign: "middle"},
             {field: "nirNum", title: "国械注准号", align: "left", valign: "middle"},
             {
                 field: "checkStatus",
-                title: "验收结果",
+                title: "销售审核",
                 align: "left",
                 valign: "middle",
                 formatter: function (value, row, index) {
                     if (value == 0) {
-                        return '未通过'
+                        return '<span class="xiaoShouShenHe">未通过</span>'
                     } else if (value == 1) {
-                        return '审核通过'
+                        return '<span class="xiaoShouShenHe suc">审核通过</span>'
                     }
                 }
             },
@@ -3501,12 +3517,12 @@
                     params.token = quakooUser.getUserInfo().token;
                     params.page = (params.offset / params.limit) + 1;
                     params.size = params.limit;
-                    if (startTime) {
-                        params.ctime = startTime;
-                    }
-                    if (endTime) {
-                        params.utime = endTime;
-                    }
+                    // if (startTime) {
+                    //     params.ctime = startTime;
+                    // }
+                    // if (endTime) {
+                    //     params.utime = endTime;
+                    // }
                     return typeof tabObj.callBack == 'function' ? tabObj.callBack(params) : false;
                 },
                 onCheckAll: tabObj.onCheckAll,
@@ -3525,35 +3541,35 @@
         $("#table2").show();
         /*所有商品(需要补充说明商品)*/
         //企业证件有效期到期列表
-        var tabThree = new TableInit({
-            dom: '#xsjl-table1',
-            data: false,
-            method: 'get',
-            type: 'server',
-            url: config.getUrl_medicalAppliances_getNotBuCSMShop(),
-            columns: winObj.warnSPList,
-            callBack: function (row) {
-                subid: quakooUser.getUserInfo().sid;
-                token: quakooUser.getUserInfo().token;
-                return row
-            }
-        });
-        tabThree.Init();
-        // quakooData.ajaxGetData(config.getUrl_medicalAppliances_getNotBuCSMShop(), {
-        //     subid: quakooUser.getUserInfo().sid,
-        //     token: quakooUser.getUserInfo().token
-        // }, function (ret) {
-        //     console.log(ret)
-        //     var tabTwo = new TableInit({
-        //         dom: '#xsjl-table1',
-        //         data: ret.rows,
-        //         method: false,
-        //         type: 'client',
-        //         url: false,
-        //         columns: winObj.warnSPList
-        //     });
-        // tabTwo.Init();
-        // })
+        // var tabThree = new TableInit({ //分页请求
+        //     dom: '#xsjl-table1',
+        //     data: false,
+        //     method: 'get',
+        //     type: 'server',
+        //     url: config.getUrl_medicalAppliances_getNotBuCSMShop(),
+        //     columns: winObj.warnSPList,
+        //     callBack: function (row) {
+        //         subid: quakooUser.getUserInfo().sid;
+        //         token: quakooUser.getUserInfo().token;
+        //         return row
+        //     }
+        // });
+        // tabThree.Init();
+        quakooData.ajaxGetData(config.getUrl_medicalAppliances_getNotBuCSMShop(), {
+            subid: quakooUser.getUserInfo().sid,
+            token: quakooUser.getUserInfo().token
+        }, function (ret) {
+            console.log(ret)
+            var tabTwo = new TableInit({
+                dom: '#xsjl-table1',
+                data: ret.rows,
+                method: false,
+                type: 'client',
+                url: false,
+                columns: winObj.warnSPList
+            });
+        tabTwo.Init();
+        })
     }
 
     function tabListFooter(num, ids) {
