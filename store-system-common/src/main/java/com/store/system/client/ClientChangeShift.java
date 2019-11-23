@@ -15,8 +15,11 @@ import org.apache.commons.beanutils.BeanUtils;
 public class ClientChangeShift extends ChangeShift {
 
     private String copyName;
+    private String copyCover;
     private String replaceName;
+    private String replaceCover;
     private String checkName;
+    private String checkCover;
     private String askName;
 
 

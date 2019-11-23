@@ -13,8 +13,10 @@ import java.util.List;
 public class ClientWorkOverTime extends WorkOverTime{
 
     private String checkName; //审核人名称
+    private String checkCover; //审核人名称
 
     private String copyName; //抄送人名称
+    private String copyCover; //抄送人名称
     private String askName; //申请人
 
 

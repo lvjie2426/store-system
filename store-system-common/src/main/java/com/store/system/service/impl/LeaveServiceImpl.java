@@ -161,8 +161,10 @@ public class LeaveServiceImpl implements LeaveService {
         User ask = userDao.load(leave.getAskUid());
         User copy = userDao.load(leave.getCopyUid());
         clientLeave.setCheckName(load!=null?load.getName():"");
+        clientLeave.setCheckCover(load!=null?load.getCover():"");
         clientLeave.setAskName(ask!=null?ask.getName():"");
         clientLeave.setCopyName(copy!=null?copy.getName():"");
+        clientLeave.setCopyCover(copy!=null?copy.getCover():"");
         return clientLeave;
     }
 }

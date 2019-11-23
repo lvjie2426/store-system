@@ -15,10 +15,12 @@ import org.apache.commons.beanutils.BeanUtils;
 public class ClientLeave extends Leave {
 
     private String checkName;
+    private String checkCover;
 
     private String askName;
 
     private String copyName;
+    private String copyCover;
 
 
     public ClientLeave(Leave leave) {
