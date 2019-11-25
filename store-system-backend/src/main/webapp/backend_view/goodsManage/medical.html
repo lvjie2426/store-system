@@ -2553,6 +2553,24 @@
                     return '<button class="btn btn-primary">编辑</button>';
                 }
             }
+        ],
+        XSReload: [
+            {checkbox: true, valign: "middle"},
+            {field: "stime", title: "销售日期", align: "left", valign: "middle"},
+            {field: "sname ", title: "客户名称", align: "left", valign: "middle"},
+            {field: "series", title: "商品编号", align: "left", valign: "middle"},
+            {field: "model", title: "商品名称", align: "left", valign: "middle"},
+            {field: "cycle", title: "销售数量", align: "left", valign: "middle"},
+            {field: "spy", title: "生产企业", align: "left", valign: "middle"},
+            {field: "quality", title: "生产许可号", align: "left", valign: "middle"},
+            {field: "guoxieNum", title: "国械注准号", align: "left", valign: "middle"},
+            {field: "guige", title: "规格", align: "left", valign: "middle"},
+            {field: "spNum", title: "生产批号", align: "left", valign: "middle"},
+            {field: "quality", title: "生产时间", align: "left", valign: "middle"},
+            {field: "guoqi", title: "过期时间", align: "left", valign: "middle"},
+            {field: "putPerson", title: "销售人员", align: "center", valign: "middle"},
+            {field: "shPerson", title: "审核人员", align: "center", valign: "middle"},
+            {field: "num", title: "单据编号", align: "left", valign: "middle"}
         ]
     };
     var brand,//品牌
@@ -3139,110 +3157,59 @@
             {field: "num", title: "单据编号", align: "left", valign: "middle"},
         ]
     });
+
+
+
     /*销售记录*/
-    var data5 = [
-        {
-            stime: "2018.12.10",
-            sname: "李国芳",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            sname: "李国芳",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            sname: "李国芳",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            sname: "李国芳",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        }
-    ];
-    $("#xsReload-table").bootstrapTable({
-        data: data5,                 //被加载的数据。
-        classes: "table",
-        pagination: true,            //是否显示分页
-        pageNumber: 1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: [
-            {checkbox: true, valign: "middle"},
-            {field: "stime", title: "销售日期", align: "left", valign: "middle"},
-            {field: "sname ", title: "客户名称", align: "left", valign: "middle"},
-            {field: "series", title: "商品编号", align: "left", valign: "middle"},
-            {field: "model", title: "商品名称", align: "left", valign: "middle"},
-            {field: "cycle", title: "销售数量", align: "left", valign: "middle"},
-            {field: "spy", title: "生产企业", align: "left", valign: "middle"},
-            {field: "quality", title: "生产许可号", align: "left", valign: "middle"},
-            {field: "guoxieNum", title: "国械注准号", align: "left", valign: "middle"},
-            {field: "guige", title: "规格", align: "left", valign: "middle"},
-            {field: "spNum", title: "生产批号", align: "left", valign: "middle"},
-            {field: "quality", title: "生产时间", align: "left", valign: "middle"},
-            {field: "guoqi", title: "过期时间", align: "left", valign: "middle"},
-            {field: "putPerson", title: "销售人员", align: "center", valign: "middle"},
-            {field: "shPerson", title: "审核人员", align: "center", valign: "middle"},
-            {field: "num", title: "单据编号", align: "left", valign: "middle"}
-        ]
-    });
+    // var tabFour = new TableInit({
+    //     dom: '#xsReload-table',
+    //     data: false,
+    //     method: 'get',
+    //     type: 'server',
+    //     url: config.getUrl_medicalAppliances_getXiaoShouReload(),
+    //     columns: winObj.XSReload,
+    //     // queryParams: function (param) {
+    //     //     param.subid = quakooUser.getUserInfo().sid;
+    //     //     param.token = quakooUser.getUserInfo().token;
+    //     //     if (startTime) {
+    //     //         param.startTime = startTime;
+    //     //     }
+    //     //     if (endTime) {
+    //     //         param.endTime = endTime;
+    //     //     }
+    //     //     return param
+    //     // },
+    //     // onCheckAll: function (data) {
+    //     //     var len = data.length;
+    //     //     for (var i = 0; i < data.length; i++) {
+    //     //         checkArray[data[i].id] = data[i].id
+    //     //     }
+    //     //     shouyeShowFooter(len, checkArray)
+    //     // },
+    //     // onUncheckAll: function (data) {
+    //     //     var len = 0;
+    //     //     checkArray = {};
+    //     //     shouyeShowFooter(len, checkArray)
+    //     // },
+    //     // onCheck: function (data) {
+    //     //     var len = $('#xsjl-table').find('tr.selected').length;
+    //     //     checkArray[data.id] = data.id;
+    //     //     shouyeShowFooter(len, checkArray)
+    //     // },
+    //     // onUncheck: function (data) {
+    //     //     delete checkArray[data.id]
+    //     //     var len = $('#xsjl-table').find('tr.selected').length;
+    //     //     shouyeShowFooter(len, checkArray)
+    //     // },
+    //     callBack: function (row) {
+    //         subid: quakooUser.getUserInfo().sid
+    //         startTime: startTime;
+    //         endTime: endTime;
+    //         return row
+    //     }
+    // });
+    // tabFour.Init();
+
     /*退货记录*/
     var data9 = [
         {
