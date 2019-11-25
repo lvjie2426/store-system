@@ -145,8 +145,6 @@ public class UserController extends BaseController {
         try {
             user.setPassword("123456");
             user.setContactPhone(user.getPhone());
-            user.setPhone("");
-            user.setUserName(user.getName());
             ClientUserOnLogin clientUserOnLogin = userService.register(user);
             return this.viewNegotiating(request, response, new ResultClient(clientUserOnLogin));
         } catch (StoreSystemException e) {

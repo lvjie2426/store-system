@@ -688,7 +688,10 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		AttendanceItem item=new AttendanceItem();//默认的时间点都是-1
 		//特殊的上班时间，特殊的放假时间
 		Map<Long,SpecialDay> specialMap=attendanceTemplate.getSpecial();
-		SpecialDay thisSpecialDay=specialMap.get(day);
+		SpecialDay thisSpecialDay=null;
+		if(specialMap!=null) {
+			thisSpecialDay = specialMap.get(day);
+		}
 		//轮换制度
 		if(attendanceTemplate.getType()==AttendanceTemplate.type_turn){
 			//判断今天是否要上班
@@ -1010,7 +1013,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 				if (attendanceLog.getStartTime() > 0) {
 					Date date = new Date(attendanceLog.getStartTime());
 					int mins = date.getHours() * 60 + date.getMinutes();
-					if (mins > (attendanceLog.getStart() + subSettings.getLateTime()*60)) {
+					if (mins > (attendanceLog.getStart() + subSettings.getLateTime())) {
 						late = true;
 						clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_late);
 					}
@@ -1021,7 +1024,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 				if (attendanceLog.getEndTime() > 0) {
 					Date date = new Date(attendanceLog.getEndTime());
 					int mins = date.getHours() * 60 + date.getMinutes();
-					if (mins < (attendanceLog.getEnd() - subSettings.getEarlyTime()*60)) {
+					if (mins < (attendanceLog.getEnd() - subSettings.getEarlyTime())) {
 						leaveEarly = true;
 						clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_leaveEarly);
 					}
