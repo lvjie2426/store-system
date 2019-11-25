@@ -688,7 +688,10 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		AttendanceItem item=new AttendanceItem();//默认的时间点都是-1
 		//特殊的上班时间，特殊的放假时间
 		Map<Long,SpecialDay> specialMap=attendanceTemplate.getSpecial();
-		SpecialDay thisSpecialDay=specialMap.get(day);
+		SpecialDay thisSpecialDay=null;
+		if(specialMap!=null) {
+			thisSpecialDay = specialMap.get(day);
+		}
 		//轮换制度
 		if(attendanceTemplate.getType()==AttendanceTemplate.type_turn){
 			//判断今天是否要上班
