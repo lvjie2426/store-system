@@ -40,7 +40,7 @@ public class LoginController extends BaseController {
     public ModelAndView in(HttpServletRequest request, HttpServletResponse response, final Model model)
             throws Exception {
         try {
-            String userName = request.getParameter("userName");
+            String phone = request.getParameter("phone");
             String password = request.getParameter("password");
             String userTypeStr = request.getParameter("userType");
             String code = request.getParameter("code1");
@@ -49,12 +49,13 @@ public class LoginController extends BaseController {
             if(StringUtils.isNotBlank(userTypeStr)){
                 userType=Integer.parseInt(userTypeStr);
             }
-            if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
+            if (StringUtils.isBlank(phone) || StringUtils.isBlank(password)) {
                 cache.delete(verifyCode + uuid);
                 return this.viewNegotiating(request, response, new ResultClient("用户名密码错误"));
             }
             User user=new User();
-            user.setUserName(userName);
+//            user.setUserName(userName);
+            user.setPhone(phone);
             user.setPassword(password);
             user.setUserType(userType);
             ClientUserOnLogin clientUserOnLogin = userService.login(user, code);

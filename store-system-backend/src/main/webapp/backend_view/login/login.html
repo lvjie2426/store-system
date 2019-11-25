@@ -63,7 +63,7 @@
             <form method="post" id="login_form" onsubmit="return login();" action="#">
                 <h4 class="no-margins">登录：</h4>
                 <p class="m-t-md">登录到后台管理系统</p>
-                <input id="username" type="text" class="form-control uname" name="username" placeholder="手机号" required=""/>
+                <input id="phone" type="text" class="form-control uname" name="phone" placeholder="手机号" required=""/>
                 <input id="password" type="password" class="form-control pword m-b" name="password" placeholder="密码" required=""/>
                 <div class="safecode">
                     <input id="code1" type="text" class="form-control code" name="code1" placeholder="验证码" required=""/>
@@ -151,7 +151,7 @@
         }
 		function login(){
 		    var loginJson={};
-		    loginJson.userName = $('#username').val();
+		    loginJson.phone = $('#phone').val();
 		    loginJson.password = $('#password').val();
 		    loginJson.code1= $('#code1').val();
 		    loginJson.uuid=uuid;

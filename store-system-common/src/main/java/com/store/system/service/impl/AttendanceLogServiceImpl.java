@@ -1013,7 +1013,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 				if (attendanceLog.getStartTime() > 0) {
 					Date date = new Date(attendanceLog.getStartTime());
 					int mins = date.getHours() * 60 + date.getMinutes();
-					if (mins > (attendanceLog.getStart() + subSettings.getLateTime()*60)) {
+					if (mins > (attendanceLog.getStart() + subSettings.getLateTime())) {
 						late = true;
 						clientAttendanceLog.setStartType(ClientAttendanceLog.attendanceType_late);
 					}
@@ -1024,7 +1024,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 				if (attendanceLog.getEndTime() > 0) {
 					Date date = new Date(attendanceLog.getEndTime());
 					int mins = date.getHours() * 60 + date.getMinutes();
-					if (mins < (attendanceLog.getEnd() - subSettings.getEarlyTime()*60)) {
+					if (mins < (attendanceLog.getEnd() - subSettings.getEarlyTime())) {
 						leaveEarly = true;
 						clientAttendanceLog.setEndType(ClientAttendanceLog.attendanceType_leaveEarly);
 					}
