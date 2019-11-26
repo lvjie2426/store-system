@@ -44,7 +44,7 @@ public class InventoryOutBill implements Serializable {
 
     private long checkUid; //审核人
 
-    private int type; //出库类型，0 正常 1 退货；2 销毁
+    private int type; //出库类型，0 正常 3 退货；2 销毁
 
     @HyperspaceColumn(isJson = true)
     private List<InventoryOutBillItem> items; //子条目JSON

@@ -144,6 +144,7 @@ public class WorkOverTimeServiceImpl implements WorkOverTimeService {
         }User load2 = userDao.load(workOverTime.getAskUid());
         if(load1!=null){
             clientWorkOverTime.setAskName(load2.getName());
+            clientWorkOverTime.setAskCover(load2.getCover());
         }
         return clientWorkOverTime;
     }

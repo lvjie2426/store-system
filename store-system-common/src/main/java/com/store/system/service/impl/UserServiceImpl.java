@@ -1600,7 +1600,9 @@ public class UserServiceImpl implements UserService {
             tem += personal;
             ClientUser clientUser = new ClientUser(user);
             clientUser.setSale(personal);
-            clientUsers.add(clientUser);
+            if(clientUser.getSale()>0){
+                clientUsers.add(clientUser);
+            }
         }
         Collections.sort(clientUsers);
         clientMissForUser.setTem(tem);

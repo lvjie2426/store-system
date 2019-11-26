@@ -17,7 +17,9 @@ public class ClientWorkOverTime extends WorkOverTime{
 
     private String copyName; //抄送人名称
     private String copyCover; //抄送人名称
+
     private String askName; //申请人
+    private String askCover;
 
 
     public ClientWorkOverTime(WorkOverTime workOverTime) {

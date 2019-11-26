@@ -163,6 +163,7 @@ public class LeaveServiceImpl implements LeaveService {
         clientLeave.setCheckName(load!=null?load.getName():"");
         clientLeave.setCheckCover(load!=null?load.getCover():"");
         clientLeave.setAskName(ask!=null?ask.getName():"");
+        clientLeave.setAskCover(ask!=null?ask.getCover():"");
         clientLeave.setCopyName(copy!=null?copy.getName():"");
         clientLeave.setCopyCover(copy!=null?copy.getCover():"");
         return clientLeave;
