@@ -18,7 +18,9 @@ public class ClientFillCard extends FillCard {
 
     private String checkName;
     private String checkCover;
+
     private String askName;
+    private String askCover;
 
 
     public  ClientFillCard(FillCard fillCard){

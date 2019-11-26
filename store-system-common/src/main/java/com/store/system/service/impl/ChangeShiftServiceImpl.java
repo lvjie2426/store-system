@@ -170,6 +170,7 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
         } User load3 = userDao.load(changeShift.getAskUid());
         if (load3 != null) {
             clientChangeShift.setAskName(load3.getName());
+            clientChangeShift.setAskCover(load3.getCover());
         }
         return clientChangeShift;
     }

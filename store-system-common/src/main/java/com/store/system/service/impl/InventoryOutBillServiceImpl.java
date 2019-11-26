@@ -64,7 +64,6 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     private RowMapperHelp<InventoryOutBill> rowMapper = new RowMapperHelp<>(InventoryOutBill.class);
 
 
-
     @Resource
     private InventoryOutBillDao inventoryOutBillDao;
 
@@ -106,7 +105,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         check(inventoryOutBill);
         //查询
         Subordinate subordinate = subordinateDao.load(inventoryOutBill.getSubid());
-        if(subordinate.getIsCheck()==Subordinate.isCheck_no){
+        if (subordinate.getIsCheck() == Subordinate.isCheck_no) {
             //todo 这里获取店长，设置成店长的id。
             inventoryOutBill.setCheckUid(0);
             inventoryOutBill.setCheck(InventoryOutBill.check_pass);
@@ -119,7 +118,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     public boolean update(InventoryOutBill inventoryOutBill) throws Exception {
         InventoryOutBill dbOutBill = inventoryOutBillDao.load(inventoryOutBill.getId());
         int status = dbOutBill.getStatus();
-        if(status != InventoryOutBill.status_edit) throw new StoreSystemException("状态错误,不能修改");
+        if (status != InventoryOutBill.status_edit) throw new StoreSystemException("状态错误,不能修改");
         check(inventoryOutBill);
         boolean res = inventoryOutBillDao.update(inventoryOutBill);
         return res;
@@ -128,7 +127,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     @Override
     public boolean del(long id) throws Exception {
         InventoryOutBill outBill = inventoryOutBillDao.load(id);
-        if(null != outBill && outBill.getStatus() == InventoryOutBill.status_edit) {
+        if (null != outBill && outBill.getStatus() == InventoryOutBill.status_edit) {
             return inventoryOutBillDao.delete(id);
         }
         return false;
@@ -137,7 +136,7 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     @Override
     public boolean submit(long id) throws Exception {
         InventoryOutBill outBill = inventoryOutBillDao.load(id);
-        if(null != outBill && outBill.getStatus() == InventoryOutBill.status_edit) {
+        if (null != outBill && outBill.getStatus() == InventoryOutBill.status_edit) {
             outBill.setStatus(InventoryOutBill.status_wait_check);
             return inventoryOutBillDao.update(outBill);
         }
@@ -150,17 +149,17 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         lock.lock();
         try {
             InventoryOutBill outBill = inventoryOutBillDao.load(id);
-            if(null == outBill) throw new StoreSystemException("出库单为空");
-            if(outBill.getStatus() != InventoryOutBill.status_wait_check) throw new StoreSystemException("出库单状态错误");
+            if (null == outBill) throw new StoreSystemException("出库单为空");
+            if (outBill.getStatus() != InventoryOutBill.status_wait_check) throw new StoreSystemException("出库单状态错误");
             List<InventoryOutBillItem> items = outBill.getItems();
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
             Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
-            for(InventoryOutBillItem item : items) {
+            for (InventoryOutBillItem item : items) {
                 InventoryDetail detail = detailMap.get(item.getDid());
-                if(item.getNum() > detail.getNum()) throw new StoreSystemException("库存数量不足");
+                if (item.getNum() > detail.getNum()) throw new StoreSystemException("库存数量不足");
             }
-            for(InventoryOutBillItem item : items) {
+            for (InventoryOutBillItem item : items) {
                 InventoryDetail detail = detailMap.get(item.getDid());
                 detail.setNum(detail.getNum() - item.getNum());
                 inventoryDetailDao.update(detail);
@@ -177,8 +176,8 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     @Override
     public void noPass(long id, long checkUid) throws Exception {
         InventoryOutBill outBill = inventoryOutBillDao.load(id);
-        if(null == outBill) throw new StoreSystemException("出库单为空");
-        if(outBill.getStatus() != InventoryOutBill.status_wait_check) throw new StoreSystemException("出库单状态错误");
+        if (null == outBill) throw new StoreSystemException("出库单为空");
+        if (outBill.getStatus() != InventoryOutBill.status_wait_check) throw new StoreSystemException("出库单状态错误");
         outBill.setCheckUid(checkUid);
         outBill.setCheck(InventoryOutBill.check_no_pass);
         outBill.setStatus(InventoryOutBill.status_end);
@@ -187,16 +186,16 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
 
     private void check(InventoryOutBill inventoryOutBill) throws Exception {
         long subid = inventoryOutBill.getSubid();
-        if(subid == 0) throw new StoreSystemException("店铺不能为空");
+        if (subid == 0) throw new StoreSystemException("店铺不能为空");
         long wid = inventoryOutBill.getWid();
-        if(wid == 0) throw new StoreSystemException("仓库不能为空");
-        if(inventoryOutBill.getOutUid() == 0) throw new StoreSystemException("出库人不能为空");
-        if(inventoryOutBill.getCreateUid() == 0) throw new StoreSystemException("创建人不能为空");
+        if (wid == 0) throw new StoreSystemException("仓库不能为空");
+        if (inventoryOutBill.getOutUid() == 0) throw new StoreSystemException("出库人不能为空");
+        if (inventoryOutBill.getCreateUid() == 0) throw new StoreSystemException("创建人不能为空");
         List<InventoryOutBillItem> items = inventoryOutBill.getItems();
         Map<Long, Integer> didNumMap = Maps.newHashMap();
-        for(InventoryOutBillItem item : items) {
+        for (InventoryOutBillItem item : items) {
             Integer num = didNumMap.get(item.getDid());
-            if(null == num) {
+            if (null == num) {
                 didNumMap.put(item.getDid(), 1);
             } else {
                 didNumMap.put(item.getDid(), num + 1);
@@ -206,13 +205,13 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
         List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
         Map<Long, InventoryDetail> detailMap = detailMapUtils.listToMap(details, "id");
-        for(InventoryOutBillItem item : items) {
-            if(item.getNum() <= 0) throw new StoreSystemException("出库单子项目出库数错误");
-            if(didNumMap.get(item.getDid()) > 1) throw new StoreSystemException("已经添加相同子项目进出库单");
+        for (InventoryOutBillItem item : items) {
+            if (item.getNum() <= 0) throw new StoreSystemException("出库单子项目出库数错误");
+            if (didNumMap.get(item.getDid()) > 1) throw new StoreSystemException("已经添加相同子项目进出库单");
             InventoryDetail detail = detailMap.get(item.getDid());
-            if(null == detail) throw new StoreSystemException("库存明细为空");
-            if(detail.getWid() != wid) throw new StoreSystemException("出库单子项目仓库错误");
-            if(item.getNum() > detail.getNum()) throw new StoreSystemException("库存数量不足");
+            if (null == detail) throw new StoreSystemException("库存明细为空");
+            if (detail.getWid() != wid) throw new StoreSystemException("出库单子项目仓库错误");
+            if (item.getNum() > detail.getNum()) throw new StoreSystemException("库存数量不足");
         }
     }
 
@@ -247,10 +246,14 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
     }
 
     @Override
-    public Pager getAllPager(Pager pager, long subid, int type,String licenceNum) throws Exception {
+    public Pager getAllPager(Pager pager, long subid, int type, String licenceNum) throws Exception {
         String sql = "SELECT * FROM `inventory_out_bill` where subid = " + subid + " and `type` = " + type;
-        String sqlCount = "SELECT COUNT(id) FROM `inventory_out_bill` where subid = " + subid +" and `type` = " + type;
+        String sqlCount = "SELECT COUNT(id) FROM `inventory_out_bill` where subid = " + subid + " and `type` = " + type;
         String limit = " limit %d , %d ";
+        if (StringUtils.isNotBlank(licenceNum)) {
+            sql += " and  items like '%" + licenceNum + "%'";
+            sqlCount += " and  items like '%" + licenceNum + "%'";
+        }
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<InventoryOutBill> outBills = this.jdbcTemplate.query(sql, rowMapper);
@@ -266,12 +269,12 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         Set<Long> uids = Sets.newHashSet();
         Set<Long> wids = Sets.newHashSet();
         Set<Long> subids = Sets.newHashSet();
-        for(InventoryOutBill outBill : outBills) {
-            if(outBill.getWid() > 0) wids.add(outBill.getWid());
-            if(outBill.getCreateUid() > 0) uids.add(outBill.getCreateUid());
-            if(outBill.getOutUid() > 0) uids.add(outBill.getOutUid());
-            if(outBill.getCheckUid() > 0) uids.add(outBill.getCheckUid());
-            if(outBill.getSubid() > 0) subids.add(outBill.getSubid());
+        for (InventoryOutBill outBill : outBills) {
+            if (outBill.getWid() > 0) wids.add(outBill.getWid());
+            if (outBill.getCreateUid() > 0) uids.add(outBill.getCreateUid());
+            if (outBill.getOutUid() > 0) uids.add(outBill.getOutUid());
+            if (outBill.getCheckUid() > 0) uids.add(outBill.getCheckUid());
+            if (outBill.getSubid() > 0) subids.add(outBill.getSubid());
         }
         List<User> users = userDao.load(Lists.newArrayList(uids));
         Map<Long, User> userMap = userMapUtils.listToMap(users, "id");
@@ -279,18 +282,18 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
         Map<Long, InventoryWarehouse> warehouseMap = warehouseMapUtils.listToMap(warehouses, "id");
         List<Subordinate> subordinates = subordinateDao.load(Lists.newArrayList(subids));
         Map<Long, Subordinate> subordinateMap = subMapUtils.listToMap(subordinates, "id");
-        for(InventoryOutBill outBill : outBills) {
+        for (InventoryOutBill outBill : outBills) {
             ClientInventoryOutBill client = new ClientInventoryOutBill(outBill);
             InventoryWarehouse warehouse = warehouseMap.get(client.getWid());
-            if(null != warehouse) client.setWarehouseName(warehouse.getName());
+            if (null != warehouse) client.setWarehouseName(warehouse.getName());
             User user = userMap.get(client.getCreateUid());
-            if(null != user) client.setCreateUserName(user.getName());
+            if (null != user) client.setCreateUserName(user.getName());
             user = userMap.get(client.getOutUid());
-            if(null != user) client.setOutUserName(user.getName());
+            if (null != user) client.setOutUserName(user.getName());
             user = userMap.get(client.getCheckUid());
-            if(null != user) client.setCheckUserName(user.getName());
+            if (null != user) client.setCheckUserName(user.getName());
             Subordinate subordinate = subordinateMap.get(client.getSubid());
-            if(null != subordinate) client.setSubName(subordinate.getName());
+            if (null != subordinate) client.setSubName(subordinate.getName());
             List<InventoryOutBillItem> items = outBill.getItems();
             Set<Long> dids = itemFieldSetUtils.fieldList(items, "did");
             List<InventoryDetail> details = inventoryDetailDao.load(Lists.newArrayList(dids));
@@ -312,12 +315,12 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
             List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
             Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
             List<ClientInventoryOutBillItem> clientItems = Lists.newArrayList();
-            for(InventoryOutBillItem item : items) {
+            for (InventoryOutBillItem item : items) {
                 ClientInventoryOutBillItem clientItem = new ClientInventoryOutBillItem(item);
                 InventoryDetail detail = detailMap.get(clientItem.getDid());
-                if(null != detail) {
+                if (null != detail) {
                     ProductSPU spu = spuMap.get(detail.getP_spuid());
-                    if(null != spu) {
+                    if (null != spu) {
                         clientItem.setSpuid(spu.getId());
                         clientItem.setSpuName(spu.getName());
                         clientItem.setSpuCovers(spu.getCovers());
@@ -327,21 +330,21 @@ public class InventoryOutBillServiceImpl implements InventoryOutBillService {
                         clientItem.setSid(spu.getSid());
                     }
                     ProductSKU sku = skuMap.get(detail.getP_skuid());
-                    if(null != sku) {
+                    if (null != sku) {
                         clientItem.setCode(sku.getCode());
                         clientItem.setProperties(sku.getProperties());
 
-                        Map<Object,Object> map_value = Maps.newHashMap();
-                        map_value = productService.getProperties(sku,clientItem,"p_properties_value");
+                        Map<Object, Object> map_value = Maps.newHashMap();
+                        map_value = productService.getProperties(sku, clientItem, "p_properties_value");
                         clientItem.setP_properties_value(map_value);
                     }
                 }
                 ProductCategory category = categoryMap.get(clientItem.getCid());
-                if(null != category) clientItem.setCategoryName(category.getName());
+                if (null != category) clientItem.setCategoryName(category.getName());
                 ProductBrand brand = brandMap.get(clientItem.getBid());
-                if(null != brand) clientItem.setBrandName(brand.getName());
+                if (null != brand) clientItem.setBrandName(brand.getName());
                 ProductSeries series = seriesMap.get(clientItem.getSid());
-                if(null != series) clientItem.setSeriesName(series.getName());
+                if (null != series) clientItem.setSeriesName(series.getName());
                 clientItems.add(clientItem);
             }
             client.setClientItems(clientItems);

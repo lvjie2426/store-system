@@ -18,6 +18,7 @@ public class ClientLeave extends Leave {
     private String checkCover;
 
     private String askName;
+    private String askCover;
 
     private String copyName;
     private String copyCover;

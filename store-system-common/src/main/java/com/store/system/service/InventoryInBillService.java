@@ -32,4 +32,5 @@ public interface InventoryInBillService {
 
     public List<InventoryInBill> getListByStatus(long psid, long subid, long uid) throws Exception;
 
+    public Pager getELAllPager(Pager pager, long subid, long startTime, long endTime, int type, String num)throws Exception;
 }

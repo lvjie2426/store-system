@@ -267,6 +267,27 @@ public class ProductController extends BaseController {
         }
     }
 
+
+    /**
+     * 获取公司的所有医疗器械商品SPU
+     **/
+    @RequestMapping("/getELSPUPager")
+    public ModelAndView getELSPUPager(
+                                    @RequestParam(value = "subid", defaultValue = "0") long subid,
+                                    @RequestParam(value = "startTime", defaultValue = "0") long startTime,
+                                    @RequestParam(value = "endTime", defaultValue = "0") long endTime,
+                                    Pager pager,
+                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            Subordinate subordinate = subordinateService.load(subid);
+            if(subordinate.getPid() > 0) subid = subordinate.getPid();
+            pager = productService.getELSPUBackPager(pager, subid,startTime,endTime, subordinate.getId());
+            return this.viewNegotiating(request, response, new PagerResult<>(pager));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
     @RequestMapping("/loadSPU")
     public ModelAndView loadSPU(@RequestParam(value = "id") long id,
                                 HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -351,13 +372,27 @@ public class ProductController extends BaseController {
         }
     }
 
-    //医疗器械商品 审核通过 变成已验收状态。
+    //新增医疗器械商品 审核通过 变成已验收状态。
     @RequestMapping("/checkStatus")
     public ModelAndView checkStatus(HttpServletRequest request, HttpServletResponse response,
                                     @RequestParam(required = true, value = "ids[]", defaultValue = "") List<Long> ids) throws Exception {
         try {
             User user= UserUtils.getUser(request);
             boolean flag= productService.checkStatus(ids,user);
+            return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+
+    }
+
+    //销毁/退货 医疗器械商品 审核通过
+    @RequestMapping("/checkStatusKillRe")
+    public ModelAndView checkStatusKillRe(HttpServletRequest request, HttpServletResponse response,
+                                    @RequestParam(required = true, value = "ids[]", defaultValue = "") List<Long> ids) throws Exception {
+        try {
+            User user= UserUtils.getUser(request);
+            boolean flag= productService.checkStatusKillRe(ids,user);
             return this.viewNegotiating(request, response, new ResultClient(flag));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -394,5 +429,20 @@ public class ProductController extends BaseController {
             return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
         }
     }
+    /**
+     * 退货/销毁 申请
+     */
+    @RequestMapping("/updateSpuStatus")
+    public ModelAndView updateSpuStatus(@RequestParam(value = "ids[]") List<Long> ids,int start,
+                                  HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        try {
+            return this.viewNegotiating(request, response, new ResultClient(productService.updateSpuStatus(ids,start)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request,response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+
+
 
 }

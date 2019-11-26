@@ -11,6 +11,7 @@ import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.quakoo.ext.RowMapperHelp;
 import com.quakoo.space.mapper.HyperspaceAllIdRowMapper;
 import com.quakoo.space.mapper.HyperspaceBeanPropertyRowMapper;
+import com.store.system.bean.InventoryOutBillItem;
 import com.store.system.client.*;
 import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
@@ -94,6 +95,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private InventoryDetailDao inventoryDetailDao;
+    @Resource
+    private InventoryOutBillDao inventoryOutBillDao;
 
     @Resource
     private InventoryWarehouseDao inventoryWarehouseDao;
@@ -391,14 +394,6 @@ public class ProductServiceImpl implements ProductService {
         return clientProductSPU;
     }
 
-    private ClientProductSPU transformClientSPU(ClientProductSPU clientProductSPU) {
-        ClientProductSPU clientProductSPU1 = clientProductSPU;
-        List<ClientProductSKU> properties = clientProductSPU1.getSkuList();
-        // sku 属性。
-
-        return clientProductSPU;
-    }
-
     private List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList, long subId) throws Exception {
         List<ClientProductSPU> res = Lists.newArrayList();
         if (productSPUList.size() == 0) return res;
@@ -532,9 +527,9 @@ public class ProductServiceImpl implements ProductService {
         return clientProductSPU;
     }
 
-    public List<ClientProductSPU> selectSPU(long subid,  long cid) throws Exception {
+    public List<ClientProductSPU> selectSPU(long subid, long cid) throws Exception {
         List<ProductSPU> productSPUList = productSPUDao.getAllList(subid, cid);
-        return transformClients(productSPUList,subid);
+        return transformClients(productSPUList, subid);
     }
 
     @Override
@@ -697,7 +692,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean checkStatus(List<Long> ids,User user) throws Exception {
+    public boolean checkStatus(List<Long> ids, User user) throws Exception {
 
         List<ProductSPU> load = productSPUDao.load(ids);
         if (load.size() > 0) {
@@ -868,6 +863,105 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return map_value;
+    }
+
+    @Override
+    public Pager getELSPUBackPager(Pager pager, long subid, long startTime, long endTime, long psid) throws Exception {
+
+        String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore +" and cid in (3,5)";
+        String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore+" and cid in (3,5)";
+        String limit = " limit %d , %d ";
+
+        if (subid > 0) {
+            sql =sql+ " and subid = " + subid;
+            sqlCount += " and subid = " + subid;
+        }
+        if (startTime > 0) {
+            sql += " and ib.ctime > " + startTime;
+            sqlCount += " and ib.ctime > " + startTime;
+        }
+        if (endTime > 0) {
+            sql += " and ib.ctime < " + endTime;
+            sqlCount += " and ib.ctime < " + endTime;
+        }
+
+        sql = sql + " order  by `ctime` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<ProductSPU> productSPUList = this.jdbcTemplate.query(sql, spuRowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        pager.setData(transformClients(productSPUList, psid));
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public Boolean updateSpuStatus(List<Long> ids, int start) throws Exception {
+        // 退货，销毁申请
+        if (ids.size() == 0) {
+            throw new StoreSystemException("必须选择商品！");
+        }
+        List<ProductSPU> load = productSPUDao.load(ids);
+        for (ProductSPU li : load) {
+            li.setStatus(start);
+            li.setCheckStatus(ProductSPU.checkStatus_no);
+            productSPUDao.update(li);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkStatusKillRe(List<Long> ids, User user) throws Exception {
+        //审核通过后
+        // 1、出库记录记录
+        // 2、库存删除
+        // 3、商品状态改变
+        List<ProductSPU> load = productSPUDao.load(ids);
+
+        List<InventoryWarehouse> warehouses = inventoryWarehouseDao.getAllList(user.getSid(),InventoryWarehouse.status_nomore);
+
+        if (load.size() > 0) {
+            for (ProductSPU productSPU : load) {
+                productSPU.setCheckStatus(ProductSPU.checkStatus_yes);
+                productSPU.setCheckStatusDate(System.currentTimeMillis());
+                productSPU.setExt(user.getName());
+                productSPU.setSaleStatus(ProductSPU.sale_status_close);
+                productSPUDao.update(productSPU);
+
+                //库存状态改变
+                List<InventoryDetail> allListBySubAndSPU = inventoryDetailDao.getAllListBySubAndSPU(productSPU.getSubid(), productSPU.getId());
+                List<InventoryOutBillItem> item = new ArrayList<>();
+                if (allListBySubAndSPU.size() > 0) {
+                    for (InventoryDetail li : allListBySubAndSPU) {
+                        li.setStatus(InventoryDetail.status_past);
+                        inventoryDetailDao.update(li);
+
+                        InventoryOutBillItem inventoryOutBillItem = new InventoryOutBillItem();
+                        inventoryOutBillItem.setDid(li.getId());
+                        inventoryOutBillItem.setNum(li.getNum());
+                        item.add(inventoryOutBillItem);
+                    }
+
+                    //出库列表记录
+                    InventoryOutBill inventoryOutBill = new InventoryOutBill();
+                    inventoryOutBill.setStatus(InventoryOutBill.status_end);
+                    inventoryOutBill.setSubid(user.getSid());
+                    inventoryOutBill.setWid(warehouses.size()>0?warehouses.get(0).getId():0);
+                    inventoryOutBill.setOutUid(user.getId());
+                    inventoryOutBill.setCreateUid(user.getId());
+                    inventoryOutBill.setCheckUid(user.getId());
+                    inventoryOutBill.setType(productSPU.getStatus());
+                    inventoryOutBill.setCheck(InventoryOutBill.check_pass);
+                    inventoryOutBill.setItems(item);
+
+                    inventoryOutBillDao.insert(inventoryOutBill);
+                }
+
+
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
