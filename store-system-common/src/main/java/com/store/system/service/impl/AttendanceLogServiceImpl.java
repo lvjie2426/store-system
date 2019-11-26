@@ -99,6 +99,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		}
 		attendanceLog.setMonth(TimeUtils.getMonthFormTime(time));
 		attendanceLog.setWeek(TimeUtils.getWeekFormTime(time));
+		attendanceLog.setYear(TimeUtils.getYearFormTime(time));
 		attendanceLog= attendanceLogDao.insert(attendanceLog);
 		createUserStatisticsAttendance(uid,time);
 		return attendanceLog;
@@ -157,6 +158,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 			}
 			attendanceLog.setMonth(TimeUtils.getMonthFormTime(time));
 			attendanceLog.setWeek(TimeUtils.getWeekFormTime(time));
+			attendanceLog.setYear(TimeUtils.getYearFormTime(time));
 			dblog = attendanceLogDao.insert(attendanceLog);
 		}
 
@@ -1060,8 +1062,16 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 			SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
 			clientAttendanceLog.setDayStr(sdf.format(new Date(TimeUtils.getTimeFormDay(attendanceLog.getDay()))));
-			clientAttendanceLog.setStartStr(sdfTime.format(new Date(clientAttendanceLog.getStartTime())));
-			clientAttendanceLog.setEndStr(sdfTime.format(new Date(clientAttendanceLog.getEndTime())));
+			if(clientAttendanceLog.getStartTime()==0){
+				clientAttendanceLog.setStartStr("--:--");
+			}else{
+				clientAttendanceLog.setStartStr(sdfTime.format(new Date(clientAttendanceLog.getStartTime())));
+			}
+			if(clientAttendanceLog.getEndTime()==0){
+				clientAttendanceLog.setEndStr("--:--");
+			}else{
+				clientAttendanceLog.setEndStr(sdfTime.format(new Date(clientAttendanceLog.getEndTime())));
+			}
 			int startHour = clientAttendanceLog.getStart()/60;
 			int startMinute = clientAttendanceLog.getStart()%60;
 			int endHour = clientAttendanceLog.getEnd()/60;
