@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>营销管理</title>
+    <title>营销管理-储值送礼</title>
     <!--Bootstrap样式引入开始-->
     <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
     <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
@@ -19,6 +19,7 @@
     <!--Bootstrap样式引入结束-->
     <!--字体样式文件引用开始-->
     <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <link rel="stylesheet" href="../resource/fonts2/iconfont.css">
     <!--字体样式文件引用结束-->
     <!--标签样式重置开始-->
     <link rel="stylesheet" href="../resource/css/reset.css">
@@ -29,35 +30,165 @@
     <!--单页样式-->
     <link rel="stylesheet" href="../resource/css/yanjing/market.css">
     <!--单页样式结束-->
-
+    <style>
+        .warp {
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        @media screen and (min-width:780px) {
+            .item-body {
+                overflow: hidden;
+                width: 50%;
+                float: left;
+                padding: 0 20px;
+                padding-top: 10px;
+            }
+            .item-body:nth-child(even) {
+                padding-right: 20px;
+                padding-left: 0px;
+            }
+        }
+        
+        .item-body {
+            padding-top: 10px;
+        }
+        
+        .item-body .active-item {
+            position: relative;
+            height: 96px;
+            width: 100%;
+            padding: 20px 24px;
+            border-radius: 3px;
+            background: #fff;
+        }
+        
+        .active-item .item-left {
+            margin-right: 12px;
+            display: inline-block;
+            width: 56px;
+            height: 56px;
+            line-height: 56px;
+            text-align: center;
+            border-radius: 50%;
+            color: #54B677;
+            font-size: 20px;
+            background: #EDF7F1;
+        }
+        
+        .clear :nth-of-type(2) .active-item .item-left {
+            color: #DA698B;
+            background: #FBEFF3;
+        }
+        
+        .clear :nth-of-type(3) .active-item .item-left {
+            color: #DD5B4B;
+            background: #FBEEED;
+        }
+        
+        .clear :nth-of-type(4) .active-item .item-left {
+            color: #FDF9E8;
+            background: #F4C621;
+        }
+        
+        .clear :nth-of-type(5) .active-item .item-left {
+            color: #57B8DB;
+            background: #EEF7FB;
+        }
+        
+        .item-left .iconfont {
+            font-size: 19px;
+        }
+        
+        .item-con h2 {
+            display: inline-block;
+            height: 20px;
+            line-height: 20px;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            font-size: 14px;
+            color: #3A3A54;
+            font-family: 'PingFangSC-Medium';
+        }
+        
+        .item-con p {
+            display: block;
+            max-width: 290px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-size: 12px;
+            color: #A2A2B2;
+        }
+        
+        .active-item div {
+            float: left;
+        }
+        
+        div.item-right {
+            position: absolute;
+            right: 24px;
+            top: 15px;
+            margin-top: 19px;
+            color: #5794E0;
+        }
+        
+        .item-right .item-set {
+            height: 18px;
+            line-height: 18px;
+            font-size: 13px;
+            display: block;
+        }
+        
+        .item-set i {
+            vertical-align: middle;
+        }
+        
+        .tab-ul li {
+            display: none;
+        }
+        
+        .tab-ul .show {
+            display: block;
+        }
+    </style>
 </head>
 
 <body class="body-bg">
     <div class="header clear">
         <ul class="tab-ul clear">
-            <li class="active" onclick="changeType(1)">营销活动</li>
+            <li class="show" onclick="settingSaleType(0)">
+                </i>营销活动</li>
+            <li>储值送礼</li>
             <!-- 抵用券营销 改为 优惠券营销 -->
-            <li onclick="changeType(2)">优惠券营销</li>
+            <li onclick="changeSaleType()">积花营销</li>
             <!--<li>短信营销</li>-->
-            <li data-id="send" onclick="changeType(3)">短信群发</li>
-            <li onclick="changeType(4)">任务奖励</li>
+            <li data-id="send" onclick="changeSaleType(3)">买赠活动</li>
+            <li onclick="changeSaleType(4)">双倍积分</li>
+            <li onclick="changeSaleType(5)">任务奖励</li>
         </ul>
         <ol>
             <li class="right-info active">
-                <button onclick="salesactivity()">营销活动</button>
+                <button onclick="salesactivity()">储值送礼</button>
+            </li>
+            <li class="right-info">
+                <button onclick="createTask()">积花营销</button>
             </li>
             <li class="right-info ">
-                <button onclick="voucherDialog()">新增优惠券</button>
+                <button onclick="voucherDialog()">买赠活动</button>
             </li>
             <!--<li class="right-info">-->
             <!--&lt;!&ndash;<span>剩余 1200 条信息可用</span>&ndash;&gt;-->
             <!--</li>-->
             <li class="right-info">
                 <!--<span>剩余 1200 条信息可用</span>-->
-                <button onclick="newVouchers3()">新增短信群发</button>
+                <button onclick="newVouchers3()">双倍积分</button>
             </li>
             <li class="right-info">
-                <button onclick="createTask()">创建任务</button>
+                <button onclick="createTask()">套餐活动</button>
             </li>
         </ol>
     </div>
@@ -67,71 +198,208 @@
             <!-- 新增营销活动 -->
             <li class="tab-item  first active">
                 <ol class="clear" id="">
+                    <div class="item-body">
+                        <li class="active-item">
+                            <div class="item-left">
+
+                                <i class="iconfont icon-ico_rmb"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>储值送礼</h2>
+                                <p>1 行描述的情况，为储值卡充值可获赠优惠券</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set" onclick="settingSaleType(1)">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="item-body">
+                        <li class="active-item">
+                            <div class="item-left">
+                                <i class="iconfont icon-ico_flower"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>积花营销</h2>
+                                <p>购买商品可以额外获得花卡，花卡可用来兑换礼品</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set" onclick="settingSaleType(2)">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="item-body">
+                        <li class="active-item">
+                            <div class="item-left">
+                                <i class="iconfont icon-ico_box"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>买赠活动</h2>
+                                <p>2 行描述的情况，购买某品类商品的顾客可相应获得赠送的商品或者优惠券</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set" onclick="settingSaleType(3)">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="item-body">
+                        <li class="active-item">
+                            <div class="item-left">
+                                <i class="iconfont icon-ico_jifen"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>双倍积分</h2>
+                                <p>文案仅做展示，为相应的商品设置多倍积分</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set" onclick="settingSaleType(4)">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="item-body">
+                        <li class="active-item">
+                            <div class="item-left">
+                                <i class="iconfont icon-ico_set"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>套餐活动</h2>
+                                <p>文案仅做展示，搭配商品为销售套餐的营销工具</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set" onclick="settingSaleType(5)">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+
                 </ol>
                 <table id="" data-toggle="table" class="table table-border"></table>
             </li>
-            <li class="tab-item first ">
+            <li class="tab-item first">
                 <ol class="clear" id="card-list1">
+                    <li class="card-item">
+                        <div class="top">
+
+                            <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                <span class="off">未开启</span>
+                                <span class="switch-btn"><i></i></span>
+                            </div>
+
+                            <div class="text fl">
+                                条件满个
+                            </div>
+                        </div>
+                        <div class="middle-cont">
+                            <div class="item">
+                                <div class="text-top">获取条件</div>
+
+                                <div class="text-bot">消费满 1元
+                                </div>
+
+                            </div>
+                            <div class="item">
+                                <div class="text-top">抵用券描述</div>
+
+                                <div class="text-bot">消费满 1元减 1元
+                                </div>
+
+                            </div>
+                            <div class="item">
+                                <div class="text-top">有效期</div>
+                                <div class="text-bot">
+                                    2019.11.05 - 2019.12.10
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bot-cont">
+                            <span class="button button-thin-blue" onclick="voucherDialog('33')">编辑</span>
+                            <span class="button button-thin-red" onclick="delVoucher('33')">删除</span>
+                        </div>
+                    </li>
                 </ol>
-                <table id="yj-page-table" data-toggle="table" class="table table-border"></table>
-            </li>
-            <!--<li class="tab-item section ">
-            <ol class="clear" id="yj-page-note-table">
-                <li class="card-item">
-                    <div class="inner">
-                        <div class="top">
-                            <div class="text">
-                                <div class="main">消费信息提醒</div>
-                                <div class="vice">消费后发送信息至顾客的手机或微信中</div>
-                            </div>
-                            <div class="switch">
-                                <span class="off">未开启</span>
-                                <span class="on">已启用</span>
-                                <span class="switch-btn"><i></i></span>
-                            </div>
-                        </div>
-                        <div class="cont">
-                            <div class="off"  onclick="newVouchers2()">
-                                <i class="iconfont icon-ico_setting_filled"></i>
-                                <span>设置</span>
+                <div class="bootstrap-table">
+                    <div class="fixed-table-toolbar">
+                        <div class="columns columns-right btn-group pull-right">
+                            <div class="keep-open btn-group" title="列"><button type="button" aria-label="columns" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu" role="menu"></ul>
                             </div>
                         </div>
                     </div>
-                </li>
-                <li class="card-item">
-                    <div class="inner">
-                        <div class="top">
-                            <div class="text">
-                                <div class="main">消费信息提醒</div>
-                                <div class="vice">消费后发送信息至顾客的手机或微信中</div>
-                            </div>
-                            <div class="switch active">
-                                <span class="off">未开启</span>
-                                <span class="on">已启用</span>
-                                <span class="switch-btn"><i></i></span>
-                            </div>
+                    <div class="fixed-table-container" style="padding-bottom: 0px;">
+                        <div class="fixed-table-header" style="display: none;">
+                            <table></table>
                         </div>
-                        <div class="cont">
-                            <div class="on">
-                                <div class="message-top">
-                                    <span class="fl">短信内容</span>
-                                    <input class="fr button-thin" type="button" onclick="newVouchers2()" value="编辑">
-                                </div>
-                                <div class="message-cont">
-                                    尊敬的xxx你好，你在xxxx你好，你在xxxxx消费了xx尊敬的xxx你好，你在xxxxx消费了xxx元，欢迎你下次再来。
+                        <div class="fixed-table-body">
+                            <div class="fixed-table-loading" style="top: 1px; display: none;">正在努力地加载数据中，请稍候……</div>
+                            <table id="yj-page-table" data-toggle="table" class="table table-border" style="margin-top: 0px;">
+                                <thead style="">
+                                    <tr></tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-index="0"> </tr>
+                                    <tr data-index="1"> </tr>
+                                    <tr data-index="2"> </tr>
+                                    <tr data-index="3"> </tr>
+                                    <tr data-index="4"> </tr>
+                                    <tr data-index="5"> </tr>
+                                    <tr data-index="6"> </tr>
+                                    <tr data-index="7"> </tr>
+                                    <tr data-index="8"> </tr>
+                                    <tr data-index="9"> </tr>
+                                    <tr data-index="10"> </tr>
+                                    <tr data-index="11"> </tr>
+                                    <tr data-index="12"> </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="fixed-table-footer" style="display: none;">
+                            <table>
+                                <tbody>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="fixed-table-pagination" style="display:none;">
+                            <div class="pull-left pagination-detail"><span class="pagination-info">共13条</span></div>
+                            <div class="pull-center pagination">
+                                <ul class="pagination">
+                                    <li class="page-pre disabled"><a href="#">‹</a></li>
+                                    <li class="page-number active"><a href="#">1</a></li>
+                                    <li class="page-number"><a href="#">2</a></li>
+                                    <li class="page-number"><a href="#">3</a></li>
+                                    <li class="page-next"><a href="#">›</a></li>
+                                </ul>
+                            </div>
+                            <div class="page-list-set"><span class="page-list"><span class="btn-group dropup"><button type="button" class="btn-page dropdown-toggle"
+                                             data-toggle="dropdown"><span class="page-size">6条/页</span> <span class="iconfont icon-ico_arrow_down"></span></button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li role="menuitem" class="active"><a href="#">6</a></li>
+                                    <li role="menuitem"><a href="#">12</a></li>
+                                    <li role="menuitem"><a href="#">18</a></li>
+                                </ul>
+                                </span>
+                                </span>
+                                <div class="go-page">跳至
+                                    <div class="page-frame">
+                                        <input class="page-num" value="1" type="number">
+                                        <span class="pages">/3</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </li>
-            </ol>
-        </li>-->
-            <li class="tab-item">
-                <table id="dxqf-table" data-toggle="table" class="table table-border"></table>
+                </div>
+                <div class="clearfix"></div>
             </li>
             <li class="tab-item">
-                <table id="rwjl-table" data-toggle="table" class="table table-border"></table>
+                买赠活动
             </li>
+            <li class="tab-item">
+                双倍积分
+            </li>
+            <li class="tab-item">
+                套餐活动
+            </li>
+
+
         </ul>
     </div>
     <div class="content-view1" id="voucherDiaUl">
@@ -865,21 +1133,19 @@
                 }
             });
         });
-
-        function changeType(t) {
+        //切换营销栏目
+        function settingSaleType(t) {
             type = t;
-            if (type == 1) {
-                salesactivity();
-            } else if (type == 2) {
-                manage()
-            } else if (type == 3) {
-                getSendList();
-            } else if (type == 4) {
-                missionRewards();
+            if (type == 1) {} else if (type == 2) {} else if (type == 3) {} else if (type == 4) {} else if (type == 4) {}
+            $(".tab-ul li").eq(type).show().siblings().hide();
+            $(".tab-ul li").eq(0).show();
+            if (type != 0) { //显示当前所选的栏目
+                $(".tab-item").hide().eq(type - 1).show();
+                $(".right-info").hide().eq(type - 1).show();
+            } else {
+                $(".tab-item").hide().eq(0).show();
+                $(".right-info").hide().eq(type).show();
             }
-            $(".tab-ul li").eq(type - 1).addClass('active').siblings().removeClass('active');
-            $(".tab-item").hide().eq(type - 1).show();
-            $(".right-info").hide().eq(type - 1).show();
         }
 
         /************************************<营销活动开始>******************************************/
