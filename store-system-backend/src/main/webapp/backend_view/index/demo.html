@@ -1,0 +1,420 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>后台 - 登录</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <link href="../resource/layui/css/layui.css" rel="stylesheet">
+    <link href="../resource/css/yanjing/goodsManage.css" rel="stylesheet">
+    <!--时间插件引用的css-->
+    <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
+    <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+    <!--时间插件引用的css结束-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;url="/login/ie.html" />
+    <![endif]-->
+    <style>
+        body{
+            width: 80%;
+            margin: 0 auto;
+            padding:20px 0;
+        }
+        section{
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .dwcc div.mbsc-w-p:nth-child(2) .dwfl:nth-child(1){
+            display: none;
+        }
+        .dw-bubble-bottom{
+            margin-left: -40px;
+        }
+
+        #tests {
+            position: absolute;
+            left: 0px;
+            top:0px;
+            width: 140px;
+            height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            padding-left: 10px;
+        }
+        #tests::-webkit-input-placeholder{
+            font-weight: 500;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+    </style>
+
+</head>
+<body>
+    <!--下拉选择html开始-->
+    <section>
+        <div class="selectBox" id="selectBox">
+            <div class="select-box-header">
+                <span class="text">品牌</span> <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+            </div>
+
+            <div class="optionBox">
+                <ul class="optionUL">
+                    <li value="01">1</li>
+                    <li value="02">2</li>
+                    <li value="03">3</li>
+                    <li value="04">4</li>
+                    <li value="05">5</li>
+                </ul>
+                <div class="zi_dingyi">
+                    <span class="zdy_pingpai">自定义品牌</span>
+                    <div class="zi_dingyi_input_Box">
+                        <input type="text" placeholder="品牌" class="zi_dingyi_input">
+                        <div class="btn_conten">确定</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--下拉选择HTML结束-->
+    <!--tab开始-->
+    <section>
+        <ul class="tab-ul">
+            <li class="active">全部订单</li>
+            <li>未完成订单</li>
+            <li>作废订单</li>
+        </ul>
+    </section>
+    <!--tab结束-->
+    <section>
+        <div class="btn-status btn-red">未加工</div>
+        <div class="btn-status btn-yellow">未取货</div>
+        <div class="btn-status btn-blue">欠￥500</div>
+        <div class="btn-status btn-black">已作废</div>
+        <div class="btn-status btn-gray">已完成</div>
+    </section>
+    <section>
+        <button class="btn btn-primary">primary</button>
+        <button class="btn btn-info">info</button>
+        <button class="btn btn-order">查看订单</button>
+        <button class="btn btn-danger">查看订单</button>
+        <button class="btn btn-gray">查看订单</button>
+        <button class="btn btn-order">查看订单</button>
+    </section>
+    <!--弹出框开始-->
+    <section>
+        <button class="btn btn-order" onclick="addAlert()">弹出框1</button>
+    </section>
+    <section>
+        <div class="yj-demo-time">
+            <div class="yj-date">
+                <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="" style="position: relative;height: 50px;">
+            <div class="settings" style="display:none;">
+                <select name="demo" id="demo">
+                    <option value="date">日期</option>
+                </select>
+            </div>
+            <input name="test" id="tests" class="demo-test-date demo-test-datetime demo-test-time demo-test-credit" placeholder="出生日期" data-type="time"/>
+        </div>
+    </section>
+    <!--弹出框结束-->
+    <!--表格开始-->
+    <section>
+        <table id="yj-table" data-toggle="table"  class="table table-border"></table>
+    </section>
+    <!--表格结束-->
+<!--
+    <section>
+        <h3>张宏超</h3>
+        <div>
+            管理人员-统计数据-主页面：
+            <a target="_blank" href="https://pro.modao.cc/app/2f7d4185e9c8726c454ade89a5682a48358610da#screen=s3f59d56b6a153926834800">https://pro.modao.cc/app/2f7d4185e9c8726c454ade89a5682a48358610da#screen=s3f59d56b6a153926834800</a>
+            其他多店对比 等三个 是这个页面上的一些选项卡等等
+        </div>
+        <div>
+            管理人员-公司管理-店面列表-主页面：
+            <a target="_blank" href="https://pro.modao.cc/app/2f7d4185e9c8726c454ade89a5682a48358610da#screen=sca391a5ec3155100983500">https://pro.modao.cc/app/2f7d4185e9c8726c454ade89a5682a48358610da#screen=sca391a5ec3155100983500</a>
+        </div>
+        <div>
+            管理人员-公司管理-店面列表-员工列表-主页面：
+            <a target="_blank" href="https://pro.modao.cc/app/2f7d4185e9c8726c454ade89a5682a48358610da#screen=s453637c63c155100983100">https://pro.modao.cc/app/2f7d4185e9c8726c454ade89a5682a48358610da#screen=s453637c63c155100983100</a>
+        </div>
+        <div>
+            （库管人员）-盘点-盘点任务列表
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s97a51c6855153926738700">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s97a51c6855153926738700</a>
+            流程：管理人员发起或者创建盘点任务，销售人员或者库管人员对货物进行盘点-并且录入结果
+        </div>
+    </section>
+    <section>
+        <h3>赵碧阳</h3>
+        <div>
+            管理人员-营销管理-任务列表
+            <a target="_blank" href="https://pro.modao.cc/app/2f7d4185e9c8726c454ade89a5682a48358610da#screen=sb79116d015155100982700">https://pro.modao.cc/app/2f7d4185e9c8726c454ade89a5682a48358610da#screen=sb79116d015155100982700</a>
+        </div>
+        <div>
+            管理人员-营销管理-抵用券列表
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sea2d42be2c153926749200">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sea2d42be2c153926749200</a>
+        </div>
+        <div>
+            管理人员-营销管理-群发短信
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s78f4d99d39153926749300">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s78f4d99d39153926749300</a>
+        </div>
+        <div>
+            管理人员-营销管理-短信营销
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sbbe9a46869153926749400">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sbbe9a46869153926749400</a>
+        </div>
+        <div>
+            订单管理-全部订单
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sed509987cd153926674400">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sed509987cd153926674400</a>
+        </div>
+        <div>
+            订单管理-未完成订单列表
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s923c49e790153926674300">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s923c49e790153926674300</a>
+        </div>
+        <div>
+            订单管理-作废订单
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s266b31d43d153926674300">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s266b31d43d153926674300</a>
+        </div>
+    </section>
+    <section>
+        <h3>张昊</h3>
+        <div>
+            （销售|管理人员）-顾客管理-顾客列表
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sb27258dc6a153926744300">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sb27258dc6a153926744300</a>
+        </div>
+        <div>
+            销售人员-销售开单-开单主页面
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sf288b358bb153926574000">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sf288b358bb153926574000</a>
+
+            指的是 销售人员在店里面，顾客购买眼镜，销售人员给顾客开单打印小票的场景，其他页面均为辅助流程
+        </div>
+        <div>
+            销售人员-实时工作台-主页面
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s0663e94bdc153926660300">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s0663e94bdc153926660300</a>
+            指的是 给销售看的 统计信息
+        </div>
+    </section>
+
+    <section>
+        <h3>李默然</h3>
+        <div>
+            （库管人员）-商品管理-商品列表
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sff2dfda358153926684500">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sff2dfda358153926684500</a>
+        </div>
+        <div>
+            （库管人员）-商品管理-出库
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s04fac53069153926721600">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s04fac53069153926721600</a>
+        </div>
+        <div>
+            （库管人员）-商品管理-调货（调货申请）
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s5993e64a0b153926730300">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s5993e64a0b153926730300</a>
+        </div>
+        <div>
+            商品管理-调货（调货审核）
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s5993e64a0b153926730300">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s5993e64a0b153926730300</a>
+            审核他人的请求
+        </div>
+
+        <div>
+            销售人员-售后-售后发起
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s8a1f5382c8153926757600">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s8a1f5382c8153926757600</a>
+            流程：顾客到店里找到销售要进行售后，销售人员先输入顾客的姓名或者订单号，搜到顾客的订单。
+            点击进行售后，创建一个售后任务。
+        </div>
+        <div>
+            销售人员-售后-售后任务列表页面
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sd63e8efd92153926757700">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=sd63e8efd92153926757700</a>
+        </div>
+    </section>
+    <section>
+        <div>
+            <a target="_blank" href="https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s7b5044bbb9153926711600">https://pro.modao.cc/app/98103c2f3a50c799ca67e4cc6e8769196bdda367#screen=s7b5044bbb9153926711600</a>
+            这个是错误的页面  先不做
+        </div>
+    </section>-->
+
+
+    <div class="content-view">
+        <table class="layui-hide yj-layui-table" id="test" lay-filter="demoEvent"></table>
+    </div>
+
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js"></script>
+    <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakoo/project.js"></script>
+
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+    <script src="../resource/layui/layui.js"></script>
+
+
+    <script src="../resource/js/yanjing.js"></script>
+    <script src="../resource/js/mobiscroll.2.13.2.js"></script>
+
+    <!--//日期范围插件开始-->
+    <script src="../resource/js/yanjing/daterange.js"></script>
+    <!--//日期范围插件结束-->
+
+    <script>
+
+
+        // 下拉选择JS开始
+        selectTag($("#selectBox"),function (ret) {
+            console.log(ret)
+        })
+        // 下拉选择JS结束
+
+        // 时间插件JS开始
+        $(function () {
+            var curr = new Date().getFullYear();
+            var opt = {};
+            opt.date = {preset: 'date'};
+            opt.datetime = {preset: 'datetime'};
+            opt.time = {preset: 'time'};
+
+            opt.default = {
+                theme: 'mbsc-android-holo', //皮肤样式
+                display: 'bubble', //显示方式
+                mode: 'scroller', //日期选择模式
+                dateFormat: 'yyyy-mm-dd',
+                lang: 'zh',
+                showNow: true,
+                nowText: "今天",
+                typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+            };
+            $('.settings').bind('change', function () {
+                var demo = 'datetime';
+                if (!demo.match(/select/i)) {
+                    $('.demo-test-' + demo).val('');
+                }
+                $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+                $('.demo').hide();
+                $('.demo-' + demo).show();
+            });
+            $('#demo').trigger('change');
+            return curr;
+        });
+        // 时间插件JS结束
+        //日期范围插件开始
+        var date1 = new dateRange(".yj-demo-time");
+        date1.init()
+        //日期范围插件结束
+
+        $(".tab-ul li").click(function(){
+            $(this).addClass('active').siblings().removeClass('active')
+        });
+
+        var data = [{id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"},
+            {id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"},
+            {id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"},{id:1,name:"李四",phone:"123456"}
+        ];
+        $("#yj-table").bootstrapTable({
+            data:data,
+            classes:"table",
+            pagination:true,        //是否显示分页
+            pageNumber:1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,
+            pageList: [5, 10, 15, 20],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign:"center",
+            clickToSelect:true,
+            columns:[
+                {checkbox: true, align:"center",valign:"middle"},
+                {field: "id", title: "ID", align:"center",valign:"middle",formatter: function (value, row, index) {
+                        return '<div class="btn-status btn-red">'+value+'</div>';
+                    }
+                },
+                {field: "name", title: "姓名", align:"center",valign:"middle"},
+                {field: "phone", title: "电话", align:"center",valign:"middle"},
+                {field: "", title: "操作", align:"center",valign:"middle",formatter: function (value, row, index) {
+                        return '<button class="btn btn-info">查看</button>';
+                    }
+                }
+            ]
+
+        });
+
+        function addAlert(){
+            var index = layer.open({
+                type: 1,shade: 0.01,
+                skin: 'layui-layer-demo', //样式类名
+                area: ['550px', '500px'],
+                anim: 0,
+                shadeClose: true, //开启遮罩关闭
+                content: $('.content-view'),
+                btn: ['提交', '关闭'],
+                yes: function(){
+
+                },
+                btn2: function(){
+                    //    取消
+                },
+                success: function(layero, index){
+                    var data1 = [{num:'+0.00'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'},{num:'-0.25'}];
+                    layui.use('table', function(){
+                        var table = layui.table;
+                        table.render({
+                            elem: '#test'
+                            ,data:data1
+                            ,width: 500
+                            ,height: 300
+                            ,unresize:true
+                            ,cols: [[
+                                {field:'num', width:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'}
+                                ,{field:'', width:60, title: '+0.00', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-0.25', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-0.50', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-0.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.00', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.25', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.50', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                                ,{field:'', width:60, title: '-1.75', event: 'setSign',unresize:true}
+                            ]]
+                        });
+                        //监听单元格事件
+                        table.on('tool(demoEvent)', function(obj){
+                            $(this).toggleClass('activenow')
+                            var data = obj.data;
+                            if(obj.event === 'setSign'){
+                                console.log(data)
+                            }
+                        });
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

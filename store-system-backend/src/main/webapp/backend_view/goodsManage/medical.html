@@ -24,1433 +24,21 @@
     <!--标签样式重置结束-->
     <!--公用组件样式-->
     <link rel="stylesheet" href="../resource/css/common.css">
+    <link href="../resource/layui/css/layui.css" rel="stylesheet">
     <!--公用组件样式结束-->
     <!--单页样式-->
     <link rel="stylesheet" href="../resource/css/yanjing/medical.css">
-    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
-    <link rel="stylesheet" href="../resource/css/yanjing/companyManage.css">
+    <!--<link rel="stylesheet" href="../resource/css/yanjing/companyManage.css">-->
+    <link rel="stylesheet" href="../resource/css/yanjing/goodsManage.css">
     <link href="../resource/css/yanjing/mobiscroll.2.13.2.css" rel="stylesheet">
     <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
     <link rel="stylesheet" href="../resource/css/baiduMap.css">
     <script src="../resource/js/baiduMap.js"></script>
-    <!--单页样式结束-->
-
-    <style>
-        .dwcc div.mbsc-w-p:nth-child(2) {
-            display: none;
-        }
-
-        .dwwl3 {
-            display: none;
-        }
-
-        .content1.bgcolor {
-            background-color: #ECECF3;
-        }
-
-        #status::after {
-            width: 12px;
-            height: 12px;
-            border-radius: 100px;
-            background-color: rgba(255, 255, 255, 1);
-            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            right: 1px;
-            top: 1px;
-            bottom: 1px;
-        }
-
-        .mainGoodList {
-            width: 100%;
-            /*  height:  462px;
-            overflow:  scroll;  */
-            box-sizing: border-box;
-            padding: 16px 16px;
-            overflow: hidden;
-            display: flex;
-            justify-content: space-between;
-            flex-flow: row wrap;
-        }
-
-        .goot-select {
-            color: rgba(57, 57, 83, 1);
-            width: 156px;
-            font-weight: bold;
-            font-size: 12px;
-            line-height: 30px;
-            font-family: PingFangSC-Semibold;
-            flex: 0 0 156px;
-            margin-bottom: 12px;
-        }
-
-        .goot-select1 {
-            color: rgba(57, 57, 83, 1);
-            width: 101px;
-            font-weight: bold;
-            font-size: 12px;
-            line-height: 30px;
-            font-family: PingFangSC-Semibold;
-            flex: 0 0 101px;
-            margin-bottom: 12px;
-        }
-
-        .goot-select.f1 {
-            margin-bottom: 0px;
-        }
-
-        .goot-select-items {
-            width: 100%;
-            color: rgba(130, 130, 151, 1);
-            height: 28px;
-            line-height: 28px;
-            padding: 0px 8px;
-            overflow: hidden;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-        }
-
-        .goot-select-items.g1 {
-            margin-top: 22.8px;
-        }
-
-        .goot-select-items span {
-            font-size: 12px;
-            float: left;
-            font-weight: normal;
-        }
-
-        .goot-items {
-            line-height: 17px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-            margin-bottom: 6px;
-        }
-
-        .goot-items1 {
-            line-height: 17px;
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-            margin-top: -1px;
-            overflow: hidden;
-        }
-
-        .goot-items1 a {
-            color: rgba(65, 134, 220, 1);
-            text-decoration: underline;
-        }
-
-        .goot-select-items i {
-            float: right;
-            font-size: 16px;
-            font-weight: normal;
-        }
-
-        .zhibaoTime {
-            line-height: 16px;
-            color: rgba(130, 130, 151, 1);
-            font-size: 11px;
-            text-align: left;
-            font-family: Roboto-Bold;
-            margin-top: 4px;
-        }
-
-        .goot-goot-putong {
-            width: 100%;
-            box-sizing: border-box;
-            overflow: hidden;
-            padding: 0px 16px;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-        }
-
-        .goot-goot-putong li {
-            line-height: 36px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-            overflow: hidden;
-        }
-
-
-        .goot-goot-putong li .select {
-            width: 16px;
-            height: 16px;
-            line-height: 16px;
-            text-align: center;
-            border-radius: 2px;
-            padding: 0px 2px;
-            background: #fff;
-            border: 1px solid #d2d2d2;
-            cursor: pointer;
-        }
-
-        .goot-goot-putong li .select:hover {
-            border: 1px solid rgba(65, 134, 220, 1);
-        }
-
-        .goot-goot-putong li .select.active {
-            background-color: rgba(65, 134, 220, 1);
-        }
-
-        .select i {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 1);
-            font-weight: normal;
-        }
-
-        .goot-goot-huiyuan .lingshou {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 0px 16px;
-            line-height: 36px;
-            box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
-            margin-top: 12px;
-        }
-
-        .zhekou {
-            width: 100%;
-            background-color: rgba(244, 244, 248, 1);
-            padding: 0px 16px;
-            overflow: hidden;
-            line-height: 36px;
-            box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
-        }
-
-        .goot-left {
-            float: left;
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .goot-Right {
-            float: right;
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .yj-radio {
-            width: 16px;
-            height: 16px;
-            float: left;
-            margin-top: 10px;
-            border-radius: 100px;
-            background-color: rgba(244, 244, 248, 1);
-            border: 1px solid rgba(130, 130, 151, 0.2);
-            margin-right: 4px;
-        }
-
-        .yj-radio input {
-            width: 0;
-            height: 0;
-        }
-
-        .yj-radio.active {
-            border: 5px solid rgba(65, 134, 220, 1);
-        }
-
-        .goot-Right a {
-            color: rgba(65, 134, 220, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-            text-decoration: underline;
-            margin-left: 4px;
-        }
-
-        .lingshou {
-            width: 100%;
-            box-sizing: border-box;
-            overflow: hidden;
-            display: flex;
-            justify-content: space-between;
-            flex-flow: row wrap;
-            padding-top: 12px;
-        }
-
-        .lingshou.l1 {
-            height: 56px;
-        }
-
-        #inNum {
-            width: 156px;
-            height: 28px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            padding-left: 8px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-        }
-
-        #inNum::-webkit-input-placeholder {
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-        }
-
-        .useTime {
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 16px;
-        }
-
-        .useTime div {
-            height: 17px;
-            line-height: 17px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-            margin-bottom: 6px;
-        }
-
-        .useTime .uTime {
-            width: 180px;
-            box-sizing: border-box;
-            padding: 5px 8px 6px 8px;
-            height: 28px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            overflow: hidden;
-        }
-
-        .useTime .uTime span {
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            font-family: Roboto-Medium;
-            float: left;
-        }
-
-        .useTime .uTime i {
-            float: right;
-            font-size: 12px;
-            color: rgba(130, 130, 151, 1);
-        }
-
-        .warnInput {
-            width: 60px;
-            height: 28px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            padding-left: 8px;
-        }
-
-        /* 注册医疗信息 */
-        .zhuceInfo {
-            border: 1px solid #eee;
-        }
-
-        .zhuceInfo li {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 0px 16px;
-            margin-bottom: 12px;
-        }
-
-        .zhuceInfo-first {
-            width: 100%;
-            height: 36px;
-            line-height: 36px;
-            background-color: rgba(255, 255, 255, 1);
-            overflow: hidden;
-            color: rgba(221, 91, 75, 1);
-            font-size: 12px;
-            box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1), 0px -1px 0px 0px rgba(244, 244, 248, 1);
-        }
-
-        .zhuceInfo-first i {
-            color: rgba(221, 91, 75, 1);
-            font-size: 12px;
-            text-align: left;
-            float: right;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .zhuceInfo-items {
-            float: left;
-        }
-
-        .zhucehao div {
-            margin-top: 12px;
-        }
-
-        .zhucehao div,
-        .zhucehao .zhucehao2 .guoxie {
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .zhucehao2 .guoxie {
-            display: inline-block;
-            width: 64px;
-            height: 28px;
-            line-height: 28px;
-            text-align: center;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-        }
-
-        .guoInput {
-            width: 92px;
-            height: 28px;
-            padding-left: 8px;
-        }
-
-        .guoInput::-webkit-input-placeholder {
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Medium;
-        }
-
-        .zhuceUl li {
-            padding: 0px;
-        }
-
-        .guoxie {
-            display: inline-block;
-            width: 64px;
-            height: 28px;
-            line-height: 27px;
-            text-align: center;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            border-right: none;
-            float: left;
-            vertical-align: top;
-        }
-
-        .guoInput {
-            border: 1px solid rgba(236, 236, 244, 1);
-            border-radius: 2px;
-        }
-
-        .guoTime {
-            width: 156px;
-            line-height: 26px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            overflow: hidden;
-            border: 1px solid rgba(236, 236, 244, 1);
-            padding: 0px 8px;
-            font-size: 12px;
-            text-align: left;
-            color: rgba(130, 130, 151, 1);
-        }
-
-        .guoTime i {
-            float: right;
-            font-size: 12px;
-            font-family: PingFangSC-Medium;
-        }
-
-        .guoxieLast div {
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Medium;
-            line-height: 17px;
-        }
-
-        .guoxieLast div span {
-            color: rgba(130, 130, 151, 1);
-            font-family: Roboto-Medium;
-        }
-
-        .guoImgs {
-            width: 101px;
-            height: 101px;
-            border-radius: 2px;
-            overflow: hidden;
-            border: 1px solid #eee;
-            margin-top: 6px;
-        }
-
-        .qiyeLists {
-            width: 100%;
-            overflow: hidden;
-            box-sizing: border-box;
-            padding: 8px 16px 8px 16px;
-        }
-
-        .daoqiWarn {
-            width: 100%;
-            height: 32px;
-            line-height: 32px;
-            border-radius: 2px;
-            background-color: rgba(221, 91, 75, 0.1);
-            border: 1px solid rgba(221, 91, 75, 0.1);
-            color: rgba(221, 91, 75, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-            overflow: hidden;
-            padding: 0px 8px;
-            margin-bottom: 8px;
-        }
-
-        .daoqiWarn .warnLeft {
-            float: left;
-        }
-
-        .warn1 {
-            padding-bottom: 6px;
-        }
-
-        .warnLeft i {
-            vertical-align: middle;
-        }
-
-        .warnRight {
-            float: right;
-        }
-
-        /* 新增企业 */
-        .proNames {
-            width: 156px;
-            height: 28px;
-            border-radius: 2px;
-            font-size: 12px;
-            font-weight: normal;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            padding-left: 8px;
-        }
-
-        .proNames::-webkit-input-placeholder {
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Medium;
-        }
-
-        .showAddress {
-            width: 100%;
-            height: 28px;
-            line-height: 28px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            box-sizing: border-box;
-            overflow: hidden;
-            padding-left: 8px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Medium;
-            margin-bottom: 12px;
-        }
-
-        .yingyeTu {
-            line-height: 17px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-            margin-bottom: 6px;
-        }
-
-        .img1 {
-            width: 101px;
-            height: 101px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .selectPro {
-            vertical-align: sub;
-        }
-
-        .goot-goot-putong.s1 {
-            border-bottom: 1px solid #eee;
-        }
-
-        .mainGoodList.m1 {
-            padding: 11px 16px;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-        }
-
-        /* 改变按钮样式 */
-        .my-skin .layui-layer-btn a {
-            background-color: rgba(130, 130, 151, 0.1);
-            color: rgba(130, 130, 151, 1);
-            border-color: rgba(236, 236, 244, 1);
-        }
-
-        /* 员工列表 */
-        .yuangongUl {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 16px 16px 16px 16px;
-            border-radius: 2px;
-        }
-
-        .yuangongUl li {
-            width: 100%;
-            overflow: hidden;
-            border: 1px solid #eee;
-            white-space: nowrap;
-        }
-
-        .yuangongUl .first {
-            background-color: rgba(130, 130, 151, 0.1);
-        }
-
-        .yuangongUl .hideBorder .others {
-            width: 100%;
-            padding: 0px 12px;
-            line-height: 28px;
-            background-color: rgba(255, 255, 255, 1);
-            overflow: hidden;
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Medium;
-            border: 1px solid #eee;
-            border-top: 0px;
-        }
-
-        .yuangongUl .others .yuanLeft {
-            float: left;
-        }
-
-        .yuangongUl .others .yuanRight {
-            float: right;
-        }
-
-        .ygList1,
-        .ygList2,
-        .ygList3,
-        .ygList4,
-        .ygList5 {
-            display: inline-block;
-            height: 36px;
-            line-height: 36px;
-            padding-left: 12px;
-            background-color: rgba(255, 255, 255, 0);
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Medium;
-        }
-
-        .ygList1 {
-            width: 120px;
-        }
-
-        .ygList2 {
-            width: 120px;
-        }
-
-        .ygList3 {
-            width: 80px;
-        }
-
-        .ygList4 {
-            width: 128px;
-        }
-
-        .ygList5 {
-            width: 240px;
-        }
-
-        .showYuanList {
-            border: 1px solid #eee;
-            border-top: 0px;
-        }
-
-        .showYuanList li {
-            border: 0px;
-        }
-
-        .showYuanList li .ygList1,
-        .showYuanList li .ygList2,
-        .showYuanList li .ygList3,
-        .showYuanList li .ygList4,
-        .showYuanList li .ygList5 {
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Medium;
-        }
-
-        .yuangongUl .hideBorder {
-            border: 0px;
-        }
-
-        /* 员工列表(培训记录) */
-        .pxInput {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 0px 16px;
-            margin-top: -17px;
-        }
-
-        .pxDanwei {
-            line-height: 17px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .pxIn {
-            width: 328px;
-            height: 80px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            padding-top: 5px;
-            padding-left: 8px;
-            color: rgba(57, 57, 83, 1);
-            font-family: PingFangSC-Medium;
-            resize: none;
-            margin-top: 6px;
-            margin-bottom: 12px;
-        }
-
-        .beizhu {
-            width: 328px;
-            height: 28px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            color: rgba(57, 57, 83, 1);
-            margin-top: 6px;
-            padding-left: 8px;
-        }
-
-        .beizhu::-webkit-input-placeholder {
-            color: rgba(130, 130, 151, 1);
-        }
-
-        /* 出库记录 */
-        .ckReload {
-            background-color: rgba(236, 236, 244, 1);
-            padding-bottom: 12px;
-        }
-
-        .ckReload li {
-            float: left;
-            height: 52px;
-            line-height: 52px;
-            margin-right: 24px;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            border: none;
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            font-weight: 600;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .ckReload li.active {
-            color: rgba(57, 57, 83, 1);
-            border-bottom: 2px solid #393953;
-        }
-
-        .ckReload li:hover {
-            border-bottom: 2px solid #393953;
-        }
-
-        .content3_1,
-        .content3_2,
-        .content3_3 {
-            display: none;
-        }
-
-        .content3_1.active,
-        .content3_2.active,
-        .content3_3.active {
-            display: block;
-        }
-
-        /* 需要补充说明商品 */
-        #table2 {
-            display: none;
-        }
-
-        /* 顶部 */
-        .btn1,
-        .btn2 {
-            display: inline-block;
-            width: 64px;
-            padding: 0px 6px;
-            line-height: 28px;
-            border-radius: 2px;
-            font-size: 12px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .btn1 {
-            color: rgba(65, 134, 220, 1);
-            border: 1px solid rgba(65, 134, 220, 0.1);
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-            background-color: rgba(65, 134, 220, 0.1);
-            margin-right: 11px;
-        }
-
-        .btn2 {
-            color: rgba(87, 184, 219, 1);
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-            background-color: rgba(87, 184, 219, 0.1);
-            border: 1px solid rgba(87, 184, 219, 0.1);
-            margin-right: 20px;
-        }
-
-        .btn.b1 {
-            height: 28px;
-        }
-
-        .addbtn {
-            display: inline-block;
-            width: 64px;
-            line-height: 28px;
-            border-radius: 2px;
-            background-color: rgba(65, 134, 220, 1);
-            color: rgba(255, 255, 255, 1);
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-            text-align: center;
-            vertical-align: middle;
-            margin-left: 10px;
-        }
-
-        /* 所有商品中的验收结果样式 */
-        .yanResult {
-            display: inline-block;
-            width: 45px;
-            line-height: 18px;
-            border-radius: 2px;
-            color: rgba(130, 130, 151, 1);
-            background-color: rgba(244, 244, 248, 1);
-            text-align: center;
-        }
-
-        .yanResult.active {
-            color: #fff;
-            background-color: rgba(65, 134, 220, 1);
-        }
-
-        /* 弹窗头部 */
-        .toastHead {
-            width: 100%;
-            height: 44px;
-            line-height: 44px;
-            box-sizing: border-box;
-            padding: 0px 16px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 13px;
-            font-weight: 600;
-            font-family: PingFangSC-Semibold;
-            background-color: rgba(255, 255, 255, 1);
-            box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
-            overflow: hidden;
-        }
-
-        #addPopupName {
-            float: left;
-            cursor: move;
-            width: 70%;
-        }
-
-        #removeStaff {
-            float: right;
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-        }
-
-        #status1 {
-            display: inline-block;
-            width: 24px;
-            height: 16px;
-            border-radius: 100px;
-            background-color: rgba(130, 130, 151, 0.3);
-            position: relative;
-            vertical-align: middle;
-            margin-left: 6px;
-            cursor: pointer;
-        }
-
-        #status1::after {
-            content: ' ';
-            width: 12px;
-            height: 12px;
-            border-radius: 100px;
-            background-color: rgba(255, 255, 255, 1);
-            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            left: 2px;
-            top: 2px;
-            bottom: 2px;
-        }
-
-        #status1.active {
-            background-color: rgba(65, 134, 220, 1);
-        }
-
-        #status1.active::after {
-            left: inherit;
-            right: 2px;
-        }
-
-        /* 企业列表弹窗头部 */
-        .qyHeader {
-            width: 100%;
-            height: 44px;
-            line-height: 44px;
-            box-sizing: border-box;
-            padding: 0px 16px;
-            color: rgba(57, 57, 83, 1);
-            font-size: 13px;
-            font-weight: 600;
-            font-family: PingFangSC-Semibold;
-            background-color: rgba(255, 255, 255, 1);
-            box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
-            overflow: hidden;
-        }
-
-        #qyList1,
-        #ygLi1 {
-            float: left;
-        }
-
-        #qyList2 {
-            float: right;
-            width: 64px;
-            height: 28px;
-            line-height: 28px;
-            border-radius: 2px;
-            text-align: center;
-            color: #fff;
-            background-color: rgba(65, 134, 220, 1);
-            font-size: 12px;
-            font-weight: normal;
-            margin-top: 8px;
-        }
-
-        #ygLi2,
-        #ygLi3 {
-            float: right;
-            width: 64px;
-            height: 28px;
-            line-height: 28px;
-            text-align: center;
-            border-radius: 2px;
-            font-size: 13px;
-            font-weight: normal;
-            margin-top: 8px;
-        }
-
-        #ygLi2 {
-            background-color: rgba(87, 184, 219, 0.1);
-            border: 1px solid rgba(87, 184, 219, 0.1);
-            color: rgba(87, 184, 219, 1);
-            margin-left: 11px;
-        }
-
-        #ygLi3 {
-            background-color: rgba(65, 134, 220, 0.1);
-            border: 1px solid rgba(65, 134, 220, 0.1);
-            color: rgba(65, 134, 220, 1);
-        }
-
-        /* 体检记录弹窗头部 */
-        .ygDetail1 {
-            float: left;
-            color: rgba(57, 57, 83, 1);
-            font-size: 13px;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .ygDetail2,
-        .ygDetail3 {
-            float: right;
-            height: 28px;
-            text-align: left;
-            line-height: 28px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            font-weight: normal;
-            font-family: PingFangSC-Medium;
-            overflow: hidden;
-            margin-top: 8px;
-            padding: 0px 8px;
-        }
-
-        .ygDetail2 {
-            width: 156px;
-            margin-right: 8px;
-        }
-
-        .ygDetail2 i {
-            float: right;
-            color: rgba(130, 130, 151, 1);
-        }
-
-        .ygDetail3 {
-            width: 76px;
-        }
-
-        .ygDetail3 i {
-            float: right;
-            color: rgba(130, 130, 151, 1);
-        }
-
-        .checksc {
-            display: block;
-        }
-
-
-        .icon10 {
-            position: relative;
-            left: 135px;
-            top: -24px;
-        }
-
-        .icon11 {
-            position: relative;
-            left: 132px;
-            top: -22px;
-            font-size: 16px;
-            color: #828297;
-        }
-
-        .uploadPic.n1 {
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-        }
-
-        .t1 {
-            line-height: 28px;
-        }
-
-        .qyshow1 {
-            display: none;
-        }
-
-        .qyshow2 {
-            display: none;
-        }
-
-        .s1 {
-            border-top: 1px solid #eee;
-        }
-
-        .selectBox {
-            width: 156px;
-            height: 28px;
-            line-height: 28px;
-        }
-
-        .optionBox .optionUL .optionItems {
-            width: 100%;
-            height: 28px;
-            line-height: 28px;
-        }
-
-        .addGoods.layui-layer .layui-layer-title {
-            padding: 0;
-        }
-
-        #dayNum {
-            border: none;
-        }
-
-        .dhNum {
-            width: 156px;
-            padding-left: 8px;
-            height: 28px;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            color: rgba(57, 57, 83, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: Roboto-Medium;
-        }
-
-        .iconfont {
-            font-weight: normal;
-        }
-
-        .zcImg {
-            display: inline-block;
-            width: 101px;
-            text-align: center;
-            line-height: 101px;
-            border-radius: 2px;
-            background-color: rgba(244, 244, 248, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            margin-top: 6px;
-        }
-
-        .goods-range-body {
-            width: 100%;
-            height: 17px;
-            line-height: 17px;
-            color: rgba(65, 134, 220, 1);
-            font-size: 12px;
-            cursor: pointer;
-            font-family: PingFangSC-Semibold;
-            text-decoration: underline;
-        }
-
-        /* 设置现货范围 */
-        .range-header {
-            height: 40px;
-            line-height: 40px;
-        }
-
-        .range-header div {
-            float: left;
-            font-size: 12px;
-            font-family: PingFangSC-Medium;
-        }
-
-        .range-header em {
-            width: 12px;
-            height: 12px;
-            border-radius: 1px;
-            float: left;
-            margin-top: 14px;
-            margin-right: 6px;
-        }
-
-        .now-goods-range {
-            color: rgba(65, 134, 220, 1);
-        }
-
-        .now-goods-range em {
-            background-color: rgba(65, 134, 220, 0.1);
-            border: 1px solid rgba(65, 134, 220, 0.2);
-        }
-
-        .dingzhi-range {
-            margin-left: 16px;
-            color: #DD5B4B;
-        }
-
-        .dingzhi-range em {
-            background-color: rgba(221, 91, 75, 0.1);
-            border: 1px solid rgba(221, 91, 75, 0.2);
-        }
-
-        .yj-layui-table-header {
-            position: relative;
-            width: 60px;
-            height: 36px;
-        }
-
-        .yj-layui-table-header > span:first-of-type {
-            position: absolute;
-            top: 0;
-            right: 7px;
-        }
-
-        .yj-layui-table-header > span:last-of-type {
-            position: absolute;
-            bottom: 0;
-            left: 7px;
-        }
-
-        .yj-layui-table-header:after {
-            content: "";
-            display: block;
-            width: 70px;
-            height: 1px;
-            position: absolute;
-            transform: rotate(31deg);
-            bottom: 18px;
-            left: -5px;
-            background: #ECECF4;
-        }
-
-        .guoxieLast .imgBox {
-            width: 100px;
-            height: 100px;
-            float: left;
-            overflow: hidden;
-            border-radius: 2px;
-            margin-right: 8px;
-            margin-top: 6px;
-            position: relative;
-        }
-
-        /*新加样式*/
-        .guoTime.g1 {
-            margin-top: 2px;
-        }
-
-        .tjHeader {
-            width: 100%;
-            height: 44px;
-            line-height: 44px;
-            box-sizing: border-box;
-            padding: 0px 8px 0px 16px;
-            background-color: rgba(255, 255, 255, 1);
-            box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
-            font-size: 13px;
-            color: #393953;
-            font-family: PingFangSC-Semibold;
-            clear: both;
-        }
-
-        .tjLeft {
-            float: left;
-            font-weight: 600;
-        }
-
-        .tjRight {
-            float: right;
-        }
-
-        .selectBox.tj3 {
-            width: 76px;
-        }
-
-        .selectBox.tj2,
-        .selectBox.tj3 {
-            vertical-align: middle;
-        }
-
-        .clearfix:after {
-            content: "020";
-            display: block;
-            height: 0;
-            clear: both;
-            visibility: hidden;
-        }
-
-        .clearfix {
-            zoom: 1;
-        }
-
-        .my-skin1 .layui-layer-btn .layui-layer-btn0,
-        .my-skin1 .layui-layer-btn .layui-layer-btn1 {
-            width: 44px;
-            height: 32px;
-            padding: 0px;
-            text-align: center;
-            border-radius: 2px;
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .my-skin1 .layui-layer-btn .layui-layer-btn1 {
-            background-color: rgba(65, 134, 220, 1);
-            color: rgba(255, 255, 255, 1);
-            margin-left: 8px;
-        }
-
-        .my-skin1 .layui-layer-btn .layui-layer-btn0 {
-            background-color: rgba(244, 244, 248, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            color: rgba(130, 130, 151, 1);
-        }
-
-        .duoXuans {
-            display: inline-block;
-            vertical-align: middle;
-            width: 16px;
-            height: 16px;
-            padding: 0px 2px;
-            line-height: 16px;
-            text-align: center;
-            border-radius: 2px;
-            background-color: #F4F4F8;
-            border: 1px solid rgba(130, 130, 151, 0.2);
-            cursor: pointer;
-            font-weight: normal;
-        }
-
-        .duoXuans i {
-            display: none;
-            font-size: 12px;
-            color: #fff;
-        }
-
-        .duoXuans.active i {
-            display: inline-block;
-        }
-
-        .duoXuans.active {
-            background-color: rgba(65, 134, 220, 1);
-        }
-
-        .ygList1,
-        .ygList2 {
-            width: 120px;
-        }
-
-        .ygList4 {
-            width: 128px;
-        }
-
-        .ygList5 {
-            width: 240px;
-        }
-
-        .ygList1,
-        .ygList2,
-        .ygList3,
-        .ygList4,
-        .ygList5 {
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        .winFooterBox {
-            background-color: #fff;
-            width: 100%;
-            overflow: hidden;
-            text-align: left;
-        }
-
-        #numLen {
-            display: inline-block;
-            line-height: 34px;
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: Roboto-Medium;
-            padding-left: 10px;
-        }
-
-        .winFooterLast {
-            float: right;
-        }
-
-        .btnPreservation, .btnSubmission {
-            display: inline-block;
-            width: 68px;
-            text-align: center;
-            line-height: 32px;
-            border-radius: 2px;
-            font-size: 12px;
-            font-family: PingFangSC-Semibold;
-        }
-
-        .btnSubmission {
-            background-color: rgba(244, 244, 248, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            color: rgba(130, 130, 151, 1);
-        }
-
-        .btnPreservation {
-            background-color: rgba(65, 134, 220, 1);
-            color: rgba(255, 255, 255, 1);
-            margin-left: 6px;
-        }
-
-        /*首页底部*/
-        .showShouyeFooter {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 52px;
-            line-height: 52px;
-            background-color: #fff;
-            padding: 0px 12px 0px 16px;
-        }
-
-        .xuanZhongXiang {
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            text-align: left;
-            font-family: PingFangSC-Medium;
-        }
-
-        .xuanRight {
-            float: right;
-        }
-
-        .quXiaoXuanZhong, .shenHeTongguo, .piLiangDaYin {
-            display: inline-block;
-            width: 84px;
-            height: 36px;
-            line-height: 36px;
-            border-radius: 2px;
-            font-size: 13px;
-            text-align: center;
-            font-family: PingFangSC-Semibold;
-            margin-left: 8px;
-        }
-
-        .quXiaoXuanZhong {
-            background-color: rgba(244, 244, 248, 1);
-            border: 1px solid rgba(236, 236, 244, 1);
-            color: rgba(130, 130, 151, 1);
-        }
-
-        .piLiangDaYin {
-            background-color: rgba(65, 134, 220, 0.1);
-            border: 1px solid rgba(65, 134, 220, 0.1);
-            color: rgba(65, 134, 220, 1);
-
-        }
-
-        .shenHeTongguo {
-            background-color: rgba(65, 134, 220, 1);
-            color: rgba(255, 255, 255, 1);
-        }
-
-        #select-time-header {
-            width: 180px;
-            height: 32px;
-            border-right: 2px solid #eee;
-        }
-        #select-time-header .yj-demo-time {
-            height: 100%;
-        }
-
-        #select-time-header .yj-demo-time .yj-date {
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0);
-            box-shadow: 1px 0px 0px 0px rgba(236, 236, 244, 1);
-        }
-        .xiaoShouShenHe {
-            display: inline-block;
-            width: 45px;
-            height: 18px;
-            line-height: 18px;
-            text-align: center;
-            border-radius: 2px;
-            background-color: rgba(244, 244, 248, 1);
-            color: rgba(130, 130, 151, 1);
-            font-size: 11px;
-            font-family: PingFangSC-Semibold;
-        }
-        .xiaoShouShenHe.suc {
-            background-color: #4186DC;
-            color: #fff;
-        }
-    </style>
 </head>
 
 <body class="body-bg">
 <div class="header clear">
-    <ul class="tab-ul clear">
+    <ul class="tab-ul clear tab-ul-header">
         <li class="active">产品列表</li>
         <li>入库记录</li>
         <li>出库记录</li>
@@ -1460,7 +48,7 @@
             <span class="btn1" onclick="proLists()">企业列表</span>
             <span class="btn2" onclick="employList()">员工列表</span>
             <input type="search" class="search-box" placeholder="搜索生产批号">
-            <span class="addbtn" onclick="addGoods()">新增商品</span>
+            <span class="addbtn" onclick="addGoods(false)">新增商品</span>
         </li>
     </ol>
 </div>
@@ -1533,8 +121,40 @@
 </div>
 
 <!--新增镜片-->
-<div class="content-view  content-view-addgoods" id="addGoodsDom">
+<div class="content-view content-view-addgoods" id="addGoodsDom">
 
+</div>
+<!--设置提成的弹出框-->
+<div class="content-view content-view-ticheng" id="tiChengDom">
+
+</div>
+<!--设置现货范围-->
+<div class="content-view content-view-range">
+    <div class="yj-content-body">
+        <div class="range-header">
+            <div class="now-goods-range">
+                <em></em>现货范围
+            </div>
+            <div class="dingzhi-range">
+                <em></em>定制范围
+            </div>
+        </div>
+        <table class="layui-hide yj-layui-table" id="rangeEvent" lay-filter="rangeEvent"></table>
+    </div>
+</div>
+<!--设定价格-->
+<div class="content-view content-view-price">
+    <ul class="tab-ul" id="setPriceBtn">
+        <li onclick="setPrice(1)">零售价/元</li>
+        <li onclick="setPrice(2)">批发价/元</li>
+        <li onclick="setPrice(3)">备货量/片</li>
+        <li onclick="setPrice(4)">积分价/分</li>
+        <li onclick="setPrice(5)">左眼选择</li>
+        <li onclick="setPrice(6)">右眼选择</li>
+    </ul>
+    <div class="price-table-box">
+        <table class="layui-hide yj-layui-table" id="priceEvent" lay-filter="priceEvent"></table>
+    </div>
 </div>
 
 <!-- 员工列表 -->
@@ -1547,6 +167,8 @@
     <ul class="yuangongUl" id="yuangongList1">
     </ul>
 </div>
+
+
 <!-- 证件有效期到期弹窗 -->
 <div class="content-view content-view-cardGuoqi">
     <table id="zjdq-table" data-toggle="table" class="table table-border"></table>
@@ -1980,167 +602,248 @@
         </ul>
     </div>
 </script>
-<!--增加商品弹出框-->
 <script type="text/html" id="addGoodsTmp">
-    <div class="mainGoodList">
-        <div class="goot-select">
-            <div class="goot-items">品牌</div>
-            <div class="selectBox" id="select-type">
+    <div class="goods-select-box">
+        <div class="goods-select">
+            <div class="goods-select-title">品牌</div>
+            <div class="selectBox" id="yj-add-brand">
                 <div class="select-box-header">
-                    <input type="text" id="brandName" value="" placeholder="品牌" autocomplete="off">
-                    <i class="iconfont  icon-ico_arrow_down"></i>
-                </div>
-            </div>
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">系列</div>
-            <div class="selectBox" id="select-series">
-                <div class="select-box-header">
-                    <input type="text" id="seriesName" value="" placeholder="系列" autocomplete="off">
-                    <i class="iconfont  icon-ico_arrow_down"></i>
-                </div>
-            </div>
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">类型</div>
-            <div class="selectBox" id="yj-add-type">
-                <div class="select-box-header">
-                    <span class="text">类型</span> <i class="iconfont  icon-ico_arrow_down"></i>
+                    <input type="text" id="brandName" onkeyup="changeBrand(this)" value="<%=list.brandName%>" placeholder="品牌"><i class="iconfont icon-ico_arrow_down" ></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
-                        <%for(var i = 0;i < typeData.length;i++){%>
+                        <%for(var i=0;i< brandData.length;i++){%>
+                        <li value="<%=brandData[i].id%>"><%=brandData[i].name%></li>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="goods-select">
+            <div class="goods-select-title">系列</div>
+            <div class="selectBox" onkeyup="changeSeries(this)" id="yj-add-series">
+                <div class="select-box-header">
+                    <input type="text" id="seriesName" value="<%=list.seriesName%>" placeholder="系列"><i class="iconfont icon-ico_arrow_down" ></i>
+                </div>
+            </div>
+        </div>
+        <div class="goods-select">
+            <div class="goods-select-title">供应商</div>
+            <div class="selectBox" id="yj-add-provider">
+                <div class="select-box-header">
+                    <span class="text"><%if(list.providerName){%><%=list.providerName%><%}else{%>供应商<%}%></span> <i class="iconfont icon-ico_arrow_down" ></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <%for(var i=0;i< providerData.length;i++){%>
+                        <li value="<%=providerData[i].id%>"><%=providerData[i].name%></li>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="goods-select">
+            <div class="goods-select-title">类型</div>
+            <div class="selectBox" id="yj-add-type">
+                <div class="select-box-header">
+                        <span class="text">
+                            <%if(list.properties && list.properties[5]){%>
+                                <%for(var i=0;i< typeData.length;i++){%>
+                                    <%if(list.properties[5]==typeData[i].id){%>
+                                        <%=typeData[i].content%>
+                                    <%}%>
+                                <%}%>
+                            <%}else{%>
+                                类型
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <%for(var i=0;i< typeData.length;i++){%>
                         <li value="<%=typeData[i].id%>" data-pnid="<%=typeData[i].pnid%>"><%=typeData[i].content%></li>
                         <%}%>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="goot-select">
-            <div class="goot-items">更换周期</div>
-            <div class="selectBox  goot-select-items" id="yj-add-jiaodian">
+        <div class="goods-select">
+            <div class="goods-select-title">更换周期</div>
+            <div class="selectBox" id="yj-add-zhouqi">
                 <div class="select-box-header">
-                    <span class="text">更换周期</span>
-                    <i class="iconfont  icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL"></ul>
-                </div>
-            </div>
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">包装</div>
-            <div class="selectBox  goot-select-items" id="yj-add-baozhuang">
-                <div class="select-box-header">
-                    <span class="text">包装</span>
-                    <i class="iconfont icon-ico_arrow_down"></i>
-                </div>
-                <div class="optionBox">
-                    <ul class="optionUL"></ul>
-                </div>
-            </div>
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">质保时长/天*</div>
-            <div class="goot-select-items"><input type="number" placeholder="天数" autocomplete="off" id="dayNum">
-            </div>
-            <div class="zhibaoTime">*设定后会短信自动提醒顾客</div>
-        </div>
-        <div class="goot-select">
-            <div class="goot-items">供应商</div>
-            <div class="selectBox" id="yj-gongS">
-                <div class="select-box-header">
-                    <span class="text">供应商</span>
-                    <i class="iconfont icon-ico_arrow_down"></i>
+                    <span class="text">
+                        <%if(list.properties && list.properties[5]){%>
+                            <%for(var i=0;i< zhouqiData.length;i++){%>
+                                <%if(list.properties[5]==zhouqiData[i].id){%>
+                                    <%=zhouqiData[i].content%>
+                                <%}%>
+                            <%}%>
+                        <%}else{%>
+                            更换周期
+                        <%}%>
+                    </span> <i class="iconfont icon-ico_arrow_down" ></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
-                        <%if(gongS){%>
-                        <%for(var i = 0;i < gongS.length;i++){%>
-                        <li><%=gongS[i].name%></li>
-                        <%}%>
+                        <%for(var i=0;i< zhouqiData.length;i++){%>
+                        <li value="<%=zhouqiData[i].id%>" data-pnid="<%=zhouqiData[i].pnid%>"><%=zhouqiData[i].content%></li>
                         <%}%>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="goot-select">
-            <div class="goot-items">生产商</div>
-            <div class="selectBox" id="yj-shengS">
+        <div class="goods-select">
+            <div class="goods-select-title">包装</div>
+            <div class="selectBox" >
+                <input type="text" value="<%=list.properties[7]%>" class="yj-input fl" id="yj-add-baozhuang" data-pnid="7" style="width: 75%">
+                <span style="float: right">片裝</span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="goods-select">
+            <div class="goods-select-title">生产商</div>
+            <div class="selectBox" id="yj-add-shengchan">
                 <div class="select-box-header">
-                    <span class="text">生产商</span>
-                    <i class="iconfont icon-ico_arrow_down"></i>
+                    <span class="text">
+                        <%if(list.properties && list.properties[7]){%>
+                            <%for(var i=0;i< baozhuangData.length;i++){%>
+                                <%if(list.properties[7]==baozhuangData[i].id){%>
+                                    <%=baozhuangData[i].content%>
+                                <%}%>
+                            <%}%>
+                        <%}else{%>
+                            生产商
+                        <%}%>
+                    </span> <i class="iconfont icon-ico_arrow_down" ></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
-                        <%if(shengS){%>
-                        <%for(var i = 0;i < shengS.length;i++){%>
-                        <li><%=shengS[i].name%></li>
-                        <%}%>
+                        <%for(var i=0;i< shengchanData.length;i++){%>
+                        <li value="<%=shengchanData[i].id%>" ><%=shengchanData[i].name%></li>
                         <%}%>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="goot-select f1">
-            <div class="goot-items">现货范围</div>
-            <div class="goot-items1 goods-range-body" onclick="openGoodsRange('现货','<%=isUpdate%>')">设定现货范围</div>
-        </div>
-        <div class="goot-select f1">
-            <div class="goot-items">定制单范围</div>
-            <div class="goot-items1 goods-range-body" onclick="openGoodsRange('定制','<%=isUpdate%>')">设定定制范围</div>
-        </div>
-    </div>
-    <ul class="goot-goot-putong">
-        <li><span class="select s1"><i class="iconfont icon-ico_check"></i></span> 常规商品</li>
-    </ul>
-    <ul class="goot-goot-huiyuan">
-        <li class="zhekou">
-            <span class="goot-left">会员折扣</span>
-            <span class="goot-Right">
-                    <div class="yj-radio"></div> 参与会员折扣
-                </span>
-        </li>
-        <li class="lingshou">
-            <div class="goot-select">
-                <div class="goot-items">零售价</div>
-                <div class="goot-items1"><a href="">设定零售价</a></div>
+        <div class="goods-select">
+            <div class="goods-select-title">质保时长/天</div>
+            <div class="selectBox" >
+                <%if(list.properties && list.properties[8]){%>
+                <input type="text" placeholder="天数" value="<%=list.properties[8]%>" class="yj-input" id="yj-add-day" data-pnid="8">
+                <%}else{%>
+                <input type="text" placeholder="天数"  class="yj-input" id="yj-add-day" data-pnid="8">
+                <%}%>
             </div>
-            <div class="goot-select">
-                <div class="goot-items">提成</div>
-                <div class="goot-items1"><a href="">设定提成</a></div>
-            </div>
+        </div>
+        <div class="clearfix"></div>
 
-        </li>
-    </ul>
-    <ul class="goot-goot-putong u2">
-        <li><span class="select s2"><i class="iconfont icon-ico_check"></i></span> 积分商品</li>
-    </ul>
-    <ul class="goot-goot-putong uItem">
-        <li class="lingshou">
-            <div class="goot-select">
-                <div class="goot-items">积分价</div>
-                <div class="goot-items1"><a href="">设定积分价</a></div>
+        <div class="goods-select goods-range">
+                <div class="goods-select-title">现货范围</div>
+                <div class="goods-range-body" onclick="openGoodsRange('现货',<%=isUpdate%>)">设定现货范围</div>
             </div>
-            <div class="goot-select">
-                <div class="goot-items">兑换数量上限</div>
-                <input type="number" placeholder="输入" class="dhNum">
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">定制范围</div>
+                <div class="goods-range-body" onclick="openGoodsRange('定制',<%=isUpdate%>)">设定定制范围</div>
             </div>
-            <div class="goot-select">
-                <div class="goot-items">有效时间</div>
-                <div class="yj-youxiao-time">
-                    <div class="yj-date">
-                        <span>开始时间-结束时间</span>
-                        <i class="iconfont icon-ico_calendar"></i>
+            <div style="clear: both"></div>
+        </div>
+        <form class="layui-form" action="">
+            <div class="goods-type">
+                常规商品
+                <!--<div class="layui-form-item" pane="">
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked>
+                    </div>
+                </div>-->
+            </div>
+                <div class="yj-from" style="display: block;">
+                    <div class="goods-vip-btn">
+                        <div class="goods-vip-left">会员折扣</div>
+                        <%if(list.ugDiscount && list.ugDiscount.length>0){%>
+                        <div class="goods-vip-right active" onclick="changeVipStatus(this)">
+                            <%}else{%>
+                            <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                                <%}%>
+                                <div class="yj-radio"></div>
+                                <span>参与会员折扣</span>
+                                <!--<em onclick="openSettingVip(this)">设置</em>-->
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+
+                        <div class="goods-select-box">
+                            <div class="goods-select goods-range">
+                                <div class="goods-select-title">零售价</div>
+                                <div class="goods-range-body" onclick="openZeroPrice(1)">设定零售价</div>
+                            </div>
+                            <div class="goods-select goods-range">
+                                <div class="goods-select-title">提成</div>
+                                <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+
+                    </div>
+                    <div class="goods-type">
+                        积分商品
+                        <!--<div class="layui-form-item" pane="">
+                            <div class="layui-input-block">
+                                <%if(list.type==0){%>
+                                <input type="checkbox" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
+                                <%}else{%>
+                                <input type="checkbox" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" checked >
+                                <%}%>
+                            </div>
+                        </div>-->
                     </div>
                 </div>
+
+                <div class="yj-from goods-select-box" style="display: block">
+                    <div class="goods-select goods-range">
+                        <div class="goods-select-title">积分价</div>
+                        <div class="goods-range-body" onclick="openZeroPrice(4)">设定积分价</div>
+                    </div>
+                    <div class="goods-select">
+                        <div class="goods-select-title">兑换数量上限</div>
+                        <div class="">
+                            <%if(list.integralNum){%>
+                            <input type="text" placeholder="数量" value="<%=list.integralNum%>" id="yj-add-integralNum" class="yj-input">
+                            <%}else{%>
+                            <input type="text" placeholder="数量"  id="yj-add-integralNum" class="yj-input">
+                            <%}%>
+                        </div>
+                    </div>
+                    <div class="goods-select " style="width: 100%;height: auto;">
+                        <div class="goods-select-title">有效期</div>
+                        <div class="yj-demo-time" id="yj-add-time">
+                            <div class="yj-date">
+                                <%if(list.integralStartTimeNew){%>
+                                <span><%=list.integralStartTimeNew%>-<%=list.integralEndTimeNew%></span><i class="iconfont icon-ico_calendar"></i>
+                                <%}else{%>
+                                <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="clear: both"></div>
+                </div>
+            <div class="goods-select-box" style="height: 50px;">
+                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item" pane="">
+                            <div class="layui-input-block yj-check-input">
+                                <%if(list.nowRemind){%>
+                                <input type="checkbox" name="" checked="checked"  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input value='<%=list.nowRemind%>' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
+                                <%}else{%>
+                                <input type="checkbox" name=""  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input readonly='' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
+                                <%}%>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </li>
-        <li><span class="select s3"><i class="iconfont icon-ico_check"></i></span> 当库存低于
-            <input type="text" placeholder="数量" class="warnInput" id="warn1" disabled>
-            触发警报
-        </li>
-    </ul>
+        </form>
     <!-- 注册医疗信息 -->
     <ul class="zhuceInfo">
         <li class="zhuceInfo-first">
@@ -2153,13 +856,13 @@
                     <div class="goot-select">
                         <div class="goot-items">注册证号</div>
                         <div class="goot-items1"><span class="guoxie">国械注准</span>
-                            <input type="text" placeholder="输入" class="guoInput"></div>
+                            <input type="text" placeholder="输入" id="nirNum" class="guoInput"></div>
                     </div>
                     <div class="goot-select">
                         <div class="goot-items">注册时间</div>
                         <div class="goot-items1">
                             <input class="guoTime demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                   data-type="day" placeholder="选择时间"/>
+                                   data-type="day" placeholder="选择时间" id="nirNumDate"/>
                             <i class="iconfont icon-ico_calendar icon11"></i>
                         </div>
                         <div class="settings" style="display:none;">
@@ -2168,21 +871,27 @@
                             </select>
                         </div>
                     </div>
-                    </div>
                 </li>
-                <li class="guoxieLast uploadPic">
+                <li class="guoxieLast uploadPic layui-upload" id="imgBox">
                     <div>注册证图片 <span>1-3 张</span></div>
-                    <div class="cont layui-upload" style="overflow: hidden">
-
+                    <div style="overflow: hidden">
+                        <%if(list.storeImg){%>
+                        <%for(var i=0;i< list.storeImg.length;i++){%>
+                        <div class="imgBox">
+                            <img src="<%=list.storeImg[i]%>" real-src="<%=list.storeImg[i]%>" style="width: 100%;height: 100%" alt="">
+                            <div class="del" onclick="delRegImg(this)"></div>
+                        </div>
+                        <%}%>
+                        <%}%>
+                        <span onclick="uploadImg(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
                     </div>
-                    <span onclick="uploadIcon(this)" class="layui-btn test2 zcImg"><i
-                            class="icon iconfont icon-ico_plus"></i></span>
                 </li>
             </ul>
         </li>
     </ul>
-</script>
+</div>
 
+</script>
 
 <script src="./medical.js"></script>
 <!--员工列表开始时列表-->
@@ -2373,7 +1082,78 @@
     <%}%>
 
 </script>
-
+<!--下拉选择模板-->
+<script type="text/html" id="selectTagInputTmp">
+    <div class="select-box-header">
+        <input type="text" id="seriesName"  value="<%=title%>" placeholder="系列"><i class="iconfont icon-ico_arrow_down" ></i>
+    </div>
+    <div class="optionBox">
+        <ul class="optionUL">
+            <%for(var i=0;i< list.length;i++){%>
+            <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
+            <%}%>
+        </ul>
+    </div>
+</script>
+<!--提成-->
+<script type="text/html" id="tiChengTmp">
+    <div class="ticheng-checkbox">
+        <form class="layui-form" action="">
+            <div class="layui-input-block" style="float:left;">
+                <%if(group){%>
+                <input type="checkbox" value="group" lay-skin="primary"  title="团体统一提成" checked="checked">
+                <%}else{%>
+                <input type="checkbox" value="group" lay-skin="primary"  title="团体统一提成" >
+                <%}%>
+            </div>
+            <div class="layui-input-block" style="float:left;">
+                <%if(personal){%>
+                <input type="checkbox" value="personal" lay-skin="primary" title="个人统一提成" checked="checked">
+                <%}else{%>
+                <input type="checkbox" value="personal" lay-skin="primary" title="个人统一提成" >
+                <%}%>
+            </div>
+        </form>
+    </div>
+    <table class="table  table-self table-ticheng">
+        <tr class="bg-gray">
+            <th class="bg-gray">门店名称</th>
+            <th class="bg-gray">团体</th>
+            <th class="bg-gray">个人</th>
+        </tr>
+        <%for(var i=0;i< shopData.length;i++){%>
+        <%if(commissionJson[shopData[i].id]){%>
+        <tr>
+            <td><%=shopData[i].name%></td>
+            <%if(group){%>
+            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" value="<%=commissionJson[shopData[i].id].price%>" placeholder="0"></td>
+            <%}else{%>
+            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+            <%}%>
+            <%if(personal){%>
+            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" value="<%=commissionJson[shopData[i].id].users%>" placeholder="0"></td>
+            <%}else{%>
+            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+            <%}%>
+        </tr>
+        <%}else{%>
+        <tr>
+            <td><%=shopData[i].name%></td>
+            <%if(group){%>
+            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"></td>
+            <%}else{%>
+            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+            <%}%>
+            <%if(personal){%>
+            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"></td>
+            <%}else{%>
+            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+            <%}%>
+        </tr>
+        <%}%>
+        <%}%>
+    </table>
+</script>
 <script>
     template.helper('isCheck', function (array, type) {
         var flag = false;
@@ -2384,7 +1164,8 @@
         }
         return flag;
     });
-    var sid = quakooUser.getUserInfo().psid;//企业/公司id
+    var subid = quakooUser.getUserInfo().psid;//企业/公司id
+    var shopId = quakooUser.getUserInfo().sid;//企业/公司id
     var areaJson = new areaJson();
     var oneArea = areaJson.oneList;//省数据
     var winObj = {
@@ -2420,8 +1201,7 @@
             },
             {
                 field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">编辑</button>';
-                    console.log(row)
+                    return '<button class="btn btn-primary"  onclick="updateGoods('+row.id+')">编辑</button>';
                 }
             }
         ],
@@ -2577,18 +1357,13 @@
         series,//系列
         typeData,//类型
         shengS,//生产商
+        zhouqiData,//更换周期  数据
+        baozhuangData,//包装  数据
         gongS;//供应商
-    var subid = quakooUser.getUserInfo().psid;//企业/公司id
-    var shopId = quakooDb.getItem('sel_ShopId');//门店id
-    var cid = '';//类目id
-    var pid = '';//供应商ID
-    var bid = '';//品牌ID
-    var sid = '';//系列ID
-    var name = '';//搜索关键字
-    var params = {};//添加商品所需要的参数    key    类目id；value：所需参数
-    var ballData = '';//球数据
-    var columnData = '';//柱数据
-    var typeData;//隐形眼镜类型数据5
+    var ballData;   //球数据
+    var columnData;//柱数据
+    var shopData;   //店铺数据
+
 
 
     /*员工列表开始*/
@@ -2908,6 +1683,14 @@
         quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid: 5}, function (ret) {
             typeData = ret.data
         })
+        //获取属性-隐形眼镜更换周期/6
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid:6}, function (ret) {
+            zhouqiData = ret.data
+        })
+        //获取属性-隐形眼镜包装/7
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid:6}, function (ret) {
+            baozhuangData = ret.data
+        })
         //获取生产商
         quakooData.ajaxGetData(config.getUrl_medicalAppliances_getgongSheng(), {mpId: 1}, function (ret) {
             shengS = ret.data
@@ -2916,7 +1699,28 @@
         quakooData.ajaxGetData(config.getUrl_medicalAppliances_getgongSheng(), {mpId: 2}, function (ret) {
             gongS = ret.data
         })
-
+        //获取属性-球
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:41},function (ret) {
+            if(ret && ret.success){
+                ballData = ret.data.sort(function (a,b) {
+                    return b.content-a.content;
+                });
+            }
+        });
+        //获取属性-柱
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:42},function (ret) {
+            if(ret && ret.success){
+                columnData = ret.data.sort(function (a,b) {
+                    return b.content-a.content;
+                });
+            }
+        });
+        //获取门店
+        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(), {sid: subid}, function (ret) {
+            if (ret && ret.success) {
+                shopData = ret.data;
+            }
+        });
     })
 
     // 首页时间
@@ -3432,7 +2236,7 @@
     /**
      * tab切换
      * */
-    $(".tab-ul li").click(function () {
+    $(".tab-ul-header li").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
         $(".tab-item").hide().eq($(this).index()).show();
         $(".right-info").hide().eq($(this).index()).show();

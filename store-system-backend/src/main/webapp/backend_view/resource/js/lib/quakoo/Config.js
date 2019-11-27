@@ -24,12 +24,12 @@ var Config = (function(_super){
 
 
         /**测试服务器地址*/
-        // this.serverUrl = "http://39.107.247.82:20005";
+        this.serverUrl = "http://39.107.247.82:20005";
         // this.serverUrl = "http://192.168.1.20:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
-        this.serverUrl = "http://192.168.1.31:20005";
+        // this.serverUrl = "http://192.168.1.31:20005";
         /**马文军*/
          // this.serverUrl = "http://127.0.0.1:20005";
         /**聊天服务地址*/
