@@ -57,14 +57,14 @@
 
 
         /*新增*/
-        .contentBox {
+        .rightBox {
             position: relative;
         }
 
         .recommendBtn {
             position: absolute;
             right: 22px;
-            bottom: 165px;
+            top:280px;
             width: 28px;
             text-align: center;
             height: 28px;
@@ -80,6 +80,7 @@
         }
 
         .recommendGoods {
+            display: none;
             width: 100%;
             position: relative;
             margin-bottom: 18px;
@@ -150,34 +151,60 @@
             border-radius: 1px;
             font-size: 12px;
             background-color: rgba(65, 134, 220, 1);
-            box-shadow: -24px 0px 10px 10px rgba(255, 255, 255, 0.4);
+            /*box-shadow: -24px 0px 10px 10px rgba(255, 255, 255, 0.4);*/
         }
 
         .orderHeader {
             width: 100%;
             overflow: hidden;
+            line-height: 28px;
+            margin-top: 12px;
         }
 
-        .orderHeader input {
+        .orderHeaderLeft {
             float: left;
+        }
+        .orderHeaderLeft span {
+            display: inline-block;
+            margin-right: 10px;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: Roboto-Regular;
+        }
+        .orderHeaderLeft span i {
+            font-size: 12px;
+            margin-right: 4px;
+        }
+        .orderHeaderLeft span:nth-child(2), .orderHeaderLeft span:nth-child(2) i {
+            color: rgba(218, 105, 139, 1);
+        }
+        .orderHeaderLeft span:nth-child(3), .orderHeaderLeft span:nth-child(3) i {
+            color: rgba(224, 139, 36, 1);
+        }
+        .orderHeaderLeft span:nth-child(3) i {
+            padding-left: 9px;
+            border-left: 0.5px solid #eee;
+        }
+        .orderHeaderRight input {
             width: 184px;
             height: 28px;
             line-height: 28px;
             padding-left: 8px;
             border-radius: 2px;
-            margin-top: 12px;
             background-color: rgba(255, 255, 255, 1);
             border: 1px solid rgba(236, 236, 244, 1);
         }
 
-        .orderHeader::-webkit-input-placeholder {
+        .orderHeaderRight::-webkit-input-placeholder {
             color: rgba(130, 130, 151, 1);
             font-size: 12px;
             font-family: PingFangSC-Semibold;
         }
-
-        .orderHeader span {
+        .orderHeaderRight {
             float: right;
+        }
+        .orderHeaderRight span {
+            display: inline-block;
             width: 68px;
             height: 28px;
             line-height: 28px;
@@ -188,7 +215,43 @@
             color: rgba(130, 130, 151, 1);
             font-size: 12px;
             font-family: PingFangSC-Semibold;
-            margin-top: 12px;
+            margin-right: 8px;
+            vertical-align: bottom;
+        }
+        .orderHeaderRight .doubleJf {
+            display: inline-block;
+            width: 83px;
+            height: 28px;
+            line-height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .orderHeaderRight .doubleJf span {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            text-align: center;
+            line-height: 16px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            vertical-align: text-bottom;
+            margin-right: 4px;
+        }
+        .orderHeaderRight .doubleJf span.active {
+            background-color: rgba(65, 134, 220, 1);
+        }
+        .orderHeaderRight .doubleJf span.active i {
+            font-size: 12px;
+            color: #fff;
+        }
+        .orderHeaderRight .doubleJf span i {
+            font-size: 12px;
+            color: rgba(130, 130, 151, 1);
         }
 
         .kjHeader {
@@ -213,12 +276,20 @@
             margin-right: 32px;
             display: inline-block;
             box-sizing: border-box;
+            position: relative;
         }
 
         .kjLeft .kjItemTabs.active {
-            display: inline-block;
             color: rgba(57, 57, 83, 1);
-            border-bottom: 2px solid rgba(57, 57, 83, 1);
+        }
+        .kjLeft .kjItemTabs.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 78px;
+            height: 2px;
+            background-color: rgba(57, 57, 83, 1);
         }
 
         .kjRight {
@@ -235,7 +306,7 @@
             border-radius: 100px;
             position: relative;
             vertical-align: middle;
-            background-color: rgba(65, 134, 220, 1);
+            background-color: rgba(130, 130, 151, 0.5);
         }
 
         .kjBtn:after {
@@ -250,11 +321,21 @@
             left: 2px;
             bottom: 2px;
         }
+        .kjBtn.active {
+            background-color: rgba(65, 134, 220, 1);
+        }
+        .kjBtn.active:after {
+            right: 2px;
+            left: inherit;
+        }
 
         .kjBody {
-            padding: 10px;
             text-align: center;
             background-color: rgba(240, 240, 244, 1);
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 16px;
         }
 
         .conHead {
@@ -275,17 +356,569 @@
             height: 28px;
             line-height: 28px;
             border-radius: 2px;
+            background-color: rgba(230, 230, 237, 1);
+        }
+        .conHead .zdy.active {
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .conFooter {
+            margin-top: 10px;
+        }
+        .conUl li {
+            height: 28px;
+            float: left;
+            line-height: 28px;
+            text-align: center;
+            background-color: rgba(222, 222, 233, 1);
+            /*border: 1px solid rgba(236, 236, 244, 1);*/
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: Roboto-Medium;
+            padding: 0px 10px;
+            margin-right: 4px;
+        }
+        .conUl .active {
+            color: rgba(57, 57, 83, 1);
+            font-family: PingFangSC-Medium;
+            background-color: rgba(255, 255, 255, 1)
+        }
+        .conUl li input {
+            width: 87px;
+            height: 20px;
+            border-radius: 1px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(212, 212, 225, 1);
+            color: rgba(57, 57, 83, 1);
+        }
+        .conUl li i {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: Roboto-Medium;
+        }
+
+        .conLast {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 12px;
+            height: 36px;
+            line-height: 36px;
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+            overflow: hidden;
+            margin-bottom: 1px;
+        }
+        .conLeft {
+            float: left;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Medium;
+        }
+        .conRight {
+            float: right;
+            width: 68px;
+            line-height: 24px;
+            text-align: center;
+            border-radius: 2px;
+            color: #fff;
+            font-size: 12px;
+            margin-top: 6px;
+            /*vertical-align: middle;*/
+            background-color: rgba(65, 134, 220, 1);
+        }
+        .conTableUl {
+            overflow: hidden;
+        }
+        .conTableUl li {
+            width: 100%;
+            /*height: 288px;*/
+            /*overflow-x: scroll;*/
+            box-sizing: border-box;
+            padding: 0px 12px;
+            height: 36px;
+            line-height: 36px;
+            background-color: rgba(255, 255, 255, 1);
+            overflow: hidden;
+        }
+        .conTableUl .active {
+            position: relative;
+            box-shadow: 0px 0px 12px 2px rgba(240, 240, 244, 1);
+        }
+        .conTableUlLeft {
+            float: left;
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Medium;
+        }
+        .conTableUlLeft i {
+            color: rgba(130, 130, 151, 1);
+        }
+        .conTableUlRight {
+            float: right;
+        }
+        .setMing {
+            display: inline-block;
+            color: rgba(87, 184, 219, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Medium;
+            text-decoration: none;
+        }
+        .setReomve {
+            display: inline-block;
+            color: rgba(221, 91, 75, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Medium;
+            margin-left: 8px;
+            /*text-decoration: none;*/
+        }
+        .my-skin .layui-layer-btn .layui-layer-btn0 {
+            width: 68px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .kuaiJeiXiaoShou {
+            display: none;
+        }
+        .layui-layer.my-skin {
+            background-color: rgba(240, 240, 244, 1);
+        }
+        .znTuijain {
+            display: none;
+            width: 100%;
+            /*height: 36px;*/
+            /*line-height: 36px;*/
+            border-bottom: 1px solid rgba(229, 229, 229, 0.5);
             background-color: rgba(255, 255, 255, 1);
         }
 
-        .conHead .znt {
+        .addHead {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 8px 0px 16px;
+            height: 44px;
+            line-height: 44px;
+            background-color: rgba(255, 255, 255, 0);
+            box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+            overflow: hidden;
+        }
+        .addHeadLeft {
+            float: left;
+            color: rgba(57, 57, 83, 1);
+            font-size: 13px;
+            font-family: PingFangSC-Semibold;
+        }
+        .addHeadRight {
+            float: right;
+        }
+        .addHeadRight span {
             display: inline-block;
-            width: 88px;
+            width: 80px;
+            text-align: center;
+            line-height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .addHeadRight input {
+            width: 120px;
+            line-height: 28px;
+            border-radius: 2px;
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            padding-left: 8px;
+        }
+        .addHeadRight::-webkit-input-placeholder {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .addGoodsXin {
+            width: 100%;
+            /*height: 40px;*/
+            border-bottom: 0.5px solid #eee;
+            border-top: 1px solid #eee;
+            background-color: rgba(255, 255, 255, 1);
+            margin-bottom: 16px;
+        }
+        .addGoodsTable {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 16px;
+        }
+        .addGoodsXinZeng table thead tr:first-child {
+            background-color: rgba(244, 244, 248, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Medium;
+        }
+
+        .setJianMing {
+            display: inline-block;
+            width: 92px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(87, 184, 219, 1);
+            color: rgba(255, 255, 255, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .chooseGoods {
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(65, 134, 220, 1);
+            color: rgba(255, 255, 255, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            margin-left: 6px;
+        }
+        .my-skin1 .layui-layer-btn .layui-layer-btn0 {
+            width: 68px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        #setMingZi {
+            width: 208px;
+            height: 32px;
+            border-radius: 2px;
+            padding-left: 8px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+        }
+        #setMingZi::-webkit-input-placeholder {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .my-skin2 .layui-layer-content {
+            width: 100%;
+            text-align: center;
+        }
+        .my-skin2 .layui-layer-btn .layui-layer-btn0 {
+            width: 44px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(65, 134, 220, 1);
+            color: rgba(255, 255, 255, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .my-skin2 .layui-layer-btn .layui-layer-btn1 {
+            width: 44px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+        .addGoodsXinZeng {
+            display: none;
+        }
+
+        .chuZhi {
+            width: 80px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(240, 152, 63, 0.1);
+            border: 1px solid rgba(240, 152, 63, 0.1);
+            color: rgba(240, 152, 63, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            vertical-align: middle;
+        }
+        .hKaDuiHaun {
+            width: 68px;
             height: 28px;
             line-height: 28px;
             border-radius: 2px;
-            background-color: rgba(230, 230, 237, 1);
+            background-color: rgba(218, 105, 139, 0.1);
+            border: 1px solid rgba(218, 105, 139, 0.1);
+            color: rgba(218, 105, 139, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            vertical-align: middle;
+            margin-right: 8px;
         }
+
+        .cardDh {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: Roboto-Regular;
+            font-weight: normal;
+        }
+        .hCardUl li {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 16px;
+            line-height: 76px;
+            background-color: rgba(240, 240, 244, 0);
+            box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
+            overflow: hidden;
+            border-top: 0.5px solid #eee;
+        }
+        .hCardUlLeft {
+            float: left;
+            overflow: hidden;
+            line-height: 100%;
+            margin-top: 14px;
+        }
+        .hCardUlRight {
+            float: right;
+        }
+        .hCardImg {
+            float: left;
+            width: 48px;
+            height: 48px;
+            overflow: hidden;
+            border-radius: 2px;
+            object-fit: cover;
+        }
+        .hCardUlLeftR {
+            float: right;
+            margin-left: 14px;
+        }
+        .hCardUlLeftR div {
+            line-height: 18px;
+        }
+        .hCardUlLeftR div:first-child {
+            text-align: left;
+            margin-bottom: 3px;
+        }
+        .hCardUlLeftR div:last-child {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Regular;
+        }
+        .hCardUlLeftR div:last-child em {
+            color: rgba(57, 57, 83, 1);
+        }
+        .hCardUlRight span:first-child {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50%;
+            color: rgba(130, 130, 151, 1);
+            background-color: rgba(130, 130, 151, 0.1);
+        }
+        .hCardUlRight span.active {
+            background-color: rgba(65, 134, 220, 0.1);
+            color: rgba(65, 134, 220, 1);
+        }
+        .hCardUlRight span:last-child {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            font-size: 16px;
+            color: rgba(130, 130, 151, 1);
+            border-radius: 50%;
+            color: #fff;
+            background-color: rgba(65, 134, 220, 1);
+        }
+        .hCardUlRight span:nth-child(2) {
+            display: inline-block;
+            width: 18px;
+            line-height: 19px;
+            color: rgba(57, 57, 83, 1);
+            font-size: 16px;
+            font-family: Roboto-Regular;
+            border-bottom: 2px solid rgba(130, 130, 151, 0.2);
+        }
+        .input-itemFoot span:first-child {
+            display: inline-block;
+            height: 18px;
+            box-sizing: border-box;
+            padding: 0px 6px;
+            border-radius: 2px;
+            border: 1px solid rgba(130, 130, 151, 0.1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 11px;
+            font-family: PingFangSC-Semibold;
+        }
+        .input-itemFoot span:last-child {
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            font-family: Roboto-Medium;
+        }
+
+        .gouMaiGoods {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 20px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+
+        .goodsTypes {
+            display: inline-block;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Regular;
+            margin-right: 26px;
+        }
+        .line {
+            color: rgba(57, 57, 83, 1);
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .goodsname {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .dian {
+            flex-grow: 1;
+            height: 18px;
+            position: relative;
+            margin: 0 6px;
+        }
+
+        .dian::after {
+            content: '';
+            width: 100%;
+            height: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            border-bottom: 1px dashed rgba(57, 57, 83, 0.2);
+        }
+
+
+        .goodsprice {
+            color: rgba(130, 130, 151, 1);
+            font-size: 13px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .my-skin2 .layui-layer-title {
+            border-bottom: 1px solid #eee;
+        }
+        .goodsTime {
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            font-family: Roboto-Regular;
+        }
+        .lines {
+            text-align: left;
+            font-size: 13px;
+        }
+        .goodsTypes.g1 {
+            margin-right: 10px;
+        }
+
+
+        .mainContent {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 20px;
+        }
+        .taoCanDetail, .taoCanDetails {
+            text-align: left;
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Regular;
+            margin-bottom: 16px;
+            margin-top: 14px;
+        }
+        .taoCanDetails span {
+            display: inline-block;
+            margin-left: 39px;
+        }
+        .taoCanDetails .quan {
+            margin-left: 25px;
+        }
+
+        .rowsDetail {
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 21px;
+        }
+        .taoLeft {
+            float: left;
+        }
+        .addBotton {
+            float: right;
+            width: 38px;
+            line-height: 22px;
+            text-align: center;
+            border-radius: 2px;
+            border: 1px solid rgba(130, 130, 151, 0.2);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Medium;
+            background-color: #fff;
+        }
+        .addBotton.active {
+            color: #fff;
+            background-color: rgba(65, 134, 220, 1);
+        }
+        .addYuan {
+            width: 62px;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Regular;
+        }
+        .addLei {
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Regular;
+        }
+        .addTip {
+            display: inline-block;
+            width: 34px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 2px;
+            border: 1px solid rgba(130, 130, 151, 0.1);
+            color: rgba(130, 130, 151, 1);
+        }
+
     </style>
 </head>
 
@@ -458,7 +1091,10 @@
         <div class="titleBox clearfix">
             <h4>订单信息</h4>
             <div class="btnBox">
-                <button class="btn btn-recharge" onclick="rechargeCard()">储值卡充值</button>
+                <button class="tGoodsDetail" onclick="tGoodsToast()">套餐活动</button>
+                <button class="zGoodsDetail" onclick="zGoodsToast()">买赠活动</button>
+                <button class="hKaDuiHaun" onclick="hKHaun()">花卡兑换</button>
+                <button class="chuZhi" onclick="rechargeCard()">储值卡充值</button>
                 <button class="btn addRoutineCommodity" onclick="addPro(0)">添加常规商品</button>
                 <button class="btn addIntegralCommodity" onclick="addPro(1)">添加积分商品</button>
                 <button class="btn seeHistoryOrder" onclick="hisOrder()">历史订单记录</button>
@@ -518,12 +1154,21 @@
             </div>
             <div class="rightBox">
                 <div class="orderHeader">
-                    <input type="text" placeholder="输入条码">
-                    <span onclick="kjToast(this)">定制商品</span>
+                    <div class="orderHeaderLeft">
+                        <span>本次消费获得</span>
+                        <span><i class="iconfont icon-ico_fire_filled"></i>花卡 0 张</span>
+                        <span><i class="iconfont icon-ico_table"></i>积分 120</span>
+                    </div>
+                    <div class="orderHeaderRight">
+                        <span class="doubleJf"><span onclick="doubleJf(this)"><i class="iconfont icon-ico_check"></i></span>双倍积分</span>
+                        <span onclick="kjToast(this)">定制商品</span>
+                        <input type="text" placeholder="输入条码">
+                    </div>
+
                 </div>
                 <div id="orderForm">
                 </div>
-                <div class="recommendBtn"><i class="iconfont icon-ico_arrow_down"></i></div>
+                <div class="recommendBtn" onclick="tabChoose(this)"><i class="iconfont icon-ico_arrow_down"></i></div>
             </div>
         </div>
     </div>
@@ -533,8 +1178,6 @@
     <button class="btnSubmission" onclick="saveOrder(true)">提交订单</button>
     <button class="btnPreservation" onclick="saveOrder()">保存订单</button>
 </div>
-
-
 <!-- 弹窗结构 -->
 <div class="smallTicket h" id="printBox" style="display: none;"></div>
 <div id="salesOrder">
@@ -598,20 +1241,22 @@
                 <li class="input-item">
                     <input type="number" class="member-input" placeholder="充值金额" id="chuNum">
                 </li>
-                <!--
-                                <li class="input-item">
-                                    <form class="layui-form cckXK">
-                                        <div class="layui-form-item">
-                                            <div class="layui-input-block">
-                                                <input type="checkbox" value="本次活动期间，充3送1" name="like1[write]" lay-skin="primary"
-                                                       lay-filter="shop" title="本次活动期间，充3送1">
-                                                <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
-                                                    <span>本次活动期间，充3送1</span><i class="layui-icon layui-icon-ok"></i></div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </li>
-                -->
+                <li class="input-itemFoot">
+                    <span>赠优惠券</span>
+                    <span>满 200 减 20</span>
+                </li>
+                <!--<li class="input-item">
+                    <form class="layui-form cckXK">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="checkbox" value="满 200 减 20" name="like1[write]" lay-skin="primary"
+                                       lay-filter="shop" title="满 200 减 20">
+                                <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                                    <span>本次活动期间，充3送1</span><i class="layui-icon layui-icon-ok"></i></div>
+                            </div>
+                        </div>
+                    </form>
+                </li>-->
             </ul>
         </div>
     </div>
@@ -1295,22 +1940,238 @@
         </div>
         <div class="kjRight">
             快捷销售已开启
-            <span class="kjBtn"></span>
+            <span class="kjBtn" onclick="kjBtn(this)"></span>
         </div>
     </div>
     <div class="kjBody">
         <div class="conHead">
-            <span class="zdy">自定义推荐</span>
-            <span class="znt">智能推荐</span>
+            <span class="zdy active" onclick="conTui(this, 1)">自定义推荐</span>
+            <span class="zdy" onclick="conTui(this, 2)">智能推荐</span>
         </div>
-    </div>
-    <div class="conFooter">
-        <ul>
-            <li>默认推荐商品</li>
-            <li><i class="iconfont icon-ico_home"></i>用户设置推荐 1</li>
-            <li></li>
+        <div class="conFooter">
+            <ul class="conUl">
+                <li class="active">默认推荐商品</li>
+                <li><i class="iconfont icon-ico_home"></i>用户设置推荐 1 <i class="iconfont icon-ico_cross"></i></li>
+                <li><i class="iconfont icon-ico_home"></i>用户设置推荐 2 <i class="iconfont icon-ico_cross"></i></li>
+                <li><i class="iconfont icon-ico_home"></i><input type="text"> <i class="iconfont icon-ico_cross"></i></li>
+                <li><i class="iconfont icon-ico_plus"></i>添加分组</li>
+            </ul>
+        </div>
+        <ul class="tab-ul znTuijain">
+            <li onclick="chooseGoods(this)" class="active">镜片</li>
+            <li onclick="chooseGoods(this)">镜架</li>
+            <li onclick="chooseGoods(this)">隐形眼镜</li>
+            <li onclick="chooseGoods(this)">太阳镜</li>
+            <li onclick="chooseGoods(this)">护理产品</li>
+            <li onclick="chooseGoods(this)">其它商品</li>
+            <li onclick="chooseGoods(this)">特殊商品</li>
+        </ul>
+        <div class="conLast">
+            <div class="conLeft">
+                智能销售已开启
+                <span class="kjBtn" onclick="kjBtn(this)"></span>
+            </div>
+            <div class="conRight" onclick="addGoos()">新增商品</div>
+        </div>
+        <ul class="conTableUl">
+            <li>
+                <div class="conTableUlLeft">
+                    <i class="iconfont icon-ico_home"></i>
+                    HYDRON 海昌透明黑色单片年抛
+                </div>
+                <div class="conTableUlRight">
+                    <a class="setMing">设置简易名称</a>
+                    <a class="setReomve">移除</a>
+                </div>
+            </li><li>
+                <div class="conTableUlLeft">
+                    <i class="iconfont icon-ico_home"></i>
+                    HYDRON 海昌透明黑色单片年抛
+                </div>
+                <div class="conTableUlRight">
+                    <a class="setMing">设置简易名称</a>
+                    <a class="setReomve">移除</a>
+                </div>
+            </li>
+            <li class="active">
+                <div class="conTableUlLeft">
+                    <i class="iconfont icon-ico_home"></i>
+                    HYDRON 海昌透明黑色单片年抛
+                </div>
+                <div class="conTableUlRight">
+                    <a class="setMing">设置简易名称</a>
+                    <a class="setReomve">移除</a>
+                </div>
+            </li><li>
+                <div class="conTableUlLeft">
+                    <i class="iconfont icon-ico_home"></i>
+                    HYDRON 海昌透明黑色单片年抛
+                </div>
+                <div class="conTableUlRight">
+                    <a class="setMing">设置简易名称</a>
+                    <a class="setReomve">移除</a>
+                </div>
+            </li><li>
+                <div class="conTableUlLeft">
+                    <i class="iconfont icon-ico_home"></i>
+                    HYDRON 海昌透明黑色单片年抛
+                </div>
+                <div class="conTableUlRight">
+                    <a class="setMing">设置简易名称</a>
+                    <a class="setReomve">移除</a>
+                </div>
+            </li><li>
+                <div class="conTableUlLeft">
+                    <i class="iconfont icon-ico_home"></i>
+                    HYDRON 海昌透明黑色单片年抛
+                </div>
+                <div class="conTableUlRight">
+                    <a class="setMing">设置简易名称</a>
+                    <a class="setReomve">移除</a>
+                </div>
+            </li>
         </ul>
     </div>
+</div>
+<!--新增商品弹窗-->
+<div class="addGoodsXinZeng">
+    <div class="addHead">
+        <div class="addHeadLeft">新增商品</div>
+        <div class="addHeadRight">
+            <span>商品名称<i class="iconfont icon-ico_arrow_down"></i></span>
+            <input type="text" placeholder="搜索商品名称">
+        </div>
+    </div>
+    <ul class="tab-ul addGoodsXin">
+        <li onclick="addGoodsXin(this)" class="active">镜片</li>
+        <li onclick="addGoodsXin(this)">镜架</li>
+        <li onclick="addGoodsXin(this)">隐形眼镜</li>
+        <li onclick="addGoodsXin(this)">太阳镜</li>
+        <li onclick="addGoodsXin(this)">护理产品</li>
+        <li onclick="addGoodsXin(this)">其它商品</li>
+        <li onclick="addGoodsXin(this)">特殊商品</li>
+    </ul>
+    <div class="content addGoodsTable">
+        <table border="0" cellpadding="0" cellspacing="0" data-toggle="table"
+               class="addGoodsXinZeng table table-border" id="addGoodsXinZeng"></table>
+    </div>
+</div>
+<!-- 设置简易名称弹窗 -->
+<div class="card-pay" id="setJianMing">
+    <input type="text" placeholder="输入简易名称" id="setMingZi">
+</div>
+<!-- 花卡兑换弹窗 -->
+<div class="card-pay" id="hCardToast">
+    <ul class="hCardUl">
+        <li>
+            <div class="hCardUlLeft">
+                <div class="hCardImg"><img src="../resource/img/a1.jpg" alt=""></div>
+                <div class="hCardUlLeftR">
+                    <div>依视路镜片</div>
+                    <div>
+                        <span>花费花卡 <em>10</em>张</span>
+                        <span>可兑数量 <em>10</em>张</span>
+                        <span>当前库存 <em>10</em>张</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hCardUlRight">
+                <span>-</span>
+                <span>1</span>
+                <span><i class="iconfont icon-ico_plus"></i></span>
+            </div>
+        </li>
+        <li>
+            <div class="hCardUlLeft">
+                <div class="hCardImg"><img src="../resource/img/a1.jpg" alt=""></div>
+                <div class="hCardUlLeftR">
+                    <div>依视路镜片</div>
+                    <div>
+                        <span>花费花卡 <em>10</em>张</span>
+                        <span>可兑数量 <em>10</em>张</span>
+                        <span>当前库存 <em>10</em>张</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hCardUlRight">
+                <span class="active">-</span>
+                <span>2</span>
+                <span><i class="iconfont icon-ico_plus"></i></span>
+            </div>
+        </li>
+        <li>
+            <div class="hCardUlLeft">
+                <div class="hCardImg"><img src="../resource/img/a1.jpg" alt=""></div>
+                <div class="hCardUlLeftR">
+                    <div>依视路镜片</div>
+                    <div>
+                        <span>花费花卡 <em>10</em>张</span>
+                        <span>可兑数量 <em>10</em>张</span>
+                        <span>当前库存 <em>10</em>张</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hCardUlRight">
+                <span class="active">-</span>
+                <span>2</span>
+                <span><i class="iconfont icon-ico_plus"></i></span>
+            </div>
+        </li>
+    </ul>
+</div>
+<!-- 买赠活动弹窗 -->
+<div class="card-pay" id="zGoodsToasts">
+    <div class="gouMaiGoods">
+        <div class="line">
+            <div class="goodsTypes">购买</div>
+            <span class="goodsname ">明月镜片 2.0</span>
+            <span class="dian"></span>
+            <span class="goodsprice">x15</span>
+        </div>
+        <div class="line">
+            <div class="goodsTypes">赠送</div>
+            <span class="goodsname ">暴龙镜架金属框</span>
+            <span class="dian"></span>
+            <span class="goodsprice">x15</span>
+        </div>
+        <div class="lines">
+            <div class="goodsTypes g1">有效期</div>
+            <span class="goodsTime">2019.08.29 - 2020.08.29</span>
+        </div>
+    </div>
+</div>
+<!-- 套餐活动弹窗 -->
+<div class="card-pay" id="tGoodsToasts">
+    <div class="mainContent">
+        <div class="taoCanDetail">套餐详情</div>
+        <div class="rowsDetail">
+            <div class="taoLeft">
+                <span class="addYuan">加10元，送</span>
+                <span class="addLei">暴龙镜架金属镜片</span>
+                <span class="addTip">定制</span>
+            </div>
+            <span class="addBotton active">添加</span>
+        </div>
+        <div class="rowsDetail">
+            <div class="taoLeft">
+                <span class="addYuan">加10元，送</span>
+                <span class="addLei">暴龙镜架金属镜片</span>
+                <span class="addTip">定制</span>
+            </div>
+            <span class="addBotton active">添加</span>
+        </div>
+        <div class="rowsDetail">
+            <div class="taoLeft">
+                <span class="addYuan">加10元，送</span>
+                <span class="addLei">暴龙镜架金属镜片</span>
+                <span class="addTip">定制</span>
+            </div>
+            <span class="addBotton">移除</span>
+        </div>
+        <div class="taoCanDetails">赠品 <span>-</span></div>
+        <div class="taoCanDetails">优惠券 <span class="quan">满 200 减 20</span></div>
+    </div>
+
 </div>
 <!--全局js-->
 <!-- jq库 -->
@@ -3608,7 +4469,7 @@
             title: '储值卡充值',
             skin: 'layer-recharge',
             anim: 0,
-            area: ['240px', '150px'],
+            area: ['240px', '170px'],
             closeBtn: 0,
             resize: false,
             shadeClose: true,
@@ -5099,8 +5960,8 @@
         var title = '';
         var index5 = layer.open({
             type: 1,
-            skin: 'layui-layer-demo', //样式类名
-            area: ['720px', '400px'],
+            skin: 'layui-layer-demo, my-skin', //样式类名
+            area: ['720px', '540px'],
             anim: 0,
             closeBtn: 0,
             title: '',
@@ -5110,7 +5971,7 @@
             content: $('.kuaiJeiXiaoShou'),
             resize: false,
             btn: '关闭窗口',
-            move: $('.kuaiJeiXiaoShou'),
+            // move: $('.kuaiJeiXiaoShou'),
             yes: function (index) {
                 layer.close(index)
             },
@@ -5119,6 +5980,198 @@
             },
         });
     }
+    /**添加商品*/
+    function addGoos() {
+        var index = layer.open({
+            type: 1,
+            skin: 'layui-layer-demo my-skin1', //样式类名
+            area: ['720px', '600px'],
+            anim: 0,
+            closeBtn: 0,
+            title: '',
+            shade: 0.1,
+            shadeClose: true, //开启遮罩关闭
+            scrollbar: false,
+            content: $('.addGoodsXinZeng'),
+            resize: false,
+            btn: '关闭窗口',
+            yes: function (index) {
+                layer.close(index)
+            },
+            success: function (layero) {
+                rederAddGoods();
+            },
+        });
+
+        function rederAddGoods() {
+            var data = [
+                {goodsName: "商品原始生成名称",jianName: "商品简易名称"},
+                {goodsName: "商品原始生成名称",jianName: "商品简易名称"},
+                {goodsName: "商品原始生成名称",jianName: "商品简易名称"},
+                {goodsName: "商品原始生成名称",jianName: "商品简易名称"},
+                {goodsName: "商品原始生成名称",jianName: "商品简易名称"}
+            ];
+            $("#addGoodsXinZeng").bootstrapTable('destroy');
+            $("#addGoodsXinZeng").bootstrapTable({
+                data: data,                 //被加载的数据。
+                classes: "table",
+                pagination: true,            //是否显示分页
+                pageNumber: 1,               //初始化加载第一页，默认第一页
+                pageSize: 10,
+                pageList: [5, 10, 15, 20],
+                sortable: false,
+                sortOrder: "asc",
+                showColumns: true,
+                strictSearch: true,
+                locale: "zh-CN",
+                paginationHAlign: "center",
+                clickToSelect: true,
+                columns: [
+                    {field: "goodsName", title: "商品名称", align: "left", valign: "middle"},
+                    {field: "jianName", title: "简易名称", align: "left", valign: "middle"},
+                    {
+                        field: "btn", title: "操作", align: "left", valign: "middle", formatter: function () {
+                            return '<div class="setJianMing" onclick="setJian(this)">设置简易名称</div>' + '<div class="chooseGoods">选择</div>'
+                        }
+                    }
+                ],
+                success: function () {
+
+                }
+            });
+
+        }
+    }
+    //设置简易名称弹窗
+    function setJian() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '设置简易名称',
+            skin: 'layer-recharge my-skin2',
+            anim: 0,
+            area: ['240px', '132px'],
+            closeBtn: 0,
+            resize: false,
+            shadeClose: true,
+            content: $('#setJianMing'),
+            btn: ['保存', '取消'],
+            yes: function (index, layero) {
+                layer.close(index)
+            },
+            btn2: function (index, layero) {
+            },
+            success: function (layero, index) {
+
+            }
+
+        });
+    }
+    //花卡兑换弹窗
+    function hKHaun() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '花卡兑换' + '<span class="cardDh">当前拥有花卡 10 张</span>',
+            skin: 'layer-recharge my-skin2',
+            anim: 0,
+            area: ['480px', '320px'],
+            closeBtn: 0,
+            resize: false,
+            shadeClose: true,
+            content: $('#hCardToast'),
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                layer.close(index)
+            },
+            btn2: function (index, layero) {
+            },
+            success: function (layero, index) {
+
+            }
+
+        });
+    }
+    //智能推荐、自定义推荐切换
+    function conTui(_this, index) {
+        $(_this).addClass('active').siblings().removeClass('active');
+        if(index == 1) {
+            $('.conFooter').show();
+            $('.znTuijain').hide();
+        }else if(index == 2){
+            $('.conFooter').hide();
+            $('.znTuijain').show();
+        }
+    }
+    //tab切换
+    function chooseGoods(_this) {
+        $(_this).addClass('active').siblings().removeClass('active');
+    }
+
+    //新增商品弹窗的tab切换
+    function addGoodsXin(_this) {
+        $(_this).addClass('active').siblings().removeClass('active')
+    }
+    //快捷销售、app销售切换
+    function kjItemTabs(_this) {
+        $(_this).addClass('active').siblings().removeClass('active')
+    }
+    //快捷销售按钮
+    function kjBtn(_this) {
+        $(_this).toggleClass('active')
+    }
+    //圆形下拉按钮
+    function tabChoose(_this) {
+        $(_this).children().toggleClass('icon-ico_arrow_down').toggleClass('icon-ico_arrow_up')
+        $('.recommendGoods').slideToggle();
+    }
+    //选择双倍积分
+    function doubleJf(_this) {
+        $(_this).toggleClass('active');
+    }
+    
+    function zGoodsToast() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '买明月镜片送暴龙镜架',
+            skin: 'layer-recharge my-skin2',
+            anim: 0,
+            area: ['325px', '188px'],
+            closeBtn: 0,
+            resize: false,
+            shadeClose: true,
+            content: $('#zGoodsToasts')
+        });
+    }
+    function tGoodsToast() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '套餐活动' + '<span class="cardDh">活动商品：明月隐形眼镜 1.40</span>',
+            skin: 'layer-recharge my-skin2',
+            anim: 0,
+            area: ['325px', '330px'],
+            closeBtn: 0,
+            resize: false,
+            shadeClose: true,
+            content: $('#tGoodsToasts'),
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                layer.close(index)
+            },
+            btn2: function (index, layero) {
+            },
+            success: function (layero, index) {
+
+            }
+
+        });
+    }
+
+
+
+
 </script>
 </body>
 
