@@ -2,6 +2,7 @@ package com.store.system.service;
 
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.store.system.client.ClientLeave;
+import com.store.system.model.User;
 import com.store.system.model.attendance.Leave;
 import com.store.system.model.attendance.WorkOverTime;
 
@@ -44,4 +45,22 @@ public interface LeaveService {
      * @throws Exception
      */
     public boolean nopass(long id, String reason)throws Exception;
+
+    /**
+     * 获取全部请假列表
+     * @param pager
+     * @param type
+     * @param endTime
+     * @param startTime
+     * @return
+     */
+    public Pager getList(Pager pager, int type, long endTime, long startTime,User user)throws Exception;
+
+    /**
+     * 编辑请假信息
+     * @param leave
+     * @return
+     * @throws Exception
+     */
+    public Boolean update(Leave leave,User user)throws Exception;
 }
