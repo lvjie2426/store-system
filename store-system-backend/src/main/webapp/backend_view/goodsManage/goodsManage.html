@@ -1008,19 +1008,19 @@
             {checkbox: true, valign:"middle"},
             {field: "brandName", title: "品牌", valign:"middle"},
             {field: "seriesName", title: "系列", valign:"middle"},
-            /*{field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
+            {field: "", title: "实际·挂起", valign:"middle",formatter: function (value, row, index) {
                     return '100·2';
                 }
-            },*/
+            },
             {field: "canUseNum", title: "可用数量", valign:"middle"},
-            /*{field: "", title: "零售价", valign:"middle",formatter: function (value, row, index) {
+            {field: "", title: "零售价", valign:"middle",formatter: function (value, row, index) {
                     return '￥10';
                 }
             },
             {field: "", title: "成本价", valign:"middle",formatter: function (value, row, index) {
                     return '￥10';
                 }
-            },*/
+            },
             {field: "", title: "提成", valign:"middle",formatter: function (value, row, index) {
                     return '<span class="goods-ticheng">团</span>';
                 }
@@ -1038,9 +1038,9 @@
                 }
             },
             {field: "", title: "操作", valign:"middle",formatter: function (value, row, index) {
-                    /*return '<button class="btn btn-primary" type="button" onclick="openNumInfo()" style="margin-right: 8px;">库存详情</button>' +
-                        '<button class="btn btn-info" type="button" onclick="updateGoods('+row.id+')">编辑</button>';*/
-                    return '<button class="btn btn-info" type="button" onclick="updateGoods('+row.id+')">编辑</button>';
+                    return '<button class="btn btn-primary" type="button" onclick="updateGoods('+row.id+')" style="margin-right: 8px;">库存详情</button>' +
+                        '<button class="btn btn-info" type="button" onclick="updateGoods('+row.id+')">编辑</button>';
+                    // return '<button class="btn btn-info" type="button" onclick="updateGoods('+row.id+')">编辑</button>';
                 }
             }
         ];

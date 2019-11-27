@@ -243,6 +243,14 @@ public class ProductServiceImpl implements ProductService {
 //        int count = productSPUDao.getCount(productSPU.getSubid(), productSPU.getPid(),
 //                productSPU.getCid(), productSPU.getBid(), productSPU.getSid());
 //        if(count==0) {
+        if(productSPU.getCid()==3){
+            //补充证明为医疗器械
+            productSPU.setType(ProductSPU.type_devices);
+            productSPU.setCheckStatus(ProductSPU.checkStatus_no);
+            productSPU.setNirNum(productSPU.getNirNum());
+            productSPU.setNirNumDate(productSPU.getNirNumDate());
+            productSPU.setNirImg(productSPU.getNirImg());
+        }
         productSPU.setNowRemind(productSPU.getNowRemind());
         productSPU.setTotalRemind(productSPU.getTotalRemind());
         productSPU.setUnderRemind(productSPU.getUnderRemind());
@@ -717,15 +725,9 @@ public class ProductServiceImpl implements ProductService {
         String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore + " and subid = " + subid;
         String limit = " limit %d , %d ";
 
-        sql = sql + " and type=" + ProductSPU.type_devices;
-        sqlCount = sqlCount + " and type=" + ProductSPU.type_devices;
+        sql = sql + " and cid=3 and type=" + ProductSPU.type_common;
+        sqlCount = sqlCount + " and cid=3 and type=" + ProductSPU.type_common;
 
-        sql = sql + " and (nirNum=''";
-        sqlCount = sqlCount + " and (nirNum=''";
-        sql = sql + " or nirNumDate=0";
-        sqlCount = sqlCount + " or nirNumDate=0";
-        sql = sql + " or nirImg='[]')";
-        sqlCount = sqlCount + " or nirImg='[]')";
 
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
@@ -867,9 +869,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Pager getELSPUBackPager(Pager pager, long subid, long startTime, long endTime, long psid) throws Exception {
-
-        String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore +" and cid in (3,5)";
-        String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore+" and cid in (3,5)";
+        //查询隐形眼镜补充完著准号的
+        String sql = "SELECT * FROM `product_spu` where `status` = " + ProductSPU.status_nomore +" and cid=3 and type=1";
+        String sqlCount = "SELECT COUNT(id) FROM `product_spu` where `status` = " + ProductSPU.status_nomore+" and cid=3 and type=1";
         String limit = " limit %d , %d ";
 
         if (subid > 0) {
