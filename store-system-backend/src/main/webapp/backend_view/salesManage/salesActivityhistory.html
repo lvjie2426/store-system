@@ -250,6 +250,211 @@
             display: inline-block;
             float: none;
         }
+        /* 积花营销 设置布局 */
+        /* 646测试高度 */
+        
+        .setting_box {
+            width: 100%;
+            padding: 12px 12px 38px;
+            background: #ECECF3;
+        }
+        
+        .set_l,
+        .set_r {
+            border-radius: 3px;
+        }
+        
+        .item_hd .titleBox {
+            width: 100%;
+            padding: 17px 8px 15px 20px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #ECECF4;
+        }
+        
+        .set_l .item_hd .titleBox {
+            border: none;
+        }
+        
+        .item_hd .item-tab-ul {
+            display: flex;
+            padding: 0 20px;
+            justify-content: space-between;
+            height: 52px;
+            background: #fff;
+        }
+        
+        .item-tab-ul li {
+            height: 28px;
+            line-height: 20px;
+            margin-right: 5px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border: none;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-weight: 600;
+            text-align: left;
+            font-family: PingFangSC-Semibold;
+        }
+        
+        .item-tab-ul .active {
+            color: rgba(57, 57, 83, 1);
+            border-bottom: 2px solid #393953;
+            font-weight: 600;
+        }
+        
+        .tabbox {
+            overflow: hidden;
+            border-top: 1px solid #EDEDF5;
+        }
+        
+        .tabbox .tab_shopType {
+            box-sizing: border-box;
+            float: left;
+            padding-left: 20px;
+            display: table;
+            width: 50%;
+            height: 44px;
+            border-right: 1px solid #F1F1F7;
+        }
+        
+        .tab_shopType span {
+            vertical-align: middle;
+            margin-left: 4px;
+            line-height: 44px;
+        }
+        
+        .tab_shopType label {
+            margin: 0px;
+        }
+        
+        .tab_shopType .ckbox {
+            display: none;
+        }
+        
+        .tab_shopType .ckbox+label {
+            width: 16px;
+            height: 16px;
+            margin: 0px;
+            display: inline-block;
+            text-align: center;
+            vertical-align: bottom;
+            line-height: 44px;
+            vertical-align: middle;
+            border-radius: 0px;
+            border: 1px solid #d3d3d3;
+        }
+        
+        .tab_shopType .ckbox:checked+label {
+            background: #2783FB;
+            line-height: 13px;
+        }
+        
+        .tab_shopType .ckbox:checked+label::after {
+            content: '\2714';
+            font-size: 8px;
+            color: #fff;
+        }
+        
+        .tab_shopType .ckbox:checked {
+            background: #4186DC;
+        }
+        
+        .tabbox .tab_shopType:nth-child(2) {
+            border-right: none;
+        }
+        
+        .item-lst {
+            border-bottom: 1px solid #EDEDF5;
+        }
+        
+        .item-lst .item-lst-t {
+            height: 48px;
+            line-height: 48px;
+            border-top: 1px solid #EBEBEE;
+            background: #F9F9FB;
+        }
+        
+        .item-lst-con {
+            border-top: 1px solid #EBEBEE;
+            padding: 14px 20px;
+            line-height: 20px;
+            background: #F4F4F7;
+        }
+        
+        .item-lst-t p {
+            float: left;
+            margin-left: 20px;
+        }
+        
+        .item-lst-t p i {
+            vertical-align: middle;
+        }
+        
+        .item-lst-t p:nth-child(2) {
+            float: right;
+            margin-left: 0;
+            margin-right: 20px;
+            color: #9393A6;
+        }
+        
+        .titleBox>i {
+            vertical-align: text-top;
+            display: inline-block;
+            height: 20px;
+            width: 20px;
+            line-height: 20px;
+            border-radius: 2px;
+            font-size: 10px;
+            color: #fff;
+            text-align: center;
+            background: #DC7292;
+        }
+        
+        .set_r .titleBox>i {
+            background: #4186DC;
+        }
+        
+        .titleBox h3 {
+            display: inline-block;
+            vertical-align: middle;
+            font-family: PingFangSC-Regular;
+            margin: 0 5px;
+            font-size: 14px;
+            line-height: 20px;
+        }
+        
+        .titleBox .tips {
+            display: inline-block;
+            vertical-align: middle;
+            color: #AFAFBD;
+            font-size: 14px;
+            line-height: 20px;
+        }
+        
+        @media screen and (min-width:780px) {
+            .set_l {
+                float: left;
+                width: 45%;
+            }
+            .set_l .item_set {
+                margin-right: 12px;
+                background: #fff;
+                /* height: 646px; */
+            }
+            .set_r {
+                float: right;
+                width: 55%;
+                height: 646px;
+                background: #fff;
+            }
+        }
+        
+        .item_set,
+        .set_r {
+            border: 1px solid #DEDEE6;
+        }
     </style>
 </head>
 
@@ -546,7 +751,6 @@
                             </div>
                         </li>
                     </ol>
-
                     <div class="bootstrap-table">
                         <div class="fixed-table-toolbar">
                             <div class="columns columns-right btn-group pull-right">
@@ -623,7 +827,105 @@
                 </div>
             </li>
             <li class="tab-item first">
-                积花营销
+                <!-- 积花营销 -->
+                <div class="setting_box clearfix">
+                    <div class="set_l">
+                        <div class="item_set">
+                            <div class="item_hd">
+                                <div class="titleBox"><i class="iconfont icon-ico_flower"></i>
+                                    <h3>花卡获得条件</h3>
+                                </div>
+                                <ul class="item-tab-ul clear">
+                                    <li class="active" onclick="">镜片</li>
+                                    <li onclick="" class="">镜架</li>
+                                    <li>隐形眼镜</li>
+                                    <li>太阳镜</li>
+                                    <li>护理产品</li>
+                                    <li>其它商品</li>
+                                </ul>
+                                <div class="tabbox">
+                                    <div class="tab_shopType ">
+                                        <div class="tab_set">
+                                            <input type="checkbox" class="ckbox" id="shop1">
+                                            <label for="shop1">
+                                            </label>
+                                            <span>针对该品类进行设置</span>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="tab_shopType ">
+                                        <div class="tab_set">
+                                            <input type="checkbox" class="ckbox" id="shop2">
+                                            <label for="shop2">
+                                            </label>
+                                            <span>对不同商品进行设置</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item_bd">
+                                <div class="item-lst">
+                                    <div class="item-lst-t">
+                                        <p>明月镜片旗下新品牌 A 系列</p>
+                                        <p><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
+                                    </div>
+                                    <div class="item-lst-con">
+                                        <div>
+                                            消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-lst">
+                                    <div class="item-lst-t">
+                                        <p>明月镜片旗下新品牌 A 系列</p>
+                                        <p><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
+                                    </div>
+                                    <div class="item-lst-con">
+                                        <div>
+                                            消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-lst">
+                                    <div class="item-lst-t">
+                                        <p>明月镜片旗下新品牌 A 系列</p>
+                                        <p><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
+                                    </div>
+                                    <div class="item-lst-con">
+                                        <div>
+                                            消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-lst">
+                                    <div class="item-lst-t">
+                                        <p>明月镜片旗下新品牌 A 系列</p>
+                                        <p><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
+                                    </div>
+                                    <div class="item-lst-con">
+                                        <div>
+                                            消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="set_r">
+                        <div class="item_set">
+                            <div class="item_hd">
+                                <div class="titleBox"><i class="iconfont icon-ico_home_filled"></i>
+                                    <h3>兑换的商品</h3>
+                                    <span class="tips">最多设置 8 个</span>
+                                </div>
+                            </div>
+                            <div class="item_bd"></div>
+                        </div>
+                    </div>
+                </div>
+
+
             </li>
             <li class="tab-item first">
                 买赠活动
