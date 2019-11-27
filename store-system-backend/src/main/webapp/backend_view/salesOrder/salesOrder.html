@@ -50,14 +50,248 @@
         .dwbw.dwb-n {
             display: none;
         }
+
         .orderProvisional .select-box-header span {
             max-width: 94%;
+        }
+
+
+        /*新增*/
+        .contentBox {
+            position: relative;
+        }
+
+        .recommendBtn {
+            position: absolute;
+            right: 22px;
+            bottom: 165px;
+            width: 28px;
+            text-align: center;
+            height: 28px;
+            line-height: 28px;
+            vertical-align: middle;
+            border-radius: 50%;
+            background-color: rgba(65, 134, 220, 1);
+        }
+
+        .recommendBtn i {
+            font-size: 17px;
+            color: #fff;
+        }
+
+        .recommendGoods {
+            width: 100%;
+            position: relative;
+            margin-bottom: 18px;
+            box-shadow: 0px 1px 10px 10px rgba(130, 130, 151, 0.1);
+        }
+
+        .recommendGoods .recommendHead {
+            width: 100%;
+            line-height: 32px;
+            border-radius: 2px;
+            padding-left: 10px;
+            color: #fff;
+            font-size: 12px;
+            text-align: left;
+            background-color: rgba(65, 134, 220, 1);
+        }
+
+        .recommendGoods .recommendHead span {
+            margin-right: 20px;
+        }
+
+        .recommendGoods .recommendHead span:first-child {
+            font-weight: 600;
+        }
+
+        .recommendGoods .recommendFoot .recommendUls {
+            width: 100%;
+            display: flex;
+            flex-flow: row nowrap;
+            overflow-x: scroll;
+        }
+
+        .recommendGoods .recommendFoot .recommendUls li {
+            flex: 0 0 144px;
+            float: left;
+            width: 144px;
+            height: 54px;
+            border-radius: 1px;
+            text-align: center;
+            font-size: 12px;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            border: 0.5px solid #eee;
+            border-right: 0px;
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 1px 0px 0px 0px rgba(221, 91, 75, 0.1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: Roboto-Regular;
+        }
+
+        .recommendGoods .recommendFoot .recommendUls li:last-child {
+            border-right: 0.5px solid #eee;
+        }
+
+        .recommendUls.hideScroll::-webkit-scrollbar {
+            display: none
+        }
+
+        .recommendTip {
+            position: absolute;
+            right: 0px;
+            bottom: 13px;
+            width: 16px;
+            line-height: 28px;
+            text-align: center;
+            color: #fff;
+            border-radius: 1px;
+            font-size: 12px;
+            background-color: rgba(65, 134, 220, 1);
+            box-shadow: -24px 0px 10px 10px rgba(255, 255, 255, 0.4);
+        }
+
+        .orderHeader {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .orderHeader input {
+            float: left;
+            width: 184px;
+            height: 28px;
+            line-height: 28px;
+            padding-left: 8px;
+            border-radius: 2px;
+            margin-top: 12px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+        }
+
+        .orderHeader::-webkit-input-placeholder {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+
+        .orderHeader span {
+            float: right;
+            width: 68px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            margin-top: 12px;
+        }
+
+        .kjHeader {
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            box-sizing: border-box;
+            padding: 0px 16px;
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 0px 1px 0px 0px rgba(228, 228, 241, 1);
+            overflow: hidden;
+        }
+
+        .kjLeft {
+            float: left;
+            color: rgba(130, 130, 151, 1);
+            font-size: 13px;
+            font-family: PingFangSC-Semibold;
+        }
+
+        .kjLeft .kjItemTabs {
+            margin-right: 32px;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+
+        .kjLeft .kjItemTabs.active {
+            display: inline-block;
+            color: rgba(57, 57, 83, 1);
+            border-bottom: 2px solid rgba(57, 57, 83, 1);
+        }
+
+        .kjRight {
+            float: right;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Medium;
+        }
+
+        .kjBtn {
+            display: inline-block;
+            width: 24px;
+            height: 16px;
+            border-radius: 100px;
+            position: relative;
+            vertical-align: middle;
+            background-color: rgba(65, 134, 220, 1);
+        }
+
+        .kjBtn:after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 100px;
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            bottom: 2px;
+        }
+
+        .kjBody {
+            padding: 10px;
+            text-align: center;
+            background-color: rgba(240, 240, 244, 1);
+        }
+
+        .conHead {
+            width: 188px;
+            height: 36px;
+            margin: 0px 256px;
+            line-height: 36px;
+            box-sizing: border-box;
+            padding: 0px 4px;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(230, 230, 237, 1);
+        }
+
+        .conHead .zdy {
+            display: inline-block;
+            width: 88px;
+            height: 28px;
+            line-height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .conHead .znt {
+            display: inline-block;
+            width: 88px;
+            height: 28px;
+            line-height: 28px;
+            border-radius: 2px;
+            background-color: rgba(230, 230, 237, 1);
         }
     </style>
 </head>
 
-<body>
 <!-- 当前页面头部 -->
+<body>
+
 <div class="headerBox clearfix">
     <i class="ruku" style=""></i>
     <h3>销售开单</h3>
@@ -227,7 +461,7 @@
                 <button class="btn btn-recharge" onclick="rechargeCard()">储值卡充值</button>
                 <button class="btn addRoutineCommodity" onclick="addPro(0)">添加常规商品</button>
                 <button class="btn addIntegralCommodity" onclick="addPro(1)">添加积分商品</button>
-                <!--<button class="btn seeHistoryOrder" onclick="hisOrder()">历史订单记录</button>-->
+                <button class="btn seeHistoryOrder" onclick="hisOrder()">历史订单记录</button>
             </div>
         </div>
         <div class="contentBox clearfix">
@@ -264,7 +498,7 @@
                     </div>
                     <div class="selectBox" id="costAdditional">
                     </div>
-                    <input type="number" class="moneyNum" id="extraCharges" placeholder="金额" readonly="readonly" >
+                    <input type="number" class="moneyNum" id="extraCharges" placeholder="金额" readonly="readonly">
                     <button class="addOrder" style="padding: 7px 10px;" onclick="addExtra()">添加</button>
                 </div>
                 <div class="promotionBox mt15">
@@ -282,7 +516,14 @@
                 <h4 class="mt15">订单备注</h4>
                 <textarea name="备注" id="optometryRemarks2" cols="30" rows="10" style="resize:none"></textarea>
             </div>
-            <div class="rightBox" id="orderForm">
+            <div class="rightBox">
+                <div class="orderHeader">
+                    <input type="text" placeholder="输入条码">
+                    <span onclick="kjToast(this)">定制商品</span>
+                </div>
+                <div id="orderForm">
+                </div>
+                <div class="recommendBtn"><i class="iconfont icon-ico_arrow_down"></i></div>
             </div>
         </div>
     </div>
@@ -357,20 +598,20 @@
                 <li class="input-item">
                     <input type="number" class="member-input" placeholder="充值金额" id="chuNum">
                 </li>
-<!--
-                <li class="input-item">
-                    <form class="layui-form cckXK">
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <input type="checkbox" value="本次活动期间，充3送1" name="like1[write]" lay-skin="primary"
-                                       lay-filter="shop" title="本次活动期间，充3送1">
-                                <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
-                                    <span>本次活动期间，充3送1</span><i class="layui-icon layui-icon-ok"></i></div>
-                            </div>
-                        </div>
-                    </form>
-                </li>
--->
+                <!--
+                                <li class="input-item">
+                                    <form class="layui-form cckXK">
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <input type="checkbox" value="本次活动期间，充3送1" name="like1[write]" lay-skin="primary"
+                                                       lay-filter="shop" title="本次活动期间，充3送1">
+                                                <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                                                    <span>本次活动期间，充3送1</span><i class="layui-icon layui-icon-ok"></i></div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </li>
+                -->
             </ul>
         </div>
     </div>
@@ -1045,6 +1286,32 @@
     </div>
 </div>
 
+<!-- 快捷销售设置弹窗 -->
+<div class="kuaiJeiXiaoShou">
+    <div class="kjHeader">
+        <div class="kjLeft">
+            <span class="kjItemTabs active" onclick="kjItemTabs(this)">后台快销设置</span>
+            <span class="kjItemTabs" onclick="kjItemTabs(this)">App快销设置</span>
+        </div>
+        <div class="kjRight">
+            快捷销售已开启
+            <span class="kjBtn"></span>
+        </div>
+    </div>
+    <div class="kjBody">
+        <div class="conHead">
+            <span class="zdy">自定义推荐</span>
+            <span class="znt">智能推荐</span>
+        </div>
+    </div>
+    <div class="conFooter">
+        <ul>
+            <li>默认推荐商品</li>
+            <li><i class="iconfont icon-ico_home"></i>用户设置推荐 1</li>
+            <li></li>
+        </ul>
+    </div>
+</div>
 <!--全局js-->
 <!-- jq库 -->
 <script src="../resource/js/jquery.min.js"></script>
@@ -1071,7 +1338,7 @@
 <!--临时订单列表-->
 <script type="text/html" id="proOrderData">
     <%for(var i=0; i < list.length;i++){%>
-        <li value='<%=list[i].id%>'><%=list[i].orderNo%><i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
+    <li value='<%=list[i].id%>'><%=list[i].orderNo%><i class="rem iconfont ico_circle_cross_fil">&#xe6aa;</i></li>
     <%}%>
 </script>
 <!--顾客手机号模糊搜索列表-->
@@ -1079,7 +1346,7 @@
     <%if(list.length>0){%>
     <ul>
         <%for(var i =0;i< list.length;i++){%>
-            <li onclick = 'showCus(<%=initobj(list[i])%>)' data-id="<%=list[i].phone%>"><%=list[i].phone%></li>
+        <li onclick='showCus(<%=initobj(list[i])%>)' data-id="<%=list[i].phone%>"><%=list[i].phone%></li>
         <%}%>
     </ul>
     <%}%>
@@ -1089,7 +1356,9 @@
     <ul>
         <%if(list.length>0){%>
         <%for(var i =0;i< list.length;i++){%>
-        <li onclick="renderReffer(this)" data-id="<%=list[i].id%>" data-tname="<%=list[i].tname%>" data-tphone="<%=list[i].tphone%>"><%=list[i].name%>·<%=list[i].phone%></li>
+        <li onclick="renderReffer(this)" data-id="<%=list[i].id%>" data-tname="<%=list[i].tname%>"
+            data-tphone="<%=list[i].tphone%>"><%=list[i].name%>·<%=list[i].phone%>
+        </li>
         <%}%>
         <%}%>
     </ul>
@@ -1100,11 +1369,13 @@
     <div class="fromInfo">
         <form class="layui-form" action="">
             <div class="search-select">
-                <input value="<%=list.phone%>" type="number" placeholder="顾客手机号" id="searchCusPhone" maxlength="11" autocomplete="off">
+                <input value="<%=list.phone%>" type="number" placeholder="顾客手机号" id="searchCusPhone" maxlength="11"
+                       autocomplete="off">
             </div>
             <div class="layui-form-item nameInput">
                 <div>
-                    <input value="<%=list.name%>" type="text" name="title" autocomplete="off" placeholder="姓名" id="cusInfoName">
+                    <input value="<%=list.name%>" type="text" name="title" autocomplete="off" placeholder="姓名"
+                           id="cusInfoName">
                 </div>
             </div>
             <div class="benderBox" id="cusInfoSex">
@@ -1132,7 +1403,8 @@
             </div>
             <div class="layui-form-item ageNum">
                 <div class="layui-input-block">
-                    <input id="autoAge" type="text" value="<%=list.age%>" name="title" lay-verify="title" autocomplete="off"
+                    <input id="autoAge" type="text" value="<%=list.age%>" name="title" lay-verify="title"
+                           autocomplete="off"
                            placeholder="年龄（自动）" class="layui-input">
                 </div>
             </div>
@@ -1169,7 +1441,8 @@
                 <span class="tuiJianRen">推荐人</span>
                 <div class="search-select">
                     <%if(list.tname&&list.tphone){%>
-                    <input value="<%=list.tname%>·<%=list.tphone%>" autocomplete="off" type="text" placeholder="搜索推荐人" class="layer-input" id="searchReferrer">
+                    <input value="<%=list.tname%>·<%=list.tphone%>" autocomplete="off" type="text" placeholder="搜索推荐人"
+                           class="layer-input" id="searchReferrer">
                     <%}else{%>
                     <input autocomplete="off" type="text" placeholder="搜索推荐人" class="layer-input" id="searchReferrer">
                     <%}%>
@@ -1183,91 +1456,91 @@
 <!--顾客信息_会员信息-->
 <script type="text/html" id="memberTmp">
     <%if(list.cardNumber){%>
-        <div class="memberInfo  noRegisterWx">
-            <%if(list.weixinId){%>
-            <span class="yiyanzheng">
+    <div class="memberInfo  noRegisterWx">
+        <%if(list.weixinId){%>
+        <span class="yiyanzheng">
                 <h4>会员信息</h4>
                 <span class="registerMember active">已验证</span>
                 <span class="wxNoBind active">已绑定微信</span>
             </span>
-            <%}else{%>
-            <span class="weiyanzheng">
+        <%}else{%>
+        <span class="weiyanzheng">
                 <h4>会员信息</h4>
                 <button class="btn btn-order registerMember" onclick="openVerify()">点击验证</button>
                 <span class="wxNoBind">未绑定微信</span>
             </span>
-            <%}%>
-            <div class="textInfoBox">
-                <div class="textInfo">
-                    <span class="mem-tag">卡号</span>
-                    <em class="member-text" id="memcard-num"><%=list.cardNumber%></em>
-                </div>
-                <div class="textInfo">
-                    <span class="mem-tag">等级</span>
-                    <em class="member-text" id="mem-grade"><%=list.member%></em>
-                </div>
-                <div class="textInfo">
-                    <span class="mem-tag">储值金额</span>
-                    <em class="member-text" id="mem-money"><%=list.money%></em>
-                </div>
-                <div class="textInfo">
-                    <span class="mem-tag">积分</span>
-                    <em class="member-text" id="mem-integral"><%=list.score%></em>
-                </div>
-                <div class="textInfo">
-                    <span class="mem-tag">上次消费</span>
-                    <em class="member-text" id="last-contime"><%=list.lastMoney%></em>
-                </div>
-                <div class="textInfo">
-                    <span class="mem-tag">消费次数</span>
-                    <em class="member-text" id="con-num"><%=list.payCount%></em>
-                </div>
-                <div class="textInfo">
-                    <span class="mem-tag">推荐人</span>
-                    <em class="mem-text" id="tname"><%=list.tname%></em> · <b id="tphone"><%=list.tphone%></b>
-                </div>
+        <%}%>
+        <div class="textInfoBox">
+            <div class="textInfo">
+                <span class="mem-tag">卡号</span>
+                <em class="member-text" id="memcard-num"><%=list.cardNumber%></em>
+            </div>
+            <div class="textInfo">
+                <span class="mem-tag">等级</span>
+                <em class="member-text" id="mem-grade"><%=list.member%></em>
+            </div>
+            <div class="textInfo">
+                <span class="mem-tag">储值金额</span>
+                <em class="member-text" id="mem-money"><%=list.money%></em>
+            </div>
+            <div class="textInfo">
+                <span class="mem-tag">积分</span>
+                <em class="member-text" id="mem-integral"><%=list.score%></em>
+            </div>
+            <div class="textInfo">
+                <span class="mem-tag">上次消费</span>
+                <em class="member-text" id="last-contime"><%=list.lastMoney%></em>
+            </div>
+            <div class="textInfo">
+                <span class="mem-tag">消费次数</span>
+                <em class="member-text" id="con-num"><%=list.payCount%></em>
+            </div>
+            <div class="textInfo">
+                <span class="mem-tag">推荐人</span>
+                <em class="mem-text" id="tname"><%=list.tname%></em> · <b id="tphone"><%=list.tphone%></b>
             </div>
         </div>
+    </div>
     <%}else{%>
-        <div class="memberInfo  noRegister" style="display: block;">
+    <div class="memberInfo  noRegister" style="display: block;">
         <h4>会员信息</h4>
         <button class="btn btn-order registerMember noRegisterZC" onclick="regMember()">手机验证</button>
         <div style="color: #828297;margin-top: 16px;">暂无</div>
-        </div>
+    </div>
     <%}%>
 </script>
 <!--验光信息表格-->
 <script type="text/html" id="ygTmp">
     <%if(list.defShow){%>
     <table border="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;" class="<%=className%>">
-    <%}else{%>
-    <table border="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;" class="<%=className%> hide">
-    <%}%>
-        <thead>
-        <tr>
-            <th></th>
-            <%for(var i=0; i < list.length;i++){%>
+        <%}else{%>
+        <table border="" cellpadding="1" cellspacing="0" style="width:100%;padding:5px;" class="<%=className%> hide">
+            <%}%>
+            <thead>
+            <tr>
+                <th></th>
+                <%for(var i=0; i < list.length;i++){%>
                 <th><%=list[i].name%></th>
-            <%}%>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th>R</th>
-            <%for(var i=0;i< list.length;i++){%>
-            <td><input data-attr1="rightResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入">
-            </td>
-            <%}%>
-        </tr>
-        <tr>
-            <th>L</th>
-            <%for(var i=0;i< list.length;i++){%>
-            <td><input data-attr1="leftResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入">
-            </td>
-            <%}%>
-        </tr>
-        </tbody>
-    </table>
+                <%}%>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>R</th>
+                <%for(var i=0;i< list.length;i++){%>
+                <td><input data-attr1="rightResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入">
+                </td>
+                <%}%>
+            </tr>
+            <tr>
+                <th>L</th>
+                <%for(var i=0;i< list.length;i++){%>
+                <td><input data-attr1="leftResItem" data-attr2="<%=list[i].value%>" type="number" placeholder="请输入">
+                </td>
+                <%}%>
+            </tr>
+            </tbody>
+        </table>
 </script>
 <!--验光记录tab-->
 <script type="text/html" id="tagDateList">
@@ -1291,24 +1564,25 @@
         <ul class="optionUL" style="overflow: hidden;" id="listExtraCharge">
             <li value="附加费用">附加费用</li>
             <%for(var i = 0; i < list.length; i++){%>
-                <li value="<%=list[i]%>"><%=list[i]%></li>
+            <li value="<%=list[i]%>"><%=list[i]%></li>
             <%}%>
         </ul>
     </div>
 </script>
 <!--订单信息表格-->
 <script type="text/html" id="orderFormList1">
+
     <div class="rightFormBox">
         <table width="100%" border="1">
             <thead>
-                <tr>
-                    <th>商品名称</th>
-                    <th>数量</th>
-                    <th>零售价</th>
-                    <th>会员折扣</th>
-                    <th>小计</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>商品名称</th>
+                <th>数量</th>
+                <th>零售价</th>
+                <th>会员折扣</th>
+                <th>小计</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody class="active">
             <!--type? 1=>金钱商品 1=>积分商品 3=>附加费用 4=>促销方式-->
@@ -1358,6 +1632,7 @@
             <%}%>
             </tbody>
         </table>
+
     </div>
     <div class="rightFooterBox clearfix">
         <%if(price){%>
@@ -1366,7 +1641,8 @@
             <div>折后金额 <span id="dicountPrice">¥<%=price.dicountPriceYuan%></span></div>
         </div>
         <div class="actualMoney">
-            <div id="chuzhi">储值卡金额<span> <b>¥</b> <input type="text" id="chuMoney" readonly="readonly" value="<%=rechargeAmount%>"></span></div>
+            <div id="chuzhi">储值卡金额<span> <b>¥</b> <input type="text" id="chuMoney" readonly="readonly"
+                                                         value="<%=rechargeAmount%>"></span></div>
             <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney" value="<%=price.dicountPriceYuan%>"></span></div>
             <div>折扣<i id="userDiscount"><%=price.userDiscount%></i></div>
         </div>
@@ -1376,7 +1652,8 @@
             <div>折后金额 <span id="dicountPrice">¥0</span></div>
         </div>
         <div class="actualMoney">
-            <div id="chuzhi" >储值卡金额<span> <b>¥</b> <input type="text" id="chuMoney" readonly="readonly" value="<%=rechargeAmount%>"></span></div>
+            <div id="chuzhi">储值卡金额<span> <b>¥</b> <input type="text" id="chuMoney" readonly="readonly"
+                                                         value="<%=rechargeAmount%>"></span></div>
             <div>实收金额<span> <b>¥</b> <input type="text" id="PaidMoney"></span></div>
             <div>折扣<i id="userDiscount">10.0</i></div>
         </div>
@@ -1389,35 +1666,39 @@
     <div class="rightFormBox">
         <table width="100%" border="1">
             <thead>
-                <tr>
-                    <th>商品名称</th>
-                    <th>数量</th>
-                    <th>零售价</th>
-                    <th>会员折扣</th>
-                    <th>小计</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>商品名称</th>
+                <th>数量</th>
+                <th>零售价</th>
+                <th>会员折扣</th>
+                <th>小计</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody class="active">
             <%for(var i = 0;i < list.skuidsList.length;i++){%>
-                <tr>
-                    <td>
-                        <div><%=list.skuidsList[i].code%></div>
-                    </td>
-                    <td class="goods-item">
-                        <a class="jian" onclick="addSub(2,<%=i%>)">-</a>
-                        <input class="goods-number" onchange="goodsNumChange(<%=i%>)" type="number" placeholder="数量" value="<%=list.skuidsList[i].num%>">
-                        <a class="jia" onclick="addSub(1,<%=i%>)">+</a>
-                    </td>
-                    <td>¥<%=(list.skuidsList[i].retailPrice/100).toFixed(2)%></td>
-                    <%if(list.skuidsList[i].discount > 0 && list.skuidsList[i].discount<10){%>
-                    <td><input type="number" placeholder="<%=list.skuidsList[i].discount%>" value="<%=list.skuidsList[i].discount%>" class="goods-discount" onchange="goodsDiscountChange(<%=i%>)"></td>
-                    <%}else{%>
-                    <td><input type="number" placeholder="10.0" value="10.0" class="goods-discount" onchange="goodsDiscountChange(<%=i%>)"></td>
-                    <%}%>
-                    <td>¥ <%=(list.skuidsList[i].subtotal/100).toFixed(2)%></td>
-                    <td><u onclick="removeItem(3,<%=i%>)">移除</u></td>
-                </tr>
+            <tr>
+                <td>
+                    <div><%=list.skuidsList[i].code%></div>
+                </td>
+                <td class="goods-item">
+                    <a class="jian" onclick="addSub(2,<%=i%>)">-</a>
+                    <input class="goods-number" onchange="goodsNumChange(<%=i%>)" type="number" placeholder="数量"
+                           value="<%=list.skuidsList[i].num%>">
+                    <a class="jia" onclick="addSub(1,<%=i%>)">+</a>
+                </td>
+                <td>¥<%=(list.skuidsList[i].retailPrice/100).toFixed(2)%></td>
+                <%if(list.skuidsList[i].discount > 0 && list.skuidsList[i].discount<10){%>
+                <td><input type="number" placeholder="<%=list.skuidsList[i].discount%>"
+                           value="<%=list.skuidsList[i].discount%>" class="goods-discount"
+                           onchange="goodsDiscountChange(<%=i%>)"></td>
+                <%}else{%>
+                <td><input type="number" placeholder="10.0" value="10.0" class="goods-discount"
+                           onchange="goodsDiscountChange(<%=i%>)"></td>
+                <%}%>
+                <td>¥ <%=(list.skuidsList[i].subtotal/100).toFixed(2)%></td>
+                <td><u onclick="removeItem(3,<%=i%>)">移除</u></td>
+            </tr>
             <%}%>
             <%for(var i=0;i< list.valueCard.length;i++){%>
             <tr class="discount">
@@ -1429,22 +1710,22 @@
             </tr>
             <%}%>
             <%for(var i=0;i< list.surchargesJson.length;i++){%>
-                <tr class="discount">
-                    <td>
-                        <div><%=list.surchargesJson[i].name%></div>
-                    </td>
-                    <td>¥ <%=(list.surchargesJson[i].price/100).toFixed(2)%></td>
-                    <td><u onclick="removeItem(1,<%=i%>)">移除</u></td>
-                </tr>
+            <tr class="discount">
+                <td>
+                    <div><%=list.surchargesJson[i].name%></div>
+                </td>
+                <td>¥ <%=(list.surchargesJson[i].price/100).toFixed(2)%></td>
+                <td><u onclick="removeItem(1,<%=i%>)">移除</u></td>
+            </tr>
             <%}%>
             <%if(list.couponArr.length>0){%>
-                <tr class="discount">
-                    <td>
-                        <div><%=list.couponArr[0].name%></div>
-                    </td>
-                    <td>¥ <%=-(list.couponArr[0].price/100).toFixed(2)%></td>
-                    <td><u onclick="removeItem(2,<%=i%>)">移除</u></td>
-                </tr>
+            <tr class="discount">
+                <td>
+                    <div><%=list.couponArr[0].name%></div>
+                </td>
+                <td>¥ <%=-(list.couponArr[0].price/100).toFixed(2)%></td>
+                <td><u onclick="removeItem(2,<%=i%>)">移除</u></td>
+            </tr>
             <%}%>
             <%if(list.reductionPrice>0){%>
             <tr class="discount">
@@ -1457,14 +1738,34 @@
             </tbody>
         </table>
     </div>
+    <div class="recommendGoods">
+        <div class="recommendHead">
+            <span>推荐商品</span>
+            <span>用户推荐设置1</span>
+            <span>用户推荐设置2</span>
+        </div>
+        <div class="recommendFoot">
+            <ul class="recommendUls hideScroll">
+                <li>HYDRON 海昌透明黑色单片年抛</li>
+                <li>HYDRON 海昌透明黑色单片年抛</li>
+                <li>HYDRON 海昌透明黑色单片年抛</li>
+                <li>HYDRON 海昌透明黑色单片年抛</li>
+                <li>HYDRON 海昌透明黑色单片年抛</li>
+                <li>HYDRON 海昌透明黑色单片年抛</li>
+            </ul>
+            <div class="recommendTip"><i class="iconfont icon-ico_arrow_right"></i></div>
+        </div>
+    </div>
     <div class="rightFooterBox clearfix">
         <div class="amountMoney">
             <div>原价共计 <span id="totalPrice">¥ <%=(list.originalPrice/100).toFixed(2)%></span></div>
             <div>折后金额 <span id="dicountPrice">¥ <%=(list.discountPrice/100).toFixed(2)%></span></div>
         </div>
         <div class="actualMoney">
-            <div>实收金额 <span> <b>¥</b> <input type="text" onchange="paidInChange()" id="PaidMoney" value="<%=(list.collectPrice/100).toFixed(2)%>"></span></div>
-            <div>折扣 <input id="bossDiscount" type="number" onchange="discountChange()" value="<%=list.bossDiscount%>"></div>
+            <div>实收金额 <span> <b>¥</b> <input type="text" onchange="paidInChange()" id="PaidMoney"
+                                             value="<%=(list.collectPrice/100).toFixed(2)%>"></span></div>
+            <div>折扣 <input id="bossDiscount" type="number" onchange="discountChange()" value="<%=list.bossDiscount%>">
+            </div>
         </div>
     </div>
 </script>
@@ -1495,16 +1796,16 @@
                     <li>
                         <div class="topic">支付宝</div>
                         <%if(settlement.ali){%>
-                            <div class="valueBox btnBlack">
-                                <%if(settlement.ali.status==1){%>
-                                    <span class="payed"><%=settlement.ali.money%></span>
-                                    <span class="btnRed fr mr10" onclick="reimburse(1)" id="alirefund">退款</span>
-                                <%}else if(settlement.ali.status==2){%>
-                                    <span class="btnRed center-text" id="alirefunded">已退款</span>
-                                <%}%>
-                            </div>
+                        <div class="valueBox btnBlack">
+                            <%if(settlement.ali.status==1){%>
+                            <span class="payed"><%=settlement.ali.money%></span>
+                            <span class="btnRed fr mr10" onclick="reimburse(1)" id="alirefund">退款</span>
+                            <%}else if(settlement.ali.status==2){%>
+                            <span class="btnRed center-text" id="alirefunded">已退款</span>
+                            <%}%>
+                        </div>
                         <%}else{%>
-                            <div class="valueBox btnBlue" onclick="payDialog(1)">点击支付</div>
+                        <div class="valueBox btnBlue" onclick="payDialog(1)">点击支付</div>
                         <%}%>
                     </li>
                     <li>
@@ -1512,10 +1813,10 @@
                         <%if(settlement.weixin){%>
                         <div class="valueBox btnBlack">
                             <%if(settlement.weixin.status==1){%>
-                                <span class="payed"><%=settlement.weixin.money%></span>
-                                <span class="btnRed fr mr10" onclick="reimburse(2)">退款</span>
+                            <span class="payed"><%=settlement.weixin.money%></span>
+                            <span class="btnRed fr mr10" onclick="reimburse(2)">退款</span>
                             <%}else if(settlement.weixin.status==2){%>
-                                <span class="btnRed center-text" id="weirefunded">已退款</span>
+                            <span class="btnRed center-text" id="weirefunded">已退款</span>
                             <%}%>
                         </div>
                         <%}else{%>
@@ -1525,52 +1826,63 @@
                     <li>
                         <div class="topic">现金</div>
                         <%if(settlement.cash){%>
-                        <div class="valueBox"><input type="text" placeholder="输入" value="<%=(settlement.cash/100).toFixed(2)%>" id="countCash"></div>
+                        <div class="valueBox"><input type="text" placeholder="输入"
+                                                     value="<%=(settlement.cash/100).toFixed(2)%>" id="countCash"></div>
                         <%}else{%>
                         <div class="valueBox"><input type="text" placeholder="输入" id="countCash"></div>
                         <%}%>
                     </li>
                     <li>
                         <div class="topic">银行卡</div>
-                        <div class="valueBox"><input type="text" placeholder="输入" value="<%=settlement.bankCard%>"></div>
+                        <div class="valueBox"><input type="text" placeholder="输入" value="<%=settlement.bankCard%>">
+                        </div>
                     </li>
                     <li>
                         <div class="topic">积分</div>
                         <%if(settlement.integral){%>
-                            <%if(settlement.integral.hasNum){%>
-                                <div class="valueBox"><input type="text" placeholder="<%=settlement.integral.hasNum%>" value="<%=settlement.integral.usedNum%>"></div>
-                            <%}else{%>
-                                <div class="valueBox"><input type="text" placeholder="无可用积分" readonly="readonly"></div>
-                            <%}%>
+                        <%if(settlement.integral.hasNum){%>
+                        <div class="valueBox"><input type="text" placeholder="<%=settlement.integral.hasNum%>"
+                                                     value="<%=settlement.integral.usedNum%>"></div>
                         <%}else{%>
-                            <div class="valueBox"><input type="text" placeholder="无可用积分" readonly="readonly"></div>
+                        <div class="valueBox"><input type="text" placeholder="无可用积分" readonly="readonly"></div>
+                        <%}%>
+                        <%}else{%>
+                        <div class="valueBox"><input type="text" placeholder="无可用积分" readonly="readonly"></div>
                         <%}%>
                     </li>
                     <li>
                         <div class="topic">储存卡</div>
                         <%if(settlement.valueCard){%>
-                            <%if(settlement.valueCard.hasNum){%>
-                                <div class="valueBox"><input type="text" placeholder="<%=settlement.valueCard.hasNum%>" value="<%=(settlement.valueCard.usedNum/100).toFixed(2)%>" id="countValue"></div>
-                            <%}else{%>
-                                <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly" id="countValue"></div>
-                            <%}%>
+                        <%if(settlement.valueCard.hasNum){%>
+                        <div class="valueBox"><input type="text" placeholder="<%=settlement.valueCard.hasNum%>"
+                                                     value="<%=(settlement.valueCard.usedNum/100).toFixed(2)%>"
+                                                     id="countValue"></div>
                         <%}else{%>
-                            <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly" id="countValue"></div>
+                        <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly"
+                                                     id="countValue"></div>
+                        <%}%>
+                        <%}else{%>
+                        <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly"
+                                                     id="countValue"></div>
                         <%}%>
 
                     </li>
                     <li>
                         <div class="topic">他人储存值<span class="YZBtn" onclick="verifyAnothorCard()">验证</span></div>
                         <%if(settlement.otherValue){%>
-                            <%if(settlement.otherValue.type==2){%>
-                                <%if(settlement.otherValue.hasNum){%>
-                                    <div class="valueBox"><input type="text" placeholder="<%=settlement.otherValue.hasNum%>" value="<%=(settlement.otherValue.usedNum/100).toFixed(2)%>" id="countOtherValue"></div>
-                                <%}else{%>
-                                    <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly"  id="countOtherValue"></div>
-                                <%}%>
-                            <%}else{%>
-                                <div class="valueBox"><input type="text" placeholder="输入" readonly="readonly"  id="countOtherValue"></div>
-                            <%}%>
+                        <%if(settlement.otherValue.type==2){%>
+                        <%if(settlement.otherValue.hasNum){%>
+                        <div class="valueBox"><input type="text" placeholder="<%=settlement.otherValue.hasNum%>"
+                                                     value="<%=(settlement.otherValue.usedNum/100).toFixed(2)%>"
+                                                     id="countOtherValue"></div>
+                        <%}else{%>
+                        <div class="valueBox"><input type="text" placeholder="无可用余额" readonly="readonly"
+                                                     id="countOtherValue"></div>
+                        <%}%>
+                        <%}else{%>
+                        <div class="valueBox"><input type="text" placeholder="输入" readonly="readonly"
+                                                     id="countOtherValue"></div>
+                        <%}%>
                         <%}%>
                     </li>
                     <li>
@@ -1593,18 +1905,18 @@
     <i id="smallTicketBg"></i>
     <div class="stHeader">
         <div class="stTitle"><span></span>
-                <h3><%=orderInfo.subName%></h3><span></span>
+            <h3><%=orderInfo.subName%></h3><span></span>
         </div>
         <ul>
             <li><span class="fl">下单时间</span><span class="fr"><%=getDateTimeDian(orderInfo.ctime)%></span></li>
             <li><span class="fl">订单号</span><span class="fr"><%=orderInfo.orderNo%></span></li>
             <li><span class="fl">销售员</span><span class="fr"><%=orderInfo.staffName%></span></li>
             <%if(orderInfo.status==0){%>
-                <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">未交费</span></li>
+            <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">未交费</span></li>
             <%}else if(orderInfo.status==1){%>
-                <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">已缴费</span></li>
+            <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">已缴费</span></li>
             <%}else if(orderInfo.status==2){%>
-                <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">已退款</span></li>
+            <li class="btnRed"><span class="fl">订单状态</span><span class="fr" id="payStatus">已退款</span></li>
             <%}%>
         </ul>
     </div>
@@ -1679,15 +1991,15 @@
     <%}%>
     <div class="purchaseItems">
         <%if(orderInfo.skuList.length>0){%>
-            <ul>
-                <%for(var i = 0;i < orderInfo.skuList.length;i++){%>
-                <li>
-                    <span class="text"><%=orderInfo.skuList[i].code%></span>
-                    <span class="num">X<%=orderInfo.skuList[i].num%></span>
-                    <span class="price">¥<%=orderInfo.skuList[i].price%></span>
-                </li>
-                <%}%>
-            </ul>
+        <ul>
+            <%for(var i = 0;i < orderInfo.skuList.length;i++){%>
+            <li>
+                <span class="text"><%=orderInfo.skuList[i].code%></span>
+                <span class="num">X<%=orderInfo.skuList[i].num%></span>
+                <span class="price">¥<%=orderInfo.skuList[i].price%></span>
+            </li>
+            <%}%>
+        </ul>
         <%}%>
     </div>
     <div class="reduction">
@@ -1697,17 +2009,17 @@
             </li>
             <%}%>
             <%if(orderInfo.surcharges.length > 0){%>
-                <%for(var i=0;i < orderInfo.surcharges.length;i++){%>
-                    <li><span class="fl"><%=orderInfo.surcharges[i].name%></span><span class="fr">¥<%=(orderInfo.surcharges[i].price/100).toFixed(2)%></span>
-                    </li>
-                <%}%>
+            <%for(var i=0;i < orderInfo.surcharges.length;i++){%>
+            <li><span class="fl"><%=orderInfo.surcharges[i].name%></span><span class="fr">¥<%=(orderInfo.surcharges[i].price/100).toFixed(2)%></span>
+            </li>
+            <%}%>
             <%}%>
             <%if(orderInfo.surcharges&&orderInfo.surcharges.price){%>
-                <li><span class="fl">促销减免</span><span class="fr">-¥<%=(orderInfo.surcharges.price/100).toFixed(2)%></span>
-                </li>
+            <li><span class="fl">促销减免</span><span class="fr">-¥<%=(orderInfo.surcharges.price/100).toFixed(2)%></span>
+            </li>
             <%}%>
             <%if(orderInfo.oddsPrice){%>
-                <li><span class="fl">特惠减免</span><span class="fr">-¥<%=(orderInfo.oddsPrice/100).toFixed(2)%></span></li>
+            <li><span class="fl">特惠减免</span><span class="fr">-¥<%=(orderInfo.oddsPrice/100).toFixed(2)%></span></li>
             <%}%>
         </ul>
     </div>
@@ -1717,42 +2029,42 @@
     </div>
     <div class="payment">
         <%if(settlement.ali){%>
-            <%if(settlement.ali.status==1 && settlement.ali.money>0){%>
-                <li>
-                    <span class="fl">支付宝支付</span>
-                    <span class="fr">¥<%=(settlement.ali.money/100).toFixed(2)%></span>
-                </li>
-            <%}%>
+        <%if(settlement.ali.status==1 && settlement.ali.money>0){%>
+        <li>
+            <span class="fl">支付宝支付</span>
+            <span class="fr">¥<%=(settlement.ali.money/100).toFixed(2)%></span>
+        </li>
+        <%}%>
         <%}%>
         <%if(settlement.weixin){%>
-            <%if(settlement.weixin.status==1 && settlement.weixin.money>0){%>
-                <li>
-                    <span class="fl">微信支付</span>
-                    <span class="fr">¥<%=(settlement.weixin.money/100).toFixed(2)%></span>
-                </li>
-            <%}%>
+        <%if(settlement.weixin.status==1 && settlement.weixin.money>0){%>
+        <li>
+            <span class="fl">微信支付</span>
+            <span class="fr">¥<%=(settlement.weixin.money/100).toFixed(2)%></span>
+        </li>
+        <%}%>
         <%}%>
         <%if(settlement.cash){%>
-            <li>
-                <span class="fl">现金支付</span>
-                <span class="fr">¥<%=(settlement.cash/100).toFixed(2)%></span>
-            </li>
+        <li>
+            <span class="fl">现金支付</span>
+            <span class="fr">¥<%=(settlement.cash/100).toFixed(2)%></span>
+        </li>
         <%}%>
         <%if(settlement.valueCard){%>
-            <%if(settlement.valueCard.usedNum>0){%>
-                <li>
-                    <span class="fl">储值卡支付</span>
-                    <span class="fr">¥<%=(settlement.valueCard.usedNum/100).toFixed(2)%></span>
-                </li>
-            <%}%>
+        <%if(settlement.valueCard.usedNum>0){%>
+        <li>
+            <span class="fl">储值卡支付</span>
+            <span class="fr">¥<%=(settlement.valueCard.usedNum/100).toFixed(2)%></span>
+        </li>
+        <%}%>
         <%}%>
         <%if(settlement.otherValue){%>
-            <%if(settlement.otherValue.type==2 && settlement.otherValue.usedNum>0){%>
-                <li>
-                    <span class="fl">他人储值卡支付</span>
-                    <span class="fr">¥<%=(settlement.otherValue.usedNum/100).toFixed(2)%></span>
-                </li>
-            <%}%>
+        <%if(settlement.otherValue.type==2 && settlement.otherValue.usedNum>0){%>
+        <li>
+            <span class="fl">他人储值卡支付</span>
+            <span class="fr">¥<%=(settlement.otherValue.usedNum/100).toFixed(2)%></span>
+        </li>
+        <%}%>
         <%}%>
     </div>
     <div class="noteText">
@@ -1841,7 +2153,7 @@
     var settlementList = {};                              //结算清单
     initOrderData();
     var realpriceChange;                                  //实收金额改变的时候反给后台的参数
-    var locMember={};                                     //会员信息
+    var locMember = {};                                     //会员信息
     var couponData = {};                                  //订单抵用券数据
     var locOrder = {};                                    //订单的属性存储
     var userScore = 0;                                    //会员积分
@@ -1862,7 +2174,7 @@
         }
         return new Date(l).format(formatStr);
     });
-    template.helper('initobj',function (obj) {
+    template.helper('initobj', function (obj) {
         return JSON.stringify(obj)
     });
     $(function () {
@@ -1872,6 +2184,7 @@
         getListClass();                                   //类目
         getListBrand();                                   //品牌
     });
+
     /**初始化页面*/
     function initPage(isfirst) {
         //时间插件
@@ -1924,7 +2237,7 @@
         //$("#tests2").attr('placeholder',time);
         //$("#tests2").removeAttr("readonly");
 
-        if(isfirst){
+        if (isfirst) {
             renderYgTable(LocYgInfo.yuanTable, "#tableContent", true); //验光信息远用table
             renderYgTable(LocYgInfo.yinTable, "#tableContent");        //验光信息隐形table
             renderYgTable(LocYgInfo.jinTable, "#tableContent");        //验光信息近用table
@@ -1932,11 +2245,11 @@
         }
         getUsersByJob("验光师", 1, 1);                              //获取门店下的验光师
         getResult();//渲染结果和建议
-/*
-        if(cusLocInfo.id){
-            getYgInfo(cusLocInfo.id);
-        }
-*/
+        /*
+                if(cusLocInfo.id){
+                    getYgInfo(cusLocInfo.id);
+                }
+        */
         /**************订单****************/
         getUsersByJob("销售员", 1, 2);                         //获取门店下的销售员
         getUsersByJob("加工师", 1, 3);                         //获取门店下的加工师
@@ -1944,16 +2257,17 @@
         getListPromotions();                                  //获取促销方式
         renderList();
     }
+
     /**初始化数据*/
-    function initPageData(){
+    function initPageData() {
         cusLocInfo = {};
         ygInfo = {now: {}};
         initOrderData();
     }
 
     /**初始化订单数据*/
-    function initOrderData(){
-        locShopCart={};
+    function initOrderData() {
+        locShopCart = {};
         locShopCart.skuidsList = [];
         locShopCart.surchargesJson = [];
         locShopCart.valueCard = [];
@@ -1966,10 +2280,10 @@
 
     /**接口——获取门店下的临时订单*/
     function getTemporaryOrder() {
-        quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(), {subId: subid,makeStatus:6}, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_order_getTemporaryOrder(), {subId: subid, makeStatus: 6}, function (ret) {
             if (ret && quakooUtils.isNotBlack(ret.data)) {
                 document.querySelector("#selectBox .text").innerHTML = "临时订单";
-                for(var i=0;i<ret.data.length;i++){
+                for (var i = 0; i < ret.data.length; i++) {
                     provisionalOrder[ret.data[i].id] = ret.data[i];
                 }
                 var data = {list: ret.data};
@@ -1978,15 +2292,15 @@
                 selectTag($("#selectBox"), function (ret) {
                     initPageData();//初始化页面数据
                     //切换订单
-                    if(quakooUtils.isNotBlack(provisionalOrder[ret.value].userInfo)){
-                        for(var i in provisionalOrder[ret.value].userInfo){
+                    if (quakooUtils.isNotBlack(provisionalOrder[ret.value].userInfo)) {
+                        for (var i in provisionalOrder[ret.value].userInfo) {
                             cusLocInfo[i] = provisionalOrder[ret.value].userInfo[i];
                         }
                     }
-                    if(quakooUtils.isNotBlack(provisionalOrder[ret.value].oiId)){
+                    if (quakooUtils.isNotBlack(provisionalOrder[ret.value].oiId)) {
 
                     }
-                    if(quakooUtils.isNotBlack(ret.value)){
+                    if (quakooUtils.isNotBlack(ret.value)) {
                         getOrderInfoToLoc(provisionalOrder[ret.value]);
                     }
                     initPage();//根据数据初始化整个页面
@@ -2001,10 +2315,10 @@
 
     /***************************************************顾客信息开始*****************************************************/
     /**渲染顾客信息*/
-    function renderCusInfo(){
-        var data = {list:cusLocInfo};
-        var html = template("cusBasicTmp",data);
-        var memHtml = template("memberTmp",data);
+    function renderCusInfo() {
+        var data = {list: cusLocInfo};
+        var html = template("cusBasicTmp", data);
+        var memHtml = template("memberTmp", data);
         $("#cusBasicUl").html(html);
         $('#memberUl').html(memHtml);
         //顾客手机号查询选择
@@ -2020,11 +2334,12 @@
             $(this).addClass('active').siblings().removeClass('active');
         });
         //职业
-        selectTag($("#occupationTypeBox"),function (ret) {
+        selectTag($("#occupationTypeBox"), function (ret) {
             cusLocInfo.job = ret.value;
         });
         getReferrer();//推荐人查询
     }
+
     /**顾客信息顾客搜索*/
     function searchCus() {
         var content = $('#searchPhoneUser').val();
@@ -2036,7 +2351,7 @@
         param.subid = subid;
         param.userType = 0;
         if (cusSeachType == 1) {
-            if(!quakooUtils.isMobileNum(content)){
+            if (!quakooUtils.isMobileNum(content)) {
                 layer.msg("请输入正确的手机号");
                 return;
             }
@@ -2046,7 +2361,7 @@
         }
         /**打开顾客搜索结果的弹窗*/
         quakooData.ajaxGetData(config.getUrl_user_getSubCustomerPager(), param, function (ret) {
-            if(quakooUtils.isNotBlack(ret.rows)){
+            if (quakooUtils.isNotBlack(ret.rows)) {
                 $('#searchPhoneUser').val("");
                 layer.open({
                     type: 1,
@@ -2067,9 +2382,14 @@
                     },
                     success: function (layero, index) {
                         var diaIndex = index;
-                        var column =[
+                        var column = [
                             {field: "name", title: "姓名", align: "left", valign: "middle"},
-                            {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
+                            {
+                                field: "sex",
+                                title: "性别",
+                                align: "left",
+                                valign: "middle",
+                                formatter: function (value, row, index) {
                                     if (value === 0) {
                                         return "-"
                                     } else if (value === 1) {
@@ -2077,7 +2397,8 @@
                                     } else if (value === 2) {
                                         return "女"
                                     }
-                                }},
+                                }
+                            },
                             {field: "age", title: "年龄", align: "left", valign: "middle"},
                             {
                                 field: "phone",
@@ -2096,8 +2417,12 @@
                             },
                             {field: "subName", title: "来源", align: "left", valign: "middle"},
                             {
-                                field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
-                                    var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+diaIndex+")'>选择</div>";
+                                field: "",
+                                title: "操作",
+                                align: "left",
+                                valign: "middle",
+                                formatter: function (value, row, index) {
+                                    var html = "<div class='btnSeeHistory' onclick='selIntentionCus(" + JSON.stringify(row) + "," + diaIndex + ")'>选择</div>";
                                     return html;
                                 }
                             }];
@@ -2117,13 +2442,14 @@
 
                     }
                 });
-            }else{
+            } else {
                 cusLocInfo = {};
                 renderCusInfo();
                 layer.msg("未查询到顾客信息")
             }
         });
     }
+
     /**接口——获取意向顾客*/
     function activeCus() {
         layer.open({
@@ -2148,6 +2474,7 @@
             }
         });
     }
+
     function showIntention(index) {
         var thisIndex = index;
         var table = $('#JFProTable');
@@ -2209,7 +2536,7 @@
                 {field: "subName", title: "来源", align: "left", valign: "middle"},
                 {
                     field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
-                        var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+thisIndex+")'>选择</div>";
+                        var html = "<div class='btnSeeHistory' onclick='selIntentionCus(" + JSON.stringify(row) + "," + thisIndex + ")'>选择</div>";
                         return html;
                     }
                 }],
@@ -2223,14 +2550,16 @@
             }
         });
     }
-    function selIntentionCus(data,diaIndex) {
-            initPageData();
-            for(var i in data){
-                cusLocInfo[i] = data[i];
-            }
-            initPage();
-            layer.close(diaIndex);
+
+    function selIntentionCus(data, diaIndex) {
+        initPageData();
+        for (var i in data) {
+            cusLocInfo[i] = data[i];
+        }
+        initPage();
+        layer.close(diaIndex);
     }
+
     /**注册成为会员*/
     function regMember() {
         var phone = $("#searchCusPhone").val();
@@ -2238,7 +2567,7 @@
         var sex = $("#cusInfoSex span.active").attr("data-value");
         var strTime = $("#tests").val().split("-");
         var birthdate = new Date(strTime[0], strTime[1], strTime[2]).getTime();
-        var age = $("#autoAge").val().slice(0,-1);
+        var age = $("#autoAge").val().slice(0, -1);
         var card = $("#stuCard").val();
         if (quakooUtils.isBlack(name)) {
             layer.msg("请输入姓名");
@@ -2273,7 +2602,7 @@
         cusLocInfo.sex = sex;
         cusLocInfo.birthdate = birthdate;
         cusLocInfo.age = age;
-        if(card){
+        if (card) {
             cusLocInfo.card = card;
         }
         /**注册会员弹窗*/
@@ -2303,21 +2632,25 @@
 
     /**根据手机号模糊查询顾客*/
     function getCusPhone() {
-        $('#searchCusPhone').bind('input propertychange', function(){
+        $('#searchCusPhone').bind('input propertychange', function () {
             var thisPhone;
             var keyword = $(this).val();
-            if(keyword.length == 11){
+            if (keyword.length == 11) {
                 thisPhone = keyword;
-                if(!quakooUtils.isMobileNum(keyword)){
+                if (!quakooUtils.isMobileNum(keyword)) {
                     layer.msg('请输入正确的手机号');
                     return;
                 }
                 $(this).blur();
-                quakooData.ajaxGetData(config.getUrl_user_getUserListByPhone(),{subid:subid,userType:0,phone:keyword*1},function(ret){
-                    if(ret.success){
-                        if(quakooUtils.isNotBlack(ret.data)){
+                quakooData.ajaxGetData(config.getUrl_user_getUserListByPhone(), {
+                    subid: subid,
+                    userType: 0,
+                    phone: keyword * 1
+                }, function (ret) {
+                    if (ret.success) {
+                        if (quakooUtils.isNotBlack(ret.data)) {
                             thisPhone = ret.data[0].phone;
-                        }else{
+                        } else {
                             cusLocInfo = {};
                             cusLocInfo.phone = keyword;
                             renderCusInfo();
@@ -2342,12 +2675,23 @@
                             },
                             success: function (layero, index) {
                                 var diaIndex = index;
-                                var column =[
-                                    {field: "ctime", title: "时间", align: "left", valign: "middle",formatter:function (value, row, index) {
+                                var column = [
+                                    {
+                                        field: "ctime",
+                                        title: "时间",
+                                        align: "left",
+                                        valign: "middle",
+                                        formatter: function (value, row, index) {
                                             return quakooUtils.formatTimeToDate(value);
-                                        }},
+                                        }
+                                    },
                                     {field: "name", title: "姓名", align: "left", valign: "middle"},
-                                    {field: "sex",title: "性别",align: "left",valign: "middle",formatter: function (value, row, index) {
+                                    {
+                                        field: "sex",
+                                        title: "性别",
+                                        align: "left",
+                                        valign: "middle",
+                                        formatter: function (value, row, index) {
                                             if (value === 0) {
                                                 return "-"
                                             } else if (value === 1) {
@@ -2355,7 +2699,8 @@
                                             } else if (value === 2) {
                                                 return "女"
                                             }
-                                        }},
+                                        }
+                                    },
                                     {field: "age", title: "年龄", align: "left", valign: "middle"},
                                     {
                                         field: "phone",
@@ -2374,8 +2719,12 @@
                                     },
                                     {field: "subName", title: "来源", align: "left", valign: "middle"},
                                     {
-                                        field: "", title: "操作", align: "left", valign: "middle", formatter: function (value, row, index) {
-                                            var html = "<div class='btnSeeHistory' onclick='selIntentionCus("+JSON.stringify(row)+","+diaIndex+")'>选择</div>";
+                                        field: "",
+                                        title: "操作",
+                                        align: "left",
+                                        valign: "middle",
+                                        formatter: function (value, row, index) {
+                                            var html = "<div class='btnSeeHistory' onclick='selIntentionCus(" + JSON.stringify(row) + "," + diaIndex + ")'>选择</div>";
                                             return html;
                                         }
                                     }];
@@ -2395,22 +2744,22 @@
                                 /**搜索内容*/
                                 var searchType = 1;
                                 $(".layui-layer-title").append('<div class="search-customer-box">\n' +
-                                '            <div class="searchTypeBox">\n' +
-                                '                <div class="selectBox" id="select-customer">\n' +
-                                '                    <div class="select-box-header">\n' +
-                                '                        <span class="text">手机号</span> <i class="iconfont icon-ico_arrow_down"></i>\n' +
-                                '                    </div>\n' +
-                                '                    <div class="optionBox">\n' +
-                                '                        <ul class="optionUL" id="type-list">\n' +
-                                '                            <li value="1">手机号</li>\n' +
-                                '                            <li value="2">姓名</li>\n' +
-                                '                        </ul>\n' +
-                                '                    </div>\n' +
-                                '                </div>\n' +
-                                '            </div>\n' +
-                                '            <input id="search-input" type="text" placeholder="搜索手机号" autocomplete="off">\n' +
-                                '            <div class="btn btn-info" style="margin-left: 6px;" id="searchButton">搜索</div>\n' +
-                                '        </div>');
+                                    '            <div class="searchTypeBox">\n' +
+                                    '                <div class="selectBox" id="select-customer">\n' +
+                                    '                    <div class="select-box-header">\n' +
+                                    '                        <span class="text">手机号</span> <i class="iconfont icon-ico_arrow_down"></i>\n' +
+                                    '                    </div>\n' +
+                                    '                    <div class="optionBox">\n' +
+                                    '                        <ul class="optionUL" id="type-list">\n' +
+                                    '                            <li value="1">手机号</li>\n' +
+                                    '                            <li value="2">姓名</li>\n' +
+                                    '                        </ul>\n' +
+                                    '                    </div>\n' +
+                                    '                </div>\n' +
+                                    '            </div>\n' +
+                                    '            <input id="search-input" type="text" placeholder="搜索手机号" autocomplete="off">\n' +
+                                    '            <div class="btn btn-info" style="margin-left: 6px;" id="searchButton">搜索</div>\n' +
+                                    '        </div>');
                                 selectTag($("#select-customer"), function (ret) {
                                     $("#search-input").val("");
                                     searchType = ret.value;
@@ -2420,23 +2769,23 @@
                                         $('#search-input').attr('placeholder', '搜索姓名')
                                     }
                                 });
-                                $("#searchButton").click(function(){
+                                $("#searchButton").click(function () {
                                     var searchWord = $("#search-input").val();
                                     var param = {};
                                     param.subid = subid;
                                     param.userType = 0;
-                                    if(searchType == 1){
-                                        if(!quakooUtils.isMobileNum(searchWord)){
+                                    if (searchType == 1) {
+                                        if (!quakooUtils.isMobileNum(searchWord)) {
                                             layer.msg("请输入正确手机号");
                                             return;
                                         }
                                         param.phone = searchWord;
-                                    }else if(searchType == 2){
+                                    } else if (searchType == 2) {
                                         param.name = searchWord;
                                     }
-                                    quakooData.ajaxGetData(config.getUrl_user_searchUserList(),param,function(ret){
-                                        if(ret&&ret.success){
-                                            if(quakooUtils.isNotBlack(ret.data)){
+                                    quakooData.ajaxGetData(config.getUrl_user_searchUserList(), param, function (ret) {
+                                        if (ret && ret.success) {
+                                            if (quakooUtils.isNotBlack(ret.data)) {
                                                 thisPhone = ret.data[0].phone
                                                 $("#customerInfoTable").bootstrapTable('destroy');
                                                 $("#customerInfoTable").bootstrapTable({
@@ -2452,19 +2801,19 @@
                                                     columns: column
                                                 });
                                             }
-                                        }else{
+                                        } else {
                                             layer.msg(ret.data);
                                         }
                                     })
                                 });
-                                $("#addCusByPhone").click(function(){
+                                $("#addCusByPhone").click(function () {
                                     $("#searchCusPhone").val(thisPhone);
                                     layer.close(index);
-                                    layer.msg("请填写其它信息并验证",{icon:1});
+                                    layer.msg("请填写其它信息并验证", {icon: 1});
                                 });
                             }
                         });
-                    }else{
+                    } else {
                         layer.msg(ret.data);
                     }
                 })
@@ -2474,32 +2823,36 @@
 
     /**获取推荐人*/
     function getReferrer() {
-        $('#searchReferrer').bind('input propertychange', function(){
+        $('#searchReferrer').bind('input propertychange', function () {
             var keyword = $(this).val();
-            if(quakooUtils.isNotBlack(keyword)){
-                quakooData.ajaxGetData(config.getUrl_user_getUserByNamePhone(),{subId:subid,search:keyword},function(ret){
-                    if(ret.success){
-                        if(quakooUtils.isNotBlack(ret.data)){
-                            var data = {list:ret.data};
-                            var html = template("cusInfoReferrerTmp",data);
+            if (quakooUtils.isNotBlack(keyword)) {
+                quakooData.ajaxGetData(config.getUrl_user_getUserByNamePhone(), {
+                    subId: subid,
+                    search: keyword
+                }, function (ret) {
+                    if (ret.success) {
+                        if (quakooUtils.isNotBlack(ret.data)) {
+                            var data = {list: ret.data};
+                            var html = template("cusInfoReferrerTmp", data);
                             $("#tuijianren").html(html);
                             $("#tuijianren").show();
                             $("body").click(function () {
                                 $("#tuijianren")[0].style.display = "none";
                             })
-                        }else{
+                        } else {
                             $("#tuijianren").hide();
                         }
                     }
                 })
-            }else{
+            } else {
                 $("#tuijianren").hide();
             }
         });
     }
-    function renderReffer(self){
+
+    function renderReffer(self) {
         var info = {};
-        info.text= $(self).html();
+        info.text = $(self).html();
         info.id = $(self).attr("data-id");
         info.tname = $(self).attr("data-tname");
         info.tphone = $(self).attr("data-tphone");
@@ -2509,6 +2862,7 @@
         cusLocInfo.tphone = info.tphone;
         $("#tuijianren").hide();
     }
+
     /**接口——获取短信验证码*/
     function getSms() {
         if (!isRen) {
@@ -2543,14 +2897,14 @@
         params.age = cusLocInfo.age;
         params.job = cusLocInfo.job;
         params.recommender = cusLocInfo.recommender;
-        if(cusLocInfo.card){
-            params.card =cusLocInfo.card;
+        if (cusLocInfo.card) {
+            params.card = cusLocInfo.card;
         }
-        quakooData.ajaxGetData(config.getUrl_user_becomeVip(),params, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_user_becomeVip(), params, function (ret) {
             if (ret && ret.success) {
                 if (ret.data) {
                     layer.msg("注册成功", {icon: 1});
-                    for(var i in ret.data){
+                    for (var i in ret.data) {
                         cusLocInfo[i] = ret.data[i];
                     }
                     renderCusInfo();
@@ -2674,52 +3028,52 @@
 
     /***************************************************验光模块开始*****************************************************/
     /**关联瞳距*/
-    function relevancePd(){
+    function relevancePd() {
         $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').change(function () {
             var yuanRPd = $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').val();
             var yuanLPd = $('.yuan-table input[data-attr1="leftResItem"][data-attr2="pd"]').val();
-            $('#farDistance').val(yuanLPd*1+yuanRPd*1);
+            $('#farDistance').val(yuanLPd * 1 + yuanRPd * 1);
             $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(Number(yuanRPd));
             $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').val(Number(yuanRPd));
         });
         $('.yuan-table input[data-attr1="leftResItem"][data-attr2="pd"]').change(function () {
             var yuanRPd = $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').val();
             var yuanLPd = $('.yuan-table input[data-attr1="leftResItem"][data-attr2="pd"]').val();
-            $('#farDistance').val(yuanLPd*1+yuanRPd*1);
+            $('#farDistance').val(yuanLPd * 1 + yuanRPd * 1);
             $('.jin-table input[data-attr1="leftResItem"][data-attr2="pd"]').val(Number(yuanLPd));
             $('.jian-table input[data-attr1="leftResItem"][data-attr2="fpd"]').val(Number(yuanLPd));
         });
         $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').change(function () {
             var yuanRPd = $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').val();
             var yuanLPd = $('.jin-table input[data-attr1="leftResItem"][data-attr2="pd"]').val();
-            $('#farDistance').val(yuanLPd*1+yuanRPd*1);
+            $('#farDistance').val(yuanLPd * 1 + yuanRPd * 1);
             $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(Number(yuanRPd));
             $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').val(Number(yuanRPd));
         });
         $('.jin-table input[data-attr1="leftResItem"][data-attr2="pd"]').change(function () {
             var yuanRPd = $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').val();
             var yuanLPd = $('.jin-table input[data-attr1="leftResItem"][data-attr2="pd"]').val();
-            $('#farDistance').val(yuanLPd*1+yuanRPd*1);
+            $('#farDistance').val(yuanLPd * 1 + yuanRPd * 1);
             $('.yuan-table input[data-attr1="leftResItem"][data-attr2="pd"]').val(Number(yuanLPd));
             $('.jian-table input[data-attr1="leftResItem"][data-attr2="fpd"]').val(Number(yuanLPd));
         });
         $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').change(function () {
             var yuanRPd = $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').val();
             var yuanLPd = $('.jian-table input[data-attr1="leftResItem"][data-attr2="fpd"]').val();
-            $('#farDistance').val(yuanLPd*1+yuanRPd*1);
+            $('#farDistance').val(yuanLPd * 1 + yuanRPd * 1);
             $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(Number(yuanRPd));
             $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(Number(yuanRPd));
         });
         $('.jian-table input[data-attr1="leftResItem"][data-attr2="fpd"]').change(function () {
             var yuanRPd = $('.jian-table input[data-attr1="rightResItem"][data-attr2="fpd"]').val();
             var yuanLPd = $('.jian-table input[data-attr1="leftResItem"][data-attr2="fpd"]').val();
-            $('#farDistance').val(yuanLPd*1+yuanRPd*1);
+            $('#farDistance').val(yuanLPd * 1 + yuanRPd * 1);
             $('.yuan-table input[data-attr1="leftResItem"][data-attr2="pd"]').val(Number(yuanLPd));
             $('.jin-table input[data-attr1="leftResItem"][data-attr2="pd"]').val(Number(yuanLPd));
         });
         $('#farDistance').change(function () {
             var zongPd = $('#farDistance').val();
-            var average = (Number(zongPd)/2).toFixed(0);
+            var average = (Number(zongPd) / 2).toFixed(0);
             $('.yuan-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(average);
             $('.yuan-table input[data-attr1="leftResItem"][data-attr2="pd"]').val(average);
             $('.jin-table input[data-attr1="rightResItem"][data-attr2="pd"]').val(average);
@@ -2835,7 +3189,7 @@
         param.uid = cusId;
         quakooData.ajaxGetData(config.getUrl_optometryinfo_getList(), param, function (ret) {
             if (ret && ret.success) {
-                if(quakooUtils.isNotBlack(ret.data)){
+                if (quakooUtils.isNotBlack(ret.data)) {
                     //tab切换
                     var html = "";
                     var data = [];
@@ -2871,7 +3225,7 @@
                     if (quakooUtils.isNotBlack(selData)) {
                         selHtml = template("ygRecord", {list: selData});
                         $("#moreYgList").html(selHtml);
-                        selectTag($("#optometrySelect"),function (ret) {
+                        selectTag($("#optometrySelect"), function (ret) {
                         })
                     }
                 }
@@ -3142,14 +3496,14 @@
     $("#ygType li").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
         $('#tableContent>table').eq($(this).index()).removeClass('hide').siblings().addClass('hide');
-        if($(this).index()===1){
-            $(".companyBox")[0].style.display='none';
-        }else{
-            $(".companyBox")[0].style.display='inline-block';
+        if ($(this).index() === 1) {
+            $(".companyBox")[0].style.display = 'none';
+        } else {
+            $(".companyBox")[0].style.display = 'inline-block';
         }
     });
     mainEye = 1;
-    selectTag($("#maineye"), function (ret){
+    selectTag($("#maineye"), function (ret) {
         mainEye = ret.value;
     });
 
@@ -3158,74 +3512,79 @@
     /**加减
      * type 1(加) 2（减）
      * */
-    function addSub(type,index) {
-        if(type==1){
+    function addSub(type, index) {
+        if (type == 1) {
             locShopCart.skuidsList[index].num++;
-        }else if(type == 2){
-            if(locShopCart.skuidsList[index].num < 2){
+        } else if (type == 2) {
+            if (locShopCart.skuidsList[index].num < 2) {
                 layer.msg("数量不能小于1");
                 return;
-            }else{
+            } else {
                 locShopCart.skuidsList[index].num--;
             }
         }
         countOrder()
     }
+
     /**商品数量加减*/
     function goodsNumChange(index) {
         var num = $('.goods-item .goods-number').eq(index).val();
-        if(num<1){
+        if (num < 1) {
             layer.msg('非法输入');
             $('.goods-item .goods-number').eq(index).val(locShopCart.skuidsList[index].num);
-        }else{
+        } else {
             locShopCart.skuidsList[index].num = num;
         }
         countOrder();
     }
+
     /**商品折扣改变*/
-    function goodsDiscountChange(index){
+    function goodsDiscountChange(index) {
         var discount = $(".goods-discount").eq(index).val();
-        if(0<discount<=10){
+        if (0 < discount <= 10) {
             locShopCart.skuidsList[index].discount = discount;
-        }else{
+        } else {
             layer.msg("非法输入");
             $(".goods-item .goods-discount").eq(index).val(locShopCart.skuidsList[index].discount);
         }
         countOrder();
     }
+
     /**最终折扣编辑*/
     function discountChange() {
-        var discount = $("#bossDiscount").val()*1;
-        if(discount > 0 && discount <= 10){
+        var discount = $("#bossDiscount").val() * 1;
+        if (discount > 0 && discount <= 10) {
             locShopCart.bossDiscount = discount.toFixed(1);
-            for(var i=0;i<locShopCart.skuidsList.length;i++){
+            for (var i = 0; i < locShopCart.skuidsList.length; i++) {
                 locShopCart.skuidsList[i].discount = discount;
             }
             countOrder()
-        }else{
+        } else {
             layer.msg("非法输入");
             $("#bossDiscount").val(locShopCart.bossDiscount);
         }
     }
+
     /**获取附加费用*/
-    function getExtraCharges(){
-        quakooData.ajaxGetData(config.getUrl_order_getSurcharge(),{},function(ret){
-            var data = {list:ret.data};
-            var html = template("extraTmp",data);
+    function getExtraCharges() {
+        quakooData.ajaxGetData(config.getUrl_order_getSurcharge(), {}, function (ret) {
+            var data = {list: ret.data};
+            var html = template("extraTmp", data);
             $("#costAdditional").html(html);
             selectTag($("#costAdditional"), function (ret) {
                 // $('#costAdditional .text').html(ret.value);
-                $("#extraCharges").attr("readonly","readonly").removeClass("active");
-                if(ret.value!=="附加费用"){
-                    $("#extraCharges").attr("readonly",false).addClass("active");
+                $("#extraCharges").attr("readonly", "readonly").removeClass("active");
+                if (ret.value !== "附加费用") {
+                    $("#extraCharges").attr("readonly", false).addClass("active");
                 }
             });
         })
     }
+
     /**添加附加费*/
     function addExtra() {
         var $extra = $("#extraCharges");
-        if($extra.attr("readonly")){
+        if ($extra.attr("readonly")) {
             layer.msg("请选择附加费用类型");
             return;
         }
@@ -3235,54 +3594,56 @@
         }
         var obj = {};
         obj.name = $('#costAdditional .text').html();
-        obj.price = $extra.val()*100;
+        obj.price = $extra.val() * 100;
         locShopCart.surchargesJson.push(obj);
         $extra.val("");
         countOrder();
     }
+
     /**储值卡充值*/
-    function rechargeCard(){
+    function rechargeCard() {
         layer.open({
             type: 1,
-            shade:0.01,
+            shade: 0.01,
             title: '储值卡充值',
-            skin:'layer-recharge',
+            skin: 'layer-recharge',
             anim: 0,
-            area: ['240px','150px'],
+            area: ['240px', '150px'],
             closeBtn: 0,
             resize: false,
             shadeClose: true,
             content: $('#recharge'),
-            btn:['充值','取消'],
-            yes: function (index,layero) {
+            btn: ['充值', '取消'],
+            yes: function (index, layero) {
                 topUp(index);//充值
             },
-            btn2: function (index,layero){
+            btn2: function (index, layero) {
             },
-            success: function(layero,index){
+            success: function (layero, index) {
                 $("#chuNum").val("");
-/*
-                layui.use('form', function(){
-                    var form = layui.form;
-                    //监听提交
-                    form.on('submit(formDemo)', function(data){
-                        layer.msg(JSON.stringify(data.field));
-                        return false;
-                    });
-                });
-*/
+                /*
+                                layui.use('form', function(){
+                                    var form = layui.form;
+                                    //监听提交
+                                    form.on('submit(formDemo)', function(data){
+                                        layer.msg(JSON.stringify(data.field));
+                                        return false;
+                                    });
+                                });
+                */
             }
 
         });
+
         function topUp(index) {
             var $chuNum = $("#chuNum");
-            var num = $chuNum.val()*100;
-            if(num<=0){
+            var num = $chuNum.val() * 100;
+            if (num <= 0) {
                 layer.msg("输入非法");
                 $chuNum.val("");
                 return;
             }
-            if(quakooUtils.isBlack(num)){
+            if (quakooUtils.isBlack(num)) {
                 layer.msg("请输入充值金额");
                 return;
             }
@@ -3296,104 +3657,108 @@
         }
 
     }
+
     /**改变实收金额*/
     function paidInChange() {
-        var collectPrice = $("#PaidMoney").val()*100;
-        if(collectPrice<0){
+        var collectPrice = $("#PaidMoney").val() * 100;
+        if (collectPrice < 0) {
             layer.msg("不能小于0");
-            $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
+            $("#PaidMoney").val((locShopCart.collectPrice / 100).toFixed(2));
             return;
-        }else if(collectPrice>locShopCart.originalPrice){
+        } else if (collectPrice > locShopCart.originalPrice) {
             layer.msg("实收金额不能大于原价");
-            $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
+            $("#PaidMoney").val((locShopCart.collectPrice / 100).toFixed(2));
             return;
-        }else{
+        } else {
             realpriceChange = collectPrice;
         }
         countOrder();
     }
+
     /**删除订单信息
      * type:1(附加费用)，2(促销方式),3(常规商品),4(积分商品),5(储值卡充值)
      * index 对应的list的索引
      * */
-    function removeItem(type,index) {
-        if(type == 1){
-            locShopCart.surchargesJson.splice(index,1);
-        }else if(type == 2){
-            locShopCart.couponArr.splice(index,1);
-        }else if(type == 3){
-            locShopCart.skuidsList.splice(index,1);
-        }else if(type == 4){
+    function removeItem(type, index) {
+        if (type == 1) {
+            locShopCart.surchargesJson.splice(index, 1);
+        } else if (type == 2) {
+            locShopCart.couponArr.splice(index, 1);
+        } else if (type == 3) {
+            locShopCart.skuidsList.splice(index, 1);
+        } else if (type == 4) {
 
-        }else if(type == 5){
-            locShopCart.valueCard.splice(index,1);
+        } else if (type == 5) {
+            locShopCart.valueCard.splice(index, 1);
         }
-        if(quakooUtils.isBlack(locShopCart.skuidsList)&&quakooUtils.isBlack(locShopCart.valueCard)&&quakooUtils.isBlack(locShopCart.surchargesJson)){
+        if (quakooUtils.isBlack(locShopCart.skuidsList) && quakooUtils.isBlack(locShopCart.valueCard) && quakooUtils.isBlack(locShopCart.surchargesJson)) {
             initOrderData();
             renderList()
-        }else{
+        } else {
             countOrder()
         }
     }
+
     /**渲染表格数据*/
-    function renderList(){
-        var data = {list:locShopCart};
-        var html = template("orderFormList",data);
+    function renderList() {
+        var data = {list: locShopCart};
+        var html = template("orderFormList", data);
         $("#orderForm").html(html);
         /**折扣*/
-/*
-        if(quakooUtils.isNotBlack(locShopCart.skuidsList)){
-            $("#bossDiscount").bind("input propertychange",function(){
-                var timer = null;
-                var discount = $(this).val()*1;
-                if(!timer){
-                    timer = setTimeout(function(){
-                        if(discount > 0 && discount <= 10){
-                            locShopCart.bossDiscount = discount.toFixed(1);
-                            for(var i=0;i<locShopCart.skuidsList.length;i++){
-                                locShopCart.skuidsList[i].discount = discount;
-                            }
-                            countOrder()
-                        }else if(discount<0||discount>10){
-                            layer.msg("非法输入");
+        /*
+                if(quakooUtils.isNotBlack(locShopCart.skuidsList)){
+                    $("#bossDiscount").bind("input propertychange",function(){
+                        var timer = null;
+                        var discount = $(this).val()*1;
+                        if(!timer){
+                            timer = setTimeout(function(){
+                                if(discount > 0 && discount <= 10){
+                                    locShopCart.bossDiscount = discount.toFixed(1);
+                                    for(var i=0;i<locShopCart.skuidsList.length;i++){
+                                        locShopCart.skuidsList[i].discount = discount;
+                                    }
+                                    countOrder()
+                                }else if(discount<0||discount>10){
+                                    layer.msg("非法输入");
+                                }
+                            },800);
                         }
-                    },800);
+                    })
+                }else{
+                    $("#bossDiscount").attr("readonly","readonly")
                 }
-            })
-        }else{
-            $("#bossDiscount").attr("readonly","readonly")
-        }
-*/
+        */
         /**实收金额*/
-/*
-        $("#PaidMoney").bind("input propertychange",function(){
-            var timer = null;
-            var collectPrice = $(this).val()*100;
-            if(!timer){
-                timer = setTimeout(function(){
-                    if(collectPrice<0){
-                        layer.msg("不能小于0");
-                        $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
-                        return;
-                    }else if(collectPrice>locShopCart.originalPrice){
-                        layer.msg("实收金额不能大于原价");
-                        $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
-                        return;
-                    }else{
-                        realpriceChange = collectPrice;
-                        countOrder();
+        /*
+                $("#PaidMoney").bind("input propertychange",function(){
+                    var timer = null;
+                    var collectPrice = $(this).val()*100;
+                    if(!timer){
+                        timer = setTimeout(function(){
+                            if(collectPrice<0){
+                                layer.msg("不能小于0");
+                                $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
+                                return;
+                            }else if(collectPrice>locShopCart.originalPrice){
+                                layer.msg("实收金额不能大于原价");
+                                $("#PaidMoney").val((locShopCart.collectPrice/100).toFixed(2));
+                                return;
+                            }else{
+                                realpriceChange = collectPrice;
+                                countOrder();
+                            }
+                        },1000)
                     }
-                },1000)
-            }
-        })
-*/
+                })
+        */
     }
+
     /**添加常规商品*/
     function addPro(type) {
         var index = layer.open({
             type: 1,
             skin: 'layui-layer-demo', //样式类名
-            area: ['960px','400px'],
+            area: ['960px', '400px'],
             anim: 0,
             closeBtn: 0,
             title: '',
@@ -3415,16 +3780,17 @@
                 }
                 locOrder.type = type;
                 getSPU();                       //获取类目和品牌下的SPU
-/*
-                if(quakooUtils.isNotBlack(cusLocInfo.userGradeId)){
-                    getMemberInfo();            //获取会员信息
-                }else{
-                    layer.msg("非会员无折扣");
-                }
-*/
+                /*
+                                if(quakooUtils.isNotBlack(cusLocInfo.userGradeId)){
+                                    getMemberInfo();            //获取会员信息
+                                }else{
+                                    layer.msg("非会员无折扣");
+                                }
+                */
             },
         });
     }
+
     /**获取商品SPU*/
     function getSPU() {
         $("#spuTable").bootstrapTable('destroy');
@@ -3476,12 +3842,13 @@
             }
         });
     }
+
     /**获取SKU
      * spuName:系列名字
      * categoryName:类目名字
      * integralNum:编码
      * */
-    function getSKU( spuid, spuName, categoryName, integralNum) {
+    function getSKU(spuid, spuName, categoryName, integralNum) {
         locOrder.series = spuName || "";
         var title = "";
         if (locOrder.type == 0) {
@@ -3507,13 +3874,14 @@
                 layer.close(index)
             },
             success: function () {
-                renderSku( spuid, categoryName, integralNum);
+                renderSku(spuid, categoryName, integralNum);
             },
         });
     }
+
     /**渲染SKU*/
     function renderSku(spuid, categoryName, integralNum) {
-        quakooData.ajaxGetData(config.getUrl_product_getSaleSKUAllList(), {subid: subid,spuid: spuid}, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_product_getSaleSKUAllList(), {subid: subid, spuid: spuid}, function (ret) {
             if (ret && ret.success) {
                 var column;
                 if (ret.data) {
@@ -3559,7 +3927,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ',' + index + ')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3602,7 +3970,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ',' + index + ')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3655,7 +4023,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ',' + index + ')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3698,7 +4066,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ',' + index + ')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3737,7 +4105,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ',' + index + ')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3776,7 +4144,7 @@
                                 },
                                 {
                                     field: '', title: '操作', formatter: function (value, row, index) {
-                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
+                                        return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ',' + index + ')\'>添加</div>';
                                     }
                                 }
                             ]
@@ -3820,7 +4188,7 @@
                             },
                             {
                                 field: '', title: '操作', formatter: function (value, row, index) {
-                                    return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ','+index+')\'>添加</div>';
+                                    return '<div class="btnSeeHistory" onclick=\'addConventionalProducts(' + spuid + ',' + JSON.stringify(row) + ',' + index + ')\'>添加</div>';
                                     /*
                                                                         if (type == 0) {
                                                                             return '<div class="btnSeeHistory" onclick="addConventionalProducts(' + spuid + ',' + row.id + ',' + row.code + ',' + row.retailPrice + ',' + index + ')">添加</div>';
@@ -3851,22 +4219,24 @@
             }
         })
     }
+
     /**获取会员信息*/
     function getMemberInfo() {
         locMember = {};//initialize 会员信息
-        quakooData.ajaxGetData(config.getUrl_usergrade_load(),{
-            id:cusLocInfo.userGradeId
-        },function (ret) {
-            if(ret&&ret.success){
-                for(var i in ret.data){
+        quakooData.ajaxGetData(config.getUrl_usergrade_load(), {
+            id: cusLocInfo.userGradeId
+        }, function (ret) {
+            if (ret && ret.success) {
+                for (var i in ret.data) {
                     locMember[i] = ret.data[i];
                 }
             }
         })
     }
+
     /**促销方式*/
     function getListPromotions() {
-        quakooData.ajaxGetData(config.getUrl_marketingcoupon_getCanUseList(), {subid:psid}, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_marketingcoupon_getCanUseList(), {subid: psid}, function (ret) {
             if (ret && ret.success) {
                 if (quakooUtils.isNotBlack(ret.data)) {
                     var html = '';
@@ -3876,16 +4246,16 @@
                     }
                     $("#ListPromotions").html(html);
                     selectTag($("#promotion"), function (ret) {
-                        if(quakooUtils.isNotBlack(locShopCart.skuidsList)){
+                        if (quakooUtils.isNotBlack(locShopCart.skuidsList)) {
                             locShopCart.couponId = ret.value;
                             countOrder();
-                        }else{
+                        } else {
                             layer.msg('请选择常规商品')
                         }
-/*
-                        quakooData.ajaxGetData(config.getUrl_marketingcoupon_calculateMoney(),{mcId:ret.value,num:locShopCart.goodsNumber,money:locShopCart.dicountPrice},function(ret){
-                        })
-*/
+                        /*
+                                                quakooData.ajaxGetData(config.getUrl_marketingcoupon_calculateMoney(),{mcId:ret.value,num:locShopCart.goodsNumber,money:locShopCart.dicountPrice},function(ret){
+                                                })
+                        */
                     });
                 } else {
                     $("#ListPromotions").html("暂无促销方式");
@@ -3893,6 +4263,7 @@
             }
         })
     }
+
     /**接口——获取企业类目列表*/
     function getListClass() {
         quakooData.ajaxGetData(config.getUrl_productCategory_getSubAllList(), {subid: psid}, function (ret) {
@@ -3912,6 +4283,7 @@
             }
         })
     }
+
     /**接口——获取企业品牌列表*/
     function getListBrand() {
         quakooData.ajaxGetData(config.getUrl_productBrand_getSubAllList(), {subid: psid}, function (ret) {
@@ -3931,6 +4303,7 @@
             }
         })
     }
+
     /**选择商品类目*/
     function selClass(_self, id, name) {
         $(_self).addClass("active").siblings().removeClass("active");
@@ -3938,6 +4311,7 @@
         locOrder.className = name;
         getSPU();
     }
+
     /**选择商品品牌*/
     function selBrand(_self, id, name) {
         $(_self).addClass("active").siblings().removeClass("active");
@@ -3945,8 +4319,9 @@
         locOrder.brandName = name;
         getSPU();
     }
+
     /**添加常规商品到订单*/
-    function addConventionalProducts(spuid,skuData,index) {
+    function addConventionalProducts(spuid, skuData, index) {
         var quantity = $("#skuTable tr[data-index='" + index + "'] input").val() * 1; //数量
         if (quakooUtils.isBlack(quantity)) {
             layer.msg("请输入添加数量");
@@ -3959,72 +4334,73 @@
         obj.num = quantity;
         obj.retailPrice = skuData.retailPrice;
         obj.canUseNum = skuData.canUseNum;
-        if(checkList(locShopCart.skuidsList,obj.id).flag){
-            locShopCart.skuidsList[checkList(locShopCart.skuidsList,obj.id).index].num += obj.num;
-        }else{
+        if (checkList(locShopCart.skuidsList, obj.id).flag) {
+            locShopCart.skuidsList[checkList(locShopCart.skuidsList, obj.id).index].num += obj.num;
+        } else {
             locShopCart.skuidsList.push(obj);
         }
         countOrder()
     }
+
     /**计算金额接口*/
-    function countOrder(){
+    function countOrder() {
         var params = {};
-        if(quakooUtils.isNotBlack(realpriceChange)){
+        if (quakooUtils.isNotBlack(realpriceChange)) {
             params.realPrice = realpriceChange;
             realpriceChange = "";
         }
         params.desc = locShopCart.desc;
-        if(quakooUtils.isNotBlack(cusLocInfo.id)){
+        if (quakooUtils.isNotBlack(cusLocInfo.id)) {
             params.uid = cusLocInfo.id;
         }
-        if(quakooUtils.isNotBlack(locShopCart.saleUid)){
+        if (quakooUtils.isNotBlack(locShopCart.saleUid)) {
             params.staffId = locShopCart.saleUid;
         }
-        if(quakooUtils.isNotBlack(locShopCart.machinistId)){
+        if (quakooUtils.isNotBlack(locShopCart.machinistId)) {
             params.machinistId = locShopCart.machinistId;
         }
-        if(quakooUtils.isNotBlack(ygInfo.now.id)){
+        if (quakooUtils.isNotBlack(ygInfo.now.id)) {
             params.oiId = ygInfo.now.id;
         }
-        if(quakooUtils.isNotBlack(locShopCart.bossDiscount)){
+        if (quakooUtils.isNotBlack(locShopCart.bossDiscount)) {
             params.discount = String(Number(locShopCart.bossDiscount));
-        }else{
+        } else {
             params.discount = String(10);
         }
-        if(quakooUtils.isNotBlack(locShopCart.couponId)){
+        if (quakooUtils.isNotBlack(locShopCart.couponId)) {
             params.couponId = locShopCart.couponId;
         }
-        if(locShopCart.valueCard.length>0){
+        if (locShopCart.valueCard.length > 0) {
             params.rechargePrice = locShopCart.valueCard[0].price;
         }
-        if(locShopCart.skuidsList.length>0){
+        if (locShopCart.skuidsList.length > 0) {
             params.skuJson = [];
-            for(var i=0;i<locShopCart.skuidsList.length;i++){
+            for (var i = 0; i < locShopCart.skuidsList.length; i++) {
                 var skuobj = {};
                 skuobj.skuId = locShopCart.skuidsList[i].id;
                 skuobj.spuId = locShopCart.skuidsList[i].spuid;
                 skuobj.num = locShopCart.skuidsList[i].num;
-                if(quakooUtils.isNotBlack(locShopCart.skuidsList[i].discount)){
+                if (quakooUtils.isNotBlack(locShopCart.skuidsList[i].discount)) {
                     skuobj.discount = String(Number(locShopCart.skuidsList[i].discount));
                 }
                 params.skuJson.push(skuobj);
             }
         }
-        if(locShopCart.surchargesJson.length>0){
+        if (locShopCart.surchargesJson.length > 0) {
             params.surchargesJson = [];
-            for(var i=0;i<locShopCart.surchargesJson.length;i++){
+            for (var i = 0; i < locShopCart.surchargesJson.length; i++) {
                 params.surchargesJson.push(locShopCart.surchargesJson[i]);
             }
         }
         params.skuJson = JSON.stringify(params.skuJson);
         params.surchargesJson = JSON.stringify(params.surchargesJson);
-        quakooData.ajaxGetData(config.getUrl_businessOrder_currentCalculate(),params,function (ret) {
-            if(ret&&ret.success){
-                if(quakooUtils.isNotBlack(ret.data)){
+        quakooData.ajaxGetData(config.getUrl_businessOrder_currentCalculate(), params, function (ret) {
+            if (ret && ret.success) {
+                if (quakooUtils.isNotBlack(ret.data)) {
                     getOrderInfoToLoc(ret.data);
                     renderList();
                 }
-            }else{
+            } else {
                 initOrderData();
                 renderList();
                 layer.msg(ret.data);
@@ -4032,20 +4408,21 @@
         })
 
     }
+
     /**获取订单数据保存为本地对象*/
-    function getOrderInfoToLoc(orderData){
+    function getOrderInfoToLoc(orderData) {
         locShopCart = {};
         locShopCart.skuidsList = []; //常规商品
         locShopCart.valueCard = []; //储值卡
         locShopCart.couponArr = []; //优惠券
         locShopCart.surchargesJson = [];//附加费用
-        if(orderData.staffId){
+        if (orderData.staffId) {
             locShopCart.saleUid = orderData.staffId;
         }
-        if(orderData.machinistId){
+        if (orderData.machinistId) {
             locShopCart.machinistId = orderData.machinistId;
         }
-        if(orderData.desc){
+        if (orderData.desc) {
             locShopCart.desc = orderData.desc;
         }
         locShopCart.bossDiscount = orderData.discount;
@@ -4053,28 +4430,28 @@
         locShopCart.discountPrice = orderData.discountPrice;
         locShopCart.collectPrice = orderData.realPrice;
         locShopCart.totalPrice = orderData.totalPrice;
-        if(orderData.rechargePrice > 0){
+        if (orderData.rechargePrice > 0) {
             locShopCart.valueCard[0] = {};
             locShopCart.valueCard[0].name = "储值卡";
             locShopCart.valueCard[0].price = orderData.rechargePrice;
         }
-        if(orderData.oddsPrice){
+        if (orderData.oddsPrice) {
             locShopCart.reductionPrice = orderData.oddsPrice;
         }
         //附加费用
-        for(var i = 0;i < orderData.surcharges.length;i++){
+        for (var i = 0; i < orderData.surcharges.length; i++) {
             locShopCart.surchargesJson.push(orderData.surcharges[i]);
         }
-        if(quakooUtils.isNotBlack(orderData.couponId)){
+        if (quakooUtils.isNotBlack(orderData.couponId)) {
             locShopCart.couponId = orderData.couponId;
         }
-        if(quakooUtils.isNotBlack(orderData.coupon)){
+        if (quakooUtils.isNotBlack(orderData.coupon)) {
             locShopCart.couponArr[0] = {};
             locShopCart.couponArr[0].id = orderData.coupon.id;
             locShopCart.couponArr[0].name = orderData.coupon.title;
             locShopCart.couponArr[0].price = orderData.coupon.descSubtract;
         }
-        for(var i = 0;i < orderData.skuList.length;i++){
+        for (var i = 0; i < orderData.skuList.length; i++) {
             locShopCart.skuidsList[i] = {};
             locShopCart.skuidsList[i].spuid = orderData.skuList[i].spuId;
             locShopCart.skuidsList[i].id = orderData.skuList[i].skuId;
@@ -4088,11 +4465,11 @@
     }
 
     /**检查list是否包含某一项*/
-    function checkList(arr,id) {
-        var obj={};
+    function checkList(arr, id) {
+        var obj = {};
         obj.flag = false;
-        for(var i=0;i<arr.length;i++){
-            if(arr[i].id == id){
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].id == id) {
                 obj.flag = true;
                 obj.index = i;
                 break;
@@ -4100,6 +4477,7 @@
         }
         return obj;
     }
+
     /**查看历史记录*/
     function hisOrder() {
         var index = layer.open({
@@ -4123,6 +4501,7 @@
                 renderHistory()
             },
         });
+
         function renderHistory() {
             //历史消费记录
             $("#cmMain-table1").bootstrapTable('destroy');
@@ -4155,7 +4534,7 @@
                     }
                 ],
                 queryParams: function (params) {
-                      params.page = this.pageNumber;
+                    params.page = this.pageNumber;
                     params.size = this.pageSize;
                     params.token = quakooUser.getUserInfo().token;
                     params.uid = cusLocInfo.id;
@@ -4171,22 +4550,23 @@
 
         }
     }
+
     /**保存订单*/
     function saveOrder(type) {
         var params = {};
-        if(quakooUtils.isNotBlack(cusLocInfo.id)){
+        if (quakooUtils.isNotBlack(cusLocInfo.id)) {
             params.uid = cusLocInfo.id;
         }
-        if(quakooUtils.isBlack(locShopCart.saleUid)){
+        if (quakooUtils.isBlack(locShopCart.saleUid)) {
             layer.msg("请选择销售员");
             return;
         }
-        if(quakooUtils.isBlack(locShopCart.surchargesJson)&&quakooUtils.isBlack(locShopCart.skuidsList)&&quakooUtils.isBlack(locShopCart.valueCard)){
+        if (quakooUtils.isBlack(locShopCart.surchargesJson) && quakooUtils.isBlack(locShopCart.skuidsList) && quakooUtils.isBlack(locShopCart.valueCard)) {
             layer.msg("订单不能为空");
             return
         }
         params.subId = subid;
-        if(ygInfo.now.id){
+        if (ygInfo.now.id) {
             params.oiId = ygInfo.now.id;
         }
         params.staffId = locShopCart.saleUid;
@@ -4195,26 +4575,26 @@
         params.originalPrice = locShopCart.originalPrice;
         params.discountPrice = locShopCart.discountPrice;
         params.realPrice = locShopCart.collectPrice;
-/*
-        if(type != true){//提交订单的时候不传
-            params.totalPrice = locShopCart.totalPrice;
-        }else{
-        }
-*/
+        /*
+                if(type != true){//提交订单的时候不传
+                    params.totalPrice = locShopCart.totalPrice;
+                }else{
+                }
+        */
         params.totalPrice = locShopCart.totalPrice;
         params.oddsPrice = locShopCart.reductionPrice;
         params.discount = locShopCart.bossDiscount;
-        if(locShopCart.valueCard.length>0){
+        if (locShopCart.valueCard.length > 0) {
             params.rechargePrice = locShopCart.valueCard[0].price;
         }
         params.makeStatus = 6;
-        if(quakooUtils.isNotBlack(locShopCart.couponId)&&quakooUtils.isNotBlack(locShopCart.couponArr)){
+        if (quakooUtils.isNotBlack(locShopCart.couponId) && quakooUtils.isNotBlack(locShopCart.couponArr)) {
             params.couponId = locShopCart.couponArr[0].id;
             params.couponFee = locShopCart.couponArr[0].price;
         }
-        if(locShopCart.skuidsList.length>0){
+        if (locShopCart.skuidsList.length > 0) {
             params.skuJson = [];
-            for(var i=0;i<locShopCart.skuidsList.length;i++){
+            for (var i = 0; i < locShopCart.skuidsList.length; i++) {
                 params.skuJson[i] = {};
                 params.skuJson[i].skuId = locShopCart.skuidsList[i].id;
                 params.skuJson[i].spuId = locShopCart.skuidsList[i].spuid;
@@ -4224,9 +4604,9 @@
                 params.skuJson[i].subtotal = locShopCart.skuidsList[i].code;
             }
         }
-        if(locShopCart.surchargesJson.length>0){
-            params.surchargesJson=[];
-            for(var i=0;i<locShopCart.surchargesJson.length;i++){
+        if (locShopCart.surchargesJson.length > 0) {
+            params.surchargesJson = [];
+            for (var i = 0; i < locShopCart.surchargesJson.length; i++) {
                 params.surchargesJson[i] = {};
                 params.surchargesJson[i].name = locShopCart.surchargesJson[i].name;
                 params.surchargesJson[i].price = locShopCart.surchargesJson[i].price;
@@ -4234,9 +4614,9 @@
         }
         params.skuJson = JSON.stringify(params.skuJson);
         params.surchargesJson = JSON.stringify(params.surchargesJson);
-        quakooData.ajaxGetData(config.getUrl_businessOrder_saveOrder(),params,function (ret) {
-            if(ret&&ret.success){
-                if(type){//提交订单
+        quakooData.ajaxGetData(config.getUrl_businessOrder_saveOrder(), params, function (ret) {
+            if (ret && ret.success) {
+                if (type) {//提交订单
                     /*结算清单初始化*/
                     settlementList.noPayNum = ret.data.realPrice;
                     settlementList.total = 0;
@@ -4246,19 +4626,20 @@
                     settlementList.valueCard.hasNum = ret.data.money;
                     settlementList.otherValue = {};
                     settlementList.otherValue.type = 1;
-                    for(var i in ret.data){
+                    for (var i in ret.data) {
                         receiptInfo[i] = ret.data[i];
                     }
                     submitOrder();
-                }else{//保存订单
+                } else {//保存订单
                     layer.msg("订单已保存")
                 }
-            }else{
+            } else {
                 layer.msg(ret.data)
             }
         })
 
     }
+
     /**提交订单*/
     function submitOrder() {
         printId = 0;
@@ -4277,22 +4658,22 @@
             btn: ['结算并打印小票', '取消'],
             move: $('#payDiaVertical .title'),
             yes: function (index, layero) {
-                if(quakooUtils.isBlack(settlementList.desc)){
+                if (quakooUtils.isBlack(settlementList.desc)) {
                     layer.msg("请输入小票备注");
-                }else{
-                    if(settlementList.noPayNum > 0){
-                        layer.confirm('支付未完成，是否去结算', {icon: 3, title:'提示'}, function(index){
+                } else {
+                    if (settlementList.noPayNum > 0) {
+                        layer.confirm('支付未完成，是否去结算', {icon: 3, title: '提示'}, function (index) {
                             printReceipts();
                             layer.close(index);
                         });
-                    }else{
+                    } else {
                         printReceipts();
                     }
                 }
             },
             btn2: function (index, layero) {
 
-                layer.confirm('关闭后，订单将作废，确定要关闭吗', {icon: 3, title:'提示'}, function(index){
+                layer.confirm('关闭后，订单将作废，确定要关闭吗', {icon: 3, title: '提示'}, function (index) {
                     layer.closeAll();
                 });
                 return false
@@ -4301,16 +4682,16 @@
                 //底部取货勾选框
                 $('.layui-layer-btn').append('<div class="noPickUp" id="noPickUp"><input type="checkbox" name="statusCheck" id="goodsChecked"/><label for="">未取货</label><input type="checkbox" name="statusCheck" id="processChecked"/><label for="">未加工</label></div>');
                 var dom = document.getElementById("noPickUp");
-                dom.addEventListener('click',function(e){
-                   var target = e.target;
-                   var flag = false;
-                   if($(target).prop("checked") == true||$(target).attr("checked") == true){
-                       flag = true;
-                   }
-                   $(this).find('input').removeAttr('checked');
-                   if(flag){
-                       $(target).prop("checked","checked");
-                   }
+                dom.addEventListener('click', function (e) {
+                    var target = e.target;
+                    var flag = false;
+                    if ($(target).prop("checked") == true || $(target).attr("checked") == true) {
+                        flag = true;
+                    }
+                    $(this).find('input').removeAttr('checked');
+                    if (flag) {
+                        $(target).prop("checked", "checked");
+                    }
                 });
 
                 renderSubmit();
@@ -4321,19 +4702,19 @@
 
     /**渲染提交订单信息*/
     function renderSubmit() {
-        var html = template('payDiaVerticalList', {orderInfo: locShopCart,settlement:settlementList});
-        var printHtml = template('printTicketTmp', {orderInfo: receiptInfo,settlement:settlementList});
+        var html = template('payDiaVerticalList', {orderInfo: locShopCart, settlement: settlementList});
+        var printHtml = template('printTicketTmp', {orderInfo: receiptInfo, settlement: settlementList});
         printContent = printHtml;
         $('#payDiaVertical').html(html);
         $('#printTicketUl').html(printHtml);
-        inputPress('countCash',countOffline,1);       //现金
-        inputPress('countValue',countOffline,2);      //储值卡
-        inputPress('countOtherValue',countOffline,3); //他人储值卡
+        inputPress('countCash', countOffline, 1);       //现金
+        inputPress('countValue', countOffline, 2);      //储值卡
+        inputPress('countOtherValue', countOffline, 3); //他人储值卡
 
         var timeout = null;
-        $("#paymentNote").bind("input propertyChange",function (){
+        $("#paymentNote").bind("input propertyChange", function () {
             settlementList.desc = $(this).val();
-            if(timeout !== null){
+            if (timeout !== null) {
                 clearTimeout(timeout);
             }
             timeout = setTimeout(renderSubmit, 2200);
@@ -4343,11 +4724,13 @@
             renderSubmit();
         })
     }
+
     /**获取订单详情*/
-    function getOrderInfo(orderId){
-        quakooData.ajaxGetData(config.getUrl_order_loadOrder(),{id:orderId},function (ret) {
+    function getOrderInfo(orderId) {
+        quakooData.ajaxGetData(config.getUrl_order_loadOrder(), {id: orderId}, function (ret) {
         })
     }
+
     /**线上付款*/
     function payDialog(type) {//前端定type：1 => 支付宝，2 => 微信
         // var paymentNote = $('#paymentNote').val();
@@ -4382,9 +4765,11 @@
             }
         });
     }
+
     function closePay() {
         layer.close(payDialogIndex);
     }
+
     //重绘
     function redraw() {
         $('.paymentPopup .speedProgress li').removeClass("active").eq(0).addClass("active");
@@ -4392,9 +4777,10 @@
         $('.paymentPopup .payContent .content-item.first').addClass('active');
         $('.paymentPopup .payContent input').val('');
     }
+
     //btn——输入金额下一步
     function firstNext() {
-        onlinePayMoney = $('#payNum').val()*100;
+        onlinePayMoney = $('#payNum').val() * 100;
         if (quakooUtils.isBlack(onlinePayMoney)) {
             layer.msg("请输入金额");
             return;
@@ -4426,8 +4812,8 @@
         param.type = 1;
         if (payType == 1) {
             quakooData.ajaxGetData(config.getUrl_order_handleAliBarcodeOrder(), param, function (ret) {
-                if(ret&&ret.success){
-                    settlementList.ali={};
+                if (ret && ret.success) {
+                    settlementList.ali = {};
                     settlementList.ali.money = ret.data.price;
                     settlementList.ali.id = ret.data.id;
                     settlementList.ali.status = 1;
@@ -4438,18 +4824,18 @@
                     $('.paymentPopup .payContent .content-item.third').addClass('active');
                     renderSubmit();
                     layer.msg("支付成功");
-                }else{
-                    if(quakooUtils.isNotBlack(ret.data)){
+                } else {
+                    if (quakooUtils.isNotBlack(ret.data)) {
                         layer.msg(ret.data);
-                    }else{
-                        layer.msg("支付失败",{icon:1})
+                    } else {
+                        layer.msg("支付失败", {icon: 1})
                     }
                 }
             });
         } else if (payType == 2) {
             quakooData.ajaxGetData(config.getUrl_order_handleWxBarcodeOrder(), param, function (ret) {
-                if(ret&&ret.success){
-                    settlementList.weixin={};
+                if (ret && ret.success) {
+                    settlementList.weixin = {};
                     settlementList.weixin.money = ret.data.price;
                     settlementList.weixin.id = ret.data.id;
                     settlementList.weixin.status = 1;
@@ -4460,11 +4846,11 @@
                     $('.paymentPopup .payContent .content-item.third').addClass('active');
                     renderSubmit();
                     layer.msg("支付成功");
-                }else{
-                    if(quakooUtils.isNotBlack(ret.data)){
+                } else {
+                    if (quakooUtils.isNotBlack(ret.data)) {
                         layer.msg(ret.data);
-                    }else{
-                        layer.msg("支付失败",{icon:1})
+                    } else {
+                        layer.msg("支付失败", {icon: 1})
                     }
                 }
             })
@@ -4480,39 +4866,39 @@
      * 线下支付
      * @param type:1（现金）；2（储值卡）；3（他人储值卡）
      */
-    function countOffline(value,type){
+    function countOffline(value, type) {
         var params = {};
         params.boId = receiptInfo.id;
         var price = value * 100;
-        if(price<0){
+        if (price < 0) {
             layer.msg("非法输入");
             return;
         }
-        if(type == 1){
+        if (type == 1) {
             params.cash = price;
-        }else if(type == 2){
-            if(price>settlementList.valueCard.hasNum){
+        } else if (type == 2) {
+            if (price > settlementList.valueCard.hasNum) {
                 layer.msg("储值卡余额不足");
                 return;
             }
             params.stored = price;
-        }else if(type == 3){
-            if(settlementList.otherValue.type==1){
+        } else if (type == 3) {
+            if (settlementList.otherValue.type == 1) {
                 layer.msg("未验证");
                 return;
             }
-            if(price>settlementList.otherValue.hasNum){
+            if (price > settlementList.otherValue.hasNum) {
                 layer.msg("储值卡余额不足");
                 return;
             }
             params.otherStored = price;
         }
-        quakooData.ajaxGetData(config.getUrl_businessOrder_settlementPay(),params,function (ret){
-            if(ret&&ret.success){
-                if(ret.data.ali){
+        quakooData.ajaxGetData(config.getUrl_businessOrder_settlementPay(), params, function (ret) {
+            if (ret && ret.success) {
+                if (ret.data.ali) {
                     settlementList.ali.money = ret.data.ali;
                 }
-                if(ret.data.wx){
+                if (ret.data.wx) {
                     settlementList.ali.wx = ret.data.wx;
                 }
                 settlementList.cash = ret.data.cash;
@@ -4521,32 +4907,33 @@
                 settlementList.noPayNum = ret.data.amount;
                 settlementList.total = ret.data.total;
                 renderSubmit()
-            }else{
+            } else {
                 layer.msg(ret.data);
             }
         });
     }
-    function inputPress(id,callback,type){
+
+    function inputPress(id, callback, type) {
         var timeout = null;
-        $("#"+id).bind("input propertyChange",function(){
+        $("#" + id).bind("input propertyChange", function () {
             var value = $(this).val();
-            if(timeout !== null){
+            if (timeout !== null) {
                 clearTimeout(timeout);
             }
-            timeout = setTimeout(function(){
-                callback(value,type);
-            },1200);
+            timeout = setTimeout(function () {
+                callback(value, type);
+            }, 1200);
         });
         document.getElementById(id).onkeypress = function (e) {
             // debugger
             var value;
             var keycode = e.keyCode;
-            if(keycode == 13){
+            if (keycode == 13) {
                 clearTimeout(timeout);
                 document.getElementById(id).blur();
                 e.preventDefault();
                 value = document.getElementById(id).value;
-                callback(value,type);
+                callback(value, type);
             }
         };
     }
@@ -4554,10 +4941,10 @@
     /**退款弹窗*/
     function reimburse(type) {
         var price;
-        type = type||payType;
-        if(type == 1){
+        type = type || payType;
+        if (type == 1) {
             price = settlementList.ali.money;
-        }else if(type == 2){
+        } else if (type == 2) {
             price = settlementList.weixin.money;
         }
         layer.open({
@@ -4582,14 +4969,14 @@
                                     renderSubmit();
                                     layer.msg("退款成功", {icon: 1});
                                     layer.close(index);
-                                    if(payDialogIndex){
+                                    if (payDialogIndex) {
                                         layer.close(payDialogIndex);
                                     }
                                 } else {
                                     layer.msg("退款失败");
                                 }
                             })
-                        }else{
+                        } else {
                             layer.msg(ret.data)
                         }
                     })
@@ -4602,7 +4989,7 @@
                                     renderSubmit();
                                     layer.msg("退款成功", {icon: 1});
                                     layer.close(index);
-                                    if(payDialogIndex){
+                                    if (payDialogIndex) {
                                         layer.close(payDialogIndex);
                                     }
                                 } else {
@@ -4619,8 +5006,8 @@
             btn2: function (index) {
 
             },
-            success:function (layero, index) {
-                $('.content-view-removeStaff p').html("确定退款"+ (price/100).toFixed(2) +"元？");
+            success: function (layero, index) {
+                $('.content-view-removeStaff p').html("确定退款" + (price / 100).toFixed(2) + "元？");
             }
 
         });
@@ -4630,33 +5017,33 @@
     function printReceipts() {
         var params = {};
         params.boId = receiptInfo.id;
-        if(settlementList.cash){
+        if (settlementList.cash) {
             params.cash = settlementList.cash;
         }
-        if(settlementList.integral&&settlementList.integral.usedNum){
+        if (settlementList.integral && settlementList.integral.usedNum) {
             params.score = settlementList.integral.usedNum;
         }
-        if(settlementList.valueCard&&settlementList.valueCard.usedNum){
+        if (settlementList.valueCard && settlementList.valueCard.usedNum) {
             params.stored = settlementList.valueCard.usedNum;
         }
-        if(settlementList.otherValue&&settlementList.otherValue.type==2&&settlementList.otherValue.usedNum){
+        if (settlementList.otherValue && settlementList.otherValue.type == 2 && settlementList.otherValue.usedNum) {
             params.otherStored = settlementList.otherValue.usedNum;
         }
-        if($("#goodsChecked").prop("checked") == true){
+        if ($("#goodsChecked").prop("checked") == true) {
             params.makeStatus = 3;
         }
-        if($("#processChecked").prop("checked") == true){
+        if ($("#processChecked").prop("checked") == true) {
             params.makeStatus = 1;
         }
         params.desc = settlementList.desc;
-        quakooData.ajaxGetData(config.getUrl_businessOrder_settlementOrder(),params,function (ret) {
+        quakooData.ajaxGetData(config.getUrl_businessOrder_settlementOrder(), params, function (ret) {
             return;
-            if(ret && ret.success){
-                if(ret.data){
-                   for(var i in ret.data){
-                       receiptInfo[i] = ret.data[i];
-                       renderSubmit();
-                   }
+            if (ret && ret.success) {
+                if (ret.data) {
+                    for (var i in ret.data) {
+                        receiptInfo[i] = ret.data[i];
+                        renderSubmit();
+                    }
                 }
             }
         });
@@ -4680,6 +5067,7 @@
             }
         })
     }
+
     //验证他人储值卡
     function verifyAnothorCard() {
         var index = layer.open({
@@ -4688,21 +5076,49 @@
             title: "验证他人储值卡",
             skin: "by-verifyCode",
             anim: 0,
-            area: ['240px','245px'],
+            area: ['240px', '245px'],
             closeBtn: 0,
             resize: false,
             shadeClose: true,
             content: $('#verifyAnothorCard'),
-            btn:['验证','取消'],
-            yes: function (){},
-            btn2: function (){},
-            success: function (){
+            btn: ['验证', '取消'],
+            yes: function () {
+            },
+            btn2: function () {
+            },
+            success: function () {
                 $("#verifyInput").val("");
             }
         })
     }
+
     /***************************************************订单信息结束*****************************************************/
-    
+
+    // 新增
+    function kjToast(_this) {
+        var title = '';
+        var index5 = layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['720px', '400px'],
+            anim: 0,
+            closeBtn: 0,
+            title: '',
+            shade: 0.1,
+            shadeClose: true, //开启遮罩关闭
+            scrollbar: false,
+            content: $('.kuaiJeiXiaoShou'),
+            resize: false,
+            btn: '关闭窗口',
+            move: $('.kuaiJeiXiaoShou'),
+            yes: function (index) {
+                layer.close(index)
+            },
+            success: function (layero) {
+
+            },
+        });
+    }
 </script>
 </body>
 

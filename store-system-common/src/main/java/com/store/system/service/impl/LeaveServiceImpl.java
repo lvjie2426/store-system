@@ -5,12 +5,14 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.baseFramework.transform.TransformFieldSetUtils;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientLeave;
 import com.store.system.dao.ApprovalLogDao;
 import com.store.system.dao.LeaveDao;
 import com.store.system.dao.UserDao;
 import com.store.system.dao.UserLeavePoolDao;
 import com.store.system.exception.StoreSystemException;
+import com.store.system.model.Order;
 import com.store.system.model.User;
 import com.store.system.model.attendance.ApprovalLog;
 import com.store.system.model.attendance.Leave;
@@ -20,8 +22,11 @@ import com.store.system.service.LeaveService;
 import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +53,10 @@ public class LeaveServiceImpl implements LeaveService {
     @Autowired
     private ApprovalLogDao approvalLogDao;
 
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+
+    private RowMapperHelp<Leave> rowMapper = new RowMapperHelp<>(Leave.class);
 
     private void check(Leave leave) {
         if (leave.getLeaveTime() == 0) throw new StoreSystemException("请假时长不能为空！");
@@ -155,16 +164,90 @@ public class LeaveServiceImpl implements LeaveService {
         return leaveDao.update(load);
     }
 
+    @Override
+    public Pager getList(Pager pager, int type, long endTime, long startTime,User user) throws Exception {
+        String sql = "select * from leave where 1=1";
+        String countSql = "select count(*) from leave where 1=1";
+        String limit = "  limit %d , %d ";
+        sql=sql+" and checkUid="+user.getId();
+        countSql=countSql+" and checkUid="+user.getId();
+        if (type > -1) {
+            sql = sql + " and TYPE=" + type;
+            countSql = countSql + " and TYPE=" + type;
+        }
+        if (startTime > 0) {
+            sql = sql + " and ctime>=" + startTime;
+            countSql = countSql + " and ctime>=" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and ctime<=" + endTime;
+            countSql = countSql + " and ctime<=" + endTime;
+        }
+
+
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<Leave> leaveList = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(countSql, Integer.class);
+        pager.setData(transformClients(leaveList));
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public Boolean update(Leave leave,User user) throws Exception {
+        check(leave);
+        Leave load = leaveDao.load(leave.getId());
+        if(load!=null){
+            load.setLeaveType(leave.getLeaveType());
+            load.setLeaveTime(leave.getLeaveTime());
+            load.setStatus(leave.getStatus());
+            load.setSid(leave.getSid());
+            load.setSubId(leave.getSubId());
+            load.setAskUid(leave.getAskUid());
+            load.setCheckUid(user.getId());
+            load.setCopyUid(leave.getCopyUid());
+            load.setStartTime(leave.getStartTime());
+            load.setEndTime(leave.getEndTime());
+            load.setImgs(leave.getImgs());
+            load.setContent(leave.getContent());
+        }
+        UserLeavePool userLeavePool = new UserLeavePool();
+        userLeavePool.setLid(load.getId());
+        userLeavePool.setStatus(load.getStatus());
+        userLeavePool.setUid(load.getAskUid());
+        userLeavePoolDao.update(userLeavePool);
+        if (load.getStatus() == Leave.status_success) {
+            long startDay = TimeUtils.getDayFormTime(load.getStartTime());
+            long endDay = TimeUtils.getDayFormTime(load.getEndTime());
+            for (long day = startDay; day <= endDay; day++) {
+                attendanceLogService.updateLeave(load.getAskUid(), day, load.getLeaveType(), load.getStartTime(), load.getEndTime());
+            }
+        }
+        return leaveDao.update(load);
+    }
+
     public ClientLeave transformClients(Leave leave) {
         ClientLeave clientLeave = new ClientLeave(leave);
         User load = userDao.load(leave.getCheckUid());
         User ask = userDao.load(leave.getAskUid());
         User copy = userDao.load(leave.getCopyUid());
-        clientLeave.setCheckName(load!=null?load.getName():"");
-        clientLeave.setCheckCover(load!=null?load.getCover():"");
-        clientLeave.setAskName(ask!=null?ask.getName():"");
-        clientLeave.setCopyName(copy!=null?copy.getName():"");
-        clientLeave.setCopyCover(copy!=null?copy.getCover():"");
+        clientLeave.setCheckName(load != null ? load.getName() : "");
+        clientLeave.setCheckCover(load != null ? load.getCover() : "");
+        clientLeave.setAskName(ask != null ? ask.getName() : "");
+        clientLeave.setAskCover(ask != null ? ask.getCover() : "");
+        clientLeave.setCopyName(copy != null ? copy.getName() : "");
+        clientLeave.setCopyCover(copy != null ? copy.getCover() : "");
         return clientLeave;
+    }
+
+    public List<ClientLeave> transformClients(List<Leave> leave) {
+        List<ClientLeave> list=new ArrayList<>(leave.size());
+        for (Leave le : leave) {
+            ClientLeave clientLeave = transformClients(le);
+            list.add(clientLeave);
+        }
+        return list;
     }
 }

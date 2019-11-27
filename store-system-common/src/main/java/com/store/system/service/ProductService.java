@@ -62,4 +62,31 @@ public interface ProductService {
 
     public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception;
 
+    /**
+     * 获取医疗器械商品列表
+     * @param pager
+     * @param subid
+     * @param startTime
+     * @param endTime
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public Pager getELSPUBackPager(Pager pager, long subid, long startTime, long endTime, long id)throws Exception;
+
+    /**
+     * 退货/销毁 申请
+     * @param ids
+     * @return
+     */
+    public Boolean updateSpuStatus(List<Long> ids,int start)throws Exception;
+
+    /**
+     * 销毁/退货审核通过
+     *
+     * @param ids
+     * @param user
+     * @return
+     */
+    public boolean checkStatusKillRe(List<Long> ids, User user)throws Exception;
 }

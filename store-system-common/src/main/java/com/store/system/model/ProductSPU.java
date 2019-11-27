@@ -30,6 +30,8 @@ public class ProductSPU implements Serializable {
 
     public static final int status_nomore=0;//正常
     public static final int status_delete=1;//删除
+    public static final int status_kill=2;//销毁
+    public static final int status_return=3;//退货
 
     public static final int sale_status_open=0;//开启
     public static final int sale_status_close=1;//关闭
@@ -46,6 +48,8 @@ public class ProductSPU implements Serializable {
     private long subid; //店铺ID (一级：公司)
 
     private long pid; //供应商ID
+
+    private long createid; //生产商ID
 
     private long cid; //类目ID
 

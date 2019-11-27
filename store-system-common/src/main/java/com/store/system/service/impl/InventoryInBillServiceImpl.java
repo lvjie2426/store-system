@@ -27,10 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Service
@@ -394,6 +391,37 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
         if(type>-1){
             sql = sql + " and `type` = " + type;
             sqlCount = sqlCount + " and `type` = " + type;
+        }
+        sql = sql + " order  by `ctime` desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        List<InventoryInBill> inBills = this.jdbcTemplate.query(sql, rowMapper);
+        int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
+        List<ClientInventoryInBill> data = transformClients(inBills);
+        pager.setData(data);
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public Pager getELAllPager(Pager pager, long subid, long startTime, long endTime, int type,String num) throws Exception {
+        String sql = "SELECT ib.* FROM `inventory_in_bill`  ib ,inventory_warehouse iw ,inventory_detail ide   WHERE iw.id=ib.wid and ide.wid=iw.id  subid = " + subid + " and `status` > " + InventoryInBill.status_edit;
+        String sqlCount = "SELECT count(1) FROM `inventory_in_bill`  ib ,inventory_warehouse iw ,inventory_detail ide   WHERE iw.id=ib.wid and ide.wid=iw.id  subid = " + subid + " and `status` > " + InventoryInBill.status_edit;
+        String limit = " limit %d , %d ";
+        if(startTime>0){
+            sql = sql + " and `ib.ctime` > " + startTime;
+            sqlCount = sqlCount + " and `ib.ctime` > " + startTime;
+        }
+        if(endTime>0){
+            sql = sql + " and `ib.ctime` < " + endTime;
+            sqlCount = sqlCount + " and `ib.ctime` < " + endTime;
+        }
+        if(type>-1){
+            sql = sql + " and `type` = " + type;
+            sqlCount = sqlCount + " and `type` = " + type;
+        }
+        if(StringUtils.isNotBlank(num)){
+            sql = sql + " and items like '%"+num+"%'";
+            sqlCount = sqlCount + " and items like '%"+num+"%'";
         }
         sql = sql + " order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());

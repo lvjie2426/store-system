@@ -4,13 +4,12 @@ import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.store.system.client.ClientApprovalLog;
+import com.store.system.client.ClientFillCard;
 import com.store.system.dao.*;
 import com.store.system.model.User;
-import com.store.system.model.attendance.ApprovalLog;
-import com.store.system.model.attendance.ChangeShift;
-import com.store.system.model.attendance.Leave;
-import com.store.system.model.attendance.WorkOverTime;
+import com.store.system.model.attendance.*;
 import com.store.system.service.ApprovalLogService;
+import com.store.system.service.FillCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +29,8 @@ public class ApprovalLogServiceImpl implements ApprovalLogService {
     private ApprovalLogDao approvalLogDao;
     @Autowired
     private ChangeShiftDao changeShiftDao;
+    @Autowired
+    private FillCardService fillCardService;
     @Autowired
     private WorkOverTimeDao workOverTimeDao;
     @Autowired
@@ -81,6 +82,13 @@ public class ApprovalLogServiceImpl implements ApprovalLogService {
                         }
                     } else if (approvalLog.getType() == ApprovalLog.type_card) {
                         //补卡
+                        ClientFillCard load = fillCardService.load(approvalLog.getTypeId());
+                        if(load!=null){
+                            clientApprovalLog.setData(load.getCtime());
+                            clientApprovalLog.setCheckName(load.getCheckName());
+                            clientApprovalLog.setStatus(load.getStatus());
+                        }
+
                     } else if (approvalLog.getType() == ApprovalLog.type_change) {
                         //调班
                         ChangeShift changeShift = changeShiftDao.load(approvalLog.getTypeId());
