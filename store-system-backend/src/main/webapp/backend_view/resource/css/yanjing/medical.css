@@ -373,3 +373,1448 @@
     float: right;
     margin-top: 8px;
 }
+
+.dwcc div.mbsc-w-p:nth-child(2) {
+    display: none;
+}
+
+.dwwl3 {
+    display: none;
+}
+
+.content1.bgcolor {
+    background-color: #ECECF3;
+}
+
+#status::after {
+    width: 12px;
+    height: 12px;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+}
+
+.mainGoodList {
+    width: 100%;
+    /*  height:  462px;
+    overflow:  scroll;  */
+    box-sizing: border-box;
+    padding: 16px 16px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+}
+
+.goot-select {
+    color: rgba(57, 57, 83, 1);
+    width: 156px;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 30px;
+    font-family: PingFangSC-Semibold;
+    flex: 0 0 156px;
+    margin-bottom: 12px;
+}
+
+.goot-select1 {
+    color: rgba(57, 57, 83, 1);
+    width: 101px;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 30px;
+    font-family: PingFangSC-Semibold;
+    flex: 0 0 101px;
+    margin-bottom: 12px;
+}
+
+.goot-select.f1 {
+    margin-bottom: 0px;
+}
+
+.goot-select-items {
+    width: 100%;
+    color: rgba(130, 130, 151, 1);
+    height: 28px;
+    line-height: 28px;
+    padding: 0px 8px;
+    overflow: hidden;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+
+.goot-select-items.g1 {
+    margin-top: 22.8px;
+}
+
+.goot-select-items span {
+    font-size: 12px;
+    float: left;
+    font-weight: normal;
+}
+
+.goot-items {
+    line-height: 17px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    margin-bottom: 6px;
+}
+
+.goot-items1 {
+    line-height: 17px;
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    margin-top: -1px;
+    overflow: hidden;
+}
+
+.goot-items1 a {
+    color: rgba(65, 134, 220, 1);
+    text-decoration: underline;
+}
+
+.goot-select-items i {
+    float: right;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.zhibaoTime {
+    line-height: 16px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 11px;
+    text-align: left;
+    font-family: Roboto-Bold;
+    margin-top: 4px;
+}
+
+.goot-goot-putong {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0px 16px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.goot-goot-putong li {
+    line-height: 36px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    overflow: hidden;
+}
+
+
+.goot-goot-putong li .select {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 2px;
+    padding: 0px 2px;
+    background: #fff;
+    border: 1px solid #d2d2d2;
+    cursor: pointer;
+}
+
+.goot-goot-putong li .select:hover {
+    border: 1px solid rgba(65, 134, 220, 1);
+}
+
+.goot-goot-putong li .select.active {
+    background-color: rgba(65, 134, 220, 1);
+}
+
+.select i {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 1);
+    font-weight: normal;
+}
+
+.goot-goot-huiyuan .lingshou {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 16px;
+    line-height: 36px;
+    box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
+    margin-top: 12px;
+}
+
+.zhekou {
+    width: 100%;
+    background-color: rgba(244, 244, 248, 1);
+    padding: 0px 16px;
+    overflow: hidden;
+    line-height: 36px;
+    box-shadow: 0px 1px 0px 0px rgba(130, 130, 151, 0.1);
+}
+
+.goot-left {
+    float: left;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+
+.goot-Right {
+    float: right;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+}
+
+.yj-radio {
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin-top: 10px;
+    border-radius: 100px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(130, 130, 151, 0.2);
+    margin-right: 4px;
+}
+
+.yj-radio input {
+    width: 0;
+    height: 0;
+}
+
+.yj-radio.active {
+    border: 5px solid rgba(65, 134, 220, 1);
+}
+
+.goot-Right a {
+    color: rgba(65, 134, 220, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+    text-decoration: underline;
+    margin-left: 4px;
+}
+
+.lingshou {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    padding-top: 12px;
+}
+
+.lingshou.l1 {
+    height: 56px;
+}
+
+#inNum {
+    width: 156px;
+    height: 28px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    padding-left: 8px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+}
+
+#inNum::-webkit-input-placeholder {
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+}
+
+.useTime {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+}
+
+.useTime div {
+    height: 17px;
+    line-height: 17px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+    margin-bottom: 6px;
+}
+
+.useTime .uTime {
+    width: 180px;
+    box-sizing: border-box;
+    padding: 5px 8px 6px 8px;
+    height: 28px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    overflow: hidden;
+}
+
+.useTime .uTime span {
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: Roboto-Medium;
+    float: left;
+}
+
+.useTime .uTime i {
+    float: right;
+    font-size: 12px;
+    color: rgba(130, 130, 151, 1);
+}
+
+.warnInput {
+    width: 60px;
+    height: 28px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    padding-left: 8px;
+}
+
+/* 注册医疗信息 */
+.zhuceInfo {
+    border: 1px solid #eee;
+}
+
+.zhuceInfo li {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 16px;
+    margin-bottom: 12px;
+}
+
+.zhuceInfo-first {
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    background-color: rgba(255, 255, 255, 1);
+    overflow: hidden;
+    color: rgba(221, 91, 75, 1);
+    font-size: 12px;
+    box-shadow: 0px 1px 0px 0px rgba(244, 244, 248, 1), 0px -1px 0px 0px rgba(244, 244, 248, 1);
+}
+
+.zhuceInfo-first i {
+    color: rgba(221, 91, 75, 1);
+    font-size: 12px;
+    text-align: left;
+    float: right;
+    font-family: PingFangSC-Semibold;
+}
+
+.zhuceInfo-items {
+    float: left;
+}
+
+.zhucehao div {
+    margin-top: 12px;
+}
+
+.zhucehao div,
+.zhucehao .zhucehao2 .guoxie {
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+}
+
+.zhucehao2 .guoxie {
+    display: inline-block;
+    width: 64px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+}
+
+.guoInput {
+    width: 92px;
+    height: 28px;
+    padding-left: 8px;
+}
+
+.guoInput::-webkit-input-placeholder {
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+}
+
+.zhuceUl li {
+    padding: 0px;
+}
+
+.guoxie {
+    display: inline-block;
+    width: 64px;
+    height: 28px;
+    line-height: 27px;
+    text-align: center;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    border-right: none;
+    float: left;
+    vertical-align: top;
+}
+
+.guoInput {
+    border: 1px solid rgba(236, 236, 244, 1);
+    border-radius: 2px;
+}
+
+.guoTime {
+    width: 156px;
+    line-height: 26px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    overflow: hidden;
+    border: 1px solid rgba(236, 236, 244, 1);
+    padding: 0px 8px;
+    font-size: 12px;
+    text-align: left;
+    color: rgba(130, 130, 151, 1);
+}
+
+.guoTime i {
+    float: right;
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+}
+
+.guoxieLast div {
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    line-height: 17px;
+}
+
+.guoxieLast div span {
+    color: rgba(130, 130, 151, 1);
+    font-family: Roboto-Medium;
+}
+
+.guoImgs {
+    width: 101px;
+    height: 101px;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    margin-top: 6px;
+}
+
+.qiyeLists {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 8px 16px 8px 16px;
+}
+
+.daoqiWarn {
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 2px;
+    background-color: rgba(221, 91, 75, 0.1);
+    border: 1px solid rgba(221, 91, 75, 0.1);
+    color: rgba(221, 91, 75, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+    overflow: hidden;
+    padding: 0px 8px;
+    margin-bottom: 8px;
+}
+
+.daoqiWarn .warnLeft {
+    float: left;
+}
+
+.warn1 {
+    padding-bottom: 6px;
+}
+
+.warnLeft i {
+    vertical-align: middle;
+}
+
+.warnRight {
+    float: right;
+}
+
+/* 新增企业 */
+.proNames {
+    width: 156px;
+    height: 28px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: normal;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    padding-left: 8px;
+}
+
+.proNames::-webkit-input-placeholder {
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+
+.showAddress {
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    box-sizing: border-box;
+    overflow: hidden;
+    padding-left: 8px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+    margin-bottom: 12px;
+}
+
+.yingyeTu {
+    line-height: 17px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    margin-bottom: 6px;
+}
+
+.img1 {
+    width: 101px;
+    height: 101px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.selectPro {
+    vertical-align: sub;
+}
+
+.goot-goot-putong.s1 {
+    border-bottom: 1px solid #eee;
+}
+
+.mainGoodList.m1 {
+    padding: 11px 16px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+/* 改变按钮样式 */
+.my-skin .layui-layer-btn a {
+    background-color: rgba(130, 130, 151, 0.1);
+    color: rgba(130, 130, 151, 1);
+    border-color: rgba(236, 236, 244, 1);
+}
+
+/* 员工列表 */
+.yuangongUl {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 16px 16px 16px;
+    border-radius: 2px;
+}
+
+.yuangongUl li {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #eee;
+    white-space: nowrap;
+}
+
+.yuangongUl .first {
+    background-color: rgba(130, 130, 151, 0.1);
+}
+
+.yuangongUl .hideBorder .others {
+    width: 100%;
+    padding: 0px 12px;
+    line-height: 28px;
+    background-color: rgba(255, 255, 255, 1);
+    overflow: hidden;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+    border: 1px solid #eee;
+    border-top: 0px;
+}
+
+.yuangongUl .others .yuanLeft {
+    float: left;
+}
+
+.yuangongUl .others .yuanRight {
+    float: right;
+}
+
+.ygList1,
+.ygList2,
+.ygList3,
+.ygList4,
+.ygList5 {
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    padding-left: 12px;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+
+.ygList1 {
+    width: 120px;
+}
+
+.ygList2 {
+    width: 120px;
+}
+
+.ygList3 {
+    width: 80px;
+}
+
+.ygList4 {
+    width: 128px;
+}
+
+.ygList5 {
+    width: 240px;
+}
+
+.showYuanList {
+    border: 1px solid #eee;
+    border-top: 0px;
+}
+
+.showYuanList li {
+    border: 0px;
+}
+
+.showYuanList li .ygList1,
+.showYuanList li .ygList2,
+.showYuanList li .ygList3,
+.showYuanList li .ygList4,
+.showYuanList li .ygList5 {
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+
+.yuangongUl .hideBorder {
+    border: 0px;
+}
+
+/* 员工列表(培训记录) */
+.pxInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 16px;
+    margin-top: -17px;
+}
+
+.pxDanwei {
+    line-height: 17px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+
+.pxIn {
+    width: 328px;
+    height: 80px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    padding-top: 5px;
+    padding-left: 8px;
+    color: rgba(57, 57, 83, 1);
+    font-family: PingFangSC-Medium;
+    resize: none;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+
+.beizhu {
+    width: 328px;
+    height: 28px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(57, 57, 83, 1);
+    margin-top: 6px;
+    padding-left: 8px;
+}
+
+.beizhu::-webkit-input-placeholder {
+    color: rgba(130, 130, 151, 1);
+}
+
+/* 出库记录 */
+.ckReload {
+    background-color: rgba(236, 236, 244, 1);
+    padding-bottom: 12px;
+}
+
+.ckReload li {
+    float: left;
+    height: 52px;
+    line-height: 52px;
+    margin-right: 24px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: none;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+
+.ckReload li.active {
+    color: rgba(57, 57, 83, 1);
+    border-bottom: 2px solid #393953;
+}
+
+.ckReload li:hover {
+    border-bottom: 2px solid #393953;
+}
+
+.content3_1,
+.content3_2,
+.content3_3 {
+    display: none;
+}
+
+.content3_1.active,
+.content3_2.active,
+.content3_3.active {
+    display: block;
+}
+
+/* 需要补充说明商品 */
+#table2 {
+    display: none;
+}
+
+/* 顶部 */
+.btn1,
+.btn2 {
+    display: inline-block;
+    width: 64px;
+    padding: 0px 6px;
+    line-height: 28px;
+    border-radius: 2px;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.btn1 {
+    color: rgba(65, 134, 220, 1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    background-color: rgba(65, 134, 220, 0.1);
+    margin-right: 11px;
+}
+
+.btn2 {
+    color: rgba(87, 184, 219, 1);
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+    background-color: rgba(87, 184, 219, 0.1);
+    border: 1px solid rgba(87, 184, 219, 0.1);
+    margin-right: 20px;
+}
+
+.btn.b1 {
+    height: 28px;
+}
+
+.addbtn {
+    display: inline-block;
+    width: 64px;
+    line-height: 28px;
+    border-radius: 2px;
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+/* 所有商品中的验收结果样式 */
+.yanResult {
+    display: inline-block;
+    width: 45px;
+    line-height: 18px;
+    border-radius: 2px;
+    color: rgba(130, 130, 151, 1);
+    background-color: rgba(244, 244, 248, 1);
+    text-align: center;
+}
+
+.yanResult.active {
+    color: #fff;
+    background-color: rgba(65, 134, 220, 1);
+}
+
+/* 弹窗头部 */
+.toastHead {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    box-sizing: border-box;
+    padding: 0px 16px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: PingFangSC-Semibold;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+    overflow: hidden;
+}
+
+#addPopupName {
+    float: left;
+    cursor: move;
+    width: 70%;
+}
+
+#removeStaff {
+    float: right;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+}
+
+#status1 {
+    display: inline-block;
+    width: 24px;
+    height: 16px;
+    border-radius: 100px;
+    background-color: rgba(130, 130, 151, 0.3);
+    position: relative;
+    vertical-align: middle;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+#status1::after {
+    content: ' ';
+    width: 12px;
+    height: 12px;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    bottom: 2px;
+}
+
+#status1.active {
+    background-color: rgba(65, 134, 220, 1);
+}
+
+#status1.active::after {
+    left: inherit;
+    right: 2px;
+}
+
+/* 企业列表弹窗头部 */
+.qyHeader {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    box-sizing: border-box;
+    padding: 0px 16px;
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: PingFangSC-Semibold;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+    overflow: hidden;
+}
+
+#qyList1,
+#ygLi1 {
+    float: left;
+}
+
+#qyList2 {
+    float: right;
+    width: 64px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    text-align: center;
+    color: #fff;
+    background-color: rgba(65, 134, 220, 1);
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 8px;
+}
+
+#ygLi2,
+#ygLi3 {
+    float: right;
+    width: 64px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: normal;
+    margin-top: 8px;
+}
+
+#ygLi2 {
+    background-color: rgba(87, 184, 219, 0.1);
+    border: 1px solid rgba(87, 184, 219, 0.1);
+    color: rgba(87, 184, 219, 1);
+    margin-left: 11px;
+}
+
+#ygLi3 {
+    background-color: rgba(65, 134, 220, 0.1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    color: rgba(65, 134, 220, 1);
+}
+
+/* 体检记录弹窗头部 */
+.ygDetail1 {
+    float: left;
+    color: rgba(57, 57, 83, 1);
+    font-size: 13px;
+    text-align: left;
+    font-family: PingFangSC-Semibold;
+}
+
+.ygDetail2,
+.ygDetail3 {
+    float: right;
+    height: 28px;
+    text-align: left;
+    line-height: 28px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    font-weight: normal;
+    font-family: PingFangSC-Medium;
+    overflow: hidden;
+    margin-top: 8px;
+    padding: 0px 8px;
+}
+
+.ygDetail2 {
+    width: 156px;
+    margin-right: 8px;
+}
+
+.ygDetail2 i {
+    float: right;
+    color: rgba(130, 130, 151, 1);
+}
+
+.ygDetail3 {
+    width: 76px;
+}
+
+.ygDetail3 i {
+    float: right;
+    color: rgba(130, 130, 151, 1);
+}
+
+.checksc {
+    display: block;
+}
+
+
+.icon10 {
+    position: relative;
+    left: 135px;
+    top: -24px;
+}
+
+.icon11 {
+    position: relative;
+    left: 132px;
+    top: -22px;
+    font-size: 16px;
+    color: #828297;
+}
+
+.uploadPic.n1 {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.t1 {
+    line-height: 28px;
+}
+
+.qyshow1 {
+    display: none;
+}
+
+.qyshow2 {
+    display: none;
+}
+
+.s1 {
+    border-top: 1px solid #eee;
+}
+
+.selectBox {
+    width: 156px;
+    height: 28px;
+    line-height: 28px;
+}
+
+.optionBox .optionUL .optionItems {
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+}
+
+.addGoods.layui-layer .layui-layer-title {
+    padding: 0;
+}
+
+#dayNum {
+    border: none;
+}
+
+.dhNum {
+    width: 156px;
+    padding-left: 8px;
+    height: 28px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(57, 57, 83, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+}
+
+.iconfont {
+    font-weight: normal;
+}
+
+.zcImg {
+    display: inline-block;
+    width: 101px;
+    text-align: center;
+    line-height: 101px;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    margin-top: 6px;
+}
+
+.goods-range-body {
+    width: 100%;
+    height: 17px;
+    line-height: 17px;
+    color: rgba(65, 134, 220, 1);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: PingFangSC-Semibold;
+    text-decoration: underline;
+}
+
+/* 设置现货范围 */
+.range-header {
+    height: 40px;
+    line-height: 40px;
+}
+
+.range-header div {
+    float: left;
+    font-size: 12px;
+    font-family: PingFangSC-Medium;
+}
+
+.range-header em {
+    width: 12px;
+    height: 12px;
+    border-radius: 1px;
+    float: left;
+    margin-top: 14px;
+    margin-right: 6px;
+}
+
+.now-goods-range {
+    color: rgba(65, 134, 220, 1);
+}
+
+.now-goods-range em {
+    background-color: rgba(65, 134, 220, 0.1);
+    border: 1px solid rgba(65, 134, 220, 0.2);
+}
+
+.dingzhi-range {
+    margin-left: 16px;
+    color: #DD5B4B;
+}
+
+.dingzhi-range em {
+    background-color: rgba(221, 91, 75, 0.1);
+    border: 1px solid rgba(221, 91, 75, 0.2);
+}
+
+.yj-layui-table-header {
+    position: relative;
+    width: 60px;
+    height: 36px;
+}
+
+.yj-layui-table-header > span:first-of-type {
+    position: absolute;
+    top: 0;
+    right: 7px;
+}
+
+.yj-layui-table-header > span:last-of-type {
+    position: absolute;
+    bottom: 0;
+    left: 7px;
+}
+
+.yj-layui-table-header:after {
+    content: "";
+    display: block;
+    width: 70px;
+    height: 1px;
+    position: absolute;
+    transform: rotate(31deg);
+    bottom: 18px;
+    left: -5px;
+    background: #ECECF4;
+}
+
+/*.guoxieLast .imgBox {
+    width: 100px;
+    height: 100px;
+    float: left;
+    overflow: hidden;
+    border-radius: 2px;
+    margin-right: 8px;
+    margin-top: 6px;
+    position: relative;
+}*/
+
+/*新加样式*/
+.guoTime.g1 {
+    margin-top: 2px;
+}
+
+.tjHeader {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    box-sizing: border-box;
+    padding: 0px 8px 0px 16px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(236, 236, 244, 1);
+    font-size: 13px;
+    color: #393953;
+    font-family: PingFangSC-Semibold;
+    clear: both;
+}
+
+.tjLeft {
+    float: left;
+    font-weight: 600;
+}
+
+.tjRight {
+    float: right;
+}
+
+.selectBox.tj3 {
+    width: 76px;
+}
+
+.selectBox.tj2,
+.selectBox.tj3 {
+    vertical-align: middle;
+}
+
+.clearfix:after {
+    content: "020";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.my-skin1 .layui-layer-btn .layui-layer-btn0,
+.my-skin1 .layui-layer-btn .layui-layer-btn1 {
+    width: 44px;
+    height: 32px;
+    padding: 0px;
+    text-align: center;
+    border-radius: 2px;
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+}
+
+.my-skin1 .layui-layer-btn .layui-layer-btn1 {
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+    margin-left: 8px;
+}
+
+.my-skin1 .layui-layer-btn .layui-layer-btn0 {
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+}
+
+.duoXuans {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    padding: 0px 2px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 2px;
+    background-color: #F4F4F8;
+    border: 1px solid rgba(130, 130, 151, 0.2);
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.duoXuans i {
+    display: none;
+    font-size: 12px;
+    color: #fff;
+}
+
+.duoXuans.active i {
+    display: inline-block;
+}
+
+.duoXuans.active {
+    background-color: rgba(65, 134, 220, 1);
+}
+
+.ygList1,
+.ygList2 {
+    width: 120px;
+}
+
+.ygList4 {
+    width: 128px;
+}
+
+.ygList5 {
+    width: 240px;
+}
+
+.ygList1,
+.ygList2,
+.ygList3,
+.ygList4,
+.ygList5 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.winFooterBox {
+    background-color: #fff;
+    width: 100%;
+    overflow: hidden;
+    text-align: left;
+}
+
+#numLen {
+    display: inline-block;
+    line-height: 34px;
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: Roboto-Medium;
+    padding-left: 10px;
+}
+
+.winFooterLast {
+    float: right;
+}
+
+.btnPreservation, .btnSubmission {
+    display: inline-block;
+    width: 68px;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-family: PingFangSC-Semibold;
+}
+
+.btnSubmission {
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+}
+
+.btnPreservation {
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+    margin-left: 6px;
+}
+
+/*首页底部*/
+.showShouyeFooter {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 52px;
+    line-height: 52px;
+    background-color: #fff;
+    padding: 0px 12px 0px 16px;
+}
+
+.xuanZhongXiang {
+    color: rgba(130, 130, 151, 1);
+    font-size: 12px;
+    text-align: left;
+    font-family: PingFangSC-Medium;
+}
+
+.xuanRight {
+    float: right;
+}
+
+.quXiaoXuanZhong, .shenHeTongguo, .piLiangDaYin {
+    display: inline-block;
+    width: 84px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 2px;
+    font-size: 13px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+    margin-left: 8px;
+}
+
+.quXiaoXuanZhong {
+    background-color: rgba(244, 244, 248, 1);
+    border: 1px solid rgba(236, 236, 244, 1);
+    color: rgba(130, 130, 151, 1);
+}
+
+.piLiangDaYin {
+    background-color: rgba(65, 134, 220, 0.1);
+    border: 1px solid rgba(65, 134, 220, 0.1);
+    color: rgba(65, 134, 220, 1);
+
+}
+
+.shenHeTongguo {
+    background-color: rgba(65, 134, 220, 1);
+    color: rgba(255, 255, 255, 1);
+}
+
+#select-time-header {
+    width: 180px;
+    height: 32px;
+    border-right: 2px solid #eee;
+}
+#select-time-header .yj-demo-time {
+    height: 100%;
+}
+
+#select-time-header .yj-demo-time .yj-date {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    box-shadow: 1px 0px 0px 0px rgba(236, 236, 244, 1);
+}
+.xiaoShouShenHe {
+    display: inline-block;
+    width: 45px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 2px;
+    background-color: rgba(244, 244, 248, 1);
+    color: rgba(130, 130, 151, 1);
+    font-size: 11px;
+    font-family: PingFangSC-Semibold;
+}
+.xiaoShouShenHe.suc {
+    background-color: #4186DC;
+    color: #fff;
+}
+
+.layui-upload .imgBox{
+    width: 98px;height: 98px;
+    float: left;
+    overflow: hidden;
+    border-radius: 2px;
+    margin: 0 8px 8px 0;
+    position: relative;
+}
+.layui-upload .imgBox img{
+    display: block;
+}
+.layui-upload .imgBox .del{
+    position: absolute;top: 0;left: 0;
+    width: 100%;height: 100%;
+    background: rgba(0,0,0,0.5) url("../../img/shanchu.png") no-repeat center;
+    background-size: 40px;
+    transition: .2s;
+    opacity: 0;
+    z-index: -1;cursor: pointer;
+}
+.layui-upload .imgBox:hover .del{
+    z-index: 1;
+    opacity: 1;
+}
+.uploadPic span.layui-btn {
+     display: inline-block;
+     width: 100px;
+     height: 100px;
+     line-height: 100px;
+     text-align: center;
+     background: #F4F4F8;
+     margin: 0 8px 8px 0;
+    color: #828297;
+}
