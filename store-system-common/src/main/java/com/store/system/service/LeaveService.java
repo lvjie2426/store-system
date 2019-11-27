@@ -54,7 +54,7 @@ public interface LeaveService {
      * @param startTime
      * @return
      */
-    public Pager getList(Pager pager, int type, long endTime, long startTime)throws Exception;
+    public Pager getList(Pager pager, int type, long endTime, long startTime,User user)throws Exception;
 
     /**
      * 编辑请假信息

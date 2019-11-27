@@ -165,10 +165,12 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public Pager getList(Pager pager, int type, long endTime, long startTime) throws Exception {
+    public Pager getList(Pager pager, int type, long endTime, long startTime,User user) throws Exception {
         String sql = "select * from leave where 1=1";
         String countSql = "select count(*) from leave where 1=1";
         String limit = "  limit %d , %d ";
+        sql=sql+" and checkUid="+user.getId();
+        countSql=countSql+" and checkUid="+user.getId();
         if (type > -1) {
             sql = sql + " and TYPE=" + type;
             countSql = countSql + " and TYPE=" + type;
