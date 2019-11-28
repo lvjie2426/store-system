@@ -48,6 +48,7 @@
             <span class="btn1" onclick="proLists()">企业列表</span>
             <span class="btn2" onclick="employList()">员工列表</span>
             <input type="search" class="search-box" placeholder="搜索生产批号">
+            <span class="scSearch" onclick="scSearch()">搜索</span>
             <span class="addbtn" onclick="addGoods(false)">新增商品</span>
         </li>
     </ol>
@@ -89,6 +90,12 @@
     </ul>
     <div class="content3_1 tab-items active">
         <table id="xsReload-table" data-toggle="table" class="table table-border"></table>
+    </div>
+    <div class="content3_2 tab-items" style="display: none;">
+        <table id="thReload-table" data-toggle="table" class="table table-border"></table>
+    </div>
+    <div class="content3_3 tab-items" style="display: none;">
+        <table id="xhReload-table" data-toggle="table" class="table table-border"></table>
     </div>
     <div class="content-view"></div>
 </div>
@@ -608,7 +615,8 @@
             <div class="goods-select-title">品牌</div>
             <div class="selectBox" id="yj-add-brand">
                 <div class="select-box-header">
-                    <input type="text" id="brandName" onkeyup="changeBrand(this)" value="<%=list.brandName%>" placeholder="品牌"><i class="iconfont icon-ico_arrow_down" ></i>
+                    <input type="text" id="brandName" onkeyup="changeBrand(this)" value="<%=list.brandName%>"
+                           placeholder="品牌"><i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
@@ -623,7 +631,8 @@
             <div class="goods-select-title">系列</div>
             <div class="selectBox" onkeyup="changeSeries(this)" id="yj-add-series">
                 <div class="select-box-header">
-                    <input type="text" id="seriesName" value="<%=list.seriesName%>" placeholder="系列"><i class="iconfont icon-ico_arrow_down" ></i>
+                    <input type="text" id="seriesName" value="<%=list.seriesName%>" placeholder="系列"><i
+                        class="iconfont icon-ico_arrow_down"></i>
                 </div>
             </div>
         </div>
@@ -641,7 +650,7 @@
                             <%}else{%>
                                 供应商
                             <%}%>
-                    </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </span> <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
@@ -666,7 +675,7 @@
                             <%}else{%>
                                 类型
                             <%}%>
-                        </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                        </span> <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
@@ -691,12 +700,14 @@
                         <%}else{%>
                             更换周期
                         <%}%>
-                    </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </span> <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
                         <%for(var i=0;i< zhouqiData.length;i++){%>
-                        <li value="<%=zhouqiData[i].id%>" data-pnid="<%=zhouqiData[i].pnid%>"><%=zhouqiData[i].content%></li>
+                        <li value="<%=zhouqiData[i].id%>" data-pnid="<%=zhouqiData[i].pnid%>">
+                            <%=zhouqiData[i].content%>
+                        </li>
                         <%}%>
                     </ul>
                 </div>
@@ -704,8 +715,9 @@
         </div>
         <div class="goods-select">
             <div class="goods-select-title">包装</div>
-            <div class="selectBox" >
-                <input type="text" value="<%=list.properties[7]%>" class="yj-input fl" id="yj-add-baozhuang" data-pnid="7" style="width: 75%">
+            <div class="selectBox">
+                <input type="text" value="<%=list.properties[7]%>" class="yj-input fl" id="yj-add-baozhuang"
+                       data-pnid="7" style="width: 75%">
                 <span style="float: right">片裝</span>
             </div>
         </div>
@@ -724,12 +736,12 @@
                         <%}else{%>
                             生产商
                         <%}%>
-                    </span> <i class="iconfont icon-ico_arrow_down" ></i>
+                    </span> <i class="iconfont icon-ico_arrow_down"></i>
                 </div>
                 <div class="optionBox">
                     <ul class="optionUL">
                         <%for(var i=0;i< shengchanData.length;i++){%>
-                        <li value="<%=shengchanData[i].id%>" ><%=shengchanData[i].name%></li>
+                        <li value="<%=shengchanData[i].id%>"><%=shengchanData[i].name%></li>
                         <%}%>
                     </ul>
                 </div>
@@ -737,122 +749,127 @@
         </div>
         <div class="goods-select">
             <div class="goods-select-title">质保时长/天</div>
-            <div class="selectBox" >
+            <div class="selectBox">
                 <%if(list.properties && list.properties[8]){%>
-                <input type="text" placeholder="天数" value="<%=list.properties[8]%>" class="yj-input fl" id="yj-add-day" data-pnid="8">
+                <input type="text" placeholder="天数" value="<%=list.properties[8]%>" class="yj-input fl" id="yj-add-day"
+                       data-pnid="8">
                 <%}else{%>
-                <input type="text" placeholder="天数"  class="yj-input fl" id="yj-add-day" data-pnid="8">
+                <input type="text" placeholder="天数" class="yj-input fl" id="yj-add-day" data-pnid="8">
                 <%}%>
             </div>
         </div>
         <div class="clearfix"></div>
         <div class="goods-select goods-range">
             <div class="goods-select-title">现货范围</div>
-            <div class="goods-range-body" onclick="openGoodsRange('现货',<%=isUpdate%>)">设定现货范围</div>
+            <div class="goods-range-body" onclick="openGoodsRange('现货','<%=isUpdate%>')">设定现货范围</div>
         </div>
         <div class="goods-select goods-range">
             <div class="goods-select-title">定制范围</div>
-            <div class="goods-range-body" onclick="openGoodsRange('定制',<%=isUpdate%>)">设定定制范围</div>
+            <div class="goods-range-body" onclick="openGoodsRange('定制','<%=isUpdate%>')">设定定制范围</div>
         </div>
         <div style="clear: both"></div>
     </div>
-        <form class="layui-form" action="">
-            <div class="goods-type">
-                常规商品
-                <!--<div class="layui-form-item" pane="">
-                    <div class="layui-input-block">
-                        <input type="checkbox" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked>
-                    </div>
-                </div>-->
-            </div>
-                <div class="yj-from" style="display: block;">
-                    <!--<div class="goods-vip-btn">
-                        <div class="goods-vip-left">会员折扣</div>
-                        <%if(list.ugDiscount && list.ugDiscount.length>0){%>
-                        <div class="goods-vip-right active" onclick="changeVipStatus(this)">
-                            <%}else{%>
-                            <div class="goods-vip-right" onclick="changeVipStatus(this)">
-                                <%}%>
-                                <div class="yj-radio"></div>
-                                <span>参与会员折扣</span>
-                                &lt;!&ndash;<em onclick="openSettingVip(this)">设置</em>&ndash;&gt;
-                            </div>
-                        </div>
-                        <div style="clear: both"></div>-->
-
-                        <div class="goods-select-box">
-                            <div class="goods-select goods-range">
-                                <div class="goods-select-title">零售价</div>
-                                <div class="goods-range-body" onclick="openZeroPrice(1)">设定零售价</div>
-                            </div>
-                            <div class="goods-select goods-range">
-                                <div class="goods-select-title">提成</div>
-                                <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
-                            </div>
-                            <div style="clear: both"></div>
-                        </div>
-
-                    </div>
-                    <div class="goods-type">
-                        积分商品
-                        <!--<div class="layui-form-item" pane="">
-                            <div class="layui-input-block">
-                                <%if(list.type==0){%>
-                                <input type="checkbox" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
-                                <%}else{%>
-                                <input type="checkbox" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" checked >
-                                <%}%>
-                            </div>
-                        </div>-->
+    <form class="layui-form" action="">
+        <div class="goods-type">
+            常规商品
+            <!--<div class="layui-form-item" pane="">
+                <div class="layui-input-block">
+                    <input type="checkbox" lay-filter="defaultGoods"  name="type" value="0" lay-skin="primary" title="常规商品" checked>
+                </div>
+            </div>-->
+        </div>
+        <div class="yj-from" style="display: block;">
+            <!--<div class="goods-vip-btn">
+                <div class="goods-vip-left">会员折扣</div>
+                <%if(list.ugDiscount && list.ugDiscount.length>0){%>
+                <div class="goods-vip-right active" onclick="changeVipStatus(this)">
+                    <%}else{%>
+                    <div class="goods-vip-right" onclick="changeVipStatus(this)">
+                        <%}%>
+                        <div class="yj-radio"></div>
+                        <span>参与会员折扣</span>
+                        &lt;!&ndash;<em onclick="openSettingVip(this)">设置</em>&ndash;&gt;
                     </div>
                 </div>
+                <div style="clear: both"></div>-->
 
-                <div class="yj-from goods-select-box" style="display: block">
-                    <div class="goods-select goods-range">
-                        <div class="goods-select-title">积分价</div>
-                        <div class="goods-range-body" onclick="openZeroPrice(4)">设定积分价</div>
+            <div class="goods-select-box">
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">零售价</div>
+                    <div class="goods-range-body" onclick="openZeroPrice(1)">设定零售价</div>
+                </div>
+                <div class="goods-select goods-range">
+                    <div class="goods-select-title">提成</div>
+                    <div class="goods-range-body" onclick="openSettingTicheng()">设定提成</div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+
+        </div>
+        <div class="goods-type">
+            积分商品
+            <!--<div class="layui-form-item" pane="">
+                <div class="layui-input-block">
+                    <%if(list.type==0){%>
+                    <input type="checkbox" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" >
+                    <%}else{%>
+                    <input type="checkbox" name="type" value="1" lay-filter="scoreGoods" lay-skin="primary" title="积分商品" checked >
+                    <%}%>
+                </div>
+            </div>-->
+        </div>
+        </div>
+
+        <div class="yj-from goods-select-box" style="display: block">
+            <div class="goods-select goods-range">
+                <div class="goods-select-title">积分价</div>
+                <div class="goods-range-body" onclick="openZeroPrice(4)">设定积分价</div>
+            </div>
+            <div class="goods-select">
+                <div class="goods-select-title">兑换数量上限</div>
+                <div class="">
+                    <%if(list.integralNum){%>
+                    <input type="text" placeholder="数量" value="<%=list.integralNum%>" id="yj-add-integralNum"
+                           class="yj-input">
+                    <%}else{%>
+                    <input type="text" placeholder="数量" id="yj-add-integralNum" class="yj-input">
+                    <%}%>
+                </div>
+            </div>
+            <div class="goods-select " style="width: 100%;height: auto;">
+                <div class="goods-select-title">有效期</div>
+                <div class="yj-demo-time" id="yj-add-time">
+                    <div class="yj-date">
+                        <%if(list.integralStartTimeNew){%>
+                        <span><%=list.integralStartTimeNew%>-<%=list.integralEndTimeNew%></span><i
+                            class="iconfont icon-ico_calendar"></i>
+                        <%}else{%>
+                        <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                        <%}%>
                     </div>
-                    <div class="goods-select">
-                        <div class="goods-select-title">兑换数量上限</div>
-                        <div class="">
-                            <%if(list.integralNum){%>
-                            <input type="text" placeholder="数量" value="<%=list.integralNum%>" id="yj-add-integralNum" class="yj-input">
+                </div>
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
+        <div class="goods-select-box" style="height: 50px;">
+            <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item" pane="">
+                        <div class="layui-input-block yj-check-input">
+                            <%if(list.nowRemind){%>
+                            <input type="checkbox" name="" checked="checked" lay-filter="kucun-yj" lay-skin="primary"
+                                   title="当库存低于<input value='<%=list.nowRemind%>' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报">
                             <%}else{%>
-                            <input type="text" placeholder="数量"  id="yj-add-integralNum" class="yj-input">
+                            <input type="checkbox" name="" lay-filter="kucun-yj" lay-skin="primary"
+                                   title="当库存低于<input readonly='' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报">
                             <%}%>
                         </div>
                     </div>
-                    <div class="goods-select " style="width: 100%;height: auto;">
-                        <div class="goods-select-title">有效期</div>
-                        <div class="yj-demo-time" id="yj-add-time">
-                            <div class="yj-date">
-                                <%if(list.integralStartTimeNew){%>
-                                <span><%=list.integralStartTimeNew%>-<%=list.integralEndTimeNew%></span><i class="iconfont icon-ico_calendar"></i>
-                                <%}else{%>
-                                <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-                                <%}%>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="clear: both"></div>
-                </div>
-            <div class="goods-select-box" style="height: 50px;">
-                <div class="goods-select goods-youxiaoqi" style="width: 100%;height: auto;">
-                    <form class="layui-form" action="">
-                        <div class="layui-form-item" pane="">
-                            <div class="layui-input-block yj-check-input">
-                                <%if(list.nowRemind){%>
-                                <input type="checkbox" name="" checked="checked"  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input value='<%=list.nowRemind%>' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
-                                <%}else{%>
-                                <input type="checkbox" name=""  lay-filter="kucun-yj" lay-skin="primary" title="当库存低于<input readonly='' onclick='quakooUtils.stopEventBubble()' id='yj-add-kucun' class='yj-input' placeholder='数量'>触发警报" >
-                                <%}%>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                </form>
             </div>
-        </form>
+        </div>
+    </form>
     <!-- 注册医疗信息 -->
     <ul class="zhuceInfo">
         <li class="zhuceInfo-first">
@@ -865,13 +882,14 @@
                     <div class="goot-select">
                         <div class="goot-items">注册证号</div>
                         <div class="goot-items1"><span class="guoxie">国械注准</span>
-                            <input type="text" placeholder="输入" id="nirNum" value="<%=list.nirNum?list.nirNum:''%>" class="guoInput"></div>
+                            <input type="text" placeholder="输入" id="nirNum" value="<%=list.nirNum?list.nirNum:''%>"
+                                   class="guoInput"></div>
                     </div>
                     <div class="goot-select">
                         <div class="goot-items">注册时间</div>
                         <div class="goot-items1">
                             <input class="guoTime demo-test-date demo-test-datetime demo-test-time demo-test-credit"
-                                   data-type="day" placeholder="选择时间" id="nirNumDate"  value="<%=list.nirNumDate%>"/>
+                                   data-type="day" placeholder="选择时间" id="nirNumDate" value="<%=list.nirNumDate%>"/>
                             <i class="iconfont icon-ico_calendar icon11"></i>
                         </div>
                         <div class="settings" style="display:none;">
@@ -887,22 +905,25 @@
                         <%if(list.nirImg){%>
                         <%for(var i=0;i< list.nirImg.length;i++){%>
                         <div class="imgBox">
-                            <img src="<%=list.nirImg[i]%>" real-src="<%=list.nirImg[i]%>" style="width: 100%;height: 100%" alt="">
+                            <img src="<%=list.nirImg[i]%>" real-src="<%=list.nirImg[i]%>"
+                                 style="width: 100%;height: 100%" alt="">
                             <div class="del" onclick="delRegImg(this)"></div>
                         </div>
                         <%}%>
                         <%if(list.nirImg.length<3){%>
-                        <span onclick="uploadImg(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
+                        <span onclick="uploadImg(this)" class="layui-btn" id="test2"><i
+                                class="icon iconfont icon-ico_plus"></i></span>
                         <%}%>
                         <%}else{%>
-                        <span onclick="uploadImg(this)" class="layui-btn" id="test2"><i class="icon iconfont icon-ico_plus"></i></span>
+                        <span onclick="uploadImg(this)" class="layui-btn" id="test2"><i
+                                class="icon iconfont icon-ico_plus"></i></span>
                         <%}%>
                     </div>
                 </li>
             </ul>
         </li>
     </ul>
-</div>
+    </div>
 
 </script>
 
@@ -1098,12 +1119,15 @@
 <!--下拉选择模板-->
 <script type="text/html" id="selectTagInputTmp">
     <div class="select-box-header">
-        <input type="text" id="seriesName"  value="<%=title%>" placeholder="系列"><i class="iconfont icon-ico_arrow_down" ></i>
+        <input type="text" id="seriesName" value="<%=title%>" placeholder="系列"><i
+            class="iconfont icon-ico_arrow_down"></i>
     </div>
     <div class="optionBox">
         <ul class="optionUL">
             <%for(var i=0;i< list.length;i++){%>
-            <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>"><%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%></li>
+            <li value="<%=list[i].id%>" data-pnid="<%if(list[i].pnid){%><%=list[i].pnid%><%}%>">
+                <%if(list[i].name){%><%=list[i].name%><%}else{%><%=list[i].content%><%}%>
+            </li>
             <%}%>
         </ul>
     </div>
@@ -1114,16 +1138,16 @@
         <form class="layui-form" action="">
             <div class="layui-input-block" style="float:left;">
                 <%if(group){%>
-                <input type="checkbox" value="group" lay-skin="primary"  title="团体统一提成" checked="checked">
+                <input type="checkbox" value="group" lay-skin="primary" title="团体统一提成" checked="checked">
                 <%}else{%>
-                <input type="checkbox" value="group" lay-skin="primary"  title="团体统一提成" >
+                <input type="checkbox" value="group" lay-skin="primary" title="团体统一提成">
                 <%}%>
             </div>
             <div class="layui-input-block" style="float:left;">
                 <%if(personal){%>
                 <input type="checkbox" value="personal" lay-skin="primary" title="个人统一提成" checked="checked">
                 <%}else{%>
-                <input type="checkbox" value="personal" lay-skin="primary" title="个人统一提成" >
+                <input type="checkbox" value="personal" lay-skin="primary" title="个人统一提成">
                 <%}%>
             </div>
         </form>
@@ -1139,14 +1163,18 @@
         <tr>
             <td><%=shopData[i].name%></td>
             <%if(group){%>
-            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" value="<%=commissionJson[shopData[i].id].price%>" placeholder="0"></td>
+            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>"
+                       value="<%=commissionJson[shopData[i].id].price%>" placeholder="0"></td>
             <%}else{%>
-            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"
+                       disabled="disabled"></td>
             <%}%>
             <%if(personal){%>
-            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" value="<%=commissionJson[shopData[i].id].users%>" placeholder="0"></td>
+            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>"
+                       value="<%=commissionJson[shopData[i].id].users%>" placeholder="0"></td>
             <%}else{%>
-            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"
+                       disabled="disabled"></td>
             <%}%>
         </tr>
         <%}else{%>
@@ -1155,12 +1183,14 @@
             <%if(group){%>
             <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"></td>
             <%}else{%>
-            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+            <td><input class="tuanduiInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"
+                       disabled="disabled"></td>
             <%}%>
             <%if(personal){%>
             <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"></td>
             <%}else{%>
-            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0" disabled="disabled"></td>
+            <td><input class="gerenInput" type="number" data-id="<%=shopData[i].id%>" placeholder="0"
+                       disabled="disabled"></td>
             <%}%>
         </tr>
         <%}%>
@@ -1214,7 +1244,7 @@
             },
             {
                 field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary"  onclick="updateGoods('+row.id+')">编辑</button>';
+                    return '<button class="btn btn-primary"  onclick="updateGoods(' + row.id + ')">编辑</button>';
                 }
             }
         ],
@@ -1312,6 +1342,7 @@
                 }
             }
         ],
+        //获取未补充说明的生产商列表
         warnSPList: [
             {checkbox: true, valign: "middle"},
             {field: "brandName", title: "品牌", align: "left", valign: "middle"},
@@ -1325,9 +1356,9 @@
                 valign: "middle",
                 formatter: function (value, row, index) {
                     if (value == 0) {
-                        return '未通过'
+                        return '<span class="xiaoShouShenHe">未通过</span>'
                     } else if (value == 1) {
-                        return '审核通过'
+                        return '<span class="xiaoShouShenHe suc">审核通过</span>'
                     }
                 }
             },
@@ -1343,13 +1374,37 @@
             },
             {
                 field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-                    return '<button class="btn btn-primary">编辑</button>';
+                    return '<button class="btn btn-primary" onclick="updateGoods(' + row.id + ')">编辑</button>';
                 }
             }
         ],
+        //销售记录列表
         XSReload: [
             {checkbox: true, valign: "middle"},
-            {field: "stime", title: "销售日期", align: "left", valign: "middle"},
+            {
+                field: "day", title: "销售日期", align: "left", valign: "middle", formatter: function (value, row, index) {
+                    return quakooUtils.formatTimeToDay(value);
+                }
+            },
+            {field: "uName ", title: "客户名称", align: "left", valign: "middle"},
+            {field: "code", title: "商品编号", align: "left", valign: "middle"},
+            {field: "model", title: "商品名称", align: "left", valign: "middle"},
+            {field: "num", title: "销售数量", align: "left", valign: "middle"},
+            {field: "spy", title: "生产企业", align: "left", valign: "middle"},
+            {field: "quality", title: "生产许可号", align: "left", valign: "middle"},
+            {field: "nirNum", title: "国械注准号", align: "left", valign: "middle"},
+            {field: "guige", title: "规格", align: "left", valign: "middle"},
+            {field: "spNum", title: "生产批号", align: "left", valign: "middle"},
+            {field: "quality", title: "生产时间", align: "left", valign: "middle"},
+            {field: "guoqi", title: "过期时间", align: "left", valign: "middle"},
+            {field: "putPerson", title: "销售人员", align: "center", valign: "middle"},
+            {field: "shPerson", title: "审核人员", align: "center", valign: "middle"},
+            {field: "num", title: "单据编号", align: "left", valign: "middle"}
+        ],
+        //退货记录列表
+        THReload: [
+            {checkbox: true, valign: "middle"},
+            {field: "stime", title: "退货日期", align: "left", valign: "middle"},
             {field: "sname ", title: "客户名称", align: "left", valign: "middle"},
             {field: "series", title: "商品编号", align: "left", valign: "middle"},
             {field: "model", title: "商品名称", align: "left", valign: "middle"},
@@ -1364,6 +1419,74 @@
             {field: "putPerson", title: "销售人员", align: "center", valign: "middle"},
             {field: "shPerson", title: "审核人员", align: "center", valign: "middle"},
             {field: "num", title: "单据编号", align: "left", valign: "middle"}
+        ],
+        //销毁记录列表
+        xhReload: [
+            {checkbox: true, valign: "middle"},
+            {field: "stime", title: "退货日期", align: "left", valign: "middle"},
+            {field: "series", title: "商品编号", align: "left", valign: "middle"},
+            {field: "model", title: "商品名称", align: "left", valign: "middle"},
+            {field: "cycle", title: "销售数量", align: "left", valign: "middle"},
+            {field: "spy", title: "生产企业", align: "left", valign: "middle"},
+            {field: "quality", title: "生产许可号", align: "left", valign: "middle"},
+            {field: "guoxieNum", title: "国械注准号", align: "left", valign: "middle"},
+            {field: "guige", title: "规格", align: "left", valign: "middle"},
+            {field: "spNum", title: "生产批号", align: "left", valign: "middle"},
+            {field: "quality", title: "生产时间", align: "left", valign: "middle"},
+            {field: "guoqi", title: "过期时间", align: "left", valign: "middle"},
+            {field: "putPerson", title: "销售人员", align: "center", valign: "middle"},
+            {field: "shPerson", title: "审核人员", align: "center", valign: "middle"},
+            {field: "num", title: "单据编号", align: "left", valign: "middle"}
+        ],
+        RKReload: [
+            {checkbox: true, valign: "middle"},
+            {
+                field: "ctime",
+                title: "入库时间",
+                align: "left",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    return quakooUtils.formatTimeToDay(value)
+                }
+            },
+            {
+                field: "clientItems",
+                title: "编号",
+                align: "left",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    return value[0].bid
+                }
+            },
+            {
+                field: "clientItems",
+                title: "商品名称",
+                align: "left",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    return value[0].brandName
+                }
+            },
+            {
+                field: "clientItems",
+                title: "验收数量",
+                align: "left",
+                valign: "middle",
+                formatter: function (value, row, index) {
+                    return value[0].num
+                }
+            },
+            {field: "sPy", title: "生产企业", align: "left", valign: "middle"},
+            {field: "productNum", title: "生产许可号", align: "left", valign: "middle"},
+            {field: "guoxieNum", title: "国械注准号", align: "left", valign: "middle"},
+            {field: "guige", title: "规格", align: "left", valign: "middle"},
+            {field: "spNum", title: "生产批号", align: "left", valign: "middle"},
+            {field: "quality", title: "生产时间", align: "left", valign: "middle"},
+            {field: "guoqi", title: "过期时间", align: "left", valign: "middle"},
+            {field: "ysjueguo", title: "验收结果", align: "left", valign: "middle"},
+            {field: "yanshou", title: "验收日期", align: "left", valign: "middle"},
+            {field: "putPerson", title: "质检人员", align: "center", valign: "middle"},
+            {field: "num", title: "单据编号", align: "left", valign: "middle"},
         ]
     };
     var brand,//品牌
@@ -1378,7 +1501,6 @@
     var shopData;   //店铺数据
 
 
-
     /*员工列表开始*/
     // 员工列表开始时首页表
 
@@ -1389,7 +1511,6 @@
             obj.push(ret.data[k])
         }
         obj.shift()
-        console.log(obj[0][0].name)
     })
 
     function employList() {
@@ -1683,7 +1804,19 @@
 
     /*员工列表结束*/
 
-
+    // 首页时间
+    var startTime,
+        scNum,
+        endTime;
+    date5 = new dateRange("#select-time-header .yj-demo-time");
+    date5.init();
+    $('#select-time-header button').click(function () {
+        startTime = date5.getTime()[2];
+        endTime = date5.getTime()[3];
+        initPage();
+        getXiaoShouReload();
+        getRuKuReload();
+    })
     $(function () {
         initPage();
         //获取品牌（页面及弹窗）
@@ -1697,11 +1830,11 @@
             typeData = ret.data
         })
         //获取属性-隐形眼镜更换周期/6
-        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid:6}, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid: 6}, function (ret) {
             zhouqiData = ret.data
         })
         //获取属性-隐形眼镜包装/7
-        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid:6}, function (ret) {
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid: 6}, function (ret) {
             baozhuangData = ret.data
         })
         //获取生产商
@@ -1713,18 +1846,18 @@
             gongS = ret.data
         })
         //获取属性-球
-        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:41},function (ret) {
-            if(ret && ret.success){
-                ballData = ret.data.sort(function (a,b) {
-                    return b.content-a.content;
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid: 41}, function (ret) {
+            if (ret && ret.success) {
+                ballData = ret.data.sort(function (a, b) {
+                    return b.content - a.content;
                 });
             }
         });
         //获取属性-柱
-        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(),{pnid:42},function (ret) {
-            if(ret && ret.success){
-                columnData = ret.data.sort(function (a,b) {
-                    return b.content-a.content;
+        quakooData.ajaxGetData(config.getUrl_productPropertyvalue_getAllList(), {pnid: 42}, function (ret) {
+            if (ret && ret.success) {
+                columnData = ret.data.sort(function (a, b) {
+                    return b.content - a.content;
                 });
             }
         });
@@ -1736,19 +1869,7 @@
         });
     })
 
-    // 首页时间
-    var startTime,
-        endTime;
-    date5 = new dateRange("#select-time-header .yj-demo-time");
-    date5.init();
-    $('#select-time-header button').click(function () {
-        startTime = date5.getTime()[2];
-        endTime = date5.getTime()[3];
-        console.log(startTime)
-        console.log(endTime)
-        initPage()
-    })
-    //初始化函数
+    //初始化函数(首页产品列表)
     function initPage() {
         // quakooData.ajaxGetData(config.getUrl_product_getSPUPager(), { subid: quakooUser.getUserInfo().psid, type: 1 }, function (ret) {
         //     console.log(ret)
@@ -1774,7 +1895,7 @@
                 for (var i = 0; i < data.length; i++) {
                     checkArray[data[i].id] = data[i].id
                 }
-                shouyeShowFooter(len, checkArray)
+                shouyeShowFooter(len, checkArray, 1)
             },
             onUncheckAll: function (data) {
                 var len = 0;
@@ -1784,16 +1905,17 @@
             onCheck: function (data) {
                 var len = $('#xsjl-table').find('tr.selected').length;
                 checkArray[data.id] = data.id;
-                shouyeShowFooter(len, checkArray)
+                shouyeShowFooter(len, checkArray, 1)
             },
             onUncheck: function (data) {
                 delete checkArray[data.id]
                 var len = $('#xsjl-table').find('tr.selected').length;
-                shouyeShowFooter(len, checkArray)
+                shouyeShowFooter(len, checkArray, 1)
             },
             callBack: function (row) {
-                row.subid =  quakooUser.getUserInfo().sid
-                row.type = 1;
+                row.subid = quakooUser.getUserInfo().sid
+                row.startTime = startTime ? startTime : '';
+                row.endTime = endTime ? endTime : '';
                 return row
             }
         });
@@ -1811,437 +1933,247 @@
     }
 
     //获取所有商品首页展示的列表
-    function shouyeShowFooter(num, obj) {
+    function shouyeShowFooter(num, obj, index) {
         var botBar = '<div class="showShouyeFooter">' +
             '<span class="xuanZhongXiang">已选中' + num + '项</span>' +
             '<div class="xuanRight">' +
             '<span class="quXiaoXuanZhong">取消选中</span>' +
             '<span class="piLiangDaYin">批量打印</span>' +
+            '<span class="tuiHuoBtn">退货</span>' +
+            '<span class="xiaoHuiBtn">销毁</span>' +
             '<span class="shenHeTongguo">审核通过</span>' +
             '</div>' +
             '</div>';
         if (num > 0) {
             $('.body-bg').append(botBar)
             $('.showShouyeFooter').show();
-            //审核通过
-            $('.shenHeTongguo').click(function () {
-                var ids = [];
-                //转换成数组
-                Object.keys(obj).forEach(function (key) {
-                    ids.push(key)
-                });
-                console.log(ids)
-                // quakooData.ajaxGetData(config.getUrl_medicalAppliances_checkAddStatus(), {ids: ids}, function (ret) {
-                //     if(ret && ret.success){
-                //         layer.msg('审核成功')
-                //     }
-                // })
-            })
+            if(index == 1){
+                //审核通过
+                $('.shenHeTongguo').click(function () {
+                    var ids = [];
+                    //转换成数组
+                    Object.keys(obj).forEach(function (key) {
+                        ids.push(key)
+                    });
+                    quakooData.ajaxGetData(config.getUrl_medicalAppliances_checkAddStatus(), {ids: ids}, function (ret) {
+                        if (ret && ret.success) {
+                            layer.msg('审核成功')
+                            initPage();
+                        }
+                    })
+                })
+                //销毁
+                $('.xiaoHuiBtn').click(function () {
+                    var ids = [];
+                    //转换成数组
+                    Object.keys(obj).forEach(function (key) {
+                        ids.push(key)
+                    });
+                    quakooData.ajaxGetData(config.getUrl_medicalAppliances_inventoryOutBill(), {
+                        ids: ids,
+                        start: 2
+                    }, function (ret) {
+                        if (ret && ret.success) {
+                            layer.msg('销毁完成');
+                            initPage();
+                        }
+                    })
+                })
+                //退货
+                $('.tuiHuoBtn').click(function () {
+                    var ids = [];
+                    //转换成数组
+                    Object.keys(obj).forEach(function (key) {
+                        ids.push(key)
+                    });
+                    quakooData.ajaxGetData(config.getUrl_medicalAppliances_inventoryOutBill(), {
+                        ids: ids,
+                        start: 3
+                    }, function (ret) {
+                        if (ret && ret.success) {
+                            layer.msg('退货完成');
+                            initPage();
+                        }
+                    })
+                })
+            }else if (index == 2) {
+                $('.tuiHuoBtn').hide();
+                $('.xiaoHuiBtn').hide();
+                //审核通过入库单
+                $('.shenHeTongguo').click(function () {
+                    var ids = [];
+                    //转换成数组
+                    Object.keys(obj).forEach(function (key) {
+                        ids.push(key)
+                    });
+                    console.log(ids);
+                    quakooData.ajaxGetData(config.getUrl_medicalAppliances_rukuInventoryinbill(), {id: 33}, function (ret) {
+                        if (ret && ret.success) {
+                            layer.msg('审核成功')
+                            initPage();
+                        }
+                    })
+                })
+
+            }else if (index == 3) {
+                $('.tuiHuoBtn').hide();
+                $('.xiaoHuiBtn').hide();
+                $('.shenHeTongguo').hide();
+            }
+
         } else {
             $('.showShouyeFooter').hide();
         }
+
+
     }
 
-    /*新改的入库记录*/
-    var data4 = [
-        {
-            stime: "2018.12.10",
-            bianhao: "9218379212",
-            sname: "清凉一夏暴龙太阳眼镜",
-            shNum: "12",
-            sPy: "北京暴龙眼镜有限公司",
-            productNum: "2319876741",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            ysjieguo: "已验收",
-            guoqi: "2019.03.30",
-            putPerson: "李四",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            bianhao: "9218379212",
-            sname: "清凉一夏暴龙太阳眼镜",
-            shNum: "12",
-            sPy: "北京暴龙眼镜有限公司",
-            productNum: "2319876741",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            ysjieguo: "已验收",
-            guoqi: "2019.03.30",
-            putPerson: "李四",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            bianhao: "9218379212",
-            sname: "清凉一夏暴龙太阳眼镜",
-            shNum: "12",
-            sPy: "北京暴龙眼镜有限公司",
-            productNum: "2319876741",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            ysjieguo: "已验收",
-            guoqi: "2019.03.30",
-            putPerson: "李四",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            bianhao: "9218379212",
-            sname: "清凉一夏暴龙太阳眼镜",
-            shNum: "12",
-            sPy: "北京暴龙眼镜有限公司",
-            productNum: "2319876741",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            ysjieguo: "已验收",
-            guoqi: "2019.03.30",
-            putPerson: "李四",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            bianhao: "9218379212",
-            sname: "清凉一夏暴龙太阳眼镜",
-            shNum: "12",
-            sPy: "北京暴龙眼镜有限公司",
-            productNum: "2319876741",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            ysjieguo: "已验收",
-            guoqi: "2019.03.30",
-            putPerson: "李四",
-            num: "50"
-        },
-    ];
-    $("#rkjl-table").bootstrapTable({
-        data: data4,                 //被加载的数据。
-        classes: "table",
-        pagination: true,            //是否显示分页
-        pageNumber: 1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: [
-            {checkbox: true, valign: "middle"},
-            {field: "stime", title: "入库时间", align: "left", valign: "middle"},
-            {field: "bianhao", title: "编号", align: "left", valign: "middle"},
-            {field: "sname", title: "商品名称", align: "left", valign: "middle"},
-            {field: "shNum", title: "验收数量", align: "left", valign: "middle"},
-            {field: "sPy", title: "生产企业", align: "left", valign: "middle"},
-            {field: "productNum", title: "生产许可号", align: "left", valign: "middle"},
-            {field: "guoxieNum", title: "国械注准号", align: "left", valign: "middle"},
-            {field: "guige", title: "规格", align: "left", valign: "middle"},
-            {field: "spNum", title: "生产批号", align: "left", valign: "middle"},
-            {field: "quality", title: "生产时间", align: "left", valign: "middle"},
-            {field: "guoqi", title: "过期时间", align: "left", valign: "middle"},
-            {field: "ysjueguo", title: "验收结果", align: "left", valign: "middle"},
-            {field: "yanshou", title: "验收日期", align: "left", valign: "middle"},
-            {field: "putPerson", title: "质检人员", align: "center", valign: "middle"},
-            {field: "num", title: "单据编号", align: "left", valign: "middle"},
-        ]
-    });
+    /*入库记录*/
+    function getRuKuReload(n) {
+        var checkArray = {};
+        var tabFour = new TableInit({
+            dom: '#rkjl-table',
+            data: false,
+            method: 'get',
+            type: 'server',
+            url: config.getUrl_medicalAppliances_getRuKuReload(),
+            singleSelect : true,
+            columns: winObj.RKReload,
+            // onCheckAll: function (data) {
+            //     var len = data.length;
+            //     for (var i = 0; i < data.length; i++) {
+            //         checkArray[data[i].id] = data[i].id
+            //     }
+            //     shouyeShowFooter(len, checkArray, 2)
+            // },
+            // onUncheckAll: function (data) {
+            //     var len = 0;
+            //     checkArray = {};
+            //     shouyeShowFooter(len, checkArray, 2)
+            // },
+            onCheck: function (data) {
+                console.log(data)
+                var len = $('#rkjl-table').find('tr.selected').length;
+                checkArray[data.id] = data.id;
+                shouyeShowFooter(len, checkArray, 2)
+            },
+            onUncheck: function (data) {
+                delete checkArray[data.id]
+                var len = $('#rkjl-table').find('tr.selected').length;
+                shouyeShowFooter(len, checkArray, 2)
+            },
+            callBack: function (row) {
+                row.subid = quakooUser.getUserInfo().sid;
+                row.startTime = startTime ? startTime : '';
+                row.endTime = endTime ? endTime : '';
+                row.num = n ? n : '';
+                row.type = 0;
+                return row
+            }
+        });
+        tabFour.Init();
+    }
 
-
+    /*入库记录按生产批号查找*/
+    function scSearch() {
+        scNum = $('.search-box').val();
+        console.log(scNum)
+        getRuKuReload(scNum);
+    }
 
     /*销售记录*/
-    // var tabFour = new TableInit({
-    //     dom: '#xsReload-table',
-    //     data: false,
-    //     method: 'get',
-    //     type: 'server',
-    //     url: config.getUrl_medicalAppliances_getXiaoShouReload(),
-    //     columns: winObj.XSReload,
-    //     // queryParams: function (param) {
-    //     //     param.subid = quakooUser.getUserInfo().sid;
-    //     //     param.token = quakooUser.getUserInfo().token;
-    //     //     if (startTime) {
-    //     //         param.startTime = startTime;
-    //     //     }
-    //     //     if (endTime) {
-    //     //         param.endTime = endTime;
-    //     //     }
-    //     //     return param
-    //     // },
-    //     // onCheckAll: function (data) {
-    //     //     var len = data.length;
-    //     //     for (var i = 0; i < data.length; i++) {
-    //     //         checkArray[data[i].id] = data[i].id
-    //     //     }
-    //     //     shouyeShowFooter(len, checkArray)
-    //     // },
-    //     // onUncheckAll: function (data) {
-    //     //     var len = 0;
-    //     //     checkArray = {};
-    //     //     shouyeShowFooter(len, checkArray)
-    //     // },
-    //     // onCheck: function (data) {
-    //     //     var len = $('#xsjl-table').find('tr.selected').length;
-    //     //     checkArray[data.id] = data.id;
-    //     //     shouyeShowFooter(len, checkArray)
-    //     // },
-    //     // onUncheck: function (data) {
-    //     //     delete checkArray[data.id]
-    //     //     var len = $('#xsjl-table').find('tr.selected').length;
-    //     //     shouyeShowFooter(len, checkArray)
-    //     // },
-    //     callBack: function (row) {
-    //         subid: quakooUser.getUserInfo().sid
-    //         startTime: startTime;
-    //         endTime: endTime;
-    //         return row
-    //     }
-    // });
-    // tabFour.Init();
+    function getXiaoShouReload() {
+        var checkArray = {};
+        var tabFour = new TableInit({
+            dom: '#xsReload-table',
+            data: false,
+            method: 'get',
+            type: 'server',
+            url: config.getUrl_medicalAppliances_getXiaoShouReload(),
+            columns: winObj.XSReload,
+            onCheckAll: function (data) {
+                var len = data.length;
+                for (var i = 0; i < data.length; i++) {
+                    checkArray[data[i].id] = data[i].id
+                }
+                shouyeShowFooter(len, checkArray, 3)
+            },
+            onUncheckAll: function (data) {
+                var len = 0;
+                checkArray = {};
+                shouyeShowFooter(len, checkArray, 3)
+            },
+            onCheck: function (data) {
+                var len = $('#xsjl-table').find('tr.selected').length;
+                checkArray[data.id] = data.id;
+                shouyeShowFooter(len, checkArray, 3)
+            },
+            onUncheck: function (data) {
+                delete checkArray[data.id]
+                var len = $('#xsjl-table').find('tr.selected').length;
+                shouyeShowFooter(len, checkArray, 3)
+            },
+            callBack: function (row) {
+                row.subId = quakooUser.getUserInfo().sid;
+                row.startTime = startTime ? startTime : '';
+                row.endTime = endTime ? endTime : '';
+                return row
+            }
+        });
+        tabFour.Init();
+    }
 
     /*退货记录*/
-    var data9 = [
-        {
-            stime: "2018.12.10",
-            sname: "李国芳",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            sname: "李国芳",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            sname: "李国芳",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            sname: "李国芳",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-    ];
-    $("#thReload-table").bootstrapTable({
-        data: data9,                 //被加载的数据。
-        classes: "table",
-        pagination: true,            //是否显示分页
-        pageNumber: 1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: [
-            {checkbox: true, valign: "middle"},
-            {field: "stime", title: "退货日期", align: "left", valign: "middle"},
-            {field: "sname ", title: "客户名称", align: "left", valign: "middle"},
-            {field: "series", title: "商品编号", align: "left", valign: "middle"},
-            {field: "model", title: "商品名称", align: "left", valign: "middle"},
-            {field: "cycle", title: "销售数量", align: "left", valign: "middle"},
-            {field: "spy", title: "生产企业", align: "left", valign: "middle"},
-            {field: "quality", title: "生产许可号", align: "left", valign: "middle"},
-            {field: "guoxieNum", title: "国械注准号", align: "left", valign: "middle"},
-            {field: "guige", title: "规格", align: "left", valign: "middle"},
-            {field: "spNum", title: "生产批号", align: "left", valign: "middle"},
-            {field: "quality", title: "生产时间", align: "left", valign: "middle"},
-            {field: "guoqi", title: "过期时间", align: "left", valign: "middle"},
-            {field: "putPerson", title: "销售人员", align: "center", valign: "middle"},
-            {field: "shPerson", title: "审核人员", align: "center", valign: "middle"},
-            {field: "num", title: "单据编号", align: "left", valign: "middle"}
-        ]
-    });
+    function getTuiHuoReload() {
+        var tabFive = new TableInit({
+            dom: '#thReload-table',
+            data: false,
+            method: 'get',
+            type: 'server',
+            url: config.getUrl_medicalAppliances_getTuiHuoReload(),
+            columns: winObj.THReload,
+            callBack: function (row) {
+                row.subid = quakooUser.getUserInfo().sid;
+                row.type = 1; //1退货 2销毁
+                return row
+            }
+        });
+        tabFive.Init();
+    }
+
     /*销毁记录*/
-    var data8 = [
-        {
-            stime: "2018.12.10",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        },
-        {
-            stime: "2018.12.10",
-            series: "9218379212",
-            model: "清凉一夏暴龙太阳眼镜",
-            cycle: "12",
-            spy: "北京暴龙眼镜有限公司",
-            quality: "21928378291",
-            guoxieNum: "2319876741",
-            guige: "瓶",
-            spNum: "2319876741",
-            quality: "2019.03.30",
-            guoqi: "2019.03.30",
-            putPerson: "王",
-            shPerson: "李红",
-            num: "50"
-        }
-    ];
-    $("#xhReload-table").bootstrapTable({
-        data: data8,                 //被加载的数据。
-        classes: "table",
-        pagination: true,            //是否显示分页
-        pageNumber: 1,               //初始化加载第一页，默认第一页
-        pageSize: 10,
-        pageList: [5, 10, 15, 20],
-        sortable: false,
-        sortOrder: "asc",
-        showColumns: true,
-        strictSearch: true,
-        locale: "zh-CN",
-        paginationHAlign: "center",
-        clickToSelect: true,
-        columns: [
-            {checkbox: true, valign: "middle"},
-            {field: "stime", title: "退货日期", align: "left", valign: "middle"},
-            {field: "series", title: "商品编号", align: "left", valign: "middle"},
-            {field: "model", title: "商品名称", align: "left", valign: "middle"},
-            {field: "cycle", title: "销售数量", align: "left", valign: "middle"},
-            {field: "spy", title: "生产企业", align: "left", valign: "middle"},
-            {field: "quality", title: "生产许可号", align: "left", valign: "middle"},
-            {field: "guoxieNum", title: "国械注准号", align: "left", valign: "middle"},
-            {field: "guige", title: "规格", align: "left", valign: "middle"},
-            {field: "spNum", title: "生产批号", align: "left", valign: "middle"},
-            {field: "quality", title: "生产时间", align: "left", valign: "middle"},
-            {field: "guoqi", title: "过期时间", align: "left", valign: "middle"},
-            {field: "putPerson", title: "销售人员", align: "center", valign: "middle"},
-            {field: "shPerson", title: "审核人员", align: "center", valign: "middle"},
-            {field: "num", title: "单据编号", align: "left", valign: "middle"}
-        ]
-    });
+    function getXiaoHuiReload() {
+        var tabSix = new TableInit({
+            dom: '#xhReload-table',
+            data: false,
+            method: 'get',
+            type: 'server',
+            url: config.getUrl_medicalAppliances_getTuiHuoReload(),
+            columns: winObj.xhReload,
+            callBack: function (row) {
+                row.subid = quakooUser.getUserInfo().sid;
+                row.type = 2; //1退货 2销毁
+                return row
+            }
+        });
+        tabSix.Init();
+    }
+
     /**
      * tab切换
      * */
     $(".tab-ul-header li").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
         $(".tab-item").hide().eq($(this).index()).show();
-        $(".right-info").hide().eq($(this).index()).show();
+        if ($(this).index() == 1) {
+            getRuKuReload();
+            $(".right-info").find('.addbtn').hide();
+        } else if ($(this).index() == 2) {
+            getXiaoShouReload();
+            $(".right-info").find('.addbtn').hide();
+        } else if ($(this).index() == 0) {
+            $(".right-info").find('.addbtn').show();
+        }
     });
     /**
      * 出库记录二级tab切换
@@ -2249,6 +2181,13 @@
     $(".ckReload li").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
         $(".tab-items").hide().eq($(this).index()).show();
+        if ($(this).index() == 1) {
+            getTuiHuoReload();
+        } else if ($(this).index() == 2) {
+            getXiaoHuiReload();
+        } else if ($(this).index() == 0) {
+            getXiaoShouReload();
+        }
     });
     //初始化
     var TableInit = function (tabObj) {
@@ -2341,7 +2280,7 @@
                 url: false,
                 columns: winObj.warnSPList
             });
-        tabTwo.Init();
+            tabTwo.Init();
         })
     }
 

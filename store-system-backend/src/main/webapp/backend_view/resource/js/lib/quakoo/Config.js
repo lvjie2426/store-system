@@ -406,6 +406,16 @@ var Config = (function(_super) {
     _proto.getUrl_medicalAppliances_checkAddStatus = function(){return this.serverUrl + '/product/checkStatus';};
     /**获取医疗器械所有商品*/
     _proto.getUrl_product_getELSPUPager = function(){return this.serverUrl + '/product/getELSPUPager';};
+    /**获取医疗器械销售商品列表*/
+    _proto.getUrl_medicalAppliances_getXiaoShouReload = function(){return this.serverUrl + '/businessOrder/getMedicalAllList';};
+    /**获取医疗器械出库记录（退货和销毁）*/
+    _proto.getUrl_medicalAppliances_getTuiHuoReload = function(){return this.serverUrl + '/inventoryOutBill/getAllPager';};
+    /**获取医疗器械入库记录*/
+    _proto.getUrl_medicalAppliances_getRuKuReload = function(){return this.serverUrl + '/inventoryinbill/getAllPager';};
+    /**销毁/退货医疗器械*/
+    _proto.getUrl_medicalAppliances_inventoryOutBill = function(){return this.serverUrl + '/product/updateSpuStatus';};
+    /**审核通过入库单*/
+    _proto.getUrl_medicalAppliances_rukuInventoryinbill = function(){return this.serverUrl + '/inventoryinbill/pass';};
     //=======================商品管理 结束====================
 
 
