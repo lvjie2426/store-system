@@ -39,12 +39,22 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
 
 
     @Override
-    public Map<Long,List<ClientCategoryStatistics>>  getDayList(long subId, List<Long> days) throws Exception {
+    public Map<Long,List<ClientCategoryStatistics>> getDayList(long subId, List<Long> days) throws Exception {
         List<SaleCategoryStatistics> list=Lists.newArrayList();
         for (Long day : days) {
             list.addAll(saleCategoryStatisticsDao.getSubList(subId, day));
         }
         return transformClientSale(list,subId);
+    }
+
+    @Override
+    public ClientCategoryStatistics getDayList(long subId, long cid, List<Long> days) throws Exception {
+        List<SaleCategoryStatistics> list=Lists.newArrayList();
+        for (Long day : days) {
+            list.addAll(saleCategoryStatisticsDao.getSubList(subId, day, cid));
+        }
+        Map<Long,List<ClientCategoryStatistics>> map = transformClientSale(list,subId);
+        return transformClientSum(map,subId);
     }
 
     @Override
@@ -188,6 +198,28 @@ public class SaleCategoryStatisticsServiceImpl implements SaleCategoryStatistics
         sql = sql + " order  by `day` desc";
         List<SaleCategoryStatistics> saleStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleCategoryStatistics.class));
         return transformClientSale(saleStatistics,subId);
+    }
+
+    @Override
+    public ClientCategoryStatistics searchSale(long startTime, long endTime, long subId, long cid) throws Exception {
+        String sql = "SELECT  *  FROM `sale_category_statistics` where  1=1 ";
+        if (subId > 0) {
+            sql = sql + " and `subId` = " + subId;
+        }
+        if (cid > 0) {
+            sql = sql + " and `cid` = " + cid;
+        }
+        if (startTime > 0) {
+            sql = sql + " and `day` > " + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and `day` < " + endTime;
+        }
+
+        sql = sql + " order  by `day` desc";
+        List<SaleCategoryStatistics> saleStatistics = jdbcTemplate.query(sql, new HyperspaceBeanPropertyRowMapper(SaleCategoryStatistics.class));
+        Map<Long,List<ClientCategoryStatistics>> map = transformClientSale(saleStatistics,subId);
+        return transformClientSum(map,subId);
     }
 
     private Map<Long,List<ClientCategoryStatistics>> transformClientSale(List<SaleCategoryStatistics> saleCategoryStatistics, long subId) throws Exception {
