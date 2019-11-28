@@ -62,6 +62,8 @@ public interface ProductService {
 
     public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception;
 
+    public List<ClientProductSKU> transformSKUClient(List<ProductSKU> skuList) throws Exception;
+
     /**
      * 获取医疗器械商品列表
      * @param pager
