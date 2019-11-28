@@ -291,7 +291,8 @@ public class ProductController extends BaseController {
     @RequestMapping("/loadSPU")
     public ModelAndView loadSPU(@RequestParam(value = "id") long id,
                                 HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        ClientProductSPU clientProductSPU = productService.loadSPU(id);
+        User user=UserUtils.getUser(request);
+        ClientProductSPU clientProductSPU = productService.loadSPU(id,user);
         return this.viewNegotiating(request,response, new ResultClient(true, clientProductSPU));
     }
 

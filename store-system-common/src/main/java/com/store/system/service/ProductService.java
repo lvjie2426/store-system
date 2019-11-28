@@ -21,7 +21,7 @@ public interface ProductService {
 
     public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName, List<Commission> commissions) throws Exception;
 
-    public ClientProductSPU loadSPU(long id) throws Exception;
+    public ClientProductSPU loadSPU(long id,User user) throws Exception;
 
     public boolean updateSPU(ProductSPU productSPU) throws Exception;
 

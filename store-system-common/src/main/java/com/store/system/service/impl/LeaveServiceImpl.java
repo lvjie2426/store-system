@@ -165,12 +165,26 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public Pager getList(Pager pager, int type, long endTime, long startTime,User user) throws Exception {
-        String sql = "select * from leave where 1=1";
-        String countSql = "select count(*) from leave where 1=1";
+    public Pager getList(long subid, long sid, String userName, Pager pager, int type, long endTime, long startTime) throws Exception {
+        String sql = "select le.* from leave le,user u where 1=1 and u.id=le.askUid";
+        String countSql = "select count(*) from leave where 1=1 and u.id=le.askUid";
         String limit = "  limit %d , %d ";
-        sql=sql+" and checkUid="+user.getId();
-        countSql=countSql+" and checkUid="+user.getId();
+
+        if (sid > 0 && subid > 0) {
+            //门店
+            sql = sql + " and le.subid=" + subid;
+            countSql = countSql + " and le.subid=" + subid;
+        }
+        if (sid > 0 && subid == 0) {
+            // 企业
+            sql = sql + " and le.sid=" + sid + " and le.subid=0";
+            countSql = countSql + " and le.sid=" + sid + " and le.subid=0";
+        }
+
+        if (StringUtils.isNotBlank(userName)) {
+            sql = sql + " and u.`name` like '%" + userName + "%'";
+            countSql = countSql + " and u.`name` like '%" + userName + "%'";
+        }
         if (type > -1) {
             sql = sql + " and TYPE=" + type;
             countSql = countSql + " and TYPE=" + type;
@@ -196,10 +210,10 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public Boolean update(Leave leave,User user) throws Exception {
+    public Boolean update(Leave leave, User user) throws Exception {
         check(leave);
         Leave load = leaveDao.load(leave.getId());
-        if(load!=null){
+        if (load != null) {
             load.setLeaveType(leave.getLeaveType());
             load.setLeaveTime(leave.getLeaveTime());
             load.setStatus(leave.getStatus());
@@ -213,19 +227,32 @@ public class LeaveServiceImpl implements LeaveService {
             load.setImgs(leave.getImgs());
             load.setContent(leave.getContent());
         }
-        UserLeavePool userLeavePool = new UserLeavePool();
-        userLeavePool.setLid(load.getId());
-        userLeavePool.setStatus(load.getStatus());
-        userLeavePool.setUid(load.getAskUid());
-        userLeavePoolDao.update(userLeavePool);
-        if (load.getStatus() == Leave.status_success) {
-            long startDay = TimeUtils.getDayFormTime(load.getStartTime());
-            long endDay = TimeUtils.getDayFormTime(load.getEndTime());
-            for (long day = startDay; day <= endDay; day++) {
-                attendanceLogService.updateLeave(load.getAskUid(), day, load.getLeaveType(), load.getStartTime(), load.getEndTime());
+        if (leave.getStatus() == Leave.status_success) {
+            UserLeavePool userLeavePool = new UserLeavePool();
+            userLeavePool.setLid(load.getId());
+            userLeavePool.setStatus(load.getStatus());
+            userLeavePool.setUid(load.getAskUid());
+            userLeavePoolDao.update(userLeavePool);
+            if (load.getStatus() == Leave.status_success) {
+                long startDay = TimeUtils.getDayFormTime(load.getStartTime());
+                long endDay = TimeUtils.getDayFormTime(load.getEndTime());
+                for (long day = startDay; day <= endDay; day++) {
+                    attendanceLogService.updateLeave(load.getAskUid(), day, load.getLeaveType(), load.getStartTime(), load.getEndTime());
+                }
             }
         }
+
         return leaveDao.update(load);
+    }
+
+    @Override
+    public boolean passMore(List<Long> ids) throws Exception {
+        for(Long  id:ids) {
+
+            pass(id);
+
+        }
+        return true;
     }
 
     public ClientLeave transformClients(Leave leave) {
@@ -243,7 +270,7 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     public List<ClientLeave> transformClients(List<Leave> leave) {
-        List<ClientLeave> list=new ArrayList<>(leave.size());
+        List<ClientLeave> list = new ArrayList<>(leave.size());
         for (Leave le : leave) {
             ClientLeave clientLeave = transformClients(le);
             list.add(clientLeave);

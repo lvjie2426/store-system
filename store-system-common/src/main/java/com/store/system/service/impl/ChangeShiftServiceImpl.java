@@ -3,6 +3,7 @@ package com.store.system.service.impl;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientChangeShift;
 import com.store.system.dao.ApprovalLogDao;
 import com.store.system.dao.ChangeShiftDao;
@@ -11,10 +12,14 @@ import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
 import com.store.system.model.attendance.ApprovalLog;
 import com.store.system.model.attendance.ChangeShift;
+import com.store.system.model.attendance.WorkOverTime;
 import com.store.system.service.ChangeShiftService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +39,11 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
     private UserDao userDao;
     @Autowired
     private ApprovalLogDao approvalLogDao;
+
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+
+    private RowMapperHelp<ChangeShift> rowMapper = new RowMapperHelp<>(ChangeShift.class);
 
     private void check(ChangeShift changeShift) {
         if (changeShift.getDate() == 0) throw new StoreSystemException("调班日期不能为空！");
@@ -151,6 +161,58 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
         return changeShiftDao.update(load);
     }
 
+    @Override
+    public Pager getList(long subid, long sid, String userName, long startTime, long endTime, int status, Pager pager) throws Exception {
+        String sql = "select wo.* from work_overtime wo, user u where u.id=wo.askUid ";
+        String countSql = "select count(1) from work_overtime wo, user u where u.id=wo.askUid ";
+        String limit = "  limit %d , %d ";
+        if (status>-1) {
+            sql = sql + " and status=" + status;
+            countSql = countSql + " and status=" + status;
+        }
+        if (sid > 0 && subid > 0) {
+            //门店
+            sql = sql + " and subid=" + subid;
+            countSql = countSql + " and subid=" + subid;
+        }
+        if (sid > 0 && subid == 0) {
+            // 企业
+            sql = sql + " and sid=" + sid + " and subid=0";
+            countSql = countSql + " and sid=" + sid + " and subid=0";
+        }
+
+        if (StringUtils.isNotBlank(userName)) {
+            sql = sql + " and u.`name` like '%" + userName + "%'";
+            countSql = countSql + " and u.`name` like '%" + userName + "%'";
+        }
+        if (startTime > 0) {
+            sql = sql + " and ctime>=" + startTime;
+            countSql = countSql + " and ctime>=" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and ctime<=" + endTime;
+            countSql = countSql + " and ctime<=" + endTime;
+        }
+
+
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<ChangeShift> changeShifts = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(countSql, Integer.class);
+
+        List<ClientChangeShift> clientChangeShifts = new ArrayList<>(changeShifts.size());
+        for (ChangeShift changeShift : changeShifts) {
+            ClientChangeShift clientChangeShift = TransFormCliens(changeShift);
+            clientChangeShifts.add(clientChangeShift);
+        }
+
+        pager.setData(clientChangeShifts);
+        pager.setTotalCount(count);
+        return pager;
+
+    }
+
     public ClientChangeShift TransFormCliens(ChangeShift changeShift) {
         ClientChangeShift clientChangeShift = new ClientChangeShift(changeShift);
         User load = userDao.load(changeShift.getReplaceUid());
@@ -167,7 +229,8 @@ public class ChangeShiftServiceImpl implements ChangeShiftService {
         if (load2 != null) {
             clientChangeShift.setCheckName(load2.getName());
             clientChangeShift.setCheckCover(load2.getCover());
-        } User load3 = userDao.load(changeShift.getAskUid());
+        }
+        User load3 = userDao.load(changeShift.getAskUid());
         if (load3 != null) {
             clientChangeShift.setAskName(load3.getName());
             clientChangeShift.setAskCover(load3.getCover());
