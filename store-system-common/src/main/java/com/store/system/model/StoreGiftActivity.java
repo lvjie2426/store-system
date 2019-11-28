@@ -21,8 +21,8 @@ import java.io.Serializable;
 @Data
 public class StoreGiftActivity implements Serializable{
 
-    public static final int STATUS_NORMAL = 0;//正常
-    public static final int STATUS_DELETE = 1;//删除
+    public static final int STATUS_ON = 0;//启用
+    public static final int STATUS_OFF = 1;//关闭
 
 
     @PrimaryKey
@@ -30,7 +30,7 @@ public class StoreGiftActivity implements Serializable{
     /***
      * 公司ID
      */
-    private long sid;
+    private long psid;
     /***
     * 标题
     */

@@ -20,7 +20,17 @@ public class ClientProductSKU extends ProductSKU {
 
     private double discount; //商品的会员折扣
 
-    private Map<Object,Object> p_properties_value;//SKU属性的值
+    private Map<Object,Object> k_properties_value;//SKU属性的值
+
+    private Map<Object,Object> p_properties_value;//SPU属性的值
+
+    private String providerName;
+
+    private String categoryName;
+
+    private String brandName;
+
+    private String seriesName;
 
     public ClientProductSKU(ProductSKU productSKU) {
         try {

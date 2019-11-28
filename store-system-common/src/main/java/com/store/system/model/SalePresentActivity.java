@@ -24,15 +24,15 @@ import java.util.List;
 @Data
 public class SalePresentActivity implements Serializable {
 
-    public static final int STATUS_NORMAL = 0;//正常
-    public static final int STATUS_DELETE = 1;//删除
+    public static final int STATUS_ON = 0;//启用
+    public static final int STATUS_OFF = 1;//关闭
 
     @PrimaryKey
     private long id;
     /***
      * 公司ID
      */
-    private long sid;
+    private long psid;
     /***
      * 标题
      */
@@ -46,7 +46,7 @@ public class SalePresentActivity implements Serializable {
      */
     private int num;
     /***
-     * 优惠券ID
+     * 商品或优惠券
      */
     @HyperspaceColumn(isJson = true)
     private List<SalePresentItem> items;

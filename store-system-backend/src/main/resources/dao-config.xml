@@ -636,4 +636,49 @@
         </property>
     </bean>
 
+    <bean id="storeGiftActivityDao" class="com.store.system.dao.impl.StoreGiftActivityDaoImpl">
+        <property name="tableName" value="store_gift_activity"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="salePresentActivityDao" class="com.store.system.dao.impl.SalePresentActivityDaoImpl">
+        <property name="tableName" value="sale_present_activity"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="integralActivityDao" class="com.store.system.dao.impl.IntegralActivityDaoImpl">
+        <property name="tableName" value="integral_activity"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="comboActivityDao" class="com.store.system.dao.impl.ComboActivityDaoImpl">
+        <property name="tableName" value="combo_activity"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="couponDao" class="com.store.system.dao.impl.CouponDaoImpl">
+        <property name="tableName" value="coupon"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

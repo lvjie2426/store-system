@@ -29,6 +29,8 @@
     <!--公用组件样式结束-->
     <!--单页样式-->
     <link rel="stylesheet" href="../resource/css/yanjing/market.css">
+    <!-- 单页样式-lvjie -->
+    <link rel="stylesheet" href="../resource/css/yanjing/salesActive.css">
     <!--单页样式结束-->
     <style>
         .fl {
@@ -39,421 +41,36 @@
             float: right!important;
         }
         
-        @media screen and (min-width:1010px) {
-            .item-body {
-                overflow: hidden;
-                width: 50%;
-                float: left;
-                padding: 0 20px;
-                padding-top: 10px;
-            }
-            .item-body:nth-child(even) {
-                padding-right: 20px;
-                padding-left: 0px;
-            }
+        [class^='content-view-item'] .btn-info {
+            width: 40px;
         }
         
-        .item-body {
-            padding-top: 10px;
+        .mcentent {
+            display: block!important;
+            margin: 8px auto!important;
         }
         
-        .item-body .active-item {
-            position: relative;
-            height: 96px;
-            width: 100%;
-            padding: 20px 24px;
-            border-radius: 3px;
-            background: #fff;
+        [class^='content-view-item'] .item-lst-con input[type='text'] {
+            width: 60px;
         }
         
-        .active-item .item-left {
-            margin-right: 12px;
-            display: inline-block;
-            width: 56px;
-            height: 56px;
-            line-height: 56px;
-            text-align: center;
-            border-radius: 50%;
-            color: #54B677;
-            font-size: 20px;
-            background: #EDF7F1;
+        [class^="content-view-item2"] .lay-content {
+            padding-right: 0;
+            padding-left: 0;
         }
         
-        .clear :nth-of-type(2) .active-item .item-left {
-            color: #DA698B;
-            background: #FBEFF3;
+        [class^="content-view-item3"] .item-group {
+            margin-top: 16px;
+            border: 1px solid #F4F4F8;
         }
         
-        .clear :nth-of-type(3) .active-item .item-left {
-            color: #DD5B4B;
-            background: #FBEEED;
-        }
-        
-        .clear :nth-of-type(4) .active-item .item-left {
-            color: #FDF9E8;
-            background: #F4C621;
-        }
-        
-        .clear :nth-of-type(5) .active-item .item-left {
-            color: #57B8DB;
-            background: #EEF7FB;
-        }
-        
-        .item-left .iconfont {
-            font-size: 19px;
-        }
-        
-        .item-con h2 {
-            display: inline-block;
-            height: 20px;
-            line-height: 20px;
-            margin-top: 6px;
-            margin-bottom: 2px;
-            font-size: 14px;
-            color: #3A3A54;
-            font-family: 'PingFangSC-Medium';
-        }
-        
-        .item-con p {
-            display: block;
-            max-width: 290px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            font-size: 12px;
-            color: #A2A2B2;
-        }
-        
-        .active-item div {
-            float: left;
-        }
-        
-        div.item-right {
-            position: absolute;
-            right: 24px;
-            top: 15px;
-            margin-top: 19px;
-            color: #5794E0;
-        }
-        
-        .item-right .item-set {
-            height: 18px;
-            line-height: 18px;
-            font-size: 13px;
-            display: block;
-        }
-        
-        .item-set i {
-            vertical-align: middle;
-        }
-        
-        .tab-ul li {
-            display: none;
-        }
-        
-        .tab-ul li>i {
-            vertical-align: middle;
-            height: 12px;
-            width: 12px;
-            font-size: 12px;
-            line-height: 12px;
-            color: #87879C;
-        }
-        
-        .header .tab-ul li {
-            margin-left: 0;
-            color: #45455D;
-        }
-        
-        .tab-ul li:nth-child(1) {
-            margin-left: 25px;
-            color: #87879C;
-            font-size: 12px;
-        }
-        
-        .tab-ul .show {
-            display: block;
-        }
-        
-        .card-item .item::after {
-            content: '';
-            display: block;
-            visibility: hidden;
-            clear: both;
-            height: 0;
-        }
-        
-        .middle-cont .item .text-top {
-            width: 70px;
-            text-overflow: clip;
-            word-wrap: break-word;
-        }
-        
-        .bot-cont .button.fl {
-            color: #828297;
-        }
-        
-        .tab-item .tabcard {
-            height: 20px;
-            width: 180px;
-            margin: 16px auto;
-        }
-        
-        .tabcard .tabitem {
-            float: left;
-            padding: 0 10px;
-            text-align: left;
-            font-size: 12px;
-            height: 18px;
-            line-height: 18px;
-            font-family: PingFangSC-Regular;
-            color: #393953;
-        }
-        
-        .tabcard .active {
-            font-weight: 600;
-            color: #393953;
-        }
-        
-        .tabcard .line {
-            float: left;
-            width: 1px;
-            margin-top: 4px;
-            height: 12px;
-            background: #DEDEE8;
-        }
-        
-        .trash .btn {
-            display: inline-block;
-            height: 16px;
-            padding: 1px 6px;
-            line-height: 16px;
-            border: 1px solid #E8E8EC;
-            font-size: 11px;
-            color: #C7C7D0;
-        }
-        
-        .item_bd .delete {
-            height: 60px;
-            padding-top: 20px;
-        }
-        
-        .item_bd .delete .button {
-            float: none!important;
-            display: table;
-            margin: 0 auto;
-        }
-        
-        .right-switch {
-            display: inline-block;
-            float: none;
-        }
-        /* 积花营销 设置布局 */
-        /* 646测试高度 */
-        
-        .setting_box {
-            width: 100%;
-            padding: 12px 12px 38px;
-            background: #ECECF3;
-        }
-        
-        .set_l,
-        .set_r {
+        .item-group .item_hd {
+            background: #F4F4F8;
             border-radius: 3px;
         }
         
-        .item_hd .titleBox {
-            width: 100%;
-            padding: 17px 8px 15px 20px;
-            box-sizing: border-box;
-            border-bottom: 1px solid #ECECF4;
-        }
-        
-        .set_l .item_hd .titleBox {
-            border: none;
-        }
-        
-        .item_hd .item-tab-ul {
-            display: flex;
-            padding: 0 20px;
-            justify-content: space-between;
-            height: 52px;
-            background: #fff;
-        }
-        
-        .item-tab-ul li {
-            height: 28px;
-            line-height: 20px;
-            margin-right: 5px;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            border: none;
-            color: rgba(130, 130, 151, 1);
-            font-size: 12px;
-            font-weight: 600;
-            text-align: left;
-            font-family: PingFangSC-Semibold;
-        }
-        
-        .item-tab-ul .active {
-            color: rgba(57, 57, 83, 1);
-            border-bottom: 2px solid #393953;
-            font-weight: 600;
-        }
-        
-        .tabbox {
-            overflow: hidden;
-            border-top: 1px solid #EDEDF5;
-        }
-        
-        .tabbox .tab_shopType {
-            box-sizing: border-box;
-            float: left;
-            padding-left: 20px;
-            display: table;
-            width: 50%;
-            height: 44px;
-            border-right: 1px solid #F1F1F7;
-        }
-        
-        .tab_shopType span {
-            vertical-align: middle;
-            margin-left: 4px;
-            line-height: 44px;
-        }
-        
-        .tab_shopType label {
-            margin: 0px;
-        }
-        
-        .tab_shopType .ckbox {
-            display: none;
-        }
-        
-        .tab_shopType .ckbox+label {
-            width: 16px;
-            height: 16px;
-            margin: 0px;
-            display: inline-block;
-            text-align: center;
-            vertical-align: bottom;
-            line-height: 44px;
-            vertical-align: middle;
-            border-radius: 0px;
-            border: 1px solid #d3d3d3;
-        }
-        
-        .tab_shopType .ckbox:checked+label {
-            background: #2783FB;
-            line-height: 13px;
-        }
-        
-        .tab_shopType .ckbox:checked+label::after {
-            content: '\2714';
-            font-size: 8px;
-            color: #fff;
-        }
-        
-        .tab_shopType .ckbox:checked {
-            background: #4186DC;
-        }
-        
-        .tabbox .tab_shopType:nth-child(2) {
-            border-right: none;
-        }
-        
-        .item-lst {
-            border-bottom: 1px solid #EDEDF5;
-        }
-        
-        .item-lst .item-lst-t {
-            height: 48px;
-            line-height: 48px;
-            border-top: 1px solid #EBEBEE;
-            background: #F9F9FB;
-        }
-        
-        .item-lst-con {
-            border-top: 1px solid #EBEBEE;
-            padding: 14px 20px;
-            line-height: 20px;
-            background: #F4F4F7;
-        }
-        
-        .item-lst-t p {
-            float: left;
-            margin-left: 20px;
-        }
-        
-        .item-lst-t p i {
-            vertical-align: middle;
-        }
-        
-        .item-lst-t p:nth-child(2) {
-            float: right;
-            margin-left: 0;
-            margin-right: 20px;
-            color: #9393A6;
-        }
-        
-        .titleBox>i {
-            vertical-align: text-top;
-            display: inline-block;
-            height: 20px;
-            width: 20px;
-            line-height: 20px;
-            border-radius: 2px;
-            font-size: 10px;
-            color: #fff;
-            text-align: center;
-            background: #DC7292;
-        }
-        
-        .set_r .titleBox>i {
-            background: #4186DC;
-        }
-        
-        .titleBox h3 {
-            display: inline-block;
-            vertical-align: middle;
-            font-family: PingFangSC-Regular;
-            margin: 0 5px;
-            font-size: 14px;
-            line-height: 20px;
-        }
-        
-        .titleBox .tips {
-            display: inline-block;
-            vertical-align: middle;
-            color: #AFAFBD;
-            font-size: 14px;
-            line-height: 20px;
-        }
-        
-        @media screen and (min-width:780px) {
-            .set_l {
-                float: left;
-                width: 45%;
-            }
-            .set_l .item_set {
-                margin-right: 12px;
-                background: #fff;
-                /* height: 646px; */
-            }
-            .set_r {
-                float: right;
-                width: 55%;
-                height: 646px;
-                background: #fff;
-            }
-        }
-        
-        .item_set,
-        .set_r {
-            border: 1px solid #DEDEE6;
+        .item-group .tab_shopType {
+            padding: 0px 6px 0px 11px;
         }
     </style>
 </head>
@@ -836,27 +453,26 @@
                                     <h3>花卡获得条件</h3>
                                 </div>
                                 <ul class="item-tab-ul clear">
-                                    <li class="active" onclick="">镜片</li>
-                                    <li onclick="" class="">镜架</li>
-                                    <li>隐形眼镜</li>
-                                    <li>太阳镜</li>
-                                    <li>护理产品</li>
-                                    <li>其它商品</li>
+                                    <li class="active" onclick="itemtab(0)">镜片</li>
+                                    <li onclick="itemtab(1)" class="">镜架</li>
+                                    <li onclick="itemtab(2)">隐形眼镜</li>
+                                    <li onclick="itemtab(3)">太阳镜</li>
+                                    <li onclick="itemtab(4)">护理产品</li>
+                                    <li onclick="itemtab(5)">其它商品</li>
                                 </ul>
                                 <div class="tabbox">
                                     <div class="tab_shopType ">
                                         <div class="tab_set">
-                                            <input type="checkbox" class="ckbox" id="shop1">
+                                            <input type="checkbox" class="ckbox" id="shop1" onclick="optshoplst(this)">
                                             <label for="shop1">
                                             </label>
                                             <span>针对该品类进行设置</span>
-
                                         </div>
 
                                     </div>
                                     <div class="tab_shopType ">
                                         <div class="tab_set">
-                                            <input type="checkbox" class="ckbox" id="shop2">
+                                            <input type="checkbox" class="ckbox" id="shop2" onclick="optshoplst(this)">
                                             <label for="shop2">
                                             </label>
                                             <span>对不同商品进行设置</span>
@@ -864,48 +480,123 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="item_bd">
-                                <div class="item-lst">
-                                    <div class="item-lst-t">
-                                        <p>明月镜片旗下新品牌 A 系列</p>
-                                        <p><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
-                                    </div>
-                                    <div class="item-lst-con">
-                                        <div>
-                                            消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                            <!-- 针对item_hd中选择查看 不同状态的商品 -->
+                            <div class="set_tabcon">
+                                <div class="item_bd" title="对该品类">
+                                    <div class="item-lst">
+                                        <div class="item-lst-con  bgnone clearfix">
+                                            <div class="fl">
+                                                <label for="">消费满</label>
+                                                <input type="text" value="5"> 元，
+                                                <label for="">获得花卡</label>
+                                                <input type="text" value="10"> 张
+                                            </div>
+                                            <div class="bd-deletd fr clearfix">
+                                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item-lst">
-                                    <div class="item-lst-t">
-                                        <p>明月镜片旗下新品牌 A 系列</p>
-                                        <p><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
-                                    </div>
-                                    <div class="item-lst-con">
-                                        <div>
-                                            消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                    <div class="item-lst">
+                                        <div class="item-lst-con  bgnone clearfix">
+                                            <div class="fl">
+                                                <label for="">消费满</label>
+                                                <input type="text" value="5"> 元，
+                                                <label for="">获得花卡</label>
+                                                <input type="text" value="10"> 张
+                                            </div>
+                                            <div class="bd-deletd fr clearfix">
+                                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item-lst">
-                                    <div class="item-lst-t">
-                                        <p>明月镜片旗下新品牌 A 系列</p>
-                                        <p><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
-                                    </div>
-                                    <div class="item-lst-con">
-                                        <div>
-                                            消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                    <div class="item-lst">
+                                        <div class="item-lst-con  bgnone clearfix">
+                                            <div class="fl">
+                                                <label for="">消费满</label>
+                                                <input type="text" value="5"> 元，
+                                                <label for="">获得花卡</label>
+                                                <input type="text" value="10"> 张
+                                            </div>
+                                            <div class="bd-deletd fr clearfix">
+                                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item-lst">
-                                    <div class="item-lst-t">
-                                        <p>明月镜片旗下新品牌 A 系列</p>
-                                        <p><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
+                                    <div class="item-lst">
+                                        <div class="item-lst-con  bgnone clearfix">
+                                            <div class="fl">
+                                                <label for="">消费满</label>
+                                                <input type="text" value="5"> 元，
+                                                <label for="">获得花卡</label>
+                                                <input type="text" value="10"> 张
+                                            </div>
+                                            <div class="bd-deletd fr clearfix">
+                                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="item-lst-con">
-                                        <div>
-                                            消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                    <div class="item-lst">
+                                        <div class="item-lst-con  bgnone clearfix">
+                                            <div class="fl">
+                                                <label for="">消费满</label>
+                                                <input type="text" value="5"> 元，
+                                                <label for="">获得花卡</label>
+                                                <input type="text" value="10"> 张
+                                            </div>
+                                            <div class="bd-deletd fr clearfix">
+                                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item-lst">
+                                        <div class="item-lst-con  bgnone clearfix">
+                                            <div class="fl">
+                                                <label for="">消费满</label>
+                                                <input type="text" value="5"> 元，
+                                                <label for="">获得花卡</label>
+                                                <input type="text" value="10"> 张
+                                            </div>
+                                            <div class="bd-deletd fr clearfix">
+                                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item-lst">
+                                        <div class="item-lst-con  bgnone clearfix">
+                                            <div class="fl">
+                                                <label for="">消费满</label>
+                                                <input type="text" value="5"> 元，
+                                                <label for="">获得花卡</label>
+                                                <input type="text" value="10"> 张
+                                            </div>
+                                            <div class="bd-deletd fr clearfix">
+                                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="btn btn-info" onclick="addshopitem(1)">+新增</p>
+                                </div>
+                                <div class="item_bd" title="不同商品类" style="display: none;">
+                                    <div class="item-lst">
+                                        <div class="item-lst-t">
+                                            <p>明月镜片旗下新品牌 A 系列</p>
+                                            <p onclick="setshops(this)"><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
+                                        </div>
+                                        <div class="item-lst-con">
+                                            <div>
+                                                消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item-lst">
+                                        <div class="item-lst-t">
+                                            <p>明月镜片旗下新品牌 A 系列</p>
+                                            <p onclick="setshops(this)"><span>去设置<i class="iconfont icon-ico_arrow_right"></i></span></p>
+                                        </div>
+                                        <div class="item-lst-con">
+                                            <div>
+                                                消费满 100 元，获得花卡 10 张；消费满 200 元，获得花卡 20 张；消费满 500 元，获得花卡 50 张；消费满 1000 元，获得花卡 100 张；
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -920,8 +611,153 @@
                                     <span class="tips">最多设置 8 个</span>
                                 </div>
                             </div>
-                            <div class="item_bd"></div>
+                            <div class="item_bd clearfix">
+                                <div class="bd-l fl clearfix">
+                                    <div class="imgbox fl icon-ico_plus iconfont ">
+
+                                    </div>
+                                    <div class="businfo fl">
+                                        <span class="busname">依视路镜片</span>
+                                        <button class="btn btn-default">5 家门店可兑换<i class="iconfont icon-ico_arrow_right"></i></button>
+                                        <!-- <p class="actinfo">
+                                            
+                                        </p> -->
+                                        <input type="text" class="actinfo" value="非常好用的镜片，限时兑换">
+                                    </div>
+                                </div>
+                                <div class="bd-r fr clearfix">
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                    <div class="bd-deletd fr clearfix">
+                                        <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                    </div>
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item_bd clearfix">
+                                <div class="bd-l fl clearfix">
+                                    <div class="imgbox fl icon-ico_plus iconfont ">
+
+                                    </div>
+                                    <div class="businfo fl">
+                                        <span class="busname">选择商品</span>
+                                        <button class="btn btn-default">可兑换门店<i class="iconfont icon-ico_arrow_right"></i></button>
+                                        <!-- <p class="actinfo">
+                                            非常好用的镜片，限时兑换
+                                        </p> -->
+
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                                <div class="bd-r fr clearfix">
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                    <div class="bd-deletd fr clearfix">
+                                        <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                    </div>
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item_bd clearfix">
+                                <div class="bd-l fl clearfix">
+                                    <div class="imgbox fl icon-ico_plus iconfont ">
+
+                                    </div>
+                                    <div class="businfo fl">
+                                        <span class="busname">选择商品</span>
+                                        <button class="btn btn-default">可兑换门店<i class="iconfont icon-ico_arrow_right"></i></button>
+                                        <!-- <p class="actinfo">
+                                            非常好用的镜片，限时兑换
+                                        </p> -->
+
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                                <div class="bd-r fr clearfix">
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                    <div class="bd-deletd fr clearfix">
+                                        <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                    </div>
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item_bd clearfix">
+                                <div class="bd-l fl clearfix">
+                                    <div class="imgbox fl icon-ico_plus iconfont ">
+
+                                    </div>
+                                    <div class="businfo fl">
+                                        <span class="busname">选择商品</span>
+                                        <button class="btn btn-default">可兑换门店<i class="iconfont icon-ico_arrow_right"></i></button>
+                                        <!-- <p class="actinfo">
+                                            非常好用的镜片，限时兑换
+                                        </p> -->
+
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                                <div class="bd-r fr clearfix">
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                    <div class="bd-deletd fr clearfix">
+                                        <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                    </div>
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item_bd clearfix">
+                                <div class="bd-l fl clearfix">
+                                    <div class="imgbox fl icon-ico_plus iconfont ">
+
+                                    </div>
+                                    <div class="businfo fl">
+                                        <span class="busname">选择商品</span>
+                                        <button class="btn btn-default">可兑换门店<i class="iconfont icon-ico_arrow_right"></i></button>
+                                        <!-- <p class="actinfo">
+                                            非常好用的镜片，限时兑换
+                                        </p> -->
+
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                                <div class="bd-r fr clearfix">
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                    <div class="bd-deletd fr clearfix">
+                                        <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                                    </div>
+                                    <div class="bd-r-item fl">
+                                        <span>兑换所需花卡</span>
+                                        <input type="text" class="actinfo" value="20">
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+                        <p class="btn btn-info" onclick="addshopitem(2)">+新增</p>
                     </div>
                 </div>
 
@@ -1649,6 +1485,8 @@
             </li>
         </ul>
     </div>
+
+
     <!-- 展示插件弹窗 -->
     <div class="content-view1" id="voucherDiaUl">
     </div>
@@ -1695,6 +1533,181 @@
         <div class="delete-header layui-layer-title">确定删除任务？</div>
         <div class="content">此操作不可撤销</div>
     </div>
+
+    <!--************************************<营销模块弹窗 开始>******************************************/ -->
+
+    <!-- 展示【静态弹窗】 -->
+    <div class="content-view-item1 " title="储值送礼弹窗">
+        <!-- 储值送礼 -->
+        <form action="">
+            <div class="lay-header">
+                <span class="lay-title" id="voucher-title">创建储值送礼活动</span>
+                <div class="switch active fr" id="voucherSwitch">
+                    <span class="off">未开启</span>
+                    <span class="on">已启用</span>
+                    <span class="switch-btn"><i></i></span>
+                </div>
+            </div>
+            <div class="lay-content">
+                <ol class="clear left halfcon">
+                    <li class="lay-row title clear">
+                        <div>标题</div>
+                        <input type="text" placeholder="标题" class="title" id="voucherTitle">
+                    </li>
+
+                    <li class="lay-row title clear">
+                        <div>赠送优惠券</div>
+                        <div class="selectBox" id="selectBox2">
+                            <div class="select-box-header">
+                                <span class="text">选择优惠券</span><i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+                <ol class="clear left halfcon">
+                    <li class="lay-row title clear">
+                        <div>需一次性储值金额</div>
+                        <input type="text" placeholder="事假" class="title" id="voucherTitle">
+                    </li>
+
+                    <li class="lay-row title clear">
+                        <div>活动有效期</div>
+                        <div class="selectBox" id="selectBox2">
+                            <div class="select-box-header">
+                                <span class="text">选择时间</span><i class="iconfont icon-ico_calendar"></i>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </form>
+    </div>
+    <div class="content-view-item2" title="积花营销-花卡兑换设置">
+        <form action="">
+            <div class="lay-header">
+                <span class="lay-title" id="voucher-title">花卡兑换设置</span>
+            </div>
+            <div class="lay-content">
+                <div class="item_bd" title="对该品类" style="display: block;">
+                    <div class="item-lst">
+                        <div class="item-lst-con  bgnone clearfix">
+                            <div class="fl">
+                                <label for="">消费满</label>
+                                <input type="text" value="5"> 元，
+                                <label for="">获得花卡</label>
+                                <input type="text" value="10"> 张
+                            </div>
+                            <div class="bd-deletd fr clearfix">
+                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-lst">
+                        <div class="item-lst-con  bgnone clearfix">
+                            <div class="fl">
+                                <label for="">消费满</label>
+                                <input type="text" value="5"> 元，
+                                <label for="">获得花卡</label>
+                                <input type="text" value="10"> 张
+                            </div>
+                            <div class="bd-deletd fr clearfix">
+                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-lst">
+                        <div class="item-lst-con  bgnone clearfix">
+                            <div class="fl">
+                                <label for="">消费满</label>
+                                <input type="text" value="5"> 元，
+                                <label for="">获得花卡</label>
+                                <input type="text" value="10"> 张
+                            </div>
+                            <div class="bd-deletd fr clearfix">
+                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-lst">
+                        <div class="item-lst-con  bgnone clearfix">
+                            <div class="fl">
+                                <label for="">消费满</label>
+                                <input type="text" value="5"> 元，
+                                <label for="">获得花卡</label>
+                                <input type="text" value="10"> 张
+                            </div>
+                            <div class="bd-deletd fr clearfix">
+                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="btn btn-info mcentent">+新增</p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="content-view-item3" title="积花营销-可兑换门店">
+        <form action="">
+            <div class="lay-header">
+                <span>可兑换门店</span>
+            </div>
+            <div class="lay-content">
+                <div class="item-group">
+                    <div class="item_hd">
+                        <div class="tab_shopType ">
+                            <div class="tab_set">
+                                <input type="checkbox" class="ckbox" id="tab_set0">
+                                <label for="tab_set0">
+                                                </label>
+                                <span>门店名称</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item_bd" title="对该品类">
+                        <div class="tab_shopType ">
+                            <div class="tab_set">
+                                <input type="checkbox" class="ckbox" id="tab_set1">
+                                <label for="tab_set1">
+                                        </label>
+                                <span>针对该品类进行设置</span>
+                            </div>
+                        </div>
+                        <div class="tab_shopType ">
+                            <div class="tab_set">
+                                <input type="checkbox" class="ckbox" id="tab_set2">
+                                <label for="tab_set2">
+                                            </label>
+                                <span>针对该品类进行设置</span>
+                            </div>
+                        </div>
+                        <div class="tab_shopType ">
+                            <div class="tab_set">
+                                <input type="checkbox" class="ckbox" id="tab_set3">
+                                <label for="tab_set3">
+                                                </label>
+                                <span>针对该品类进行设置</span>
+                            </div>
+                        </div>
+                        <div class="tab_shopType ">
+                            <div class="tab_set">
+                                <input type="checkbox" class="ckbox" id="tab_set3">
+                                <label for="tab_set3">
+                                                    </label>
+                                <span>针对该品类进行设置</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!--************************************<营销模块弹窗 结束>******************************************/ -->
+
     <!--全局JS引用-->
     <!-- jq库 -->
     <script src="../resource/js/jquery.min.js"></script>
@@ -2615,6 +2628,88 @@
         function saveSales() {
 
         }
+        //itemtab 功能切换 列表
+        function itemtab(t) { //切换当前的 列表
+            var type = t; //
+            var pul = $('.setting_box .item-tab-ul li');
+            pul.eq(t).addClass('active').siblings().removeClass('active')
+            type = null
+        }
+        // 积花选择设置 商品列表/
+        function optshoplst(e) {
+            // 默认隐藏不同位置
+            var ckbox = $(e).parents('.tabbox').find('input[type=checkbox]');
+            ckbox.prop('checked', false)
+            $(e).prop('checked', true)
+            if ($(e).prop('id') == 'shop2') { //展示不同列表 位置1
+                // console.log($('.set_tabcon').eq(1))
+                $('.set_tabcon').children().eq(1).show().siblings().hide();
+            } else if ($(e).prop('id') == 'shop1') { //相同的列表位置 0
+                $('.set_tabcon').children().eq(0).show().siblings().hide();
+            }
+        }
+        //设置 积花营销对-不同商品的设置
+        function setshops(e) {
+            if ($(e)) {
+                layer_windwo({
+                    width: '360',
+                    height: '350',
+                    targetcon: '.content-view-item2', //选择渲染的容器
+                }, function() {})
+            }
+        }
+        //设置 积花营销-新增 
+        function addshopitem(type) {
+            //type的值1:为花卡获得条件-新增  2:兑换的商品 -新增
+            if (type == 1) {
+                layer_windwo({
+                    width: '360',
+                    height: '350',
+                    targetcon: '.content-view-item2', //选择渲染的容器
+                }, function() {})
+            } else if (type == 2) {
+                layer_windwo({
+                    width: '360',
+                    height: '350',
+                    targetcon: '.content-view-item3', //选择渲染的容器
+                }, function() {})
+            }
+        }
+
+        function layer_windwo(obj, callback) {
+            /**弹窗——储值送礼-新增满减劵(编辑)----*/
+            var btn;
+            if (quakooUtils.isBlack(obj)) {
+                btn = ['取消', '新增'];
+            } else {
+                btn = ['取消', '编辑'];
+            }
+            var index = layer.open({
+                type: 1,
+                shade: 0.01,
+                shadeClose: true,
+                skin: 'dialog-voucher', //样式类名
+                area: [obj.width + 'px', obj.height + 'px'],
+                anim: 0,
+                closeBtn: 0,
+                resize: false,
+                title: null,
+                move: ".lay-header",
+                content: $(obj.targetcon),
+                btn: btn,
+                yes: function(index) {
+                    layer.close(index)
+                },
+                btn2: function(index, layero) { //btn 新增
+                    // addVoucher(index);// 借鉴 【新增抵用券】
+                    return false
+                },
+                success: function(layero, index) { //layer成功 后调用 
+                    // renderVouDia(voucherId);借鉴 【渲染抵用券】
+                    //rendersale_act(voucherId); // 渲染 储值送礼 --活动弹窗
+                }
+            });
+        }
 
         //营销活动-储值送礼 --活动弹窗
         function salesactivity(voucherId) {
@@ -2630,13 +2725,13 @@
                 shade: 0.01,
                 shadeClose: true,
                 skin: 'dialog-voucher', //样式类名
-                area: ['360px', '375px'],
+                area: ['360px', '230px'],
                 anim: 0,
                 closeBtn: 0,
                 resize: false,
                 title: null,
                 move: ".lay-header",
-                content: $('.content-view1'),
+                content: $('.content-view-item1'),
                 btn: btn,
                 yes: function(index) {
                     layer.close(index)
@@ -2647,7 +2742,7 @@
                 },
                 success: function(layero, index) { //layer成功 后调用 
                     // renderVouDia(voucherId);借鉴 【渲染抵用券】
-                    rendersale_act(voucherId); // 渲染 储值送礼 --活动弹窗
+                    //rendersale_act(voucherId); // 渲染 储值送礼 --活动弹窗
                 }
             });
 

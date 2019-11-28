@@ -35,7 +35,7 @@ public class Coupon implements Serializable {
     /***
      * 公司ID
      */
-    private long sid;
+    private long psid;
     /***
      * 标题
      */

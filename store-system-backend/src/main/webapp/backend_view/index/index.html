@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
- 
+
 <head>
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
     <meta charset="UTF-8">
@@ -25,9 +25,10 @@
     <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="../resource/css/common.css" rel="stylesheet">
     <style>
-        body{
+        body {
             min-width: 1280px;
         }
+        
         .merchants {
             padding: 4px 6px;
             margin: 10px 5px 5px 0;
@@ -36,12 +37,14 @@
             color: #393953;
             font-weight: bold;
         }
-
-        .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+        
+        .nav .open>a,
+        .nav .open>a:focus,
+        .nav .open>a:hover {
             background-color: transparent;
             border-color: transparent;
         }
-
+        
         .nav-header .xiaoshoukaidan {
             left: 16px;
             top: 68px;
@@ -56,16 +59,16 @@
             text-align: center;
             font-family: PingFangSC-Semibold;
         }
-
+        
         .xiaoshoukaidan a {
             color: #fff;
         }
-
+        
         .xiaoshoukaidan i {
             margin-right: 6px;
             vertical-align: middle;
         }
-
+        
         .nav-header-admin .select-box-header {
             color: #393953;
         }
@@ -73,119 +76,128 @@
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
-<div id="wrapper">
-    <!--头部开始-->
-    <div class="row border-bottom">
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <a class="navbar-minimalize minimalize-styl-2" href="javascript:;"><i
+    <div id="wrapper">
+        <!--头部开始-->
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2" href="javascript:;"><i
                         class="icon iconfont icon-ico_menu_collapse"></i> </a>
-                <a class="merchants " href="javascript:;"><i class="icon iconfont icon-ico_frame"
+                    <a class="merchants " href="javascript:;"><i class="icon iconfont icon-ico_frame"
                                                              style="margin-right: 4px"></i> 精益眼镜</a>
-            </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="nav-header">
-                    <div class="selectBox" id="selectBox">
-                        <div class="select-box-header">
-                            <span class="text" id="shopDefaultText"></span> <i
-                                class="iconfont icon-ico_arrow_down"></i>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="nav-header">
+                        <div class="selectBox" id="selectBox">
+                            <div class="select-box-header">
+                                <span class="text" id="shopDefaultText"></span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL" id="shopUl">
+                                </ul>
+                            </div>
                         </div>
-                        <div class="optionBox">
-                            <ul class="optionUL" id="shopUl">
-                            </ul>
+                    </li>
+                    <li class="nav-header nav-header-admin">
+                        <div class="selectBox selectBoxNoBorder" id="select-admin" style="width: auto">
+                            <div class="select-box-header">
+                                <span class="" id="name" style="margin-right: 10px;max-width: none">管理员账户</span> <i class="iconfont icon-ico_arrow_down"></i>
+                            </div>
+                            <div class="optionBox">
+                                <ul class="optionUL">
+                                    <li value="安全退出" onclick="logout()">安全退出</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li class="nav-header nav-header-admin">
-                    <div class="selectBox selectBoxNoBorder" id="select-admin" style="width: auto">
-                        <div class="select-box-header">
-                            <span class="" id="name" style="margin-right: 10px;max-width: none">管理员账户</span> <i class="iconfont icon-ico_arrow_down"></i>
-                        </div>
-                        <div class="optionBox">
-                            <ul class="optionUL">
-                                <li value="安全退出" onclick="logout()">安全退出</li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <!--左侧导航开始-->
-    <nav class="navbar-default navbar-static-side" role="navigation">
-        <div class="sidebar-collapse">
-            <ul class="nav" id="side-menu">
-                <li class="nav-header">
-                    <div class="xiaoshoukaidan nav nav-second-level">
-                        <a class='J_menuItem' href="../salesOrder/salesOrder.html"><i
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!--左侧导航开始-->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="xiaoshoukaidan nav nav-second-level">
+                            <a class='J_menuItem' href="../salesOrder/salesOrder.html"><i
                                 class="icon iconfont icon-ico_circle_plus_fill"></i>销售开单</a>
-                    </div>
-                </li>
-                <li>
-                    <a class="J_menuItem" href="../timeWorkbench/timeWorkbench.html"><i
+                        </div>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="../timeWorkbench/timeWorkbench.html"><i
                             class="icon iconfont icon-ico_home"></i>
                         <span class="nav-label">实时工作台</span>
                     </a>
-                </li>
-                <li>
-                    <a href="../orderManagement/ordersManage.html" class="J_menuItem"><i
+                    </li>
+                    <li>
+                        <a href="../orderManagement/ordersManage.html" class="J_menuItem"><i
                             class="icon iconfont icon-ico_order"></i>
                         <span class="nav-label">订单管理</span>
                     </a>
-                </li>
-                <li>
-                    <a href="#"><i class="icon iconfont icon-ico_product"></i>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon iconfont icon-ico_product"></i>
                         <span class="nav-label">商品管理</span>
                     </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" data-index='10' href="../goodsManage/goodsManage.html">商品列表</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="../goodsManage/putStorage.html">入库</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="../goodsManage/outbound.html">出库</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="../goodsManage/setGoods.html">调货</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="../goodsManage/inventory.html">盘点</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="../goodsManage/medical.html">医疗器械</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="J_menuItem" href="../custManagement/custManagement.html"><i
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" data-index='10' href="../goodsManage/goodsManage.html">商品列表</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="../goodsManage/putStorage.html">入库</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="../goodsManage/outbound.html">出库</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="../goodsManage/setGoods.html">调货</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="../goodsManage/inventory.html">盘点</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="../goodsManage/medical.html">医疗器械</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="../custManagement/custManagement.html"><i
                             class="icon iconfont icon-ico_user"></i>
                         <span class="nav-label">顾客管理</span>
                     </a>
-                </li>
-                <li>
-                    <a class="J_menuItem" href="../salesManage/salesManage.html"><i
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="../salesManage/salesManage.html"><i
                             class="icon iconfont icon-ico_present"></i>
                         <span class="nav-label">营销管理</span>
                     </a>
-                </li>
-                <li>
-                    <a class="J_menuItem" href="../companyManage/companyManage.html"><i
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="../companyManage/companyManage.html"><i
                             class="icon iconfont icon-ico_multiuser"></i>
                         <span class="nav-label">公司管理</span>
                     </a>
-                </li>
-                <li>
-                    <a class="J_menuItem" href="../statistics/statistics.html"><i
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="../statistics/statistics.html"><i
                             class="icon iconfont icon-ico_statistics"></i>
                         <span class="nav-label">统计数据</span>
                     </a>
-                </li>
-                <li>
-                    <a href="#"><i class="icon iconfont icon-ico_product"></i>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon iconfont icon-ico_product"></i>
                         <span class="nav-label">考勤管理</span>
                     </a>
+<<<<<<< HEAD
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="../attendance/attendanceRule.html">考勤规则</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="../afterSale/afterSale.html"><i
+=======
                     <ul class="nav nav-second-level">
                         <li>
                             <a class="J_menuItem" href="../attendance/attendanceRule.html">考勤规则</a>
@@ -212,180 +224,188 @@
                 </li>
                 <li>
                     <a class="J_menuItem" href="../afterSale/afterSale.html"><i
+>>>>>>> 5556c990a2108c4346f3c8d6eb4c0486c681e796
                             class="icon iconfont icon-ico_statistics"></i>
                         <span class="nav-label">售后</span>
                     </a>
-                </li>
-                <li>
-                    <a class="J_menuItem" href="./setting.html"><i class="icon iconfont icon-ico_setting"></i>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="./setting.html"><i class="icon iconfont icon-ico_setting"></i>
                         <span class="nav-label">设置</span>
                     </a>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row J_mainContent" id="content-main">
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="../salesOrder/salesOrder.html" frameborder="0" data-id="index_v1" seamless></iframe>
+            </div>
         </div>
-    </nav>
-    <!--左侧导航结束-->
-    <!--右侧部分开始-->
-    <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="../salesOrder/salesOrder.html"
-                    frameborder="0"
-                    data-id="index_v1" seamless></iframe>
-        </div>
+        <!--右侧部分结束-->
+        <!--右侧边栏开始-->
     </div>
-    <!--右侧部分结束-->
-    <!--右侧边栏开始-->
-</div>
 
-<!-- 全局js -->
-<!--IE ES6兼容(需要将对应的script标签的type = "text/babel") 开始-->
-<!--<script src="../resource/js/yanjing/browser.js"></script>-->
-<!--<script src="../resource/js/yanjing/browser-polyfill.js"></script>-->
-<!--IE ES6兼容 结束-->
-<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
-<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
-<script src="../resource/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="../resource/js/plugins/layer/layer.js"></script>
+    <!-- 全局js -->
+    <!--IE ES6兼容(需要将对应的script标签的type = "text/babel") 开始-->
+    <!--<script src="../resource/js/yanjing/browser.js"></script>-->
+    <!--<script src="../resource/js/yanjing/browser-polyfill.js"></script>-->
+    <!--IE ES6兼容 结束-->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="../resource/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../resource/js/plugins/layer/layer.js"></script>
 
-<!-- 第三方插件 -->
-<script src="../resource/js/plugins/pace/pace.min.js"></script>
+    <!-- 第三方插件 -->
+    <script src="../resource/js/plugins/pace/pace.min.js"></script>
 
 
-<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
-<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
-<script src="../resource/js/lib/quakoo/Config.js"></script>
-<script src="../resource/js/lib/quakoo/project.js"></script>
-<script src="../resource/common/common.js?" +Math.random()></script>
-<script src="../resource/js/template-native.js"></script>
-<script src="../resource/js/yanjing/yanjing.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakoo/Config.js"></script>
+    <script src="../resource/js/lib/quakoo/project.js"></script>
+    <script src="../resource/common/common.js?" +Math.random()></script>
+    <script src="../resource/js/template-native.js"></script>
+    <script src="../resource/js/yanjing/yanjing.js"></script>
 
-<!--门店列表开始-->
-<script type="text/html" id="shopList">
-    <%for(var i=0;i < list.length;i++){%>
-    <li value="<%=list[i].id%>"><%=list[i].name%></li>
-    <%}%>
-</script>
-<!--门店列表结束-->
-<script>
-    console.log("登录用户信息：", quakooUser.getUserInfo())
-    var sid = quakooUser.getUserInfo().psid;//企业ID
-    if (quakooUtils.isBlack(quakooDb.getItem('sel_ShopId'))) {
-        quakooDb.setItem("sel_ShopId", quakooUser.getUserInfo().sid); //门店ID
-    }
-    $("#name").html(quakooUser.getUserInfo().name)
-    getSubordinateStore();//获取公司下门店
-    /**获取公司下门店列表*/
-    function getSubordinateStore() {
-        quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(), {sid: sid}, function (ret) {
-            console.log('公司下门店列表：', ret);
-            if (ret && ret.success) {
-                if (quakooUtils.isNotBlack(ret.data)) {
-                    var data = {list: ret.data};
-                    var html = template("shopList", data);
-                    document.getElementById("shopUl").innerHTML = html;
-                    /**默认加载第一个店*/
-                    if (quakooDb.getItem('sel_ShopName')) {
-                        document.getElementById("shopDefaultText").innerHTML = quakooDb.getItem('sel_ShopName')
-                    } else {
-                        document.getElementById("shopDefaultText").innerHTML = quakooUser.getUserInfo().sname;
+    <!--门店列表开始-->
+    <script type="text/html" id="shopList">
+        <%for(var i=0;i < list.length;i++){%>
+            <li value="<%=list[i].id%>">
+                <%=list[i].name%>
+            </li>
+            <%}%>
+    </script>
+    <!--门店列表结束-->
+    <script>
+        console.log("登录用户信息：", quakooUser.getUserInfo())
+        var sid = quakooUser.getUserInfo().psid; //企业ID
+        if (quakooUtils.isBlack(quakooDb.getItem('sel_ShopId'))) {
+            quakooDb.setItem("sel_ShopId", quakooUser.getUserInfo().sid); //门店ID
+        }
+        $("#name").html(quakooUser.getUserInfo().name)
+        getSubordinateStore(); //获取公司下门店
+        /**获取公司下门店列表*/
+        function getSubordinateStore() {
+            quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(), {
+                sid: sid
+            }, function(ret) {
+                console.log('公司下门店列表：', ret);
+                if (ret && ret.success) {
+                    if (quakooUtils.isNotBlack(ret.data)) {
+                        var data = {
+                            list: ret.data
+                        };
+                        var html = template("shopList", data);
+                        document.getElementById("shopUl").innerHTML = html;
+                        /**默认加载第一个店*/
+                        if (quakooDb.getItem('sel_ShopName')) {
+                            document.getElementById("shopDefaultText").innerHTML = quakooDb.getItem('sel_ShopName')
+                        } else {
+                            document.getElementById("shopDefaultText").innerHTML = quakooUser.getUserInfo().sname;
+                        }
+                        /**下拉框*/
+                        selectTag($('#selectBox'), function(ret) {
+                            console.log(ret);
+                            quakooDb.setItem("sel_ShopId", parseInt(ret.value)); //sava 门店ID
+                            quakooDb.setItem("sel_ShopName", ret.text); //save 门店名字
+                            location.reload();
+                        });
                     }
-                    /**下拉框*/
-                    selectTag($('#selectBox'), function (ret) {
-                        console.log(ret);
-                        quakooDb.setItem("sel_ShopId", parseInt(ret.value)); //sava 门店ID
-                        quakooDb.setItem("sel_ShopName", ret.text); //save 门店名字
-                        location.reload();
+                }
+            });
+        }
+
+        $(function() {
+            /*下拉框*/
+            initMenu();
+            selectTag($('#select-admin'));
+        });
+
+        function initMenu() {
+            var param = {};
+            var user = quakooUser.getUserInfo();
+            param.token = user.token;
+            $('#side-menu').hide();
+            quakooData.ajaxGetData(config.getUrl_web_user_getTree(), param, function(data) {
+                var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                if (data.success) {
+                    var menu = addMenu(data.data);
+                    $("#side-menu").append(menu);
+                    showMenu()
+                } else {
+                    layer.msg(result.fail + msg, {
+                        icon: 1,
+                        shade: 0.01
                     });
                 }
-            }
-        });
-    }
-
-    $(function () {
-        /*下拉框*/
-        initMenu();
-        selectTag($('#select-admin'));
-    });
-
-    function initMenu() {
-        var param = {};
-        var user = quakooUser.getUserInfo();
-        param.token = user.token;
-        $('#side-menu').hide();
-        quakooData.ajaxGetData(config.getUrl_web_user_getTree(), param, function (data) {
-            var msg = (data.msg == undefined ? '' : ',' + data.msg);
-            if (data.success) {
-                var menu = addMenu(data.data);
-                $("#side-menu").append(menu);
-                showMenu()
-            } else {
-                layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
-            }
-        })
-    }
-
-
-    function include_js(path) {
-        var sobj = document.createElement('script');
-        sobj.type = "text/javascript";
-        sobj.src = path;
-        var headobj = document.getElementsByTagName('head')[0];
-        headobj.appendChild(sobj);
-    }
-
-    function showMenu() {
-        // MetsiMenu
-        $('#side-menu').metisMenu();
-        $('#side-menu').show();
-        include_js('../resource/js/backhand.js');
-        include_js('../resource/js/contabs.js');
-    }
-
-    //退出
-    function logout() {
-        quakooDb.removeItem('sel_ShopId')
-        quakooDb.removeItem('sel_ShopName')
-        quakooUser.removeUserInfo()
-        window.location.href = "../login/login.html";
-    }
-
-    function addMenu(data) {
-        var permissionData = data[0];
-        var content = '';
-
-        for (var i = 0; i < permissionData.length; i++) {
-            var level2 = data[permissionData[i].id];
-            content += ' <li>';
-            if (permissionData[i].pid == 0 && permissionData[i].href.indexOf("html") > 0) {
-                content += ' <a class="J_menuItem"  data-index = ' + permissionData[i].id + ' href="' + permissionData[i].href.substring(2, permissionData[i].href.length - 2) + '">';
-                content += '  <i class="' + permissionData[i].cssName + '"></i>';
-                content += ' <span class="nav-label">' + permissionData[i].text + '</span>';
-            } else {
-                content += '  <a href="#"><i class="' + permissionData[i].cssName + '"></i>';
-                content += ' <span class="nav-label">' + permissionData[i].text + '</span>';
-            }
-            content += '</a>';
-            // content+='<span class="fa arrow"></span></a>';
-
-            if (level2 && level2.length > 0) {
-                for (var j = 0; j < level2.length; j++) {
-                    content += '  <ul class="nav nav-second-level">';
-                    content += ' <li>';
-                    content += ' <a class="J_menuItem"  data-index = ' + level2[j].id + ' href="' + level2[j].href.substring(2, level2[j].href.length - 2) + '">' + level2[j].text + '</a>';
-                    content += ' </li>';
-                    content += ' </ul>';
-                }
-            }
-
-            content += ' </li>';
+            })
         }
-        return content;
-    }
 
-</script>
+
+        function include_js(path) {
+            var sobj = document.createElement('script');
+            sobj.type = "text/javascript";
+            sobj.src = path;
+            var headobj = document.getElementsByTagName('head')[0];
+            headobj.appendChild(sobj);
+        }
+
+        function showMenu() {
+            // MetsiMenu
+            $('#side-menu').metisMenu();
+            $('#side-menu').show();
+            include_js('../resource/js/backhand.js');
+            include_js('../resource/js/contabs.js');
+        }
+
+        //退出
+        function logout() {
+            quakooDb.removeItem('sel_ShopId')
+            quakooDb.removeItem('sel_ShopName')
+            quakooUser.removeUserInfo()
+            window.location.href = "../login/login.html";
+        }
+
+        function addMenu(data) {
+            var permissionData = data[0];
+            var content = '';
+
+            for (var i = 0; i < permissionData.length; i++) {
+                var level2 = data[permissionData[i].id];
+                content += ' <li>';
+                if (permissionData[i].pid == 0 && permissionData[i].href.indexOf("html") > 0) {
+                    content += ' <a class="J_menuItem"  data-index = ' + permissionData[i].id + ' href="' + permissionData[i].href.substring(2, permissionData[i].href.length - 2) + '">';
+                    content += '  <i class="' + permissionData[i].cssName + '"></i>';
+                    content += ' <span class="nav-label">' + permissionData[i].text + '</span>';
+                } else {
+                    content += '  <a href="#"><i class="' + permissionData[i].cssName + '"></i>';
+                    content += ' <span class="nav-label">' + permissionData[i].text + '</span>';
+                }
+                content += '</a>';
+                // content+='<span class="fa arrow"></span></a>';
+
+                if (level2 && level2.length > 0) {
+                    for (var j = 0; j < level2.length; j++) {
+                        content += '  <ul class="nav nav-second-level">';
+                        content += ' <li>';
+                        content += ' <a class="J_menuItem"  data-index = ' + level2[j].id + ' href="' + level2[j].href.substring(2, level2[j].href.length - 2) + '">' + level2[j].text + '</a>';
+                        content += ' </li>';
+                        content += ' </ul>';
+                    }
+                }
+
+                content += ' </li>';
+            }
+            return content;
+        }
+    </script>
 
 
 </body>
+
 </html>

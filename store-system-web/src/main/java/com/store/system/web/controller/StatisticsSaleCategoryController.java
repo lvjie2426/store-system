@@ -118,6 +118,37 @@ public class StatisticsSaleCategoryController extends BaseController{
         }
     }
 
+    //客单价统计
+    @RequestMapping("/saleSubordinatesByCid")
+    public ModelAndView saleSubordinatesByCid(HttpServletRequest request, HttpServletResponse response,
+                                                 @RequestParam(name = "subIds[]") List<Long> subIds, int type, long cid,
+                                                 @RequestParam(name = "startTime",required = false,defaultValue = "0") long startTime,
+                                                 @RequestParam(name = "endTime",required = false,defaultValue = "0") long endTime)throws Exception{
+        try {
+            ClientCategoryStatistics res = new ClientCategoryStatistics();
+            for(Long subId:subIds) {
+                if (type == ClientSaleStatistics.type_week) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_WEEK) - 1);
+                    res = saleCategoryStatisticsService.getDayList(subId, cid, days);
+                } else if (type == ClientSaleStatistics.type_month) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    List<Long> days = TimeUtils.getPastDays(calendar.get(Calendar.DAY_OF_MONTH));
+                    res = saleCategoryStatisticsService.getDayList(subId, cid, days);
+                } else if (type == ClientSaleStatistics.type_halfYear) {
+                    List<Long> days = TimeUtils.getPastMonthDays(6);
+                    res = saleCategoryStatisticsService.getDayList(subId, cid, days);
+                } else if (type == ClientSaleStatistics.type_search) {
+                    res = saleCategoryStatisticsService.searchSale(startTime, endTime, subId, cid);
+                }
+            }
+            return this.viewNegotiating(request,response,new ResultClient(true,new ResultClient(res)));
+        }catch (StoreSystemException s){
+            return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
+        }
+    }
 
 
 

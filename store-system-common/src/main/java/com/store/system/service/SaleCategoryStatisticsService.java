@@ -16,7 +16,7 @@ import java.util.Map;
  **/
 public interface SaleCategoryStatisticsService {
 
-    public Map<Long,List<ClientCategoryStatistics>>  getDayList(long subId, List<Long> days) throws Exception;
+    public Map<Long,List<ClientCategoryStatistics>> getDayList(long subId, List<Long> days) throws Exception;
 
     public Map<Long,List<ClientCategoryStatistics>> searchSale(long startTime, long endTime, long subId) throws Exception;
 
@@ -25,5 +25,10 @@ public interface SaleCategoryStatisticsService {
     public ClientCategoryStatistics searchSaleSum(long startTime, long endTime, long subId) throws Exception;
 
     public List<ClientOrderSku> getDetail(long startTime, long endTime, List<Long> subIds, long cid) throws Exception;
+
+    public ClientCategoryStatistics getDayList(long subId, long cid, List<Long> days) throws Exception;
+
+    public ClientCategoryStatistics searchSale(long startTime, long endTime, long subId, long cid) throws Exception;
+
 
 }
