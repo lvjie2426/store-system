@@ -1336,7 +1336,11 @@
             }else{
                 btn = ['取消','编辑'];
                 title = '编辑';
-                params[cid] = updateParams;
+                for(var i in updateParams){
+                    if(i!='skuObj'){
+                        params[cid][i] = updateParams[i]
+                    }
+                }
                 params[cid].skuJson = [];
                 if(params[cid].skuList && params[cid].skuList.length>0){
                     for(var i=0;i<params[cid].skuList.length;i++){
@@ -1348,10 +1352,15 @@
                         obj.costPrice = params[cid].skuList[i].costPrice;
                         obj.num = params[cid].skuList[i].num;
                         obj.id = params[cid].skuList[i].id;
+                        obj.eyeType = params[cid].skuList[i].eyeType;
                         params[cid].skuJson.push(obj)
                     }
                 }
                 params[cid].ugDiscount = updateParams.userGradeCategoryDiscountList;
+                params[cid].nowRangesJson = updateParams.nowRanges;//现货范围
+                params[cid].rangesJson = updateParams.ranges;       //定制范围
+                delete params[cid].nowRanges
+                delete params[cid].ranges
                 if( params[cid].integralEndTime ){
                     params[cid].integralEndTimeNew = quakooUtils.formatTimeToDateDianLY(params[cid].integralEndTime)
                 }
@@ -1410,6 +1419,10 @@
             quakooData.ajaxGetData(config.getUrl_product_loadSPU(),{id:id},function (ret) {
                 if(ret.success){
                     updateParams = ret.data;
+                    updateParams.skuObj = {};
+                    for (var i = 0; i < updateParams.skuList.length; i++) {
+                        updateParams.skuObj[updateParams.skuList[i].properties[config.qiuId]+''+updateParams.skuList[i].properties[config.qiuId]+updateParams.skuList[i].eyeType] = updateParams.skuList[i]
+                    }
                     addGoods(true)
                 }
             })
@@ -1682,6 +1695,7 @@
         //设定零售价/积分价
         var momentPriceData = {};//暂时存储价格信息
         function openZeroPrice(type) {
+            showInterType = type;
             var html = [];
             html.push('<div class="layui-yj-header"> <div class="layui-layer-title mine-title"> <div>设定价格<span>规格: 片</span></div> </div>');
             html.push('<div class="title-right" onclick="openRedTip()" > 设置预警库存 </div> </div>');
@@ -1774,6 +1788,7 @@
         }
         var commissionJson = {};//本地提成
         var groupFlag=false,personalFlag=false;
+        var showInterType;//  1零售价  4 积分价
         //设定提成
         function openSettingTicheng() {
             var index = layer.open({
@@ -1887,7 +1902,7 @@
                     range[params[cid].rangesJson[i].ballId+''+params[cid].rangesJson[i].columnId] = params[cid].rangesJson[i];
                 }
             }
-            if(type==0){
+            if(showInterType==1){
                 $('#setPriceBtn li').eq(3).hide().siblings().show();
             }else{
                 $('#setPriceBtn li').show();
@@ -2506,9 +2521,14 @@
                     nowParam.properties[config.yinxingBaozhuangId] = $('#yj-add-baozhuang').val();
                 }
             }
-            if(nowParam.type==1){
-                //积分商品
-                //有效期
+            //如果有积分价   那么积分有效期 和兑换数量上限必须填
+            var flag = false;
+            for (var i = 0; i < nowParam.skuJson.length; i++) {
+                if(nowParam.skuJson[i].integralPrice){
+                    flag = true;
+                }
+            }
+            if(flag){
                 if(yjDate.getTime()[2]){
                     nowParam.integralStartTime = yjDate.getTime()[2];
                 }
@@ -2518,11 +2538,25 @@
                 //兑换数量上限
                 if($('#yj-add-integralNum').val()){
                     nowParam.integralNum = $('#yj-add-integralNum').val();
+                }else{
+                    layer.msg('请选择积分价有效期');
+                    return
+                }
+                if(!nowParam.integralStartTime){
+                    layer.msg('请选择积分价有效期');
+                    return
+                }
+                if(!nowParam.integralEndTime){
+                    layer.msg('请选择积分价有效期');
+                    return
                 }
             }
             if(quakooUtils.isArray(nowParam.ugDiscount)){
                 nowParam.ugDiscount = JSON.stringify(nowParam.ugDiscount);
             }
+            nowParam.commissionJson = JSON.stringify(nowParam.commissionJson);
+            nowParam.nowRangesJson = JSON.stringify(nowParam.nowRangesJson);
+            nowParam.rangesJson = JSON.stringify(nowParam.rangesJson);
             delete nowParam.categoryName;
             if(isUpdate){
                 delete nowParam.skuList;
@@ -2543,15 +2577,17 @@
                 nowParam.updateSkuJson = [];
                 nowParam.delSkuIdJson = [];
                 for(var i=0;i<skuJson.length;i++){
-                    if(skuJson[i].id){
-                        if(skuJson[i].del){
-                            nowParam.delSkuIdJson.push(skuJson[i].id)
-                        }else{
-                            nowParam.updateSkuJson.push(skuJson[i])
-                        }
+                    if(updateParams.skuObj[skuJson[i].properties[config.qiuId]+''+skuJson[i].properties[config.zhuId]+skuJson[i].eyeType]){
+                        skuJson[i].id = updateParams.skuObj[skuJson[i].properties[config.qiuId]+''+skuJson[i].properties[config.zhuId]+skuJson[i].eyeType].id;
+                        skuJson[i].code = updateParams.skuObj[skuJson[i].properties[config.qiuId]+''+skuJson[i].properties[config.zhuId]+skuJson[i].eyeType].code;
+                        nowParam.updateSkuJson.push(skuJson[i]);
+                        delete updateParams.skuObj[skuJson[i].properties[config.qiuId]+''+skuJson[i].properties[config.zhuId]+skuJson[i].eyeType];
                     }else{
                         nowParam.addSkuJson.push(skuJson[i])
                     }
+                }
+                for(var i in updateParams.skuObj){
+                    nowParam.delSkuIdJson.push(updateParams.skuObj[i].id)
                 }
                 nowParam.addSkuJson = JSON.stringify(nowParam.addSkuJson);
                 nowParam.updateSkuJson = JSON.stringify(nowParam.updateSkuJson);
@@ -2574,9 +2610,7 @@
                 }else{
                     delete nowParam.skuJson;
                 }
-                nowParam.commissionJson = JSON.stringify(nowParam.commissionJson);
-                nowParam.nowRangesJson = JSON.stringify(nowParam.nowRangesJson);
-                nowParam.rangesJson = JSON.stringify(nowParam.rangesJson);
+
                 quakooData.ajaxGetData(config.getUrl_product_add(),nowParam,function (ret) {
                     if(ret.success){
                         gStockWarn = {};//清空预警

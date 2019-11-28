@@ -29,7 +29,7 @@ var Config = (function(_super) {
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
-        // this.serverUrl = "http://192.168.1.31:20005";
+        // this.serverUrl = "http://192.168.1.34:20005";
         /**马文军*/
         // this.serverUrl = "http://127.0.0.1:20005";
         /**聊天服务地址*/
@@ -403,7 +403,9 @@ var Config = (function(_super) {
     /**获取未补充证明的商品*/
     _proto.getUrl_medicalAppliances_getNotBuCSMShop = function() { return this.serverUrl + '/product/getNoNirNum'; };
     /**审核医疗器械新增商品(商品列表)*/
-    _proto.getUrl_medicalAppliances_checkAddStatus = function() { return this.serverUrl + '/product/checkStatus'; };
+    _proto.getUrl_medicalAppliances_checkAddStatus = function(){return this.serverUrl + '/product/checkStatus';};
+    /**获取医疗器械所有商品*/
+    _proto.getUrl_product_getELSPUPager = function(){return this.serverUrl + '/product/getELSPUPager';};
     //=======================商品管理 结束====================
 
 
