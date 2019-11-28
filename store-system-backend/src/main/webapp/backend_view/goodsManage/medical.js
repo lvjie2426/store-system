@@ -1,5 +1,5 @@
 var cid = 3;
-var momentPriceData = {};//暂时存储价格信息
+var momentPriceData = {};//暂时存储价格信息   k(球id+柱id+左/右眼)->v
 var momentRangeData = {};//暂时存储定制范围信息
 var momentNowRangeData = {};//暂时存储现货范围信息
 var commissionJson = {};//本地提成
@@ -8,6 +8,8 @@ var groupFlag=false,personalFlag=false;  //团队提成   个人提成
 var params = {};//添加商品所需要的参数  key  类目id；value：所需参数
 var updateParams;//当前被编辑的数据
 var yjDate;//时间范围
+var yxQiuId = 41;       //隐形眼镜球
+var yxZhuId = 42;       //隐形眼镜球
 
 //添加商品
 function addGoods(isUpdate) {
@@ -26,7 +28,11 @@ function addGoods(isUpdate) {
     }else{
         btn = ['取消','编辑'];
         title = '编辑';
-        params[cid] = updateParams;
+        for(var i in updateParams){
+            if(i!='skuObj'){
+                params[cid][i] = updateParams[i]
+            }
+        }
         params[cid].skuJson = [];
         if(params[cid].skuList && params[cid].skuList.length>0){
             for(var i=0;i<params[cid].skuList.length;i++){
@@ -38,6 +44,7 @@ function addGoods(isUpdate) {
                 obj.costPrice = params[cid].skuList[i].costPrice;
                 obj.num = params[cid].skuList[i].num;
                 obj.id = params[cid].skuList[i].id;
+                obj.eyeType = params[cid].skuList[i].eyeType;
                 params[cid].skuJson.push(obj)
             }
         }
@@ -53,22 +60,18 @@ function addGoods(isUpdate) {
             params[cid].newIcon = obj.url;
             params[cid].style = obj.style;
         }
+        if(params[cid].nirNumDate){
+            params[cid].nirNumDate = quakooUtils.formatTimeToDay(params[cid].nirNumDate);
+        }
     }
-    params[cid].categoryName = $('#category'+cid).text();
+    params[cid].categoryName = '隐形眼镜';
+
     momentPriceData = {};
     momentRangeData = {};
     var html = [];
     html.push('<div class="layui-yj-header"><div class="layui-layer-title mine-title"><div>');
     html.push(title+params[cid].categoryName)
-    html.push('</div> </div>');
-    if(!isUpdate){
-        html.push('<div class="title-right" >销售状态');
-        html.push('<div class="yj-search ');
-        if(params[cid].saleStatus==0){
-            html.push('active')
-        }
-        html.push('" id="yj-add-status" onclick="changeYjStatus(this)"><i></i></div></div></div>')
-    }
+    html.push('</div> </div></div>');
     layer.open({
         type: 1,shade: 0.01,title:html.join(''),
         skin: 'layui-layer-add-goods  layui-layer-addtsgoods', //样式类名
@@ -98,7 +101,13 @@ function addGoods(isUpdate) {
 function addYjGoods(isUpdate,index) {
     var nowParam = {};
     for(var i in params[cid]){
-        nowParam[i] = params[cid][i]
+        if(i=='nowRanges'){
+            nowParam.nowRangesJson = params[cid][i];
+        }else if(i=='ranges'){
+            nowParam.rangesJson = params[cid][i];
+        }else{
+            nowParam[i] = params[cid][i]
+        }
     }
     if(!nowParam.bid){
         nowParam.brandName = $("#brandName").val();
@@ -116,11 +125,38 @@ function addYjGoods(isUpdate,index) {
         nowParam.nowRemind = $("#yj-add-kucun").val();
     }
     //销售状态  0开启  1关闭
-    if($('#yj-add-status').hasClass('active')){
-        nowParam.saleStatus = 0;
-    }else{
-        nowParam.saleStatus = 1;
+    nowParam.saleStatus = 1;
+
+    var flag = false;
+    for (var i = 0; i < nowParam.skuJson.length; i++) {
+        if(nowParam.skuJson[i].integralPrice){
+            flag = true;
+        }
     }
+    if(flag){
+        if(yjDate.getTime()[2]){
+            nowParam.integralStartTime = yjDate.getTime()[2];
+        }
+        if(yjDate.getTime()[3]){
+            nowParam.integralEndTime = yjDate.getTime()[3];
+        }
+        //兑换数量上限
+        if($('#yj-add-integralNum').val()){
+            nowParam.integralNum = $('#yj-add-integralNum').val();
+        }else{
+            layer.msg('请选择积分价有效期');
+            return
+        }
+        if(!nowParam.integralStartTime){
+            layer.msg('请选择积分价有效期');
+            return
+        }
+        if(!nowParam.integralEndTime){
+            layer.msg('请选择积分价有效期');
+            return
+        }
+    }
+
 
     nowParam.properties[$('#yj-add-day').attr('data-pnid')] = $('#yj-add-day').val();
 
@@ -132,11 +168,14 @@ function addYjGoods(isUpdate,index) {
     for(var i=0;i<$('#imgBox .imgBox').length;i++){
         nowParam.nirImg.push($('#imgBox .imgBox').eq(i).find('img').attr('real-src'))
     }
-    nowParam.nirImg = JSON.stringify(nowParam.nirImg);
-
+    nowParam.nirImg = nowParam.nirImg.join(',');
+    /*//会员折扣
     if(quakooUtils.isArray(nowParam.ugDiscount)){
         nowParam.ugDiscount = JSON.stringify(nowParam.ugDiscount);
-    }
+    }*/
+    nowParam.commissionJson = JSON.stringify(nowParam.commissionJson);//提成
+    nowParam.nowRangesJson = JSON.stringify(nowParam.nowRangesJson);//现货范围
+    nowParam.rangesJson = JSON.stringify(nowParam.rangesJson);//定制范围
     delete nowParam.categoryName;
     if(isUpdate){
         delete nowParam.skuList;
@@ -153,24 +192,26 @@ function addYjGoods(isUpdate,index) {
         delete nowParam.integralStartTimeNew;
 
         var skuJson = nowParam.skuJson;
+
         nowParam.addSkuJson = [];
         nowParam.updateSkuJson = [];
         nowParam.delSkuIdJson = [];
         for(var i=0;i<skuJson.length;i++){
-            if(skuJson[i].id){
-                if(skuJson[i].del){
-                    nowParam.delSkuIdJson.push(skuJson[i].id)
-                }else{
-                    nowParam.updateSkuJson.push(skuJson[i])
-                }
+            if(updateParams.skuObj[skuJson[i].properties[yxQiuId]+''+skuJson[i].properties[yxZhuId]+skuJson[i].eyeType]){
+                skuJson[i].id = updateParams.skuObj[skuJson[i].properties[yxQiuId]+''+skuJson[i].properties[yxZhuId]+skuJson[i].eyeType].id;
+                skuJson[i].code = updateParams.skuObj[skuJson[i].properties[yxQiuId]+''+skuJson[i].properties[yxZhuId]+skuJson[i].eyeType].code;
+                nowParam.updateSkuJson.push(skuJson[i]);
+                delete updateParams.skuObj[skuJson[i].properties[yxQiuId]+''+skuJson[i].properties[yxZhuId]+skuJson[i].eyeType];
             }else{
                 nowParam.addSkuJson.push(skuJson[i])
             }
         }
+        for(var i in updateParams.skuObj){
+            nowParam.delSkuIdJson.push(updateParams.skuObj[i].id)
+        }
         nowParam.addSkuJson = JSON.stringify(nowParam.addSkuJson);
         nowParam.updateSkuJson = JSON.stringify(nowParam.updateSkuJson);
         nowParam.delSkuIdJson = JSON.stringify(nowParam.delSkuIdJson);
-
         quakooData.ajaxGetData(config.getUrl_product_change(),nowParam,function (ret) {
             if(ret.success){
                 gStockWarn = {};//清空预警
@@ -188,9 +229,7 @@ function addYjGoods(isUpdate,index) {
         }else{
             delete nowParam.skuJson;
         }
-        nowParam.commissionJson = JSON.stringify(nowParam.commissionJson);
-        nowParam.nowRangesJson = JSON.stringify(nowParam.nowRangesJson);
-        nowParam.rangesJson = JSON.stringify(nowParam.rangesJson);
+
         quakooData.ajaxGetData(config.getUrl_product_add(),nowParam,function (ret) {
             if(ret.success){
                 layer.msg('添加成功',{icon: 1});
@@ -308,9 +347,7 @@ function openYjGoods(isUpdate) {
     };
     $('.settings').bind('change', function () {
         var demo = 'datetime';
-        if (!demo.match(/select/i)) {
-            $('.demo-test-' + demo).val('');
-        }
+
         $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
         $('.demo').hide();
         $('.demo-' + demo).show();
@@ -351,6 +388,10 @@ function openSettingTicheng() {
                         }
                     }
                 });
+            }else{
+                for (var i in commissionJson) {
+                    commissionJson[i].price = '';
+                }
             }
             if(personalFlag){
                 $("#tiChengDom .gerenInput").each(function (index,item) {
@@ -362,22 +403,12 @@ function openSettingTicheng() {
                         }
                     }
                 });
+            }else{
+                for (var i in commissionJson) {
+                    commissionJson[i].users = '';
+                }
             }
             params[cid].commissionJson = [];
-            /*if(!groupFlag){
-                for(var i in commissionJson){
-                    if(commissionJson[i]){
-                        commissionJson[i].price = '';
-                    }
-                }
-            }
-            if(!personalFlag){
-                for(var i in commissionJson){
-                    if(commissionJson[i]){
-                        commissionJson[i].users = '';
-                    }
-                }
-            }*/
             for(var i in commissionJson){
                 if(commissionJson[i] && (commissionJson[i].users || commissionJson[i].price)){
                     params[cid].commissionJson.push(commissionJson[i]);
@@ -386,9 +417,15 @@ function openSettingTicheng() {
             commissionJson = {};
         },
         success: function(layero, index){
-            if(params[cid] && params[cid].commissionJson){
-                for(var i=0;i<params[cid].commissionJson.length;i++){
-                    commissionJson[params[cid].commissionJson[i].subId] = params[cid].commissionJson[i];
+            if(params[cid] && params[cid].commissions){
+                for(var i=0;i<params[cid].commissions.length;i++){
+                    commissionJson[params[cid].commissions[i].subId] = params[cid].commissions[i];
+                    if(params[cid].commissions[i].price){
+                        groupFlag = true;
+                    }
+                    if(params[cid].commissions[i].users){
+                        personalFlag = true;
+                    }
                 }
             }
             $("#tiChengDom").html(template('tiChengTmp',{shopData:shopData,commissionJson:commissionJson,group:groupFlag,personal:personalFlag}));
@@ -427,25 +464,24 @@ function setPrice(type) {
     var range = {};     //定制
     var nowRange = {};  //现货
     //现货数据
-    if(params[cid] && params[cid].nowRangesJson){
-        for(var i=0;i<params[cid].nowRangesJson.length;i++){
-            nowRange[params[cid].nowRangesJson[i].ballId+''+params[cid].nowRangesJson[i].columnId] = params[cid].nowRangesJson[i];
+    if(params[cid] && params[cid].nowRanges){
+        for(var i=0;i<params[cid].nowRanges.length;i++){
+            nowRange[params[cid].nowRanges[i].ballId+''+params[cid].nowRanges[i].columnId] = params[cid].nowRanges[i];
         }
     }
     //定制数据
-    if(params[cid] && params[cid].rangesJson){
-        for(var i=0;i<params[cid].rangesJson.length;i++){
-            range[params[cid].rangesJson[i].ballId+''+params[cid].rangesJson[i].columnId] = params[cid].rangesJson[i];
+    if(params[cid] && params[cid].ranges){
+        for(var i=0;i<params[cid].ranges.length;i++){
+            range[params[cid].ranges[i].ballId+''+params[cid].ranges[i].columnId] = params[cid].ranges[i];
         }
     }
-    if(type==0){
+    if(showInterType==1){
         $('#setPriceBtn li').eq(3).hide().siblings().show();
     }else{
         $('#setPriceBtn li').show();
     }
     var cols = [];//球
     var rangeData = [];//柱
-    var codeArr = [];//所有的产品编码
     cols.push({field:'num', minWidth:60, title: '<div class="yj-layui-table-header"><span>球</span><span>柱</span></div>', fixed: 'left'})
     $('#setPriceBtn li').eq(type-1).addClass('active').siblings().removeClass('active');
     for(var i=0;i<ballData.length;i++){
@@ -589,8 +625,8 @@ function initTableDragInput(type) {
                             }else{
                                 var param = {};
                                 param.properties = {};
-                                param.properties[config.qiuId] = ballId;
-                                param.properties[config.zhuId] = columnId;
+                                param.properties[yxQiuId] = ballId;
+                                param.properties[yxZhuId] = columnId;
                                 param.eyeTypeArr = [type-4];
                                 momentPriceData[ballId+''+columnId] = param;
                             }
@@ -628,11 +664,13 @@ function initTableDragInput(type) {
 function changeYjStatus(self) {
     $(self).toggleClass('active');
 }
+var showInterType;//  1零售价  4 积分价
 function openZeroPrice(type) {
+    showInterType = type;
     var html = [];
     html.push('<div class="layui-yj-header"> <div class="layui-layer-title mine-title"> <div>设定价格<span>规格: 片</span></div> </div>');
-    html.push('<div class="title-right" onclick="openRedTip()" > 设置预警库存 </div> </div>');
-    html.push('</div>');
+    // html.push('<div class="title-right" onclick="openRedTip()" > 设置预警库存 </div>');
+    html.push('</div> </div>');
     layer.open({
         type: 1,shade: 0.01,title:html.join(''),
         skin: 'layui-layer-yj layui-layer-add-goods layui-layer-view-price', //样式类名
@@ -663,16 +701,19 @@ function openZeroPrice(type) {
                     }
                 }
             }
+            for (var i = 0; i < params[cid].skuJson.length; i++) {
+                delete params[cid].skuJson[i].eyeTypeArr;
+            }
             momentPriceData = {};
         },
         success: function(layero, index){
             if(params[cid] && params[cid].skuJson){
                 for(var i=0;i<params[cid].skuJson.length;i++){
-                    if(momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]]){
-                        momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]].eyeTypeArr.push(params[cid].skuJson[i].eyeType);
+                    if(momentPriceData[params[cid].skuJson[i].properties[yxQiuId]+''+params[cid].skuJson[i].properties[yxZhuId]]){
+                        momentPriceData[params[cid].skuJson[i].properties[yxQiuId]+''+params[cid].skuJson[i].properties[yxZhuId]].eyeTypeArr.push(params[cid].skuJson[i].eyeType);
                     }else{
                         params[cid].skuJson[i].eyeTypeArr = [params[cid].skuJson[i].eyeType];
-                        momentPriceData[params[cid].skuJson[i].properties[config.qiuId]+''+params[cid].skuJson[i].properties[config.zhuId]] = params[cid].skuJson[i];
+                        momentPriceData[params[cid].skuJson[i].properties[yxQiuId]+''+params[cid].skuJson[i].properties[yxZhuId]] = params[cid].skuJson[i];
                     }
                 }
             }
@@ -697,17 +738,17 @@ function openGoodsRange(title,isUpdate) {
             layer.close(index)
         },
         btn2: function(index, layero){
-            params[cid].nowRangesJson = [];
+            params[cid].nowRanges = [];
             for(var i in momentNowRangeData){
                 if(momentNowRangeData[i]){
-                    params[cid].nowRangesJson.push(momentNowRangeData[i])
+                    params[cid].nowRanges.push(momentNowRangeData[i])
                 }
             }
             momentNowRangeData = {};
-            params[cid].rangesJson = [];
+            params[cid].ranges = [];
             for(var i in momentRangeData){
                 if(momentRangeData[i]){
-                    params[cid].rangesJson.push(momentRangeData[i])
+                    params[cid].ranges.push(momentRangeData[i])
                 }
             }
             momentRangeData = {};
@@ -721,15 +762,15 @@ function openGoodsRange(title,isUpdate) {
 //初始化范围表格
 function setRange(title,isUpdate) {
     //现货数据
-    if(params[cid] && params[cid].nowRangesJson){
-        for(var i=0;i<params[cid].nowRangesJson.length;i++){
-            momentNowRangeData[params[cid].nowRangesJson[i].ballId+''+params[cid].nowRangesJson[i].columnId] = params[cid].nowRangesJson[i];
+    if(params[cid] && params[cid].nowRanges){
+        for(var i=0;i<params[cid].nowRanges.length;i++){
+            momentNowRangeData[params[cid].nowRanges[i].ballId+''+params[cid].nowRanges[i].columnId] = params[cid].nowRanges[i];
         }
     }
     //定制数据
-    if(params[cid] && params[cid].rangesJson){
-        for(var i=0;i<params[cid].rangesJson.length;i++){
-            momentRangeData[params[cid].rangesJson[i].ballId+''+params[cid].rangesJson[i].columnId] = params[cid].rangesJson[i];
+    if(params[cid] && params[cid].ranges){
+        for(var i=0;i<params[cid].ranges.length;i++){
+            momentRangeData[params[cid].ranges[i].ballId+''+params[cid].ranges[i].columnId] = params[cid].ranges[i];
         }
     }
     var cols = [];//球
@@ -914,8 +955,8 @@ function priceInputChange(self,type) {
     }else{
         var param = {};
         param.properties = {};
-        param.properties[config.qiuId] = ballId;
-        param.properties[config.zhuId] = columnId;
+        param.properties[yxQiuId] = ballId;
+        param.properties[yxZhuId] = columnId;
         param[str] = self.value;
         param.eyeTypeArr = [];
         momentPriceData[ballId+''+columnId] = param;
@@ -949,6 +990,10 @@ function updateGoods(id) {
     quakooData.ajaxGetData(config.getUrl_product_loadSPU(),{id:id},function (ret) {
         if(ret.success){
             updateParams = ret.data;
+            updateParams.skuObj = {};
+            for (var i = 0; i < updateParams.skuList.length; i++) {
+                updateParams.skuObj[updateParams.skuList[i].properties[41]+''+updateParams.skuList[i].properties[42]+updateParams.skuList[i].eyeType] = updateParams.skuList[i]
+            }
             addGoods(true)
         }
     })
