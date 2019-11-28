@@ -12,8 +12,8 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @ClassName ComboActivity
+/**套餐活动
+ * @ClassName ComboActivityDao
  * @Description TODO
  * @Author LaoMa
  * @Date 2019/11/25 19:06
@@ -52,7 +52,6 @@ public class ComboActivity implements Serializable {
 
     @HyperspaceColumn(isJson = true)
     private List<ComboItem> items;
-
     /***
      * 赠品
      */
@@ -61,8 +60,6 @@ public class ComboActivity implements Serializable {
      * 优惠券ID
      */
     private long couponId;
-
-
     /***
      * 状态
      */

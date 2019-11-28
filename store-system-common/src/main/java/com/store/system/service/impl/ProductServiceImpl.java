@@ -47,7 +47,9 @@ public class ProductServiceImpl implements ProductService {
 
     private TransformMapUtils subordinateMapUtils = new TransformMapUtils(Subordinate.class);
 
-    private TransformMapUtils productSPUMapUtils = new TransformMapUtils(ProductSPU.class);
+    private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
+
+    private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
 
     private TransformMapUtils commissionMapUtils = new TransformMapUtils(Commission.class);
 
@@ -374,7 +376,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ClientProductSPU loadSPU(long id) throws Exception {
+    public ClientProductSPU loadSPU(long id,User user) throws Exception {
         ProductSPU productSPU = productSPUDao.load(id);
         ClientProductSPU clientProductSPU = transformClient(productSPU);
         List<ProductSKU> productSKUList = productSKUDao.getAllList(id, ProductSKU.status_nomore);
@@ -383,7 +385,7 @@ public class ProductServiceImpl implements ProductService {
             ClientProductSKU clientProductSKU = new ClientProductSKU(one);
             Map<Object, Object> map_value = Maps.newHashMap();
             map_value = getProperties(one, clientProductSKU, "p_properties_value");
-            clientProductSKU.setP_properties_value(map_value);
+            clientProductSKU.setK_properties_value(map_value);
             skuList.add(clientProductSKU);
         }
 
@@ -396,7 +398,8 @@ public class ProductServiceImpl implements ProductService {
             clientUserGradeCategoryDiscounts.add(clientUserGradeCategoryDiscount);
 
         }
-
+        List<Commission> commissions = commissionDao.getAllList(user.getSid(), productSPU.getId());
+        clientProductSPU.setCommissions(commissions);
         clientProductSPU.setSkuList(skuList);
         clientProductSPU.setUserGradeCategoryDiscountList(clientUserGradeCategoryDiscounts);
         return clientProductSPU;
@@ -444,6 +447,67 @@ public class ProductServiceImpl implements ProductService {
         }
         return res;
     }
+
+    @Override
+    public List<ClientProductSKU> transformSKUClient(List<ProductSKU> skuList) throws Exception {
+        Set<Long> skuIds = Sets.newHashSet();
+        Set<Long> spuIds = Sets.newHashSet();
+        Set<Long> pids = Sets.newHashSet();
+        Set<Long> cids = Sets.newHashSet();
+        Set<Long> bids = Sets.newHashSet();
+        Set<Long> sids = Sets.newHashSet();
+        for (ProductSKU sku : skuList) {
+            skuIds.add(sku.getId());
+            spuIds.add(sku.getSpuid());
+            ProductSPU spu = productSPUDao.load(sku.getSpuid());
+            if(spu!=null) {
+                pids.add(spu.getPid());
+                cids.add(spu.getCid());
+                bids.add(spu.getBid());
+                sids.add(spu.getSid());
+            }
+        }
+        List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuIds));
+        Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spuList, "id");
+        List<ProductSKU> skus = productSKUDao.load(Lists.newArrayList(skuIds));
+        Map<Long, ProductSKU> skuMap = skuMapUtils.listToMap(skus, "id");
+
+        List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(pids));
+        Map<Long, ProductProvider> providerMap = providerMapUtils.listToMap(providers, "id");
+        List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
+        Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
+        List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
+        Map<Long, ProductBrand> brandMap = brandMapUtils.listToMap(brands, "id");
+        List<ProductSeries> seriesList = productSeriesDao.load(Lists.newArrayList(sids));
+        Map<Long, ProductSeries> seriesMap = seriesMapUtils.listToMap(seriesList, "id");
+        List<ClientProductSKU> clientProductSKUS = Lists.newArrayList();
+        for (ProductSKU sku : skuList) {
+            ClientProductSKU clientProductSKU = new ClientProductSKU(sku);
+
+            ProductSKU productSKU = skuMap.get(sku.getId());
+            Map<Object, Object> sku_value = Maps.newHashMap();
+            sku_value = this.getProperties(productSKU, clientProductSKU, "k_properties_value");
+            clientProductSKU.setK_properties_value(sku_value);
+
+            ProductSPU productSPU = spuMap.get(sku.getSpuid());
+            Map<Object, Object> spu_value = Maps.newHashMap();
+            spu_value = this.getProperties(productSPU, clientProductSKU, "p_properties_value");
+            clientProductSKU.setP_properties_value(spu_value);
+            clientProductSKUS.add(clientProductSKU);
+
+            ProductSPU spu = productSPUDao.load(sku.getSpuid());
+            ProductProvider provider = providerMap.get(spu.getPid());
+            if (null != provider) clientProductSKU.setProviderName(provider.getName());
+            ProductCategory category = categoryMap.get(spu.getCid());
+            if (null != category) clientProductSKU.setCategoryName(category.getName());
+            ProductBrand brand = brandMap.get(spu.getBid());
+            if (null != brand) clientProductSKU.setBrandName(brand.getName());
+            ProductSeries series = seriesMap.get(spu.getSid());
+            if (null != series) clientProductSKU.setSeriesName(series.getName());
+        }
+        return clientProductSKUS;
+    }
+
 
     private ClientProductSPU transformClient(ProductSPU productSPU) throws Exception {
         ClientProductSPU clientProductSPU = new ClientProductSPU(productSPU);
@@ -653,8 +717,8 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
             Map<Object, Object> map_value = Maps.newHashMap();
-            map_value = getProperties(one, client, "p_properties_value");
-            client.setP_properties_value(map_value);
+            map_value = getProperties(one, client, "k_properties_value");
+            client.setK_properties_value(map_value);
             client.setDetails(details);
             client.setOtherDetails(otherDetails);
             client.setCanUseNum(num);
@@ -778,7 +842,7 @@ public class ProductServiceImpl implements ProductService {
                     spuIds.add(info.getSpuId());
                 }
                 List<ProductSPU> spus = productSPUDao.load(Lists.newArrayList(spuIds));
-                Map<Long, ProductSPU> spuMap = productSPUMapUtils.listToMap(spus, "id");
+                Map<Long, ProductSPU> spuMap = spuMapUtils.listToMap(spus, "id");
                 for (Commission info : list) {
                     ProductSPU spu = spuMap.get(info.getSpuId());
                     ClientProductSPU clientProductSPU = transformClient(spu);

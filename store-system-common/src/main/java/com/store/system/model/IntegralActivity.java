@@ -32,9 +32,9 @@ public class IntegralActivity implements Serializable{
     @PrimaryKey
     private long id;
     /***
-     * 门店ID
+     * 公司ID
      */
-    private long subId;
+    private long sid;
     /***
      * 标题
      */

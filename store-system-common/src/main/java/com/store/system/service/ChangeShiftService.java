@@ -67,4 +67,19 @@ public interface ChangeShiftService {
      * @throws Exception
      */
     public boolean replacePass(long id)throws Exception;
+
+    /**
+     * 根据条件获取调班列表
+     *
+     * @param subid
+     * @param sid
+     * @param userName
+     * @param startTime
+     * @param endTime
+     * @param status
+     * @param pager
+     * @return
+     * @throws Exception
+     */
+    public Pager getList(long subid, long sid, String userName, long startTime, long endTime, int status, Pager pager)throws Exception;
 }

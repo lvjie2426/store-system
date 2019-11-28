@@ -139,8 +139,21 @@
         .recommendUls.hideScroll::-webkit-scrollbar {
             display: none
         }
-
-        .recommendTip {
+        .recommendTip1 {
+            display: none;
+            position: absolute;
+            left: 0px;
+            bottom: 13px;
+            width: 16px;
+            line-height: 28px;
+            text-align: center;
+            color: #fff;
+            border-radius: 1px;
+            font-size: 12px;
+            background-color: rgba(65, 134, 220, 1);
+            z-index: 10;
+        }
+        .recommendTip2 {
             position: absolute;
             right: 0px;
             bottom: 13px;
@@ -153,7 +166,6 @@
             background-color: rgba(65, 134, 220, 1);
             /*box-shadow: -24px 0px 10px 10px rgba(255, 255, 255, 0.4);*/
         }
-
         .orderHeader {
             width: 100%;
             overflow: hidden;
@@ -2606,6 +2618,7 @@
             <span>用户推荐设置2</span>
         </div>
         <div class="recommendFoot">
+            <div class="recommendTip1" onclick="gunScroll1(this)"><i class="iconfont icon-ico_arrow_left"></i></div>
             <ul class="recommendUls hideScroll">
                 <li>HYDRON 海昌透明黑色单片年抛</li>
                 <li>HYDRON 海昌透明黑色单片年抛</li>
@@ -2614,7 +2627,7 @@
                 <li>HYDRON 海昌透明黑色单片年抛</li>
                 <li>HYDRON 海昌透明黑色单片年抛</li>
             </ul>
-            <div class="recommendTip"><i class="iconfont icon-ico_arrow_right"></i></div>
+            <div class="recommendTip2" onclick="gunScroll2(this)"><i class="iconfont icon-ico_arrow_right"></i></div>
         </div>
     </div>
     <div class="rightFooterBox clearfix">
@@ -6168,9 +6181,13 @@
 
         });
     }
-
-
-
+    function gunScroll1(_this) {
+        $('.recommendUls li').css({"transform": "translate(0px, 0px)", "transition": "all 0.2s linear"})
+    }
+    function gunScroll2(_this) {
+        $('.recommendUls li').css({"transform": "translate(-72px, 0px)", "transition": "all 0.2s linear"})
+        $('.recommendTip1').show();
+    }
 
 </script>
 </body>

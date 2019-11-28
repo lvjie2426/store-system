@@ -44,4 +44,18 @@ public interface WorkOverTimeService {
      * @throws Exception
      */
     public boolean nopass(long id,String reason)throws Exception;
+
+    /**
+     * pc 获取加班申请 列表
+     * @param userName
+     * @param startTime
+     * @param endTime
+     * @param pager
+     * @return
+     * @throws Exception
+     */
+    public Pager getList(long subid,long sid, String userName, long startTime, long endTime, Pager pager)throws Exception;
+
+    public boolean passMore(List<Long> ids)throws Exception;
+
 }

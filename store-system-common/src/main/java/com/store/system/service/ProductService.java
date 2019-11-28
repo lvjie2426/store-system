@@ -21,7 +21,7 @@ public interface ProductService {
 
     public void add(ProductSPU productSPU, List<ProductSKU> productSKUList, String brandName, String seriesName, List<Commission> commissions) throws Exception;
 
-    public ClientProductSPU loadSPU(long id) throws Exception;
+    public ClientProductSPU loadSPU(long id,User user) throws Exception;
 
     public boolean updateSPU(ProductSPU productSPU) throws Exception;
 
@@ -61,6 +61,8 @@ public interface ProductService {
     public ClientProductCategory searchSpu(String name)throws Exception;
 
     public Map<Object, Object> getProperties(Object clazz, Object client, String property) throws Exception;
+
+    public List<ClientProductSKU> transformSKUClient(List<ProductSKU> skuList) throws Exception;
 
     /**
      * 获取医疗器械商品列表
