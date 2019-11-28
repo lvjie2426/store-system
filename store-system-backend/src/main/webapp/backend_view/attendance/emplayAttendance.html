@@ -247,10 +247,11 @@
       padding: 6px;
     }
 
-    .companyManageCont .shopItems .contUl li.item .bottom button {
+    .companyManageCont .shopItems .contUl li.item .bottom a {
       cursor: pointer;
       float: right;
       height: 26px;
+      line-height: 26px;
       font-size: 12px;
       outline: none;
       border-radius: 2px;
@@ -258,13 +259,13 @@
       padding: 0 10px;
     }
 
-    .companyManageCont .shopItems .contUl li.item .bottom button.edit {
+    .companyManageCont .shopItems .contUl li.item .bottom a.edit {
       border: 1px solid #d9e5f6;
       color: #4186DC;
       background: #eaf1fa;
     }
 
-    .companyManageCont .shopItems .contUl li.item .bottom button.check {
+    .companyManageCont .shopItems .contUl li.item .bottom a.check {
       color: #fff;
       background: #4186DC;
       border: 1px solid #4186DC;
@@ -442,13 +443,16 @@
       '                    </p>' +
       '                </div>' +
       '                <div class="bottom">' +
-      '                    <button class="edit">查看员工考勤</button>' +
+      '                    <a class="edit" onclick="seeEmployDetail(this)">查看员工考勤</a>' +
       '                </div>' +
       '            </li>'
     for (var i = 0; i < 10; i++) {
       $('.shopItems .contUl').append(shopItem)
     }
 
+    function seeEmployDetail(_this) {
+
+    }
   </script>
 </body>
 
