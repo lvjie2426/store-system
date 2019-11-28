@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.store.system.dao.SubSettingsDao;
+import com.store.system.model.Subordinate;
 import com.store.system.model.attendance.PunchCardPlace;
 import com.store.system.model.attendance.SubSettings;
 import com.store.system.model.attendance.WirelessNetwork;
@@ -118,5 +119,22 @@ public class SubSettingsServiceImpl implements SubSettingsService {
             return dbInfo;
         }
         return subSettings;
+    }
+
+    @Override
+    public SubSettings add(SubSettings subSettings) throws Exception {
+        SubSettings insert = subSettingsDao.insert(subSettings);
+        return insert;
+    }
+
+    @Override
+    public Boolean updateStatus(long subid, int type) throws Exception {
+        SubSettings load = subSettingsDao.load(subid);
+        if(type== SubSettings.status_off){
+            load.setHumanizedStatus(SubSettings.status_off);
+        }else{
+            load.setHumanizedStatus(SubSettings.status_on);
+        }
+        return subSettingsDao.update(load);
     }
 }

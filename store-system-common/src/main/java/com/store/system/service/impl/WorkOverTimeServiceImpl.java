@@ -3,6 +3,7 @@ package com.store.system.service.impl;
 import com.quakoo.baseFramework.model.pagination.Pager;
 import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientWorkOverTime;
 import com.store.system.dao.ApprovalLogDao;
 import com.store.system.dao.UserDao;
@@ -10,13 +11,16 @@ import com.store.system.dao.WorkOverTimeDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
 import com.store.system.model.attendance.ApprovalLog;
+import com.store.system.model.attendance.Leave;
 import com.store.system.model.attendance.WorkOverTime;
 import com.store.system.service.WorkOverTimeService;
 import com.store.system.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +39,11 @@ public class WorkOverTimeServiceImpl implements WorkOverTimeService {
     private UserDao userDao;
     @Autowired
     private ApprovalLogDao approvalLogDao;
+
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+
+    private RowMapperHelp<WorkOverTime> rowMapper = new RowMapperHelp<>(WorkOverTime.class);
 
     private void check(WorkOverTime workOverTime) {
         if(workOverTime.getStartTime()==0)throw  new StoreSystemException("加班开始时间不能为空！");
@@ -128,6 +137,62 @@ public class WorkOverTimeServiceImpl implements WorkOverTimeService {
             load.setReason(reason);
         }
         return workOverTimeDao.update(load);
+    }
+
+    @Override
+    public Pager getList(long subid,long sid, String userName, long startTime, long endTime, Pager pager) throws Exception {
+        String sql = "select wo.* from work_overtime wo, user u where u.id=wo.askUid ";
+        String countSql = "select count(1) from work_overtime wo, user u where u.id=wo.askUid ";
+        String limit = "  limit %d , %d ";
+
+        if(sid>0&&subid>0){
+            //门店
+            sql=sql+" and subid="+subid;
+            countSql=countSql+" and subid="+subid;
+        }
+        if(sid>0&&subid==0){
+            // 企业
+            sql=sql+" and sid="+sid+" and subid=0";
+            countSql=countSql+" and sid="+sid+" and subid=0";
+        }
+
+        if (StringUtils.isNotBlank(userName)) {
+            sql = sql + " and u.`name` like '%"+userName+"%'";
+            countSql = countSql + " and u.`name` like '%"+userName+"%'";
+        }
+        if (startTime > 0) {
+            sql = sql + " and ctime>=" + startTime;
+            countSql = countSql + " and ctime>=" + startTime;
+        }
+        if (endTime > 0) {
+            sql = sql + " and ctime<=" + endTime;
+            countSql = countSql + " and ctime<=" + endTime;
+        }
+
+
+        sql = sql + " order  by ctime desc";
+        sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
+        int count = 0;
+        List<WorkOverTime> workOverTimes = this.jdbcTemplate.query(sql, rowMapper);
+        count = this.jdbcTemplate.queryForObject(countSql, Integer.class);
+
+        List<ClientWorkOverTime> clientWorkOverTimeList=new ArrayList<>(workOverTimes.size());
+        for(WorkOverTime workOverTime:workOverTimes){
+            ClientWorkOverTime clientWorkOverTime=transformClients(workOverTime);
+            clientWorkOverTimeList.add(clientWorkOverTime);
+        }
+
+        pager.setData(clientWorkOverTimeList);
+        pager.setTotalCount(count);
+        return pager;
+    }
+
+    @Override
+    public boolean passMore(List<Long> ids) throws Exception {
+        for(Long id:ids){
+            pass(id);
+        }
+        return true;
     }
 
     public ClientWorkOverTime transformClients(WorkOverTime workOverTime){

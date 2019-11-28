@@ -66,6 +66,12 @@ public class SubSettings implements Serializable{
 
     private int netStatus;  //网络设置开启/关闭
 
+
+    /***
+     * 创建人
+     */
+    private long checkUid;
+
     @SortKey
     private long ctime;
 

@@ -374,7 +374,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ClientProductSPU loadSPU(long id) throws Exception {
+    public ClientProductSPU loadSPU(long id,User user) throws Exception {
         ProductSPU productSPU = productSPUDao.load(id);
         ClientProductSPU clientProductSPU = transformClient(productSPU);
         List<ProductSKU> productSKUList = productSKUDao.getAllList(id, ProductSKU.status_nomore);
@@ -396,7 +396,8 @@ public class ProductServiceImpl implements ProductService {
             clientUserGradeCategoryDiscounts.add(clientUserGradeCategoryDiscount);
 
         }
-
+        List<Commission> commissions = commissionDao.getAllList(user.getSid(), productSPU.getId());
+        clientProductSPU.setCommissions(commissions);
         clientProductSPU.setSkuList(skuList);
         clientProductSPU.setUserGradeCategoryDiscountList(clientUserGradeCategoryDiscounts);
         return clientProductSPU;
