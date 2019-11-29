@@ -1,5 +1,6 @@
 package com.store.system.service;
 
+import com.store.system.client.ClientCoupon;
 import com.store.system.model.Coupon;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface CouponService {
 
     List<Coupon> getAllList(long psid) throws Exception;
 
-    List<Coupon> getIngList(long psid) throws Exception;
+    List<ClientCoupon> getIngList(long psid) throws Exception;
 
-    List<Coupon> getHistoryList(long psid) throws Exception;
+    List<ClientCoupon> getHistoryList(long psid) throws Exception;
 }

@@ -23,8 +23,8 @@ import java.util.List;
 @Data
 public class IntegralActivity implements Serializable{
 
-    public static final int STATUS_NORMAL = 0;//正常
-    public static final int STATUS_DELETE = 1;//删除
+    public static final int STATUS_ON = 0;//启用
+    public static final int STATUS_OFF = 1;//关闭
 
     public static final int TYPE_MONEY = 1; //金额
     public static final int TYPE_RATE = 2; //百分比
@@ -34,7 +34,7 @@ public class IntegralActivity implements Serializable{
     /***
      * 公司ID
      */
-    private long sid;
+    private long psid;
     /***
      * 标题
      */
@@ -49,7 +49,7 @@ public class IntegralActivity implements Serializable{
      */
     private long startTime;
     /***
-     * 活动结束时间 长期有效=50之后的时间戳
+     * 活动结束时间 长期有效=50年之后的时间戳
      */
     private long endTime;
     /***
@@ -57,13 +57,14 @@ public class IntegralActivity implements Serializable{
      */
     private int type;
     /***
-     * 折扣代表：减折(8.8折)
-     * 数额代表：分
+     * 百分比代表：75.5%
+     * 金额代表：分
      */
     private double descSubtract;
 
     /***
      * 为空代表所有人
+     * 活动对象
      */
     @HyperspaceColumn(isJson = true)
     private List<Long> ugIds;

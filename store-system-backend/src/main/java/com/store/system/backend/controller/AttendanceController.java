@@ -1,15 +1,22 @@
-/*
 package com.store.system.backend.controller;
 
 import com.google.common.collect.Lists;
-import com.s7.baseFramework.model.pagination.Pager;
-import com.s7.webframework.BaseController;
-import com.xiuqiang.client.ResultClient;
-import com.xiuqiang.client.attendance.ClientAttendanceInfo;
-import com.xiuqiang.client.attendance.ClientAttendanceLog;
-import com.xiuqiang.client.attendance.ClientAttendanceTemplate;
-import com.xiuqiang.model.attendance.AttendanceTemplate;
-import com.xiuqiang.service.attendance.AttendanceService;
+import com.google.common.collect.Maps;
+import com.quakoo.webframework.BaseController;
+import com.store.system.client.ClientAttendanceInfo;
+import com.store.system.client.ClientAttendanceLog;
+import com.store.system.client.ResultClient;
+import com.store.system.exception.StoreSystemException;
+import com.store.system.model.User;
+import com.store.system.model.attendance.AttendanceLog;
+import com.store.system.model.attendance.PunchCardLog;
+import com.store.system.service.AttendanceLogService;
+import com.store.system.service.UserService;
+import com.store.system.util.Constant;
+import com.store.system.util.TimeUtils;
+import com.store.system.util.UserUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,235 +24,152 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
-
-*/
-/**
- *
- *//*
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/attendance")
 public class AttendanceController extends BaseController {
 
     @Autowired
-    private AttendanceService attendanceService;
+    private AttendanceLogService attendanceLogService;
+    @Resource
+    private UserService userService;
 
-    @RequestMapping("/getStatisticsBySchool")
-    public ModelAndView getStaticBySchool(HttpServletRequest request, HttpServletResponse response,
-                                          Pager pager,
-                                          @RequestParam(required = false, value = "type",defaultValue = "0") int type,
-                                          @RequestParam(required = false, value = "schoolId",defaultValue = "0") long schoolId,
-                                          @RequestParam(required = false, value = "startTime",defaultValue = "0") long startTime,
-                                          @RequestParam(required = false, value = "endTime",defaultValue = "0") long endTime,
-                                          Model model) throws Exception {
-        Map<Long,ClientAttendanceInfo> map= attendanceService.getSchoolStatisticsAttendance(Lists.newArrayList(schoolId),startTime,endTime,type);
-        ClientAttendanceInfo clientAttendanceInfo=map.get(schoolId);
-        if(clientAttendanceInfo==null){
-            clientAttendanceInfo=new ClientAttendanceInfo();
+
+    /***
+     * 获取用户某个时间正常的考勤日志
+     * @Param: [request, response, month, week, day, uid, type, model]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/9/20
+     */
+    @RequestMapping("/getUserNormalList")
+    public ModelAndView getUserNormalList(HttpServletRequest request, HttpServletResponse response,
+                                          @RequestParam(name = "month", required = false, defaultValue = "0") long month,
+                                          @RequestParam(name = "days[]", required = false) List<Long> days,
+                                          @RequestParam(name = "day", required = false, defaultValue = "0") long day,
+                                          long uid, int type, Model model) throws Exception {
+        try {
+            User user = userService.load(uid);
+            List<ClientAttendanceLog> res = Lists.newArrayList();
+            if (type == Constant.type_day_search) {
+                res = attendanceLogService.getAllListByDay(user.getPsid(), user.getSid(), uid, day, true);
+            } else if (type == Constant.type_week_search) {
+                res = attendanceLogService.getAllListByDay(user.getPsid(), user.getSid(), uid, days, true);
+            } else if (type == Constant.type_month_search) {
+                res = attendanceLogService.getAllListByMonth(user.getPsid(), user.getSid(), uid, month, true);
+            }
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
-        return this.viewNegotiating(request,response,clientAttendanceInfo);
     }
 
-
-    @RequestMapping("/searchLog")
-    public ModelAndView searchLog(HttpServletRequest request, HttpServletResponse response,
-                                  @RequestParam(required = false, value = "type",defaultValue = "0") int type,
-                                  @RequestParam(required = false, value = "sid",defaultValue = "0") long sid,
-                                  @RequestParam(required = false, value = "uid",defaultValue = "0") long uid,
-                                  @RequestParam(required = false, value = "startTime",defaultValue = "0") long startTime,
-                                  @RequestParam(required = false, value = "endTime",defaultValue = "0") long endTime,
-                                  Model model) throws Exception {
-        ClientAttendanceInfo clientAttendanceInfo= attendanceService.getUserAttendanceLogs(sid,uid,startTime,endTime,type);
-        return this.viewNegotiating(request,response,new ResultClient(clientAttendanceInfo.getAttendanceLogs()));
-    }
-
-    */
-/**
-     * 获取一条考勤记录数据
-     * @param request
-     * @param response
-     * @param sid
-     * @param uid
-     * @param type
-     * @param day
-     * @param model
-     * @return
-     * @throws Exception
-     *//*
-
-    @RequestMapping("/get")
-    public ModelAndView get(HttpServletRequest request, HttpServletResponse response,
-                            long sid, long uid, int type, long day,
-                            Model model) throws Exception {
-        ClientAttendanceLog clientAttendanceLog = attendanceService.loadAttendanceLog(sid,uid,type,day);
-        ResultClient resultClient=new ResultClient(true,clientAttendanceLog);
-        return this.viewNegotiating(request,response,resultClient);
-    }
-
-    */
-/**
-     * 添加考勤模板
-     * @param request
-     * @param response
-     * @param attendanceTemplate
-     * @param model
-     * @return
-     * @throws Exception
-     *//*
-
-    @RequestMapping("/addAttendanceTemplate")
-    public ModelAndView addAttendanceTemplate(HttpServletRequest request, HttpServletResponse response,
-                                              AttendanceTemplate attendanceTemplate, Model model) throws Exception {
-        AttendanceTemplate template = attendanceService.addAttendanceTemplate(attendanceTemplate);
-        return this.viewNegotiating(request,response,new ResultClient(true,template));
-    }
-
-    */
-/**
-     * 获取考勤模板列表
-     * @param request
-     * @param response
-     * @param sid
-     * @param model
-     * @return
-     * @throws Exception
-     *//*
-
-    @RequestMapping("/getAttendanceTemplates")
-    public ModelAndView getAttendanceTemplates(HttpServletRequest request, HttpServletResponse response,
-                                               long sid, Model model) throws Exception {
-        List<ClientAttendanceTemplate> attendanceTemplates= attendanceService.getAllAttendanceTemplate(sid);
-        return this.viewNegotiating(request,response,new ResultClient(attendanceTemplates));
-    }
-
-    */
-/**
-     * 删除考勤模板
-     * @param request
-     * @param response
-     * @param id
-     * @param model
-     * @return
-     * @throws Exception
-     *//*
-
-    @RequestMapping("/deleteAttendanceTemplates")
-    public ModelAndView deleteAttendanceTemplates(HttpServletRequest request, HttpServletResponse response,
-                                                  long id, Model model) throws Exception {
-        boolean b = attendanceService.deleteAttendanceTemplate(id);
-        return this.viewNegotiating(request,response,new ResultClient(b));
-    }
-
-    */
-/**
-     * 修改考勤模板
-     * @param request
-     * @param response
-     * @param attendanceTemplate
-     * @param model
-     * @return
-     * @throws Exception
-     *//*
-
-    @RequestMapping("/updateAttendanceTemplates")
+    /***
+     * 修改考勤的打卡开始时间和打卡结束时间
+     * @Param: [request, response, attendanceLog, model]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/9/17
+     */
+    @RequestMapping("/update")
     public ModelAndView update(HttpServletRequest request, HttpServletResponse response,
-                               AttendanceTemplate attendanceTemplate,
-                               Model model) throws Exception {
-        boolean b = attendanceService.updateAttendanceTemplate(attendanceTemplate);
-        return this.viewNegotiating(request,response,new ResultClient(b));
+                               AttendanceLog attendanceLog, Model model) throws Exception {
+        try {
+            boolean res = attendanceLogService.update(attendanceLog);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
-    */
-/**
-     * 获取考勤模板
-     * @param request
-     * @param response
-     * @param aid
-     * @param model
-     * @return
-     * @throws Exception
-     *//*
-
-    @RequestMapping("/getAttendanceTemplate")
-    public ModelAndView getAttendanceTemplate(HttpServletRequest request, HttpServletResponse response,
-                                              long aid, Model model) throws Exception {
-        AttendanceTemplate attendanceTemplate = attendanceService.getAttendanceTemplate(aid);
-        return this.viewNegotiating(request,response,new ResultClient(attendanceTemplate));
+    /***
+     * 考勤汇总月统计
+     * @Param: [request, response, subIds, month, model]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Author: LaoMa
+     * @Date: 2019/9/17
+     */
+    @RequestMapping("/statisticsMonth")
+    public ModelAndView statisticsMonth(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(name = "subIds[]") List<Long> subIds, long month, int type, Model model) throws Exception {
+        try {
+            Map<Long, ClientAttendanceInfo> res = attendanceLogService.getUserStatisticsMonth(subIds, month, type);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
-    */
-/**
-     * 分配考勤模板给教师
-     * @param request
-     * @param response
-     * @param model
-     * @return
-     * @throws Exception
-     *//*
 
-    @RequestMapping("/addTemplatesToTearcher")
-    public ModelAndView addTemplatesToTearcher(HttpServletRequest request, HttpServletResponse response,
-                                               @RequestParam(required = false,value = "uids[]") List<Long> uids, long aid,
-                                               Model model) throws Exception {
-        attendanceService.setBackendUserAttendanceTemplate(aid,uids);
-        return this.viewNegotiating(request,response,new ResultClient(true));
+    /***
+     * 获取门店某月 考勤统计  获取门店下全部员工的考勤记录
+     * @Param: [request, response, month, week, day, subIds, type, timeType, model]
+     * @return: org.springframework.web.servlet.ModelAndView
+     */
+    @RequestMapping("/statistics")
+    public ModelAndView statistics(HttpServletRequest request, HttpServletResponse response,
+                                   @RequestParam(name = "startTime", defaultValue = "0") long startTime,
+                                   @RequestParam(name = "endTime", defaultValue = "0") long endTime,
+                                   @RequestParam(name = "subIds") long subId, Model model) throws Exception {
+        try {
+            List<User> users = userService.getAllUserBySid(subId);
+            List<Long> ids = users.stream().map(User::getId).collect(Collectors.toList());
+            Map<Long,ClientAttendanceInfo> res= attendanceLogService.getUserStatisticsAttendance(users.get(0).getPsid(), ids, startTime, endTime);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
-    */
-/**
-     * 分配考勤模板给园所
-     * @param request
-     * @param response
-     * @param model
-     * @return
-     * @throws Exception
-     *//*
-
-    @RequestMapping("/addTemplatesToSchool")
-    public ModelAndView addTemplatesToSchool(HttpServletRequest request, HttpServletResponse response,
-                                             long sid, long aid, Model model) throws Exception {
-        attendanceService.setSchoolAttendanceTemplate(aid,sid);
-        return this.viewNegotiating(request,response,new ResultClient(true));
+    /***
+     * 获取个人考勤记录详细记录
+     * @Param: [request, response, month, week, day, subIds, type, timeType, model]
+     * @return: org.springframework.web.servlet.ModelAndView
+     */
+    @RequestMapping("/getAllByUid")
+    public ModelAndView getAllByUid(HttpServletRequest request, HttpServletResponse response,
+                                   @RequestParam(name = "startTime", defaultValue = "0") long startTime,
+                                   @RequestParam(name = "endTime", defaultValue = "0") long endTime,
+                                   @RequestParam(name = "uid") long uid,
+                                    Model model) throws Exception {
+        try {
+            List<ClientAttendanceLog> res= attendanceLogService.getUserAttendanceLog(uid,startTime, endTime);
+            return this.viewNegotiating(request, response, new ResultClient(res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
-    */
-/**
-     * 获取所有的节日
-     *//*
-
-    @RequestMapping("/getAllHoliday")
-    public ModelAndView getAllHoliday(HttpServletRequest request, HttpServletResponse response,
-                                      Model model) throws Exception {
-        List<Long> result= attendanceService.getAllHoliday();
-        return this.viewNegotiating(request,response,new ResultClient(result));
-    }
-    */
-/**
-     * 添加节日
-     *//*
-
-    @RequestMapping("/addAllHolidayInfo")
-    public ModelAndView addAllHolidayInfo(HttpServletRequest request, HttpServletResponse response,
-                                          long day, Model model) throws Exception {
-        attendanceService.addAllHolidayInfo(day);
-        return this.viewNegotiating(request,response,new ResultClient());
-    }
-    */
-/**
-     * 删除节日
-     *//*
-
-    @RequestMapping("/deleteAllHolidayInfo")
-    public ModelAndView deleteAllHolidayInfo(HttpServletRequest request, HttpServletResponse response,
-                                             long day, Model model) throws Exception {
-        attendanceService.deleteAllHolidayInfo(day);
-        return this.viewNegotiating(request,response,new ResultClient());
+    /***
+     * 获取前n天 后-n天的日期 0为当日
+     */
+    @RequestMapping("/getDay")
+    public ModelAndView getDay(HttpServletRequest request, HttpServletResponse response,
+                               int num) throws Exception {
+        try {
+            return this.viewNegotiating(request, response, new ResultClient(TimeUtils.getDay(num)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
     }
 
+    /***
+     * 获取前n周 后-n周的日期 0为当前周
+     */
+    @RequestMapping("/getWeek")
+    public ModelAndView getWeek(HttpServletRequest request, HttpServletResponse response,
+                                int num) throws Exception {
+        try {
+            return this.viewNegotiating(request, response, new ResultClient(TimeUtils.getWeekToDays(num)));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
 
 }
-*/

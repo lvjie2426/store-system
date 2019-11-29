@@ -1,13 +1,20 @@
 package com.store.system.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
+import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.webframework.BaseController;
+import com.store.system.bean.InventoryInBillItem;
+import com.store.system.client.ClientCoupon;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.Coupon;
 import com.store.system.service.CouponService;
 import com.store.system.service.CouponService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -30,8 +37,14 @@ public class CouponController extends BaseController{
     private CouponService couponService;
 
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request, HttpServletResponse response, Coupon coupon) throws Exception {
+    public ModelAndView add(HttpServletRequest request, HttpServletResponse response, Coupon coupon,
+                            String skuIdsJson) throws Exception {
         try {
+            List<Long> skuIds = Lists.newArrayList();
+            if(StringUtils.isNotBlank(skuIdsJson)) {
+                skuIds = JsonUtils.fromJson(skuIdsJson, new TypeReference<List<Long>>() {});
+            }
+            coupon.setSkuIds(skuIds);
             Coupon res = couponService.add(coupon);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
@@ -50,8 +63,14 @@ public class CouponController extends BaseController{
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request, HttpServletResponse response, Coupon coupon) throws Exception {
+    public ModelAndView update(HttpServletRequest request, HttpServletResponse response, Coupon coupon,
+                               String skuIdsJson) throws Exception {
         try {
+            List<Long> skuIds = Lists.newArrayList();
+            if(StringUtils.isNotBlank(skuIdsJson)) {
+                skuIds = JsonUtils.fromJson(skuIdsJson, new TypeReference<List<Long>>() {});
+            }
+            coupon.setSkuIds(skuIds);
             boolean res = couponService.update(coupon);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
@@ -83,7 +102,7 @@ public class CouponController extends BaseController{
     @RequestMapping("/getIngList")
     public ModelAndView getIngList(HttpServletRequest request, HttpServletResponse response, long psid) throws Exception {
         try {
-            List<Coupon> res = couponService.getIngList(psid);
+            List<ClientCoupon> res = couponService.getIngList(psid);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -93,7 +112,7 @@ public class CouponController extends BaseController{
     @RequestMapping("/getHistoryList")
     public ModelAndView getHistoryList(HttpServletRequest request, HttpServletResponse response, long psid) throws Exception {
         try {
-            List<Coupon> res = couponService.getHistoryList(psid);
+            List<ClientCoupon> res = couponService.getHistoryList(psid);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

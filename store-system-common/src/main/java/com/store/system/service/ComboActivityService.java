@@ -1,5 +1,6 @@
 package com.store.system.service;
 
+import com.store.system.client.ClientComboActivity;
 import com.store.system.model.ComboActivity;
 
 import java.util.List;
@@ -21,6 +22,6 @@ public interface ComboActivityService {
 
     boolean updateStatus(long id, int status) throws Exception;
 
-    List<ComboActivity> getAllList(long psid) throws Exception;
+    List<ClientComboActivity>  getAllList(long psid) throws Exception;
 
 }

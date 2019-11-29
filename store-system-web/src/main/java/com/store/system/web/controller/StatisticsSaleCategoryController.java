@@ -144,7 +144,7 @@ public class StatisticsSaleCategoryController extends BaseController{
                     res = saleCategoryStatisticsService.searchSale(startTime, endTime, subId, cid);
                 }
             }
-            return this.viewNegotiating(request,response,new ResultClient(true,new ResultClient(res)));
+            return this.viewNegotiating(request,response,new ResultClient(res));
         }catch (StoreSystemException s){
             return this.viewNegotiating(request,response,new ResultClient(false,s.getMessage()));
         }

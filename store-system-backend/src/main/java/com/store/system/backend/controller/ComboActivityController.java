@@ -4,11 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
 import com.quakoo.webframework.BaseController;
-import com.store.system.client.ClientIntegralActivity;
+import com.store.system.bean.ComboItem;
+import com.store.system.client.ClientComboActivity;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
-import com.store.system.model.IntegralActivity;
-import com.store.system.service.IntegralActivityService;
+import com.store.system.model.ComboActivity;
+import com.store.system.service.ComboActivityService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,34 +21,34 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * @ClassName IntegralActivityController
+ * @ClassName ComboActivityController
  * @Description TODO
  * @Author LaoMa
- * @Date 2019/11/28 14:24
+ * @Date 2019/11/29 14:34
  * @Version 1.0
  **/
 @Controller
-@RequestMapping("/integral")
-public class IntegralActivityController extends BaseController{
+@RequestMapping("/combo")
+public class ComboActivityController extends BaseController {
 
     @Resource
-    private IntegralActivityService integralActivityService;
+    private ComboActivityService comboActivityService;
 
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request, HttpServletResponse response, IntegralActivity integralActivity,
-                            String skuIdsJson, String ugIdsJson) throws Exception {
+    public ModelAndView add(HttpServletRequest request, HttpServletResponse response, ComboActivity comboActivity,
+                            String skuIdsJson, String itemsJson) throws Exception {
         try {
             List<Long> skuIds = Lists.newArrayList();
             if(StringUtils.isNotBlank(skuIdsJson)) {
                 skuIds = JsonUtils.fromJson(skuIdsJson, new TypeReference<List<Long>>() {});
             }
-            integralActivity.setSkuIds(skuIds);
-            List<Long> ugIds = Lists.newArrayList();
-            if(StringUtils.isNotBlank(ugIdsJson)) {
-                ugIds = JsonUtils.fromJson(ugIdsJson, new TypeReference<List<Long>>() {});
+            comboActivity.setSkuIds(skuIds);
+            List<ComboItem> comboItems = Lists.newArrayList();
+            if(StringUtils.isNotBlank(itemsJson)) {
+                comboItems = JsonUtils.fromJson(itemsJson, new TypeReference<List<ComboItem>>() {});
             }
-            integralActivity.setUgIds(ugIds);
-            IntegralActivity res = integralActivityService.add(integralActivity);
+            comboActivity.setItems(comboItems);
+            ComboActivity res = comboActivityService.add(comboActivity);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -57,7 +58,7 @@ public class IntegralActivityController extends BaseController{
     @RequestMapping("/del")
     public ModelAndView del(HttpServletRequest request, HttpServletResponse response, long id) throws Exception {
         try {
-            boolean res = integralActivityService.delete(id);
+            boolean res = comboActivityService.delete(id);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -65,20 +66,20 @@ public class IntegralActivityController extends BaseController{
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request, HttpServletResponse response, IntegralActivity integralActivity,
-                               String skuIdsJson, String ugIdsJson) throws Exception {
+    public ModelAndView update(HttpServletRequest request, HttpServletResponse response, ComboActivity comboActivity,
+                               String skuIdsJson, String itemsJson) throws Exception {
         try {
             List<Long> skuIds = Lists.newArrayList();
             if(StringUtils.isNotBlank(skuIdsJson)) {
                 skuIds = JsonUtils.fromJson(skuIdsJson, new TypeReference<List<Long>>() {});
             }
-            integralActivity.setSkuIds(skuIds);
-            List<Long> ugIds = Lists.newArrayList();
-            if(StringUtils.isNotBlank(ugIdsJson)) {
-                ugIds = JsonUtils.fromJson(ugIdsJson, new TypeReference<List<Long>>() {});
+            comboActivity.setSkuIds(skuIds);
+            List<ComboItem> comboItems = Lists.newArrayList();
+            if(StringUtils.isNotBlank(itemsJson)) {
+                comboItems = JsonUtils.fromJson(itemsJson, new TypeReference<List<ComboItem>>() {});
             }
-            integralActivity.setUgIds(ugIds);
-            boolean res = integralActivityService.update(integralActivity);
+            comboActivity.setItems(comboItems);
+            boolean res = comboActivityService.update(comboActivity);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -89,7 +90,7 @@ public class IntegralActivityController extends BaseController{
     public ModelAndView updateStatus(HttpServletRequest request, HttpServletResponse response,
                                      long id, int status) throws Exception {
         try {
-            boolean res = integralActivityService.updateStatus(id, status);
+            boolean res = comboActivityService.updateStatus(id, status);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
@@ -99,30 +100,12 @@ public class IntegralActivityController extends BaseController{
     @RequestMapping("/getAllList")
     public ModelAndView getAllList(HttpServletRequest request, HttpServletResponse response, long psid) throws Exception {
         try {
-            List<IntegralActivity> res = integralActivityService.getAllList(psid);
+            List<ClientComboActivity> res = comboActivityService.getAllList(psid);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }
     }
 
-    @RequestMapping("/getIngList")
-    public ModelAndView getIngList(HttpServletRequest request, HttpServletResponse response, long psid) throws Exception {
-        try {
-            List<ClientIntegralActivity> res = integralActivityService.getIngList(psid);
-            return this.viewNegotiating(request, response, new ResultClient(true, res));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-    }
 
-    @RequestMapping("/getHistoryList")
-    public ModelAndView getHistoryList(HttpServletRequest request, HttpServletResponse response, long psid) throws Exception {
-        try {
-            List<ClientIntegralActivity> res = integralActivityService.getHistoryList(psid);
-            return this.viewNegotiating(request, response, new ResultClient(true, res));
-        } catch (StoreSystemException e) {
-            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
-        }
-    }
 }
