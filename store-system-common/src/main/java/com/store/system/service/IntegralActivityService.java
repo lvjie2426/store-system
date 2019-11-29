@@ -20,7 +20,7 @@ public interface IntegralActivityService {
 
     boolean update(IntegralActivity integralActivity) throws Exception;
 
-    boolean updateStatus(long id, int status) throws Exception;
+    boolean updateOpen(long id, int open) throws Exception;
 
     List<IntegralActivity> getAllList(long psid) throws Exception;
 

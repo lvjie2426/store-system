@@ -15,6 +15,6 @@ import java.util.List;
  **/
 public interface IntegralActivityDao extends HDao<IntegralActivity> {
 
-    List<IntegralActivity> getAllList(long psid) throws DataAccessException;
+    List<IntegralActivity> getAllList(long psid, int status, int open) throws DataAccessException;
 
 }

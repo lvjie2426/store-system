@@ -19,7 +19,7 @@ public interface StoreGiftActivityService {
 
     boolean update(StoreGiftActivity storeGiftActivity) throws Exception;
 
-    boolean updateStatus(long id, int status) throws Exception;
+    boolean updateOpen(long id, int open) throws Exception;
 
     List<StoreGiftActivity> getAllList(long psid) throws Exception;
 

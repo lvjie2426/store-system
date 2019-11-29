@@ -23,10 +23,6 @@ import java.util.List;
         identityType = IdentityType.origin_indentity)
 @Data
 public class ComboActivity implements Serializable {
-
-    public static final int STATUS_ON = 0;//启用
-    public static final int STATUS_OFF = 1;//关闭
-
     public static final int TYPE_ORIGINAL = 0;//原价
     public static final int TYPE_VIP = 1;//会员价
 
@@ -66,6 +62,10 @@ public class ComboActivity implements Serializable {
      * 状态
      */
     private int status;
+    /***
+     * 启用状态
+     */
+    private int open;
 
     @SortKey
     private long ctime;

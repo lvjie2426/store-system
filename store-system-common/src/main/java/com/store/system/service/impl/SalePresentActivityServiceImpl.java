@@ -16,6 +16,7 @@ import com.store.system.model.ProductSKU;
 import com.store.system.model.SalePresentActivity;
 import com.store.system.service.ProductService;
 import com.store.system.service.SalePresentActivityService;
+import com.store.system.util.Constant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +59,7 @@ public class SalePresentActivityServiceImpl implements SalePresentActivityServic
                throw new StoreSystemException("赠送的商品或优惠券的类型不正确");
             }
             if(item.getTypeId()==0) throw new StoreSystemException("赠送的商品或优惠券的ID不能为空");
-            if(item.getNum()==0) throw new StoreSystemException("赠送的商品或优惠券的数量不能为空");
+            if(item.getItemNum()==0) throw new StoreSystemException("赠送的商品或优惠券的数量不能为空");
         }
         if (salePresentActivity.getStartTime() == 0) throw new StoreSystemException("活动开始时间不能为空");
         if (salePresentActivity.getEndTime() == 0) throw new StoreSystemException("活动结束时间不能为空");
@@ -72,7 +73,9 @@ public class SalePresentActivityServiceImpl implements SalePresentActivityServic
 
     @Override
     public boolean delete(long id) throws Exception {
-        return salePresentActivityDao.delete(id);
+        SalePresentActivity dbInfo = salePresentActivityDao.load(id);
+        dbInfo.setStatus(Constant.STATUS_DELETE);
+        return salePresentActivityDao.update(dbInfo);
     }
 
     @Override
@@ -81,21 +84,21 @@ public class SalePresentActivityServiceImpl implements SalePresentActivityServic
     }
 
     @Override
-    public boolean updateStatus(long id, int status) throws Exception {
+    public boolean updateOpen(long id, int open) throws Exception {
         SalePresentActivity storeGiftActivity = salePresentActivityDao.load(id);
-        storeGiftActivity.setStatus(status);
+        storeGiftActivity.setOpen(open);
         return salePresentActivityDao.update(storeGiftActivity);
     }
 
     @Override
     public List<SalePresentActivity> getAllList(long psid) throws Exception {
-        return salePresentActivityDao.getAllList(psid);
+        return salePresentActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
     }
 
     @Override
     public List<ClientSalePresentActivity> getIngList(long psid) throws Exception {
         List<SalePresentActivity> res = Lists.newArrayList();
-        List<SalePresentActivity> list = salePresentActivityDao.getAllList(psid);
+        List<SalePresentActivity> list = salePresentActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
         long currentTime = System.currentTimeMillis();
         for (SalePresentActivity one : list) {
             if (currentTime >= one.getStartTime() && currentTime <= one.getEndTime()) {
@@ -108,7 +111,7 @@ public class SalePresentActivityServiceImpl implements SalePresentActivityServic
     @Override
     public List<ClientSalePresentActivity> getHistoryList(long psid) throws Exception {
         List<SalePresentActivity> res = Lists.newArrayList();
-        List<SalePresentActivity> list = salePresentActivityDao.getAllList(psid);
+        List<SalePresentActivity> list = salePresentActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
         long currentTime = System.currentTimeMillis();
         for (SalePresentActivity one : list) {
             if (currentTime > one.getEndTime()) {

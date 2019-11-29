@@ -15,5 +15,5 @@ import java.util.List;
  **/
 public interface SalePresentActivityDao extends HDao<SalePresentActivity>{
 
-    List<SalePresentActivity> getAllList(long psid) throws DataAccessException;
+    List<SalePresentActivity> getAllList(long psid, int status, int open) throws DataAccessException;
 }

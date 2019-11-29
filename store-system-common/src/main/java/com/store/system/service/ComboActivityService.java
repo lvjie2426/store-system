@@ -20,7 +20,7 @@ public interface ComboActivityService {
 
     boolean update(ComboActivity comboActivity) throws Exception;
 
-    boolean updateStatus(long id, int status) throws Exception;
+    boolean updateOpen(long id, int open) throws Exception;
 
     List<ClientComboActivity>  getAllList(long psid) throws Exception;
 

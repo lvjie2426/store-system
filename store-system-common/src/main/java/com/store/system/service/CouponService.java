@@ -20,7 +20,7 @@ public interface CouponService {
 
     boolean update(Coupon coupon) throws Exception;
 
-    boolean updateStatus(long id, int status) throws Exception;
+    boolean updateOpen(long id, int open) throws Exception;
 
     List<Coupon> getAllList(long psid) throws Exception;
 

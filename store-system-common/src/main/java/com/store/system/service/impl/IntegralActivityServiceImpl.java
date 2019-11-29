@@ -1,19 +1,23 @@
 package com.store.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.quakoo.baseFramework.transform.TransformMapUtils;
 import com.store.system.client.ClientIntegralActivity;
 import com.store.system.client.ClientProductSKU;
 import com.store.system.dao.IntegralActivityDao;
 import com.store.system.dao.ProductSKUDao;
+import com.store.system.dao.ProductSPUDao;
 import com.store.system.dao.UserGradeDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.IntegralActivity;
 import com.store.system.model.ProductSKU;
+import com.store.system.model.ProductSPU;
 import com.store.system.model.UserGrade;
 import com.store.system.service.IntegralActivityService;
 import com.store.system.service.ProductService;
+import com.store.system.util.Constant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +38,8 @@ public class IntegralActivityServiceImpl implements IntegralActivityService{
 
     @Resource
     private IntegralActivityDao integralActivityDao;
+    @Resource
+    private ProductSPUDao productSPUDao;
     @Resource
     private ProductSKUDao productSKUDao;
     @Resource
@@ -63,7 +69,9 @@ public class IntegralActivityServiceImpl implements IntegralActivityService{
 
     @Override
     public boolean delete(long id) throws Exception {
-        return integralActivityDao.delete(id);
+        IntegralActivity integralActivity = integralActivityDao.load(id);
+        integralActivity.setStatus(Constant.STATUS_DELETE);
+        return integralActivityDao.update(integralActivity);
     }
 
     @Override
@@ -72,21 +80,21 @@ public class IntegralActivityServiceImpl implements IntegralActivityService{
     }
 
     @Override
-    public boolean updateStatus(long id, int status) throws Exception {
+    public boolean updateOpen(long id, int open) throws Exception {
         IntegralActivity integralActivity = integralActivityDao.load(id);
-        integralActivity.setStatus(status);
+        integralActivity.setOpen(open);
         return integralActivityDao.update(integralActivity);
     }
 
     @Override
     public List<IntegralActivity> getAllList(long psid) throws Exception {
-        return integralActivityDao.getAllList(psid);
+        return integralActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
     }
 
     @Override
     public List<ClientIntegralActivity> getIngList(long psid) throws Exception {
         List<IntegralActivity> res = Lists.newArrayList();
-        List<IntegralActivity> list = integralActivityDao.getAllList(psid);
+        List<IntegralActivity> list = integralActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
         long currentTime = System.currentTimeMillis();
         for (IntegralActivity one : list) {
             if (currentTime >= one.getStartTime() && currentTime <= one.getEndTime()) {
@@ -99,7 +107,7 @@ public class IntegralActivityServiceImpl implements IntegralActivityService{
     @Override
     public List<ClientIntegralActivity> getHistoryList(long psid) throws Exception {
         List<IntegralActivity> res = Lists.newArrayList();
-        List<IntegralActivity> list = integralActivityDao.getAllList(psid);
+        List<IntegralActivity> list = integralActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
         long currentTime = System.currentTimeMillis();
         for (IntegralActivity one : list) {
             if (currentTime > one.getEndTime()) {
@@ -122,10 +130,18 @@ public class IntegralActivityServiceImpl implements IntegralActivityService{
         for(IntegralActivity one:integralActivities){
             ClientIntegralActivity client = new ClientIntegralActivity(one);
             List<ClientProductSKU> skus = Lists.newArrayList();
+
             for(Long skuId:one.getSkuIds()){
                 skus.add(clientSkuMap.get(skuId));
             }
-            client.setSkuList(skus);
+            Map<Long,List<ClientProductSKU>> map = Maps.newHashMap();
+            for(ClientProductSKU sku:skus){
+                ProductSPU spu = productSPUDao.load(sku.getSpuid());
+                List<ClientProductSKU> clientSkus = map.computeIfAbsent(spu.getCid(), k -> Lists.newArrayList());
+                clientSkus.add(sku);
+            }
+
+            client.setSkuMap(map);
             List<String> ugNames = Lists.newArrayList();
             if(one.getUgIds().size()>0){
                 List<UserGrade> userGrades = userGradeDao.load(Lists.newArrayList(one.getUgIds()));

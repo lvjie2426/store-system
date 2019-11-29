@@ -15,6 +15,7 @@ import com.store.system.model.ProductSKU;
 import com.store.system.model.SalePresentActivity;
 import com.store.system.service.CouponService;
 import com.store.system.service.ProductService;
+import com.store.system.util.Constant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +63,9 @@ public class CouponServiceImpl implements CouponService{
 
     @Override
     public boolean delete(long id) throws Exception {
-        return couponDao.delete(id);
+        Coupon coupon = couponDao.load(id);
+        coupon.setStatus(Constant.STATUS_DELETE);
+        return couponDao.update(coupon);
     }
 
     @Override
@@ -71,21 +74,21 @@ public class CouponServiceImpl implements CouponService{
     }
 
     @Override
-    public boolean updateStatus(long id, int status) throws Exception {
-        Coupon integralActivity = couponDao.load(id);
-        integralActivity.setStatus(status);
-        return couponDao.update(integralActivity);
+    public boolean updateOpen(long id, int open) throws Exception {
+        Coupon coupon = couponDao.load(id);
+        coupon.setOpen(open);
+        return couponDao.update(coupon);
     }
 
     @Override
     public List<Coupon> getAllList(long psid) throws Exception {
-        return couponDao.getAllList(psid);
+        return couponDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
     }
 
     @Override
     public List<ClientCoupon> getIngList(long psid) throws Exception {
         List<Coupon> res = Lists.newArrayList();
-        List<Coupon> list = couponDao.getAllList(psid);
+        List<Coupon> list = couponDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
         long currentTime = System.currentTimeMillis();
         for (Coupon one : list) {
             if (currentTime >= one.getStartTime() && currentTime <= one.getEndTime()) {
@@ -98,7 +101,7 @@ public class CouponServiceImpl implements CouponService{
     @Override
     public List<ClientCoupon> getHistoryList(long psid) throws Exception {
         List<Coupon> res = Lists.newArrayList();
-        List<Coupon> list = couponDao.getAllList(psid);
+        List<Coupon> list = couponDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
         long currentTime = System.currentTimeMillis();
         for (Coupon one : list) {
             if (currentTime > one.getEndTime()) {

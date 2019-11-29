@@ -85,11 +85,11 @@ public class IntegralActivityController extends BaseController{
         }
     }
 
-    @RequestMapping("/updateStatus")
-    public ModelAndView updateStatus(HttpServletRequest request, HttpServletResponse response,
-                                     long id, int status) throws Exception {
+    @RequestMapping("/updateOpen")
+    public ModelAndView updateOpen(HttpServletRequest request, HttpServletResponse response,
+                                     long id, int open) throws Exception {
         try {
-            boolean res = integralActivityService.updateStatus(id, status);
+            boolean res = integralActivityService.updateOpen(id, open);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

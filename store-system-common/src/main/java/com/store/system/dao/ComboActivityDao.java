@@ -15,5 +15,5 @@ import java.util.List;
  **/
 public interface ComboActivityDao extends HDao<ComboActivity> {
 
-    List<ComboActivity> getAllList(long psid) throws DataAccessException;
+    List<ComboActivity> getAllList(long psid, int status, int open) throws DataAccessException;
 }

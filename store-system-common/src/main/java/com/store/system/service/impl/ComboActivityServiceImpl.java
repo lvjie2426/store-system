@@ -16,6 +16,7 @@ import com.store.system.model.Coupon;
 import com.store.system.model.ProductSKU;
 import com.store.system.service.ComboActivityService;
 import com.store.system.service.ProductService;
+import com.store.system.util.Constant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,9 @@ public class ComboActivityServiceImpl implements ComboActivityService{
 
     @Override
     public boolean delete(long id) throws Exception {
-        return comboActivityDao.delete(id);
+        ComboActivity comboActivity = comboActivityDao.load(id);
+        comboActivity.setStatus(Constant.STATUS_DELETE);
+        return comboActivityDao.update(comboActivity);
     }
 
     @Override
@@ -78,15 +81,15 @@ public class ComboActivityServiceImpl implements ComboActivityService{
     }
 
     @Override
-    public boolean updateStatus(long id, int status) throws Exception {
+    public boolean updateOpen(long id, int open) throws Exception {
         ComboActivity comboActivity = comboActivityDao.load(id);
-        comboActivity.setStatus(status);
+        comboActivity.setOpen(open);
         return comboActivityDao.update(comboActivity);
     }
 
     @Override
     public List<ClientComboActivity> getAllList(long psid) throws Exception {
-        return transformClient(comboActivityDao.getAllList(psid));
+        return transformClient(comboActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON));
     }
 
     private List<ClientComboActivity> transformClient(List<ComboActivity> comboActivities) throws Exception {

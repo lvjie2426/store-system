@@ -22,10 +22,6 @@ import java.util.List;
         identityType = IdentityType.origin_indentity)
 @Data
 public class IntegralActivity implements Serializable{
-
-    public static final int STATUS_ON = 0;//启用
-    public static final int STATUS_OFF = 1;//关闭
-
     public static final int TYPE_MONEY = 1; //金额
     public static final int TYPE_RATE = 2; //百分比
 
@@ -61,18 +57,20 @@ public class IntegralActivity implements Serializable{
      * 金额代表：分
      */
     private double descSubtract;
-
     /***
      * 为空代表所有人
      * 活动对象
      */
     @HyperspaceColumn(isJson = true)
     private List<Long> ugIds;
-
     /***
      * 状态
      */
     private int status;
+    /***
+     * 启用状态
+     */
+    private int open;
 
     @SortKey
     private long ctime;

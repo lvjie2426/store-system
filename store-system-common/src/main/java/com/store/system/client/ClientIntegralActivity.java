@@ -6,6 +6,7 @@ import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName ClientIntegralActivity
@@ -22,7 +23,7 @@ public class ClientIntegralActivity extends IntegralActivity{
     */
     private List<String> ugNames;
 
-    private List<ClientProductSKU> skuList;
+    private Map<Long,List<ClientProductSKU>> skuMap;
 
     public  ClientIntegralActivity(IntegralActivity integralActivity){
         try {

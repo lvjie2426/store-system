@@ -15,5 +15,5 @@ import java.util.List;
  **/
 public interface CouponDao extends HDao<Coupon> {
 
-    List<Coupon> getAllList(long psid) throws DataAccessException;
+    List<Coupon> getAllList(long psid, int status, int open) throws DataAccessException;
 }
