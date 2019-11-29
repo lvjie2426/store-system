@@ -121,6 +121,9 @@ public interface AttendanceLogService {
 	 */
 	public ClientAttendanceInfo getUserAttendanceLogs(String timeTitle, long uid, long startTime, long endTime) throws Exception;
 
+	public List<ClientAttendanceLog> getUserAttendanceLog(long uid, long startTime, long endTime) throws Exception;
+
+
 	/**
 	 * 根据时间 获取单位所有用户的 考勤日志合计（包含自行统计结果，考勤日志）
 	 *

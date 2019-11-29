@@ -5,16 +5,10 @@ import com.quakoo.baseFramework.model.pagination.PagerSession;
 import com.quakoo.baseFramework.model.pagination.service.PagerRequestService;
 import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientFillCard;
-import com.store.system.dao.ApprovalLogDao;
-import com.store.system.dao.AttendanceLogDao;
-import com.store.system.dao.FillCardDao;
-import com.store.system.dao.UserDao;
+import com.store.system.dao.*;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.User;
-import com.store.system.model.attendance.ApprovalLog;
-import com.store.system.model.attendance.AttendanceLog;
-import com.store.system.model.attendance.FillCard;
-import com.store.system.model.attendance.WorkOverTime;
+import com.store.system.model.attendance.*;
 import com.store.system.service.AttendanceLogService;
 import com.store.system.service.FillCardService;
 import com.store.system.util.TimeUtils;
@@ -45,7 +39,7 @@ public class FillCardServiceImpl implements FillCardService {
     @Resource
     private AttendanceLogService attendanceLogService;
     @Resource
-    private AttendanceLogDao attendanceLogDao;
+    private PunchCardDao punchCardDao;
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -104,10 +98,11 @@ public class FillCardServiceImpl implements FillCardService {
                 clientFillCard.setAskCover(load1.getCover());
             }
         }
-        List<AttendanceLog> attendanceLogs = attendanceLogDao.getAllListByUserDay(load.getSid(), load.getSubId(), load.getAskUid(), load.getTime());
-        if(attendanceLogs.size()>0){
-            clientFillCard.setComeTime(attendanceLogs.get(0).getStartTime());
-            clientFillCard.setLeaveTime(attendanceLogs.get(attendanceLogs.size()-1).getEndTime());
+        // 拿到当天打卡记录表 信息取第一次打卡和最后一次打卡
+        List<PunchCardLog> punchCardLogs = punchCardDao.getAllList(load.getAskUid(),TimeUtils.getDayFormTime(load.getTime()));
+        if(punchCardLogs.size()>0){
+            clientFillCard.setComeTime(punchCardLogs.get(0).getPunchCardTime());
+            clientFillCard.setLeaveTime(punchCardLogs.get(punchCardLogs.size()-1).getPunchCardTime());
         }
 
         return clientFillCard;
@@ -182,13 +177,13 @@ public class FillCardServiceImpl implements FillCardService {
 
         if (sid > 0 && subid > 0) {
             //门店
-            sql = sql + " and subid=" + subid;
-            countSql = countSql + " and subid=" + subid;
+            sql = sql + " and fill.subid=" + subid;
+            countSql = countSql + " and fill.subid=" + subid;
         }
         if (sid > 0 && subid == 0) {
             // 企业
-            sql = sql + " and sid=" + sid + " and subid=0";
-            countSql = countSql + " and sid=" + sid + " and subid=0";
+            sql = sql + " and fill.sid=" + sid + " and fill.subid=0";
+            countSql = countSql + " and fill.sid=" + sid + " and fill.subid=0";
         }
 
         if (StringUtils.isNotBlank(userName)) {
