@@ -41,6 +41,10 @@
             float: right!important;
         }
         
+        .allcon {
+            width: 100%!important;
+        }
+        
         [class^='content-view-item'] .btn-info {
             width: 40px;
         }
@@ -71,6 +75,37 @@
         
         .item-group .tab_shopType {
             padding: 0px 6px 0px 11px;
+        }
+        
+        .first li .top .text {
+            color: #4A4A62;
+        }
+        
+        .content-view-item4 .text-bot input {
+            width: 66px;
+            font-size: 12px;
+        }
+        
+        .content-view-item4 .box>div {
+            margin-bottom: 11px;
+        }
+        
+        .content-view-item4 .bdcon {
+            overflow: hidden;
+            padding-top: 12px;
+            background: #F7F7F9;
+        }
+        
+        .bdcon h3 {
+            padding-left: 15px;
+        }
+        
+        .bdcon .box {
+            overflow: hidden;
+            margin: 10px 6px 15px;
+            padding: 12px 12px 0;
+            border-radius: 3px;
+            background: #fff;
         }
     </style>
 </head>
@@ -107,7 +142,7 @@
             </li>
             <li class="right-info ">
                 <!-- 买赠活动 -->
-                <button onclick="voucherDialog()">创建买赠活动</button>
+                <button onclick="opbuywidow()">创建买赠活动</button>
             </li>
             <!--<li class="right-info">-->
             <!--&lt;!&ndash;<span>剩余 1200 条信息可用</span>&ndash;&gt;-->
@@ -774,35 +809,38 @@
                     <ol class="clear">
                         <li class="card-item">
                             <div class="top">
-
                                 <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
                                     <span class="off"></span>
                                     <span class="switch-btn"><i></i></span>
                                 </div>
-
                                 <div class="text fl">
-                                    储值 100 送满减券
+                                    买明月镜片送暴龙镜架
                                 </div>
                             </div>
                             <div class="middle-cont">
                                 <div class="item">
-                                    <div class="text-top fl">获取条件</div>
+                                    <div class="text-top fl">购买</div>
 
-                                    <div class="text-bot fl">消费满 1元
+                                    <div class="text-bot fl">明月镜片 2.0
                                     </div>
+                                    <span class="fr">X1</span>
 
                                 </div>
                                 <div class="item">
-                                    <div class="text-top fl">抵用券描述</div>
+                                    <div class="text-top fl">赠送</div>
 
-                                    <div class="text-bot fl">消费满 1元减 1元
+                                    <div class="text-bot fl"> 暴龙镜架金属框
                                     </div>
-
+                                    <span class="fr">X1</span>
                                 </div>
                                 <div class="item">
-                                    <div class="text-top fl">有效期</div>
+                                    <div class="text-top fl"></div>
+                                    <span class="fl">…等 2 种商品</span>
+                                </div>
+                                <div class="item">
+                                    <div class="text-top fl">活动时间</div>
                                     <div class="text-bot fl">
-                                        2019.11.05 - 2019.12.10
+                                        2019.08.29 - 2020.08.29
                                     </div>
                                 </div>
                             </div>
@@ -891,34 +929,38 @@
                     <ol class="clear ">
                         <li class="card-item">
                             <div class="top">
-
                                 <div class="switch fr trash">
                                     <span class=" btn btn-default ">已过期</span>
                                 </div>
 
                                 <div class="text fl">
-                                    储值 999 送满减券
+                                    买明月镜片送暴龙镜架
                                 </div>
                             </div>
                             <div class="middle-cont">
                                 <div class="item">
-                                    <div class="text-top fl">获取条件</div>
+                                    <div class="text-top fl">购买</div>
 
-                                    <div class="text-bot fl">消费满 1元
+                                    <div class="text-bot fl">明月镜片 2.0
                                     </div>
+                                    <span class="fr">X1</span>
 
                                 </div>
                                 <div class="item">
-                                    <div class="text-top fl">抵用券描述</div>
+                                    <div class="text-top fl">赠送</div>
 
-                                    <div class="text-bot fl">消费满 1元减 1元
+                                    <div class="text-bot fl"> 暴龙镜架金属框
                                     </div>
-
+                                    <span class="fr">X1</span>
                                 </div>
                                 <div class="item">
-                                    <div class="text-top fl">有效期</div>
+                                    <div class="text-top fl"></div>
+                                    <span class="fl">…等 2 种商品</span>
+                                </div>
+                                <div class="item">
+                                    <div class="text-top fl">活动时间</div>
                                     <div class="text-bot fl">
-                                        2019.11.05 - 2019.12.10
+                                        2019.08.29 - 2020.08.29
                                     </div>
                                 </div>
                             </div>
@@ -1698,7 +1740,6 @@
                                 <span>针对该品类进行设置</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -1706,138 +1747,226 @@
         </form>
     </div>
 
+    <div class="content-view-item4" title="创建买赠活动">
+        <form action="">
+            <div class="lay-header">
+                <span class="lay-title" id="voucher-title">创建买赠活动</span>
+                <div class="switch active fr" id="voucherSwitch">
+                    <span class="off">未开启</span>
+                    <span class="on">已启用</span>
+                    <span class="switch-btn"><i></i></span>
+                </div>
+            </div>
+            <div class="lay-content">
+                <div class="clearfix">
+                    <ol class="clear left halfcon">
+                        <li class="lay-row title clear">
+                            <div>标题</div>
+                            <input type="text" placeholder="标题" class="title" id="voucherTitle">
+                        </li>
+                    </ol>
+                    <ol class="clear left halfcon">
+                        <li class="lay-row title clear">
+                            <div>活动有效期</div>
+                            <div class="selectBox" id="selectBox2">
+                                <div class="select-box-header">
+                                    <span class="text">选择时间</span><i class="iconfont icon-ico_calendar"></i>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                    <ol class="clear clearfix fl allcon ">
+
+                        <li class="card-item clearfix">
+                            <div class="middle-cont">
+                                <div class="item clearfix">
+                                    <div class="text-top ">购买商品</div>
+                                    <div class="text-bot "><a href="# " class="fl ">选择商品</a>
+                                        <span class="fr ">X1 <input type="text" id="allcon" value="10 " placeholder="输入数量 "></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="clearfix bdcon">
+                <h3>赠送商品或优惠券</h3>
+                <div class="box">
+                    <div>
+                        <input type="radio"><span>商品</span>
+                        <input type="radio"><span>优惠券</span>
+                        <div class="bd-deletd fr clearfix">
+                            <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                        </div>
+                    </div>
+                    <div class="text-bot clearfix "><a href="# " class="fl" style="line-height: 28px;">选择商品</a>
+                        <span class="fr ">X1 <input type="text" id="allcon" value="10 " placeholder="输入数量 "></span>
+                    </div>
+                </div>
+                <div class="box">
+                    <div>
+                        <input type="radio"><span>商品</span>
+                        <input type="radio"><span>优惠券</span>
+                        <div class="bd-deletd fr clearfix">
+                            <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                        </div>
+                    </div>
+                    <div class="text-bot clearfix ">
+                        <div class="select-box-header" style="border:1px solid  #ECECF4;border-radius: 3px;">
+                            <span class="text">满 200 减 10</span><i class="iconfont icon-ico_arrow_down fr"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div>
+                        <input type="radio"><span>商品</span>
+                        <input type="radio"><span>优惠券</span>
+                        <div class="bd-deletd fr clearfix">
+                            <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                        </div>
+                    </div>
+                    <div class="text-bot clearfix "><a href="# " class="fl" style="line-height: 28px;">选择商品</a>
+                        <span class="fr ">X1 <input type="text" id="allcon" value="10 " placeholder="输入数量 "></span>
+                    </div>
+                </div>
+                <p class="btn btn-info" style="margin: 0 auto 10px; display: block;">+新增</p>
+            </div>
+        </form>
+
+    </div>
     <!--************************************<营销模块弹窗 结束>******************************************/ -->
 
     <!--全局JS引用-->
     <!-- jq库 -->
-    <script src="../resource/js/jquery.min.js"></script>
+    <script src="../resource/js/jquery.min.js "></script>
     <!-- bootstrap UI需要依赖的js -->
-    <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
-    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../resource/js/bootstrap.js?v=3.3.6 "></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js "></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js "></script>
     <!-- layui需要依赖的js -->
-    <script src="../resource/js/plugins/layer/layer.js"></script>
-    <script src="../resource/layui/layui.js"></script>
+    <script src="../resource/js/plugins/layer/layer.js "></script>
+    <script src="../resource/layui/layui.js "></script>
     <!-- 公司内部库 -->
-    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-    <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
-    <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
-    <script src="../resource/js/lib/quakoo/Config.js"></script>
-    <script src="../resource/js/lib/quakoo/project.js"></script>
-    <script src="../resource/js/template-native.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js "></script>
+    <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js "></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js "></script>
+    <script src="../resource/js/lib/quakoo/Config.js "></script>
+    <script src="../resource/js/lib/quakoo/project.js "></script>
+    <script src="../resource/js/template-native.js "></script>
 
     <!-- 全局公共js -->
-    <script src="../resource/js/yanjing/yanjing.js"></script>
+    <script src="../resource/js/yanjing/yanjing.js "></script>
     <!--单个时间插件-->
-    <script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
+    <script src="../resource/js/yanjing/mobiscroll.2.13.2.js "></script>
     <!--//日期范围插件开始-->
-    <script src="../resource/js/yanjing/daterange.js"></script>
+    <script src="../resource/js/yanjing/daterange.js "></script>
     <!--//日期范围插件结束-->
-    <script src="../resource/js/yanjing/tuodong.js"></script>
+    <script src="../resource/js/yanjing/tuodong.js "></script>
 
     <!--抵用券营销卡片Table-->
-    <script type="text/html" id="voucherList">
+    <script type="text/html " id="voucherList ">
         <%for(var i = 0; i < list.length; i++){%>
-            <li class="card-item">
-                <div class="top">
+            <li class="card-item ">
+                <div class="top ">
                     <%if(list[i].open == 1){%>
-                        <div class="switch active fr" attr-open="2" onclick="updateOpen('<%=list[i].id%>',this)">
-                            <span class="on">已启用</span>
-                            <span class="switch-btn"><i></i></span>
+                        <div class="switch active fr " attr-open="2 " onclick="updateOpen( '<%=list[i].id%>',this) ">
+                            <span class="on ">已启用</span>
+                            <span class="switch-btn "><i></i></span>
                         </div>
                         <%}else if(list[i].open == 2){%>
-                            <div class="switch fr" attr-open="1" onclick="updateOpen('<%=list[i].id%>',this)">
-                                <span class="off">未开启</span>
-                                <span class="switch-btn"><i></i></span>
+                            <div class="switch fr " attr-open="1 " onclick="updateOpen( '<%=list[i].id%>',this) ">
+                                <span class="off ">未开启</span>
+                                <span class="switch-btn "><i></i></span>
                             </div>
                             <%}%>
-                                <div class="text fl">
+                                <div class="text fl ">
                                     <%=list[i].title%>
                                 </div>
                 </div>
-                <div class="middle-cont">
-                    <div class="item">
-                        <div class="text-top">获取条件</div>
+                <div class="middle-cont ">
+                    <div class="item ">
+                        <div class="text-top ">获取条件</div>
                         <%if(list[i].conditionType == 1){%>
-                            <div class="text-bot">全场通用</div>
+                            <div class="text-bot ">全场通用</div>
                             <%}else if(list[i].conditionType == 2){%>
-                                <div class="text-bot">消费满
+                                <div class="text-bot ">消费满
                                     <%=list[i].conditionFull%>元</div>
                                 <%}else if(list[i].conditionType == 3){%>
-                                    <div class="text-bot">消费满
+                                    <div class="text-bot ">消费满
                                         <%=list[i].conditionFull%>个</div>
                                     <%}%>
                     </div>
-                    <div class="item">
-                        <div class="text-top">抵用券描述</div>
+                    <div class="item ">
+                        <div class="text-top ">抵用券描述</div>
                         <%if(list[i].descFullType == 1&&list[i].descSubtractType ==1){%>
-                            <div class="text-bot">消费满
+                            <div class="text-bot ">消费满
                                 <%=list[i].descFull%>元减
                                     <%=list[i].descSubtract%>元</div>
                             <%}else if(list[i].descFullType == 1&&list[i].descSubtractType ==2){%>
-                                <div class="text-bot">消费满
+                                <div class="text-bot ">消费满
                                     <%=list[i].descFull%>元减
                                         <%=list[i].descSubtract%>%</div>
                                 <%}else if(list[i].descFullType == 2&&list[i].descSubtractType ==1){%>
-                                    <div class="text-bot">消费满
+                                    <div class="text-bot ">消费满
                                         <%=list[i].descFull%>个减
                                             <%=list[i].descSubtract%>元</div>
                                     <%}else if(list[i].descFullType == 2&&list[i].descSubtractType ==2){%>
-                                        <div class="text-bot">消费满
+                                        <div class="text-bot ">消费满
                                             <%=list[i].descFull%>个减
                                                 <%=list[i].descSubtract%>%</div>
                                         <%}%>
                     </div>
-                    <div class="item">
-                        <div class="text-top">有效期</div>
-                        <div class="text-bot">
+                    <div class="item ">
+                        <div class="text-top ">有效期</div>
+                        <div class="text-bot ">
                             <%=list[i].startTimeText%> -
                                 <%=list[i].endTimeText%>
                         </div>
                     </div>
                 </div>
-                <div class="bot-cont">
-                    <span class="button button-thin-blue" onclick="voucherDialog('<%=list[i].id%>')">编辑</span>
-                    <span class="button button-thin-red" onclick="delVoucher('<%=list[i].id%>')">删除</span>
+                <div class="bot-cont ">
+                    <span class="button button-thin-blue " onclick="voucherDialog( '<%=list[i].id%>') ">编辑</span>
+                    <span class="button button-thin-red " onclick="delVoucher( '<%=list[i].id%>') ">删除</span>
                 </div>
             </li>
             <%}%>
     </script>
     <!-- 弹窗模板 start -->
     <!--抵用券营销弹窗-->
-    <script type="text/html" id="voucherDiaTem">
-        <form action="">
-            <div class="lay-header">
+    <script type="text/html " id="voucherDiaTem ">
+        <form action=" ">
+            <div class="lay-header ">
                 <%if(list.id){%>
-                    <span class="lay-title" id="voucher-title">编辑抵用券</span>
+                    <span class="lay-title " id="voucher-title ">编辑抵用券</span>
                     <%if(list.open == 1){%>
-                        <div class="switch active fr" id="voucherSwitch">
-                            <span class="off">未开启</span>
-                            <span class="on">已启用</span>
-                            <span class="switch-btn"><i></i></span>
+                        <div class="switch active fr " id="voucherSwitch ">
+                            <span class="off ">未开启</span>
+                            <span class="on ">已启用</span>
+                            <span class="switch-btn "><i></i></span>
                         </div>
                         <%}else if(list.open == 2){%>
-                            <div class="switch fr" id="voucherSwitch">
-                                <span class="off">未开启</span>
-                                <span class="on">已启用</span>
-                                <span class="switch-btn"><i></i></span>
+                            <div class="switch fr " id="voucherSwitch ">
+                                <span class="off ">未开启</span>
+                                <span class="on ">已启用</span>
+                                <span class="switch-btn "><i></i></span>
                             </div>
                             <%}%>
                                 <%}else{%>
-                                    <span class="lay-title" id="voucher-title">新增抵用券</span>
-                                    <div class="switch active fr" id="voucherSwitch">
-                                        <span class="off">未开启</span>
-                                        <span class="on">已启用</span>
-                                        <span class="switch-btn"><i></i></span>
+                                    <span class="lay-title " id="voucher-title ">新增抵用券</span>
+                                    <div class="switch active fr " id="voucherSwitch ">
+                                        <span class="off ">未开启</span>
+                                        <span class="on ">已启用</span>
+                                        <span class="switch-btn "><i></i></span>
                                     </div>
                                     <%}%>
             </div>
-            <div class="lay-content">
+            <div class="lay-content ">
                 <ol>
-                    <li class="lay-row title clear">
-                        <div class="left">抵用券标题</div>
+                    <li class="lay-row title clear ">
+                        <div class="left ">抵用券标题</div>
                         <%if(list.id){%>
-                            <input class="right" type="text" placeholder="抵用券标题" value="<%=list.title%>" id="voucherTitle">
+                            <input class="right " type="text " placeholder="抵用券标题 " value="<%=list.title%>" id="voucherTitle">
                             <%}else{%>
                                 <input class="right" type="text" placeholder="抵用券标题" id="voucherTitle">
                                 <%}%>
@@ -2674,6 +2803,14 @@
                     targetcon: '.content-view-item3', //选择渲染的容器
                 }, function() {})
             }
+        }
+        //opbuywidow 设置创建买赠活动
+        function opbuywidow() {
+            layer_windwo({
+                width: '360',
+                height: '565',
+                targetcon: '.content-view-item4', //选择渲染的容器
+            })
         }
 
         function layer_windwo(obj, callback) {
