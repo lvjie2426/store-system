@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @ClassName SubSettingsController
@@ -109,6 +110,24 @@ public class SubSettingsController extends BaseController {
         try {
            Boolean flag= subSettingsService.updateStatus(subid,type);
             return this.viewNegotiating(request, response, new ResultClient(flag));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    /***
+     * 获取全部门店设置列表
+     * @Param: [request, response, model, subId]
+     * @return: org.springframework.web.servlet.ModelAndView
+     * @Date: 2019/9/18
+     */
+    @RequestMapping("/getAllList")
+    public ModelAndView getAllList(HttpServletRequest request, HttpServletResponse response, Model model,
+                             long subId) throws Exception {
+        try {
+           User user=UserUtils.getUser(request);
+            List<SubSettings> subSettings = subSettingsService.getAllList(subId,user.getPsid());
+            return this.viewNegotiating(request, response, new ResultClient(subSettings));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
         }

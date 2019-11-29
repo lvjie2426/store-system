@@ -232,7 +232,7 @@ public class InventoryInBillController extends BaseController {
                                       @RequestParam(required = false,value = "startTime",defaultValue = "0") long startTime,
                                       @RequestParam(required = false,value = "endTime",defaultValue = "0") long endTime,
                                       @RequestParam(required = false,value = "type",defaultValue = "-1") int type,
-                                      @RequestParam(required = false,value = "num",defaultValue = "-1") String num,
+                                      @RequestParam(required = false,value = "num",defaultValue = "") String num,
                                       Pager pager, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         pager = inventoryInBillService.getELAllPager(pager, subid, startTime, endTime, type,num);
 
