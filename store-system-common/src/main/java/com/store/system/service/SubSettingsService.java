@@ -2,6 +2,8 @@ package com.store.system.service;
 
 import com.store.system.model.attendance.SubSettings;
 
+import java.util.List;
+
 /**
  * @ClassName SubSettingsService
  * @Description TODO
@@ -31,4 +33,11 @@ public interface SubSettingsService {
      * @throws Exception
      */
     public  Boolean updateStatus(long subid, int type)throws Exception;
+
+    /**
+     * 获取所有店铺/单店铺人性化设置
+     * @param subId
+     * @return
+     */
+    public List<SubSettings> getAllList(long subId,long psid)throws Exception;
 }

@@ -67,6 +67,10 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     private InventoryDetailDao inventoryDetailDao;
     @Resource
     private ProductProviderDao productProviderDao;
+
+    @Resource
+    private CompanyDao companyDao;
+
     @Resource
     private ProductCategoryDao productCategoryDao;
     @Resource
@@ -86,6 +90,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     private TransformMapUtils skuMapUtils = new TransformMapUtils(ProductSKU.class);
     private TransformMapUtils spuMapUtils = new TransformMapUtils(ProductSPU.class);
     private TransformMapUtils providerMapUtils = new TransformMapUtils(ProductProvider.class);
+    private TransformMapUtils companyMapUtils = new TransformMapUtils(Company.class);
     private TransformMapUtils brandMapUtils = new TransformMapUtils(ProductBrand.class);
     private TransformMapUtils seriesMapUtils = new TransformMapUtils(ProductSeries.class);
     private TransformMapUtils categoryMapUtils = new TransformMapUtils(ProductCategory.class);
@@ -961,15 +966,23 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         Set<Long> cids = Sets.newHashSet();
         Set<Long> bids = Sets.newHashSet();
         Set<Long> sids = Sets.newHashSet();
+        Set<Long> comcids = Sets.newHashSet();
+        Set<Long> compids = Sets.newHashSet();
         for (OrderSku sku : skuList) {
             skuIds.add(sku.getSkuId());
             spuIds.add(sku.getSpuId());
             ProductSPU spu = productSPUDao.load(sku.getSpuId());
             if(spu!=null) {
-                pids.add(spu.getPid());
+                if(spu.getType()==ProductSPU.type_devices){
+                    compids.add(spu.getPid());
+                    comcids.add(spu.getCreateid());
+                }else{
+                    pids.add(spu.getPid());
+                }
                 cids.add(spu.getCid());
                 bids.add(spu.getBid());
                 sids.add(spu.getSid());
+
             }
         }
         List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuIds));
@@ -979,6 +992,12 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
 
         List<ProductProvider> providers = productProviderDao.load(Lists.newArrayList(pids));
         Map<Long, ProductProvider> providerMap = providerMapUtils.listToMap(providers, "id");
+
+        List<Company> comcidLists = companyDao.load(Lists.newArrayList(pids));
+        Map<Long, Company> comcidMap = companyMapUtils.listToMap(comcidLists, "id");
+        List<Company> compidLists = companyDao.load(Lists.newArrayList(pids));
+        Map<Long, Company> compidMap = companyMapUtils.listToMap(compidLists, "id");
+
         List<ProductCategory> categories = productCategoryDao.load(Lists.newArrayList(cids));
         Map<Long, ProductCategory> categoryMap = categoryMapUtils.listToMap(categories, "id");
         List<ProductBrand> brands = productBrandDao.load(Lists.newArrayList(bids));
@@ -1001,8 +1020,16 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             clientOrderSkus.add(clientOrderSku);
 
             ProductSPU spu = productSPUDao.load(sku.getSpuId());
-            ProductProvider provider = providerMap.get(spu.getPid());
-            if (null != provider) clientOrderSku.setProviderName(provider.getName());
+            if(spu.getType()==ProductSPU.type_devices){
+                Company companypid = compidMap.get(spu.getPid());
+                if (null != companypid) clientOrderSku.setProviderName(companypid.getName());
+                Company companycid = comcidMap.get(spu.getCreateid());
+                if (null != companycid) clientOrderSku.setCreateName(companycid.getName());
+            }else{
+                ProductProvider provider = providerMap.get(spu.getPid());
+                if (null != provider) clientOrderSku.setProviderName(provider.getName());
+            }
+
             ProductCategory category = categoryMap.get(spu.getCid());
             if (null != category) clientOrderSku.setCategoryName(category.getName());
             ProductBrand brand = brandMap.get(spu.getBid());

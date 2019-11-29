@@ -24,9 +24,6 @@ import java.util.List;
 @Data
 public class SalePresentActivity implements Serializable {
 
-    public static final int STATUS_ON = 0;//启用
-    public static final int STATUS_OFF = 1;//关闭
-
     @PrimaryKey
     private long id;
     /***
@@ -62,6 +59,10 @@ public class SalePresentActivity implements Serializable {
      * 状态
      */
     private int status;
+    /***
+     * 启用状态
+     */
+    private int open;
 
     @SortKey
     private long ctime;

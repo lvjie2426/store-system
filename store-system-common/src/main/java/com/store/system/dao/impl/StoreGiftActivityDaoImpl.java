@@ -29,7 +29,7 @@ public class StoreGiftActivityDaoImpl extends CacheBaseDao<StoreGiftActivity> im
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<StoreGiftActivity> getAllList(long psid) throws DataAccessException {
+    public List<StoreGiftActivity> getAllList(long psid, int status, int open) throws DataAccessException {
         return null;
     }
 }

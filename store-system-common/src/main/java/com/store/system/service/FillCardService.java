@@ -13,13 +13,18 @@ import com.store.system.model.attendance.FillCard;
 
 public interface FillCardService {
 
-   public boolean nopass(long id)throws Exception;
+    public boolean nopass(long id) throws Exception;
 
-    public boolean pass(long id)throws Exception;
+    public boolean pass(long id) throws Exception;
 
-    public ClientFillCard load(long id)throws Exception;
+    public ClientFillCard load(long id) throws Exception;
 
-    public FillCard add(FillCard fillCard)throws Exception;
+    public FillCard add(FillCard fillCard) throws Exception;
 
-    public Pager getListByUid(long id, Pager pager)throws Exception;
+    public Pager getListByUid(long id, Pager pager) throws Exception;
+
+    public Boolean update(FillCard fillCard) throws Exception;
+
+    public Pager getAllList(Pager pager, long subid, long sid, long startTime, long endTime, int status, String userName) throws Exception;
+
 }

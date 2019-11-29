@@ -85,6 +85,9 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
     private ProductSPUDao productSPUDao;
 
     @Resource
+    private CompanyDao companyDao;
+
+    @Resource
     private ProductSKUDao productSKUDao;
 
     @Resource
@@ -404,26 +407,28 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
 
     @Override
     public Pager getELAllPager(Pager pager, long subid, long startTime, long endTime, int type,String num) throws Exception {
-        String sql = "SELECT ib.* FROM `inventory_in_bill`  ib ,inventory_warehouse iw ,inventory_detail ide   WHERE iw.id=ib.wid and ide.wid=iw.id  subid = " + subid + " and `status` > " + InventoryInBill.status_edit;
-        String sqlCount = "SELECT count(1) FROM `inventory_in_bill`  ib ,inventory_warehouse iw ,inventory_detail ide   WHERE iw.id=ib.wid and ide.wid=iw.id  subid = " + subid + " and `status` > " + InventoryInBill.status_edit;
+        String sql = "SELECT ib.* FROM inventory_in_bill ib left JOIN inventory_detail  id on id.wid=ib.wid  WHERE 1=1 and  ib.subid = " + subid + " and ib.`status` > " + InventoryInBill.status_edit;
+        String sqlCount = "SELECT count(1) FROM inventory_in_bill ib left JOIN inventory_detail  id on id.wid=ib.wid  WHERE 1=1 and ib.subid = " + subid + " and ib.`status` > " + InventoryInBill.status_edit;
         String limit = " limit %d , %d ";
+        sql = sql + " and id.p_cid in (3,5)";
+        sqlCount = sqlCount +" and id.p_cid in (3,5)";
         if(startTime>0){
-            sql = sql + " and `ib.ctime` > " + startTime;
-            sqlCount = sqlCount + " and `ib.ctime` > " + startTime;
+            sql = sql + " and ib.ctime > " + startTime;
+            sqlCount = sqlCount + " and ib.ctime > " + startTime;
         }
         if(endTime>0){
-            sql = sql + " and `ib.ctime` < " + endTime;
-            sqlCount = sqlCount + " and `ib.ctime` < " + endTime;
+            sql = sql + " and ib.ctime < " + endTime;
+            sqlCount = sqlCount + " and ib.ctime < " + endTime;
         }
         if(type>-1){
-            sql = sql + " and `type` = " + type;
-            sqlCount = sqlCount + " and `type` = " + type;
+            sql = sql + " and ib.`type` = " + type;
+            sqlCount = sqlCount + " and ib.`type` = " + type;
         }
         if(StringUtils.isNotBlank(num)){
             sql = sql + " and items like '%"+num+"%'";
             sqlCount = sqlCount + " and items like '%"+num+"%'";
         }
-        sql = sql + " order  by `ctime` desc";
+        sql = sql + " GROUP BY ib.id order  by `ctime` desc";
         sql = sql + String.format(limit, (pager.getPage() - 1) * pager.getSize(), pager.getSize());
         List<InventoryInBill> inBills = this.jdbcTemplate.query(sql, rowMapper);
         int count = this.jdbcTemplate.queryForObject(sqlCount, Integer.class);
@@ -565,6 +570,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 ProductSPU spu = spuMap.get(clientItem.getSpuid());
                 if(null != spu) {
                     clientItem.setSpuName(spu.getName());
+                    clientItem.setNirNum(spu.getNirNum());
                     clientItem.setSpuCovers(spu.getCovers());
                     clientItem.setSpuIcon(spu.getIcon());
                     clientItem.setBid(spu.getBid());
@@ -574,6 +580,10 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                     Map<Object,Object> map_value = Maps.newHashMap();
                     map_value = productService.getProperties(item,clientItem,"p_properties_value");
                     clientItem.setP_properties_value(map_value);
+                    if(spu.getType()==ProductSPU.type_devices){
+                        clientItem.setCompany(companyDao.load(spu.getCreateid()));
+                    }
+
                 }
                 ProductBrand brand = brandMap.get(clientItem.getBid());
                 if(null != brand) clientItem.setBrandName(brand.getName());
@@ -581,6 +591,7 @@ public class InventoryInBillServiceImpl implements InventoryInBillService {
                 if(null != series) clientItem.setSeriesName(series.getName());
                 ProductCategory category = categoryMap.get(clientItem.getCid());
                 if(null != category) clientItem.setCategoryName(category.getName());
+
                 clientItems.add(clientItem);
             }
             client.setClientItems(clientItems);

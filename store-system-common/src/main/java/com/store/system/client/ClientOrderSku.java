@@ -20,7 +20,9 @@ public class ClientOrderSku extends OrderSku{
 
     private Map<Object,Object> k_properties_value;//SKU属性的值
 
-    private String providerName;
+    private String providerName;//供应商
+
+    private String createName;// 生产商
 
     private String categoryName;
 

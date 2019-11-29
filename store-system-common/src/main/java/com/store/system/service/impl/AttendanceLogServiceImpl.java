@@ -3,6 +3,7 @@ package com.store.system.service.impl;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.json.JsonUtils;
 import com.quakoo.baseFramework.redis.JedisX;
+import com.quakoo.ext.RowMapperHelp;
 import com.store.system.client.ClientAttendanceInfo;
 import com.store.system.client.ClientAttendanceLog;
 import com.store.system.dao.*;
@@ -12,6 +13,7 @@ import com.store.system.model.attendance.*;
 import com.store.system.service.*;
 import com.store.system.util.TimeUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -72,6 +74,8 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	@Autowired
 	private SubordinateDao subordinateDao;
 
+
+	private RowMapperHelp<AttendanceLog> rowMapper = new RowMapperHelp<>(AttendanceLog.class);
 
 	@Autowired(required = true)
 	@Qualifier("cachePool")
@@ -500,6 +504,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 	/**
 	 * 后台根据时间段 获取下属机构的所有用户的考勤统计(自行汇总统计)
 	 */
+	@Override
 	public Map<Long,ClientAttendanceInfo> getUserStatisticsAttendance(long sid, List<Long> uids, long startTime, long endTime) throws Exception{
 		List<AttendanceLog> logs=new ArrayList<>();
 		long startDay= TimeUtils.getDayFormTime(startTime);
@@ -508,6 +513,7 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 			for(long day=startDay;day<=endDay;day++) {
 				AttendanceLog attendanceLog = new AttendanceLog();
 				attendanceLog.setSid(sid);
+				attendanceLog.setSubId(5L);
 				attendanceLog.setUid(uid);
 				attendanceLog.setDay(day);
 				logs.add(attendanceLog);
@@ -592,6 +598,29 @@ public class AttendanceLogServiceImpl implements AttendanceLogService {
 		users.add(user);
 		ClientAttendanceInfo clientAttendanceInfo=createClientAttendanceInfo(timeTitle,logs,users,-1);
 		return clientAttendanceInfo;
+	}
+
+	@Override
+	public List<ClientAttendanceLog> getUserAttendanceLog(long uid, long startTime, long endTime) throws Exception{
+		User user=userService.load(uid);
+		List<AttendanceLog> logs=new ArrayList<>();
+		long startDay= TimeUtils.getDayFormTime(startTime);
+		long endDay= TimeUtils.getDayFormTime(endTime);
+		for(long day=startDay;day<=endDay;day++) {
+			AttendanceLog attendanceLog = new AttendanceLog();
+			attendanceLog.setSid(user.getPsid());
+			attendanceLog.setSubId(user.getSid());
+			attendanceLog.setUid(uid);
+			attendanceLog.setDay(day);
+			logs.add(attendanceLog);
+		}
+		logs=attendanceLogDao.load(logs);
+        List<ClientAttendanceLog> list=new ArrayList<>(logs.size());
+
+        for(AttendanceLog log:logs){
+            list.add(transformClient(log));
+        }
+		return list;
 	}
 
 

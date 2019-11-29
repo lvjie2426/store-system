@@ -24,4 +24,10 @@ public class Constant {
     public static final int type_halfUpYear = 9; //上半年
     public static final int type_halfDownYear = 10; //下半年
     public static final int type_week_search = 11; //按周查询
+
+    public static final int OPEN_ON = 1;//启用
+    public static final int OPEN_OFF = 2;//关闭
+
+    public static final int STATUS_NORMAL = 0;//正常
+    public static final int STATUS_DELETE = 1;//删除
 }

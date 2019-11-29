@@ -23,9 +23,6 @@ import java.util.List;
 @Data
 public class Coupon implements Serializable {
 
-    public static final int STATUS_NORMAL = 0;//正常
-    public static final int STATUS_DELETE = 1;//删除
-
     public static final int TYPE_FULL = 0;//满减
     public static final int TYPE_DIRECTIONAL = 1;//定向
     public static final int TYPE_DISCOUNT = 2;//折扣
@@ -69,7 +66,14 @@ public class Coupon implements Serializable {
      * 状态
      */
     private int status;
-
+    /***
+     * 启用状态
+     */
+    private int open;
+    /***
+     * 发放张数
+     */
+    private int num;
     @SortKey
     private long ctime;
 

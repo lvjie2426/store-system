@@ -29,7 +29,7 @@ public class CouponDaoImpl extends CacheBaseDao<Coupon> implements CouponDao{
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<Coupon> getAllList(long psid) throws DataAccessException {
+    public List<Coupon> getAllList(long psid, int status, int open) throws DataAccessException {
         return null;
     }
 }

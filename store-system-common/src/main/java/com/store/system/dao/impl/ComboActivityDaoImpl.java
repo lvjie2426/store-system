@@ -29,7 +29,7 @@ public class ComboActivityDaoImpl extends CacheBaseDao<ComboActivity> implements
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<ComboActivity> getAllList(long sid) throws DataAccessException {
+    public List<ComboActivity> getAllList(long psid, int status, int open) throws DataAccessException {
         return null;
     }
 }

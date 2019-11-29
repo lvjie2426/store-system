@@ -943,12 +943,12 @@ public class ProductServiceImpl implements ProductService {
             sqlCount += " and subid = " + subid;
         }
         if (startTime > 0) {
-            sql += " and ib.ctime > " + startTime;
-            sqlCount += " and ib.ctime > " + startTime;
+            sql += " and ctime > " + startTime;
+            sqlCount += " and ctime > " + startTime;
         }
         if (endTime > 0) {
-            sql += " and ib.ctime < " + endTime;
-            sqlCount += " and ib.ctime < " + endTime;
+            sql += " and ctime < " + endTime;
+            sqlCount += " and ctime < " + endTime;
         }
 
         sql = sql + " order  by `ctime` desc";

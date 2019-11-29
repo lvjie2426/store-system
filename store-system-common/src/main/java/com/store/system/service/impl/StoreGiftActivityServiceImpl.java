@@ -5,6 +5,7 @@ import com.store.system.dao.StoreGiftActivityDao;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.StoreGiftActivity;
 import com.store.system.service.StoreGiftActivityService;
+import com.store.system.util.Constant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,9 @@ public class StoreGiftActivityServiceImpl implements StoreGiftActivityService {
 
     @Override
     public boolean delete(long id) throws Exception {
-        return storeGiftActivityDao.delete(id);
+        StoreGiftActivity dbInfo = storeGiftActivityDao.load(id);
+        dbInfo.setStatus(Constant.STATUS_DELETE);
+        return storeGiftActivityDao.update(dbInfo);
     }
 
     @Override
@@ -50,21 +53,21 @@ public class StoreGiftActivityServiceImpl implements StoreGiftActivityService {
     }
 
     @Override
-    public boolean updateStatus(long id, int status) throws Exception {
+    public boolean updateOpen(long id, int open) throws Exception {
         StoreGiftActivity storeGiftActivity = storeGiftActivityDao.load(id);
-        storeGiftActivity.setStatus(status);
+        storeGiftActivity.setOpen(open);
         return storeGiftActivityDao.update(storeGiftActivity);
     }
 
     @Override
     public List<StoreGiftActivity> getAllList(long psid) throws Exception {
-        return storeGiftActivityDao.getAllList(psid);
+        return storeGiftActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
     }
 
     @Override
     public List<StoreGiftActivity> getIngList(long psid) throws Exception {
         List<StoreGiftActivity> res = Lists.newArrayList();
-        List<StoreGiftActivity> list = storeGiftActivityDao.getAllList(psid);
+        List<StoreGiftActivity> list = storeGiftActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
         long currentTime = System.currentTimeMillis();
         for (StoreGiftActivity one : list) {
             if (currentTime >= one.getStartTime() && currentTime <= one.getEndTime()) {
@@ -77,7 +80,7 @@ public class StoreGiftActivityServiceImpl implements StoreGiftActivityService {
     @Override
     public List<StoreGiftActivity> getHistoryList(long psid) throws Exception {
         List<StoreGiftActivity> res = Lists.newArrayList();
-        List<StoreGiftActivity> list = storeGiftActivityDao.getAllList(psid);
+        List<StoreGiftActivity> list = storeGiftActivityDao.getAllList(psid, Constant.STATUS_NORMAL, Constant.OPEN_ON);
         long currentTime = System.currentTimeMillis();
         for (StoreGiftActivity one : list) {
             if (currentTime > one.getEndTime()) {

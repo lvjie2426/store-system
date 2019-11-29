@@ -1,5 +1,6 @@
 package com.store.system.client;
 
+import com.store.system.model.Company;
 import com.store.system.model.InventoryInBill;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -3,17 +3,22 @@ package com.store.system.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.quakoo.baseFramework.jackson.JsonUtils;
+import com.store.system.client.ClientSubordinate;
 import com.store.system.dao.SubSettingsDao;
 import com.store.system.model.Subordinate;
 import com.store.system.model.attendance.PunchCardPlace;
 import com.store.system.model.attendance.SubSettings;
 import com.store.system.model.attendance.WirelessNetwork;
 import com.store.system.service.SubSettingsService;
+import com.store.system.service.SubordinateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName SubSettingsServiceImpl
@@ -27,6 +32,8 @@ public class SubSettingsServiceImpl implements SubSettingsService {
 
     @Resource
     private SubSettingsDao subSettingsDao;
+    @Resource
+    private SubordinateService subordinateService;
 
 
     @Override
@@ -136,5 +143,18 @@ public class SubSettingsServiceImpl implements SubSettingsService {
             load.setHumanizedStatus(SubSettings.status_on);
         }
         return subSettingsDao.update(load);
+    }
+
+    @Override
+    public List<SubSettings> getAllList(long subId,long psid) throws Exception {
+        List<SubSettings> list=new ArrayList<>();
+        if(subId>0){
+            list.add(subSettingsDao.load(subId));
+            return list;
+        }else{
+            List<ClientSubordinate> twoLevelAllList = subordinateService.getTwoLevelAllList(psid);
+           List<Long> ids= twoLevelAllList.stream().map(ClientSubordinate::getId).collect(Collectors.toList());
+           return subSettingsDao.load(ids);
+        }
     }
 }

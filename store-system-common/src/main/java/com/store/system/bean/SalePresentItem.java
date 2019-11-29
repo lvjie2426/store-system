@@ -21,6 +21,6 @@ public class SalePresentItem implements Serializable{
 
     private long typeId;
 
-    private int num;
+    private int itemNum;
 
 }

@@ -23,10 +23,6 @@ import java.util.List;
         identityType = IdentityType.origin_indentity)
 @Data
 public class ComboActivity implements Serializable {
-
-    public static final int STATUS_NORMAL = 0;//正常
-    public static final int STATUS_DELETE = 1;//删除
-
     public static final int TYPE_ORIGINAL = 0;//原价
     public static final int TYPE_VIP = 1;//会员价
 
@@ -35,7 +31,7 @@ public class ComboActivity implements Serializable {
     /***
      * 公司ID
      */
-    private long sid;
+    private long psid;
     /***
      * 标题
      */
@@ -49,7 +45,9 @@ public class ComboActivity implements Serializable {
      */
     @HyperspaceColumn(isJson = true)
     private List<Long> skuIds;
-
+    /***
+     * 套餐详情
+     */
     @HyperspaceColumn(isJson = true)
     private List<ComboItem> items;
     /***
@@ -64,6 +62,10 @@ public class ComboActivity implements Serializable {
      * 状态
      */
     private int status;
+    /***
+     * 启用状态
+     */
+    private int open;
 
     @SortKey
     private long ctime;

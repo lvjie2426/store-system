@@ -1,6 +1,7 @@
 package com.store.system.client;
 
 import com.store.system.bean.InventoryInBillItem;
+import com.store.system.model.Company;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.beanutils.BeanUtils;
@@ -31,6 +32,11 @@ public class ClientInventoryInBillItem extends InventoryInBillItem {
     private String seriesName;
 
     private Map<Object,Object> p_properties_value;//SKU属性的值
+
+    private Company company;
+
+    //国械著准号
+    private String nirNum;
 
     public ClientInventoryInBillItem(InventoryInBillItem inventoryInBillItem) {
         try {

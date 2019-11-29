@@ -9,17 +9,18 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**储值送礼活动
- * @ClassName StoreGiftActivity
+/**花卡获得设置
+ * @ClassName SpendCardSet
  * @Description TODO
  * @Author LaoMa
- * @Date 2019/11/25 17:04
+ * @Date 2019/11/29 17:13
  * @Version 1.0
  **/
 @HyperspaceDomain(domainType = HyperspaceDomainType.mainDataStructure,
         identityType = IdentityType.origin_indentity)
 @Data
-public class StoreGiftActivity implements Serializable{
+public class SpendCardSet implements Serializable {
+
 
     @PrimaryKey
     private long id;
@@ -28,33 +29,18 @@ public class StoreGiftActivity implements Serializable{
      */
     private long psid;
     /***
-    * 标题
-    */
-    private String title;
-    /***
-     * 一次性储值金额(分)
+     * 类目ID
      */
-    private int storePrice;
+    private long cid;
     /***
-     * 优惠券ID
+     * 消费满 (分)
      */
-    private long couponId;
+    private int price;
     /***
-     * 活动开始时间
+     * 花卡数量
      */
-    private long startTime;
-    /***
-     * 活动结束时间
-     */
-    private long endTime;
-    /***
-     * 状态
-     */
-    private int status;
-    /***
-     * 启用状态
-     */
-    private int open;
+    private int num;
+
 
     @SortKey
     private long ctime;

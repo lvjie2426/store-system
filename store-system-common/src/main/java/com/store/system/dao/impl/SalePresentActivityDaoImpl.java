@@ -29,7 +29,7 @@ public class SalePresentActivityDaoImpl extends CacheBaseDao<SalePresentActivity
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<SalePresentActivity> getAllList(long psid) throws DataAccessException {
+    public List<SalePresentActivity> getAllList(long psid, int status, int open) throws DataAccessException {
         return null;
     }
 }

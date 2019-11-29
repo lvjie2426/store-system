@@ -22,6 +22,9 @@ public class ClientFillCard extends FillCard {
     private String askName;
     private String askCover;
 
+    private long comeTime;
+    private long leaveTime;
+
 
     public  ClientFillCard(FillCard fillCard){
         try {
