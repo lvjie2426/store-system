@@ -33,6 +33,31 @@
     <link rel="stylesheet" href="../resource/css/yanjing/salesActive.css">
     <!--单页样式结束-->
     <style>
+        @media screen and (max-width: 860px){
+            .content .tab-item .card-item {
+                width: 33%!important;
+            }
+        }
+        @media screen and (min-width:1010px) {
+    .item-body {
+        overflow: hidden;
+        width: 50%;
+        float: left;
+        padding: 0 20px;
+        padding-top: 10px;
+    }
+    .item-body:nth-child(even) {
+        padding-right: 20px;
+        padding-left: 0px;
+    }
+}
+        @media screen and (max-width: 1079px){
+            .content .tab-item .card-item {
+                width: 33%!important;
+            }
+        }
+
+     
         .fl {
             float: left!important;
         }
@@ -40,13 +65,18 @@
         .fr {
             float: right!important;
         }
-        
         .allcon {
             width: 100%!important;
         }
-        
+        .bg_fff{
+            background: #fff;
+        }
         [class^='content-view-item'] .btn-info {
-            width: 40px;
+            display: block;
+            width: 50px;
+            background:none;
+            color: #83B0E8;
+            margin: 5px auto;
         }
         
         .mcentent {
@@ -107,6 +137,28 @@
             border-radius: 3px;
             background: #fff;
         }
+        .content-view-item5  .box{
+           border-top: 1px solid #F3F3F8 ;
+        }
+        .content-view-item5 .input-group-addon {
+            padding: 0;
+            font-size: 12px;
+        }
+        .content-view-item5 .halfcon{
+            width: 48%!important;
+        }
+       .fckbox{
+        width: 16px;
+    height: 16px;
+    margin: 0px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: bottom;
+    line-height: 44px;
+    vertical-align: middle;
+    border-radius: 0px;
+    border: 1px solid #d3d3d3;
+       }
     </style>
 </head>
 
@@ -121,7 +173,7 @@
             <!--<li>短信营销</li>-->
             <li data-id="send" onclick="changeSaleType(3)"><i class="iconfont icon-ico_arrow_right"></i>买赠活动</li>
             <li onclick="changeSaleType(4)"><i class="iconfont icon-ico_arrow_right"></i>双倍积分</li>
-            <li onclick="changeSaleType(5)"><i class="iconfont icon-ico_arrow_right"></i>任务奖励</li>
+            <li onclick="changeSaleType(5)"><i class="iconfont icon-ico_arrow_right"></i>套餐活动</li>
         </ul>
         <ol>
             <li class="right-info active">
@@ -141,7 +193,7 @@
                 <button onclick="saveSales()" attr-status="true">保存设置</button>
             </li>
             <li class="right-info ">
-                <!-- 买赠活动 -->
+                <!-- 买赠活动 --> 
                 <button onclick="opbuywidow()">创建买赠活动</button>
             </li>
             <!--<li class="right-info">-->
@@ -150,7 +202,7 @@
             <li class="right-info">
                 <!--<span>剩余 1200 条信息可用</span>-->
                 <!-- 双倍积分 分为有会员制度 和非会员制度两种弹窗 -->
-                <button onclick="newVouchers3()">创建积分活动</button>
+                <button onclick="opdoubleWindo(1)">创建积分活动</button>
             </li>
             <li class="right-info">
                 <!-- 套餐活动 只有创建活动 和查看 -->
@@ -287,8 +339,163 @@
                                 <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
                             </div>
                         </li>
-                    </ol>
+                        <li class="card-item">
+                                <div class="top">
+    
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                        <span class="off"></span>
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+    
+                                    <div class="text fl">
+                                        储值 100 送满减券
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item">
+                                        <div class="text-top fl">获取条件</div>
+    
+                                        <div class="text-bot fl">消费满 1元
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">抵用券描述</div>
+    
+                                        <div class="text-bot fl">消费满 1元减 1元
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 - 2019.12.10
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont">
+                                    <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                </div>
+                        </li>
+                        <li class="card-item">
+                                    <div class="top">
+        
+                                        <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                            <span class="off"></span>
+                                            <span class="switch-btn"><i></i></span>
+                                        </div>
+        
+                                        <div class="text fl">
+                                            储值 100 送满减券
+                                        </div>
+                                    </div>
+                                    <div class="middle-cont">
+                                        <div class="item">
+                                            <div class="text-top fl">获取条件</div>
+        
+                                            <div class="text-bot fl">消费满 1元
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">抵用券描述</div>
+        
+                                            <div class="text-bot fl">消费满 1元减 1元
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">有效期</div>
+                                            <div class="text-bot fl">
+                                                2019.11.05 - 2019.12.10
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bot-cont">
+                                        <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                        <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                    </div>
+                        </li>
+                        <li class="card-item">
+                                        <div class="top">
+            
+                                            <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                                <span class="off"></span>
+                                                <span class="switch-btn"><i></i></span>
+                                            </div>
+            
+                                            <div class="text fl">
+                                                储值 100 送满减券
+                                            </div>
+                                        </div>
+                                        <div class="middle-cont">
+                                            <div class="item">
+                                                <div class="text-top fl">获取条件</div>
+            
+                                                <div class="text-bot fl">消费满 1元
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">抵用券描述</div>
+            
+                                                <div class="text-bot fl">消费满 1元减 1元
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">有效期</div>
+                                                <div class="text-bot fl">
+                                                    2019.11.05 - 2019.12.10
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bot-cont">
+                                            <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                            <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                        </div>
+                        </li>
+                        <li class="card-item">
+                            <div class="top">
 
+                                <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                    <span class="off"></span>
+                                    <span class="switch-btn"><i></i></span>
+                                </div>
+
+                                <div class="text fl">
+                                    储值 100 送满减券
+                                </div>
+                            </div>
+                            <div class="middle-cont">
+                                <div class="item">
+                                    <div class="text-top fl">获取条件</div>
+
+                                    <div class="text-bot fl">消费满 1元
+                                    </div>
+
+                                </div>
+                                <div class="item">
+                                    <div class="text-top fl">抵用券描述</div>
+
+                                    <div class="text-bot fl">消费满 1元减 1元
+                                    </div>
+
+                                </div>
+                                <div class="item">
+                                    <div class="text-top fl">有效期</div>
+                                    <div class="text-bot fl">
+                                        2019.11.05 - 2019.12.10
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bot-cont">
+                                <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                            </div>
+                        </li>
+                    </ol>
                     <div class="bootstrap-table">
                         <div class="fixed-table-toolbar">
                             <div class="columns columns-right btn-group pull-right">
@@ -402,6 +609,154 @@
                                 <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
                             </div>
                         </li>
+                        <li class="card-item">
+                                <div class="top">
+    
+                                    <div class="switch fr trash">
+                                        <span class=" btn btn-default ">已过期</span>
+                                    </div>
+    
+                                    <div class="text fl">
+                                        储值 999 送满减券
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item">
+                                        <div class="text-top fl">获取条件</div>
+    
+                                        <div class="text-bot fl">消费满 1元
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">抵用券描述</div>
+    
+                                        <div class="text-bot fl">消费满 1元减 1元
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 - 2019.12.10
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont delete">
+                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                    <div class="top">
+        
+                                        <div class="switch fr trash">
+                                            <span class=" btn btn-default ">已过期</span>
+                                        </div>
+        
+                                        <div class="text fl">
+                                            储值 999 送满减券
+                                        </div>
+                                    </div>
+                                    <div class="middle-cont">
+                                        <div class="item">
+                                            <div class="text-top fl">获取条件</div>
+        
+                                            <div class="text-bot fl">消费满 1元
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">抵用券描述</div>
+        
+                                            <div class="text-bot fl">消费满 1元减 1元
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">有效期</div>
+                                            <div class="text-bot fl">
+                                                2019.11.05 - 2019.12.10
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bot-cont delete">
+                                        <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                    </div>
+                                </li>
+                                <li class="card-item">
+                                        <div class="top">
+            
+                                            <div class="switch fr trash">
+                                                <span class=" btn btn-default ">已过期</span>
+                                            </div>
+            
+                                            <div class="text fl">
+                                                储值 999 送满减券
+                                            </div>
+                                        </div>
+                                        <div class="middle-cont">
+                                            <div class="item">
+                                                <div class="text-top fl">获取条件</div>
+            
+                                                <div class="text-bot fl">消费满 1元
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">抵用券描述</div>
+            
+                                                <div class="text-bot fl">消费满 1元减 1元
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">有效期</div>
+                                                <div class="text-bot fl">
+                                                    2019.11.05 - 2019.12.10
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bot-cont delete">
+                                            <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                        </div>
+                                    </li>
+                                    <li class="card-item">
+                                            <div class="top">
+                
+                                                <div class="switch fr trash">
+                                                    <span class=" btn btn-default ">已过期</span>
+                                                </div>
+                
+                                                <div class="text fl">
+                                                    储值 999 送满减券
+                                                </div>
+                                            </div>
+                                            <div class="middle-cont">
+                                                <div class="item">
+                                                    <div class="text-top fl">获取条件</div>
+                
+                                                    <div class="text-bot fl">消费满 1元
+                                                    </div>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">抵用券描述</div>
+                
+                                                    <div class="text-bot fl">消费满 1元减 1元
+                                                    </div>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">有效期</div>
+                                                    <div class="text-bot fl">
+                                                        2019.11.05 - 2019.12.10
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bot-cont delete">
+                                                <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                            </div>
+                                        </li>
                     </ol>
                     <div class="bootstrap-table">
                         <div class="fixed-table-toolbar">
@@ -849,6 +1204,174 @@
                                 <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
                             </div>
                         </li>
+                        <li class="card-item">
+                                <div class="top">
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                        <span class="off"></span>
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+                                    <div class="text fl">
+                                        买明月镜片送暴龙镜架
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item">
+                                        <div class="text-top fl">购买</div>
+    
+                                        <div class="text-bot fl">明月镜片 2.0
+                                        </div>
+                                        <span class="fr">X1</span>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">赠送</div>
+    
+                                        <div class="text-bot fl"> 暴龙镜架金属框
+                                        </div>
+                                        <span class="fr">X1</span>
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl"></div>
+                                        <span class="fl">…等 2 种商品</span>
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">活动时间</div>
+                                        <div class="text-bot fl">
+                                            2019.08.29 - 2020.08.29
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont">
+                                    <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                    <div class="top">
+                                        <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                            <span class="off"></span>
+                                            <span class="switch-btn"><i></i></span>
+                                        </div>
+                                        <div class="text fl">
+                                            买明月镜片送暴龙镜架
+                                        </div>
+                                    </div>
+                                    <div class="middle-cont">
+                                        <div class="item">
+                                            <div class="text-top fl">购买</div>
+        
+                                            <div class="text-bot fl">明月镜片 2.0
+                                            </div>
+                                            <span class="fr">X1</span>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">赠送</div>
+        
+                                            <div class="text-bot fl"> 暴龙镜架金属框
+                                            </div>
+                                            <span class="fr">X1</span>
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl"></div>
+                                            <span class="fl">…等 2 种商品</span>
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">活动时间</div>
+                                            <div class="text-bot fl">
+                                                2019.08.29 - 2020.08.29
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bot-cont">
+                                        <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                        <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                    </div>
+                                </li>
+                                <li class="card-item">
+                                        <div class="top">
+                                            <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                                <span class="off"></span>
+                                                <span class="switch-btn"><i></i></span>
+                                            </div>
+                                            <div class="text fl">
+                                                买明月镜片送暴龙镜架
+                                            </div>
+                                        </div>
+                                        <div class="middle-cont">
+                                            <div class="item">
+                                                <div class="text-top fl">购买</div>
+            
+                                                <div class="text-bot fl">明月镜片 2.0
+                                                </div>
+                                                <span class="fr">X1</span>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">赠送</div>
+            
+                                                <div class="text-bot fl"> 暴龙镜架金属框
+                                                </div>
+                                                <span class="fr">X1</span>
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl"></div>
+                                                <span class="fl">…等 2 种商品</span>
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">活动时间</div>
+                                                <div class="text-bot fl">
+                                                    2019.08.29 - 2020.08.29
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bot-cont">
+                                            <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                            <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                        </div>
+                                    </li>
+                                    <li class="card-item">
+                                            <div class="top">
+                                                <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                                    <span class="off"></span>
+                                                    <span class="switch-btn"><i></i></span>
+                                                </div>
+                                                <div class="text fl">
+                                                    买明月镜片送暴龙镜架
+                                                </div>
+                                            </div>
+                                            <div class="middle-cont">
+                                                <div class="item">
+                                                    <div class="text-top fl">购买</div>
+                
+                                                    <div class="text-bot fl">明月镜片 2.0
+                                                    </div>
+                                                    <span class="fr">X1</span>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">赠送</div>
+                
+                                                    <div class="text-bot fl"> 暴龙镜架金属框
+                                                    </div>
+                                                    <span class="fr">X1</span>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl"></div>
+                                                    <span class="fl">…等 2 种商品</span>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">活动时间</div>
+                                                    <div class="text-bot fl">
+                                                        2019.08.29 - 2020.08.29
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bot-cont">
+                                                <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                                <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                            </div>
+                                        </li>
                     </ol>
 
                     <div class="bootstrap-table">
@@ -968,6 +1491,171 @@
                                 <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
                             </div>
                         </li>
+                        <li class="card-item">
+                                <div class="top">
+                                    <div class="switch fr trash">
+                                        <span class=" btn btn-default ">已过期</span>
+                                    </div>
+    
+                                    <div class="text fl">
+                                        买明月镜片送暴龙镜架
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item">
+                                        <div class="text-top fl">购买</div>
+    
+                                        <div class="text-bot fl">明月镜片 2.0
+                                        </div>
+                                        <span class="fr">X1</span>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">赠送</div>
+    
+                                        <div class="text-bot fl"> 暴龙镜架金属框
+                                        </div>
+                                        <span class="fr">X1</span>
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl"></div>
+                                        <span class="fl">…等 2 种商品</span>
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">活动时间</div>
+                                        <div class="text-bot fl">
+                                            2019.08.29 - 2020.08.29
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont delete">
+                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                    <div class="top">
+                                        <div class="switch fr trash">
+                                            <span class=" btn btn-default ">已过期</span>
+                                        </div>
+        
+                                        <div class="text fl">
+                                            买明月镜片送暴龙镜架
+                                        </div>
+                                    </div>
+                                    <div class="middle-cont">
+                                        <div class="item">
+                                            <div class="text-top fl">购买</div>
+        
+                                            <div class="text-bot fl">明月镜片 2.0
+                                            </div>
+                                            <span class="fr">X1</span>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">赠送</div>
+        
+                                            <div class="text-bot fl"> 暴龙镜架金属框
+                                            </div>
+                                            <span class="fr">X1</span>
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl"></div>
+                                            <span class="fl">…等 2 种商品</span>
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">活动时间</div>
+                                            <div class="text-bot fl">
+                                                2019.08.29 - 2020.08.29
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bot-cont delete">
+                                        <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                    </div>
+                                </li>
+                                <li class="card-item">
+                                        <div class="top">
+                                            <div class="switch fr trash">
+                                                <span class=" btn btn-default ">已过期</span>
+                                            </div>
+            
+                                            <div class="text fl">
+                                                买明月镜片送暴龙镜架
+                                            </div>
+                                        </div>
+                                        <div class="middle-cont">
+                                            <div class="item">
+                                                <div class="text-top fl">购买</div>
+            
+                                                <div class="text-bot fl">明月镜片 2.0
+                                                </div>
+                                                <span class="fr">X1</span>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">赠送</div>
+            
+                                                <div class="text-bot fl"> 暴龙镜架金属框
+                                                </div>
+                                                <span class="fr">X1</span>
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl"></div>
+                                                <span class="fl">…等 2 种商品</span>
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">活动时间</div>
+                                                <div class="text-bot fl">
+                                                    2019.08.29 - 2020.08.29
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bot-cont delete">
+                                            <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                        </div>
+                                    </li>
+                                    <li class="card-item">
+                                            <div class="top">
+                                                <div class="switch fr trash">
+                                                    <span class=" btn btn-default ">已过期</span>
+                                                </div>
+                
+                                                <div class="text fl">
+                                                    买明月镜片送暴龙镜架
+                                                </div>
+                                            </div>
+                                            <div class="middle-cont">
+                                                <div class="item">
+                                                    <div class="text-top fl">购买</div>
+                
+                                                    <div class="text-bot fl">明月镜片 2.0
+                                                    </div>
+                                                    <span class="fr">X1</span>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">赠送</div>
+                
+                                                    <div class="text-bot fl"> 暴龙镜架金属框
+                                                    </div>
+                                                    <span class="fr">X1</span>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl"></div>
+                                                    <span class="fl">…等 2 种商品</span>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">活动时间</div>
+                                                    <div class="text-bot fl">
+                                                        2019.08.29 - 2020.08.29
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bot-cont delete">
+                                                <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                            </div>
+                                        </li>
+
                     </ol>
 
                     <div class="bootstrap-table">
@@ -1093,6 +1781,162 @@
                                 <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
                             </div>
                         </li>
+                        <li class="card-item">
+                                <div class="top">
+    
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                        <span class="off"></span>
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+    
+                                    <div class="text fl">
+                                        储值 100 送满减券
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item">
+                                        <div class="text-top fl">获取条件</div>
+    
+                                        <div class="text-bot fl">消费满 1元
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">抵用券描述</div>
+    
+                                        <div class="text-bot fl">消费满 1元减 1元
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 - 2019.12.10
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont">
+                                    <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                    <div class="top">
+        
+                                        <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                            <span class="off"></span>
+                                            <span class="switch-btn"><i></i></span>
+                                        </div>
+        
+                                        <div class="text fl">
+                                            储值 100 送满减券
+                                        </div>
+                                    </div>
+                                    <div class="middle-cont">
+                                        <div class="item">
+                                            <div class="text-top fl">获取条件</div>
+        
+                                            <div class="text-bot fl">消费满 1元
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">抵用券描述</div>
+        
+                                            <div class="text-bot fl">消费满 1元减 1元
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">有效期</div>
+                                            <div class="text-bot fl">
+                                                2019.11.05 - 2019.12.10
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bot-cont">
+                                        <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                        <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                    </div>
+                                </li>
+                                <li class="card-item">
+                                        <div class="top">
+            
+                                            <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                                <span class="off"></span>
+                                                <span class="switch-btn"><i></i></span>
+                                            </div>
+            
+                                            <div class="text fl">
+                                                储值 100 送满减券
+                                            </div>
+                                        </div>
+                                        <div class="middle-cont">
+                                            <div class="item">
+                                                <div class="text-top fl">获取条件</div>
+            
+                                                <div class="text-bot fl">消费满 1元
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">抵用券描述</div>
+            
+                                                <div class="text-bot fl">消费满 1元减 1元
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">有效期</div>
+                                                <div class="text-bot fl">
+                                                    2019.11.05 - 2019.12.10
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bot-cont">
+                                            <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                            <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                        </div>
+                                    </li>
+                                    <li class="card-item">
+                                            <div class="top">
+                
+                                                <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                                    <span class="off"></span>
+                                                    <span class="switch-btn"><i></i></span>
+                                                </div>
+                
+                                                <div class="text fl">
+                                                    储值 100 送满减券
+                                                </div>
+                                            </div>
+                                            <div class="middle-cont">
+                                                <div class="item">
+                                                    <div class="text-top fl">获取条件</div>
+                
+                                                    <div class="text-bot fl">消费满 1元
+                                                    </div>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">抵用券描述</div>
+                
+                                                    <div class="text-bot fl">消费满 1元减 1元
+                                                    </div>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">有效期</div>
+                                                    <div class="text-bot fl">
+                                                        2019.11.05 - 2019.12.10
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bot-cont">
+                                                <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                                <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                            </div>
+                                        </li>
                     </ol>
 
                     <div class="bootstrap-table">
@@ -1208,6 +2052,191 @@
                                 <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
                             </div>
                         </li>
+                        <li class="card-item">
+                                <div class="top">
+    
+                                    <div class="switch fr trash">
+                                        <span class=" btn btn-default ">已过期</span>
+                                    </div>
+    
+                                    <div class="text fl">
+                                        储值 999 送满减券
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item">
+                                        <div class="text-top fl">获取条件</div>
+    
+                                        <div class="text-bot fl">消费满 1元
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">抵用券描述</div>
+    
+                                        <div class="text-bot fl">消费满 1元减 1元
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 - 2019.12.10
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont delete">
+                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                    <div class="top">
+        
+                                        <div class="switch fr trash">
+                                            <span class=" btn btn-default ">已过期</span>
+                                        </div>
+        
+                                        <div class="text fl">
+                                            储值 999 送满减券
+                                        </div>
+                                    </div>
+                                    <div class="middle-cont">
+                                        <div class="item">
+                                            <div class="text-top fl">获取条件</div>
+        
+                                            <div class="text-bot fl">消费满 1元
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">抵用券描述</div>
+        
+                                            <div class="text-bot fl">消费满 1元减 1元
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">有效期</div>
+                                            <div class="text-bot fl">
+                                                2019.11.05 - 2019.12.10
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bot-cont delete">
+                                        <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                    </div>
+                                </li>
+                                <li class="card-item">
+                                        <div class="top">
+            
+                                            <div class="switch fr trash">
+                                                <span class=" btn btn-default ">已过期</span>
+                                            </div>
+            
+                                            <div class="text fl">
+                                                储值 999 送满减券
+                                            </div>
+                                        </div>
+                                        <div class="middle-cont">
+                                            <div class="item">
+                                                <div class="text-top fl">获取条件</div>
+            
+                                                <div class="text-bot fl">消费满 1元
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">抵用券描述</div>
+            
+                                                <div class="text-bot fl">消费满 1元减 1元
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">有效期</div>
+                                                <div class="text-bot fl">
+                                                    2019.11.05 - 2019.12.10
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bot-cont delete">
+                                            <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                        </div>
+                                    </li>
+                                    <li class="card-item">
+                                            <div class="top">
+                
+                                                <div class="switch fr trash">
+                                                    <span class=" btn btn-default ">已过期</span>
+                                                </div>
+                
+                                                <div class="text fl">
+                                                    储值 999 送满减券
+                                                </div>
+                                            </div>
+                                            <div class="middle-cont">
+                                                <div class="item">
+                                                    <div class="text-top fl">获取条件</div>
+                
+                                                    <div class="text-bot fl">消费满 1元
+                                                    </div>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">抵用券描述</div>
+                
+                                                    <div class="text-bot fl">消费满 1元减 1元
+                                                    </div>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">有效期</div>
+                                                    <div class="text-bot fl">
+                                                        2019.11.05 - 2019.12.10
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bot-cont delete">
+                                                <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                            </div>
+                                        </li>
+                                        <li class="card-item">
+                                                <div class="top">
+                    
+                                                    <div class="switch fr trash">
+                                                        <span class=" btn btn-default ">已过期</span>
+                                                    </div>
+                    
+                                                    <div class="text fl">
+                                                        储值 999 送满减券
+                                                    </div>
+                                                </div>
+                                                <div class="middle-cont">
+                                                    <div class="item">
+                                                        <div class="text-top fl">获取条件</div>
+                    
+                                                        <div class="text-bot fl">消费满 1元
+                                                        </div>
+                    
+                                                    </div>
+                                                    <div class="item">
+                                                        <div class="text-top fl">抵用券描述</div>
+                    
+                                                        <div class="text-bot fl">消费满 1元减 1元
+                                                        </div>
+                    
+                                                    </div>
+                                                    <div class="item">
+                                                        <div class="text-top fl">有效期</div>
+                                                        <div class="text-bot fl">
+                                                            2019.11.05 - 2019.12.10
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="bot-cont delete">
+                                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                                </div>
+                                            </li>
                     </ol>
 
                     <div class="bootstrap-table">
@@ -1303,36 +2332,312 @@
                                 </div>
 
                                 <div class="text fl">
-                                    储值 100 送满减券
+                                        套餐活动
                                 </div>
                             </div>
                             <div class="middle-cont">
                                 <div class="item">
-                                    <div class="text-top fl">获取条件</div>
+                                    <div class="text-top fl">价格</div>
 
-                                    <div class="text-bot fl">消费满 1元
+                                    <div class="text-bot fl">原价
                                     </div>
 
                                 </div>
                                 <div class="item">
-                                    <div class="text-top fl">抵用券描述</div>
+                                    <div class="text-top fl">活动商品</div>
 
-                                    <div class="text-bot fl">消费满 1元减 1元
+                                    <div class="text-bot fl">暴龙镜架金属框
                                     </div>
-
                                 </div>
                                 <div class="item">
-                                    <div class="text-top fl">有效期</div>
-                                    <div class="text-bot fl">
-                                        2019.11.05 - 2019.12.10
+                                        <div class="text-top fl"></div>
+    
+                                        <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                        </div>
+                                    </div>
+                                <div class="item">
+                                    <div class="text-top fl">套餐详情</div>
+                                    <div class="text-bot fl trash">
+                                            暴龙镜架金属镜片
+                                            <span class=" btn btn-default ">已过期</span>
                                     </div>
                                 </div>
+                                <div class="item">
+                                        <div class="text-top fl"></div>
+    
+                                        <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                            <div class="text-top fl">赠品</div>
+                                            <div class="text-bot fl ">
+                                                    护眼台灯 
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                                <div class="text-top fl">优惠券</div>
+                                                <div class="text-bot fl ">
+                                                        满 200 减 20 
+                                                </div>
+                                            </div>
                             </div>
                             <div class="bot-cont">
                                 <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
                                 <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
                             </div>
                         </li>
+                        <li class="card-item">
+                                <div class="top">
+    
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                        <span class="off"></span>
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+    
+                                    <div class="text fl">
+                                            套餐活动
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item">
+                                        <div class="text-top fl">价格</div>
+    
+                                        <div class="text-bot fl">原价
+                                        </div>
+    
+                                    </div>
+                                    <div class="item">
+                                        <div class="text-top fl">活动商品</div>
+    
+                                        <div class="text-bot fl">暴龙镜架金属框
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                            <div class="text-top fl"></div>
+        
+                                            <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                            </div>
+                                        </div>
+                                    <div class="item">
+                                        <div class="text-top fl">套餐详情</div>
+                                        <div class="text-bot fl trash">
+                                                暴龙镜架金属镜片
+                                                <span class=" btn btn-default ">已过期</span>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                            <div class="text-top fl"></div>
+        
+                                            <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                                <div class="text-top fl">赠品</div>
+                                                <div class="text-bot fl ">
+                                                        护眼台灯 
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                    <div class="text-top fl">优惠券</div>
+                                                    <div class="text-bot fl ">
+                                                            满 200 减 20 
+                                                    </div>
+                                                </div>
+                                </div>
+                                <div class="bot-cont">
+                                    <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                    <div class="top">
+        
+                                        <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                            <span class="off"></span>
+                                            <span class="switch-btn"><i></i></span>
+                                        </div>
+        
+                                        <div class="text fl">
+                                                套餐活动
+                                        </div>
+                                    </div>
+                                    <div class="middle-cont">
+                                        <div class="item">
+                                            <div class="text-top fl">价格</div>
+        
+                                            <div class="text-bot fl">原价
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">活动商品</div>
+        
+                                            <div class="text-bot fl">暴龙镜架金属框
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                                <div class="text-top fl"></div>
+            
+                                                <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                </div>
+                                            </div>
+                                        <div class="item">
+                                            <div class="text-top fl">套餐详情</div>
+                                            <div class="text-bot fl trash">
+                                                    暴龙镜架金属镜片
+                                                    <span class=" btn btn-default ">已过期</span>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                                <div class="text-top fl"></div>
+            
+                                                <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                    <div class="text-top fl">赠品</div>
+                                                    <div class="text-bot fl ">
+                                                            护眼台灯 
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                        <div class="text-top fl">优惠券</div>
+                                                        <div class="text-bot fl ">
+                                                                满 200 减 20 
+                                                        </div>
+                                                    </div>
+                                    </div>
+                                    <div class="bot-cont">
+                                        <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                        <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                    </div>
+                                </li>
+                                <li class="card-item">
+                                        <div class="top">
+            
+                                            <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                                <span class="off"></span>
+                                                <span class="switch-btn"><i></i></span>
+                                            </div>
+            
+                                            <div class="text fl">
+                                                    套餐活动
+                                            </div>
+                                        </div>
+                                        <div class="middle-cont">
+                                            <div class="item">
+                                                <div class="text-top fl">价格</div>
+            
+                                                <div class="text-bot fl">原价
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">活动商品</div>
+            
+                                                <div class="text-bot fl">暴龙镜架金属框
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                    <div class="text-top fl"></div>
+                
+                                                    <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                    </div>
+                                                </div>
+                                            <div class="item">
+                                                <div class="text-top fl">套餐详情</div>
+                                                <div class="text-bot fl trash">
+                                                        暴龙镜架金属镜片
+                                                        <span class=" btn btn-default ">已过期</span>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                    <div class="text-top fl"></div>
+                
+                                                    <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                        <div class="text-top fl">赠品</div>
+                                                        <div class="text-bot fl ">
+                                                                护眼台灯 
+                                                        </div>
+                                                    </div>
+                                                    <div class="item">
+                                                            <div class="text-top fl">优惠券</div>
+                                                            <div class="text-bot fl ">
+                                                                    满 200 减 20 
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                        <div class="bot-cont">
+                                            <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                            <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                        </div>
+                                    </li>
+                                    <li class="card-item">
+                                            <div class="top">
+                
+                                                <div class="switch fr" attr-open="1" onclick="updateOpen('33',this)">
+                                                    <span class="off"></span>
+                                                    <span class="switch-btn"><i></i></span>
+                                                </div>
+                
+                                                <div class="text fl">
+                                                        套餐活动
+                                                </div>
+                                            </div>
+                                            <div class="middle-cont">
+                                                <div class="item">
+                                                    <div class="text-top fl">价格</div>
+                
+                                                    <div class="text-bot fl">原价
+                                                    </div>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">活动商品</div>
+                
+                                                    <div class="text-bot fl">暴龙镜架金属框
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                        <div class="text-top fl"></div>
+                    
+                                                        <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                        </div>
+                                                    </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">套餐详情</div>
+                                                    <div class="text-bot fl trash">
+                                                            暴龙镜架金属镜片
+                                                            <span class=" btn btn-default ">已过期</span>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                        <div class="text-top fl"></div>
+                    
+                                                        <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item">
+                                                            <div class="text-top fl">赠品</div>
+                                                            <div class="text-bot fl ">
+                                                                    护眼台灯 
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                                <div class="text-top fl">优惠券</div>
+                                                                <div class="text-bot fl ">
+                                                                        满 200 减 20 
+                                                                </div>
+                                                            </div>
+                                            </div>
+                                            <div class="bot-cont">
+                                                <span class="button button-thin-blue " onclick="voucherDialog('33')">编辑</span>
+                                                <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                            </div>
+                                        </li>
                     </ol>
 
                     <div class="bootstrap-table">
@@ -1419,35 +2724,365 @@
                                 </div>
 
                                 <div class="text fl">
-                                    储值 999 送满减券
+                                        套餐活动
                                 </div>
                             </div>
                             <div class="middle-cont">
-                                <div class="item">
-                                    <div class="text-top fl">获取条件</div>
-
-                                    <div class="text-bot fl">消费满 1元
+                                    <div class="item">
+                                        <div class="text-top fl">价格</div>
+    
+                                        <div class="text-bot fl">原价
+                                        </div>
+    
                                     </div>
-
-                                </div>
-                                <div class="item">
-                                    <div class="text-top fl">抵用券描述</div>
-
-                                    <div class="text-bot fl">消费满 1元减 1元
+                                    <div class="item">
+                                        <div class="text-top fl">活动商品</div>
+    
+                                        <div class="text-bot fl">暴龙镜架金属框
+                                        </div>
                                     </div>
-
-                                </div>
-                                <div class="item">
-                                    <div class="text-top fl">有效期</div>
-                                    <div class="text-bot fl">
-                                        2019.11.05 - 2019.12.10
+                                    <div class="item">
+                                            <div class="text-top fl"></div>
+        
+                                            <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                            </div>
+                                        </div>
+                                    <div class="item">
+                                        <div class="text-top fl">套餐详情</div>
+                                        <div class="text-bot fl trash">
+                                                暴龙镜架金属镜片
+                                                <span class=" btn btn-default ">已过期</span>
+                                        </div>
                                     </div>
+                                    <div class="item">
+                                            <div class="text-top fl"></div>
+        
+                                            <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                                <div class="text-top fl">赠品</div>
+                                                <div class="text-bot fl ">
+                                                        护眼台灯 
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                    <div class="text-top fl">优惠券</div>
+                                                    <div class="text-bot fl ">
+                                                            满 200 减 20 
+                                                    </div>
+                                                </div>
                                 </div>
-                            </div>
                             <div class="bot-cont delete">
                                 <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
                             </div>
                         </li>
+                        <li class="card-item">
+                                <div class="top">
+    
+                                    <div class="switch fr trash">
+                                        <span class=" btn btn-default ">已过期</span>
+                                    </div>
+    
+                                    <div class="text fl">
+                                            套餐活动
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                        <div class="item">
+                                            <div class="text-top fl">价格</div>
+        
+                                            <div class="text-bot fl">原价
+                                            </div>
+        
+                                        </div>
+                                        <div class="item">
+                                            <div class="text-top fl">活动商品</div>
+        
+                                            <div class="text-bot fl">暴龙镜架金属框
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                                <div class="text-top fl"></div>
+            
+                                                <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                </div>
+                                            </div>
+                                        <div class="item">
+                                            <div class="text-top fl">套餐详情</div>
+                                            <div class="text-bot fl trash">
+                                                    暴龙镜架金属镜片
+                                                    <span class=" btn btn-default ">已过期</span>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                                <div class="text-top fl"></div>
+            
+                                                <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                    <div class="text-top fl">赠品</div>
+                                                    <div class="text-bot fl ">
+                                                            护眼台灯 
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                        <div class="text-top fl">优惠券</div>
+                                                        <div class="text-bot fl ">
+                                                                满 200 减 20 
+                                                        </div>
+                                                    </div>
+                                    </div>
+                                <div class="bot-cont delete">
+                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                    <div class="top">
+        
+                                        <div class="switch fr trash">
+                                            <span class=" btn btn-default ">已过期</span>
+                                        </div>
+        
+                                        <div class="text fl">
+                                                套餐活动
+                                        </div>
+                                    </div>
+                                    <div class="middle-cont">
+                                            <div class="item">
+                                                <div class="text-top fl">价格</div>
+            
+                                                <div class="text-bot fl">原价
+                                                </div>
+            
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-top fl">活动商品</div>
+            
+                                                <div class="text-bot fl">暴龙镜架金属框
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                    <div class="text-top fl"></div>
+                
+                                                    <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                    </div>
+                                                </div>
+                                            <div class="item">
+                                                <div class="text-top fl">套餐详情</div>
+                                                <div class="text-bot fl trash">
+                                                        暴龙镜架金属镜片
+                                                        <span class=" btn btn-default ">已过期</span>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                    <div class="text-top fl"></div>
+                
+                                                    <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                        <div class="text-top fl">赠品</div>
+                                                        <div class="text-bot fl ">
+                                                                护眼台灯 
+                                                        </div>
+                                                    </div>
+                                                    <div class="item">
+                                                            <div class="text-top fl">优惠券</div>
+                                                            <div class="text-bot fl ">
+                                                                    满 200 减 20 
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                    <div class="bot-cont delete">
+                                        <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                    </div>
+                                </li>
+                                <li class="card-item">
+                                        <div class="top">
+            
+                                            <div class="switch fr trash">
+                                                <span class=" btn btn-default ">已过期</span>
+                                            </div>
+            
+                                            <div class="text fl">
+                                                    套餐活动
+                                            </div>
+                                        </div>
+                                        <div class="middle-cont">
+                                                <div class="item">
+                                                    <div class="text-top fl">价格</div>
+                
+                                                    <div class="text-bot fl">原价
+                                                    </div>
+                
+                                                </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">活动商品</div>
+                
+                                                    <div class="text-bot fl">暴龙镜架金属框
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                        <div class="text-top fl"></div>
+                    
+                                                        <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                        </div>
+                                                    </div>
+                                                <div class="item">
+                                                    <div class="text-top fl">套餐详情</div>
+                                                    <div class="text-bot fl trash">
+                                                            暴龙镜架金属镜片
+                                                            <span class=" btn btn-default ">已过期</span>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                        <div class="text-top fl"></div>
+                    
+                                                        <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item">
+                                                            <div class="text-top fl">赠品</div>
+                                                            <div class="text-bot fl ">
+                                                                    护眼台灯 
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                                <div class="text-top fl">优惠券</div>
+                                                                <div class="text-bot fl ">
+                                                                        满 200 减 20 
+                                                                </div>
+                                                            </div>
+                                            </div>
+                                        <div class="bot-cont delete">
+                                            <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                        </div>
+                                    </li>
+                                    <li class="card-item">
+                                            <div class="top">
+                
+                                                <div class="switch fr trash">
+                                                    <span class=" btn btn-default ">已过期</span>
+                                                </div>
+                
+                                                <div class="text fl">
+                                                        套餐活动
+                                                </div>
+                                            </div>
+                                            <div class="middle-cont">
+                                                    <div class="item">
+                                                        <div class="text-top fl">价格</div>
+                    
+                                                        <div class="text-bot fl">原价
+                                                        </div>
+                    
+                                                    </div>
+                                                    <div class="item">
+                                                        <div class="text-top fl">活动商品</div>
+                    
+                                                        <div class="text-bot fl">暴龙镜架金属框
+                                                        </div>
+                                                    </div>
+                                                    <div class="item">
+                                                            <div class="text-top fl"></div>
+                        
+                                                            <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                            </div>
+                                                        </div>
+                                                    <div class="item">
+                                                        <div class="text-top fl">套餐详情</div>
+                                                        <div class="text-bot fl trash">
+                                                                暴龙镜架金属镜片
+                                                                <span class=" btn btn-default ">已过期</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item">
+                                                            <div class="text-top fl"></div>
+                        
+                                                            <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                                <div class="text-top fl">赠品</div>
+                                                                <div class="text-bot fl ">
+                                                                        护眼台灯 
+                                                                </div>
+                                                            </div>
+                                                            <div class="item">
+                                                                    <div class="text-top fl">优惠券</div>
+                                                                    <div class="text-bot fl ">
+                                                                            满 200 减 20 
+                                                                    </div>
+                                                                </div>
+                                                </div>
+                                            <div class="bot-cont delete">
+                                                <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                            </div>
+                                        </li>
+                                        <li class="card-item">
+                                                <div class="top">
+                    
+                                                    <div class="switch fr trash">
+                                                        <span class=" btn btn-default ">已过期</span>
+                                                    </div>
+                    
+                                                    <div class="text fl">
+                                                            套餐活动
+                                                    </div>
+                                                </div>
+                                                <div class="middle-cont">
+                                                        <div class="item">
+                                                            <div class="text-top fl">价格</div>
+                        
+                                                            <div class="text-bot fl">原价
+                                                            </div>
+                        
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="text-top fl">活动商品</div>
+                        
+                                                            <div class="text-bot fl">暴龙镜架金属框
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                                <div class="text-top fl"></div>
+                            
+                                                                <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                                </div>
+                                                            </div>
+                                                        <div class="item">
+                                                            <div class="text-top fl">套餐详情</div>
+                                                            <div class="text-bot fl trash">
+                                                                    暴龙镜架金属镜片
+                                                                    <span class=" btn btn-default ">已过期</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                                <div class="text-top fl"></div>
+                            
+                                                                <div class="text-bot fl"><a href="#">查看全部商品</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item">
+                                                                    <div class="text-top fl">赠品</div>
+                                                                    <div class="text-bot fl ">
+                                                                            护眼台灯 
+                                                                    </div>
+                                                                </div>
+                                                                <div class="item">
+                                                                        <div class="text-top fl">优惠券</div>
+                                                                        <div class="text-bot fl ">
+                                                                                满 200 减 20 
+                                                                        </div>
+                                                                    </div>
+                                                    </div>
+                                                <div class="bot-cont delete">
+                                                    <span class="button fl" onclick="delVoucher('33')"><i class="iconfont icon-ico_trash"></i> 删除</span>
+                                                </div>
+                                            </li>
+
                     </ol>
 
                     <div class="bootstrap-table">
@@ -1527,8 +3162,6 @@
             </li>
         </ul>
     </div>
-
-
     <!-- 展示插件弹窗 -->
     <div class="content-view1" id="voucherDiaUl">
     </div>
@@ -1830,10 +3463,222 @@
                         <span class="fr ">X1 <input type="text" id="allcon" value="10 " placeholder="输入数量 "></span>
                     </div>
                 </div>
-                <p class="btn btn-info" style="margin: 0 auto 10px; display: block;">+新增</p>
+                <p class="btn btn-info" >+新增</p>
             </div>
         </form>
 
+    </div>
+
+    <div class="content-view-item5" title="创建双倍积分活动">
+        <form action="">
+            <div class="lay-header">
+                <span class="lay-title" id="voucher-title">创建双倍积分活动</span>
+                <div class="switch active fr" id="voucherSwitch">
+                    <span class="off">未开启</span>
+                    <span class="on">已启用</span>
+                    <span class="switch-btn"><i></i></span>
+                </div>
+            </div>
+            <div class="lay-content">
+                <div class="clearfix">
+                    <ol class="clear left halfcon">
+                        <li class="lay-row title clear">
+                            <div>标题</div>
+                            <input type="text" placeholder="标题" class="title" id="voucherTitle">
+                        </li>
+                    </ol>
+                    <ol class="clear left  halfcon">
+                        <li class="lay-row title clear">
+                            <div>活动有效期</div>
+                            <div class="selectBox" id="selectBox2">
+                                <div class="select-box-header">
+                                    <span class="text">选择时间</span><i class="iconfont icon-ico_calendar"></i>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="lay-row title clear">
+                            <div class="tab_shopType">
+                                <div class="tab_set">
+                                    <input type="checkbox" class="ckbox" id="shop2" onclick="optshoplst(this)">
+                                    <label for="shop2">
+                                    </label> 
+                                    <span>对不同商品进行设置</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="clearfix bdcon bg_fff">
+                <h3>活动商品</h3>
+                <div class="box">
+                    <div class="text-bot clearfix "><a href="# " class="fl" style="line-height: 28px;">明月镜片新款</a>
+                        <span class="fr "><div class="bd-deletd fr clearfix">
+                            <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                        </div></span>
+                    </div>
+                    <div class="text-bot clearfix "><a href="# " class="fl" style="line-height: 28px;">所有镜片</a>
+                        <span class="fr "><div class="bd-deletd fr clearfix">
+                            <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                        </div></span>
+                    </div>
+                    <p class="btn btn-info">+新增</p>
+                </div>
+                <h3>赠送积分</h3>
+                <div class="box">
+                    <ol class="clear fl halfcon">
+                        <li class="lay-row title clear">
+                            <div> <input type="radio"> 标题</div>
+                        </li>
+                        <li class="lay-row title clear">
+                                <div class="input-group clearfix">
+                                        <input type="text" class="form-control allcon" placeholder="输入" aria-describedby="basic-addon2">
+                                        <span class="input-group-addon" id="basic-addon2">%积分</span>
+                                </div>
+                        </li>
+                    </ol>
+                    <ol class="clear fr halfcon">
+                            <li class="lay-row title clear">
+                                <div> <input type="radio"> 按固定数额</div>
+                            </li>
+                            <li class="lay-row title clear">
+                                    <div class="input-group clearfix">
+                                            <input type="text" class="form-control allcon" placeholder="输入" aria-describedby="basic-addon2">
+                                            <span class="input-group-addon" id="basic-addon2">积分</span>
+                                 </div>
+                            </li>
+                        </ol>
+                </div>
+                <h3>活动对象</h3>
+                <div class="box">
+                        <ol class="clear fl halfcon">
+                            <li class="lay-row title clear">
+                                <div> <input type="radio">所有人</div>
+                            </li>
+                        </ol>
+                </div>
+            </div>
+        </form>
+
+
+        <form action="" title="会员体系" style="display: none;">
+                <div class="lay-header">
+                    <span class="lay-title" id="voucher-title">创建双倍积分活动</span>
+                    <div class="switch active fr" id="voucherSwitch">
+                        <span class="off">未开启</span>
+                        <span class="on">已启用</span>
+                        <span class="switch-btn"><i></i></span>
+                    </div>
+                </div>
+                <div class="lay-content">
+                    <div class="clearfix">
+                        <ol class="clear left halfcon">
+                            <li class="lay-row title clear">
+                                <div>标题</div>
+                                <input type="text" placeholder="标题" class="title" id="voucherTitle">
+                            </li>
+                        </ol>
+                        <ol class="clear left  halfcon">
+                            <li class="lay-row title clear">
+                                <div>活动有效期</div>
+                                <div class="selectBox" id="selectBox2">
+                                    <div class="select-box-header">
+                                        <span class="text">选择时间</span><i class="iconfont icon-ico_calendar"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="lay-row title clear">
+                                <div class="tab_shopType">
+                                    <div class="tab_set">
+                                        <input type="checkbox" class="ckbox" id="shop2" onclick="optshoplst(this)">
+                                        <label for="shop2">
+                                        </label> 
+                                        <span>对不同商品进行设置</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="clearfix bdcon bg_fff">
+                    <h3>活动商品</h3>
+                    <div class="box">
+                        <div class="text-bot clearfix "><a href="# " class="fl" style="line-height: 28px;">明月镜片新款</a>
+                            <span class="fr "><div class="bd-deletd fr clearfix">
+                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                            </div></span>
+                        </div>
+                        <div class="text-bot clearfix "><a href="# " class="fl" style="line-height: 28px;">所有镜片</a>
+                            <span class="fr "><div class="bd-deletd fr clearfix">
+                                <p class="fr"><span><i class="iconfont icon-ico_trash"></i></span></p>
+                            </div></span>
+                        </div>
+                        <p class="btn btn-info">+新增</p>
+                    </div>
+                    <h3>赠送积分</h3>
+                    <div class="box">
+                        <ol class="clear">
+                           <label class="fckbox" for=""></label><span>会员等级A</span>
+                           <label class="fckbox" for=""></label><span>会员等级B</span>
+                           <label class="fckbox" for=""></label><span>会员等级C</span>
+                        </ol>
+                    </div>
+                </div>
+        </form>
+    </div>
+
+    <div class="contne-view-item6" title="所有参与活动的商品" style="display: none;"> 
+            <form action="">
+                    <div class="lay-header" style="cursor: move;">
+                        <span class="lay-title" id="voucher-title">所有参与活动的商品</span>
+                
+                    </div>
+                    <div class="lay-content">
+                        <ol class="clear left halfcon">
+                            <li class="lay-row title clear">
+                                <div>镜片</div>
+                                <p class="text-top">明月镜片新款</p>
+                                <p class="text-top">暴龙眼镜片 B 系列</p>
+                            </li>
+                            <li>
+                                    <div>镜框</div>
+                                    <p class="text-top">暴龙眼镜款 A 系列</p>
+                            </li>
+                            <li>
+                                    <div>太阳镜</div>
+                                    <p class="text-top">全部产品</p>
+                            </li>
+                        </ol>
+                    </div>
+                </form>
+    </div>
+
+    <div class="contne-view-item7" title="套餐详情" style="display: none;">
+            <form action="">
+                    <div class="lay-header" style="cursor: move;">
+                        <span class="lay-title" id="voucher-title">套餐详情</span>
+                
+                    </div>
+                    <div class="lay-content">
+                        <ol class="clear left halfcon">
+                            <li class="lay-row title clear clearfix">
+                                <p class="fl text-top">加10元，送</p>
+                                <p class="fl ">暴龙镜架金属镜片</p>
+                                <p class="fl trash"><span class=" btn btn-default ">定制</span></p>
+                            </li>
+                            <li>
+                                    <p class="fl text-top">加20元，送</p>
+                                <p class="fl ">明月镜片新品系列最新上架</p>
+                                <p class="fl trash"><span class=" btn btn-default ">定制</span></p>
+                            </li>
+                            <li>
+                                    <p class="fl text-top">加30元，送</p>
+                                <p class="fl ">暴龙护眼台灯</p>
+                                <p class="fl trash"><span class=" btn btn-default ">定制</span></p>
+                            </li>
+                        </ol>
+                    </div>
+                </form>
     </div>
     <!--************************************<营销模块弹窗 结束>******************************************/ -->
 
@@ -2813,6 +4658,14 @@
             })
         }
 
+        function opdoubleWindo() {
+            layer_windwo({
+                width: '360',
+                height: '459',
+                targetcon: '.content-view-item5', //选择渲染的容器
+            })
+        }
+
         function layer_windwo(obj, callback) {
             /**弹窗——储值送礼-新增满减劵(编辑)----*/
             var btn;
@@ -2943,6 +4796,7 @@
 
         /**弹窗——新增抵用券(编辑)*/
         function voucherDialog(voucherId) {
+        
             var btn;
             if (quakooUtils.isBlack(voucherId)) {
                 btn = ['取消', '新增'];
