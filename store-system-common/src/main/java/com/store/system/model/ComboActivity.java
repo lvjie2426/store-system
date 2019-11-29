@@ -24,8 +24,8 @@ import java.util.List;
 @Data
 public class ComboActivity implements Serializable {
 
-    public static final int STATUS_NORMAL = 0;//正常
-    public static final int STATUS_DELETE = 1;//删除
+    public static final int STATUS_ON = 0;//启用
+    public static final int STATUS_OFF = 1;//关闭
 
     public static final int TYPE_ORIGINAL = 0;//原价
     public static final int TYPE_VIP = 1;//会员价
@@ -35,7 +35,7 @@ public class ComboActivity implements Serializable {
     /***
      * 公司ID
      */
-    private long sid;
+    private long psid;
     /***
      * 标题
      */
@@ -49,7 +49,9 @@ public class ComboActivity implements Serializable {
      */
     @HyperspaceColumn(isJson = true)
     private List<Long> skuIds;
-
+    /***
+     * 套餐详情
+     */
     @HyperspaceColumn(isJson = true)
     private List<ComboItem> items;
     /***

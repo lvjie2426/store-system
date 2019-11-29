@@ -1,5 +1,6 @@
 package com.store.system.service;
 
+import com.store.system.client.ClientIntegralActivity;
 import com.store.system.model.IntegralActivity;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public interface IntegralActivityService {
 
     List<IntegralActivity> getAllList(long psid) throws Exception;
 
-    List<IntegralActivity> getIngList(long psid) throws Exception;
+    List<ClientIntegralActivity> getIngList(long psid) throws Exception;
 
-    List<IntegralActivity> getHistoryList(long psid) throws Exception;
+    List<ClientIntegralActivity> getHistoryList(long psid) throws Exception;
     
 }

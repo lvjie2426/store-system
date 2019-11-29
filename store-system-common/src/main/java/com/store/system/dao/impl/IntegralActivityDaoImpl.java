@@ -30,7 +30,7 @@ public class IntegralActivityDaoImpl extends CacheBaseDao<IntegralActivity> impl
 
     @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
-    public List<IntegralActivity> getAllList(long sid) throws DataAccessException {
+    public List<IntegralActivity> getAllList(long psid) throws DataAccessException {
         return null;
     }
 }

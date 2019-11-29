@@ -21,5 +21,5 @@ public class ComboItem implements Serializable {
     /***
      * 商品ID
      */
-    private long skuId;
+    private long itemSkuId;
 }
