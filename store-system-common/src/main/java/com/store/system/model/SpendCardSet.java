@@ -21,6 +21,8 @@ import java.io.Serializable;
 @Data
 public class SpendCardSet implements Serializable {
 
+    public static final int TYPE_CATE = 1;//类目
+    public static final int TYPE_SPU = 2;//spu
 
     @PrimaryKey
     private long id;
@@ -33,6 +35,12 @@ public class SpendCardSet implements Serializable {
      */
     private long cid;
     /***
+     * SpuID
+     */
+    private long spuId;
+
+    private int type;
+    /***
      * 消费满 (分)
      */
     private int price;
@@ -40,6 +48,10 @@ public class SpendCardSet implements Serializable {
      * 花卡数量
      */
     private int num;
+    /***
+     * 状态
+     */
+    private int status;
 
 
     @SortKey
