@@ -405,7 +405,8 @@ public class ProductServiceImpl implements ProductService {
         return clientProductSPU;
     }
 
-    private List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList, long subId) throws Exception {
+    @Override
+    public List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList, long subId) throws Exception {
         List<ClientProductSPU> res = Lists.newArrayList();
         if (productSPUList.size() == 0) return res;
         Set<Long> pids = Sets.newHashSet();
