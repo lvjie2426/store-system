@@ -34,6 +34,12 @@ public class SpendCardExchangeDaoImpl extends CacheBaseDao<SpendCardExchange> im
     }
 
     @Override
+    @CacheDaoMethod(methodEnum = CacheMethodEnum.getAllListWithoutSharding)
+    public List<SpendCardExchange> getAllList(long psid, int status) throws DataAccessException {
+        return null;
+    }
+
+    @Override
     @CacheDaoMethod(methodEnum = CacheMethodEnum.getCountWithoutSharding)
     public int getCount(long psid, long spuId, int status) throws DataAccessException {
         return 0;

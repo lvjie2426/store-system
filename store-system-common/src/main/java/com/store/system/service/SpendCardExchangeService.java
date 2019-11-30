@@ -21,4 +21,6 @@ public interface SpendCardExchangeService {
     boolean update(SpendCardExchange spendCardExchange) throws Exception;
 
     List<ClientSpendCardExchange> getAllList(long psid, long spuId) throws Exception;
+
+    List<ClientSpendCardExchange> getAllListBySid(long psid, long sid) throws Exception;
 }

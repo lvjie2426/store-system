@@ -104,7 +104,7 @@ public class ComboActivityServiceImpl implements ComboActivityService{
             }
         }
         List<ProductSKU> skuList = productSKUDao.load(Lists.newArrayList(skuIds));
-        List<ClientProductSKU> clientProductSKUS = productService.transformSKUClient(skuList);
+        List<ClientProductSKU> clientProductSKUS = productService.transformSKUClient(skuList,0);
         Map<Long, ClientProductSKU> clientSkuMap = clientSkuMapUtils.listToMap(clientProductSKUS, "id");
 
         List<Coupon> couponList = couponDao.load(Lists.newArrayList(couponIds));
@@ -118,7 +118,7 @@ public class ComboActivityServiceImpl implements ComboActivityService{
                 items.add(clientItem);
             }
             List<ProductSKU> skus = productSKUDao.load(Lists.newArrayList(one.getSkuIds()));
-            List<ClientProductSKU> clientSkus = productService.transformSKUClient(skus);
+            List<ClientProductSKU> clientSkus = productService.transformSKUClient(skus,0);
             client.setSkuList(clientSkus);
             client.setItemList(items);
             client.setSku(clientSkuMap.get(one.getSkuId()));

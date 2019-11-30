@@ -137,7 +137,7 @@ public class SalePresentActivityServiceImpl implements SalePresentActivityServic
 
         }
         List<ProductSKU> skuList = productSKUDao.load(Lists.newArrayList(skuIds));
-        List<ClientProductSKU> clientProductSKUS = productService.transformSKUClient(skuList);
+        List<ClientProductSKU> clientProductSKUS = productService.transformSKUClient(skuList,0);
         Map<Long, ClientProductSKU> clientSkuMap = clientSkuMapUtils.listToMap(clientProductSKUS, "id");
 
         List<Coupon> couponList = couponDao.load(Lists.newArrayList(couponIds));

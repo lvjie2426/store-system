@@ -17,5 +17,7 @@ public interface SpendCardExchangeDao extends HDao<SpendCardExchange>{
 
     List<SpendCardExchange> getAllList(long psid, long spuId, int status) throws DataAccessException;
 
+    List<SpendCardExchange> getAllList(long psid, int status) throws DataAccessException;
+
     int getCount(long psid, long spuId, int status) throws DataAccessException;
 }

@@ -64,7 +64,7 @@ public interface ProductService {
 
     public List<ClientProductSPU> transformClients(List<ProductSPU> productSPUList, long subId) throws Exception;
 
-    public List<ClientProductSKU> transformSKUClient(List<ProductSKU> skuList) throws Exception;
+    public List<ClientProductSKU> transformSKUClient(List<ProductSKU> skuList, long subId) throws Exception;
 
     /**
      * 获取医疗器械商品列表
