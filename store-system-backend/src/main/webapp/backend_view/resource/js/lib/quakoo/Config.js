@@ -24,12 +24,12 @@ var Config = (function(_super) {
 
 
         /**测试服务器地址*/
-        this.serverUrl = "http://39.107.247.82:20005";
+        // this.serverUrl = "http://39.107.247.82:20005";
         // this.serverUrl = "http://192.168.1.20:20005";
         /**李浩杰*/
         // this.serverUrl = "http://192.168.1.29:20005";
         /**张猛*/
-        // this.serverUrl = "http://192.168.1.34:20005";
+        this.serverUrl = "http://192.168.1.5:20005";
         /**马文军*/
         // this.serverUrl = "http://127.0.0.1:20005";
         /**聊天服务地址*/
@@ -324,6 +324,24 @@ var Config = (function(_super) {
     /**编辑短信营销(待定)*/
     //_proto.getUrl_subordinate_getSu = function(){return this.serverUrl + '/marketingtimingsms/add';};
     //=======================企业端（营销管理） 结束====================
+
+    //=======================考勤管理 开始====================
+    /**获取员工考勤列表*/
+    _proto.getUrl_attendance_getEmployAttendance = function() { return this.serverUrl + '/attendance/statistics'; };
+    /**员工考勤详情*/
+    _proto.getUrl_attendance_getEmployAttendanceList = function() { return this.serverUrl + '/attendance/getAllByUid'; };
+    /**请假列表*/
+    _proto.getUrl_attendance_getLeaveList = function() { return this.serverUrl + '/leave/getList'; };
+    /**编辑请假*/
+    _proto.getUrl_attendance_updateLeaveList = function() { return this.serverUrl + '/leave/update'; };
+    /**加班列表*/
+    _proto.getUrl_attendance_getAddList = function() { return this.serverUrl + '/workovertime/getList'; };
+    /**调班列表*/
+    _proto.getUrl_attendance_getChangeList = function() { return this.serverUrl + '/changeShift/getList'; };
+    /**补卡列表*/
+    _proto.getUrl_attendance_getBkaList = function() { return this.serverUrl + '/fillCard/getAllList'; };
+
+    //=======================考勤管理 结束====================
 
     //=======================商品管理 开始====================
     /**获取商品的属性的值列表*/

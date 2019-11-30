@@ -2,240 +2,247 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="renderer" content="webkit">
-  <title>查看员工考勤列表</title>
-  <!--Bootstrap样式引入开始-->
-  <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
-  <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
-  <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
-  <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>查看员工考勤列表</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
-  <!--Bootstrap样式引入结束-->
-  <!--字体样式文件引用开始-->
-  <link rel="stylesheet" href="../resource/fonts/iconfont.css">
-  <!--字体样式文件引用结束-->
-  <!--标签样式重置开始-->
-  <link rel="stylesheet" href="../resource/css/reset.css">
-  <!--标签样式重置结束-->
-  <!--公用组件样式-->
-  <link rel="stylesheet" href="../resource/css/common.css">
-  <!--公用组件样式结束-->
-  <!--单页样式-->
-  <link rel="stylesheet" href="../resource/css/yanjing/ordersManage.css">
-  <!--单页样式结束-->
-  <style>
-    /* 头部样式 */
-    .header {
-      line-height: 52px;
-    }
-    .title {
-      height: 52px;
-      background: #fff;
-      padding: 12px;
-      float: left;
-    }
+    <!--Bootstrap样式引入结束-->
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <!--标签样式重置结束-->
+    <!--公用组件样式-->
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <!--公用组件样式结束-->
+    <!--单页样式-->
+    <link rel="stylesheet" href="../resource/css/yanjing/ordersManage.css">
+    <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+    <!--单页样式结束-->
+    <style>
+        /* 头部样式 */
+        .header {
+            line-height: 52px;
+        }
 
-    .title span {
-      display: block;
-      float: left;
-      height: 28px;
-      line-height: 28px;
-      text-align: center;
-    }
+        .title {
+            height: 52px;
+            background: #fff;
+            padding: 12px;
+            float: left;
+        }
 
-    .title span:nth-child(1) {
-      width: 28px;
-      height: 28px;
-      background: #4186DC;
-      border-radius: 50%;
-    }
+        .title span {
+            display: block;
+            float: left;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+        }
 
-    .title span:nth-child(1) i {
-      color: #fff;
-      font-size: 14px;
-    }
+        .title span:nth-child(1) {
+            width: 28px;
+            height: 28px;
+            background: #4186DC;
+            border-radius: 50%;
+        }
 
-    .title span:nth-child(2) {
-      font-size: 14px;
-      color: #393953;
-      margin-left: 6px;
-      font-weight: 600;
-    }
+        .title span:nth-child(1) i {
+            color: #fff;
+            font-size: 14px;
+        }
 
-    .title span:nth-child(3) {
-      font-size: 12px;
-      background: #4186DC;
-      color: #fff;
-      float: right;
-    }
+        .title span:nth-child(2) {
+            font-size: 14px;
+            color: #393953;
+            margin-left: 6px;
+            font-weight: 600;
+        }
 
-    .titleRight {
-      float: right;
-    }
+        .title span:nth-child(3) {
+            font-size: 12px;
+            background: #4186DC;
+            color: #fff;
+            float: right;
+        }
 
-    .titleRight span {
-      display: inline-block;
-      text-align: center;
-      width: 68px;
-      line-height: 28px;
-      font-size: 12px;
-      color: #fff;
-      border-radius: 2px;
-      background-color: rgba(65, 134, 220, 1);
-      margin-right: 8px;
-    }
+        .titleRight {
+            float: right;
+        }
 
-    .titleRight input {
-      width: 120px;
-      height: 28px;
-      border-radius: 2px;
-      background-color: rgba(255, 255, 255, 1);
-      border: 1px solid rgba(236, 236, 244, 1);
-      color: rgba(130, 130, 151, 1);
-      font-size: 12px;
-      font-family: PingFangSC-Semibold;
-      padding-left: 8px;
-    }
-  </style>
+        .titleRight span {
+            display: inline-block;
+            text-align: center;
+            width: 68px;
+            line-height: 28px;
+            font-size: 12px;
+            color: #fff;
+            border-radius: 2px;
+            background-color: rgba(65, 134, 220, 1);
+            margin-right: 8px;
+        }
+
+        .titleRight input {
+            width: 120px;
+            height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            padding-left: 8px;
+        }
+
+        #select-time-header .yj-demo-time .yj-date {
+            height: 32px;
+            background-color: rgba(244, 244, 248, 1);
+        }
+    </style>
 </head>
 
 <body class="body-bg">
-  <div class="header clear">
+<div class="header clear">
     <div class="contHeader">
-      <div class="title">
-        <span><i class="icon iconfont icon-ico_statistics_fille"></i></span>
-        <span>员工考勤</span>
-      </div>
+        <div class="title">
+            <span><i class="icon iconfont icon-ico_statistics_fille"></i></span>
+            <span>员工考勤</span>
+        </div>
     </div>
     <div class="titleRight">
-      <span>导出数据</span>
-      <input type="text" placeholder="搜索员工姓名">
+        <span>导出数据</span>
+        <input type="text" placeholder="搜索员工姓名">
     </div>
-  </div>
-  <div id="second-bar">
-    <ul class="filter-list clear">
-      <li class="filter-item">
+</div>
+<div id="second-bar">
+    <div id="select-time-header">
         <div class="yj-demo-time">
-          <div class="yj-date">
-            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-          </div>
+            <div class="yj-date">
+                <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+            </div>
         </div>
-      </li>
-    </ul>
-  </div>
-  <div class="content">
+    </div>
+</div>
+<div class="content">
     <table id="dxqf-table" data-toggle="table" class="table table-border"></table>
-  </div>
-  <div class="content-view"></div>
+</div>
+<div class="content-view"></div>
 
-  <!--全局JS引用-->
-  <script src="../resource/js/jquery.min.js"></script>
-  <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-  <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-  <script src="../resource/js/lib/quakoo/project.js"></script>
-  <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
-  <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
-  <script src="../resource/js/plugins/layer/layer.js"></script>
-  <script src="../resource/js/yanjing.js"></script>
-  <script src="../resource/js/mobiscroll.2.13.2.js"></script>
-  <!--//日期范围插件开始-->
-  <script src="../resource/js/yanjing/daterange.js"></script>
-  <!--//日期范围插件结束-->
+<!--全局js-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<!--时间插件引用的css-->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script src="../resource/js/template-native.js"></script>
+<script src="../resource/js/yanjing/yanjing.js"></script>
+<script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
+<!--//日期范围插件开始-->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<!--//日期范围插件结束-->
 
-  <script>
-    // 时间插件JS开始
-    $(function () {
-      var curr = new Date().getFullYear();
-      var opt = {};
-      opt.date = { preset: 'date' };
-      opt.datetime = { preset: 'datetime' };
-      opt.time = { preset: 'time' };
+<script>
+    var subid = window.location.href.split("?")[1].split("=")[1]; //接受传参
 
-      opt.default = {
-        theme: 'mbsc-android-holo', //皮肤样式
-        display: 'bubble', //显示方式
-        mode: 'scroller', //日期选择模式
-        dateFormat: 'yyyy-mm-dd',
-        lang: 'zh',
-        showNow: true,
-        nowText: "今天",
-        typeNum: 'day',//day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
-      };
-      $('.settings').bind('change', function () {
-        var demo = 'datetime';
-        if (!demo.match(/select/i)) {
-          $('.demo-test-' + demo).val('');
-        }
-        $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
-        $('.demo').hide();
-        $('.demo-' + demo).show();
-      });
-      $('#demo').trigger('change');
-      return curr;
-    });
-    // 时间插件JS结束
     //日期范围插件开始
-    var date1 = new dateRange(".yj-demo-time");
+    var startTime,
+        date = new Date(),
+        endTime;
+    var date1 = new dateRange("#select-time-header .yj-demo-time");
     date1.init();
+    $('#select-time-header button').click(function () {
+        startTime = date1.getTime()[2];
+        endTime = date1.getTime()[3];
+        getList();
+    })
     //日期范围插件结束
-
-
-    var data3 = [
-      { onum: "1", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "2", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "3", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "5", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "6", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "7", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "8", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "9", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "10", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "11", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "12", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "13", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "14", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "15", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" },
-      { onum: "16", name: "李搜索", chuqin: "21", xiuxi: "13", chidao: "1", zaotui: "1", qingjia: "5", kuangong: "0", queka: "0", tiaoban: "0" }
-    ];
-    $("#dxqf-table").bootstrapTable({
-      data: data3,                 //被加载的数据。
-      classes: "table",
-      pagination: true,            //是否显示分页
-      pageNumber: 1,               //初始化加载第一页，默认第一页
-      pageSize: 10,
-      pageList: [5, 10, 15, 20],
-      sortable: false,
-      sortOrder: "asc",
-      showColumns: true,
-      strictSearch: true,
-      locale: "zh-CN",
-      paginationHAlign: "center",
-      clickToSelect: true,
-      columns: [
-        { field: "onum", title: "序号", align: "left", valign: "middle" },
-        { field: "name", title: "姓名", align: "left", valign: "middle" },
-        { field: "chuqin", title: "出勤天数", align: "left", valign: "middle" },
-        { field: "xiuxi", title: "休息天数", align: "left", valign: "middle" },
-        { field: "chidao", title: "迟到次数", align: "left", valign: "middle" },
-        { field: "zaotui", title: "早退次数", align: "left", valign: "middle" },
-        { field: "qingjia", title: "请假次数", align: "left", valign: "middle" },
-        { field: "kuangong", title: "旷工次数", align: "left", valign: "middle" },
-        { field: "queka", title: "缺卡次数", align: "center", valign: "middle" },
-        { field: "tiaoban", title: "调班", align: "center", valign: "middle" },
+    var columns = [
+        {field: "num", title: "序号", align: "left", valign: "middle"},
+        {field: "name", title: "姓名", align: "left", valign: "middle"},
+        {field: "chuqin", title: "出勤天数", align: "left", valign: "middle"},
+        {field: "xiuxi", title: "休息天数", align: "left", valign: "middle"},
+        {field: "chidao", title: "迟到次数", align: "left", valign: "middle"},
+        {field: "zaotui", title: "早退次数", align: "left", valign: "middle"},
+        {field: "qingjia", title: "请假次数", align: "left", valign: "middle"},
+        {field: "kuangong", title: "旷工次数", align: "left", valign: "middle"},
+        {field: "queka", title: "缺卡次数", align: "center", valign: "middle"},
+        {field: "tiaoban", title: "调班", align: "center", valign: "middle"},
         {
-          field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-            return '<button class="btn btn-primary">查看详情</button>';
-          }
+            field: "id", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                return '<a class="btn btn-primary" href="./seeEmplayerDetail.html?uid=value&name=row.name">查看详情</a>';
+            }
         }
+    ]
 
-      ]
-
-    });
-  </script>
+    function getList() {
+        $('#dxqf-table').bootstrapTable('destroy');
+        $('#dxqf-table').bootstrapTable({
+            dom: '#dxqf-table',
+            data: false,
+            url: config.getUrl_attendance_getEmployAttendance(),         //请求后台的URL（*）
+            method: 'get',
+            type: 'server',
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            //                    striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            sidePagination: 'server',           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+            //                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            //              showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //              height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            //                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            columns: columns,
+            //                    showFooter:true,            //表格底部
+            onClickRow: function (row) {
+            },
+            queryParamsType: 'limit',
+            queryParams: function (params) {
+                params.token = quakooUser.getUserInfo().token;
+                params.page = (params.offset / params.limit) + 1;
+                params.size = params.limit;
+                params.subIds = subid;
+                if (isNotBlank(startTime) && isNotBlank(endTime)){
+                  params.startTime = startTime;
+                  params.endTime = endTime;
+                }else {
+                  params.startTime = new Date(date.getFullYear() + '.01' + '.01').getTime();
+                  params.endTime = date.getTime();
+                }
+                return params
+            }
+        });
+    };
+    getList();
+</script>
 </body>
 
 </html>

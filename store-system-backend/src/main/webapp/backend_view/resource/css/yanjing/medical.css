@@ -1557,15 +1557,18 @@
 }
 
 .tjRight {
-    float: right;
+    /*float: right;*/
 }
 
-.selectBox.tj3 {
+.tjHeader .tjRight #selectShop {
+    width: 156px;
+}
+.tjHeader .tjRight #selectShopEmployer {
     width: 76px;
 }
 
-.selectBox.tj2,
-.selectBox.tj3 {
+.tjRight .selectBox.tj2,
+.tjRight .selectBox.tj3 {
     vertical-align: middle;
 }
 
@@ -2063,3 +2066,9 @@
 .page-list-set .page-list {
     line-height: 24px;
 }
+
+
+
+/*=========================================================================*/
+
+
