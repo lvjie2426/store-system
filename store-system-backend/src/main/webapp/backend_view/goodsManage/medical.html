@@ -62,21 +62,88 @@
         </div>
     </div>
 </div>
+<div class="cpListTop">
+    <span class="cpListItems c1 active">产品列表</span>
+    <span class="cpListItems c2">商品及库存</span>
+</div>
 <div class="content1 tab-item active bgcolor">
-    <div class="warn1">
-        <div class="daoqiWarn" onclick="warnSP()">
+    <div class="tab-item-li">
+        <div class="warn1">
+            <div class="daoqiWarn" onclick="warnSP()">
                 <span class="warnLeft">
                     <i class="iconfont icon-ico_contact_lens "></i>
                     有 <span class="notBuChongNum"></span> 家企业证件有效期到期
                 </span>
-            <i class="iconfont icon-ico_arrow_right warnRight"></i>
+                <i class="iconfont icon-ico_arrow_right warnRight"></i>
+            </div>
+        </div>
+        <div id="table1">
+            <table id="xsjl-table" data-toggle="table" class="table table-border"></table>
+        </div>
+        <div id="table2">
+            <table id="xsjl-table1" data-toggle="table" class="table table-border"></table>
         </div>
     </div>
-    <div id="table1">
-        <table id="xsjl-table" data-toggle="table" class="table table-border"></table>
-    </div>
-    <div id="table2">
-        <table id="xsjl-table1" data-toggle="table" class="table table-border"></table>
+    <!--商品及库存-->
+    <div class="tab-item-li" style="display: none">
+        <div class="warn2">
+            <div class="daoqiWarn" onclick="kuCunWarnSP()">
+                <span class="warnLeft">
+                    <i class="iconfont icon-ico_contact_lens "></i>
+                    有 <span class="notKuChongNum"></span> 家企业证件有效期到期
+                </span>
+                <i class="iconfont icon-ico_arrow_right warnRight"></i>
+            </div>
+        </div>
+        <div id="table3">
+            <ul class="tab-head">
+                <li class="tab-head-li">
+                    <div><input type="checkbox" class="checkbox5"></div>
+                    <div>批次</div>
+                    <div>库存</div>
+                    <div>有效期</div>
+                    <div>操作</div>
+                </li>
+                <li class="tab-head-li2">
+                    <div><input type="checkbox" class="checkbox5"></div>
+                    <div><span class="brandNames">暴龙眼镜</span><span class="seriesName">A 系列</span></div>
+                    <div class="last-head">总库存 <span class="zKuCunNum">20</span><i class="iconfont icon-ico_arrow_down"></i></div>
+                    <ul class="tab-head-item" id="card-list1">
+                        <li>
+                            <div><input type="checkbox" class="checkbox5"></div>
+                            <div>PTB39712891902</div>
+                            <div>64</div>
+                            <div>2019.08.12-2020.10.21</div>
+                            <div><span class="daYin">条码打印</span><span class="tui">退货</span><span class="xiao">销毁</span></div>
+                        </li>
+                        <li>
+                            <div><input type="checkbox" class="checkbox5"></div>
+                            <div>PTB39712891902</div>
+                            <div>64</div>
+                            <div>2019.08.12-2020.10.21</div>
+                            <div><span class="daYin">条码打印</span><span class="tui">退货</span><span class="xiao">销毁</span></div>
+                        </li>
+                    </ul>
+                </li>
+                <table id="yj-page-table" data-toggle="table" class="table table-border"></table>
+            </ul>
+<!--            <table id="kcdq-table"-->
+<!--                   data-toggle="table"-->
+<!--                   data-toolbar="#toolbar"-->
+<!--                   data-detail-view="true"-->
+<!--                   data-detail-filter="detailFilter"-->
+<!--                   data-detail-formatter="detailFormatter"-->
+<!--                   class="table table-border">-->
+<!--            </table>-->
+        </div>
+        <div id="table4" style="display: none">
+            <table id="kcdq-table1"
+                   data-toggle="table"
+                   data-detail-view="true"
+                   data-detail-formatter="detailFormatter"
+                   class="table table-border">
+            </table>
+        </div>
     </div>
 </div>
 <div class="content2 tab-item">
@@ -100,6 +167,14 @@
     <div class="content-view"></div>
 </div>
 
+<!--商品及库存(退货)弹窗-->
+<div id="tuiHuoToast" style="display: none">
+    此操作不可撤销
+</div>
+<!--商品及库存(销毁)弹窗-->
+<div id="xiaohuiToast" style="display: none">
+    退货单可在商品管理-出库中查看
+</div>
 <!--员工列表体检/培训记录弹窗-->
 <div class="content-view content-view-tjReload" id="ygTjReloadList1">
 </div>
@@ -174,7 +249,6 @@
     <ul class="yuangongUl" id="yuangongList1">
     </ul>
 </div>
-
 
 <!-- 证件有效期到期弹窗 -->
 <div class="content-view content-view-cardGuoqi">
@@ -1232,7 +1306,10 @@
                     }
                 }
             },
-            {field: "checkStatusDate", title: "验收日期", align: "left", valign: "middle"},
+            {field: "checkStatusDate", title: "验收日期", align: "left", valign: "middle", formatter: function (value, row, index) {
+                    return quakooUtils.formatTimeToDay(value);
+                }
+            },
             {
                 field: "business",
                 title: "质检人员",
@@ -1245,6 +1322,19 @@
             {
                 field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
                     return '<button class="btn btn-primary"  onclick="updateGoods(' + row.id + ')">编辑</button>';
+                }
+            }
+        ],
+        //首页商品和库存的列表
+        shopKuCunAll: [
+            // {checkbox: true, valign: "middle"},
+            {field: "pici", title: "批次", align: "left", valign: "middle"},
+            {field: "kuc", title: "库存", align: "left", valign: "middle"},
+            {field: "yxTime", title: "有效期", align: "left", valign: "middle"},
+            {
+                field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                    // return '<span class="zKuCun">总库存</span><span class="ZkuCunNum">222<i class="iconfont icon-ico_arrow_down"></i></span>';
+                    return '<span>总库存</span>'
                 }
             }
         ],
@@ -1439,7 +1529,7 @@
             {field: "num", title: "单据编号", align: "left", valign: "middle"}
         ],
         RKReload: [
-            {checkbox: true, valign: "middle"},
+            {field: "radio", title: "state", align: "center", "radio": 'true'},
             {
                 field: "ctime",
                 title: "入库时间",
@@ -1464,7 +1554,7 @@
                 align: "left",
                 valign: "middle",
                 formatter: function (value, row, index) {
-                    return value[0].brandName
+                    return value[0].categoryName + '-' + value[0].brandName + '-' + value[0].seriesName;
                 }
             },
             {
@@ -2006,8 +2096,7 @@
                     Object.keys(obj).forEach(function (key) {
                         ids.push(key)
                     });
-                    console.log(ids);
-                    quakooData.ajaxGetData(config.getUrl_medicalAppliances_rukuInventoryinbill(), {id: 33}, function (ret) {
+                    quakooData.ajaxGetData(config.getUrl_medicalAppliances_rukuInventoryinbill(), {id: ids[0]}, function (ret) {
                         if (ret && ret.success) {
                             layer.msg('审核成功')
                             initPage();
@@ -2024,8 +2113,6 @@
         } else {
             $('.showShouyeFooter').hide();
         }
-
-
     }
 
     /*入库记录*/
@@ -2039,18 +2126,6 @@
             url: config.getUrl_medicalAppliances_getRuKuReload(),
             singleSelect : true,
             columns: winObj.RKReload,
-            // onCheckAll: function (data) {
-            //     var len = data.length;
-            //     for (var i = 0; i < data.length; i++) {
-            //         checkArray[data[i].id] = data[i].id
-            //     }
-            //     shouyeShowFooter(len, checkArray, 2)
-            // },
-            // onUncheckAll: function (data) {
-            //     var len = 0;
-            //     checkArray = {};
-            //     shouyeShowFooter(len, checkArray, 2)
-            // },
             onCheck: function (data) {
                 console.log(data)
                 var len = $('#rkjl-table').find('tr.selected').length;
@@ -2069,6 +2144,9 @@
                 row.num = n ? n : '';
                 row.type = 0;
                 return row
+            },
+            success: function (data) {
+                console.log(data)
             }
         });
         tabFour.Init();
@@ -2168,13 +2246,181 @@
         if ($(this).index() == 1) {
             getRuKuReload();
             $(".right-info").find('.addbtn').hide();
+            //隐藏产品列表和商品库存
+            $('.cpListTop').hide();
         } else if ($(this).index() == 2) {
             getXiaoShouReload();
             $(".right-info").find('.addbtn').hide();
+            //隐藏产品列表和商品库存
+            $('.cpListTop').hide();
         } else if ($(this).index() == 0) {
             $(".right-info").find('.addbtn').show();
+            $('.cpListTop').show();
         }
     });
+
+    /**
+     * 首页产品列表和商品库存tab切换
+     * */
+    page();
+    function page() {
+        $("#yj-page-table").bootstrapTable('destroy');
+        $("#yj-page-table").bootstrapTable({
+            url: config.getUrl_marketingcoupon_getAllList(),
+            method: 'get',
+            classes: "table",
+            pagination: true, //是否显示分页
+            sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pageSize: 6,
+            pageList: [6, 12, 18],
+            sortable: false,
+            sortOrder: "asc",
+            showColumns: true,
+            strictSearch: true,
+            locale: "zh-CN",
+            paginationHAlign: "center",
+            clickToSelect: true,
+            paginationLoop: false,
+            columns: [],
+            queryParams: function(param) {
+                param.subid = quakooUser.getUserInfo().psid;
+                param.token = quakooUser.getUserInfo().token;
+                return param
+            },
+            onPreBody: function(data) {
+                vouchertableData = [];
+                for (var i = (this.pageNumber - 1) * this.pageSize; i < this.pageNumber * this.pageSize; i++) {
+                    if (this.data[i]) {
+                        vouchertableData.push(this.data[i])
+                    }
+                }
+                console.log(vouchertableData)
+                // var html = template("voucherList", {
+                //     list: vouchertableData
+                // });
+                // $("#card-list1").html(html);
+            }
+        });
+    }
+    $('.tab-head-li2').click(function () {
+        $('.tab-head-li2').find('div i').toggleClass('icon-ico_arrow_down').toggleClass('icon-ico_arrow_up');
+        $(this).find('.tab-head-item').slideToggle();
+        $('.tab-head-item li').click(function (e) {
+            e.stopPropagation();
+            var botBar = '<div class="showShouyeFooter">' +
+                '<div class="xuanRight">' +
+                '<span class="piLiangDaYin" style="background-color: rgba(65, 134, 220, 1); color: #fff; vertical-align: middle">条码打印</span>' +
+                '<span class="tuiHuoBtn">退货</span>' +
+                '<span class="xiaoHuiBtn">销毁</span>' +
+                '</div>' +
+                '</div>';
+            $('.body-bg').append(botBar)
+            $('.showShouyeFooter').show();
+        })
+    })
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+        })
+        return html.join('')
+    }
+    //退货弹窗
+    function tuihuo() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '确认销毁该批次产品？',
+            skin: 'layer-recharge my-skin3',
+            anim: 0,
+            area: ['240px', '130px'],
+            closeBtn: 0,
+            resize: false,
+            shadeClose: true,
+            content: $('#tuiHuoToast'),
+            btn: ['取消', '确定'],
+            yes: function (index, layero) {
+                layer.close(index)
+            },
+            btn2: function (index, layero) {
+            },
+            success: function (layero, index) {
+
+            }
+
+        });
+    }
+    //销毁弹窗
+    function xiaohui() {
+        layer.open({
+            type: 1,
+            shade: 0.01,
+            title: '确认退货该批次产品？',
+            skin: 'layer-recharge my-skin3',
+            anim: 0,
+            area: ['240px', '130px'],
+            closeBtn: 0,
+            resize: false,
+            shadeClose: true,
+            content: $('#xiaohuiToast'),
+            btn: ['取消', '确定'],
+            yes: function (index, layero) {
+                layer.close(index)
+            },
+            btn2: function (index, layero) {
+            },
+            success: function (layero, index) {
+
+            }
+        });
+    }
+    $('.cpListItems').click(function () {
+        $(this).addClass('active').siblings().removeClass('active');
+        $('.tab-item-li').hide().eq($(this).index()).show();
+        if($(this).index() == 1){
+            // 获取所有商品首页(商品及库存列表)
+            var data11 = [
+                {pici: "111", kuc: "13", yxTime: "2019.12.31"},
+                {pici: "111", kuc: "13", yxTime: "2019.12.31"},
+                {pici: "111", kuc: "13", yxTime: "2019.12.31"},
+                {pici: "111", kuc: "13", yxTime: "2019.12.31"}
+            ]
+            var tabNone = new TableInit({
+                        dom: '#kcdq-table',
+                        data: data11,
+                        method: false,
+                        type: 'client',
+                        url: false,
+                        columns: winObj.shopKuCunAll
+                    });
+            tabNone.Init();
+            $('#kcdq-table').attr('data-detail-view', true)
+            console.log($('#kcdq-table').attr('data-detail-view'));
+        }
+    })
+    function kuCunWarnSP() {
+        $('#table3').hide();
+        $('.warn2').hide();
+        $('#table4').show();
+        // 获取所有商品首页(商品及库存过期列表)
+        var data12 = [
+            {pici: "99", kuc: "2", yxTime: "2019.12.31"},
+            {pici: "1", kuc: "3", yxTime: "2019.12.31"},
+            {pici: "22", kuc: "55", yxTime: "2019.12.31"},
+            {pici: "222", kuc: "66", yxTime: "2019.12.31"}
+        ]
+        var tabNone = new TableInit({
+            dom: '#kcdq-table1',
+            data: data12,
+            method: false,
+            type: 'client',
+            url: false,
+            columns: winObj.shopKuCunAll
+        });
+        tabNone.Init();
+    }
+
     /**
      * 出库记录二级tab切换
      * */
