@@ -155,6 +155,7 @@ div.item-right {
 }
 
 .tab-item .tabcard {
+    cursor: pointer;
     height: 22px;
     line-height: 22px;
     width: 210px;
@@ -415,7 +416,7 @@ div.item-right {
     border-top: 1px solid #F3F3F8;
 }
 
-.set_r .bd-l .imgbox {
+.imgbox {
     width: 60px;
     height: 60px;
     font-size: 12px;

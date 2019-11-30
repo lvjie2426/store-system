@@ -33,6 +33,7 @@
     <style>
         /* .active-item:nth-child(even) {} */
         .tab-item .tabcard {
+            cursor: pointer;
             height: 22px;
             line-height: 22px;
             width: 210px;
@@ -150,6 +151,66 @@
         .bot-cont .delete:last-child {
             margin-right: 10px !important;
         }
+        .content-view4{
+            display: none;
+        }
+        .halfcon{
+            width: 50%;
+        }
+        .allcon{
+            width: 100%;
+        }
+        [class^="content-view4"] input[type="text"] {
+            width:100%;
+            height: 28px;
+            line-height: 28px;
+            background-color: rgb(255, 255, 255);
+            color: rgb(57, 57, 83);
+            margin: 0px auto;
+            padding: 0px 8px;
+            border-radius: 2px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(236, 236, 244);
+            border-image: initial;
+        }
+        [class^="content-view4"] .lay-content{
+            padding:0px 10px 0;
+        }
+        [class^="content-view4"] .lay-content ol
+        {
+            margin-top: 5px;
+        }
+        .lay-content div,.lay-content h3{
+            margin-bottom: 8px;
+        }
+        [class^="content-view4"] .text-top{
+            color: #C4C4CE ;
+        }
+        .allcon {
+            width: 100%;
+        }
+        .radio label{
+            padding-left: 0;
+        }
+        span.radio{
+            display: inline-block;
+            font-size: 12px;
+            margin-right: 0px;
+        }
+        .layer-header{
+            height: 44px;
+            padding: 0 10px;
+            background: #f8f8f8;
+            line-height: 44px;
+        }
+        [class^='content-view'] .btn-info {
+            display: table;
+            width: 50px;
+            background: none;
+            color: #83B0E8;
+            margin: 5px auto;
+        }
     </style>
 </head>
 
@@ -165,7 +226,7 @@
             <li class="right-info ">
             </li>
             <li class="right-info ">
-                <button onclick="voucherDialog()">新增优惠券</button>
+                <button onclick="addNewcoupon()">新增优惠券</button>
             </li>
             <li class="right-info">
                 <!--<span>剩余 1200 条信息可用</span>-->
@@ -712,8 +773,307 @@
     </div>
     <div class="content-view3" id="groupMessagingUl">
     </div>
+<!-- 新增优惠券 -->
+    <div class="content-view4">
+        <form action="" title="新增满减优惠券">
+                    <div class="layer-header clearfix" style="cursor: move;">
+                            <span  class=" active fl">新增满减优惠券</span>
+                            <div class="switch active fr" id="voucherSwitch">
+                                <span class="off">未开启</span>
+                                <span class="on">已启用</span>
+                                <span class="switch-btn"><i></i></span>
+                            </div>
+                        </div>
+                    <div class="lay-content">
+                            <div class="clearfix">
+                                
+                                <ol class="clear clearfix fl allcon">
+                                   <li>
+                                       <h3>使用条件</h3>
+                                        <div class="middle-cont">
+                                            <div class="item clearfix">
+                                                <div class="text-top fl">当购买</div>
+                                                <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;所有镜片</a>
+                                                </div>
+                                                <span class="fr iconfont icon-ico_trash"></span>
+                                            </div>
+                                        </div>
+                                 
+                                          <div class="middle-cont">
+                                              <div class="item clearfix">
+                                                  <div class="text-top fl">当购买</div>
+                                                  <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;明月镜片新款</a>
+                                                  </div>
+                                                  <span class="fr iconfont icon-ico_trash"></span>
+                                              </div>
+                                          </div>
+                                      </li>
+                                </ol>
+                                <ol class="clear clearfix fl allcon">
+                                      <li>
+                                          <h3>有效期</h3>
+                                           <div class="middle-cont">
+                                               <div class="item clearfix">
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  1个月
+                                                          </label>
+                                                   </span>
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  3个月
+                                                          </label>
+                                                   </span>
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  6个月
+                                                          </label>
+                                                   </span>
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  9个月
+                                                          </label>
+                                                   </span>
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  12个月
+                                                          </label>
+                                                   </span>
+                                                   <div class="radio">
+                                                          <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              永久有效
+                                                          </label>
+                                                      </div>
+                                               </div>
+                                           </div>
+                                      </li>
+                                </ol>
+                            </div>
+                </div>    
+         </form>
+         <form action="新增定向优惠券">
+                <div class="layer-header clearfix" style="cursor: move;">
+                        <span  class=" active fl">新增定向优惠券</span>
+                        <div class="switch active fr" id="voucherSwitch">
+                            <span class="off">未开启</span>
+                            <span class="on">已启用</span>
+                            <span class="switch-btn"><i></i></span>
+                        </div>
+                    </div>
+                <div class="lay-content" title="折扣优惠券" >
+                        <div class="clearfix">
+                            <ol class="clear fl halfcon">
+                                <li class="lay-row title clear">
+                                    <div>标题</div>
+                                    <div>
+                                      <input type="text" placeholder="输入" class="title" style="width:156px;">
+                                    </div>
+                                </li>
+                            </ol>
+                            <ol class="clear fl halfcon">
+                                <li class="lay-row title clear">
+                                    <div>折扣</div>
+                                    <div>
+                                         减<input type="text" placeholder="输入" class="title" style="width:124px;">元
+                                  </div>
+                                </li>
+                            </ol>
+                            <ol class="clear clearfix fl allcon">
+                               <li>
+                                   <h3>使用条件</h3>
+                                    <div class="middle-cont">
+                                        <div class="item clearfix">
+                                            <div class="text-top fl">当购买</div>
+                                            <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;所有镜片</a>
+                                            </div>
+                                            <span class="fr iconfont icon-ico_trash"></span>
+                                        </div>
+                                    </div>
+                             
+                                      <div class="middle-cont">
+                                          <div class="item clearfix">
+                                              <div class="text-top fl">当购买</div>
+                                              <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;明月镜片新款</a>
+                                              </div>
+                                              <span class="fr iconfont icon-ico_trash"></span>
+                                          </div>
+                                      </div>
+                                  </li>
+                            </ol>
+                            <p class="btn btn-info">+新增</p>
 
-
+                            <ol class="clear clearfix fl allcon">
+                                  <li>
+                                      <h3>有效期</h3>
+                                       <div class="middle-cont">
+                                           <div class="item clearfix">
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              1个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              3个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              6个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              9个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              12个月
+                                                      </label>
+                                               </span>
+                                               <div class="radio">
+                                                      <label>
+                                                          <input type="radio" name="" id="input" value="" checked="checked">
+                                                          永久有效
+                                                      </label>
+                                                  </div>
+                                           </div>
+                                       </div>
+                                  </li>
+                            </ol>
+                        </div>
+                </div>    
+        </form>
+        <form action="" title="新增满减优惠券">
+                <div class="layer-header clearfix" style="cursor: move;">
+                        <span  class=" active fl">新增满减优惠券</span>
+                        <div class="switch active fr" id="voucherSwitch">
+                            <span class="off">未开启</span>
+                            <span class="on">已启用</span>
+                            <span class="switch-btn"><i></i></span>
+                        </div>
+                    </div>
+                <div class="lay-content" title="折扣优惠券" >
+                        <div class="clearfix">
+                         <ol class="clear fl halfcon">
+                                 <div>标题</div>
+                                 <li class="lay-row title clear">
+                                       <input type="text" placeholder="输入" class="title " style="width:156px">
+                                 </li>
+                             </ol>
+                             <ol class="clear fl halfcon">
+                                     <div>折扣</div>
+                                     <li class="lay-row title clear">
+                                           <input type="text" placeholder="输入" class="title "  style="width:120px">折 
+                                     </li>
+                            </ol>
+                            
+                            <ol class="clear clearfix fl allcon">
+                               <li>
+                                   <h3>使用条件</h3>
+                                    <div class="middle-cont">
+                                        <div class="item clearfix">
+                                            <div class="text-top fl">当购买</div>
+                                            <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;所有镜片</a>
+                                            </div>
+                                            <span class="fr iconfont icon-ico_trash"></span>
+                                        </div>
+                                    </div>
+                             
+                                      <div class="middle-cont">
+                                          <div class="item clearfix">
+                                              <div class="text-top fl">当购买</div>
+                                              <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;明月镜片新款</a>
+                                              </div>
+                                              <span class="fr iconfont icon-ico_trash"></span>
+                                          </div>
+                                      </div>
+                                  </li>
+                            </ol>
+                            <ol class="clear clearfix fl allcon">
+                                    <li>
+                                        <h3>使用条件</h3>
+                                         <div class="middle-cont">
+                                             <div class="item clearfix">
+                                                 <div class="text-top fl">当购买</div>
+                                                 <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;所有镜片</a>
+                                                 </div>
+                                                 <span class="fr iconfont icon-ico_trash"></span>
+                                             </div>
+                                         </div>
+                                  
+                                           <div class="middle-cont">
+                                               <div class="item clearfix">
+                                                   <div class="text-top fl">当购买</div>
+                                                   <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;明月镜片新款</a>
+                                                   </div>
+                                                   <span class="fr iconfont icon-ico_trash"></span>
+                                               </div>
+                                           </div>
+                                       </li>
+                             </ol>
+                             <p class="btn btn-info">+新增</p>
+                            <ol class="clear clearfix fl allcon">
+                                  <li>
+                                      <h3>有效期</h3>
+                                       <div class="middle-cont">
+                                           <div class="item clearfix">
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              1个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              3个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              6个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              9个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              12个月
+                                                      </label>
+                                               </span>
+                                               <div class="radio">
+                                                      <label>
+                                                          <input type="radio" name="" id="input" value="" checked="checked">
+                                                          永久有效
+                                                      </label>
+                                                  </div>
+                                           </div>
+                                       </div>
+                                  </li>
+                            </ol>
+                        </div>
+                </div>    
+        </form>
+    </div>
 
     <!--全局JS引用-->
     <!-- jq库 -->
@@ -958,6 +1318,22 @@
         }
 
         /************************************<营销活动结束>******************************************/
+
+        /************************************<优惠券营销开始>******************************************/
+        /**弹窗——新增（编辑）优惠券类型:定向 满减 折扣优惠券*/
+        function addNewcoupon(type){
+            
+            layer_windwo({
+                width: '360',
+                height: '350',
+                targetcon: '.content-view4',
+            },function(){})
+        }
+
+
+        /************************************<优惠券营销结束>******************************************/
+
+
 
 
         /************************************<短信群发开始>******************************************/
@@ -1470,6 +1846,46 @@
         $(".switch-btn").click(function () {
             $(this).parent(".switch").toggleClass('active');
         });
+        
+        
+        /**
+         *打开窗口
+        **/
+        function layer_windwo(obj, callback) {
+            /**弹窗——储值送礼-新增满减劵(编辑)----*/
+            var btn;
+            if (quakooUtils.isBlack(obj)) {
+                btn = ['取消', '新增'];
+            } else {
+                btn = ['取消', '编辑'];
+            }
+            var index = layer.open({
+                type: 1,
+                shade: 0.01,
+                shadeClose: true,
+                skin: 'dialog-voucher', //样式类名
+                area: [obj.width + 'px', obj.height + 'px'],
+                anim: 0,
+                closeBtn: 0,
+                resize: false,
+                title: null,
+                move: ".lay-header",
+                content: $(obj.targetcon),
+                btn: btn,
+                yes: function(index) {
+                    layer.close(index)
+                },
+                btn2: function(index, layero) { //btn 新增
+                    // addVoucher(index);// 借鉴 【新增抵用券】
+                    return false
+                },
+                success: function(layero, index) { //layer成功 后调用 
+                    // renderVouDia(voucherId);借鉴 【渲染抵用券】
+                    //rendersale_act(voucherId); // 渲染 储值送礼 --活动弹窗
+                }
+            });
+        }
+
 
         /**
          * 营销活动跳转
