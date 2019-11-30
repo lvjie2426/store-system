@@ -627,7 +627,8 @@ var QuakooUtils = (function(){
  * Base64.decode("base64_string");
  * @type {Base64}
  */
-var Base64 = (function(){
+var Base64 = (
+    function(){
     function Base64(){
     }
     var _proto = Base64.prototype;

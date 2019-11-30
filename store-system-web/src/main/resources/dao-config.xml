@@ -672,5 +672,22 @@
         </property>
     </bean>
 
+    <bean id="spendCardSetDao" class="com.store.system.dao.impl.SpendCardSetDaoImpl">
+        <property name="tableName" value="spend_card_set"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="spendCardExchangeDao" class="com.store.system.dao.impl.SpendCardExchangeDaoImpl">
+        <property name="tableName" value="spend_card_exchange"/>
+        <property name="dataSources">
+            <list>
+                <ref bean="dataSource"/>
+            </list>
+        </property>
+    </bean>
 
 </beans>

@@ -31,281 +31,1080 @@
     <link rel="stylesheet" href="../resource/css/yanjing/market.css">
     <!--单页样式结束-->
     <style>
-        .warp {
-            max-width: 1200px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        @media screen and (min-width:1010px) {
-            .item-body {
-                overflow: hidden;
-                width: 50%;
-                float: left;
-                padding: 0 20px;
-                padding-top: 10px;
-            }
-            .item-body:nth-child(even) {
-                padding-right: 20px;
-                padding-left: 0px;
-            }
-        }
-
-        .item-body {
-            padding-top: 10px;
-        }
-
-        .item-body .active-item {
-            position: relative;
-            height: 96px;
-            width: 100%;
-            padding: 20px 24px;
-            border-radius: 3px;
-            background: #fff;
-        }
-
-        .active-item .item-left {
-            margin-right: 12px;
-            display: inline-block;
-            width: 56px;
-            height: 56px;
-            line-height: 56px;
+        /* .active-item:nth-child(even) {} */
+        .tab-item .tabcard {
+            cursor: pointer;
+            height: 22px;
+            line-height: 22px;
+            width: 210px;
             text-align: center;
-            border-radius: 50%;
-            color: #54B677;
-            font-size: 20px;
-            background: #EDF7F1;
+            margin: 16px auto;
         }
 
-        .clear :nth-of-type(2) .active-item .item-left {
-            color: #DA698B;
-            background: #FBEFF3;
-        }
-
-        .clear :nth-of-type(3) .active-item .item-left {
-            color: #DD5B4B;
-            background: #FBEEED;
-        }
-
-        .clear :nth-of-type(4) .active-item .item-left {
-            color: #FDF9E8;
-            background: #F4C621;
-        }
-
-        .clear :nth-of-type(5) .active-item .item-left {
-            color: #57B8DB;
-            background: #EEF7FB;
-        }
-
-        .item-con h2 {
-            display: inline-block;
-            height: 20px;
-            line-height: 20px;
-            margin-top: 6px;
-            margin-bottom: 2px;
-            font-size: 14px;
-            color: #3A3A54;
-            font-family: 'PingFangSC-Medium';
-        }
-
-        .item-con p {
-            display: block;
-            max-width: 290px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            font-size: 12px;
-            color: #A2A2B2;
-        }
-
-        .active-item div {
+        .tabcard .tabitem {
             float: left;
-        }
-
-        div.item-right {
-            position: absolute;
-            right: 24px;
-            top: 15px;
-            margin-top: 19px;
-            color: #5794E0;
-        }
-
-        .item-right .item-set {
+            padding: 0 10px;
+            text-align: left;
+            font-size: 12px;
             height: 18px;
             line-height: 18px;
-            font-size: 13px;
-            display: block;
+            font-family: PingFangSC-Regular;
+            color: #393953;
         }
 
-        .item-set i {
-            vertical-align: middle;
+        .tabcard .active {
+            font-weight: 600;
+            color: #393953;
         }
-        /* .active-item:nth-child(even) {} */
+
+        .tabcard .line {
+            float: left;
+            width: 1px;
+            margin-top: 4px;
+            height: 12px;
+            background: #DEDEE8;
+        }
+
+        .expbtn {
+            padding: 1px 6px;
+            border: 1px solid #EAEAEE;
+            font-size: 12px !important;
+            color: #C7C7D0;
+            border-radius: 3px;
+        }
+
+        .mr-12 {
+            margin-right: 12px;
+        }
+
+        .middle-cont .mr-12 {
+            width: 75px;
+        }
+
+        .fl {
+            float: left !important;
+        }
+
+        .fr {
+            float: right !important;
+        }
+
+        .btn_user,
+        .btn_user~span.delete {
+            margin-left: 4px;
+            margin-top: 5px;
+            vertical-align: middle;
+            line-height: 17px;
+            font-size: 12px;
+            color: #B6B6C2;
+        }
+
+        .btn_user~span {
+            margin-left: 0;
+            margin-right: 5px;
+        }
+
+        .btn_user i {
+            font-size: 12px;
+            color: #828297;
+        }
+
+        .btn_user em {
+            color: #4B4B62;
+        }
+
+        .coupon-default {
+            background: #828297;
+        }
+
+        .coupon-full,
+        .coupon-dis,
+        .coupon-dir {
+            border-radius: 2px;
+            font-size: 11px;
+            color: #fff;
+        }
+
+        /* 折扣 */
+        .coupon-full {
+            background: #F0983F;
+        }
+
+        /* 折扣 */
+        .coupon-dis {
+            background: #57B8DB;
+        }
+
+        /* 定向 */
+        .coupon-dir {
+            background: #e25d4c;
+        }
+
+        .blue-color {
+            color: #7AAAE6 !important;
+        }
+
+        .card-item .text {
+            color: rgba(57, 57, 83, 1) !important;
+        }
+
+        .bot-cont .delete:last-child {
+            margin-right: 10px !important;
+        }
+        .content-view4{
+            display: none;
+        }
+        .halfcon{
+            width: 50%;
+        }
+        .allcon{
+            width: 100%;
+        }
+        [class^="content-view4"] input[type="text"] {
+            width:100%;
+            height: 28px;
+            line-height: 28px;
+            background-color: rgb(255, 255, 255);
+            color: rgb(57, 57, 83);
+            margin: 0px auto;
+            padding: 0px 8px;
+            border-radius: 2px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(236, 236, 244);
+            border-image: initial;
+        }
+        [class^="content-view4"] .lay-content{
+            padding:0px 10px 0;
+        }
+        [class^="content-view4"] .lay-content ol
+        {
+            margin-top: 5px;
+        }
+        .lay-content div,.lay-content h3{
+            margin-bottom: 8px;
+        }
+        [class^="content-view4"] .text-top{
+            color: #C4C4CE ;
+        }
+        .allcon {
+            width: 100%;
+        }
+        .radio label{
+            padding-left: 0;
+        }
+        span.radio{
+            display: inline-block;
+            font-size: 12px;
+            margin-right: 0px;
+        }
+        .layer-header{
+            height: 44px;
+            padding: 0 10px;
+            background: #f8f8f8;
+            line-height: 44px;
+        }
+        [class^='content-view'] .btn-info {
+            display: table;
+            width: 50px;
+            background: none;
+            color: #83B0E8;
+            margin: 5px auto;
+        }
     </style>
 </head>
 
 <body class="body-bg">
-<div class="header clear">
-    <ul class="tab-ul clear">
-        <li class="active" onclick="changeType(1)">营销活动</li>
-        <li onclick="changeType(2)">优惠券营销</li>
-        <li onclick="changeType(3)">短信营销</li>
-        <li data-id="send" onclick="changeType(4)">短信群发</li>
-    </ul>
-    <ol>
-        <li class="right-info ">
-        </li>
-        <li class="right-info ">
-            <button onclick="voucherDialog()">新增优惠券</button>
-        </li>
-        <li class="right-info">
-            <!--<span>剩余 1200 条信息可用</span>-->
-        </li>
-        <li class="right-info">
-            <!--<span>剩余 1200 条信息可用</span>-->
-            <button onclick="newVouchers3()">新增短信群发</button>
-        </li>
-    </ol>
-</div>
-<!-- 内容tab -->
-<div class="content">
-    <ul>
-        <!-- 新增营销活动 -->
-        <li class="tab-item  first active">
-            <ol class="clear" id="">
-                <div class="item-body" onclick="openChild(1)">
-                    <li class="active-item">
-                        <div class="item-left">
+    <div class="header clear">
+        <ul class="tab-ul clear">
+            <li class="active" onclick="changeType(1)">营销活动</li>
+            <li onclick="changeType(2)">优惠券营销</li>
+            <li onclick="changeType(3)">短信营销</li>
+            <li data-id="send" onclick="changeType(4)">短信群发</li>
+        </ul>
+        <ol>
+            <li class="right-info ">
+            </li>
+            <li class="right-info ">
+                <button onclick="addNewcoupon()">新增优惠券</button>
+            </li>
+            <li class="right-info">
+                <!--<span>剩余 1200 条信息可用</span>-->
+            </li>
+            <li class="right-info">
+                <!--<span>剩余 1200 条信息可用</span>-->
+                <button onclick="newVouchers3()">新增短信群发</button>
+            </li>
+        </ol>
+    </div>
+    <!-- 内容tab -->
+    <div class="content">
+        <ul>
+            <li class="tab-item  first active">
+                <ol class="clear" id="">
+                    <div class="item-body" onclick="openChild(1)">
+                        <li class="active-item">
+                            <div class="item-left">
 
-                            <i class="iconfont icon-ico_rmb"></i>
-                        </div>
-                        <div class="item-con">
-                            <h2>储值送礼</h2>
-                            <p>1 行描述的情况，为储值卡充值可获赠优惠券</p>
-                        </div>
-                        <div class="item-right">
-                            <span class="item-set">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
-                        </div>
-                    </li>
-                </div>
-                <div class="item-body" onclick="openChild(2)">
-                    <li class="active-item">
-                        <div class="item-left">
-                            <i class="iconfont icon-ico_flower"></i>
-                        </div>
-                        <div class="item-con">
-                            <h2>积花营销</h2>
-                            <p>购买商品可以额外获得花卡，花卡可用来兑换礼品</p>
-                        </div>
-                        <div class="item-right ">
-                            <span class="item-set">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
-                        </div>
-                    </li>
-                </div>
-                <div class="item-body" onclick="openChild(3)">
-                    <li class="active-item">
-                        <div class="item-left">
-                            <i class="iconfont icon-ico_box"></i>
-                        </div>
-                        <div class="item-con">
-                            <h2>买赠活动</h2>
-                            <p>2 行描述的情况，购买某品类商品的顾客可相应获得赠送的商品或者优惠券</p>
-                        </div>
-                        <div class="item-right">
-                            <span class="item-set">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
-                        </div>
-                    </li>
-                </div>
-                <div class="item-body" onclick="openChild(4)">
-                    <li class="active-item">
-                        <div class="item-left">
-                            <i class="iconfont icon-ico_jifen"></i>
-                        </div>
-                        <div class="item-con">
-                            <h2>双倍积分</h2>
-                            <p>文案仅做展示，为相应的商品设置多倍积分</p>
-                        </div>
-                        <div class="item-right" >
-                            <span class="item-set"><i class="iconfont icon-ico_arrow_right"></i></span>
-                        </div>
-                    </li>
-                </div>
-                <div class="item-body" onclick="openChild(5)">
-                    <li class="active-item">
-                        <div class="item-left">
-                            <i class="iconfont icon-ico_set"></i>
-                        </div>
-                        <div class="item-con">
-                            <h2>套餐活动</h2>
-                            <p>文案仅做展示，搭配商品为销售套餐的营销工具</p>
-                        </div>
-                        <div class="item-right">
-                            <span class="item-set"><i class="iconfont icon-ico_arrow_right"></i></span>
-                        </div>
-                    </li>
-                </div>
-            </ol>
-            <table id="" data-toggle="table" class="table table-border"></table>
-        </li>
-        <li class="tab-item first ">
-            <ol class="clear" id="card-list1">
-            </ol>
-            <table id="yj-page-table" data-toggle="table" class="table table-border"></table>
-        </li>
-        <li class="tab-item">
-            <table id="dxyx-table" data-toggle="table" class="table table-border"></table>
-        </li>
-        <li class="tab-item">
-            <table id="dxqf-table" data-toggle="table" class="table table-border"></table>
-        </li>
+                                <i class="iconfont icon-ico_rmb"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>储值送礼</h2>
+                                <p>1 行描述的情况，为储值卡充值可获赠优惠券</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="item-body" onclick="openChild(2)">
+                        <li class="active-item">
+                            <div class="item-left">
+                                <i class="iconfont icon-ico_flower"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>积花营销</h2>
+                                <p>购买商品可以额外获得花卡，花卡可用来兑换礼品</p>
+                            </div>
+                            <div class="item-right ">
+                                <span class="item-set">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="item-body" onclick="openChild(3)">
+                        <li class="active-item">
+                            <div class="item-left">
+                                <i class="iconfont icon-ico_box"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>买赠活动</h2>
+                                <p>2 行描述的情况，购买某品类商品的顾客可相应获得赠送的商品或者优惠券</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set">未设置<i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="item-body" onclick="openChild(4)">
+                        <li class="active-item">
+                            <div class="item-left">
+                                <i class="iconfont icon-ico_jifen"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>双倍积分</h2>
+                                <p>文案仅做展示，为相应的商品设置多倍积分</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set"><i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                    <div class="item-body" onclick="openChild(5)">
+                        <li class="active-item">
+                            <div class="item-left">
+                                <i class="iconfont icon-ico_set"></i>
+                            </div>
+                            <div class="item-con">
+                                <h2>套餐活动</h2>
+                                <p>文案仅做展示，搭配商品为销售套餐的营销工具</p>
+                            </div>
+                            <div class="item-right">
+                                <span class="item-set"><i class="iconfont icon-ico_arrow_right"></i></span>
+                            </div>
+                        </li>
+                    </div>
+                </ol>
+                <table id="" data-toggle="table" class="table table-border"></table>
+            </li>
+            <li class="tab-item first ">
+                <ol class="clear" id="card-list1">
+                    <div class="tabcard">
+                        <span class="tabitem" onclick="activStatus(1,this)">进行中的活动</span>
+                        <span class="line"></span>
+                        <span class="tabitem active" onclick="activStatus(0,this)">历史活动</span>
+                    </div>
+                    <div class="item_bd" style="display: none;">
+                        <ol class="clear">
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('32',this)">
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
 
-    </ul>
-</div>
-<div class="content-view1" id="voucherDiaUl">
-</div>
-<div class="content-view2">
-    <div class="top-name layui-layer-title ">
-        编辑隐形眼镜药水消费提醒
+                                    <div class="text fl ">
+                                        <span class="layui-btn-xs expbtn coupon-dir">定向</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em
+                                                class="blue-color">1621</em>张</i></span>
+                                    <span class="button button-thin-blue fr" onclick="voucherDialog('32')">编辑</span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('32',this)">
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+
+                                    <div class="text fl ">
+                                        <span class="layui-btn-xs expbtn coupon-dis">满减</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em
+                                                class="blue-color">1621</em>张</i></span>
+                                    <span class="button button-thin-blue fr" onclick="voucherDialog('32')">编辑</span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('32',this)">
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+
+                                    <div class="text fl ">
+                                        <span class="layui-btn-xs expbtn coupon-full">折扣</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em
+                                                class="blue-color">1621</em>张</i></span>
+                                    <span class="button button-thin-blue fr" onclick="voucherDialog('32')">编辑</span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('32',this)">
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+
+                                    <div class="text fl ">
+                                        <span class="layui-btn-xs expbtn coupon-dir">定向</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em
+                                                class="blue-color">1621</em>张</i></span>
+                                    <span class="button button-thin-blue fr" onclick="voucherDialog('32')">编辑</span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('32',this)">
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+
+                                    <div class="text fl ">
+                                        <span class="layui-btn-xs expbtn coupon-dis">满减</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em
+                                                class="blue-color">1621</em>张</i></span>
+                                    <span class="button button-thin-blue fr" onclick="voucherDialog('32')">编辑</span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="switch fr" attr-open="1" onclick="updateOpen('32',this)">
+                                        <span class="switch-btn"><i></i></span>
+                                    </div>
+
+                                    <div class="text fl ">
+                                        <span class="layui-btn-xs expbtn coupon-full">折扣</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em
+                                                class="blue-color">1621</em>张</i></span>
+                                    <span class="button button-thin-blue fr" onclick="voucherDialog('32')">编辑</span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="item_bd">
+                        <ol class="clear">
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="fr">
+                                        <span class="layui-btn-xs expbtn ">已过期</span>
+                                    </div>
+
+                                    <div class="text fl">
+                                        <span class="layui-btn-xs expbtn coupon-dir">满减</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em>1621</em>张</i></span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="fr">
+                                        <span class="layui-btn-xs expbtn ">已过期</span>
+                                    </div>
+
+                                    <div class="text fl">
+                                        <span class="layui-btn-xs expbtn coupon-dis">定向</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em>1621</em>张</i></span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="fr">
+                                        <span class="layui-btn-xs expbtn ">已过期</span>
+                                    </div>
+
+                                    <div class="text fl">
+                                        <span class="layui-btn-xs expbtn coupon-full">满减</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em>1621</em>张</i></span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="fr">
+                                        <span class="layui-btn-xs expbtn ">已过期</span>
+                                    </div>
+
+                                    <div class="text fl">
+                                        <span class="layui-btn-xs expbtn coupon-dir">满减</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em>1621</em>张</i></span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="fr">
+                                        <span class="layui-btn-xs expbtn ">已过期</span>
+                                    </div>
+
+                                    <div class="text fl">
+                                        <span class="layui-btn-xs expbtn coupon-dis">定向</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em>1621</em>张</i></span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                            <li class="card-item">
+                                <div class="top">
+                                    <div class="fr">
+                                        <span class="layui-btn-xs expbtn ">已过期</span>
+                                    </div>
+
+                                    <div class="text fl">
+                                        <span class="layui-btn-xs expbtn coupon-full">满减</span>
+                                        优惠券名称
+                                    </div>
+                                </div>
+                                <div class="middle-cont">
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">使用条件</div>
+                                        <div class="text-bot fl">满 500 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">折扣</div>
+                                        <div class="text-bot fl"><span class="layui-btn-xs expbtn">减价</span>10 元</div>
+                                    </div>
+                                    <div class="item clearfix">
+                                        <div class="text-top mr-12 fl">有效期</div>
+                                        <div class="text-bot fl">
+                                            2019.11.05 -
+                                            2019.12.11
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bot-cont clearfix">
+                                    <span class="fl btn_user" onclick="voucherDialog('32')"><i
+                                            class="iconfont icon-ico_multiuser_filled">&nbsp;&nbsp;共发放<em>1621</em>张</i></span>
+                                    <span class="fr delete" onclick="delVoucher('32')">删除</span>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                    <table id="yj-page-table" data-toggle="table" class="table table-border"></table>
+                </ol>
+            </li>
+            <li class="tab-item">
+                <table id="dxyx-table" data-toggle="table" class="table table-border"></table>
+            </li>
+            <li class="tab-item">
+                <table id="dxqf-table" data-toggle="table" class="table table-border"></table>
+            </li>
+
+        </ul>
+    </div>
+    <div class="content-view1" id="voucherDiaUl">
+    </div>
+    <div class="content-view2">
+        <div class="top-name layui-layer-title ">
+            编辑隐形眼镜药水消费提醒
+        </div>
+
+    </div>
+    <div class="content-view3" id="groupMessagingUl">
+    </div>
+<!-- 新增优惠券 -->
+    <div class="content-view4">
+        <form action="" title="新增满减优惠券">
+                    <div class="layer-header clearfix" style="cursor: move;">
+                            <span  class=" active fl">新增满减优惠券</span>
+                            <div class="switch active fr" id="voucherSwitch">
+                                <span class="off">未开启</span>
+                                <span class="on">已启用</span>
+                                <span class="switch-btn"><i></i></span>
+                            </div>
+                        </div>
+                    <div class="lay-content">
+                            <div class="clearfix">
+                                
+                                <ol class="clear clearfix fl allcon">
+                                   <li>
+                                       <h3>使用条件</h3>
+                                        <div class="middle-cont">
+                                            <div class="item clearfix">
+                                                <div class="text-top fl">当购买</div>
+                                                <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;所有镜片</a>
+                                                </div>
+                                                <span class="fr iconfont icon-ico_trash"></span>
+                                            </div>
+                                        </div>
+                                 
+                                          <div class="middle-cont">
+                                              <div class="item clearfix">
+                                                  <div class="text-top fl">当购买</div>
+                                                  <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;明月镜片新款</a>
+                                                  </div>
+                                                  <span class="fr iconfont icon-ico_trash"></span>
+                                              </div>
+                                          </div>
+                                      </li>
+                                </ol>
+                                <ol class="clear clearfix fl allcon">
+                                      <li>
+                                          <h3>有效期</h3>
+                                           <div class="middle-cont">
+                                               <div class="item clearfix">
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  1个月
+                                                          </label>
+                                                   </span>
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  3个月
+                                                          </label>
+                                                   </span>
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  6个月
+                                                          </label>
+                                                   </span>
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  9个月
+                                                          </label>
+                                                   </span>
+                                                   <span class="radio">
+                                                          <label>
+                                                                  <input type="radio" name="" id="input" value="" checked="checked">
+                                                                  12个月
+                                                          </label>
+                                                   </span>
+                                                   <div class="radio">
+                                                          <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              永久有效
+                                                          </label>
+                                                      </div>
+                                               </div>
+                                           </div>
+                                      </li>
+                                </ol>
+                            </div>
+                </div>    
+         </form>
+         <form action="新增定向优惠券">
+                <div class="layer-header clearfix" style="cursor: move;">
+                        <span  class=" active fl">新增定向优惠券</span>
+                        <div class="switch active fr" id="voucherSwitch">
+                            <span class="off">未开启</span>
+                            <span class="on">已启用</span>
+                            <span class="switch-btn"><i></i></span>
+                        </div>
+                    </div>
+                <div class="lay-content" title="折扣优惠券" >
+                        <div class="clearfix">
+                            <ol class="clear fl halfcon">
+                                <li class="lay-row title clear">
+                                    <div>标题</div>
+                                    <div>
+                                      <input type="text" placeholder="输入" class="title" style="width:156px;">
+                                    </div>
+                                </li>
+                            </ol>
+                            <ol class="clear fl halfcon">
+                                <li class="lay-row title clear">
+                                    <div>折扣</div>
+                                    <div>
+                                         减<input type="text" placeholder="输入" class="title" style="width:124px;">元
+                                  </div>
+                                </li>
+                            </ol>
+                            <ol class="clear clearfix fl allcon">
+                               <li>
+                                   <h3>使用条件</h3>
+                                    <div class="middle-cont">
+                                        <div class="item clearfix">
+                                            <div class="text-top fl">当购买</div>
+                                            <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;所有镜片</a>
+                                            </div>
+                                            <span class="fr iconfont icon-ico_trash"></span>
+                                        </div>
+                                    </div>
+                             
+                                      <div class="middle-cont">
+                                          <div class="item clearfix">
+                                              <div class="text-top fl">当购买</div>
+                                              <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;明月镜片新款</a>
+                                              </div>
+                                              <span class="fr iconfont icon-ico_trash"></span>
+                                          </div>
+                                      </div>
+                                  </li>
+                            </ol>
+                            <p class="btn btn-info">+新增</p>
+
+                            <ol class="clear clearfix fl allcon">
+                                  <li>
+                                      <h3>有效期</h3>
+                                       <div class="middle-cont">
+                                           <div class="item clearfix">
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              1个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              3个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              6个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              9个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              12个月
+                                                      </label>
+                                               </span>
+                                               <div class="radio">
+                                                      <label>
+                                                          <input type="radio" name="" id="input" value="" checked="checked">
+                                                          永久有效
+                                                      </label>
+                                                  </div>
+                                           </div>
+                                       </div>
+                                  </li>
+                            </ol>
+                        </div>
+                </div>    
+        </form>
+        <form action="" title="新增满减优惠券">
+                <div class="layer-header clearfix" style="cursor: move;">
+                        <span  class=" active fl">新增满减优惠券</span>
+                        <div class="switch active fr" id="voucherSwitch">
+                            <span class="off">未开启</span>
+                            <span class="on">已启用</span>
+                            <span class="switch-btn"><i></i></span>
+                        </div>
+                    </div>
+                <div class="lay-content" title="折扣优惠券" >
+                        <div class="clearfix">
+                         <ol class="clear fl halfcon">
+                                 <div>标题</div>
+                                 <li class="lay-row title clear">
+                                       <input type="text" placeholder="输入" class="title " style="width:156px">
+                                 </li>
+                             </ol>
+                             <ol class="clear fl halfcon">
+                                     <div>折扣</div>
+                                     <li class="lay-row title clear">
+                                           <input type="text" placeholder="输入" class="title "  style="width:120px">折 
+                                     </li>
+                            </ol>
+                            
+                            <ol class="clear clearfix fl allcon">
+                               <li>
+                                   <h3>使用条件</h3>
+                                    <div class="middle-cont">
+                                        <div class="item clearfix">
+                                            <div class="text-top fl">当购买</div>
+                                            <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;所有镜片</a>
+                                            </div>
+                                            <span class="fr iconfont icon-ico_trash"></span>
+                                        </div>
+                                    </div>
+                             
+                                      <div class="middle-cont">
+                                          <div class="item clearfix">
+                                              <div class="text-top fl">当购买</div>
+                                              <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;明月镜片新款</a>
+                                              </div>
+                                              <span class="fr iconfont icon-ico_trash"></span>
+                                          </div>
+                                      </div>
+                                  </li>
+                            </ol>
+                            <ol class="clear clearfix fl allcon">
+                                    <li>
+                                        <h3>使用条件</h3>
+                                         <div class="middle-cont">
+                                             <div class="item clearfix">
+                                                 <div class="text-top fl">当购买</div>
+                                                 <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;所有镜片</a>
+                                                 </div>
+                                                 <span class="fr iconfont icon-ico_trash"></span>
+                                             </div>
+                                         </div>
+                                  
+                                           <div class="middle-cont">
+                                               <div class="item clearfix">
+                                                   <div class="text-top fl">当购买</div>
+                                                   <div class="text-bot fl"><a href="# " class="fl ">&nbsp;&nbsp;明月镜片新款</a>
+                                                   </div>
+                                                   <span class="fr iconfont icon-ico_trash"></span>
+                                               </div>
+                                           </div>
+                                       </li>
+                             </ol>
+                             <p class="btn btn-info">+新增</p>
+                            <ol class="clear clearfix fl allcon">
+                                  <li>
+                                      <h3>有效期</h3>
+                                       <div class="middle-cont">
+                                           <div class="item clearfix">
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              1个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              3个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              6个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              9个月
+                                                      </label>
+                                               </span>
+                                               <span class="radio">
+                                                      <label>
+                                                              <input type="radio" name="" id="input" value="" checked="checked">
+                                                              12个月
+                                                      </label>
+                                               </span>
+                                               <div class="radio">
+                                                      <label>
+                                                          <input type="radio" name="" id="input" value="" checked="checked">
+                                                          永久有效
+                                                      </label>
+                                                  </div>
+                                           </div>
+                                       </div>
+                                  </li>
+                            </ol>
+                        </div>
+                </div>    
+        </form>
     </div>
 
-</div>
-<div class="content-view3" id="groupMessagingUl">
-</div>
+    <!--全局JS引用-->
+    <!-- jq库 -->
+    <script src="../resource/js/jquery.min.js"></script>
+    <!-- bootstrap UI需要依赖的js -->
+    <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+    <!-- layui需要依赖的js -->
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+    <script src="../resource/layui/layui.js"></script>
+    <!-- 公司内部库 -->
+    <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+    <script src="../resource/js/lib/quakoo/Config.js"></script>
+    <script src="../resource/js/lib/quakoo/project.js"></script>
+    <script src="../resource/js/template-native.js"></script>
 
+    <!-- 全局公共js -->
+    <script src="../resource/js/yanjing/yanjing.js"></script>
+    <!--单个时间插件-->
+    <script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
+    <!--//日期范围插件开始-->
+    <script src="../resource/js/yanjing/daterange.js"></script>
+    <!--//日期范围插件结束-->
+    <script src="../resource/js/yanjing/tuodong.js"></script>
+    <script src="../resource/common/common.js"></script>
 
-
-<!--全局JS引用-->
-<!-- jq库 -->
-<script src="../resource/js/jquery.min.js"></script>
-<!-- bootstrap UI需要依赖的js -->
-<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
-<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
-<!-- layui需要依赖的js -->
-<script src="../resource/js/plugins/layer/layer.js"></script>
-<script src="../resource/layui/layui.js"></script>
-<!-- 公司内部库 -->
-<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
-<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
-<script src="../resource/js/lib/quakoo/Config.js"></script>
-<script src="../resource/js/lib/quakoo/project.js"></script>
-<script src="../resource/js/template-native.js"></script>
-
-<!-- 全局公共js -->
-<script src="../resource/js/yanjing/yanjing.js"></script>
-<!--单个时间插件-->
-<script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
-<!--//日期范围插件开始-->
-<script src="../resource/js/yanjing/daterange.js"></script>
-<!--//日期范围插件结束-->
-<script src="../resource/js/yanjing/tuodong.js"></script>
-<script src="../resource/common/common.js"></script>
-
-<!--短信群发弹窗-->
-<script type="text/html" id="groupMessagingTem">
+    <!--短信群发弹窗-->
+    <script type="text/html" id="groupMessagingTem">
     <div class="customer">
         <div class="title">面向顾客</div>
         <div class="contents">
@@ -443,435 +1242,113 @@
     </div>
     <input type="reset" id="sendMsgResetBtn" placeholder="" value="" class="resetFormBtn">
 </script>
-<script>
-    template.helper('changeContent', function(str) {
-        str = str.replace('@var(sub_name)', '<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">门店名称</div>')
-        str = str.replace('@var(user_name)', '<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">顾客姓名</div>')
-        return str
-    })
-    template.helper('changeContentText', function(str) {
-        str = str.replace('@var(sub_name)', '&门店名称&')
-        str = str.replace('@var(user_name)', '&顾客姓名&')
-        return str
-    })
-    var psid; //企业ID
-    var subid; //门店ID
-    var jobList = []; //短信群发数组
-    var messageLocData = {}; //本地短信数据
-    var type; //1 抵用券营销   2短信群发   3任务奖励
-    var classIds; //所有的类目ID
-    /**初始化页面*/
-    $(function() {
-        psid = quakooUser.getUserInfo().psid; //企业ID(公司ID)
-        subid = quakooDb.getItem("sel_ShopId"); //门店ID
-        quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {
-            sid: subid,
-            userType: 0
-        }, function(ret) {
-            if (ret && ret.success) {
-                if (quakooUtils.isNotBlack(ret.data)) {
-                    for (var i = 0; i < ret.data.length; i++) {
-                        jobList[i] = ret.data[i];
-                    }
-                }
-            }
-        });
-    });
-    //
-    /***
-     * 切换营销栏目
-     * t        1 营销活动   2优惠券管理     3短信营销       4短信群发
-     * */
-    function changeType(t) {
-        type = t;
-        if (type == 2) {
-
-        } else if (type == 3) {
-
-        } else if (type == 4) {
-            getSendList();
-        }
-        $(".tab-ul li").eq(type - 1).addClass('active').siblings().removeClass('active');
-        $(".tab-item").hide().eq(type - 1).show();
-        $(".right-info").hide().eq(type - 1).show();
-    }
-
-    /************************************<营销活动开始>******************************************/
-
-
-    /************************************<营销活动结束>******************************************/
-
-
-    /************************************<短信群发开始>******************************************/
-    /**接口——获取短信群发列表*/
-    function getSendList() {
-        $("#dxqf-table").bootstrapTable('destroy');
-        $("#dxqf-table").bootstrapTable({
-            url: config.getUrl_marketingtimingsms_getCheckPager(),
-            method: 'get',
-            classes: "table",
-            pagination: true, //是否显示分页
-            sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
-            pageNumber: 1, //初始化加载第一页，默认第一页
-            pageSize: 10,
-            pageList: [5, 10, 15, 20],
-            sortable: false,
-            sortOrder: "asc",
-            showColumns: true,
-            strictSearch: true,
-            locale: "zh-CN",
-            paginationHAlign: "center",
-            clickToSelect: true,
-            columns: [{
-                field: "ctime",
-                title: "创建时间",
-                align: "left",
-                valign: "middle",
-                formatter: function(value, row, index) {
-                    return quakooUtils.formatTimeToDateDianLY(value);
-                }
-            }, {
-                field: "sendTime",
-                title: "发送时间",
-                align: "left",
-                valign: "middle",
-                formatter: function(value, row, index) {
-                    return quakooUtils.formatTimeToDateDianLY(value);
-                }
-            }, {
-                field: "",
-                title: "面向顾客",
-                align: "left",
-                valign: "middle",
-                formatter: function(value, row, index) {
-                    var range, sex, age, job;
-                    if (row.range == 0) {
-                        range = "全部";
-                    } else if (row.range == 1) {
-                        range = "会员";
-                    } else if (row.range == 2) {
-                        range = "非会员";
-                    }
-                    if (row.sex == 1) {
-                        sex = "男";
-                    } else if (row.sex == 2) {
-                        sex = "女";
-                    }
-                    if (row.startAge && row.endAge && row.startAge > 0) {
-                        age = row.startAge + "-" + row.endAge + "岁";
-                    }
-                    if (quakooUtils.isNotBlack(row.job)) {
-                        job = row.job;
-                    }
-                    var html = (range ? range : "") + (sex ? "," + sex : "") + (age ? "," + age : "") + (job ? "," + job : "");
-                    return html;
-                }
-            }, {
-                field: "content",
-                title: "短信内容",
-                align: "left",
-                valign: "middle",
-                formatter: function(value, row, index) {
-                    var html = "";
-                    html += value.replace(/@var\(user_name\)/g, "<span class='show-tags'>顾客姓名</span>").replace(/@var\(sub_name\)/g, "<span class='show-tags'>门店名称</span>");
-                    return html;
-                }
-            }, {
-                field: "",
-                title: "送达条数",
-                align: "left",
-                valign: "middle",
-                formatter: function(value, row, index) {
-                    return "暂无字段";
-                }
-            }, {
-                field: "status",
-                title: "操作",
-                align: "center",
-                valign: "middle",
-                formatter: function(value, row, index) {
-                    var editEvent = "newVouchers3(" + JSON.stringify(row).replace(/\"/g, '\'').replace(/\'\'/g, '\'') + ")";
-                    var html;
-                    if (value == 0) {
-                        /**正常*/
-                        html = '<button class="btn btn-primary" onclick="' + editEvent + '">编辑</button>';
-                    } else if (value == 1) {
-                        /**删除*/
-                        html = '-';
-                    }
-                    return html;
-                }
-            }],
-            queryParams: function(params) {
-                params.subid = subid;
-                params.page = this.pageNumber;
-                params.size = this.pageSize;
-                params.token = quakooUser.getUserInfo().token;
-                return params;
-            },
-            success: function() {},
-            onLoadSuccess: function(data) {}
-        });
-        quakooData.ajaxGetData(config.getUrl_marketingtimingsms_getCheckPager(), {
-            subid: subid
-        }, function(ret) {
-            if (ret && ret.success) {
-                console.log(ret);
-            }
+    <script>
+        template.helper('changeContent', function (str) {
+            str = str.replace('@var(sub_name)', '<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">门店名称</div>')
+            str = str.replace('@var(user_name)', '<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">顾客姓名</div>')
+            return str
         })
-    }
-
-    /**弹窗——新增（编辑）短信群发*/
-    function newVouchers3(upData) {
-        messageLocData = {};
-        messageLocData.startAge = 30;
-        messageLocData.endAge = 70;
-        var title, btn;
-        if (quakooUtils.isNotBlack(upData)) { //编辑
-            title = "编辑短信群发";
-            btn = ['取消', '编辑'];
-            for (var i in upData) {
-                messageLocData[i] = upData[i];
-            }
-        } else {
-            messageLocData.tags = [];
-            messageLocData.content = "";
-            title = "新增短信群发";
-            btn = ['取消', '新增'];
-        }
-        var index = layer.open({
-            type: 1,
-            shade: 0.01,
-            shadeClose: true,
-            skin: 'layui-layer-demo', //样式类名
-            area: ['360px', '633px'],
-            anim: 0,
-            closeBtn: 0,
-            resize: false,
-            title: title,
-            content: $('#groupMessagingUl'),
-            btn: btn,
-            yes: function(index) {
-                layer.close(index);
-            },
-            btn2: function(index) {
-                addmessage(index);
-                return false;
-            },
-            success: function(layero, index) {
-                renderMessage();
-            }
-        });
-    }
-
-    /**弹窗成功之后*/
-    function renderMessage() {
-        var data = {
-            list: messageLocData,
-            jobList: jobList
-        };
-        var html = template("groupMessagingTem", data);
-        $('#groupMessagingUl').html(html);
-        barArr = [];
-        if (messageLocData.content.indexOf('@var(sub_name)') >= 0) {
-            barArr.push({
-                text: "门店名称",
-                html: '<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">门店名称</div>'
-            })
-        }
-        if (messageLocData.content.indexOf('@var(user_name)') >= 0) {
-            barArr.push({
-                text: "顾客姓名",
-                html: '<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">顾客姓名</div>'
-            })
-        }
-
-        initDrag()
-        /*时间开始*/
-        // 时间插件JS开始(单个时间日期)
-        var opt = {};
-        opt.date = {
-            preset: 'date'
-        };
-        opt.datetime = {
-            preset: 'datetime'
-        };
-        opt.time = {
-            preset: 'time'
-        };
-        opt.default = {
-            theme: 'mbsc-android-holo', //皮肤样式
-            display: 'bubble', //显示方式
-            mode: 'scroller', //日期选择模式
-            dateFormat: 'yyyy-mm-dd',
-            lang: 'zh',
-            showNow: true,
-            nowText: "今天",
-            typeNum: 'day', //day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
-        };
-        $('.settings').bind('change', function() {
-            var demo = 'datetime';
-            if (!demo.match(/select/i)) {
-                $('.demo-test-' + demo).val('');
-            }
-            $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
-            $('.demo').hide();
-            $('.demo-' + demo).show();
-        });
-
-        /*时间结束*/
-
-
-
-        selectTag($("#selectBox5"), function(ret) { //短信弹窗职业获取
-            messageLocData.job = ret.value;
-        });
-
-
-        $("#send-time").attr("placeholder", "发送时间");
-        $("#send-time").val('');
-        if (quakooUtils.isNotBlack(messageLocData.id)) { //编辑
-
-            //短信内容
-
-            /*
-                        if(quakooUtils.isNotBlack(messageLocData.tags)){
-                            if(messageLocData.tags.indexOf("@var(sub_name)")>-1){
-                                $("#moveBar2").css('display','none');
-                            }
-                            if(messageLocData.tags.indexOf("@var(user_name)")>-1){
-                                $("#moveBar1").css('display','none');
-                            }
-                            var html = upData.content.replace(/@var\(user_name\)/g,'<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)" style="display: block;">门店名称</div>').replace(/@var\(user_name\)/g,'<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)" style="display: block;">顾客名称</div>');
-                            $("#fill-div").html(html);
-                            content = upData.content;
+        template.helper('changeContentText', function (str) {
+            str = str.replace('@var(sub_name)', '&门店名称&')
+            str = str.replace('@var(user_name)', '&顾客姓名&')
+            return str
+        })
+        var psid; //企业ID
+        var subid; //门店ID
+        var jobList = []; //短信群发数组
+        var messageLocData = {}; //本地短信数据
+        var type; //1 抵用券营销   2短信群发   3任务奖励
+        var classIds; //所有的类目ID
+        /**初始化页面*/
+        $(function () {
+            psid = quakooUser.getUserInfo().psid; //企业ID(公司ID)
+            subid = quakooDb.getItem("sel_ShopId"); //门店ID
+            quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {
+                sid: subid,
+                userType: 0
+            }, function (ret) {
+                if (ret && ret.success) {
+                    if (quakooUtils.isNotBlack(ret.data)) {
+                        for (var i = 0; i < ret.data.length; i++) {
+                            jobList[i] = ret.data[i];
                         }
-            */
-            //时间
-            var timeText = quakooUtils.formatTimeToDate(messageLocData.sendTime);
-            $("#send-time").attr("placeholder", timeText);
-        }
-
-        layui.use('slider', function() { //年龄范围
-            var slider = layui.slider;
-            slider.render({
-                elem: '#slide1',
-                value: [messageLocData.startAge, messageLocData.endAge], //滑块默认值
-                range: true,
-                theme: 'rgba(130,130,151,0.4)', //主题色
-                change: function(value) {
-                    messageLocData.startAge = value[0];
-                    messageLocData.endAge = value[1];
+                    }
                 }
             });
         });
-        $('#demo').trigger('change');
-    }
+        //
+        /***
+         * 切换营销栏目
+         * t        1 营销活动   2优惠券管理     3短信营销       4短信群发
+         * */
+        function changeType(t) {
+            type = t;
+            if (type == 2) {
 
-    /**接口——新增编辑短信群发*/
-    function addmessage(index) {
-        messageLocData.tags = [];
-        messageLocData.content = $('#fill-div').text();
-        if (messageLocData.content.indexOf('门店名称') >= 0) {
-            messageLocData.tags.push('@var(sub_name)')
-            messageLocData.content = messageLocData.content.replace('门店名称', '@var(sub_name)');
-        }
-        if (messageLocData.content.indexOf('顾客姓名') >= 0) {
-            messageLocData.tags.push('@var(user_name)')
-            messageLocData.content = messageLocData.content.replace('顾客姓名', '@var(user_name)');
-        }
-        var param = {};
-        var sendTime;
-        var strTime = $("#send-time").attr("placeholder");
-        if ($("#send-time").val()) {
-            sendTime = $("#send-time").val();
-        } else {
-            if (strTime.indexOf(":") >= 0) {
-                sendTime = $("#send-time").attr("placeholder");
-            } else {
-                layer.msg('请选择时间');
-                return;
+            } else if (type == 3) {
+
+            } else if (type == 4) {
+                getSendList();
             }
+            $(".tab-ul li").eq(type - 1).addClass('active').siblings().removeClass('active');
+            $(".tab-item").hide().eq(type - 1).show();
+            $(".right-info").hide().eq(type - 1).show();
         }
-        sendTime = sendTime.replace(/-/g, ',').replace(/:/g, ',').replace(/\s/, ',').split(',');
-        messageLocData.sendTime = new Date(sendTime[0], sendTime[1] - 1, sendTime[2], sendTime[3], sendTime[4]).getTime();
-        param.subid = subid;
-        param.job = messageLocData.job;
-        param.startAge = messageLocData.startAge;
-        param.endAge = messageLocData.endAge;
+
+        /************************************<营销活动开始>******************************************/
         /*
-                if(!id){
-                    var html = $('#fill-div').html();
-                    var tags = [];
-                    console.table(barArr);
-                    for (var i = 0; i < barArr.length; i++) {
-                        if (barArr[i].text == "顾客姓名") {
-                            html = html.replace(barArr[i].html, "@var(user_name)");
-                            tags.push("@var(user_name)");                                              //顾客姓名
-                        } else if (barArr[i].text == "门店名称") {
-                            html = html.replace(barArr[i].html, "@var(sub_name)");
-                            tags.push("@var(sub_name)");                                               //门店名称
-                        }
-                    }
-                    html = html.replace(/<span>/g,'').replace(/<\/span>/g,'');
-                    content = html;
-                }
-                if(quakooUtils.isBlack(content)){
-                    layer.msg("请编辑短信内容");
-                    return;
-                }
-        */
-        if (quakooUtils.isBlack(messageLocData.sendTime)) {
-            layer.msg('请选择短信的发送时间');
-            return;
-        }
-        param.sendTime = messageLocData.sendTime;
-        param.content = messageLocData.content; //内容
-        param.tagsJson = JSON.stringify(messageLocData.tags); //标签
-        param.range = $('#pro input:radio[name="property"]:checked').val(); //全部0，会员1，非会员2
-        param.sex = $('#sex input:radio[name="sex"]:checked').val(); //全部0，男1，女2
-        if (messageLocData.id) { //编辑
-            param.id = messageLocData.id;
-            url = config.getUrl_marketingtimingsms_update();
-        } else {
-            url = config.getUrl_marketingtimingsms_add()
-        }
-        quakooData.ajaxGetData(url, param, function(ret) {
-            if (ret && ret.success) {
-                if (messageLocData.id) {
-                    getSendList();
-                    layer.msg("成功编辑短信群发", {
-                        icon: 1
-                    });
-                } else {
-                    getSendList();
-                    layer.msg("成功新增短信群发", {
-                        icon: 1
-                    });
-                }
-                layer.close(index)
-            } else {
-                layer.msg(ret.data);
+         * activStatus 功能:【营销活动-各个模块状态切换】 
+         * 作用对象: 当前模块历史状态切换 默认显示历史记录
+         * */
+        function activStatus(t, e) {
+            $(e).parent().find('.tabitem').each(function () {
+                $(this).removeClass('active');
+            });
+            $(e).addClass('active')
+            var type = t; // 0为历史记录
+            if (t == 0) {
+                $(e).parents('.tab-item').find('.item_bd').eq(0).hide();
+                $(e).parents('.tab-item').find('.item_bd').eq(1).show();
+                // console.log($(e).parents('.tab-item').find('ol.clear').eq(1), $(e).parents('.tab-item').find('ol.clear').eq(0))
+            } else {// 1为正在进行
+                $(e).parents('.tab-item').find('.item_bd').eq(0).show();
+                $(e).parents('.tab-item').find('.item_bd').eq(1).hide();
             }
-        })
-    }
-    /************************************</短信群发结束>******************************************/
+            type = null
+        }
 
-    /************************************</短信营销开始>******************************************/
-    var $tableNote = $("#yj-page-note-table");
-    var data2 = [{id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}];
-    var TableInit = function (callback) {
-        var oTableInit = new Object();
-        //初始化Table
-        oTableInit.Init = function () {
-            $tableNote.bootstrapTable('destroy');
-            $tableNote.bootstrapTable({
-                data: data2,
+        /************************************<营销活动结束>******************************************/
+
+        /************************************<优惠券营销开始>******************************************/
+        /**弹窗——新增（编辑）优惠券类型:定向 满减 折扣优惠券*/
+        function addNewcoupon(type){
+            
+            layer_windwo({
+                width: '360',
+                height: '350',
+                targetcon: '.content-view4',
+            },function(){})
+        }
+
+
+        /************************************<优惠券营销结束>******************************************/
+
+
+
+
+        /************************************<短信群发开始>******************************************/
+        /**接口——获取短信群发列表*/
+        function getSendList() {
+            $("#dxqf-table").bootstrapTable('destroy');
+            $("#dxqf-table").bootstrapTable({
+                url: config.getUrl_marketingtimingsms_getCheckPager(),
+                method: 'get',
                 classes: "table",
-                pagination: true,        //是否显示分页
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 6,
-                pageList: [6, 12, 18],
+                pagination: true, //是否显示分页
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10,
+                pageList: [5, 10, 15, 20],
                 sortable: false,
                 sortOrder: "asc",
                 showColumns: true,
@@ -879,24 +1356,381 @@
                 locale: "zh-CN",
                 paginationHAlign: "center",
                 clickToSelect: true,
-                paginationLoop: false,
-                columns: [],
-                onPreBody: function (data) {
-                    if (callback) {
-                        callback(data, this)
+                columns: [{
+                    field: "ctime",
+                    title: "创建时间",
+                    align: "left",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        return quakooUtils.formatTimeToDateDianLY(value);
                     }
+                }, {
+                    field: "sendTime",
+                    title: "发送时间",
+                    align: "left",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        return quakooUtils.formatTimeToDateDianLY(value);
+                    }
+                }, {
+                    field: "",
+                    title: "面向顾客",
+                    align: "left",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        var range, sex, age, job;
+                        if (row.range == 0) {
+                            range = "全部";
+                        } else if (row.range == 1) {
+                            range = "会员";
+                        } else if (row.range == 2) {
+                            range = "非会员";
+                        }
+                        if (row.sex == 1) {
+                            sex = "男";
+                        } else if (row.sex == 2) {
+                            sex = "女";
+                        }
+                        if (row.startAge && row.endAge && row.startAge > 0) {
+                            age = row.startAge + "-" + row.endAge + "岁";
+                        }
+                        if (quakooUtils.isNotBlack(row.job)) {
+                            job = row.job;
+                        }
+                        var html = (range ? range : "") + (sex ? "," + sex : "") + (age ? "," + age : "") + (job ? "," + job : "");
+                        return html;
+                    }
+                }, {
+                    field: "content",
+                    title: "短信内容",
+                    align: "left",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        var html = "";
+                        html += value.replace(/@var\(user_name\)/g, "<span class='show-tags'>顾客姓名</span>").replace(/@var\(sub_name\)/g, "<span class='show-tags'>门店名称</span>");
+                        return html;
+                    }
+                }, {
+                    field: "",
+                    title: "送达条数",
+                    align: "left",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        return "暂无字段";
+                    }
+                }, {
+                    field: "status",
+                    title: "操作",
+                    align: "center",
+                    valign: "middle",
+                    formatter: function (value, row, index) {
+                        var editEvent = "newVouchers3(" + JSON.stringify(row).replace(/\"/g, '\'').replace(/\'\'/g, '\'') + ")";
+                        var html;
+                        if (value == 0) {
+                            /**正常*/
+                            html = '<button class="btn btn-primary" onclick="' + editEvent + '">编辑</button>';
+                        } else if (value == 1) {
+                            /**删除*/
+                            html = '-';
+                        }
+                        return html;
+                    }
+                }],
+                queryParams: function (params) {
+                    params.subid = subid;
+                    params.page = this.pageNumber;
+                    params.size = this.pageSize;
+                    params.token = quakooUser.getUserInfo().token;
+                    return params;
+                },
+                success: function () { },
+                onLoadSuccess: function (data) { }
+            });
+            quakooData.ajaxGetData(config.getUrl_marketingtimingsms_getCheckPager(), {
+                subid: subid
+            }, function (ret) {
+                if (ret && ret.success) {
+                    console.log(ret);
+                }
+            })
+        }
+
+        /**弹窗——新增（编辑）短信群发*/
+        function newVouchers3(upData) {
+            messageLocData = {};
+            messageLocData.startAge = 30;
+            messageLocData.endAge = 70;
+            var title, btn;
+            if (quakooUtils.isNotBlack(upData)) { //编辑
+                title = "编辑短信群发";
+                btn = ['取消', '编辑'];
+                for (var i in upData) {
+                    messageLocData[i] = upData[i];
+                }
+            } else {
+                messageLocData.tags = [];
+                messageLocData.content = "";
+                title = "新增短信群发";
+                btn = ['取消', '新增'];
+            }
+            var index = layer.open({
+                type: 1,
+                shade: 0.01,
+                shadeClose: true,
+                skin: 'layui-layer-demo', //样式类名
+                area: ['360px', '633px'],
+                anim: 0,
+                closeBtn: 0,
+                resize: false,
+                title: title,
+                content: $('#groupMessagingUl'),
+                btn: btn,
+                yes: function (index) {
+                    layer.close(index);
+                },
+                btn2: function (index) {
+                    addmessage(index);
+                    return false;
+                },
+                success: function (layero, index) {
+                    renderMessage();
                 }
             });
+        }
+
+        /**弹窗成功之后*/
+        function renderMessage() {
+            var data = {
+                list: messageLocData,
+                jobList: jobList
+            };
+            var html = template("groupMessagingTem", data);
+            $('#groupMessagingUl').html(html);
+            barArr = [];
+            if (messageLocData.content.indexOf('@var(sub_name)') >= 0) {
+                barArr.push({
+                    text: "门店名称",
+                    html: '<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)">门店名称</div>'
+                })
+            }
+            if (messageLocData.content.indexOf('@var(user_name)') >= 0) {
+                barArr.push({
+                    text: "顾客姓名",
+                    html: '<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)">顾客姓名</div>'
+                })
+            }
+
+            initDrag()
+            /*时间开始*/
+            // 时间插件JS开始(单个时间日期)
+            var opt = {};
+            opt.date = {
+                preset: 'date'
+            };
+            opt.datetime = {
+                preset: 'datetime'
+            };
+            opt.time = {
+                preset: 'time'
+            };
+            opt.default = {
+                theme: 'mbsc-android-holo', //皮肤样式
+                display: 'bubble', //显示方式
+                mode: 'scroller', //日期选择模式
+                dateFormat: 'yyyy-mm-dd',
+                lang: 'zh',
+                showNow: true,
+                nowText: "今天",
+                typeNum: 'day', //day：获取到日，time：获取到时，branch：获取到分；默认是获取到分
+            };
+            $('.settings').bind('change', function () {
+                var demo = 'datetime';
+                if (!demo.match(/select/i)) {
+                    $('.demo-test-' + demo).val('');
+                }
+                $('.demo-test-' + demo).scroller('destroy').scroller($.extend(opt['datetime'], opt['default']));
+                $('.demo').hide();
+                $('.demo-' + demo).show();
+            });
+
+            /*时间结束*/
+
+
+
+            selectTag($("#selectBox5"), function (ret) { //短信弹窗职业获取
+                messageLocData.job = ret.value;
+            });
+
+
+            $("#send-time").attr("placeholder", "发送时间");
+            $("#send-time").val('');
+            if (quakooUtils.isNotBlack(messageLocData.id)) { //编辑
+
+                //短信内容
+
+                /*
+                            if(quakooUtils.isNotBlack(messageLocData.tags)){
+                                if(messageLocData.tags.indexOf("@var(sub_name)")>-1){
+                                    $("#moveBar2").css('display','none');
+                                }
+                                if(messageLocData.tags.indexOf("@var(user_name)")>-1){
+                                    $("#moveBar1").css('display','none');
+                                }
+                                var html = upData.content.replace(/@var\(user_name\)/g,'<div class="movebar" id="moveBar2" draggable="true" ondragstart="drag(event)" style="display: block;">门店名称</div>').replace(/@var\(user_name\)/g,'<div class="movebar" id="moveBar1" draggable="true" ondragstart="drag(event)" style="display: block;">顾客名称</div>');
+                                $("#fill-div").html(html);
+                                content = upData.content;
+                            }
+                */
+                //时间
+                var timeText = quakooUtils.formatTimeToDate(messageLocData.sendTime);
+                $("#send-time").attr("placeholder", timeText);
+            }
+
+            layui.use('slider', function () { //年龄范围
+                var slider = layui.slider;
+                slider.render({
+                    elem: '#slide1',
+                    value: [messageLocData.startAge, messageLocData.endAge], //滑块默认值
+                    range: true,
+                    theme: 'rgba(130,130,151,0.4)', //主题色
+                    change: function (value) {
+                        messageLocData.startAge = value[0];
+                        messageLocData.endAge = value[1];
+                    }
+                });
+            });
+            $('#demo').trigger('change');
+        }
+
+        /**接口——新增编辑短信群发*/
+        function addmessage(index) {
+            messageLocData.tags = [];
+            messageLocData.content = $('#fill-div').text();
+            if (messageLocData.content.indexOf('门店名称') >= 0) {
+                messageLocData.tags.push('@var(sub_name)')
+                messageLocData.content = messageLocData.content.replace('门店名称', '@var(sub_name)');
+            }
+            if (messageLocData.content.indexOf('顾客姓名') >= 0) {
+                messageLocData.tags.push('@var(user_name)')
+                messageLocData.content = messageLocData.content.replace('顾客姓名', '@var(user_name)');
+            }
+            var param = {};
+            var sendTime;
+            var strTime = $("#send-time").attr("placeholder");
+            if ($("#send-time").val()) {
+                sendTime = $("#send-time").val();
+            } else {
+                if (strTime.indexOf(":") >= 0) {
+                    sendTime = $("#send-time").attr("placeholder");
+                } else {
+                    layer.msg('请选择时间');
+                    return;
+                }
+            }
+            sendTime = sendTime.replace(/-/g, ',').replace(/:/g, ',').replace(/\s/, ',').split(',');
+            messageLocData.sendTime = new Date(sendTime[0], sendTime[1] - 1, sendTime[2], sendTime[3], sendTime[4]).getTime();
+            param.subid = subid;
+            param.job = messageLocData.job;
+            param.startAge = messageLocData.startAge;
+            param.endAge = messageLocData.endAge;
+            /*
+                    if(!id){
+                        var html = $('#fill-div').html();
+                        var tags = [];
+                        console.table(barArr);
+                        for (var i = 0; i < barArr.length; i++) {
+                            if (barArr[i].text == "顾客姓名") {
+                                html = html.replace(barArr[i].html, "@var(user_name)");
+                                tags.push("@var(user_name)");                                              //顾客姓名
+                            } else if (barArr[i].text == "门店名称") {
+                                html = html.replace(barArr[i].html, "@var(sub_name)");
+                                tags.push("@var(sub_name)");                                               //门店名称
+                            }
+                        }
+                        html = html.replace(/<span>/g,'').replace(/<\/span>/g,'');
+                        content = html;
+                    }
+                    if(quakooUtils.isBlack(content)){
+                        layer.msg("请编辑短信内容");
+                        return;
+                    }
+            */
+            if (quakooUtils.isBlack(messageLocData.sendTime)) {
+                layer.msg('请选择短信的发送时间');
+                return;
+            }
+            param.sendTime = messageLocData.sendTime;
+            param.content = messageLocData.content; //内容
+            param.tagsJson = JSON.stringify(messageLocData.tags); //标签
+            param.range = $('#pro input:radio[name="property"]:checked').val(); //全部0，会员1，非会员2
+            param.sex = $('#sex input:radio[name="sex"]:checked').val(); //全部0，男1，女2
+            if (messageLocData.id) { //编辑
+                param.id = messageLocData.id;
+                url = config.getUrl_marketingtimingsms_update();
+            } else {
+                url = config.getUrl_marketingtimingsms_add()
+            }
+            quakooData.ajaxGetData(url, param, function (ret) {
+                if (ret && ret.success) {
+                    if (messageLocData.id) {
+                        getSendList();
+                        layer.msg("成功编辑短信群发", {
+                            icon: 1
+                        });
+                    } else {
+                        getSendList();
+                        layer.msg("成功新增短信群发", {
+                            icon: 1
+                        });
+                    }
+                    layer.close(index)
+                } else {
+                    layer.msg(ret.data);
+                }
+            })
+        }
+        /************************************</短信群发结束>******************************************/
+
+        /************************************</短信营销开始>******************************************/
+        var $tableNote = $("#yj-page-note-table");
+        var data2 = [{ id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }, { id: 1 }];
+        var TableInit = function (callback) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $tableNote.bootstrapTable('destroy');
+                $tableNote.bootstrapTable({
+                    data: data2,
+                    classes: "table",
+                    pagination: true,        //是否显示分页
+                    pageNumber: 1,                       //初始化加载第一页，默认第一页
+                    pageSize: 6,
+                    pageList: [6, 12, 18],
+                    sortable: false,
+                    sortOrder: "asc",
+                    showColumns: true,
+                    strictSearch: true,
+                    locale: "zh-CN",
+                    paginationHAlign: "center",
+                    clickToSelect: true,
+                    paginationLoop: false,
+                    columns: [],
+                    onPreBody: function (data) {
+                        if (callback) {
+                            callback(data, this)
+                        }
+                    }
+                });
+            };
+            return oTableInit;
         };
-        return oTableInit;
-    };
-    var Table = new TableInit(note);
-    Table.Init();
-    function note(data, _this) {
-        var html = '';
-        for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
-            if (i % 2 == 0) {
-                html += '<li class="card-item">' +
+        var Table = new TableInit(note);
+        Table.Init();
+        function note(data, _this) {
+            var html = '';
+            for (var i = (_this.pageNumber - 1) * _this.pageSize; i < _this.pageNumber * _this.pageSize; i++) {
+                if (i % 2 == 0) {
+                    html += '<li class="card-item">' +
                         '<div class="inner">' +
                         '<div class="top">' +
                         '<div class="text">' +
@@ -917,8 +1751,8 @@
                         '</div>' +
                         '</div>' +
                         '</li>';
-            } else if (i % 2 == 1) {
-                html += '<li class="card-item">' +
+                } else if (i % 2 == 1) {
+                    html += '<li class="card-item">' +
                         '<div class="inner">' +
                         '<div class="top">' +
                         '<div class="text">' +
@@ -944,8 +1778,8 @@
                         '</div>' +
                         '</div>' +
                         '</li>';
-            }
-            html += '<li class="card-item">' +
+                }
+                html += '<li class="card-item">' +
                     '<div class="inner">' +
                     '<div class="top">' +
                     '<div class="text">' +
@@ -966,61 +1800,101 @@
                     '</div>' +
                     '</div>' +
                     '</li>';
-        }
-        $("#yj-page-note-table").html(html);
-    }
-
-
-    /**
-     * 弹窗编辑短信营销
-     * */
-    function newVouchers2() {
-        var index = layer.open({
-            type: 1,
-            shade: 0.01,
-            shadeClose: true,
-            skin: 'layui-layer-demo layui-layer-dx', //样式类名
-            area: ['360px', '290px'],
-            anim: 0,
-            closeBtn: 0,
-            title: "",
-            content: $('.content-view2'),
-            resize: false,
-            btn: ['取消', '保存修改'],
-            yes: function(index, layero) {
-                layer.close(index)
-            },
-            btn2: function() {
-
-                return false;
-            },
-            success: function(layero, index) {
-                $('.layui-layer-dx .layui-layer-content').css('height', 290 - 44 + 'px');
-                $('.layui-layer-dx .layui-layer-btn').css({
-                    'background-color': 'rgba(244, 244, 248, 1)',
-                    'box-shadow': '0px -1px 0px 0px rgba(236, 236, 244, 1)'
-                })
             }
+            $("#yj-page-note-table").html(html);
+        }
+
+
+        /**
+         * 弹窗编辑短信营销
+         * */
+        function newVouchers2() {
+            var index = layer.open({
+                type: 1,
+                shade: 0.01,
+                shadeClose: true,
+                skin: 'layui-layer-demo layui-layer-dx', //样式类名
+                area: ['360px', '290px'],
+                anim: 0,
+                closeBtn: 0,
+                title: "",
+                content: $('.content-view2'),
+                resize: false,
+                btn: ['取消', '保存修改'],
+                yes: function (index, layero) {
+                    layer.close(index)
+                },
+                btn2: function () {
+
+                    return false;
+                },
+                success: function (layero, index) {
+                    $('.layui-layer-dx .layui-layer-content').css('height', 290 - 44 + 'px');
+                    $('.layui-layer-dx .layui-layer-btn').css({
+                        'background-color': 'rgba(244, 244, 248, 1)',
+                        'box-shadow': '0px -1px 0px 0px rgba(236, 236, 244, 1)'
+                    })
+                }
+            });
+        }
+
+        /************************************</短信营销结束>******************************************/
+
+        /**
+         * 开关切换
+         * */
+        $(".switch-btn").click(function () {
+            $(this).parent(".switch").toggleClass('active');
         });
-    }
+        
+        
+        /**
+         *打开窗口
+        **/
+        function layer_windwo(obj, callback) {
+            /**弹窗——储值送礼-新增满减劵(编辑)----*/
+            var btn;
+            if (quakooUtils.isBlack(obj)) {
+                btn = ['取消', '新增'];
+            } else {
+                btn = ['取消', '编辑'];
+            }
+            var index = layer.open({
+                type: 1,
+                shade: 0.01,
+                shadeClose: true,
+                skin: 'dialog-voucher', //样式类名
+                area: [obj.width + 'px', obj.height + 'px'],
+                anim: 0,
+                closeBtn: 0,
+                resize: false,
+                title: null,
+                move: ".lay-header",
+                content: $(obj.targetcon),
+                btn: btn,
+                yes: function(index) {
+                    layer.close(index)
+                },
+                btn2: function(index, layero) { //btn 新增
+                    // addVoucher(index);// 借鉴 【新增抵用券】
+                    return false
+                },
+                success: function(layero, index) { //layer成功 后调用 
+                    // renderVouDia(voucherId);借鉴 【渲染抵用券】
+                    //rendersale_act(voucherId); // 渲染 储值送礼 --活动弹窗
+                }
+            });
+        }
 
-    /************************************</短信营销结束>******************************************/
 
-    /**
-     * 开关切换
-     * */
-    $(".switch-btn").click(function() {
-        $(this).parent(".switch").toggleClass('active');
-    });
-
-    /**
-     * 营销活动跳转
-     * @param jumpType  1储值送礼   2积花营销   3  买赠活动 4双倍积分   5套餐活动
-     */
-    function openChild(jumpType) {
-        addMenuItem('../salesManage/salesActivityhistory.html?type='+jumpType)
-    }
-</script>
+        /**
+         * 营销活动跳转
+         * @param jumpType  1储值送礼   2积花营销   3  买赠活动 4双倍积分   5套餐活动
+         */
+        function openChild(jumpType) {
+            addMenuItem('../salesManage/salesActivityhistory.html?type=' + jumpType)
+        }
+    </script>
 </body>
 
 </html>
