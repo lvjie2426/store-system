@@ -33,132 +33,7 @@
     <link rel="stylesheet" href="../resource/css/yanjing/salesActive.css">
     <!--单页样式结束-->
     <style>
-        @media screen and (max-width: 860px){
-            .content .tab-item .card-item {
-                width: 33%!important;
-            }
-        }
-        @media screen and (min-width:1010px) {
-    .item-body {
-        overflow: hidden;
-        width: 50%;
-        float: left;
-        padding: 0 20px;
-        padding-top: 10px;
-    }
-    .item-body:nth-child(even) {
-        padding-right: 20px;
-        padding-left: 0px;
-    }
-}
-        @media screen and (max-width: 1079px){
-            .content .tab-item .card-item {
-                width: 33%!important;
-            }
-        }
-
-     
-        .fl {
-            float: left!important;
-        }
-        
-        .fr {
-            float: right!important;
-        }
-        .allcon {
-            width: 100%!important;
-        }
-        .bg_fff{
-            background: #fff;
-        }
-        [class^='content-view-item'] .btn-info {
-            display: block;
-            width: 50px;
-            background:none;
-            color: #83B0E8;
-            margin: 5px auto;
-        }
-        
-        .mcentent {
-            display: block!important;
-            margin: 8px auto!important;
-        }
-        
-        [class^='content-view-item'] .item-lst-con input[type='text'] {
-            width: 60px;
-        }
-        
-        [class^="content-view-item2"] .lay-content {
-            padding-right: 0;
-            padding-left: 0;
-        }
-        
-        [class^="content-view-item3"] .item-group {
-            margin-top: 16px;
-            border: 1px solid #F4F4F8;
-        }
-        
-        .item-group .item_hd {
-            background: #F4F4F8;
-            border-radius: 3px;
-        }
-        
-        .item-group .tab_shopType {
-            padding: 0px 6px 0px 11px;
-        }
-        
-        .first li .top .text {
-            color: #4A4A62;
-        }
-        
-        .content-view-item4 .text-bot input {
-            width: 66px;
-            font-size: 12px;
-        }
-        
-        .content-view-item4 .box>div {
-            margin-bottom: 11px;
-        }
-        
-        .content-view-item4 .bdcon {
-            overflow: hidden;
-            padding-top: 12px;
-            background: #F7F7F9;
-        }
-        
-        .bdcon h3 {
-            padding-left: 15px;
-        }
-        
-        .bdcon .box {
-            overflow: hidden;
-            margin: 10px 6px 15px;
-            padding: 12px 12px 0;
-            border-radius: 3px;
-            background: #fff;
-        }
-        .content-view-item5  .box{
-           border-top: 1px solid #F3F3F8 ;
-        }
-        .content-view-item5 .input-group-addon {
-            padding: 0;
-            font-size: 12px;
-        }
-        .content-view-item5 .halfcon{
-            width: 48%!important;
-        }
-       .fckbox{
-        width: 16px;
-    height: 16px;
-    margin: 0px;
-    display: inline-block;
-    text-align: center;
-    vertical-align: bottom;
-    line-height: 44px;
-    vertical-align: middle;
-    border-radius: 0px;
-    border: 1px solid #d3d3d3;
-       }
+       
     </style>
 </head>
 
@@ -214,7 +89,7 @@
     <div class="content">
         <ul>
             <!-- 新增营销活动 -->
-            <li class="tab-item  first active">
+            <!-- <li class="tab-item  first">
                 <ol class="clear" id="">
                     <div class="item-body">
                         <li class="active-item">
@@ -290,7 +165,7 @@
 
                 </ol>
                 <table id="" data-toggle="table" class="table table-border"></table>
-            </li>
+            </li> -->
             <li class="tab-item first">
                 <!-- <ol class="clear" id="card-list1"> -->
                 <div class="tabcard">
@@ -3706,6 +3581,7 @@
     <script src="../resource/js/yanjing/mobiscroll.2.13.2.js "></script>
     <!--//日期范围插件开始-->
     <script src="../resource/js/yanjing/daterange.js "></script>
+    <script src="../resource/common/common.js"></script>
     <!--//日期范围插件结束-->
     <script src="../resource/js/yanjing/tuodong.js "></script>
 
@@ -4560,21 +4436,25 @@
                     }
                 }
             });
+            //获取父页面openChild(type)的传参数，跳转对应的详情页
+            var pindx = quakooUtils.getQueryString('type');
+            settingSaleType(pindx);
+
         });
-        //切换营销栏目
-        function settingSaleType(t) {
-            type = t;
-            if (type == 1) {} else if (type == 2) {} else if (type == 3) {} else if (type == 4) {} else if (type == 4) {}
-            $(".tab-ul li").eq(type).show().siblings().hide();
-            $(".tab-ul li").eq(0).show();
-            //显示当前所选的栏目
-            if (type != 0) {
-                $(".tab-item").hide().eq(type).show();
-                $(".right-info").hide().eq(type).show();
-            } else {
-                $(".tab-item").hide().eq(0).show();
-                $(".right-info").hide().eq(type).show();
+        //根据父页面传参打开对应的 子页面   
+        function settingSaleType(t) {//1储值送礼   2积花营销   3  买赠活动 4双倍积分   5套餐活动
+            type =t;
+            if(type==0){ 
+                return addMenuItem('../salesManage/salesManage.html')//返回上级页面
             }
+            else{
+                $(".tab-ul li").eq(type).show().siblings().hide();
+                // $(".tab-ul li").eq(0).show();
+                //显示当前所选的栏目
+                $(".tab-item").hide().eq(type-1).show();
+                $(".right-info").hide().eq(type).show();  
+            }
+             
         }
 
 
