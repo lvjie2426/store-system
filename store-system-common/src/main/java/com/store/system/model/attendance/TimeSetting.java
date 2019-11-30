@@ -32,6 +32,8 @@ public class TimeSetting implements Serializable {
 
     private int end;
 
+    private int color;
+
     /***
     * 时间区间
     */
