@@ -76,10 +76,15 @@ public class SpendCardExchangeServiceImpl implements SpendCardExchangeService {
 
     @Override
     public List<ClientSpendCardExchange> getAllList(long psid, long spuId) throws Exception {
-        return transformClient(spendCardExchangeDao.getAllList(psid,spuId,Constant.STATUS_NORMAL));
+        return transformClient(spendCardExchangeDao.getAllList(psid,spuId,Constant.STATUS_NORMAL),0);
     }
 
-    private List<ClientSpendCardExchange> transformClient(List<SpendCardExchange> spendCardExchanges) throws Exception {
+    @Override
+    public List<ClientSpendCardExchange> getAllListBySid(long psid, long sid) throws Exception {
+        return transformClient(spendCardExchangeDao.getAllList(psid, Constant.STATUS_NORMAL), sid);
+    }
+
+    private List<ClientSpendCardExchange> transformClient(List<SpendCardExchange> spendCardExchanges, long sid) throws Exception {
         List<ClientSpendCardExchange> res = Lists.newArrayList();
         Set<Long> skuIds = Sets.newHashSet();
         Set<Long> spuIds = Sets.newHashSet();
@@ -88,7 +93,7 @@ public class SpendCardExchangeServiceImpl implements SpendCardExchangeService {
             spuIds.add(one.getSpuId());
         }
         List<ProductSKU> skuList = productSKUDao.load(Lists.newArrayList(skuIds));
-        List<ClientProductSKU> clientProductSKUS = productService.transformSKUClient(skuList);
+        List<ClientProductSKU> clientProductSKUS = productService.transformSKUClient(skuList, sid);
         Map<Long, ClientProductSKU> clientSkuMap = clientSkuMapUtils.listToMap(clientProductSKUS, "id");
 
         List<ProductSPU> spuList = productSPUDao.load(Lists.newArrayList(spuIds));

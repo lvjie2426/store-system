@@ -9,7 +9,9 @@ import com.store.system.client.ClientSpendCardExchange;
 import com.store.system.client.ResultClient;
 import com.store.system.exception.StoreSystemException;
 import com.store.system.model.SpendCardExchange;
+import com.store.system.model.User;
 import com.store.system.service.SpendCardExchangeService;
+import com.store.system.util.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,6 +83,17 @@ public class SpendCardExchangeController extends BaseController{
                                    long psid, long spuId) throws Exception {
         try {
             List<ClientSpendCardExchange> res = spendCardExchangeService.getAllList(psid, spuId);
+            return this.viewNegotiating(request, response, new ResultClient(true, res));
+        } catch (StoreSystemException e) {
+            return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));
+        }
+    }
+
+    @RequestMapping("/getAllListBySid")
+    public ModelAndView getAllListBySid(HttpServletRequest request, HttpServletResponse response,
+                                   long psid, long sid) throws Exception {
+        try {
+            List<ClientSpendCardExchange> res = spendCardExchangeService.getAllList(psid,sid);
             return this.viewNegotiating(request, response, new ResultClient(true, res));
         } catch (StoreSystemException e) {
             return this.viewNegotiating(request, response, new ResultClient(false, e.getMessage()));

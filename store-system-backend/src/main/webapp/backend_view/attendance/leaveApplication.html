@@ -2,534 +2,863 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="renderer" content="webkit">
-  <title>请假申请</title>
-  <!--Bootstrap样式引入开始-->
-  <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
-  <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
-  <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
-  <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>请假申请</title>
+    <!--Bootstrap样式引入开始-->
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
-  <!--Bootstrap样式引入结束-->
-  <!--字体样式文件引用开始-->
-  <link rel="stylesheet" href="../resource/fonts/iconfont.css">
-  <!--字体样式文件引用结束-->
-  <!--标签样式重置开始-->
-  <link rel="stylesheet" href="../resource/css/reset.css">
-  <!--标签样式重置结束-->
-  <!--公用组件样式-->
-  <link rel="stylesheet" href="../resource/css/common.css">
-  <!--公用组件样式结束-->
-  <!--单页样式-->
-  <link rel="stylesheet" href="../resource/css/yanjing/ordersManage.css">
-  <!--单页样式结束-->
-  <style>
-    /* 头部样式 */
-    .header {
-      line-height: 52px;
-    }
+    <!--Bootstrap样式引入结束-->
+    <!--字体样式文件引用开始-->
+    <link rel="stylesheet" href="../resource/fonts/iconfont.css">
+    <!--字体样式文件引用结束-->
+    <!--标签样式重置开始-->
+    <link rel="stylesheet" href="../resource/css/reset.css">
+    <!--标签样式重置结束-->
+    <!--公用组件样式-->
+    <link rel="stylesheet" href="../resource/css/common.css">
+    <!--公用组件样式结束-->
+    <!--单页样式-->
+    <link rel="stylesheet" href="../resource/css/yanjing/ordersManage.css">
+    <!--单页样式结束-->
+    <link href="../resource/css/yanjing/myDate.css" rel="stylesheet">
+    <style>
+        /* 头部样式 */
+        .header {
+            line-height: 52px;
+        }
 
-    .title {
-      border-bottom: 1px solid #DFDFE9;
-      background: #fff;
-      padding: 12px;
-      float: left;
-    }
+        .title {
+            background: #fff;
+            padding: 12px;
+            float: left;
+        }
 
-    .title span {
-      display: block;
-      float: left;
-      height: 28px;
-      line-height: 28px;
-      text-align: center;
-    }
+        .title span {
+            display: block;
+            float: left;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+        }
 
-    .title span:nth-child(1) {
-      width: 28px;
-      height: 28px;
-      background: #4186DC;
-      border-radius: 50%;
-    }
+        .title span:nth-child(1) {
+            width: 28px;
+            height: 28px;
+            background: #4186DC;
+            border-radius: 50%;
+        }
 
-    .title span:nth-child(1) i {
-      color: #fff;
-      font-size: 14px;
-    }
+        .title span:nth-child(1) i {
+            color: #fff;
+            font-size: 14px;
+        }
 
-    .title span:nth-child(2) {
-      font-size: 14px;
-      color: #393953;
-      margin-left: 6px;
-      font-weight: 600;
-    }
+        .title span:nth-child(2) {
+            font-size: 14px;
+            color: #393953;
+            margin-left: 6px;
+            font-weight: 600;
+        }
 
-    .title span:nth-child(3) {
-      font-size: 12px;
-      background: #4186DC;
-      color: #fff;
-      float: right;
-    }
+        .title span:nth-child(3) {
+            font-size: 12px;
+            background: #4186DC;
+            color: #fff;
+            float: right;
+        }
 
-    .span-staus {
-      display: inline-block;
-      line-height: 18px;
-      border-radius: 2px;
-      padding: 0px 6px;
-      color: rgba(255, 255, 255, 1);
-      font-size: 11px;
-      font-family: PingFangSC-Semibold;
-      text-align: center;
-    }
+        .span-staus {
+            display: inline-block;
+            line-height: 18px;
+            border-radius: 2px;
+            padding: 0px 6px;
+            color: rgba(255, 255, 255, 1);
+            font-size: 11px;
+            font-family: PingFangSC-Semibold;
+            text-align: center;
+        }
 
-    .sta-green {
-      background-color: rgba(84, 182, 119, 1);
-    }
+        .sta-green {
+            background-color: rgba(84, 182, 119, 1);
+        }
 
-    .sta-gray {
-      background-color: rgba(130, 130, 151, 1);
-    }
+        .sta-gray {
+            background-color: rgba(130, 130, 151, 1);
+        }
 
-    .qjImgs {
-      width: 32px;
-      height: 32px;
-      border-radius: 2px;
-      overflow: hidden;
-    }
+        .qjImgs {
+            display: inline-block;
+            margin-right: 6px;
+            width: 32px;
+            height: 32px;
+            border-radius: 2px;
+            overflow: hidden;
+            object-fit: cover;
+        }
 
-    .dkStyle {
-      color: rgba(57, 57, 83, 1);
-      font-size: 12px;
-      font-family: PingFangSC-Medium;
-    }
+        .dkStyle {
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Medium;
+        }
 
-    .dkStyle i {
-      color: rgba(130, 130, 151, 1);
-      font-size: 12px;
-    }
+        .dkStyle i {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+        }
 
-    .sdkTime {
-      color: rgba(57, 57, 83, 1);
-      font-size: 12px;
-      font-family: Roboto-Medium;
-    }
+        .sdkTime {
+            color: rgba(57, 57, 83, 1);
+            font-size: 12px;
+            font-family: Roboto-Medium;
+        }
 
-    .sdkTime1 {
-      color: rgba(130, 130, 151, 1);
-      font-size: 12px;
-      font-family: Roboto-Regular;
-    }
+        .sdkTime1 {
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: Roboto-Regular;
+        }
 
-    .titleRight {
-      float: right;
-    }
+        .titleRight {
+            float: right;
+        }
 
-    .titleRight input {
-      width: 120px;
-      height: 28px;
-      border-radius: 2px;
-      background-color: rgba(255, 255, 255, 1);
-      border: 1px solid rgba(236, 236, 244, 1);
-      color: rgba(130, 130, 151, 1);
-      font-size: 12px;
-      font-family: PingFangSC-Semibold;
-      padding-left: 8px;
-    }
+        .titleRight input {
+            width: 120px;
+            height: 28px;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+            padding-left: 8px;
+        }
 
-    /* 底部样式 */
-    .bottom-bar {
-      display: none;
-      width: 100%;
-      height: 52px;
-      line-height: 52px;
-      padding: 0 12px 0 16px;
-      background-color: rgba(255, 255, 255, 1);
-      box-shadow: 0px -1px 0px 0px rgba(130, 130, 151, 0.1);
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      z-index: 19920323;
+        /* 底部样式 */
+        .bottom-bar {
+            display: none;
+            width: 100%;
+            height: 52px;
+            line-height: 52px;
+            padding: 0 12px 0 16px;
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 0px -1px 0px 0px rgba(130, 130, 151, 0.1);
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            z-index: 19920323;
 
-    }
+        }
 
-    .bottom-bar span {
-      float: left;
-      color: rgba(130, 130, 151, 1);
-      font-size: 12px;
-      text-align: left;
-      font-family: PingFangSC-Medium;
-    }
+        .bottom-bar span {
+            float: left;
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            text-align: left;
+            font-family: PingFangSC-Medium;
+        }
 
-    .bottom-bar .print {
-      height: 36px;
-      line-height: 34px;
-      padding: 0 16px;
-      float: right;
-      margin-left: 12px;
-      background-color: rgba(87, 184, 219, 1);
-      margin-top: 8px;
-    }
+        .bottom-bar .print {
+            height: 36px;
+            line-height: 34px;
+            padding: 0 16px;
+            float: right;
+            margin-left: 12px;
+            background-color: rgba(87, 184, 219, 1);
+            margin-top: 8px;
+        }
 
-    .bottom-bar .cancel {
-      height: 36px;
-      line-height: 34px;
-      padding: 0 16px;
-      float: right;
-      margin-top: 8px;
-    }
+        .bottom-bar .cancel {
+            height: 36px;
+            line-height: 34px;
+            padding: 0 16px;
+            float: right;
+            margin-top: 8px;
+        }
 
-    .srossBtn {
-      width: 44px;
-      height: 28px;
-      vertical-align: middle;
-      text-align: center;
-      border-radius: 2px;
-      color: #fff;
-      background-color: rgba(87, 184, 219, 1);
-      border: 1px solid rgba(65, 134, 220, 0.1);
-      margin-left: 8px;
-    }
+        .srossBtn {
+            width: 44px;
+            height: 28px;
+            vertical-align: middle;
+            text-align: center;
+            border-radius: 2px;
+            color: #fff;
+            background-color: rgba(87, 184, 219, 1);
+            border: 1px solid rgba(65, 134, 220, 0.1);
+            margin-left: 8px;
+        }
 
-    /*编辑弹窗*/
-    .layui-layer-editStff-tan {
-      border-radius: 2px;
-      background: #fefefe;
-    }
+        /*编辑弹窗*/
+        .layui-layer-editStff-tan {
+            border-radius: 2px;
+            background: #fefefe;
+        }
 
-    /*头部*/
-    .layui-layer-editStff-tan .head {
-      height: 44px;
-      padding: 0 12px;
-      border-bottom: 1px solid #ebebf3;
-    }
+        /*头部*/
+        .layui-layer-editStff-tan .head {
+            height: 44px;
+            padding: 0 12px;
+            border-bottom: 1px solid #ebebf3;
+        }
 
-    .layui-layer-editStff-tan .head span {
-      display: block;
-      float: left;
-      height: 42px;
-      line-height: 42px;
-      font-weight: 600;
-    }
+        .layui-layer-editStff-tan .head span {
+            display: block;
+            float: left;
+            height: 42px;
+            line-height: 42px;
+            font-weight: 600;
+        }
 
-    .layui-layer-editStff-tan .head span:nth-child(1) {
-      color: #393953;
-    }
+        .layui-layer-editStff-tan .head span:nth-child(1) {
+            color: #393953;
+        }
 
-    .layui-layer-editStff-tan .head span:nth-child(2) {
-      font-size: 12px;
-      color: rgba(130, 130, 151, 1);
-      float: right;
-      cursor: pointer;
-      font-family: Roboto-Regular;
-    }
+        .layui-layer-editStff-tan .head span:nth-child(2) {
+            font-size: 12px;
+            color: rgba(130, 130, 151, 1);
+            float: right;
+            cursor: pointer;
+            font-family: Roboto-Regular;
+        }
 
-    /*body*/
-    .layui-layer-editStff-tan .body {
-      height: 282px;
-      border-bottom: 1px solid #ebebf3;
-    }
+        /*body*/
 
-    .layui-layer-editStff-tan .body .myUl {
-      width: 100%;
-      height: 100%;
-      margin-bottom: 0;
-    }
+        .layui-layer-editStff-tan .body .myUl {
+            width: 100%;
+            height: 100%;
+            margin-bottom: 0;
+        }
 
-    .layui-layer-editStff-tan .body .myUl .item {
-      width: 48%;
-      float: left;
-      margin-left: 2%;
-    }
+        .layui-layer-editStff-tan .body .myUl .item {
+            width: 48%;
+            float: left;
+            margin-left: 2%;
+        }
 
-    .layui-layer-editStff-tan .body .myUl .item>div {
-      color: #000;
-      font-size: 12px;
-      box-sizing: border-box;
-    }
+        .layui-layer-editStff-tan .body .myUl .item > div {
+            color: #000;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
 
-    .layui-layer-editStff-tan .body .myUl .item>div:nth-child(1) {
-      text-align: left;
-      margin-top: 12px;
-    }
+        .layui-layer-editStff-tan .body .myUl .item > div:nth-child(1) {
+            text-align: left;
+            margin-top: 12px;
+        }
 
-    .layui-layer-editStff-tan .body .myUl .item>div:nth-child(2) {
-      width: 156px;
-      height: 28px;
-      border: 1px solid #ececf4;
-      border-radius: 2px;
-      margin-top: 6px;
-    }
+        .layui-layer-editStff-tan .body .myUl .item > div:nth-child(2) {
+            width: 156px;
+            line-height: 28px;
+            border: 1px solid #ececf4;
+            border-radius: 2px;
+            margin-top: 6px;
+        }
 
-    .layui-layer-editStff-tan .body .myUl .item input {
-      width: 100%;
-      height: 100%;
-      border: none;
-      outline: none;
-      padding: 7px 8px;
-    }
+        .layui-layer-editStff-tan .body .myUl .item input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            padding: 7px 8px;
+        }
 
-    #l1 {
-      width: 98%;
-      box-sizing: border-box;
-      padding-right: 16px;
-      overflow: hidden;
-    }
+        #l1 {
+            width: 98%;
+            box-sizing: border-box;
+            padding-right: 16px;
+        }
 
-    .leaveTime {
-      margin-top: 6px;
-      display: inline-block;
-      width: 100%;
-      line-height: 28px;
-      border-radius: 2px;
-      color: rgba(57, 57, 83, 1);
-      font-family: Roboto-Medium;
-      font-size: 12px;
-      padding: 0px 8px;
-      background-color: rgba(255, 255, 255, 1);
-      border: 1px solid rgba(236, 236, 244, 1);
-    }
+        #select-time-header1 {
+            margin-top: 6px;
+            display: inline-block;
+            width: 100%;
+            line-height: 28px;
+            border-radius: 2px;
+            color: rgba(57, 57, 83, 1);
+            font-family: Roboto-Medium;
+            font-size: 12px;
+            background-color: rgba(255, 255, 255, 1);
+            border: 0px;
+        }
 
-    .leaveTime i {
-      float: right;
-      color: rgba(130, 130, 151, 1);
-    }
+        #select-time-header1 .yj-demo-time .yj-date {
+            width: 100%;
+        }
 
-    #last {
-      width: 98%;
-    }
+        #last {
+            width: 98%;
+        }
 
-    #fjImg {
-      width: 50px;
-      height: 40px;
-      border-radius: 2px;
-      overflow: hidden;
-    }
+        .imgBox {
+            display: inline-block;
+            margin-right: 6px;
+            width: 50px;
+            height: 40px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
 
-    .my-skin .layui-layer-btn .layui-layer-btn0 {
-      border-radius: 2px;
-      background-color: rgba(244, 244, 248, 1);
-      border: 1px solid rgba(236, 236, 244, 1);
-      color: rgba(130, 130, 151, 1);
-      font-size: 12px;
-      font-family: PingFangSC-Semibold;
-    }
+        #qtzlImg {
+            display: inline-block;
+            margin-right: 6px;
+            width: 98%;
+            border-radius: 2px;
+            overflow: hidden;
+            border: 0px;
+        }
 
-    .layui-layer-btn .layui-layer-btn1 {
-      border-radius: 2px;
-      background-color: rgba(65, 134, 220, 1);
-      color: rgba(255, 255, 255, 1);
-      font-size: 12px;
-      font-family: PingFangSC-Semibold;
-    }
-  </style>
+        #qtzlImg .test2 {
+            display: inline-block;
+            margin-right: 6px;
+            width: 50px;
+            height: 40px;
+            border: 1px solid #eee;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 2px;
+            color: #828297;
+            vertical-align: top;
+        }
+
+        .my-skin .layui-layer-btn .layui-layer-btn0 {
+            border-radius: 2px;
+            background-color: rgba(244, 244, 248, 1);
+            border: 1px solid rgba(236, 236, 244, 1);
+            color: rgba(130, 130, 151, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+
+        .layui-layer-btn .layui-layer-btn1 {
+            border-radius: 2px;
+            background-color: rgba(65, 134, 220, 1);
+            color: rgba(255, 255, 255, 1);
+            font-size: 12px;
+            font-family: PingFangSC-Semibold;
+        }
+
+        #select-time-header .yj-demo-time .yj-date {
+            height: 32px;
+            background-color: rgba(244, 244, 248, 1);
+        }
+    </style>
 </head>
 
 <body class="body-bg">
-  <div class="header clear">
+<div class="header clear">
     <div class="contHeader">
-      <div class="title">
-        <span><i class="icon iconfont icon-ico_multiusercopy"></i></span>
-        <span>请假申请</span>
-      </div>
+        <div class="title">
+            <span><i class="icon iconfont icon-ico_multiusercopy"></i></span>
+            <span>请假申请</span>
+        </div>
     </div>
     <div class="titleRight">
-      <input type="text" placeholder="搜索员工姓名">
+        <input type="text" placeholder="搜索员工姓名">
     </div>
-  </div>
-  <div id="second-bar">
+</div>
+<div id="second-bar">
     <ul class="filter-list clear">
-      <li class="filter-item">
-        <div class="yj-demo-time">
-          <div class="yj-date">
-            <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
-          </div>
-        </div>
-      </li>
-      <li class="filter-item">
-        <div class="selectBox" id="selectAllState">
-          <div class="select-box-header">
-            <span class="text">全部状态</span>
-            <i class="iconfont icon-ico_arrow_down" id="jt"></i>
-          </div>
-          <div class="optionBox">
-            <ul class="optionUL">
-              <li value="01">1</li>
-              <li value="02">2</li>
-              <li value="03">3</li>
-              <li value="04">4</li>
-              <li value="05">5</li>
-            </ul>
-          </div>
-        </div>
-      </li>
+        <li class="filter-item">
+            <div id="select-time-header">
+                <div class="yj-demo-time">
+                    <div class="yj-date">
+                        <span>开始时间-结束时间</span><i class="iconfont icon-ico_calendar"></i>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="filter-item">
+            <div class="selectBox" id="selectAllState">
+                <div class="select-box-header">
+                    <span class="text">全部类型</span>
+                    <i class="iconfont icon-ico_arrow_down" id="jt"></i>
+                </div>
+                <div class="optionBox">
+                    <ul class="optionUL">
+                        <li value="01">1</li>
+                        <li value="02">2</li>
+                        <li value="03">3</li>
+                        <li value="04">4</li>
+                        <li value="05">5</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
     </ul>
-  </div>
-  <div class="content">
+</div>
+<div class="content">
     <table id="dxqf-table" data-toggle="table" class="table table-border"></table>
-  </div>
-  <div class="bottom-bar">
+</div>
+<div class="bottom-bar">
     <span>已选中2项</span>
     <input type="button" class="print btn btn-primary" value="通过">
     <input type="button" class="cancel btn btn-gray" value="取消选中">
-  </div>
-  <div class="content-view"></div>
+</div>
+<div class="content-view"></div>
 
-  <!--编辑员工弹窗-->
-  <div class="content-view content-view-editStff edit-employees" style="display:none">
+<!--编辑员工弹窗-->
+<div class="content-view content-view-editStff edit-employees" style="display:none">
+    <div id="bianjiInfo"></div>
+</div>
+<!--全局JS引用-->
+<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+    <input style="height: 0;width: 0;" type="file" name="file"
+           accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" multiple="multiple"/>
+</form>
+<!--全局js-->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.js?v=3.3.6"></script>
+<!--时间插件引用的css-->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/layui/layui.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+<script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+<script src="../resource/js/lib/quakoo/Config.js"></script>
+<script src="../resource/js/lib/quakoo/project.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script src="../resource/js/template-native.js"></script>
+<script src="../resource/js/yanjing/yanjing.js"></script>
+<script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
+<!--//日期范围插件开始-->
+<script src="../resource/js/yanjing/daterange.js"></script>
+<!--//日期范围插件结束-->
+<script type="text/html" id="bianjiToast">
     <div class="head">
-      <span id="edit-name">张三的请假申请</span>
-      <span id="removeStaff">申请日期: 2019-06-06</span>
+        <span id="edit-name"><%=list.askName%>的请假申请</span>
+        <span id="removeStaff">申请日期: <%=getYMDTime(list.startTime)%></span>
     </div>
     <div class="body">
-      <ul class="myUl">
-        <li class="item">
-          <div>状态</div>
-          <div class="selectBox" id="selectBox4">
-            <div class="select-box-header">
-              <span class="text" id="edit-job"></span> <i class="iconfont icon-ico_arrow_down"></i>
-            </div>
-            <div class="optionBox">
-              <ul class="optionUL" id="jobBox">
-              </ul>
-            </div>
-          </div>
-        </li>
-        <li class="item">
-          <div>请假类型</div>
-          <div class="selectBox" id="selectBox5">
-            <div class="select-box-header">
-              <span class="text">男</span> <i class="iconfont icon-ico_arrow_down"></i>
-            </div>
-            <div class="optionBox">
-              <ul class="optionUL">
-                <li value="1">事假</li>
-                <li value="2">病假</li>
-              </ul>
-            </div>
-          </div>
-        </li>
-        <li class="item" id="l1">
-          <div>请假时间</div>
-          <span class="leaveTime"><span>2019.06.08 08:00 - 2019.06.10 21:00</span><i
-              class="iconfont icon-ico_calendar"></i></span>
-        </li>
-        <li class="item">
-          <div>审核状态</div>
-          <div class="selectBox" id="selectBox6">
-            <div class="select-box-header">
-              <span class="text" id="edit-job1">通过</span> <i class="iconfont icon-ico_arrow_down"></i>
-            </div>
-            <div class="optionBox">
-              <ul class="optionUL" id="jobBox1">
-              </ul>
-            </div>
-          </div>
-        </li>
-        <li class="item">
-          <div>申请原因</div>
-          <div>
-            <input type="email" placeholder="请输入原因" />
-          </div>
-        </li>
-        <li class="item" id="last">
-          <div>图片附件</div>
-          <div id="fjImg">
-            <img src="../resource/img/a1.jpg" alt="">
-          </div>
-        </li>
-      </ul>
+        <ul class="myUl">
+            <li class="item">
+                <div>状态</div>
+                <div class="selectBox" id="selectBox4">
+                    <div class="select-box-header">
+                        <span class="text" id="edit-job">
+                            请假
+                        </span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL" id="jobBox">
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div>请假类型</div>
+                <div class="selectBox" id="selectBox5">
+                    <div class="select-box-header">
+                        <span class="text" id="leaveTp">
+                            <%if(list.leaveType == 0){%>
+                            事假
+                            <%}else if(list.leaveType == 1){%>
+                            病假
+                            <%}else if(list.leaveType == 2){%>
+                            倒休
+                            <%}else if(list.leaveType == 3){%>
+                            年假
+                            <%}else if(list.leaveType == 4){%>
+                            月假
+                            <%}else if(list.leaveType == 5){%>
+                            婚假
+                            <%}else if(list.leaveType == 6){%>
+                            产检假
+                            <%}else if(list.leaveType == 7){%>
+                            产假
+                            <%}else if(list.leaveType == 8){%>
+                            陪产假
+                            <%}else if(list.leaveType == 9){%>
+                            丧假
+                            <%}else if(list.leaveType == 10){%>
+                            其他
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL">
+                            <li>事假</li>
+                            <li>病假</li>
+                            <li>倒休</li>
+                            <li>年假</li>
+                            <li>月假</li>
+                            <li>婚假</li>
+                            <li>产检假</li>
+                            <li>产假</li>
+                            <li>陪产假</li>
+                            <li>其他</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item" id="l1">
+                <div>请假时间</div>
+                <div id="select-time-header1">
+                    <div class="yj-demo-time">
+                        <div class="yj-date">
+                            <span><%=getYMDTime(list.startTime)%> - <%=getYMDTime(list.endTime)%></span><i
+                                class="iconfont icon-ico_calendar"></i>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div>审核状态</div>
+                <div class="selectBox" id="selectBox6">
+                    <div class="select-box-header">
+                        <span class="text" id="edit-job1">
+                            <%if(list.status == 0){%>
+                            审核通过
+                            <%}else if(list.status == 1){%>
+                            未通过
+                            <%}%>
+                        </span> <i class="iconfont icon-ico_arrow_down"></i>
+                    </div>
+                    <div class="optionBox">
+                        <ul class="optionUL" id="jobBox1">
+                            <li>审核通过</li>
+                            <li>不通过</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div>申请原因</div>
+                <div>
+                    <input type="email" placeholder='<%=list.content%>' id="reason"/>
+                </div>
+            </li>
+            <li class="item" id="last">
+                <div>图片附件</div>
+                <div class="cont layui-upload" style="overflow: hidden" class="imgBox"
+                     id="qtzlImg">
+                    <%if(list.imgs){%>
+                    <%for(var i = 0; i < list.imgs.length; i++){%>
+                    <div class="imgBox">
+                        <img src="<%=list.imgs[i]%>" real-src="<%=list.imgs[i]%>"
+                             style="width: 100%;height: 100%" alt="">
+                        <div class="del" onclick="delImg(this)"></div>
+                    </div>
+                    <%}%>
+                    <%}%>
+                    <span onclick="uploadIcon(this)" class="layui-btn test2"><i
+                            class="icon iconfont icon-ico_plus"></i></span>
+                </div>
+            </li>
+        </ul>
     </div>
-  </div>
-  <!--全局JS引用-->
-  <script src="../resource/js/jquery.min.js"></script>
-  <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
-  <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
-  <script src="../resource/js/lib/quakoo/project.js"></script>
-  <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
-  <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
-  <script src="../resource/js/plugins/layer/layer.js"></script>
-  <script src="../resource/js/yanjing.js"></script>
-  <script src="../resource/js/mobiscroll.2.13.2.js"></script>
-  <!--//日期范围插件开始-->
-  <script src="../resource/js/yanjing/daterange.js"></script>
-  <!--//日期范围插件结束-->
+</script>
+<script>
+    //日期范围插件开始
+    var startTime,
+        date = new Date(),
+        endTime;
+    var date1 = new dateRange("#select-time-header .yj-demo-time");
+    date1.init();
+    $('#select-time-header button').click(function () {
+        startTime = date1.getTime()[2];
+        endTime = date1.getTime()[3];
+        getList();
+    })
+    // 日期范围插件结束
+    //选择类型下拉框
+    selectTag($("#selectAllState"), function (ret) {
+    })
 
-  <script>
-
-    var data3 = [
-      { onum: "1", name: "李搜索", date: "2019.11.13", leixing: "病假", resean: "有事", qjImg: '<div class="qjImgs"><img src="../resource/img/a1.jpg"></div>', qjTime: "2019.11.13</br>2019.11.13", qjDay: "2天", shRen: "李", csRen: "王", status: '<span class="span-staus  sta-green">通过</span>' },
-      { onum: "1", name: "李搜索", date: "2019.11.13", leixing: "病假", resean: "有事", qjImg: '<div class="qjImgs"><img src="../resource/img/a1.jpg"></div>', qjTime: "2019.11.13</br>2019.11.13", qjDay: "2天", shRen: "李", csRen: "王", status: '<span class="span-staus  sta-gray">未通过</spa>' },
-      { onum: "1", name: "李搜索", date: "2019.11.13", leixing: "病假", resean: "有事", qjImg: '<div class="qjImgs"><img src="../resource/img/a1.jpg"></div>', qjTime: "2019.11.13</br>2019.11.13", qjDay: "2天", shRen: "李", csRen: "王", status: '<span class="span-staus  sta-green">通过</span>' },
-      { onum: "1", name: "李搜索", date: "2019.11.13", leixing: "病假", resean: "有事", qjImg: '<div class="qjImgs"><img src="../resource/img/a1.jpg"></div>', qjTime: "2019.11.13</br>2019.11.13", qjDay: "2天", shRen: "李", csRen: "王", status: '<span class="span-staus  sta-gray">未通过</span>' },
-      { onum: "1", name: "李搜索", date: "2019.11.13", leixing: "病假", resean: "有事", qjImg: '<div class="qjImgs"><img src="../resource/img/a1.jpg"></div>', qjTime: "2019.11.13</br>2019.11.13", qjDay: "2天", shRen: "李", csRen: "王", status: '<span class="span-staus  sta-green">通过</span>' },
-      { onum: "1", name: "李搜索", date: "2019.11.13", leixing: "病假", resean: "有事", qjImg: '<div class="qjImgs"><img src="../resource/img/a1.jpg"></div>', qjTime: "2019.11.13</br>2019.11.13", qjDay: "2天", shRen: "李", csRen: "王", status: '<span class="span-staus  sta-gray">未通过</span>' },
-    ];
-    $("#dxqf-table").bootstrapTable({
-      data: data3,                 //被加载的数据。
-      classes: "table",
-      pagination: true,            //是否显示分页
-      pageNumber: 1,               //初始化加载第一页，默认第一页
-      pageSize: 10,
-      pageList: [5, 10, 15, 20],
-      sortable: false,
-      sortOrder: "asc",
-      showColumns: true,
-      strictSearch: true,
-      locale: "zh-CN",
-      paginationHAlign: "center",
-      clickToSelect: true,
-      columns: [
-        { checkbox: true, valign: "middle" },
-        { field: "onum", title: "序号", align: "left", valign: "middle" },
-        { field: "name", title: "姓名", align: "left", valign: "middle" },
-        { field: "date", title: "申请日期", align: "left", valign: "middle" },
-        { field: "leixing", title: "请假类型", align: "left", valign: "middle" },
-        { field: "resean", title: "请假原因", align: "left", valign: "middle" },
-        { field: "qjImg", title: "打卡图片", align: "left", valign: "middle" },
-        { field: "qjTime", title: "请假时间", align: "left", valign: "middle" },
-        { field: "qjDay", title: "请假时长", align: "left", valign: "middle" },
-        { field: "shRen", title: "审核人", align: "left", valign: "middle" },
-        { field: "csRen", title: "抄送人", align: "left", valign: "middle" },
-        { field: "status", title: "审核状态", align: "left", valign: "middle" },
+    var columns = [
+        {checkbox: true, valign: "middle"},
+        {field: "id", title: "序号", align: "left", valign: "middle"},
+        {field: "askName", title: "姓名", align: "left", valign: "middle"},
         {
-          field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
-            return '<button class="btn btn-primary" onclick="showStffEdit()">编辑</button><button class="srossBtn">通过</button>';
-          }
+            field: "startTime",
+            title: "申请日期",
+            align: "left",
+            valign: "middle",
+            formatter: function (value, row, index) {
+                return quakooUtils.formatTimeToDay(value)
+            }
+        },
+        {
+            field: "leaveType",
+            title: "请假类型",
+            align: "left",
+            valign: "middle",
+            formatter: function (value, row, index) {
+                if (value == 0) {
+                    return '事假'
+                } else if (value == 1) {
+                    return '病假'
+                } else if (value == 2) {
+                    return '倒休'
+                } else if (value == 3) {
+                    return '年假'
+                } else if (value == 4) {
+                    return '月假'
+                } else if (value == 5) {
+                    return '婚假'
+                } else if (value == 6) {
+                    return '产检假'
+                } else if (value == 7) {
+                    return '产假'
+                } else if (value == 8) {
+                    return '陪产假'
+                } else if (value == 9) {
+                    return '丧假'
+                } else if (value == 10) {
+                    return '其他'
+                }
+            }
+        },
+        {field: "content", title: "请假原因", align: "left", valign: "middle"},
+        {
+            field: "imgs", title: "附加图片", align: "left", valign: "middle", formatter: function (value, row, index) {
+                var html = '';
+                for (var i = 0; i < value.length; i++) {
+                    html += '<div class="qjImgs">' + '<img src="' + value[i] + '" alt="">' + '</div>'
+                }
+                return html;
+            }
+        },
+        {
+            field: "startTime",
+            title: "请假时间",
+            align: "left",
+            valign: "middle",
+            formatter: function (value, row, index) {
+                return quakooUtils.formatTimeToDay(value);
+            }
+        },
+        {
+            field: "leaveTime",
+            title: "请假时长",
+            align: "left",
+            valign: "middle",
+            formatter: function (value, row, index) {
+                return value + '天';
+            }
+        },
+        {field: "checkName", title: "审核人", align: "left", valign: "middle"},
+        {field: "copyName", title: "抄送人", align: "left", valign: "middle"},
+        {
+            field: "status", title: "审核状态", align: "left", valign: "middle", formatter: function (value, row, index) {
+                if (value == 0) {
+                    return '<span class="span-staus sta-green">审核通过</span>';
+                } else if (status == 1) {
+                    return '<span class="span-staus sta-gray">未通过</span>'
+                }
+            }
+        },
+        {
+            field: "", title: "操作", align: "center", valign: "middle", formatter: function (value, row, index) {
+                return '<button class="btn btn-primary" onclick=\'showStffEdit(' + JSON.stringify(row) + ')\'>编辑</button><button class="srossBtn">通过</button>';
+            }
         }
-      ]
+    ]
 
-    });
+    function getList() {
+        $('#dxqf-table').bootstrapTable('destroy');
+        $('#dxqf-table').bootstrapTable({
+            dom: '#dxqf-table',
+            data: false,
+            url: config.getUrl_attendance_getLeaveList(),         //请求后台的URL（*）
+            method: 'get',
+            type: 'client',
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            //                    striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            sidePagination: 'client',           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+            //                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            //              showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //              height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            //                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            columns: columns,
+            //                    showFooter:true,            //表格底部
+            onClickRow: function (row) {
+            },
+            queryParamsType: 'limit',
+            queryParams: function (params) {
+                params.token = quakooUser.getUserInfo().token;
+                params.page = (params.offset / params.limit) + 1;
+                params.size = params.limit;
+                params.subid = quakooUser.getUserInfo().sid;
+                params.sid = quakooUser.getUserInfo().psid;
+                params.userName = quakooUser.getUserInfo().name;
+                params.type = 1;
+                if (isNotBlank(startTime) && isNotBlank(endTime)) {
+                    params.startTime = startTime;
+                    params.endTime = endTime;
+                } else {
+                    params.startTime = new Date(date.getFullYear() + '.01' + '.01').getTime();
+                    params.endTime = date.getTime();
+                }
+                return params
+            }
+        });
+    };
+    getList();
     $("table").click(function showBotBar() {
-      var botBar = $(".bottom-bar");
-      if ($(".table tbody tr").hasClass("selected")) {
-        botBar.css("display", "block");
-      } else {
-        botBar.css("display", "none")
-      }
+        var botBar = $(".bottom-bar");
+        if ($(".table tbody tr").hasClass("selected")) {
+            botBar.css("display", "block");
+        } else {
+            botBar.css("display", "none")
+        }
     });
+
     /**弹窗——编辑员工*/
+    var startTime1,
+        updata, //编辑的原始数据
+        endTime1;
+
     function showStffEdit(data) {
-      layer.open({
-        type: 1,
-        shade: 0.01,
-        title: null,
-        skin: 'layui-layer-editStff-tan content-view-submit my-skin', //样式类名
-        anim: 0,
-        move: $('.content-view-editStff .moveTitle'),
-        area: ['360px', 'auto'],
-        closeBtn: 0,      //不显示关闭按钮
-        resize: false,
-        shadeClose: true, //开启遮罩关闭
-        content: $('.content-view-editStff.edit-employees'),
-        btn: ['取消', '保存']
-      });
+        updata = data;
+        var html = template('bianjiToast', {list: data});
+        $('#bianjiInfo').html(html);
+        quakooUtils.stopEventBubble();
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            title: null,
+            skin: 'layui-layer-editStff-tan content-view-submit my-skin', //样式类名
+            anim: 0,
+            move: $('.content-view-editStff .moveTitle'),
+            area: ['360px', 'auto'],
+            closeBtn: 0,      //不显示关闭按钮
+            resize: false,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-editStff.edit-employees'),
+            btn: ['取消', '保存'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            btn2: function (index) {
+                updateLeave();
+            },
+            success: function (layero, index) {
+                var date2 = new dateRange("#select-time-header1 .yj-demo-time", true);
+                date2.init();
+                $('#select-time-header1 button').click(function () {
+                    startTime1 = date2.getTime()[2];
+                    endTime1 = date2.getTime()[3];
+                })
+                //选择类型下拉框
+                selectTag($("#selectBox6"), function (ret) {
+                    console.log(ret.text)
+                });
+                selectTag($("#selectBox5"), function (ret) {
+                })
+            }
+        });
+
     }
 
+    //保存编辑请假
+    function updateLeave() {
+        console.log(updata)
+        var imgs = $.makeArray($('#last .imgBox>img').map(function (index, item) {
+            return $(item).attr('real-src');
+        })).join(','); //照片
+        var type,
+            status1;
+        var leaveTp = $('#leaveTp').html();
+        if (leaveTp == '事假') {
+            type = 0;
+            console.log(type)
+            console.log(leaveTp)
+        } else if (leaveTp == '病假') {
+            type = 1;
+        } else if (leaveTp == '倒休') {
+            type = 2;
+        } else if (leaveTp == '年假') {
+            type = 3;
+        } else if (leaveTp == '月假') {
+            type = 4;
+        } else if (leaveTp == '婚假') {
+            type = 5;
+        } else if (leaveTp == '产检假') {
+            type = 6;
+        } else if (leaveTp == '产假') {
+            type = 7;
+        } else if (leaveTp == '陪产假') {
+            type = 8;
+        } else if (leaveTp == '丧假') {
+            type = 9;
+        } else if (leaveTp == '其他') {
+            type = 10;
+        }
+        //状态
+        if($('#edit-job1').html() == '审核通过'){
+            status1 = 1;
+        }else if($('#edit-job1').html() == '未通过'){
+            status1 = 2;
+        }
+        quakooData.ajaxGetData(config.getUrl_attendance_updateLeaveList(), {
+            id: updata.id,
+            leaveType: type,
+            leaveTime: updata.leaveTime,
+            sid: updata.sid,
+            subId: updata.subId,
+            askUid: updata.askUid,
+            status: status1,
+            checkUid: updata.checkUid,
+            copyUid: updata.copyUid,
+            startTime: quakooUtils.isNotBlack(startTime1) ? startTime1 : updata.startTime,
+            endTime: quakooUtils.isNotBlack(endTime1) ? endTime1 : updata.endTime,
+            imgs: imgs,
+            content: quakooUtils.isNotBlack($('#reason').val()) ? $('#reason').val() : updata.content,
+        }, function (ret) {
+            if (ret && ret.success) {
+                layer.msg('yes', {icon: 1}, 2000);
+            }
+        })
+    }
 
-  </script>
+    function delImg(self) {
+        $(self).parent('.imgBox').remove()
+        if ($('.imgBox .imgBox').length < 3) {
+            $(".test2").show();
+        }
+    }
+
+    //上传门店图片
+    function uploadIcon(self) {
+        $('#uploadForm>input').val('');
+        quakooImg.open(function (data) {
+            for (var i = 0; i < data.length; i++) {
+                if ($(self).prevAll('.imgBox').length < 9) {
+                    var obj = quakooImg.processImg(data[i], 100, 100)
+                    var str = '<div class="imgBox"><img src="' + obj.url + '" real-src="' + data[i] + '" style="' + obj.style + '" alt=""><div class="del" onclick="delImg(this)"></div></div>'
+                    $(self).before(str)
+                }
+            }
+            if ($(self).prevAll('.imgBox').length >= 9) {
+                $(self).hide();
+            }
+        })
+    }
+</script>
 </body>
 
 </html>

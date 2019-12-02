@@ -318,7 +318,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="companyManageCont">
     <div class="contHeader">
@@ -328,31 +327,12 @@
       </div>
     </div>
     <div class="shopItems wrap90 clearfix">
-      <ul class="contUl clearfix">
+      <ul class="contUl clearfix" id="contShop">
 
       </ul>
     </div>
-    <!--门店详细弹窗-->
-    <div class="content-view content-view-shopDes">
-      <div class="shopMsg">
-        <ul class="clearfix">
-          <li class="clearfix">
-            <p class="title">门店名称</p>
-            <input type="text" placeholder="名称">
-          </li>
-          <li>
-            <p class="title">门店简码</p>
-            <input type="text" placeholder="简码">
-          </li>
-          <li>
-            <p class="title">门店电话</p>
-            <input type="number" placeholder="电话">
-          </li>
-        </ul>
-      </div>
-
-    </div>
   </div>
+
   <!--全局js-->
   <script src="../resource/js/jquery.min.js"></script>
   <script src="../resource/js/bootstrap.js?v=3.3.6"></script>
@@ -362,9 +342,53 @@
   <script src="../resource/js/plugins/layer/layer.js"></script>
   <script src="../resource/layui/layui.js"></script>
   <script src="../resource/js/lib/quakooLib/QuakooBase-1.0.0.js"></script>
+  <script src="../resource/js/lib/quakooLib/QuakooConfig-1.0.0.js"></script>
+  <script src="../resource/js/lib/quakooLib/QuakooBasePc-1.0.0.js"></script>
+  <script src="../resource/js/lib/quakoo/Config.js"></script>
   <script src="../resource/js/lib/quakoo/project.js"></script>
-  <script src="../resource/js/yanjing.js"></script>
-  <script src="../resource/js/mobiscroll.2.13.2.js"></script>
+  <script src="../resource/common/common.js?" +Math.random()></script>
+  <script src="../resource/js/template-native.js"></script>
+  <script src="../resource/js/yanjing/yanjing.js"></script>
+  <script src="../resource/js/yanjing/mobiscroll.2.13.2.js"></script>
+  <!--//日期范围插件开始-->
+  <script src="../resource/js/yanjing/daterange.js"></script>
+  <!--//日期范围插件结束-->
+  <script type="text/html" id="shopTemplate">
+    <%for(var i = 0; i < list.length; i++){%>
+    <li class="item">
+      <div class="top">
+        <p class="shopName txtOverflow"><%=list[i].name%></p>
+        <div class="handle">
+          <form class="layui-form">
+            <div class="layui-form-item">
+              <label class="layui-form-label">未启用考勤</label>
+              <div class="layui-input-block">
+                <input id="shopIsOpen" type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="middle">
+        <p class="Id">
+          <span class="txt1">门店简码</span>
+          <span class="txt2 txtOverflow"><%=list[i].storeCode%></span>
+        </p>
+        <p class="addr">
+          <span class="txt1">门店地址</span>
+          <span class="txt2 txtOverflow"><%=list[i].address%></span>
+        </p>
+        <p class="tel">
+          <span class="txt1">联系方式</span>
+          <span class="txt2 txtOverflow"><%=list[i].phone%></span>
+        </p>
+      </div>
+      <div class="bottom">
+        <a class="edit" href="./seeEmplayer.html?id=<%=list[i].id%>">查看员工考勤</a>
+      </div>
+    </li>
+    <%}%>
+  </script>
   <script>
     //初始化layui模块，并监听事件
     layui.use(['form', 'layedit', 'laydate'], function () {
@@ -376,82 +400,14 @@
       });
     })
 
-    //门店详细弹窗
-    function shopDes() {
-      mapInit()
-      layer.open({
-        type: 1,
-        shade: 0.01,
-        title: '创建门店',
-        skin: 'content-view-shopDes-tan content-view-submit', //样式类名
-        anim: 0,
-        area: ['370px', '550px'],
-        closeBtn: 0, //不显示关闭按钮
-        resize: false,
-        shadeClose: true, //开启遮罩关闭
-        content: $('.content-view-shopDes'), //容器对象
-        btn: ['取消', '保存'],
-        yes: function (index) {
-          layer.close(index);
-        },
-        btn2: function (index) {
-          layer.close(index);
-        },
-        success: function (layero, index) {
-          form.on('radio(jiagong)', function (data) {
-            if (data.value == 'own') {
-              $('#jiagong').removeClass('active')
-            } else {
-              $('#jiagong').addClass('active')
-            }
-          });
-          upploadPic()
-        }
-      });
-    }
-    //店铺li
-    var shopItem = '<li class="item">' +
-      '<div class="top">' +
-      '<p class="shopName txtOverflow">杭州市旗舰店</p>' +
-      '<div class="handle">' +
-      '<form class="layui-form">' +
-      '                            <div class="layui-form-item">' +
-      '                                <label class="layui-form-label">未启用考勤</label>' +
-      '                                <div class="layui-input-block">' +
-      '                                    <input id="shopIsOpen" type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest">' +
-      '                                </div>' +
-      '                            </div>' +
-      '                        </form>' +
-      '                    </div>' +
-      '                </div>' +
-      '                <div class="middle">' +
-      '                    <p class="Id">' +
-      '                        <span class="txt1">门店密码</span>' +
-      '                        <span class="txt2 txtOverflow">SH128</span>' +
-      '                    </p>' +
-      '                    <p class="addr">' +
-      '                        <span class="txt1">门店密码</span>' +
-      '                        <span class="txt2 txtOverflow">北京市朝阳区雍和宫</span>' +
-      '                    </p>' +
-      '                    <p class="tel">' +
-      '                        <span class="txt1">门店密码</span>' +
-      '                        <span class="txt2 txtOverflow">0571 3183 2188</span>' +
-      '                    </p>' +
-      '                    <p class="payMode">' +
-      '                        <span class="txt1">门店密码</span>' +
-      '                        <span class="txt2 txtOverflow">个人微信</span>' +
-      '                    </p>' +
-      '                </div>' +
-      '                <div class="bottom">' +
-      '                    <a class="edit" onclick="seeEmployDetail(this)">查看员工考勤</a>' +
-      '                </div>' +
-      '            </li>'
-    for (var i = 0; i < 10; i++) {
-      $('.shopItems .contUl').append(shopItem)
-    }
-
-    function seeEmployDetail(_this) {
-
+    getShopInfo();
+    //获取门店信息
+    function getShopInfo() {
+      quakooData.ajaxGetData(config.getUrl_subordinate_getSubordinateStore(), {sid: quakooUser.getUserInfo().psid}, function (ret) {
+        console.log(ret);
+        var html = template('shopTemplate', {list: ret.data});
+        $('#contShop').html(html);
+      })
     }
   </script>
 </body>

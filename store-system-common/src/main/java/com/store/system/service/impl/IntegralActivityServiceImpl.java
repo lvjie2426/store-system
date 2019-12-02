@@ -124,7 +124,7 @@ public class IntegralActivityServiceImpl implements IntegralActivityService{
             skuIds.addAll(one.getSkuIds());
         }
         List<ProductSKU> skuList = productSKUDao.load(Lists.newArrayList(skuIds));
-        List<ClientProductSKU> clientProductSKUS = productService.transformSKUClient(skuList);
+        List<ClientProductSKU> clientProductSKUS = productService.transformSKUClient(skuList,0);
         Map<Long, ClientProductSKU> clientSkuMap = clientSkuMapUtils.listToMap(clientProductSKUS, "id");
 
         for(IntegralActivity one:integralActivities){

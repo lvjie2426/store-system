@@ -450,13 +450,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ClientProductSKU> transformSKUClient(List<ProductSKU> skuList) throws Exception {
+    public List<ClientProductSKU> transformSKUClient(List<ProductSKU> skuList, long subId) throws Exception {
         Set<Long> skuIds = Sets.newHashSet();
         Set<Long> spuIds = Sets.newHashSet();
         Set<Long> pids = Sets.newHashSet();
         Set<Long> cids = Sets.newHashSet();
         Set<Long> bids = Sets.newHashSet();
         Set<Long> sids = Sets.newHashSet();
+        Set<Long> wids = Sets.newHashSet();
         for (ProductSKU sku : skuList) {
             skuIds.add(sku.getId());
             spuIds.add(sku.getSpuid());
@@ -484,7 +485,18 @@ public class ProductServiceImpl implements ProductService {
         List<ClientProductSKU> clientProductSKUS = Lists.newArrayList();
         for (ProductSKU sku : skuList) {
             ClientProductSKU clientProductSKU = new ClientProductSKU(sku);
-
+            int num = 0;
+            if(subId>0) {
+                List<InventoryDetail> allDetails = inventoryDetailDao.getAllListBySKU(sku.getId());
+                for (InventoryDetail detail : allDetails) {
+                    wids.add(detail.getWid());
+                    sids.add(detail.getSubid());
+                    if (detail.getSubid() == subId) {
+                        num += detail.getNum();
+                    }
+                }
+                clientProductSKU.setCanUseNum(num);
+            }
             ProductSKU productSKU = skuMap.get(sku.getId());
             Map<Object, Object> sku_value = Maps.newHashMap();
             sku_value = this.getProperties(productSKU, clientProductSKU, "k_properties_value");
