@@ -1,3 +1,4 @@
+<!-- 营销管理-默认进来展示营销活动 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -213,7 +214,6 @@
         }
     </style>
 </head>
-
 <body class="body-bg">
     <div class="header clear">
         <ul class="tab-ul clear">
@@ -1259,11 +1259,15 @@
         var messageLocData = {}; //本地短信数据
         var type; //1 抵用券营销   2短信群发   3任务奖励
         var classIds; //所有的类目ID
+
+        //营销活动 所需参数 
+        var username ;//用户名
+        
         /**初始化页面*/
         $(function () {
             psid = quakooUser.getUserInfo().psid; //企业ID(公司ID)
             subid = quakooDb.getItem("sel_ShopId"); //门店ID
-            quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {
+            quakooData.ajaxGetData(config.getUrl_user_getAllUserJob(), {//获取门店下顾客的所有职业（公司下员工所有职位）
                 sid: subid,
                 userType: 0
             }, function (ret) {
@@ -1275,6 +1279,19 @@
                     }
                 }
             });
+            
+            //买赠活动
+            quakooData.ajaxGetData(config.getUrl_salesManage_buygive_getHistoryList(), {//获取历史的买赠活动
+                psid: psid,
+            }, function (ret) {
+                console.log(ret)
+            });
+            quakooData.ajaxGetData(config.getUrl_salesManage_buygive_getIngList(), {//获取进行中的买赠活动
+                psid: psid,
+            }, function (ret) {
+                console.log(ret)
+            });
+            
         });
         //
         /***
@@ -1329,8 +1346,6 @@
                 targetcon: '.content-view4',
             },function(){})
         }
-
-
         /************************************<优惠券营销结束>******************************************/
 
 

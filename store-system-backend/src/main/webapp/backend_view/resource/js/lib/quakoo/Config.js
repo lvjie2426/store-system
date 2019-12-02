@@ -521,6 +521,24 @@ var Config = (function(_super) {
     //=======================后台管理品牌系列 结束====================
 
 
+    //=======================营销管理 开始====================
+
+      //买赠活动--获取进行中的买赠活动
+      _proto.getUrl_salesManage_buygive_getIngList = function (){return this.serverUrl + '/salePresent/getIngList';}
+      //买赠活动--获取历史的买赠活动接口
+      _proto.getUrl_salesManage_buygive_getHistoryList = function (){return this.serverUrl + '/salePresent/getHistoryList';}
+      //买赠活动--新增
+    _proto.getUrl_salesManage_buygive_add = function (){return this.serverUrl + '/salePresent/add';}
+     //买赠活动--删除
+     _proto.getUrl_salesManage_buygive_del = function (){return this.serverUrl + '/salePresent/del';}
+      //买赠活动--修改
+    _proto.getUrl_salesManage_buygive_update = function (){return this.serverUrl + '/salePresent/update';}
+     //买赠活动--修改状态
+     _proto.getUrl_salesManage_buygive_updateOpen = function (){return this.serverUrl + '/salePresent/updateOpen';}
+
+    //=======================营销管理 结束====================
+
+
     Quakoo.class(Config, 'Config', _super);
 
 
